@@ -47,7 +47,7 @@ INSTALLED_APPS = (
     #'django.contrib.gis',
     'bootstrap','fontawesome','cookielaw',
     'haystack',
-    'debug_toolbar',
+    #'debug_toolbar',
     'model_utils',
     #'address',
     'bourseLibre',
