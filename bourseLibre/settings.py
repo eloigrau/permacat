@@ -92,7 +92,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-   'debug_toolbar.middleware.DebugToolbarMiddleware',
+'whitenoise.middleware.WhiteNoiseMiddleware',
+   #'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 
@@ -214,18 +215,12 @@ ADMINS = [
 
 
 ########################
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-def root(folder):
-    return os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', folder)
-
-
-STATIC_ROOT = root('staticstorage')
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.9/howto/static-files/
+STATIC_ROOT = root('staticfiles')
 STATIC_URL = '/static/'
-
-# Additional locations of static files
 STATICFILES_DIRS = (
-    root('static'),
+    os.path.join(BASE_DIR, 'static'),
 )
 MEDIA_URL= 'images/'
 MEDIA_ROOT= BASE_DIR + "../staticstorage/images/"
