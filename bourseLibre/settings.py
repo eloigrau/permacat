@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'vv=&pywf3%o^y=4@%^$&^0u3l225$^rer=r39^^10p_#o_pjo8'
+SECRET_KEY = 'a#_dnav(b21!_zq7qcllxducb=%t9tl+(#2pfl)ao&bkh088p*x'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -231,7 +231,7 @@ MEDIA_URL= 'images/'
 MEDIA_ROOT= BASE_DIR + "../staticstorage/images/"
 
 
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # LOCATION_FIELD = {
 #     'map.provider': 'openstreetmap',

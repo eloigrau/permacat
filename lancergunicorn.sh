@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-LOGFILE=/var/log/gunicorn/crepes_bretonnes.log
+LOGFILE=/var/log/gunicorn/permacat.log
 LOGDIR=$(dirname $LOGFILE)
 LOGLEVEL=debug   # info ou warning une fois l'installation OK
 NUM_WORKERS=3    # Règle : (2 x $num_cores) + 1
