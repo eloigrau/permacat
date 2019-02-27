@@ -182,14 +182,6 @@ DATE_FORMAT = "l d F Y"
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.8/howto/static-files/
-
-# STATIC_URL = 'https://docs.djangoproject.com/en/1.8/howto/static-files/'
-
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, "static"),
-# )
 
 INTERNAL_IPS = ['127.0.0.1']
 
@@ -217,7 +209,7 @@ ADMINS = [
 ########################
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
-STATIC_ROOT = root('staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
