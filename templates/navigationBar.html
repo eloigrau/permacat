@@ -1,0 +1,77 @@
+
+{% block navBar %}
+    {%comment%}
+<div class="topnav navbar-expand-sm navbar-light navbarMenu fixed-top">
+    {%endcomment%}
+
+<nav class="navbar navbar-light navbar-expand-md bg-light justify-content-center fixed-top navbarMenu">
+    <div class="container-fluid">
+
+  <!-- Centered link -->
+
+  <!-- Left-aligned links (default) -->
+            <button class="navbar-toggler navbar-btn" type="button" data-toggle="collapse" data-target="#navbarsActuel" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        <a class="navbar-brand" href="{% url 'bienvenue' %}"> PermaCat</a>
+    {%comment%}
+            <div class="navbar-header mr-auto order-0 order-md-0">
+            </div>
+    {%endcomment%}
+
+        {% if user.is_authenticated %}
+        <div class="navbar-collapse collapse justify-content-between align-items-center w-100"  id="navbarsActuel">
+            <ul class="navbar-nav mx-auto text-center">
+                <a role="button"  class="btn btn-success"  href="{% url 'produit_lister' %}" aria-disabled="true">Marché</a>
+
+                    <form class="form-inline my-2 my-lg-0" action="{% url 'chercher' %}" method="get">
+                    {% csrf_token %}
+                    <input class="form-control fmr-sm-2" name="id_recherche" placeholder="Chercher..." type="text">
+                    <button class="btn navbar-btn btn-outline-success my-2 my-sm-0" type="submit" >...</button>
+                    </form>
+                <a role="button" class="btn btn-success"  href="{% url 'blog:accueil' %}" aria-disabled="true">Forum</a>
+            </ul>
+
+            <ul class="nav navbar-nav justify-content-center">
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="{% url 'profil_courant' %}" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                         <span class="glyphicon glyphicon-user"></span> profil: {{request.user}}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="nav-link" href="{% url 'profil_courant' %}"><span class="lyphicon glyphicon-user"></span> Voir le profil</a>
+                            <a class="nav-link" href="{% url 'panier_afficher' %}"><span class="glyphicon glyphicon-shopping-cart"></span> Voir le panier</a>
+                            <a class="nav-link" href="{% url 'afficher_requetes' %}"><span class="glyphicon glyphicon-shopping-cart"></span> Voir les requêtes</a>
+                            <a class="nav-link" href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span>logout</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="{% url 'profil_courant' %}" id="navbarAbout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                         A propos
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarAbout">
+                            <a class="nav-link" href="{% url 'profil_list' %}"> Coopérateurs</a>
+                            <a class="nav-link" href="{% url 'haystack_search' %}"> Chercher...</a>
+                            <a class="nav-link" href="{% url 'contact_admins' %}"> Contacter admins </a>
+                            <a class="nav-link" href="{% url 'charte' %}"> Charte </a>
+                            <a class="nav-link" href="{% url 'cgu' %}"> CGU </a>
+                            <a class="nav-link" href="{% url 'liens' %}"> Liens </a>
+                            <span class="nav-link divider" role="separator"></span>
+                            <a class="nav-link" href="{% url 'fairedon' %}"> Faire un don</a>
+                        </div>
+                    </li>
+                    {% if user.is_superuser %}
+                    {% load admin_urls %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">admin</a></li>
+                    {% endif %}
+                </ul>
+            {% else %}
+                <ul class="nav navbar-nav mr-auto navbar-left">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span>login</a></li>
+                </ul>
+                {% endif %}
+        </ul>
+        </div>
+</nav>
+
+{% endblock %}

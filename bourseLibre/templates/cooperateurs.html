@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block subtitle %}
+<div class="row">
+<div class="col-sm-6">
+    <h3>Les coopérateurs :</h3>
+    </div>
+<div class="col-sm-6 textright">
+    <a href="{% url 'profil_carte' %}" class="btn btn-success">
+          <span class="glyphicon glyphicon-map-marker"></span> Afficher la carte
+        </a>
+</div>
+    </div>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+    <table class="table table-condensed tableprofils table-striped">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Avatar</th>
+                <th>Pseudo</th>
+                <th>Email</th>
+                <th>Code postal</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for profil in profils %}
+        <tr>
+            <td>
+                <img src="{{ profil.avatar.get_absolute_url }}" alt="pas d'image" style="width:100px;height:100px" href="{% url 'profil' profil.id %}">
+            </td>
+            <td><a href="{% url 'profil' profil.id %}">{{ profil.user.username }}</a></td>
+            <td><a href="{% url 'profil_contact' profil.id %}">{{ profil.user.email }}</a></td>
+            <td><a href="{% url 'profil' profil.id %}">{{ profil.adresse.code_postal }}</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'blog/baseBlog.html' %} {% block content %}
+
+<div class="row">
+	<div class="col col-md-10"><h3>Ajouter un article</h3></div>
+	<div class="col col-md-2">
+		<a href="{% url 'blog:accueil'  %}">
+	<button class="btn btn-info" role="button" >Retour au sommaire</button>
+</a>
+	</div>
+	</div>
+{% if error_message %}
+<p>
+	<strong>{{ error_message }}</strong>
+</p>
+{% endif %}
+<div class="row">
+<form class="form-horizontal" role="form" action="" method="post"
+	enctype="multipart/form-data">
+	{% csrf_token %} <input type="hidden" name="Article"
+		value="{{ article }}"> {% include 'form_template.html'%}
+
+</form>
+    </div>
+{% endblock %}

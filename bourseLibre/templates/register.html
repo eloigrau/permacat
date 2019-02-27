@@ -1,0 +1,39 @@
+{% extends 'base.html' %} 
+
+{% block title %}S'enregistrer{% endblock %}
+{% block subtitle %}S'enregistrer{% endblock %}
+{% block content %}
+<div class="container-fluid
+    <div class="row justify-content-center">
+        <div class="col align-self-center">
+    {% if error_message %}
+        <p><strong>{{ error_message }}</strong></p>
+    {% endif %}
+        <div class="col align-self-center">
+    <form class="form-horizontal " role="form" action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="container-fluid">
+                <table width="100%">
+                <col style="width:30%">
+                <col style="width:70%">
+                {{ form_user.as_table }}
+                {{ form_profil.as_table }}
+                {{ form_adresse.as_table }}
+            </table>
+
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-success">Submit</button>
+            </div>
+        </div>
+    </form>
+        </div>
+<div class="panel-footer">
+    Déjà membre ? <a href="{% url 'login' %}">clique ici</a> pour te connecter.
+</div>
+            </div>
+        </div>
+
+{% endblock %}
+

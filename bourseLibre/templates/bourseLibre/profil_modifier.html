@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Modifier profil{% endblock %}
+{% block subtitle %}
+Modifier votre profil
+{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+{% include 'bourseLibre/modifier_template.html' %}
+{% endblock %}

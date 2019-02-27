@@ -1,0 +1,69 @@
+
+{% load widget_tweaks %}
+<div class="row justify-content-sm-center">
+<div class="col-sm-12 col-md-10 col-lg-8 text-center">
+<form method="post" novalidate>
+  {% csrf_token %}
+
+  {% for hidden_field in form.hidden_fields %}
+    {{ hidden_field }}
+  {% endfor %}
+
+  {% if form.non_field_errors %}
+    <div class="alert alert-danger" role="alert">
+      {% for error in form.non_field_errors %}
+        {{ error }}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% for field in form.visible_fields %}
+    <div class="form-group">
+      {{ field.label_tag }}
+
+      {% if form.is_bound %}
+        {% if field.errors %}
+          {% render_field field class="form-control invalid" %}
+          {% for error in field.errors %}
+            <div class="invalid-feedback">
+              {{ error }}
+            </div>
+          {% endfor %}
+        {% else %}
+          {% render_field field class="form-control valid" %}
+        {% endif %}
+      {% else %}
+        {% render_field field class="form-control" %}
+      {% endif %}
+
+      {% if field.help_text %}
+        <small class="form-text text-muted">{{ field.help_text }}</small>
+      {% endif %}
+    </div>
+  {% endfor %}
+
+  <button type="submit" class="btn btn-primary">OK</button>
+</form>
+</div>
+</div>
+{% comment %}
+{% csrf_token %}
+<div class="container">
+    <div class ="col-sm-3">
+        <table width="100%">
+        <col style="width:30%">
+        <col style="width:70%">
+        {{ form.as_table }}
+        </table>
+
+    </div>
+{% comment%}
+{% for field in form %}
+<div class="col-sm-offset-4 col-sm-10">
+    <span class="text-danger small">{{ field.errors }}</span>
+</div>
+<label class="control-label col-sm-4">{{ field.label_tag }}</label>
+<div class="col-sm-10 ">{{ field }}</div>
+</div>
+{% endfor %}
+{% endcomment%}

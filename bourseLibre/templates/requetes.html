@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block subtitle %}
+Liste des demandes :
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+    <table class="table table-condensed tablepanier table-striped">
+        <thead class="thead-inverse">
+            <tr>
+                <th class="textcenter">Produit</th>
+                <th class="textcenter">Quantité</th>
+                <th class="textcenter">Prix unitaire</th>
+                <th class="textright">Total </th>
+            </tr>
+        </thead>
+        <tbody>
+    {% for item in items %}
+        {% ifchanged item.produit.user.user.id  %}
+        <tr>
+            <td class="panierTableauStyle textcenter" colspan="5" ><a href="{% url 'profil_contact' item.produit.user.user.id %}" class="btn btn-primary " type="button" id="buttonContacterProducteur">
+			Contacter {{ item.produit.user.user.username }} pour échanger :  </a> </td>
+        </tr>
+        {%endifchanged %}
+        <tr>
+            <td class="textcenter"><a href="{{item.produit.get_absolute_url}}">{{ item.produit.nom_produit }}</a></td>
+            <td class="textcenter">{{ item.quantite }} {{ item.produit.get_type_prix }}</td>
+            <td class="textcenter">{{ item.produit.get_prixEtUnite }} </td>
+            <td class="table-info textright">{{ item.total_prixEtunite }}</td>
+        </tr>
+
+    {% endfor %}
+    {% comment %}
+    <tr class="active">
+        <td class="table-success">Total</td>
+        <td class="table-success"></td>
+        <td class="table-success"> {{ panier.total_quantite_str }}</td>
+        <td class="table-success"></td>
+        <td class="table-success">{{ panier.total_prix_str }}</td>
+    </tr>
+    {% endcomment %}
+        </tbody>
+    </table>
+    </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Contact{% endblock %}
+{% block subtitle %}
+<h3>Contacter {{recepteur.user.username}}</h3>
+    {% endblock %}
+{% block content %}
+
+{% if error_message %}
+<p>
+    <strong>{{ error_message }}</strong>
+</p>
+{% endif %}
+    <input type="hidden" name="contact" value="{{ contact }}"> {% include 'form_template.html'%}
+{% endblock %}
+{% block comment %}{% endblock %}

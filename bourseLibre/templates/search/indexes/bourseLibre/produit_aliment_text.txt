@@ -1,0 +1,3 @@
+{{ object.description }}
+{{ object.nom_produit }}
+{{ object.date_debut }}

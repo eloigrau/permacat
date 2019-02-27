@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load app_filters %}
+{% block title %}Partager{% endblock %}
+{% block subtitle %}
+{% csrf_token %}
+<style>.soustitre,.bodycontenu{background-color: {{ bgcolor }};}</style>
+<div class="row justify-content-center">
+<h5>Quel {{ typeProduit }} proposez-vous ?</h5>
+</div>
+{% endblock %}
+{% block content %}
+<form class="form-horizontal" role="form" action="" method="post"
+	enctype="multipart/form-data">
+        {% include 'form_template.html'%}
+
+    {% comment %}
+<div class="row-sm-12 row-lg-6 mx-auto "style="display:flex;justify-content:center;align-items:center;">
+
+    <form action="" method="post">
+        <table  border="0" >
+    {{ form.as_table }}
+    {% if form2 %}
+        {{ form2.as_table }}
+    {%endif%}
+
+    </table>
+        <div class="btn-group" style="display:flex;justify-content:center;align-items:center;">
+            <button type="cancel" onclick="window.history.back();" class="btn btn-warning ">Annuler</button>
+            <button type="submit" class="btn btn-success">Offrir / Rechercher</button>
+        </div>
+    {% endcomment %}
+</form>
+</div>
+
+{% endblock %}
+
+{% block comment %}{% endblock %}

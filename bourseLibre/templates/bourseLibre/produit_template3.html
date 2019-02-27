@@ -1,0 +1,52 @@
+{%comment%}<div class="col-sm-12 col-md-6 col-lg-4 offre justify-content-between flex-item" >{%endcomment%}
+
+    <div class="card-deck offre justify-content-between" onclick="window.location.href='{% url 'produit_detail' produit.id %}'" style="cursor: pointer">
+
+        <div class="card d-md-flex textcenter offre2" style="background-color:{{ produit.couleur }}; border-color:{%if produit.estUneOffre == True %} lightyellow {%else%} 	lightcoral{%endif%}">
+            <div class="card-header offreentete justify-content-center">
+                    <div class="col-xs-5 ">
+                         {{produit.user.user.username}}
+                    </div>
+                    <div class="col-xs-2">
+                         <span class="badge {% if produit.estUneOffre%}badge-warning{%else%} badge-danger {%endif%}">{% if produit.estUneOffre%}Offre{%else%} Demande {%endif%}
+		                </span>
+                    </div>
+                    <div class="col-xs-5">
+                        {{produit.souscategorie}}
+                    </div>
+
+            </div>
+            <div class="card-block"  >
+            {%comment%}   <img class="card-img-top" src="{{ produit.photo.thumbnail.url }}" alt="image indisponible"/>  <img class="card-img-top" alt="Bootstrap Image Preview" src="http://lorempixel.com/200/200/" />{%endcomment%}
+
+             <img class="card-img-top" alt="Bootstrap Image Preview" src="http://via.placeholder.com/200x200/" />
+                <h4 class="card-title">{{ produit.nom_produit|truncatechars:25 }} </h4>
+                  <p class="card-text text-align-left">
+                    {{ produit.description|truncatewords:10 }}
+                  </p>
+                  <p class="card-text">
+                    {% if produit.date_debut and produit.date_expiration %}
+                    du {{ produit.date_debut|date:"j/m" }}{% endif%} {% if produit.date_expiration %} au {{ produit.date_expiration|date:"j/m" }}
+                    {%else%}
+                    {% if produit.date_debut %}à partir du {{ produit.date_debut|date:"j/m" }}{% endif%} {% if produit.date_expiration %} jusqu'au {{ produit.date_expiration|date:"j/m" }}{% endif%}
+                    {%endif%}
+   {%comment%}
+                      {{ produit.photo.thumbnail.url  }}
+   {%endcomment%}
+
+                  </p>
+            </div>
+            <div class="card-footer">
+                <p>
+                    {%if produit.estUneOffre %}{{ produit.get_prixEtUnite }} {%endif%}
+
+                </p>
+   {%comment%}
+                <p  class="btn btn-primary {%if produit.estUneOffre %}couleurOffre{%else%}couleurdemande{%endif%}"
+                   role="button">détails...
+   {%endcomment%}
+                </p>
+            </div>
+        </div>
+   {%comment%} </a>{%endcomment%}
+</div>

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block subtitle %}Liens intéressants à nos yeux : {% endblock %}
+
+{% block content %}
+<div class="row">
+<div class="col">
+    <ul class="list-group">
+{%for lien in liens%}
+        <li class="list-group-item" ><a href="{{lien}}" rel="external" target="_blank">{{lien}}</a></li>
+{%endfor%}
+</ul>
+</div>
+</div>
+ {% endblock %}

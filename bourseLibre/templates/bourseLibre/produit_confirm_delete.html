@@ -1,0 +1,5 @@
+<form action="" method="post">{% csrf_token %}
+    <p>Etes vous sur.e de vouloir supprimer l'offre de "{{ produit }}"?</p>
+    <input type="button"  onclick="window.history.back();"  value="Cancel" />
+    <input type="submit" value="Confirm" />
+</form>

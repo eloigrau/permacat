@@ -1,0 +1,47 @@
+
+{% extends 'base.html' %}
+{% block headerDocument%}
+{% load leaflet_tags %}
+{%endblock%}
+{%block header %}
+{% leaflet_js %}
+{% leaflet_css %}
+{%endblock%}
+{% block subtitle %}
+<div class="row textcenter">
+  <div class="col-md-8 textcenter">
+    <h4>Carte des coopérateurs</h4>
+    <p>  </p>
+  </div>
+  </div>
+{% endblock %}
+{% block content %}
+
+<div class="row" style="min-height:600px;">
+  <div class="col-md-12" >
+      <style>
+
+    .leaflet-container {  /* all maps */
+        width:  100%;
+        height: 100%;
+    }
+    </style>
+      <script type="text/javascript">
+        function map_init_basic (map, options) {
+        {% for profil in profils %}
+            var lat = {{profil.adresse.get_latitude}};
+            var lon = {{profil.adresse.get_longitude}};
+            var marker = L.marker([lat, lon]).bindPopup('<a href="{% url 'profil' profil.id %}"> {{profil.user.username}}</a>');
+            marker.addTo(map);
+        {%endfor%}
+        map.panTo(new L.LatLng(lat, lon));
+    }
+</script>
+{% leaflet_map "yourmap" callback="window.map_init_basic" %}
+</div>
+</div>
+
+
+{% endblock %}
+
+    

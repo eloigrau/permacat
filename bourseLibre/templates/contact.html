@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Contact{% endblock %}
+{% block subtitle %}
+<h3 style="text-align:center">Contacter {%if isContactProducteur %} {{producteur}}{%else%}les administrateurs{%endif%}{% endblock %}
+</h3>
+{% block content %}
+
+{% if error_message %}
+<p>
+    <strong>{{ error_message }}</strong>
+</p>
+{% endif %}
+
+<div class="jumbotron">
+    <input type="hidden" name="contact" value="{{ contact }}"> {% include 'form_template.html'%}
+<div class="form-group textcenter">
+    <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-success">Envoyer</button>
+    </div>
+</div>
+</div>
+</form>
+{% endblock %}
+{% block comment %}{% endblock %}
+    

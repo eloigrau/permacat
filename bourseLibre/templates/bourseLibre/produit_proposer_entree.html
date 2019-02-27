@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block title %}Partager{% endblock %}
+{% block subtitle %}
+Vous proposez un...
+{% endblock %}
+{% block content %}
+<style>.col_aliment{background-color: {{ couleurs.aliment }};}
+.col_vegetaux{background-color: {{ couleurs.vegetal }};}
+.col_services{background-color: {{ couleurs.service }};}
+.col_objets{background-color: {{ couleurs.objet }};}
+</style>
+<div class="row">
+    <div class="col-sm-6 col_cat col_aliment">
+        <a href="{%url 'produit_proposer' typeProduit='aliment' %}">
+            <div class="panel-group">
+                <div class="panel panel-primary ">
+                    <div class="panel-heading"><h4>Aliment</h4></div>
+                    <div class="panel-body">
+                        <ul>
+                            <li>légumes</li>
+                            <li>fruits</li>
+                            <li>boissons</li>
+                            <li>herbes et condiments</li>
+                            <li>...</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-sm-6 col_cat col_vegetaux">
+        <a href="{%url 'produit_proposer' typeProduit='vegetal' %}">
+            <div class="panel-group">
+                <div class="panel panel-primary">
+                    <div class="panel-heading"><h4>Végétal</h4></div>
+                    <div class="panel-body">
+                        <ul>
+                            <li>plantes</li>
+                            <li>fleurs</li>
+                            <li>graines</li>
+                            <li>feuilles</li>
+                            <li>...</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-sm-6 col_cat col_services">
+        <a href="{%url 'produit_proposer' typeProduit='service' %}">
+            <div class="panel-group">
+                <div class="panel panel-primary">
+                    <div class="panel-heading"><h4>Service</h4></div>
+                    <div class="panel-body">
+                        <ul>
+                            <li>Jardinage</li>
+                            <li>Informatique</li>
+                            <li>Bricolage</li>
+                            <li>Covoiturage</li>
+                            <li>...</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-sm-6 col_cat col_objets" style="background-color:">
+        <a href="{%url 'produit_proposer' typeProduit='objet' %}">
+            <div class="panel-group">
+                <div class="panel panel-primary">
+                    <div class="panel-heading"><h4>Objet</h4></div>
+                    <div class="panel-body">
+                        <ul>
+                            <li>Materiel</li>
+                            <li>Véhicule</li>
+                            <li>Multimedia</li>
+                            <li>Mobi</li>
+                            <li>...</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block comment %}{% endblock %}

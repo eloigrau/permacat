@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block subtitle %}
+Votre panier (id: {{panier.id}}), créé le {{panier.date_creation}}
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+    <table class="table table-condensed tablepanier table-striped">
+        <tbody>
+    {% for item in items %}
+        {% ifchanged item.produit.user.user.id  %}
+        <tr>
+            <td colspan="5" class="panierTableauStyle textcenter" ><a href="{% url 'profil_contact' item.produit.user.user.id%}?panier={{panier.id}}" class="btn btn-primary " type="button" id="buttonContacterProducteur">
+			Contacter {{ item.produit.user.user.username }} </a> </td>
+        </tr>
+        <tr>
+            <td class="textcenter">Produit </td>
+            <td class="textcenter">Quantité </td>
+            <td class="textcenter">Prix unitaire</td>
+            <td class="table-info textright">Total</td>
+            <td class="textcenter" ></td>
+        </tr>
+        {%endifchanged %}
+        <tr>
+            <td class="textcenter"><a href="{{item.produit.get_absolute_url}}">{{ item.produit.nom_produit }}</a></td>
+            <td class="textcenter">{{ item.quantite }} {{ item.produit.get_type_prix }}</td>
+            <td class="textcenter">{{ item.produit.get_prixEtUnite }} </td>
+            <td class="table-info textright">{{ item.total_prixEtunite }}</td>
+            <td class="textcenter" >
+                <a href="{%url 'supprimerDuPanier' item.id %}" type="button" class="btn btn-outline-danger">x</a></td>
+        </tr>
+    {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    </div>
+{% endblock %}

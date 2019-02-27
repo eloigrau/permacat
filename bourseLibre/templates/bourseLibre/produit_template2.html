@@ -1,0 +1,65 @@
+<div class="col-md-3 col-lg-3 offre justify-content-between hoverable flex-item" >
+<a href="{% url 'produit_detail' produit.id %}">
+<div class="card text-center offre" style="background-color:{{ produit.couleur }}; border-color:{%if produit.estUneOffre == True %} grey {%else%}white{%endif%}">
+
+    <div class="card-header">
+        <span class="badge float-right {% if produit.estUneOffre%}badge-warning{%else%} badge-danger {%endif%} ">
+            {% if produit.estUneOffre%}Offre ({{produit.souscategorie}} par {{produit.user.user.username}}) {%else%} Demande ({{produit.souscategorie}} par {{produit.user.user.username}}){%endif%}
+        </span>
+    </div>
+    <img class="card-img-top" src="{{ produit.avatar.url }}" alt="">
+    <div class="card-block"  >
+        <h4 class="card-title">{{ produit.nom_produit|truncatechars:12 }} </h4>
+          <p class="card-text">
+            {% if produit.date_debut and produit.date_expiration %}
+            du {{ produit.date_debut|date:"j/m" }}{% endif%} {% if produit.date_expiration %} au {{ produit.date_expiration|date:"j/m" }}
+            {%else%}
+            {% if produit.date_debut %}à partir du {{ produit.date_debut|date:"j/m" }}{% endif%} {% if produit.date_expiration %} jusqu'au {{ produit.date_expiration|date:"j/m" }}{% endif%}
+            {%endif%}
+          </p>
+          <p class="card-text text-align-left">
+            {{ produit.description|truncatewords:10 }}
+          </p>
+    </div>
+    <div class="card-footer">
+        <p>
+          {{ produit.get_prixEtUnite }}
+        </p>
+        <a href="{% url 'produit_detail' produit.id %}" class="btn btn-primary {%if produit.estUneOffre %}couleurOffre{%else%}couleurdemande{%endif%}"
+           role="button">{%if produit.estUneOffre %}voir l'offre{%else%}voir la demande{%endif%} </a>
+    </div>
+</div>
+</a>
+</div>
+    {%comment%}
+    <div class="card article ">
+        <a href="{% url 'produit_detail' produit.id %}" >
+  <div class="card-block">
+        <h4 class="card-title">{{ article.titre }}</h4>
+        <h6 class="card-subtitle mb-2 text-muted">Catégorie: {{ article.categorie }}, rédigé par {{ article.auteur }}, le {{ article.date|date:"DATE_FORMAT" }}</h6>
+        <p class="card-text">{{ article.contenu|truncatechars:200 }}</p>
+
+  </div>   </a>
+        <div class="row extratest align-items-start">
+        <div class="col-sm-12">
+           <div class="thumbnail">
+                <img src="{{ produit.avatar.url }}" alt="avatar" style="width:128px;height:128px">
+            </div>
+            <div class="caption textcenter ">
+                <small> ({{ produit.souscategorie }})</small>
+                <h2>{{ produit.nom_produit|truncatechars:12 }} </h2>
+                <p> par: {{ produit.user.user.username }}</p>
+            </div>
+        </div>
+        </div>
+        <div class="row align-items-end">
+        <div class="col-sm-12 textcenter">
+            <p> {{ produit.get_prixEtUnite }}</p>
+                <a href="{% url 'produit_detail' produit.id %}" class="btn btn-primary btn-sm"
+                   role="button">voir en détail...</a>
+            </div>
+        </div>
+        </a>
+    </div>
+    {%endcomment%}
+

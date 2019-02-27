@@ -1,0 +1,4 @@
+{{ object.description }}
+{{ object.user}}
+{{ object.date_registration }}
+{{ object.competences }}

@@ -1,0 +1,45 @@
+{% extends 'base.html' %} 
+{% block title %}Acceuil{% endblock %}
+
+			<div class="jumbotron well">
+{% block subtitle %}
+<h1 class = "textcenter rowbienvenue">Benvingut {% if request.user.is_autenticated %}request.user.username{%endif%}al Mercat Lliure</h1>
+<h1 class = "textcenter rowbienvenue">Bienvenue {% if request.user.is_autenticated %}request.user.username{%endif%}au marché libre</h1>
+<h3 class = "textcenter rowbienvenue"> Mercat 100% gratuït i lliure !</h3>
+
+{% endblock %}
+{% block content %}
+				{%comment%}
+<div class="row">
+		<div class="col-md-4">
+			<h2>
+				Pourquoi ?
+			</h2>
+			<p>
+				Ce site vous offre la possibilité d'échanger des biens, des services, de la compagnie ! Parce que la planète s'épuise, parceque le climat s'emballe, parce que les humains souffrent, parce que les animaux souffrent... il faut redonner du sens et du lien
+			entre gens du pays. C'est ici et maintnant qu'il faut agir.
+			</p>
+		</div>
+		<div class="col-md-4">
+			<h2>
+				Comment ?
+			</h2>
+			<p>
+				Inscrivez vous et participez au réseau de coopération locale...
+			</p>
+		</div>
+		<div class="col-md-4">
+			<h2>
+				Mais encore ?
+			</h2>
+			<p>
+				L'entraide en ces temps troubles devient primordiale, à nous de nous organiser...
+			</p>
+			<p>
+				<a class="btn" href="#">en savoir plus...</a>
+			</p>
+		</div>
+	</div>
+				{%endcomment%}
+
+{% endblock %}

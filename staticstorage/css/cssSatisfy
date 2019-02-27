@@ -1,0 +1,6 @@
+@font-face {
+  font-family: 'Satisfy';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Satisfy'), url(https://fonts.gstatic.com/s/satisfy/v6/kteN-TiU7KwgPz3aaBeTSQ.ttf) format('truetype');
+}

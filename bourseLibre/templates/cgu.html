@@ -1,0 +1,338 @@
+{% extends 'base.html' %}
+{% block subtitle %}
+			
+		<div class="content">
+			
+				<H1>Conditions g&eacute;n&eacute;rales d'utilisations</H1>
+        <section class="p2">
+			<H2>1. Pr&eacute;sentation </H2>
+			<p>Les présentes « conditions générales d'utilisation » (CGU) ont pour objet l'encadrement juridique des modalités de mise 
+				à disposition des services du site <b>MercatLliure.fr</b> et leur utilisation par « l'Utilisateur ».</p>
+			<p>Toute connexion au site est subordonnée au respect des présentes conditions. Pour l'Utilisateur, le simple accès 
+			au site de MercatLliure à l'adresse URL suivante http://www.MercatLliure.fr implique l'acceptation expresse et irrévocable de l'ensemble 
+			des conditions décrites ci-après.</p>
+			<p><b>MercatLliure</b> se réserve le droit de modifier unilatéralement et à tout moment le contenu des présentes conditions générales 
+			d'utilisation. Le membre devra alors à sa prochaine connexion valider les nouvelles CGU. </p>
+	</section>		
+
+
+	<section class="p2">
+			<H2>2. Définitions</H2>
+			<p>La présente clause a pour objet de définir les différents termes essentiels du contrat : </p>
+			<ul class="cgu-definitions">
+				<li><b>Site internet/ plate-forme : </b>désigne le site internet ou plateforme accessible à l'adresse url suivante : www.MercatLliure.fr, et dont l'objet est de mettre en relation les membres afin de leur permettre l'échange de biens ou de services sous la forme d'un troc, un échange sans contrepartie financière.</li>
+				<li><b>Utilisateur : </b>ce terme désigne toute personne qui utilise le site ou l'un des services proposés par le site.</li>				
+				<li><b>Membre : </b>l'Utilisateur devient membre lorsqu'il s'est enregistré et identifié sur le site. Les membres ne peuvent avoir qu'un profil (compte) par personne.</li>
+				<li><b>Identifiant et mot de passe : </b>c'est l'ensemble des informations nécessaires à l'identification d'un utilisateur sur le site. L'identifiant et le mot de passe permettent à l'utilisateur d'accéder à des services réservés aux membres du site. Le mot de passe est confidentiel.</li>
+				<li><b>Inscription : </b>désigne la procédure d'inscription en ligne que l'Utilisateur doit accomplir sur la plateforme de MercatLliure afin de pouvoir accéder à son profil et aux échanges de trocs. Cette inscription conduit à la création des identifiants et du compte personnel de l'Utilisateur.</li>
+				<li><b>Offre : </b>désigne la publication d'une proposition de troc.</li>																
+				<li><b>Le troqueur : </b>désigne un Utilisateur de MercatLliure qui publie par l'intermédiaire de la plateforme une offre de troc. </li>
+				<li><b>Les Conditions Générales d'Utilisation (CGU) : </b>désigne la relation commerciale formée entre la société MercatLliure et les Membres suite à la souscription d'une inscription par le membre. Le Contrat est régi par les présentes Conditions Générales d'Utilisation.</li>				
+			</ul>
+	</section>			
+
+	<section class="p2">
+			<H2>3. Droit d'utilisation </H2>
+			<p>L'&eacute;quipe MercatLliure s'efforce de rendre le service accessible en continu 24 heures sur 24 et 7 jours sur 7. Le site est accessible gratuitement en tout lieu à tout Utilisateur ayant un accès à Internet. Tous les frais supportés par l'Utilisateur pour accéder au service (matériel informatique, logiciels, connexion Internet, etc.) sont à sa charge.</p>
+			<p>selon le cas : </p>
+			<p>L'Utilisateur non Membre n'a pas accès aux services réservés aux Membres. Pour cela, il doit s'identifier à l'aide de son identifiant et de son mot de passe.</p>
+			<p>La plateforme met en œuvre tous les moyens mis à sa disposition pour assurer un accès de qualité à ses services. </p>
+			<p>Tout événement dû à un cas de force majeure ayant pour conséquence un dysfonctionnement du réseau ou du serveur n'engage pas la responsabilité de MercatLliure.</p>
+			<p>L'accès aux services de la plateforme peut à tout moment faire l'objet d'une interruption, d'une suspension, d'une modification sans préavis pour une maintenance ou pour tout autre cas. </p>
+			<p>L'Utilisateur s'oblige à ne réclamer aucune indemnisation suite à l'interruption, à la suspension ou à la modification du présent contrat.</p>
+			<p>L'Utilisateur a la possibilité de contacter le site &agrave; l'aide du <a href="{% url 'contact_admins'  %}">formulaire de contact du site</a></p>
+			<section class="p3">
+				<H3>Durée</h3>
+				<p>Le contrat est conclu pour une durée indéterminée à compter de l'acceptation par le Membre des présentes Conditions d'Utilisation.</p>		
+
+				<H3>Résiliation</h3>
+				<p>Le Membre peut résilier à tout moment le contrat, en se rendant sur le site MercatLliure.fr et en y suivant la procédure prévue à cet effet, sous réserve des stipulations spécifiques éventuelles figurant dans les Conditions Générales d'utilisation. </p>		
+			</section>
+	</section>			
+	
+	<section class="p2">
+			<H2>4. Utilisation du site</H2>
+			<p>Offre ou demande de services ou d'objets : la formulation de la demande du Membre précise notamment la catégorie, l'objet et les caractéristiques du service ou du prêt attendu, le périmètre géographique dans lequel le service doit être effectué, la transaction et le montant s'il y a, ainsi que l'arrangement du prix des frais de transport si il y a.</p>
+			<p>Les Troqueurs peuvent également formuler une contre-proposition, soit parce qu'ils ne peuvent répondre à toutes les conditions de la demande, soit parce qu'ils souhaitent proposer une Offre plus compétitive que celles formulées par d'autres Membres. </p>
+			<p>Le demandeur reste libre d'accepter ou non toute offre ou toute contre-proposition qui lui sera faite.</p>
+			<?php /* modification 2017/03/03 modalite financiere <=> modalites des frais de ports */ ?>
+			<p>l'offreur et le demandeur se mettent d'accord sur le lieu de l'échange, le lieu ou se déroulera le Service. Une fois que la transaction ou le service est effectué, l'offreur ou le demandeur valide le versement de la monnaie, s'il y a, en allant sur son profil. Si l'objet est envoyé par la poste l'offreur et le demandeur se mettent d'accord sur les modalités de remboursement des frais de ports qu'ils ont eux-mêmes convenues, (par exemple paiement en espèce, chèque, virement bancaire, par CESU, ou de monnaie libre supplémentaires). </p>
+			<section class="p3"> 
+				<H3>Les publications</h3>
+				<p>Le site permet aux Membres de publier des annonces, des articles de blog et des commentaires.</p>
+				<p>Dans ses publications, le Membre s'engage à respecter les règles de la Netiquette et les règles de droit en vigueur.</p>
+				<p>La plateforme exerce une modération a posteriori sur les publications et se réserve le droit de refuser leur mise en ligne, sans avoir à s'en justifier auprès du Membre.</p>				
+				<p>Le Membre reste titulaire de l'intégralité de ses droits de propriété intellectuelle. Mais en publiant une publication sur la plateforme, il cède à la société éditrice le droit non exclusif et gratuit de représenter, reproduire, adapter, modifier, diffuser et distribuer sa publication, directement ou par un tiers autorisé, dans le monde entier, sur tout support (numérique ou physique), pour la durée de la propriété intellectuelle. Le Membre cède notamment le droit d'utiliser sa publication sur internet et sur les réseaux de téléphonie mobile. La société MercatLliure s'engage à faire figurer le nom du Membre à proximité de chaque utilisation de sa publication.</p>
+	 {%comment%}
+
+				<p>La soci&eacute;t&eacute; MercatLliure agit en tant <b>qu'hebergeur du contenu post&eacute; par les membres</b>, (annonces, commentaires, etc...), 
+				conform&eacute;mement &agrave; l'article 6 de la loi sur la confiance dans l'&eacute;conomie numérique, la société MercatLliure ne peut être 
+				tenue responsable du contenu publié par les membres.</p>
+				{%endcomment%}
+				<p>Le <a href="{% url 'contact_admins'  %}">formulaire de contact du site</a> permet aux membres de signaler tout contenu qui leur para&icirc;t inappropri&eacute; ou ill&eacute;gal,
+				Il est important de signaler la nature du contenu, ainsi que l'adresse Url par laquelle il est accessible afin que la soci&eacute;t&eacute; MercatLliure puisse l'examiner et
+				le supprimer si n&eacute;c&eacute;ssaire. </p>
+
+				<H3>Les annonces</h3>
+				<p>Le Membre à l'origine de la publication est seul responsable du contenu qu'il met à disposition des autres utilisateurs et du choix de la catégorie dans laquelle il souhaite la référencer.</p>
+				<p>L'Utilisateur à l'origine de la création d'une discussion, d'une négociation, est seul responsable du contenu qu'il met à disposition aux autres Utilisateurs. </p>
+				<p>La publication sur la plateforme MercatLliure.fr ne peut en aucun cas être interprétée comme une garantie de MercatLliure sur l'origine, la véracité ou la qualité de ce qui est proposé.</p>
+				
+				<H3> Le profil</h3>
+				<p>Le Membre remplit son Profil en se décrivant (savoir faire, attente...). Le Membre se géolocalise pour faire apparaître où l'Objet ou le Service se trouve. Et peut modifier à tout moment les paramètres de son compte.</p>
+
+				<H3> Les contenus photos </h3>
+				<p>Le Membre est à l'origine de l'ajout de photos, il est seul responsable du contenu qu'il met à disposition aux autres Utilisateurs. La publication sur la plateforme MercatLliure.fr ne peut en aucun cas être interprétée comme une garantie de MercatLliure sur l'origine, la véracité ou la qualité de ce qui est proposé.</p>
+
+
+				<H3>Les courriers et les évaluations </h3>
+				<p>En vous inscrivant, vous acceptez que les autres Membres puissent vous envoyer des courriers, des propositions de trocs d'objets, de services de prêts ou de monnaie libres sur vos publications d'annonces. </p>
+
+				<H3> La qualité des publications</h3>
+				<p>Vos publications :</p>
+				<ul class="cgu-definitions" >
+					<li>a) Les trocs déposés doivent être précis et non mensongers. </li>				
+					<li>b) Les trocs ne doivent pas être frauduleux ou impliquer la vente d'objets contrefaits ou volés. Les marques, logos, signes et tout autre contenu du site font l'objet d'une protection par le Code de la propriété intellectuelle et plus particulièrement par le droit d'auteur. Article. L.335-2. </li>
+					<li>c) Les trocs ne peuvent pas contenir :
+						<ul class="cgu-definitions">
+							<li>i)  tabac, drogues, substances dangereuses et illicites, médicaments.</li>
+							<li>ii) armes de combat ou d'autodéfense, armes à feu, explosifs, pièges de chasse.</li>
+							<li>iii) toute forme de prostitution.</li>
+							<li>iv) certaines espèces végétales et animales protégées, menacées ou prélevées dans leur milieu naturel.</li>
+						</ul>
+					
+					</li>
+					<li>d) Le Membre s'engage à une utilisation des contenus du site dans un cadre strictement privé. Une utilisation des contenus à des fins commerciales est strictement interdite.</li>
+					<li>e) Les trocs et tout contenu mis en ligne par le Membre sont de sa seule responsabilité. </li>
+					<li>f) Le Membre s'engage à ne pas mettre en ligne de contenu pouvant porter atteinte aux intérêts de tierces personnes. Tout recours en justice engagé par un tiers lésé contre le site sera pris en charge par le Membre.</li>
+					<li>g) Toutes les publications non conformes aux valeurs du site MercatLliure peuvent être à tout moment supprimées ou modifiées par le site. Le Membre ne reçoit aucune justification et notification préalablement à la suppression ou à la modification du contenu Utilisateur.</li>
+					<li>h) Les trocs ne doivent enfreindre aucune loi ou règlement (y compris, et sans limitation, celles régissant le contrôle des exportations, la protection des consommateurs, la concurrence déloyale, les pratiques discriminatoires ou la publicité mensongère).</li>
+					<li>i) Toutes publications ne doivent pas être diffamatoires, médisantes, calomnieuses, discriminatoires, inciter à la violence, à la haine raciale, religieuse ou ethnique, ou quelle qu'elle soit.</li>
+					<li>j) Les trocs ne doivent pas engager la responsabilité de MercatLliure. Le Membre ne doit en aucun cas publier quoi que ce soit qui serait en contradiction avec les r&eacute;glementations en vigueur en France.</li>
+				</ul>
+				
+				<H3> Les Objets/ Les Produits</h3>
+				<p>Seuls peuvent faire l'objet d'échange sur le site MercatLliure des Objets/ Produits conformes à la loi.</p>
+				
+				<H3> Les Services</h3>
+				
+				<p>L'échange de service proposé dans le cadre de la plateforme est strictement limité à un échange <b>ponctuel</b>, <b>occasionnel</b> et de <b>courte durée</b>. </p>
+				
+				<?php /* modification 2017/03/03 Legal travail */ ?>
+				<p>L'échange de service entre membres ne doit pas interf&eacute;rer avec la l&eacute;gislation du travail en vigueur, les membres utilisant et/ou d&eacute;tournant la plateforme &agrave; des fins professionnelles et/ou commerciale pourront &ecirc;tre exclus sans notification pr&eacute;alable.
+					La soci&eacute;t&eacute; MercatLliure ne pourrait en aucun cas &ecirc;tre tenue responsable des agissements de ses membres concernant la l&eacute;gislation du travail.  
+				</p>							
+				<p>L'échange de service correspondant &agrave; des prestations normalement r&eacute;alis&eacute; par des professions réglementées est interdit (Exemple : taxi, professions m&eacute;dicales etc... <a style="color:#00F" href="https://fr.wikipedia.org/wiki/Profession_r%C3%A9glement%C3%A9e">Voir sur Wikipedia</a>).</p>	
+
+				<p>Les Membres ont l'obligation de s'assurer, avant d'effectuer tout service, être titulaires d'une police d'assurance couvrant leur responsabilité pour l'ensemble des dommages qu'ils pourraient causer dans le cadre du service.</p>
+				<H3> Les prêts</h3>
+				<p>Les prêts d'objet doivent être restitués par le Membre dans l'état dans lequel il l'a emprunté. Il en court seul de la responsabilité du Membre.
+					Un membre qui souhaite prêter un véhicule motorisé, comme une voiture, une moto... Se doit de vérifier avec son assurance si sa police d'assurance couvre ce genre de prêt.
+					
+				</p>
+				
+
+				<H3> Réseau social </h3>
+				<p>La plateforme MercatLliure permet aux Membres de nouer des liens, des relations privilégiées avec d'autres Membres en les suivant. Un Membre peut ajouter un autre Membre à ses troqueurs favoris.  </p>
+				
+			</section>										
+	</section>
+
+	
+
+	
+	<section class="p2">
+		<H2>5. Droit applicable et juridiction comp&eacute;tente</H2>
+		<p>Tant le présent site que les modalités et conditions de son utilisation sont régis par le droit français, quel que soit le lieu d'utilisation. En cas de contestation éventuelle, et après l'échec de toute tentative de recherche d'une solution amiable, les tribunaux français seront seuls compétents pour connaître de tout litige. </p>
+
+		<section class="p3">
+				<H3>Code de la propriété intellectuelle</h3>
+				<p><b>Article. L.335-2.</b> « Toute édition d'écrits, de composition musicale, de dessin, de peinture ou de toute autre production imprimée ou gravée en entier ou en partie, au mépris des lois et règlements relatifs à la propriété des auteurs, est une contrefaçon ; et toute contrefaçon est un délit. »</p>
+				<p>La contrefaçon en France d'ouvrages publiés en France ou à l'étranger est punie de trois ans d'emprisonnement et de 300.000 Euros d'amende. Seront punis des mêmes peines le débit, l'exportation et l'importation des ouvrages contrefaits. Exemples : DVD, CD, jeux vid&eacute;o, logiciels informatiques. Sacs, vêtements, ceintures, montres.. de marques. </p>
+				
+				<H3>Propriété intellectuelle</h3>	
+				<p>Les photographies, textes, slogans, dessins, images, vidéos, séquences animées sonores ou non ainsi que toutes œuvres intégrées sur le site sont la propriété de MercatLliure.</p>
+				<p>Toutes les œuvres représentées sur le site sont protégées au titre des droits d'auteur et des articles <b>Article L.511.1 et suivants</b> du Code de la Propriété Intellectuelle relatifs à la protection des modèles déposés.</p>
+				<p>Les reproductions, sur un support papier ou informatique, dudit site et des œuvres qui y sont reproduites sont strictement réservées à un usage personnel excluant tout usage à des fins publicitaires et/ou commerciales, et/ou d'information et/ou qu'elles soient conformes aux dispositions de l'article <b>L.122-5</b> du Code de la Propriété Intellectuelle.</p>
+				<p>A l'exception des dispositions ci-dessus, toute reproduction, représentation, utilisation ou modification, par quelque procédé que ce soit et sur quelque support que ce soit, de tout ou partie du site, de tout ou partie des différentes œuvres qui le composent, sans avoir obtenu l'autorisation préalable de MercatLliure est strictement interdite et constitue un délit de contrefaçon pouvant donner suite à des poursuites judiciaires civiles et/ou pénales et au paiement de dommages et intérêts. </p>
+
+				<H3> Code Civil (loi sur le troc)</h3>	
+				<p><B>Article 1702</b> L'échange est un contrat par lequel les parties se donnent respectivement une chose pour une autre (ici un objet, un service contre des « monnaie libres »).</p>
+				<p><B>Article 1703</b> L'échange s'opère par le seul consentement, de la même manière que la vente. </p>				
+				<p><B>Article 1704</b> Si l'un des copermutants a déjà reçu la chose à lui donner en échange, et qu'il prouve ensuite que l'autre contractant n'est pas propriétaire de cette chose, il ne peut pas être forcé à livrer celle qu'il a promise en contre-échange, mais seulement à rendre celle qu'il a reçue.</p>				
+				<p><B>Article 1705</b> Le copermutant qui est évincé de la chose qu'il a reçue en échange, a le choix de conclure à des dommages et intérêts, ou de répéter sa chose.</p>				
+				<p><B>Article 1706</b> La rescision pour cause de lésion n'a pas lieu dans le contrat d'échange.</p>				
+				<p><B>Article 1707</b> Toutes les autres règles prescrites pour le contrat de vente s'appliquent d'ailleurs à l'échange.</p>
+				<p><B>Article 1934</b> Le dépositaire auquel la chose a été enlevée par une force majeure et qui a reçu un prix ou quelque chose à la place, doit restituer ce qu'il a reçu en échange.</p>				
+								
+	</section>			
+	
+	<section class="p2">
+	<H2>6. Donn&eacute;es personnelles et Cookies</H2>
+	
+	<p>Conform&eacute;ment &agrave; la loi n&ordm; 78-17 du 6 janvier 1978 modifi&eacute;e en 2004, dite informatique et libert&eacute;s,
+	 la base de donn&eacute;es et les traitements s'y rapportant a fait l'objet d'une d&eacute;claration aupr&egrave;s de la CNIL sous le 
+	 num&eacute;ro n&ordm; <span>1885493.</span></p>
+		
+	<p>Conform&eacute;ment &agrave; la loi n&ordm; 78-17 du 6 janvier 1978 modifi&eacute;e en 2004, dite informatique et libert&eacute;s, 
+	vous b&eacute;n&eacute;ficiez d'un droit d'acc&egrave;s et de rectification aux informations qui vous concernent, que vous pouvez exercer 
+	en utilisant le <a href="{% url 'contact_admins'  %}"">formulaire de contact du site</a>.</p>
+			 
+			 
+	<p>Pour connaître les modalités de traitements de vos données personnelles par la Société Editrice MercatLliure, pour être informé sur vos droits sur ces données, 
+		et pour en savoir plus sur les cookies, nous vous invitons à consulter notre politique de données personnelles ou à contacter notre 
+		<a href='mailto:protection.des.donnees.personnelles@MercatLliure.fr'>délégué à la protection des données</a>.</p>
+		
+ 		<section class="p3">
+
+				<H3>Politique de données personnelles</H3>
+				<section class="p3">	
+				<H4>Qui est le responsable des traitements mentionn&eacute;s ?</H4>				
+				<section class="p3">
+					<p>Le responsable des traitements mentionnés par le présent document est la Société MercatLliure, SAS agréée ESUS au capital de 2 265,00 €, 
+						immatriculée au registre du commerce et des sociétés de Paris sous le n°  812 051 332 00011 et dont Madame Floriane ADDAD, est la représentante légale.</p> 
+
+					<p>Le délégué à la protection des données de la société MercatLliure est Mr <a href='mailto:protection.des.donnees.personnelles@MercatLliure.fr'>Judicael DECRIEM</a>.</p> 
+ 				</section>
+ 				<H4>Quelles sont les donn&eacute;es que nous recueillons sur vous et dans quelles circonstances les collectons-nous ?</H4>
+ 				<section class="p3">
+					<H5>Les données que vous nous transmettez directement</H5>
+
+					<p>A l'occasion des différents contacts que nous avons avec vous, vous pouvez être amené à nous communiquer des informations qui vous concernent. 
+						Elles sont collectées notamment lors de la souscription au service, de la création d'un compte sur nos sites et applications,  pour accéder à toute autre offre ou tout autre service.</p>
+
+					<p>Ces données sont notamment :</p>
+					<ul class="cgu-definitions">
+						<li> Noms, prénoms, civilité, date de naissance</li> 
+						<li> Adresse postale, adresse e-mail, numéro de téléphone</li> 
+						<li> Informations nécessaires à la livraison ou au portage d'un produit commandé</li> 
+						<li> Identifiant et mot de passe crypté utilisés pour vous identifier sur nos sites ou nos applications</li> 
+						<li> Informations cryptées relatives à vos moyens de paiement (notamment numéro de carte bancaire) </li>
+					</ul>
+
+					<H5>Les données que nous recueillons automatiquement : </H5>
+						<p>Lors de chacune de vos visites sur nos sites et applications, nous recueillons des informations relatives à votre connexion et à votre navigation. 
+						Différentes technologies peuvent être mises en œuvre pour recueillir ces données. La principale est le cookie.</p>
+
+						<p>Vous trouverez de plus amples informations sur les cookies sur les sites suivants :<a href="https://www.cnil.fr" target="_blank" rel="nofollow">www.cnil.fr</a>, 
+						<a href="https://www.aboutcookies.org" target="_blank" rel="nofollow">www.aboutcookies.org</a>.</p>
+
+						<p>Les cookies déposés par la Société éditrice MercatLliure sous réserve de vos choix nous donnent accès notamment aux informations suivantes :</p>	
+						<ul class="cgu-definitions">
+							<li> Identifiants de l'équipement que vous utilisez (adresse IP de votre ordinateur, identifiant Android, identifiant Apple, etc.)</li>
+							<li> Type de système d'exploitation utilisé par votre terminal (Microsoft Windows, Apple Os, Linux, Unix, BeOS, etc.)</li>
+							<li> Type et version du logiciel de navigation utilisé par votre terminal (Microsoft Internet Explorer, Apple Safari, Mozilla Firefox, Google Chrome, etc.)</li>
+							<li> Dates et heures de connexion à nos services</li>
+							<li> Adresse de la page Internet de provenance (« referrer »)</li>
+							<li> Données de navigation sur nos services, contenus visionnés.</li>
+						</ul>
+					<h5>Exclusion de toute donnée sensible</h5>
+
+						<p>La société MercatLliure ne collecte aucune donnée sensible vous concernant. Sont considérées comme des données sensibles : l'origine raciale ou ethnique, 
+							les opinions politiques, les croyances religieuses ou philosophiques, l'adhésion à un syndicat, les données relatives à la santé ou l'orientation sexuelle. 
+							Si de telles informations étaient d'une manière ou d'une autre communiquées, elles seront supprimées.</p>
+				</section>
+				<H4>Pour quelles finalit&eacute;s utilisons nous vos donn&eacute;es ?</H4>
+					<section class="p3">
+					<H5>Opérations nécessaires à la fourniture de produits ou services</H5>
+					<section class="p3">
+						<ul class="cgu-definitions">
+								<li> Gestion des abonnements à nos newsletters et/ou alertes e-mails </li>
+								<li> Envoi d'informations sur la modification ou l'évolution de nos services </li>
+								<li> Gestion de l'exercice de vos droits sur vos données personnelles </li>
+								<li> Vérification du respect de la législation applicable, de nos contrats et conditions générales d'utilisation.</li>
+						</ul>
+						<div class="warn">
+						Durée de conservation : 10 ans après la fin du contrat ou le dernier contact émanant du client
+						</div>
+					</section>		
+					<H5>Opérations de marketing et de prospection commerciale relatives aux publications, produits et services</H5> 
+					<section class="p3">
+						<ul class="cgu-definitions">
+								<li> Envoi d'informations sur notre activité </li>
+								<li> Envoi d'offres marketing, publicitaires et promotionnelles relatives à nos produits et services par courrier postal, asilage, e-mail, notifications mobiles, sur les réseaux sociaux ou tout autre support  </li>
+								<li> Actions de fidélisation ou de prospection personnalisées  </li>
+								<li> Mise en place de jeux concours ou autres opérations promotionnelles  </li>
+								<li> Recueil des avis clients  </li>
+						</ul>
+						<div class="warn">Durée de conservation : 5 ans après la fin du contrat ou le dernier contact émanant du client</div>
+					</section>
+					<H5>Fonctionnement et optimisation de la navigation sur nos sites et applications</H5>
+					<section class="p3">
+						<ul class="cgu-definitions">
+								<li> Adaptation de la présentation de nos sites et applications aux préférences d'affichage de votre terminal (langue utilisée, résolution d'affichage, système d'exploitation, etc.) lors de vos visites, selon les matériels et les logiciels de visualisation ou de lecture que votre terminal comporte </li>
+								<li> Mémorisation des informations relatives à un formulaire que vous avez rempli sur notre site (inscription ou accès à votre compte) ou à des produits, services ou informations que vous avez choisis sur notre site (service souscrit, contenu consulté, achat effectué, etc.) </li>
+								<li> Connexion automatique aux espaces réservés ou personnels de notre site, tels que votre compte, grâce à des identifiants ou des données que vous nous avez antérieurement confiés </li>
+								<li> Mise à disposition d'outils de partage sur les réseaux sociaux </li>
+								<li> Gestion de nos plates-formes et réalisation d'opérations techniques internes dans le cadre de résolution de problèmes, analyse de données, tests, recherches, analyses, études et sondages </li>
+								<li> Mise en œuvre de mesures de sécurité </li>
+								<li> Mesures de qualité pour nous assurer que l'affichage de nos contenus est adapté à votre appareil.</li>
+						</ul>
+						<div class="warn">Durée de conservation : 13 mois maximum</div>
+					</section>
+					<H5>Mesure de fréquentation et d'audience</H5>
+					<section class="p3">
+						<ul class="cgu-definitions">
+								<li> Établissement de statistiques et volumes de fréquentation et d'utilisation des divers éléments composant notre site (rubriques et contenus visités, parcours) afin d'améliorer l'intérêt et l'ergonomie de nos services </li>
+								<li> Analyse des audiences en fonction des résultats des campagnes publicitaires  </li>
+								<li> Détermination de centres d'intérêt et des comportements  </li>
+								<li> Amélioration de la connaissance clients/utilisateurs à des fins de personnalisation. </li>
+						</ul>
+						<div class="warn">Durée de conservation : 13 mois maximum</div>														
+					</section>
+					<H4>Vos donn&eacute;es sont-elles transf&eacute;r&eacute;es en dehors de l'union europ&eacute;enne ?</H4>
+					<section class="p3">
+						<p>Nous conservons vos données personnelles dans l'Union européenne. Toutefois, il est possible de manière marginale que les données que nous recueillons 
+						lorsque vous utilisez nos plates-formes ou dans le cadre de nos services soient transférées à des sous-traitants ou partenaires commerciaux situés dans d'autres pays, 
+						certains d'entre eux pouvant avoir une législation sur la protection des données personnelles moins protectrice que celle en vigueur dans le pays où vous résidez. 
+						En cas de transfert de ce type, nous nous assurons de ce que le traitement soit effectué conformément à la présente politique de confidentialité et qu'il soit encadré 
+						par les clauses contractuelles types de la Commission européenne qui permettent de garantir un niveau de protection suffisant de la vie privée et des droits fondamentaux 
+						des personnes.</p>
+					</section>
+					</section>
+					<H4>Comment vos donn&eacute;es sont-elles prot&eacute;g&eacute;es ?</H4>
+					<p>En tant que responsable de traitements, nous mettons en œuvre des mesures techniques et organisationnelles appropriées conformément aux dispositions légales applicables,
+ pour protéger vos données personnelles contre l'altération, la perte accidentelle ou illicite, l'utilisation, la divulgation ou l'accès non autorisé, et notamment :<p>
+						<ul class="cgu-definitions">
+								<li> La nomination d'un délégué à la protection des données </li>
+								<li> La constitution d'une cellule consacrée à la sécurité des systèmes d'information  </li>
+								<li> La sensibilisation aux exigences de confidentialité de nos collaborateurs amenés à accéder à vos données personnelles  </li>
+								<li> La sécurisation de l'accès à nos locaux et à nos plates-formes informatiques  </li>
+								<li> La mise en œuvre d'une politique générale de sécurité informatique de l'entreprise  </li>
+								<li> La sécurisation de l'accès, du partage et du transfert des données  </li>
+			 			</ul>
+			 </section>
+			 
+			 
+	<p>Toutes vos données personnelles enregistrées lors de votre inscription sont sécurisées par MercatLliure. Les informations demandées à l'inscription au site sont nécessaires et obligatoires pour la création du compte de l'Utilisateur. En particulier, l'adresse électronique pourra être utilisée par le site pour l'administration, la gestion et l'animation du service.</p>
+
+
+	<p>Les informations relatives à votre Profil d'Utilisateur sont conservées par notre société et ne sont utilisées qu'en interne pour mener notamment des études de marché. Lorsqu'elles sont utilisées pour des besoins liés à nos partenariats, l'autorisation vous en aura été préalablement demandée via une case à cocher. Ce choix est réversible. Dans l'hypoth&egrave;se o&ugrave; vous ne souhaiteriez plus recevoir nos e-mails, vous avez la possibilit&eacute; de vous y opposer dans chacun de ceux-ci en cochant la case concern&eacute;e. </p>	
+
+	<p>Les Membres s'engagent &agrave; ne pas d&eacute;voiler &agrave; d'autres, les donn&eacute;es personnelles qui lui auraient &eacute;t&eacute; communiqu&eacute;es par d'autres Membres via la plateforme MercatLliure.</p>		
+	
+		
+	</section>												
+
+						
+	
+	<section class="p2">
+		<H2>7. Responsabilit&eacute;</H2>
+		<p>Les informations fournies sur ce site, sont fournies &agrave; titre purement informatif et sont susceptibles de contenir des inexactitudes techniques et des erreurs typographiques. MercatLliure se r&eacute;serve le droit de les corriger, d&egrave;s que ces erreurs sont port&eacute;es &agrave; sa connaissance.</p>
+		<p>Les informations et/ou documents et/ou services disponibles sur ce site sont susceptibles d'&ecirc;tre modifiés &agrave; tout moment, et peuvent avoir fait l'objet de mises &agrave; jour. En particulier, ils peuvent avoir fait l'objet d'une mise &agrave; jour entre le moment de leur t&eacute;l&eacute;chargement et celui o&ugrave; l'utilisateur en prend connaissance.</p>
+		<p>L'utilisation des informations et/ou documents et/ou services, disponibles sur ce site se fait sous l'entière et seule responsabilité de l'utilisateur, qui assume la totalité des conséquences pouvant en d&eacute;couler, sans que la soci&eacute;t&eacute; MercatLliure puisse &ecirc;tre mise en cause &agrave; ce titre, et sans recours contre cette derni&egrave;re.</p>
+		<p>MercatLliure ne pourra en aucun cas &ecirc;tre tenu responsable de tout dommage de quelque nature qu'il soit, résultant de l'interprétation ou de l'utilisation des informations et/ou documents et/ou des services disponibles sur ce site.</p>
+		<p>La pr&eacute;sence d'une Annonce par le Membre sur la plateforme ne veut pas dire que les offres ou produits sont recommand&eacute;s par MercatLliure. Les informations, annonces, trocs publi&eacute;s sur la plateforme relèvent de la responsabilit&eacute; exclusive des Utilisateurs, Membres tiers et Partenaires.</p>
+		<p>Les Utilisateurs/ Membres sont responsables des prestations et biens fournis.</p>		
+		<p>MercatLliure ne peut &ecirc;tre tenu pour responsable des fausses d&eacute;clarations faites par un Utilisateur/ Membres, tiers ou Partenaire.</p>			
+	</section>		
+								
+								
+		</article>
+
+			
+		</div>
+
+	</div> 
+
+{% endblock %}

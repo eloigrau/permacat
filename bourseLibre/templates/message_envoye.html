@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block subtitle %}
+    <h4>Message envoyé !</h4>
+<div class="row">
+<div class="col-sm-12">
+<p>De : {{ envoyeur }}</p>
+<p>à : {{ destinataire }}</p>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+    <p>Sujet : </p><p>{{ sujet }}</p>
+<p>Message : </p><p>{{ message }}</p>
+</div>
+</div>
+{% endblock %}

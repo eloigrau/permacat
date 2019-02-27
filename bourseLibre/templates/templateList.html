@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+    <form action="" method="get">
+        {{ filter.form.as_p }}
+        <input type="submit" />
+    </form>
+        </div>
+</div>
+
+    {% for obj in filter.qs %}
+        {{ obj.nom_produit }}<br />
+    {% endfor %}
+
+    {% for produit in filter.qs  %}
+    {% include "offre_template.html" with produit=produit %}
+    {% cycle '' '' '' '<div class="clearfix visible-lg"></div>' %}
+    {% endfor %}
+{% endblock %}
