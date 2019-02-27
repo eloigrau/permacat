@@ -29,7 +29,7 @@ SECRET_KEY = 'a#_dnav(b21!_zq7qcllxducb=%t9tl+(#2pfl)ao&bkh088p*x'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
