@@ -1,1 +1,2 @@
-web: gunicorn bourselibre.wsgi --log-file -
+release: python manage.py migrate
+web: gunicorn bourseLibre.wsgi --log-file -
