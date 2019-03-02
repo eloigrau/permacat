@@ -6,7 +6,7 @@ body {
     /*padding: 10px;*/
     padding-top: 75px;
     /*font-family: cursive;*/
-    font-family: serif;
+    /*font-family: serif;*/
     /*font-family: system-ui;*/
 }
 .textcenter{
@@ -266,10 +266,10 @@ padding:0;
 .offre2{
     //padding-bottom:5px;
     //align-items: top;
-    min-height: 450px;
+    min-height: 350px;
     min-width:250px;
-    max-height: 650px;
-    max-width:300px;
+    max-height: 350px;
+    max-width:250px;
     //border-radius: 0.3em;
     //border:1px grey solid;
     //flex:1 1 auto;

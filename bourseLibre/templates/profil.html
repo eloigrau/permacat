@@ -170,6 +170,8 @@
 
       {%comment%}
     <script>
+
+
       var map;
       function initMap() {
       var lat = {{user.profil.adresse.get_latitude}};
@@ -186,11 +188,9 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC10StWuCZHLPmSZCyfNEdmgZ7CTqdngy0&callback=initMap"
     async defer></script>
       {%endcomment%}
+
 {%comment%}
     <div id="map"></div>
-
-
-
 <div id="myMap" style="width:80%;height:300px;"></div>
 <script>
 function myMap() {
@@ -209,7 +209,7 @@ function myMap() {
    <script async defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmGcPj0ti_7aEagETrbJyHPbE3U6gVfSA&callback=myMap">
     </script>
-    {%endcomment%}
+{%endcomment%}
 
 
 {% endblock %}

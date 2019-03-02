@@ -19,7 +19,7 @@ from phonenumber_field.formfields import PhoneNumberField
 #     even_field = forms.IntegerField(validators=[validate_even])
 
 
-fieldsCommunsProduits = ['nom_produit', 'souscategorie', 'photo', 'etat',   'description', 'estUneOffre',
+fieldsCommunsProduits = ['nom_produit', 'souscategorie', 'etat',   'description', 'estUneOffre',
                 'prix',  'unite_prix', 'type_prix', 'date_debut', 'date_expiration', 'stock_initial',]
 
 # fieldsCommunsProduits = ['type_prix', 'souscategorie', 'etat']
@@ -29,7 +29,7 @@ class ProduitCreationForm(forms.ModelForm):
         model = Produit
         exclude=('user', )
 
-        fields = ['nom_produit', 'photo','description', 'date_debut', 'date_expiration',
+        fields = ['nom_produit', 'description', 'date_debut', 'date_expiration',
                   'stock_initial', 'unite_prix','prix',]
         widgets = {
             'date_debut': forms.DateInput(attrs={'type':"date"}, ),

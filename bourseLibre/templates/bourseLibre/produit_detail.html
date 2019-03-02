@@ -57,11 +57,13 @@
 					{{produit.description}}
 				</p>
 			</div>
+			{%comment%}
 			{% if produit.photo %}
 			<div class="col-4 textright"> <img alt="{{produit.nom_produit}}" src="{{ produit.photo.url }}" class="img-responsive"/></div>
 			{% else%}
 			<div class="col-4 textright"><img alt="Bootstrap Image Preview" src="http://lorempixel.com/400/400/" /></div>
 			{% endif%}
+			{%endcomment%}
 		</div>
 	</div>
 	</div>

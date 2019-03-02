@@ -59,16 +59,17 @@ def produit_proposer(request, typeProduit):
         produit = type_form.save(commit=False)
         produit.user = Profil.objects.get(pk=request.user.id)
         produit.categorie = typeProduit
-        if produit.photo:
-            produit.photo = request.FILES['photo']
-            file_type = produit.photo.url.split('.')[-1].lower()
 
-            if file_type not in IMAGE_FILE_TYPES:
-                context = {
-                    'produit': produit, 'form': produit,
-                    'error_message': 'Image file must be PNG, JPG, or JPEG',
-                }
-                return render(request, 'bourseLibre/produit_proposer.html', context)
+        #if produit.photo:
+            #produit.photo = request.FILES['photo']
+            #file_type = produit.photo.url.split('.')[-1].lower()
+
+            #if file_type not in IMAGE_FILE_TYPES:
+            #    context = {
+            #        'produit': produit, 'form': produit,
+            #        'error_message': 'Image file must be PNG, JPG, or JPEG',
+            #    }
+            #    return render(request, 'bourseLibre/produit_proposer.html', context)
 
             # #Opening the uploaded image
             # im = Image.open(produit.photo)

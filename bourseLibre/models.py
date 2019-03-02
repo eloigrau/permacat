@@ -200,7 +200,7 @@ class Produit(models.Model):  # , BaseProduct):
                                  choices=CHOIX_CATEGORIE,
                                  default='aliment')
     #photo = models.ImageField(blank=True, upload_to="imagesProduits/")
-    photo = StdImageField(upload_to='imagesProduits/', blank=True, variations={'large': (640, 480), 'thumbnail': (100, 100, True)}) # all previous features in one declaration
+    #photo = StdImageField(upload_to='imagesProduits/', blank=True, variations={'large': (640, 480), 'thumbnail': (100, 100, True)}) # all previous features in one declaration
 
 
     estUneOffre = models.BooleanField(default=True, verbose_name='Offre (cochez) ou Demande (décochez)')
@@ -449,7 +449,6 @@ class ProductFilter(django_filters.FilterSet):
         #     # 'date_expiration': ['exact'],
         #      'prix':['gte','lte'],
         # }
-        exclude=('photo',)
 
 
 
