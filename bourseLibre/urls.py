@@ -30,12 +30,14 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^$', views.bienvenue, name='bienvenue'),
+    url(r'^permacat/presentation$', views.presentation_asso, name='presentation_asso'),
+    url(r'^permacat/statuts$$', views.statuts, name='statuts'),
     url(r'^admin/', admin.site.urls, name='admin'),
     #path('admin/', admin.site.urls, name='admin'),
-    url(r'^merci/', views.merci, name='merci'),
+    url(r'^merci/$', views.merci, name='merci'),
     url(r'^blog/', include('blog.urls', namespace='bourseLibre.blog')),
     # url(r'^search/', include('haystack.urls'), name='chercher_site'),
-    url(r'^search/', include('haystack.urls'), name='haystack_search'),
+    #url(r'^search/', include('haystack.urls'), name='haystack_search'),
     url(r'^chercher/produit/$', login_required(views.chercher, login_url='/login/'), name='chercher'),
     url(r'^accounts/profil/(?P<user_id>[0-9]+)/$', views.profil, name='profil',),
     url(r'^accounts/profil/(?P<user_username>[-A-Za-z]+)/$', views.profil_nom, name='profil_nom',),

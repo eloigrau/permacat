@@ -33,8 +33,11 @@ from PIL import Image
 def bienvenue(request):
     return render(request, 'bienvenue.html')
 
+def presentation_asso(request):
+    return render(request, 'presentation_asso.html')
 
-IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg']
+def statuts(request):
+    return render(request, 'statuts.html')
 
 
 @login_required(login_url='/login/')

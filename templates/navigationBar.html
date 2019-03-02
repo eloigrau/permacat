@@ -46,14 +46,22 @@
                         </div>
                     </li>
                     <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="{% url 'presentation_asso' %}" id="navbarAsso" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                         L'association
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarAsso">
+                            <a class="nav-link" href="{% url 'profil_list' %}"> Coopérateurs</a>
+                            <a class="nav-link" href="{% url 'presentation_asso' %}"> Qui sommes nous ?</a>
+                            <a class="nav-link" href="{% url 'charte' %}"> Charte </a>
+                            <a class="nav-link" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="{% url 'profil_courant' %}" id="navbarAbout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                         A propos
+                         Le site
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarAbout">
-                            <a class="nav-link" href="{% url 'profil_list' %}"> Coopérateurs</a>
-                            <a class="nav-link" href="{% url 'haystack_search' %}"> Chercher...</a>
                             <a class="nav-link" href="{% url 'contact_admins' %}"> Contacter admins </a>
-                            <a class="nav-link" href="{% url 'charte' %}"> Charte </a>
                             <a class="nav-link" href="{% url 'cgu' %}"> CGU </a>
                             <a class="nav-link" href="{% url 'liens' %}"> Liens </a>
                             <span class="nav-link divider" role="separator"></span>
@@ -69,6 +77,19 @@
                 <ul class="nav navbar-nav mr-auto navbar-left">
                     <li class="nav-item"><a class="nav-link" href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span>login</a></li>
                 </ul>
+            <ul class="nav navbar-nav justify-content-center">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="{% url 'presentation_asso' %}" id="navbarAsso" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                         L'association
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarAsso">
+                            <a class="nav-link" href="{% url 'profil_list' %}"> Coopérateurs</a>
+                            <a class="nav-link" href="{% url 'presentation_asso' %}"> Qui sommes nous ?</a>
+                            <a class="nav-link" href="{% url 'charte' %}"> Charte </a>
+                            <a class="nav-link" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a>
+                        </div>
+                    </li>
+            </ul>
                 {% endif %}
         </ul>
         </div>
