@@ -15,8 +15,11 @@
 
   </div>
     <div class="col-md-4 textright">
+        <a href="{% url 'lireConversation' user.username %}" class="btn btn-success">
+          <span class="glyphicon glyphicons-conversation"></span> Message
+        </a>
         <a href="{% url 'profil_contact' user.id %}" class="btn btn-success">
-          <span class="glyphicon glyphicon-envelope"></span> Message
+          <span class="glyphicon glyphicon-envelope"></span> Email
         </a>
         <a href="{% url 'produit_lister' %}?producteur={{ user.username }}" class="btn btn-success">
                 <span class="glyphicon glyphicon-plus"></span>&nbsp; Ses propositions
@@ -41,42 +44,42 @@
       <table class="table table-condensed tablepanier table-striped"><tbody>
 
     <tr>
-        <td>Date d'adhésion :</td>
-        <td>{{ user.profil.date_registration | date:"j/m/y"}}</td>
+        <td style="width:250px">Date d'adhésion :</td>
+        <td>{{ user.profil.date_registration | date:"DATE_FORMAT"}}</td>
     </tr>
     <tr>
-        <td>Pseudo :</td>
+        <td style="width:250px">Pseudo :</td>
         <td>{{ user.username }}</td>
     </tr>
   {% if user.get_full_name %}
     <tr>
-        <td>Nom :</td>
+        <td style="width:250px">Nom :</td>
         <td>{{ user.get_full_name }}</td>
     </tr>
   {% endif %}
   {% if user.profil.adresse.telephone %}
     <tr>
-        <td>Telephone :</td>
+        <td style="width:250px">Telephone :</td>
         <td>{{ user.profil.adresse.telephone }}</td>
     </tr>
   {% endif %}
   {% if user.email %}
     <tr>
-        <td>Email :</td>
+        <td style="width:250px">Email :</td>
         <td>{{ user.email }}</td>
     </tr>
   {% endif %}
 
   {% if user.profil.avatar %}
     <tr>
-        <td>Avatar : </td>
+        <td style="width:250px">Avatar : </td>
         <td>            <img src="{{ produit.avatar.url }}" alt="pas d'image" style="width:128px;height:128px"></td>
     </tr>
   {% endif %}
 
   {% if user.profil.site_web %}
     <tr>
-        <td>Site_web :</td>
+        <td style="width:250px">Site_web :</td>
         <td> {{ user.profil.site_web }}</td>
     </tr>
   {% endif %}
@@ -94,12 +97,12 @@
       {%endif%}
     <table class="table table-condensed tablepanier table-striped"><tbody>
     <tr>
-        <td>Description</td>
+        <td style="width:250px">Description</td>
         <td>{{ user.profil.description }}</td>
     </tr>
 
     <tr>
-        <td>Compétences :</td>
+        <td style="width:250px">Compétences :</td>
         <td>{{ user.profil.competences }}</td>
     </tr>
 
@@ -116,30 +119,30 @@
         <tbody>
     {%if user.profil.adresse.rue %}
     <tr>
-        <td>Adresse :</td>
+        <td style="width:250px">Adresse :</td>
         <td>{{ user.profil.adresse.rue }}, {{ user.profil.adresse.code_postal }}</td>
     </tr>
   {% endif %}
     {%if user.profil.adresse.code_postal %}
     <tr>
-        <td>Code postal :</td>
+        <td style="width:250px">Code postal :</td>
         <td>{{ user.profil.adresse.code_postal }}</td>
     </tr>
   {% endif %}
     {%if user.profil.adresse.pays %}
     <tr>
-        <td>Pays :</td>
+        <td style="width:250px">Pays :</td>
         <td>{{ user.profil.adresse.pays }}</td>
     </tr>
   {% endif %}
     {%if user.profil.adresse.telephone %}
     <tr>
-        <td>Téléphone :</td>
+        <td style="width:250px">Téléphone :</td>
         <td>{{ user.profil.adresse.telephone }}</td>
     </tr>
   {% endif %}
     <tr>
-        <td>lat/lon :</td>
+        <td style="width:200px">lat/lon :</td>
         <td>{{ user.profil.adresse.latitude }} / {{ user.profil.adresse.longitude }} </td>
     </tr>
         </tbody>
