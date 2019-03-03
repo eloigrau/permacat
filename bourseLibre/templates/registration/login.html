@@ -3,7 +3,7 @@
 {% block content %}
 
  <div class="container">
-        <div id="loginbox" style="margin-top:50px;" class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+        <div id="loginbox" style="margin-top:50px;" class="col-sm-8 col-md-6">
             <div style="padding-top:10px" class="panel-body" >
 
 <form class="form-horizontal" role="form" action="{% url 'login' %}" method="post" enctype="multipart/form-data">
@@ -11,7 +11,11 @@
     <input type="hidden" name="Message" value="{{ message }}">
     {% include 'form_template.html'%}
 </form>
-
+<div class="col-md-12 control">
+                                <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
+                                Pas encore inscrit ? <a class="underlineHover" href="{% url 'senregistrer' %}">Créer un compte</a>
+                                </div>
+                            </div>
 {% comment%}
             <form class="form-horizontal" role="form" action="{% url 'login' %}" method="post" enctype="multipart/form-data">
 
