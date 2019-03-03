@@ -40,7 +40,8 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="nav-link" href="{% url 'profil_courant' %}"><span class="lyphicon glyphicon-user"></span> Voir le profil</a>
-                            <a class="nav-link" href="{% url 'panier_afficher' %}"><span class="glyphicon glyphicon-shopping-cart"></span> Voir le panier</a>
+                            <a class="nav-link" href="{% url 'panier_afficher' %}"><span class="glyphicon glyphicon-shopping-bag"></span> Voir le panier</a>
+                            <a class="nav-link" href="{% url 'conversations' %}"><span class="glyphicon glyphicon-conversation"></span> Voir les messages</a>
                             <a class="nav-link" href="{% url 'afficher_requetes' %}"><span class="glyphicon glyphicon-shopping-cart"></span> Voir les requêtes</a>
                             <a class="nav-link" href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span>logout</a>
                         </div>
@@ -83,7 +84,6 @@
                          L'association
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarAsso">
-                            <a class="nav-link" href="{% url 'profil_list' %}"> Coopérateurs</a>
                             <a class="nav-link" href="{% url 'presentation_asso' %}"> Qui sommes nous ?</a>
                             <a class="nav-link" href="{% url 'charte' %}"> Charte </a>
                             <a class="nav-link" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a>

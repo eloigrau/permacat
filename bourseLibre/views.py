@@ -4,10 +4,10 @@ Created on 25 mai 2017
 
 @author: tchenrezi
 '''
-from django.shortcuts import render, get_object_or_404, HttpResponseRedirect  # render_to_response,
+from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect  # render_to_response,
 from .forms import Produit_aliment_CreationForm, Produit_vegetal_CreationForm, Produit_objet_CreationForm, \
-    Produit_service_CreationForm, ProducteurCreationForm, ContactForm, AdresseForm, ProfilCreationForm
-from .models import Profil, Produit, Adresse, Choix, Panier, Item, get_categorie_from_subcat#, ProductFilter#, Produit_aliment, Produit_service, Produit_objet, Produit_vegetal
+    Produit_service_CreationForm, ProducteurCreationForm, ContactForm, AdresseForm, ProfilCreationForm, MessageForm
+from .models import Profil, Produit, Adresse, Choix, Panier, Item, get_categorie_from_subcat, Conversation, Message, getOrCreateConversation
 # from django.db.models import Q
 from django.contrib.auth.models import User
 #from django.contrib.auth.forms import UserCreationForm
@@ -40,7 +40,7 @@ def statuts(request):
     return render(request, 'statuts.html')
 
 
-@login_required(login_url='/login/')
+@login_required(login_url='/auth/login/')
 def produit_proposer(request, typeProduit):
     try:
         bgcolor = Choix.couleurs[typeProduit]
@@ -97,17 +97,17 @@ def produit_proposer(request, typeProduit):
     return render(request, 'bourseLibre/produit_proposer.html', {"form": type_form, "bgcolor": bgcolor, "typeProduit":typeProduit})
 
 
-# @login_required(login_url='/login/')
+# @login_required(login_url='/auth/login/')
 class ProduitModifier(UpdateView):
     model = Produit
     template_name_suffix = '_modifier'
-    fields = ['date_debut','date_expiration','nom_produit', 'description', 'prix', 'unite_prix', 'categorie', 'photo', 'estUneOffre',]# 'souscategorie','etat','type_prix']
+    fields = ['date_debut', 'date_expiration', 'nom_produit', 'description', 'prix', 'unite_prix', 'souscategorie', 'estUneOffre', 'stock_courant','etat','type_prix']# 'souscategorie','etat','type_prix']
 
     widgets = {
         'date_debut': forms.DateInput(attrs={'type': "date"}),
         'date_expiration': forms.DateInput(attrs={'type': "date"})
     }
-    # field
+
 
     def get_form_class(self):
         if self.object.categorie == 'aliment':
@@ -122,14 +122,15 @@ class ProduitModifier(UpdateView):
             raise Exception('Type de produit inconnu (aliment, vegetal, service ou  objet)')
         return get_produitForm(self.request, self.object.categorie)
 
+    def get_queryset(self):
+        return self.model.objects.select_subclasses()
 
-
-# @login_required(login_url='/login/')
+            # @login_required(login_url='/auth/login/')
 class ProduitSupprimer(DeleteView):
     model = Produit
     success_url = reverse_lazy('produit_lister')
 
-@login_required(login_url='/login/')
+@login_required(login_url='/auth/login/')
 def proposerProduit_entree(request):
     return render(request, 'bourseLibre/produit_proposer_entree.html', {"couleurs":Choix.couleurs})
 
@@ -166,13 +167,13 @@ def merci(request, template_name='merci.html'):
 #         else:
 #             return render(request, 'index.html', {'produits': produits})
 
-# @login_required(login_url='/login/')
+# @login_required(login_url='/auth/login/')
 def profil_courant(request, ):
     user = get_object_or_404(User, id=request.user.id)
     return render(request, 'profil.html', {'user': user})
 
 
-# @login_required(login_url='/login/')
+# @login_required(login_url='/auth/login/')
 def profil(request, user_id):
     try:
         user = User.objects.get(id=user_id)
@@ -184,7 +185,7 @@ def profil(request, user_id):
         # except User.DoesNotExist:
             return render(request, 'profil_inconnu.html', {'userid': user_id})
 
-# @login_required(login_url='/login/')
+# @login_required(login_url='/auth/login/')
 def profil_nom(request, user_username):
     try:
         user = User.objects.get(username=user_username)
@@ -192,21 +193,21 @@ def profil_nom(request, user_username):
     except User.DoesNotExist:
         return render(request, 'profil_inconnu.html', {'userid': user_username})
 
-# @login_required(login_url='/login/')
+# @login_required(login_url='/auth/login/')
 def profil_inconnu(request):
     return render(request, 'profil_inconnu.html')
 
-# @login_required(login_url='/login/')
+# @login_required(login_url='/auth/login/')
 def profil_list(request):
     profils = Profil.objects.all()
     return render(request, 'cooperateurs.html', {'profils':profils, } )
 
-# @login_required(login_url='/login/')
+# @login_required(login_url='/auth/login/')
 def profil_carte(request):
     profils = Profil.objects.all()
     return render(request, 'carte_cooperateurs.html', {'profils':profils, } )
 
-# @login_required(login_url='/login/')
+# @login_required(login_url='/auth/login/')
 def profil_contact(request, user_id):
     message = None
     titre = None
@@ -267,7 +268,7 @@ def contact_admins(request):
     return render(request, 'contact.html', {'form': form, "isContactProducteur":False})
 
 
-# @login_required(login_url='/login/')
+# @login_required(login_url='/auth/login/')
 def produitContacterProducteur(request, produit_id):
     prod = Produit.objects.get_subclass(pk=produit_id)
     receveur = prod.user
@@ -284,7 +285,7 @@ def produitContacterProducteur(request, produit_id):
     return render(request, 'contact.html', {'form': form, "isContactProducteur":True, "producteur":receveur.user.username})
 
 
-# @login_required(login_url='/login/')
+# @login_required(login_url='/auth/login/')
 class profil_modifier_user(UpdateView):
     model = Profil
     form_class = ProducteurCreationForm
@@ -294,7 +295,9 @@ class profil_modifier_user(UpdateView):
     def get_object(self):
         return User.objects.get(id=self.request.user.id)
 
-# @login_required(login_url='/login/')
+
+
+# @login_required(login_url='/auth/login/')
 class profil_modifier_adresse(UpdateView):
     model = Adresse
     form_class = AdresseForm
@@ -303,7 +306,7 @@ class profil_modifier_adresse(UpdateView):
     def get_object(self):
         return Adresse.objects.get(id=self.request.user.id)
 
-# @login_required(login_url='/login/')
+# @login_required(login_url='/auth/login/')
 class profil_modifier(UpdateView):
     model = Profil
     form_class = ProfilCreationForm
@@ -312,7 +315,7 @@ class profil_modifier(UpdateView):
     def get_object(self):
         return Profil.objects.get(id=self.request.user.id)
 
-# @login_required(login_url='/login/')
+# @login_required(login_url='/auth/login/')
 def register(request):
     form_adresse = AdresseForm(request.POST or None)
     #form_user = UserCreationForm(request.POST or None)
@@ -335,7 +338,7 @@ from django.views.generic.edit import ModelFormMixin
 
 
 
-# @login_required(login_url='/login/')
+# @login_required(login_url='/auth/login/')
 class ListeProduit(ListView):
     model = Produit
     context_object_name = "produits_list"
@@ -371,7 +374,7 @@ class ListeProduit(ListView):
             elif params['ordre'] == "producteur" :
                 res = qs.order_by('user', 'date_creation', 'categorie', )
             elif params['ordre'] == "date":
-                res = qs.order_by('date_creation', 'categorie', 'user', )
+                res = qs.order_by('-date_creation', 'categorie', 'user', )
 
         return res
 
@@ -430,7 +433,7 @@ def charte(request):
 def cgu(request):
     return render(request, 'cgu.html', )
 
-# @login_required(login_url='/login/')
+# @login_required(login_url='/auth/login/')
 def liens(request):
     liens = [
         'https://www.monnaielibreoccitanie.org/',
@@ -449,7 +452,7 @@ def fairedon(request):
 
 
 
-# @login_required(login_url='/login/')
+@login_required(login_url='/auth/login/')
 def ajouterAuPanier(request, produit_id, quantite):#, **kwargs):
     quantite = float(quantite)
     produit = Produit.objects.get_subclass(pk=produit_id)
@@ -463,7 +466,7 @@ def ajouterAuPanier(request, produit_id, quantite):#, **kwargs):
     panier.add(produit, produit.unite_prix, quantite)
     return afficher_panier(request)
 
-# @login_required(login_url='/login/')
+@login_required(login_url='/auth/login/')
 def enlever_du_panier(request, item_id):
     profil = Profil.objects.get(user__id=request.user.id)
     panier = Panier.objects.get(user=profil, etat="a")
@@ -471,7 +474,7 @@ def enlever_du_panier(request, item_id):
     return afficher_panier(request)
 
 
-# @login_required(login_url='/login/')
+@login_required(login_url='/auth/login/')
 def afficher_panier(request):
     # try:
     profil = Profil.objects.get(user__id=request.user.id)
@@ -485,13 +488,13 @@ def afficher_panier(request):
     return render(request, 'panier.html', {'panier':panier, 'items':items})
 
 
-# @login_required(login_url='/login/')
+# @login_required(login_url='/auth/login/')
 def afficher_requetes(request):
     items = Item.objects.filter( produit__user__id =  request.user.id)
     return render(request, 'requetes.html', {'items':items})
 
 
-# @login_required(login_url='/login/')
+@login_required(login_url='/auth/login/')
 def chercher(request):
     recherche = request.GET.get('id_recherche')
     if recherche:
@@ -505,107 +508,52 @@ def chercher(request):
     return render(request, 'chercher.html', {'recherche':recherche, 'articles_list':articles_list, 'produits_list':produits_list, 'profils_list':profils_list})
 
 
-# from django_filters import rest_framework as filters
-# from rest_framework import generics
-# from .models import ProduitSerializer
-#
-# class ProductList(generics.ListAPIView):
-#     queryset = Produit.objects.all().select_subclasses()
-#     filter_backends = (filters.DjangoFilterBackend,)
-#     serializer_class = ProduitSerializer
-#
-# def product_list(request):
-#     f = ProductFilter(request.GET, queryset=Produit.objects.all().select_subclasses())
-#     return render(request, 'templateList.html', {'filter': f})
+@login_required(login_url='/auth/login/')
+def lireConversation(request, destinataire):
+    conversation = getOrCreateConversation(request.user.username, destinataire)
+    messages = Message.objects.filter(conversation=conversation).order_by("-date_creation")
 
-    # res = [Produit_aliment.objects.all(), Produit_vegetal.objects.all(), Produit_service.objects.all(), Produit_objet.objects.all()]
-    # queryset = list(chain(*res))
-    #queryset = qs=[Produit_aliment.objects.all(), Produit_vegetal.objects.all(), Produit_service.objects.all(), Produit_objet.objects.all())
+    form = MessageForm(request.POST or None)
+    if form.is_valid():
+        message = form.save(commit=False)
+        message.conversation = conversation
+        message.auteur = Profil.objects.get(user__id=request.user.id)
+        message.save()
+        return redirect(request.path)
+
+    return render(request, 'lireConversation.html', {'conversation': conversation, 'form': form, 'messages': messages, 'destinataire':destinataire})
 
 
-    # def get_queryset(self):
-    #     filter_val = self.request.GET.get('filter', 'give-default-value')
-    #     order = self.request.GET.get('orderby', 'give-default-value')
-    #     new_context = Update.objects.filter(
-    #         state=filter_val,
-    #     ).order_by(order)
-    #     return new_context
+@login_required(login_url='/auth/login/')
+def lireConversation_2noms(request, destinataire1, destinataire2):
+    conversation = getOrCreateConversation(destinataire1, destinataire2)
+    messages = Message.objects.filter(conversation=conversation).order_by("-date_creation")
 
-    #
-    # def get_context_data(self, **kwargs):
-    #     context = super(MyView, self).get_context_data(**kwargs)
-    #     context['filter'] = self.request.GET.get('filter', 'give-default-value')
-    #     context['orderby'] = self.request.GET.get('orderby', 'give-default-value')
-    #     return context
+    form = MessageForm(request.POST or None)
+    if form.is_valid():
+        message = form.save(commit=False)
+        message.conversation = conversation
+        message.auteur = Profil.objects.get(user__id=request.user.id)
+        message.save()
+        return redirect(request.path)
+    if destinataire1 ==request.user.username:
+        destinataire = destinataire2
+    elif destinataire2 ==request.user.username:
+        destinataire = destinataire1
+    else:
+        raise Exception('l\'utilisateur qui veut acceder a une conversation qui ne le concerne pas')
 
-# class ListeProduitFiltre(ListView):
-#     model = Produit
-#     context_object_name = "produits_list"
-#     template_name = "produit_list.html"
-#     paginate_by = 18
-#
-#     def get_queryset(self):
-#         qs = Produit.objects.select_subclasses()
-#         params = dict(self.request.GET.items())
-#         if "filtrer_producteur" in params:
-#             qs = qs.filter(user__user__username=self.request.GET.get('filtrer_producteur') )
-#
-#         if "categorie" in self.kwargs:
-#            # return list(chain(*([Produit_aliment.objects.filter(proprietes__categorie=self.kwargs["categorie"]), Produit_vegetal.objects.filter(proprietes__categorie=self.kwargs["categorie"]), Produit_service.objects.filter(proprietes__categorie=self.kwargs["categorie"]), Produit_objet.objects.filter(proprietes__categorie=self.kwargs["categorie"])])))
-#             return qs.filter(categorie=self.kwargs["categorie"]).select_subclasses()
-#         elif "producteur" in self.kwargs:
-#            # return list(chain(*([Produit_aliment.objects.filter(proprietes__user__user__username=self.kwargs["producteur"]), Produit_vegetal.objects.filter(proprietes__user__user__username=self.kwargs["producteur"]), Produit_service.objects.filter(proprietes__user__user__username=self.kwargs["producteur"]), Produit_objet.objects.filter(proprietes__user__user__username=self.kwargs["producteur"])])))
-#             return qs.filter(user__user__username=self.kwargs["producteur"]).select_subclasses()
-#         else:
-#             return qs
-#             #return list(chain(*([Produit_aliment.objects.all(), Produit_vegetal.objects.all(), Produit_service.objects.all(), Produit_objet.objects.all()])))
-#
-#     def get_context_data(self, **kwargs):
-#         # Call the base implementation first to get a context
-#         context = super().get_context_data(**kwargs)
-#         # Add in the publisher
-#         if "categorie" in self.kwargs:
-#             context['typeFiltre'] = "categorie"
-#             context['filtre'] = self.kwargs["categorie"]
-#         elif "producteur" in self.kwargs:
-#             context['typeFiltre'] = "producteur"
-#             context['filtre'] = self.kwargs['producteur']
-#         return context
-#
-#
-# class ListeProduitCategorie(ListView):
-#     model = Produit
-#     context_object_name = "produits_list"
-#     template_name = "produit_list.html"
-#     paginate_by = 18
-#
-#     def get_queryset(self):
-#         return Produit.objects.filter(categorie=self.kwargs["categorie"])
-#
-#     def get_context_data(self, **kwargs):
-#         # Call the base implementation first to get a context
-#         context = super().get_context_data(**kwargs)
-#         # Add in the publisher
-#         context['typeFiltre'] = "categorie"
-#         context['filtre'] = self.kwargs["categorie"]
-#         print(context)
-#         return context
-#
-# class ListeProduitProducteur(ListView):
-#     model = Produit
-#     context_object_name = "produits_list"
-#     template_name = "produit_list.html"
-#     paginate_by = 18
-#
-#     def get_queryset(self):
-#         return Produit.objects.filter(user__username=self.kwargs["producteur"])
-#
-#     def get_context_data(self, **kwargs):
-#         # Call the base implementation first to get a context
-#         context = super().get_context_data(**kwargs)
-#         # Add in the publisher
-#         context['typeFiltre'] = "producteur"
-#         context['filtre'] = context['user.username']
-#         return context
+    return render(request, 'lireConversation.html', {'conversation': conversation, 'form': form, 'messages': messages, 'destinataire':destinataire})
 
+class ListeConversations(ListView):
+    model = Conversation
+    context_object_name = "conversation_list"
+    template_name = "conversations.html"
+    paginate_by = 10
 
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+
+        context['conversations'] = Conversation.objects.filter(Q(profil1__user__id=self.request.user.id) | Q(profil2__user__id=self.request.user.id))
+        return context

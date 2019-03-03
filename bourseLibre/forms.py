@@ -1,22 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, User
-from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, Profil
-from phonenumber_field.formfields import PhoneNumberField
+from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, Profil, Message
 
 
-#validateur:
-# from django.core.exceptions import ValidationError
-# from django.utils.translation import gettext_lazy as _
-#
-# def validate_even(value):
-#     if value % 2 != 0:
-#         raise ValidationError(
-#             _('%(value)s is not an even number'),
-#             params={'value': value},
-#         )
-#
-# class MyForm(forms.Form):
-#     even_field = forms.IntegerField(validators=[validate_even])
 
 
 fieldsCommunsProduits = ['nom_produit', 'souscategorie', 'etat',   'description', 'estUneOffre',
@@ -95,7 +81,6 @@ class AdresseForm(forms.ModelForm):
 
     class Meta:
         model = Adresse
-        #fields = ('rue','code_postal','pays','telephone',)
         exclude = ('latitude', 'longitude')
 
     def save(self, *args, **kwargs):
@@ -121,9 +106,7 @@ class ProducteurCreationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['name', 'username', 'email', 'password1', 'password2',
-                #  'competences', 'rue', 'code_postal', 'latitude', 'longitude', 'pays', 'telephone'
-                  ]
+        fields = ['name', 'username', 'email']
     #
     def save(self, commit=True, is_active = False):
         user = super(ProducteurCreationForm, self).save(commit=False)
@@ -252,3 +235,10 @@ class ContactForm(forms.Form):
 #     demande = forms.ChoiceField(
 #         choices=(('tout','tout'),('offres','offres'),('recherches','recherches')),
 #     )
+
+
+
+class MessageForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        exclude = ['conversation','auteur']

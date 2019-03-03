@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{%block subtitle%}
+<p>Liste de vos conversations</p>
+{%endblock%}
+{% block content %}
+
+{% for conversation in conversations %}
+<div class="card conversation ">
+      <a href="{{conversation.get_absolute_url}}">
+    <div class="card-block">
+        <p class="card-text">{{ conversation.titre}}</p>
+    </div>   </a>
+    {% if not forloop.last %}
+    <hr>
+    {%endif%}
+</div>
+       {% cycle '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
+{% empty %}
+<p>Vous n'avez pas encore commencé de conversation... envoyez des messages !</p>
+{% endfor %}
+
+
+{% endblock %}

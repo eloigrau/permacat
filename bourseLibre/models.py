@@ -635,3 +635,60 @@ class Item(models.Model):
 #     #location = spatial.LocationField(based_fields=['ville'], zoom=7, default=Point(1.0, 1.0))
 #     location = spatial.PlainLocationField(based_fields=['ville'], zoom=7)
 #     objects = models_gis.GeoManager()
+
+
+
+
+def get_slug_from_names(name1, name2):
+    return str(slugify(''.join(sorted((name1, name2), key=str.lower))))
+
+class Conversation(models.Model):
+    profil1 = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='profil1')
+    profil2 = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='profil2')
+    slug = models.CharField(max_length=100)
+    date_creation = models.DateTimeField(auto_now_add=True, auto_now=False, verbose_name="Date de parution")
+
+    class Meta:
+        ordering = ('date_creation',)
+
+    def __str__(self):
+        return "Conversation de " + self.profil1.user.username + " à " + self.profil2.user.username
+
+    def titre(self):
+        return self.__str__()
+
+    titre = property(titre)
+
+    def messages(self):
+        return self.__str__()
+
+    messages = property(messages)
+
+    def get_absolute_url(self):
+        return reverse('lireConversation_2noms', kwargs={'destinataire1': self.profil1.user.username, 'destinataire2': self.profil2.user.username})
+
+    def save(self, *args, **kwargs):
+        self.slug = get_slug_from_names(self.profil1.user.username, self.profil2.user.username)
+        super(Conversation, self).save(*args, **kwargs)
+
+
+
+class Message(models.Model):
+    conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
+    message = models.TextField()
+    auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
+    date_creation = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.message
+
+
+
+def getOrCreateConversation(nom1, nom2):
+    try:
+        convers = Conversation.objects.get(slug=get_slug_from_names(nom1, nom2))
+    except Conversation.DoesNotExist:
+        profil_1 = Profil.objects.get(user__username=nom1)
+        profil_2 = Profil.objects.get(user__username=nom2)
+        convers = Conversation.objects.create(profil1=profil_1, profil2=profil_2)
+    return convers

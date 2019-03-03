@@ -132,7 +132,7 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     #{'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', },
-    # {    'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
+    #{    'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
     #{'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', },
     #{'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },
 ]
@@ -180,9 +180,9 @@ DATE_FORMAT = "l d F Y"
 #DATE_INPUT_FORMATS = ('%d/%m/%Y',)
 
 
-LOGIN_URL = '/login/'
+LOGIN_URL = '/auth/login/'
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/accounts/login/'
+LOGOUT_REDIRECT_URL = '/'
 
 INTERNAL_IPS = ['127.0.0.1']
 

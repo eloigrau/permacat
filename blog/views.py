@@ -5,6 +5,7 @@ from .models import Article, Commentaire
 from .forms import ArticleForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView
+from django.db.models import Q
 
 def accueil(request):
     """ Afficher tous les articles de notre blog """
@@ -12,7 +13,7 @@ def accueil(request):
     return render(request, 'blog/accueil.html', {'derniers_articles': articles})
 
 
-@login_required(login_url='/login/')
+@login_required(login_url='/auth/login/')
 def ajouterNouveauPost(request):
         form = ArticleForm(request.POST or None)
         if form.is_valid():
@@ -34,13 +35,11 @@ def ajouterNouveauPost(request):
 #     return render(request, 'blog/lire.html', {'article':article})
 
 
+@login_required(login_url='/auth/login/')
 def lireArticle(request, slug):
     article = get_object_or_404(Article, slug=slug)
-#     try:
     commentaires = Commentaire.objects.filter(article=article)
-    #print ('zzzzz' + commentaires)
-#     except:
-#         commentaires = None
+
     form = CommentForm(request.POST or None)
     if form.is_valid():
         comment = form.save(commit=False)
@@ -50,6 +49,7 @@ def lireArticle(request, slug):
         return redirect(request.path)
 
     return render(request, 'blog/lireArticle.html', {'article': article, 'form': form, 'commentaires':commentaires},)
+
 
 
 class ListeArticles(ListView):
@@ -82,3 +82,4 @@ class ListeArticles(ListView):
         if 'categorie' in self.request.GET:
             context['typeFiltre'] = "categorie"
         return context
+

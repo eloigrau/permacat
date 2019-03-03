@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block subtitle %}
+
+<p>Messages échangés avec
+<span style="background-color:PapayaWhip;">
+{{ destinataire }}
+</span>
+depuis le {{ conversation.date_creation|date:"DATE_FORMAT"}}</p>
+{% endblock %}
+{% block content %}
+<div class="contenu conversation">
+{% for message in messages %}
+    <div class="row {% if message.auteur.user.username == destinataire %} msg-auteur  {%else%} msg-destinataire{%endif%}">
+        <div class="col-sm-2 col-md-2 col-lg-2">
+            <p class="infos  textepetit">{{ message.date_creation|date:"DATE_FORMAT" }}</p>
+        </div>
+        <div class=" col-sm-10 col-md-8 col-lg-6 message ">
+                <p>{{ message.message }}</p>
+        </div>
+    </div>
+{% endfor %}
+</ol>
+</div>
+
+
+<hr>
+    <hr>
+<div>
+<form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %} 
+    <input type="hidden" name="Message" value="{{ message }}">
+    {% include 'form_template.html' %}
+</form>
+</div>
+
+{% endblock %}

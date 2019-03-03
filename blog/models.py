@@ -1,7 +1,6 @@
 from django.db import models
 from bourseLibre.models import Profil
 from django.urls import reverse
-
 from django.contrib.auth.models import User
 
 # from django.contrib.auth.forms import User

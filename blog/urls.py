@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from . import views
+from django.contrib.auth.decorators import login_required
 
 app_name = 'blog'
 
@@ -23,7 +24,7 @@ urlpatterns = [
     # url(r'^blog/index$', views.index, name='index'),
     #     url(r'^$', views.accueil, name='accueil'),
     #     url(r'^$', ListView.as_view(model=Article,), name='accueil2', template_name="accueil.html"),
-    url(r'^acceuil/$', views.ListeArticles.as_view(), name="accueil"),
+    url(r'^acceuil/$', login_required(views.ListeArticles.as_view(), login_url='/auth/login/'), name="accueil"),
     # url(r'^newPost/', views.ajouterNouveauPost, name='ajouterNouveauPost'),
     # url(r'^article/(?P<slug>.+)$', views.lire, name='lire'),
 

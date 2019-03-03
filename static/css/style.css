@@ -450,3 +450,12 @@ ul.errorlist{
 
 }
 }
+
+.msg-destinataire{
+    indent:30px;
+    background-color:PapayaWhip ;
+    }
+
+.msg-auteur {
+    background-color:PeachPuff ;
+    }

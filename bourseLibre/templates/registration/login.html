@@ -5,14 +5,14 @@
  <div class="container">
         <div id="loginbox" style="margin-top:50px;" class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
             <div style="padding-top:10px" class="panel-body" >
-            {% if form.non_field_errors %}
-                <ul class='form-errors'>
-                    {% for error in form.non_field_errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
 
+<form class="form-horizontal" role="form" action="{% url 'login' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="Message" value="{{ message }}">
+    {% include 'form_template.html'%}
+</form>
+
+{% comment%}
             <form class="form-horizontal" role="form" action="{% url 'login' %}" method="post" enctype="multipart/form-data">
 
                 {% csrf_token %}
@@ -51,6 +51,7 @@
     </div>
 
 
+{% endcomment%}
 {% comment%}
 <style>
     html {
