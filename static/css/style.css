@@ -82,7 +82,7 @@ section.p3 {
     display: inline-block;
    }
 
-
+.navbar-collapse { text-align: center; }
 .navbar{
 padding:0;
     }
