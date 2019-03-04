@@ -102,7 +102,7 @@ class ProfilCreationForm(forms.ModelForm):
         return profil
 
 
-class ProducteurCreationForm(UserCreationForm):
+class UserCreationForm(UserCreationForm):
     email = forms.EmailField(label="Email", required=False)
     username = forms.CharField(label="Pseudonyme*", required=True)
     name = forms.CharField(label="Nom complet", required=False)
@@ -112,7 +112,7 @@ class ProducteurCreationForm(UserCreationForm):
         fields = ['name', 'username', 'email']
 
     def save(self, commit=True, is_active = False):
-        user = super(ProducteurCreationForm, self).save(commit=False)
+        user = super(UserCreationForm, self).save(commit=False)
         user.email = self.cleaned_data['email']
         user.username =self.cleaned_data['username']
         user.set_password(self.cleaned_data['password1'])

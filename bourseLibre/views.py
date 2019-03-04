@@ -6,7 +6,7 @@ Created on 25 mai 2017
 '''
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect  # render_to_response,
 from .forms import Produit_aliment_CreationForm, Produit_vegetal_CreationForm, Produit_objet_CreationForm, \
-    Produit_service_CreationForm, ProducteurCreationForm, ContactForm, AdresseForm, ProfilCreationForm, MessageForm
+    Produit_service_CreationForm, UserCreationForm, ContactForm, AdresseForm, ProfilCreationForm, MessageForm
 from .models import Profil, Produit, Adresse, Choix, Panier, Item, get_categorie_from_subcat, Conversation, Message, getOrCreateConversation
 # from django.db.models import Q
 from django.contrib.auth.models import User
@@ -288,7 +288,7 @@ def produitContacterProducteur(request, produit_id):
 # @login_required(login_url='/auth/login/')
 class profil_modifier_user(UpdateView):
     model = Profil
-    form_class = ProducteurCreationForm
+    form_class = UserCreationForm
     template_name_suffix = '_modifier'
 #    fields = ['user','site_web','description', 'competences', 'adresse', 'avatar', 'inscrit_newsletter']
 
@@ -319,7 +319,7 @@ class profil_modifier(UpdateView):
 def register(request):
     form_adresse = AdresseForm(request.POST or None)
     #form_user = UserCreationForm(request.POST or None)
-    form_user = ProducteurCreationForm(request.POST or None)
+    form_user = UserCreationForm(request.POST or None)
     form_profil = ProfilCreationForm(request.POST or None)
     if form_adresse.is_valid() and form_user.is_valid() and form_profil.is_valid():
         user = form_user.save(commit=True,is_active = False)
