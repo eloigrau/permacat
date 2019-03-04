@@ -397,7 +397,6 @@ class Produit_objet(Produit):  # , BaseProduct):
             return 'gratuit'
         return str(self.get_prix()) + " " + self.get_unite_prix()
 
-    get_prixEtUnite = property(get_prixEtUnite)
     def get_souscategorie(self):
         return "objet"
 
