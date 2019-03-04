@@ -20,7 +20,7 @@ from django.utils.translation import ugettext_lazy as _
 #from django.contrib.contenttypes.models import ContentType
 import decimal
 
-#import requests
+import requests
 from stdimage import StdImageField
 
 # from location_field.models import spatial
