@@ -20,7 +20,7 @@ from django.utils.translation import ugettext_lazy as _
 #from django.contrib.contenttypes.models import ContentType
 import decimal
 
-import requests
+#import requests
 from stdimage import StdImageField
 
 # from location_field.models import spatial
@@ -118,14 +118,12 @@ class Adresse(models.Model):
         return str(self.longitude).replace(",",".")
 
 
-# class Profil(AbstractBaseUser):
 class Profil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     site_web = models.URLField(blank=True)
     description = models.TextField(null=True, default="")
     competences = models.TextField(null=True, default="")
     adresse = models.OneToOneField(Adresse, on_delete=models.CASCADE)
-    #avatar = models.ImageField(null=True, blank=True, upload_to="avatars/", default='avatar/avatar-defaut2.jpg')
     avatar = StdImageField(null=True, blank=True, upload_to='avatars/', variations={
         'large': (640, 480),
         'thumbnail2': (100, 100, True)})
@@ -133,11 +131,6 @@ class Profil(models.Model):
     inscrit_newsletter = models.BooleanField(default=False)
     date_registration = models.DateTimeField(verbose_name="Date de création", editable=False)
 
-    # position = models_gis.PointField()
-    # code_postal = models_gis.CharField(max_length=5)
-    # #objects = GeoManager()
-    # lon = models.FloatField()
-    # lat = models.FloatField()
 
     def __str__(self):
         return self.user.username
@@ -158,7 +151,9 @@ class Profil(models.Model):
 
     def get_absolute_url(self):
         return reverse('profil_courant')#, kwargs={'user_id':self.id})
-#
+
+
+
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created and instance.is_superuser:
@@ -167,9 +162,10 @@ def create_user_profile(sender, instance, created, **kwargs):
         Panier.objects.create(user=Profil.objects.get(user=instance))
 
 
-# @receiver(post_save, sender=User)
-# def save_user_profile(sender, instance, **kwargs):
-#     instance.profil.save()
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profil.save()
+
 
 
 class Produit(models.Model):  # , BaseProduct):
