@@ -17,6 +17,10 @@ python manage.py migrate --run-syncdb
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+try:
+    import dj-database-url
+except:
+    pass
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -24,7 +28,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'a_dnav(b21!_zq7qcllxducb=%t9tl+(#2pfl)ao&bkh088p*x'
+SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -123,12 +127,17 @@ WSGI_APPLICATION = 'bourseLibre.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+try:
+    DATABASES = {}
+    db_from_env = dj_database_url.config(conn_max_age=600)
+    DATABASES['default'].update(db_from_env)
+except:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+           'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
 
 AUTH_PASSWORD_VALIDATORS = [
     #{'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', },

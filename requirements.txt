@@ -31,7 +31,7 @@ olefile==0.45.1
 phonenumbers==8.10.4
 Pillow==5.2.0
 progressbar2==3.38.0
-psycopg2==2.7.7
+psycopg2-binary==2.7.7
 pytest-runner==4.2
 python-dateutil==2.7.5
 python-utils==2.3.0
