@@ -124,6 +124,8 @@ class ProducteurCreationForm(UserCreationForm):
         return user
 
 
+#class UserAdmin(AuthUserAdmin):
+#    add_form = ProducteurCreationForm
 
 class ProducteurChangeForm(UserChangeForm):
     """A form for updating users. Includes all the fields on
