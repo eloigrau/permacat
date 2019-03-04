@@ -162,9 +162,9 @@ def create_user_profile(sender, instance, created, **kwargs):
         Panier.objects.create(user=Profil.objects.get(user=instance))
 
 
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.profil.save()
+#@receiver(post_save, sender=User)
+#def save_user_profile(sender, instance, **kwargs):
+#    instance.profil.save()
 
 
 
