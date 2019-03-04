@@ -85,8 +85,6 @@ class Adresse(models.Model):
     telephone = models.CharField(validators=[phone_regex,], max_length=10, blank=True)  # validators should be a list
     from django.core.validators import RegexValidator
 
-    class PhoneModel(models.Model):
-        ...
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
         self.set_latlon_from_adresse()
