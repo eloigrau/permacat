@@ -60,7 +60,7 @@ def produit_proposer(request, typeProduit):
     if  type_form.is_valid():
        # produit = produit_form.save(commit=False)
         produit = type_form.save(commit=False)
-        produit.user = Profil.objects.get(pk=request.user.pk)
+        produit.user = Profil.objects.get(user=request.user)
         produit.categorie = typeProduit
 
         #if produit.photo:
