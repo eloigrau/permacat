@@ -156,10 +156,10 @@ class Profil(models.Model):
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        adresse = Adresse.objects.create()
-        Profil.objects.create(user=instance, adresse=adresse)
-        Panier.objects.create(user=Profil.objects.get(user=instance))
+    if created and user_is_superuser:
+        adresse = Adresse.objects.update_or_create()
+        Profil.objects.update_or_create(user=instance, adresse=adresse)
+        Panier.objects.update_or_create(user=Profil.objects.get(user=instance))
 
 
 #@receiver(post_save, sender=User)
