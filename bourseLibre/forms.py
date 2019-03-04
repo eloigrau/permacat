@@ -90,6 +90,9 @@ class AdresseForm(forms.ModelForm):
         return adresse
 
 class ProfilCreationForm(forms.ModelForm):
+    description = forms.CharField(label="Description", initial="Une description de vous même")
+    competences = forms.CharField(label="Savoir-faire", initial="Par exemple: electricien, bouturage, aromatherapie, etc...")
+
     class Meta:
         model = Profil
         exclude = ['user', 'adresse', 'slug']
@@ -101,7 +104,7 @@ class ProfilCreationForm(forms.ModelForm):
 
 class ProducteurCreationForm(UserCreationForm):
     email = forms.EmailField(label="Email", required=False)
-    username = forms.CharField(label="pseudonyme", required=True)
+    username = forms.CharField(label="Pseudonyme*", required=True)
     name = forms.CharField(label="Nom complet", required=False)
 
     class Meta:
@@ -176,9 +179,9 @@ class ProducteurChangeForm(UserChangeForm):
     password hash display field.
     """
     email = forms.EmailField(label="Email")
-    username = forms.CharField(label="Username")
-    description = forms.CharField()
-    competences = forms.CharField(label="competences")
+    username = forms.CharField(label="Pseudonyme")
+    description = forms.CharField(label="Description", initial="Une description de vous même")
+    competences = forms.CharField(label="Savoir-faire", initial="Par exemple: electricien, bouturage, aromatherapie, etc...")
     avatar = forms.ImageField(required=False)
     inscrit_newsletter = forms.BooleanField(required=False)
 
@@ -242,3 +245,7 @@ class MessageForm(forms.ModelForm):
     class Meta:
         model = Message
         exclude = ['conversation','auteur']
+
+        widgets = {
+                'message': forms.Textarea(attrs={'rows': 2}),
+            }

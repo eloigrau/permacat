@@ -39,7 +39,7 @@ class Choix():
 
     choix = {
     'aliment': {
-        'souscategorie': ('légumes', 'fruits', 'champignons', 'boisson', 'herbes','condiments', 'viande','poisson','boulangerie','patisserie', 'autre'),
+        'souscategorie': ('legumes', 'fruits', 'champignons', 'boisson', 'herbes','condiments', 'viande','poisson','boulangerie','patisserie', 'autre'),
         'etat': (('frais', 'frais'), ('sec', 'sec'), ('conserve', 'conserve')),
         'type_prix': typePrixUnite,
     },
@@ -675,7 +675,7 @@ class Conversation(models.Model):
 
 class Message(models.Model):
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
-    message = models.TextField()
+    message = models.TextField(null=False, blank=False)
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
     date_creation = models.DateTimeField(auto_now_add=True)
 

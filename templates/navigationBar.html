@@ -4,27 +4,19 @@
 <div class="topnav navbar-expand-sm navbar-light navbarMenu fixed-top">
     {%endcomment%}
 
-<nav class="navbar navbar-light navbar-expand-md bg-light justify-content-center fixed-top navbarMenu">
+<nav class="navbar navbar-light navbar-expand-lg bg-light justify-content-center fixed-top navbarMenu">
     <div class="container-fluid">
-
-  <!-- Centered link -->
-
-  <!-- Left-aligned links (default) -->
             <button class="navbar-toggler navbar-btn" type="button" data-toggle="collapse" data-target="#navbarsActuel" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
         <a class="navbar-brand" href="{% url 'bienvenue' %}"> PermaCat</a>
-    {%comment%}
-            <div class="navbar-header mr-auto order-0 order-md-0">
-            </div>
-    {%endcomment%}
 
         {% if user.is_authenticated %}
-        <div class="navbar-collapse collapse justify-content-between align-items-center w-100"  id="navbarsActuel">
-            <ul class="navbar-nav mx-auto text-center">
+        <div class="navbar-collapse collapse justify-content-between  align-items-center w-100"  id="navbarsActuel">
+            <ul class="navbar-nav mx-auto text-center justify-content-center">
                 <a role="button"  class="btn btn-success"  href="{% url 'produit_lister' %}" aria-disabled="true">Marché</a>
 
-                    <form class="form-inline my-2 my-lg-0" action="{% url 'chercher' %}" method="get">
+                    <form class="form-inline my-2 my-lg-0 justify-content-center" action="{% url 'chercher' %}" method="get">
                     {% csrf_token %}
                     <input class="form-control fmr-sm-2" name="id_recherche" placeholder="Chercher..." type="text">
                     <button class="btn navbar-btn btn-outline-success my-2 my-sm-0" type="submit" >...</button>

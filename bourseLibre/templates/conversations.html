@@ -4,20 +4,16 @@
 {%endblock%}
 {% block content %}
 
-{% for conversation in conversations %}
-<div class="card conversation ">
-      <a href="{{conversation.get_absolute_url}}">
-    <div class="card-block">
-        <p class="card-text">{{ conversation.titre}}</p>
-    </div>   </a>
-    {% if not forloop.last %}
-    <hr>
-    {%endif%}
-</div>
+<div class="card" >
+  <ul class="list-group list-group-flush">
+        {% for conversation in conversations %}
+            <li class="list-group-item"><a href="{{conversation.get_absolute_url}}">{{ conversation.titre}}      </a></li>
        {% cycle '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
-{% empty %}
-<p>Vous n'avez pas encore commencé de conversation... envoyez des messages !</p>
-{% endfor %}
+        {% empty %}
+        <p>Vous n'avez pas encore commencé de conversation... envoyez des messages !</p>
+        {% endfor %}
+  </ul>
+</div>
 
 
 {% endblock %}

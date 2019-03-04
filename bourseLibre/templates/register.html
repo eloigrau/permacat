@@ -1,9 +1,136 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
+{% load widget_tweaks %}
 
 {% block title %}S'enregistrer{% endblock %}
-{% block subtitle %}S'enregistrer{% endblock %}
 {% block content %}
-<div class="container-fluid
+
+<div class="jumbotron">
+<div class="row justify-content-sm-center">
+<div class="col-sm-12 col-md-10 col-lg-8 ">
+    <form role="form" action="" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+
+  {% for hidden_field in form_user.hidden_fields %}
+    {{ hidden_field }}
+  {% endfor %}
+
+  {% if form_user.non_field_errors %}
+    <div class="alert alert-danger" role="alert">
+      {% for error in form_user.non_field_errors %}
+        {{ error }}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% for field in form_user.visible_fields %}
+    <div class="form-group">
+      {{ field.label_tag }}
+
+      {% if form_user.is_bound %}
+        {% if field.errors %}
+          {% render_field field class="form-control invalid" %}
+          {% for error in field.errors %}
+            <div class="invalid-feedback">
+              {{ error }}
+            </div>
+          {% endfor %}
+        {% else %}
+          {% render_field field class="form-control valid" %}
+        {% endif %}
+      {% else %}
+        {% render_field field class="form-control" %}
+      {% endif %}
+
+      {% if field.help_text %}
+        <small class="form-text text-muted">{{ field.help_text }}</small>
+      {% endif %}
+    </div>
+  {% endfor %}
+
+
+  {% for hidden_field in form_profil.hidden_fields %}
+    {{ hidden_field }}
+  {% endfor %}
+
+  {% if form_profil.non_field_errors %}
+    <div class="alert alert-danger" role="alert">
+      {% for error in form_profil.non_field_errors %}
+        {{ error }}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% for field in form_profil.visible_fields %}
+    <div class="form-group">
+      {{ field.label_tag }}
+
+      {% if form_profil.is_bound %}
+        {% if field.errors %}
+          {% render_field field class="form-control invalid" %}
+          {% for error in field.errors %}
+            <div class="invalid-feedback">
+              {{ error }}
+            </div>
+          {% endfor %}
+        {% else %}
+          {% render_field field class="form-control valid" %}
+        {% endif %}
+      {% else %}
+        {% render_field field class="form-control" %}
+      {% endif %}
+
+      {% if field.help_text %}
+        <small class="form-text text-muted">{{ field.help_text }}</small>
+      {% endif %}
+    </div>
+  {% endfor %}
+
+  {% for hidden_field in form_adresse.hidden_fields %}
+    {{ hidden_field }}
+  {% endfor %}
+
+  {% if form_adresse.non_field_errors %}
+    <div class="alert alert-danger" role="alert">
+      {% for error in form_adresse.non_field_errors %}
+        {{ error }}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% for field in form_adresse.visible_fields %}
+    <div class="form-group">
+      {{ field.label_tag }}
+
+      {% if form_adresse.is_bound %}
+        {% if field.errors %}
+          {% render_field field class="form-control invalid" %}
+          {% for error in field.errors %}
+            <div class="invalid-feedback">
+              {{ error }}
+            </div>
+          {% endfor %}
+        {% else %}
+          {% render_field field class="form-control valid" %}
+        {% endif %}
+      {% else %}
+        {% render_field field class="form-control" %}
+      {% endif %}
+
+      {% if field.help_text %}
+        <small class="form-text text-muted">{{ field.help_text }}</small>
+      {% endif %}
+    </div>
+  {% endfor %}
+
+  <button type="submit" class="btn btn-success">S'enregistrer</button>
+</form>
+</div>
+</div>
+
+
+{%comment%}
+
+<div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col align-self-center">
     {% if error_message %}
@@ -32,8 +159,11 @@
 <div class="panel-footer">
     Déjà membre ? <a href="{% url 'login' %}">clique ici</a> pour te connecter.
 </div>
-            </div>
-        </div>
+</div>
+</div>
+</div>
+{%endcomment%}
+
 
 {% endblock %}
 

@@ -26,7 +26,7 @@
 			Demandé par
 		{%endif%}
 		{%if produit.user.id|is_numeric%}
-		<a href="{% url 'profil' produit.user.id %}">{{produit.user.user.username}}</a>, le {{ produit.date_creation }}
+		<a href="{% url 'profil' produit.user.id %}">{{produit.user.user.username}}</a>, le {{ produit.date_creation|date:"SHORT_DATE_FORMAT" }}
 		{%else%}
 		<a href="{% url 'profil_inconnu' %}">un producteur disparu !</a>, le {{ produit.date_creation }}
 		{% endif %}

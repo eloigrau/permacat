@@ -25,7 +25,7 @@
             </div>
         </div>
         <div class="btn-group">
-            <a {% if request.GET.categorie %}  href="?categorie={{categorie}}" request.GET.categorie %}"
+            <a {% if request.GET.categorie %}  href="?categorie={{categorie}}"
                 {%else%}href="#" {%endif%}>
                 <button type="button" class="btn {% if request.GET.categorie %}btn-primary{%endif%}">
                 {% if request.GET.categorie %} Catégorie: {{request.GET.categorie}} {%else%}Catégorie{%endif%}
@@ -35,7 +35,7 @@
                data-target = "#idAuteur">
                 <span class="sr-only">Toggle Dropdown</span>
               </button>
-            <div class="dropdown-menu"  aria-labelledby="menuAuteur"  id=idAuteur">
+            <div class="dropdown-menu"  aria-labelledby="menuCategorie"  id=idCategorie">
                 {% for categorie in categorie_list %}
                   <a class="dropdown-item" href="?categorie={{categorie}}">{{categorie}}</a>
                 {% endfor %}

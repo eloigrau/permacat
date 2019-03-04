@@ -10,23 +10,36 @@
 {% block title %}<h3>Profil de {{ user.username }}</h3> {% endblock %}
 {% block subtitle %}
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-md-12 textcenter">
     <h4> Profil de {{ user.username }}    </h4>
-
   </div>
-    <div class="col-md-4 textright">
+  </div>
+
+<div class="row">
+    <div class="col-md-12 textcenter">
+        {%if  user.username != request.user.username %}
         <a href="{% url 'lireConversation' user.username %}" class="btn btn-success">
           <span class="glyphicon glyphicons-conversation"></span> Message
         </a>
         <a href="{% url 'profil_contact' user.id %}" class="btn btn-success">
           <span class="glyphicon glyphicon-envelope"></span> Email
         </a>
+        {%else%}
+        <a href="{% url 'panier_afficher'  %}" class="btn btn-success">
+          <span class="glyphicon glyphicon-shopping-bag"></span> Mon panier
+        </a>
+        <a href="{% url 'conversations' %}" class="btn btn-success">
+          <span class="glyphicon glyphicon-shopping-cart"></span> Mes conversations
+        </a>
+        <a href="{% url 'afficher_requetes' %}" class="btn btn-success">
+          <span class="glyphicon glyphicon-shopping-cart"></span> Mes requêtes
+        </a>
+        {%endif%}
         <a href="{% url 'produit_lister' %}?producteur={{ user.username }}" class="btn btn-success">
-                <span class="glyphicon glyphicon-plus"></span>&nbsp; Ses propositions
+                <span class="glyphicon glyphicon-plus"></span>&nbsp; {%if  user.username != request.user.username %}Ses {%else%}Mes {%endif%}propositions
             </a>
         </a>
     </div>
-  </div>
   </div>
 {% endblock %}
 {% block content %}

@@ -15,16 +15,15 @@
 </div>
 
 <div class="row justify-content-center">
-    <nav class="navbar navbar-dark navbar-toggleable-sm navbar-expand-md justify-content-center">
+    <nav class="navbar navbar-expand-md justify-content-center  navbar-light bg-light">
         <div class="navbar-header">
-             <button class="navbar-toggler navbar-btn" data-toggle="collapse" data-target="#navbarProduit" aria-controls="navbarProduitContent" aria-expanded="true" aria-label="ToggleNavigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarProduit" aria-controls="navbarProduitContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span></button>
         </div>
         <div class="collapse navbar-collapse" id="navbarProduit">
             <ul class="nav navbar-nav">
                 <li class="nav-item dropdown active">
-                <button class="btn btn-info dropdown-toggle" type="button" id="menuOffreOuDemande" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-info dropdown-toggle btn-block" type="button" id="menuOffreOuDemande" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {{typeOffre}}
                   </button>
                 <div class="dropdown-menu"  aria-labelledby="menuOffreOuDemande">
@@ -36,11 +35,11 @@
                 </li>
             <li class="nav-item" >
                 <a href="?">
-                <button class="btn {% if typeFiltre == 'aucun' %}btn-primary {%endif%}">Tout </button>
+                <button class="btn btn-block {% if typeFiltre == 'aucun' %}btn-primary {%endif%}">Tout </button>
                 </a>
             </li>
             <li class="nav-item dropdown active">
-                <button class="btn dropdown-toggle {% if categorie_parent == 'aliment' %}btn-primary {%endif%}" type="button" id="menuAliment" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn dropdown-toggle btn-block {% if categorie_parent == 'aliment' %}btn-primary {%endif%}" type="button" id="menuAliment" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {%if souscategorie and categorie_parent == 'aliment'%}{{souscategorie}}{%else%}Aliment {%endif%}</button>
                 </button>
                 <div class="dropdown-menu"  aria-labelledby="menuAliment">
@@ -52,7 +51,7 @@
                 </div>
             </li>
             <li class="nav-item dropdown active">
-                <button class="btn dropdown-toggle {% if categorie_parent == 'vegetal' %}btn-primary {%endif%}" type="button" id="menuvegetal" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn dropdown-toggle btn-block {% if categorie_parent == 'vegetal' %}btn-primary {%endif%}" type="button" id="menuvegetal" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {%if souscategorie and categorie_parent == 'vegetal'%}{{souscategorie}}{%else%}Végétal {%endif%}</button>
                 </button>
                 <div class="dropdown-menu"  aria-labelledby="menuvegetal">
@@ -64,7 +63,7 @@
                 </div>
             </li>
             <li class="nav-item dropdown active">
-                <button class="btn dropdown-toggle {% if categorie_parent == 'service' %}btn-primary {%endif%}" type="button" id="menuservice" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn dropdown-toggle btn-block {% if categorie_parent == 'service' %}btn-primary {%endif%}" type="button" id="menuservice" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {%if souscategorie and categorie_parent == 'service'%}{{souscategorie}}{%else%}Service {%endif%}</button>
                 </button>
                 <div class="dropdown-menu"  aria-labelledby="menuservice">
@@ -76,7 +75,7 @@
                 </div>
             </li>
             <li class="nav-item dropdown active">
-                <button class="btn dropdown-toggle {% if categorie_parent == 'objet' %}btn-primary {%endif%}" type="button" id="menuobjet" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn dropdown-toggle btn-block {% if categorie_parent == 'objet' %}btn-primary {%endif%}" type="button" id="menuobjet" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {%if souscategorie and categorie_parent == 'objet'%}{{souscategorie}}{%else%}Objet {%endif%}</button>
                 </button>
                 <div class="dropdown-menu"  aria-labelledby="menuobjet">
@@ -91,7 +90,7 @@
 
             {%if producteur_list %}
             <li class="nav-item dropdown active">
-                <button class="btn dropdown-toggle  {% if request.GET.producteur %}btn-primary{%endif%}" type="button" id="menuproducteur" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn dropdown-toggle  btn-block {% if request.GET.producteur %}btn-primary{%endif%}" type="button" id="menuproducteur" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                    {% if request.GET.producteur %} Par: {{request.GET.producteur}} {%else%}Producteur{%endif%}
            </button>
                 <div class="dropdown-menu"  aria-labelledby="menuProducteur"  id="idProducteur">
@@ -104,7 +103,7 @@
 
 
             <li class="nav-item dropdown active">
-                <button class="btn dropdown-toggle btn-light" type="button" id="menuOrdreTri" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn dropdown-toggle btn-block btn-light" type="button" id="menuOrdreTri" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                    Trier par...
            </button>
                 <div class="dropdown-menu"  aria-labelledby="menuOrdreTri"  id="idOrdreTri">
