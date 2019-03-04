@@ -18,7 +18,7 @@ python manage.py migrate --run-syncdb
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 try:
-    import dj-database-url
+    import dj_database_url
 except:
     pass
 
