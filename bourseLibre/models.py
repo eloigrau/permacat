@@ -58,9 +58,8 @@ class Choix():
         'etat': (('excellent', 'excellent'), ('bon', 'bon'), ('moyen', 'moyen'), ('mauvais', 'mauvais')),
         'type_prix': typePrixUnite,
     },
-    'monnaies': (('don', 'don'), ('troc', 'troc'), ('G1', 'G1'), ('soudaqui', 'soudaqui'), ('SEL', 'SEL'), ('JEU', 'JEU'),  ('heuresT', 'heuresT'),  ('Autre', 'A negocier')),
-
     }
+    monnaies = (('don', 'don'), ('troc', 'troc'), ('G1', 'G1'), ('soudaqui', 'soudaqui'), ('SEL', 'SEL'), ('JEU', 'JEU'),  ('heuresT', 'heuresT'),  ('Autre', 'A negocier'))
 
     ordreTri = ['date', 'categorie', 'producteur']
 
@@ -191,7 +190,7 @@ class Produit(models.Model):  # , BaseProduct):
     prix = models.DecimalField(max_digits=4, decimal_places=2, default=1, validators=[MinValueValidator(0), ])
     unite_prix = models.CharField(
         max_length=8,
-        choices = Choix.choix['monnaies'],
+        choices = Choix.monnaies,
         default='lliure', verbose_name="monnaie"
     )
 
