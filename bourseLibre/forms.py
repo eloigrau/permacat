@@ -90,8 +90,8 @@ class AdresseForm(forms.ModelForm):
         return adresse
 
 class ProfilCreationForm(forms.ModelForm):
-    description = forms.CharField(label="Description", initial="Une description de vous même")
-    competences = forms.CharField(label="Savoir-faire", initial="Par exemple: electricien, bouturage, aromatherapie, etc...")
+    description = forms.CharField(label="Description", initial="Une description de vous même", widget=forms.Textarea)
+    competences = forms.CharField(label="Savoir-faire", initial="Par exemple: electricien, bouturage, aromatherapie, etc...", widget=forms.Textarea)
 
     class Meta:
         model = Profil
@@ -180,8 +180,8 @@ class ProducteurChangeForm(UserChangeForm):
     """
     email = forms.EmailField(label="Email")
     username = forms.CharField(label="Pseudonyme")
-    description = forms.CharField(label="Description", initial="Une description de vous même")
-    competences = forms.CharField(label="Savoir-faire", initial="Par exemple: electricien, bouturage, aromatherapie, etc...")
+    description = forms.CharField(label="Description", initial="Une description de vous même", widget=forms.Textarea)
+    competences = forms.CharField(label="Savoir-faire", initial="Par exemple: electricien, bouturage, aromatherapie, etc...",widget=forms.Textarea)
     avatar = forms.ImageField(required=False)
     inscrit_newsletter = forms.BooleanField(required=False)
 

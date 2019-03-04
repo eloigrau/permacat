@@ -24,6 +24,7 @@
 
   {% for field in form_user.visible_fields %}
     <div class="form-group">
+
       {{ field.label_tag }}
 
       {% if form_user.is_bound %}
