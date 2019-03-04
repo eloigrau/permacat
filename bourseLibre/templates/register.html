@@ -3,7 +3,7 @@
 
 {% block title %}S'enregistrer{% endblock %}
 {% block content %}
-
+{%comment%}
 <div class="jumbotron">
 <div class="row justify-content-sm-center">
 <div class="col-sm-12 col-md-10 col-lg-8 ">
@@ -129,11 +129,8 @@
 </div>
 
 
-{%comment%}
-
-<div class="container-fluid">
-    <div class="row justify-content-center">
-        <div class="col align-self-center">
+{%endcomment%}
+<div class="jumbotron"><div class="row justify-content-sm-center"><div class="col-sm-12 col-md-10 col-lg-8 ">
     {% if error_message %}
         <p><strong>{{ error_message }}</strong></p>
     {% endif %}
@@ -163,8 +160,6 @@
 </div>
 </div>
 </div>
-{%endcomment%}
 
-
-{% endblock %}
+    {% endblock %}
 
