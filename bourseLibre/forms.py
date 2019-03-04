@@ -107,10 +107,10 @@ class ProducteurCreationForm(UserCreationForm):
     username = forms.CharField(label="Pseudonyme*", required=True)
     name = forms.CharField(label="Nom complet", required=False)
 
-    class Meta:
+    class Meta(UserCreationForm.Meta):
         model = User
         fields = ['name', 'username', 'email']
-    #
+
     def save(self, commit=True, is_active = False):
         user = super(ProducteurCreationForm, self).save(commit=False)
         user.email = self.cleaned_data['email']
@@ -123,54 +123,6 @@ class ProducteurCreationForm(UserCreationForm):
             user.save()
         return user
 
-    # def save(self,):
-    #     user = super(UserCreationForm, self).save(commit=False)
-    #     user.email= self.cleaned_data['email']
-    #     user.username=self.cleaned_data['username']
-    #     user.password= self.cleaned_data['password1']
-    #     user.is_active=False
-    #     user.is_superuser=False
-    #
-    #     adresse =  Adresse.objects.create(
-    #         rue=self.cleaned_data['rue'],
-    #         code_postal=self.cleaned_data['code_postal'],
-    #         latitude=self.cleaned_data['latitude'],
-    #         longitude=self.cleaned_data['longitude'],
-    #         pays=self.cleaned_data['pays'],
-    #         telephone=self.cleaned_data['telephone'])
-    #
-    #     user.save()
-    #     adresse.save()
-    #     profil = Profil.objects.create(adresse=adresse,
-    #                                    description=self.cleaned_data['description'],
-    #                                    competences=self.cleaned_data['competences'])
-    #
-    #     #profil= super(ProfilCreationForm, self).save(commit=False)
-    #     profil.user=user
-    #     profil.adresse=adresse
-    #     profil.description=self.cleaned_data['description']
-    #     profil.competences=self.cleaned_data['competences']
-    #     # profil = Profil.objects.create(user=user,
-    #     #                                adresse=adresse,
-    #     #                                description=self.cleaned_data['description'],
-    #     #                                competences=self.cleaned_data['competences'])
-    #
-    #     profil.save()
-    #
-    #     return profil
-
-
-    # def save(self, commit=True):
-    #     user = super(ProducteurCreationForm, self).save(commit=False)
-    #     user.email = self.cleaned_data['email']
-    #     user.username = self.cleaned_data['username']
-    #     user.description = self.cleaned_data['description']
-    #     user.password = self.cleaned_data['password1']
-    #
-    #     if commit:
-    #         user.save()
-    #
-    #     return user
 
 
 class ProducteurChangeForm(UserChangeForm):
