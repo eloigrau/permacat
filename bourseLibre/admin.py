@@ -19,7 +19,7 @@ class CustomUserAdmin(UserAdmin):
     add_form = ProfilCreationForm
     form = ProducteurChangeForm
     model = Profil
-    list_display = ['email', 'username',]
+    #list_display = ['email', 'username',]
 
 admin.site.register(Profil, CustomUserAdmin)
 

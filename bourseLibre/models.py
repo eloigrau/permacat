@@ -119,6 +119,7 @@ class Adresse(models.Model):
 
 
 class Profil(AbstractUser):
+
     site_web = models.URLField(blank=True)
     description = models.TextField(null=True, default="")
     competences = models.TextField(null=True, default="")
@@ -157,7 +158,6 @@ class Profil(AbstractUser):
 def create_user_profile(sender, instance, created, **kwargs):
     if created and instance.is_superuser:
         adresse = Adresse.objects.create()
-        Profil.objects.create(adresse=adresse)
         Panier.objects.create(user=instance)
 
 
