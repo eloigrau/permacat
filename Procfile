@@ -1,2 +1,2 @@
-release: python manage.py migrate --run-syncdb --all
+release: python manage.py migrate --run-syncdb
 web: gunicorn bourseLibre.wsgi --log-file -
