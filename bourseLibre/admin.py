@@ -8,28 +8,41 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 from .models import User
 
+from django.contrib import admin
+from django.contrib.auth import get_user_model
+from django.contrib.auth.admin import UserAdmin
 
-class MyUserCreationForm(UserCreationForm):
-    def clean_username(self):
-        username = self.cleaned_data["username"]
-        try:
-            User._default_manager.get(username=username)
-        except User.DoesNotExist:
-            return username
-        raise forms.ValidationError(self.error_messages['duplicate_username'])
+from .forms import ProfilCreationForm, ProducteurChangeForm
+from .models import Profil
 
-    class Meta(UserCreationForm.Meta):
-        model = User
+class CustomUserAdmin(UserAdmin):
+    add_form = ProfilCreationForm
+    form = ProducteurChangeForm
+    model = Profil
+    list_display = ['email', 'username',]
 
+admin.site.register(Profil, CustomUserAdmin)
 
-class UserAdmin(AuthUserAdmin):
-    add_form = MyUserCreationForm
-    update_form_class = UserChangeForm
+# class MyUserCreationForm(UserCreationForm):
+#     def clean_username(self):
+#         username = self.cleaned_data["username"]
+#         try:
+#             User._default_manager.get(username=username)
+#         except User.DoesNotExist:
+#             return username
+#         raise forms.ValidationError(self.error_messages['duplicate_username'])
+#
+#     class Meta(UserCreationForm.Meta):
+#         model = User
+#
+#
+# class UserAdmin(AuthUserAdmin):
+#     add_form = MyUserCreationForm
+#     update_form_class = UserChangeForm
+#
+# admin.site.unregister(User)
+# admin.site.register(User, UserAdmin)
 
-admin.site.unregister(User)
-admin.site.register(User, UserAdmin)
-
-admin.site.register(Profil)
 admin.site.register(Adresse)
 admin.site.register(Produit)
 admin.site.register(Produit_vegetal)

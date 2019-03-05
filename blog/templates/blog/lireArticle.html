@@ -2,7 +2,7 @@
 {% block subtitle %}
 <div class="row">
     <div class="col-md-10">
-        <p class="infos  textepetit">Dans: <a href="{% url 'blog:accueil'  %}?categorie={{article.categorie}}">{{ article.get_categorie_display }}</a>, rédigé par <a href="{% url 'profil' article.auteur.id %}"> {{ article.auteur.user.username }}</a>, le {{ article.date|date:"DATE_FORMAT" }}</p>
+        <p class="infos  textepetit">Dans: <a href="{% url 'blog:accueil'  %}?categorie={{article.categorie}}">{{ article.get_categorie_display }}</a>, rédigé par <a href="{% url 'profil' article.auteur.id %}"> {{ article.auteur.username }}</a>, le {{ article.date|date:"DATE_FORMAT" }}</p>
     </div>
     <div class="col-md-2">
         <a  href="{% url 'blog:accueil'  %}">

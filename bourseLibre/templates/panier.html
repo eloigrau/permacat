@@ -9,10 +9,10 @@ Votre panier, créé le {{panier.date_creation}}
     <table class="table table-condensed tablepanier table-striped">
         <tbody>
     {% for item in items %}
-        {% ifchanged item.produit.user.user.id  %}
+        {% ifchanged item.produit.user.id  %}
         <tr>
-            <td colspan="5" class="panierTableauStyle textcenter" ><a href="{% url 'profil_contact' item.produit.user.user.id%}?panier={{panier.id}}" class="btn btn-primary " type="button" id="buttonContacterProducteur">
-			Contacter {{ item.produit.user.user.username }} </a> </td>
+            <td colspan="5" class="panierTableauStyle textcenter" ><a href="{% url 'profil_contact' item.produit.user.id%}?panier={{panier.id}}" class="btn btn-primary " type="button" id="buttonContacterProducteur">
+			Contacter {{ item.produit.user.username }} </a> </td>
         </tr>
         <tr>
             <td class="textcenter">Produit </td>

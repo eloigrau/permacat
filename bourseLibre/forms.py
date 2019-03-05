@@ -89,39 +89,41 @@ class AdresseForm(forms.ModelForm):
         adresse.save()
         return adresse
 
-class ProfilCreationForm(forms.ModelForm):
-    description = forms.CharField(label="Description", initial="Une description de vous même", widget=forms.Textarea)
-    competences = forms.CharField(label="Savoir-faire", initial="Par exemple: electricien, bouturage, aromatherapie, etc...", widget=forms.Textarea)
+class ProfilCreationForm(UserCreationForm):
+    description = forms.CharField(label="Description", help_text="Une description de vous même", widget=forms.Textarea)
+    competences = forms.CharField(label="Savoir-faire", help_text="Par exemple: electricien, bouturage, aromatherapie, etc...", widget=forms.Textarea)
 
-    class Meta:
+    class Meta(UserCreationForm):
         model = Profil
+        fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'description', 'competences', 'inscrit_newsletter']
         exclude = ['user', 'adresse', 'slug']
 
-    def save(self, commit = True):
+    def save(self, commit = True, is_active=False):
+        self.is_active=is_active
         profil = super(ProfilCreationForm, self).save(commit)
         return profil
 
 
-class UserCreationForm(UserCreationForm):
-    email = forms.EmailField(label="Email", required=False)
-    username = forms.CharField(label="Pseudonyme*", required=True)
-    name = forms.CharField(label="Nom complet", required=False)
-
-    class Meta(UserCreationForm.Meta):
-        model = User
-        fields = ['name', 'username', 'email']
-
-    def save(self, commit=True, is_active = False):
-        user = super(UserCreationForm, self).save(commit=False)
-        user.email = self.cleaned_data['email']
-        user.username =self.cleaned_data['username']
-        user.set_password(self.cleaned_data['password1'])
-        user.is_active = is_active
-        user.is_superuser = False
-
-        if commit:
-            user.save()
-        return user
+# class NewUserCreationForm(UserCreationForm):
+#     email = forms.EmailField(label="Email", required=False)
+#     username = forms.CharField(label="Pseudonyme*", required=True)
+#     name = forms.CharField(label="Nom complet", required=False)
+#
+#     class Meta(UserCreationForm.Meta):
+#         model = Profil
+#         fields = ['name', 'username', 'email']
+#
+#     def save(self, commit=True, is_active = False):
+#         user = super(NewUserCreationForm, self).save(commit=False)
+#         user.email = self.cleaned_data['email']
+#         user.username =self.cleaned_data['username']
+#         user.set_password(self.cleaned_data['password1'])
+#         user.is_active = is_active
+#         user.is_superuser = False
+#
+#         if commit:
+#             user.save()
+#         return user
 
 
 

@@ -43,8 +43,8 @@
             <td>
                 <img src="{{ profil.avatar.get_absolute_url }}" alt="pas d'image" style="width:100px;height:100px" href="{% url 'profil' profil.id %}">
             </td>
-            <td><a href="{% url 'profil' profil.id %}">{{ profil.user.username }}</a></td>
-            <td><a href="{% url 'profil_contact' profil.id %}">{{ profil.user.email }}</a></td>
+            <td><a href="{% url 'profil' profil.id %}">{{ profil.username }}</a></td>
+            <td><a href="{% url 'profil_contact' profil.id %}">{{ profil.email }}</a></td>
             <td><a href="{% url 'profil' profil.id %}">{{ profil.adresse.code_postal }}</a></td>
         </tr>
         {% endfor %}

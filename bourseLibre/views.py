@@ -5,8 +5,10 @@ Created on 25 mai 2017
 @author: tchenrezi
 '''
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect  # render_to_response,
+
+from bourseLibre.forms import ProducteurChangeForm
 from .forms import Produit_aliment_CreationForm, Produit_vegetal_CreationForm, Produit_objet_CreationForm, \
-    Produit_service_CreationForm, UserCreationForm, ContactForm, AdresseForm, ProfilCreationForm, MessageForm
+    Produit_service_CreationForm, ContactForm, AdresseForm, ProfilCreationForm, MessageForm
 from .models import Profil, Produit, Adresse, Choix, Panier, Item, get_categorie_from_subcat, Conversation, Message, getOrCreateConversation
 # from django.db.models import Q
 from django.contrib.auth.models import User
@@ -226,7 +228,7 @@ def profil_contact(request, user_id):
     form = ContactForm(request.POST or None, message=message, titre=titre)
     recepteur = Profil.objects.get(id=user_id)
     if form.is_valid():
-        sujet = request.user.username +'vous a écrit:', form.cleaned_data['sujet']
+        sujet = request.username +'vous a écrit:', form.cleaned_data['sujet']
         message = form.cleaned_data['message']
         send_mail(
             sujet,
@@ -246,7 +248,7 @@ def contact_admins(request):
     form = ContactForm(request.POST or None, envoyeur=request.user.email)
     if form.is_valid():
         sujet = form.cleaned_data['sujet']
-        message = request.user.username + ' a envoyé le message suivant : \\n' + form.cleaned_data['message']
+        message = request.username + ' a envoyé le message suivant : \\n' + form.cleaned_data['message']
         mail_admins(sujet, message)
         if form.cleaned_data['renvoi'] :
             mess = "[MarchéLibre] message envoyé aux administrateurs : \\n"
@@ -275,7 +277,7 @@ def produitContacterProducteur(request, produit_id):
     form = ContactForm(request.POST or None, envoyeur=request.user.email)
     if form.is_valid():
         sujet =  "[MarchéLibre]" + form.cleaned_data['sujet']
-        message = form.cleaned_data['message'] + '(par : ' + request.user.username + ')'
+        message = form.cleaned_data['message'] + '(par : ' + request.username + ')'
 
         send_mail( sujet, message, request.user.email, receveur.email, fail_silently=False,)
         if form.cleaned_data['renvoi'] :
@@ -288,7 +290,7 @@ def produitContacterProducteur(request, produit_id):
 # @login_required(login_url='/auth/login/')
 class profil_modifier_user(UpdateView):
     model = Profil
-    form_class = UserCreationForm
+    form_class = ProducteurChangeForm
     template_name_suffix = '_modifier'
 #    fields = ['user','site_web','description', 'competences', 'adresse', 'avatar', 'inscrit_newsletter']
 
@@ -318,20 +320,16 @@ class profil_modifier(UpdateView):
 # @login_required(login_url='/auth/login/')
 def register(request):
     form_adresse = AdresseForm(request.POST or None)
-    #form_user = UserCreationForm(request.POST or None)
-    form_user = UserCreationForm(request.POST or None)
     form_profil = ProfilCreationForm(request.POST or None)
-    if form_adresse.is_valid() and form_user.is_valid() and form_profil.is_valid():
-        user = form_user.save(commit=True,is_active = False)
+    if form_adresse.is_valid() and form_profil.is_valid():
         adresse = form_adresse.save()
-        profil_courant = form_profil.save(commit=False)
-        profil_courant.user = user
+        profil_courant = form_profil.save(commit=False,is_active = False)
         profil_courant.adresse = adresse
         profil_courant.save()
         Panier.objects.create(user=profil_courant)
         return render(request, 'userenattente.html')
 
-    return render(request, 'register.html', {"form_adresse": form_adresse,"form_user": form_user,"form_profil": form_profil,})
+    return render(request, 'register.html', {"form_adresse": form_adresse,"form_profil": form_profil,})
 
 
 from django.views.generic.edit import ModelFormMixin

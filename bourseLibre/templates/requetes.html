@@ -17,10 +17,10 @@ Liste des demandes :
         </thead>
         <tbody>
     {% for item in items %}
-        {% ifchanged item.produit.user.user.id  %}
+        {% ifchanged item.produit.user.id  %}
         <tr>
-            <td class="panierTableauStyle textcenter" colspan="5" ><a href="{% url 'profil_contact' item.produit.user.user.id %}" class="btn btn-primary " type="button" id="buttonContacterProducteur">
-			Contacter {{ item.produit.user.user.username }} pour échanger :  </a> </td>
+            <td class="panierTableauStyle textcenter" colspan="5" ><a href="{% url 'profil_contact' item.produit.user.id %}" class="btn btn-primary " type="button" id="buttonContacterProducteur">
+			Contacter {{ item.produit.user.username }} pour échanger :  </a> </td>
         </tr>
         {%endifchanged %}
         <tr>

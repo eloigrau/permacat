@@ -13,7 +13,7 @@ from model_utils.managers import InheritanceManager
 import django_filters
 from django.urls import reverse, reverse_lazy
 from django.core.validators import RegexValidator
-
+from django.contrib.auth.models import AbstractUser
 from django.template.defaultfilters import slugify
 
 from django.utils.translation import ugettext_lazy as _
@@ -118,8 +118,7 @@ class Adresse(models.Model):
         return str(self.longitude).replace(",",".")
 
 
-class Profil(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+class Profil(AbstractUser):
     site_web = models.URLField(blank=True)
     description = models.TextField(null=True, default="")
     competences = models.TextField(null=True, default="")
@@ -133,17 +132,17 @@ class Profil(models.Model):
 
 
     def __str__(self):
-        return self.user.username
+        return self.username
 
     def __unicode__(self):
-        return self.user.username
+        return self.username
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
         if not self.id:
             self.date_registration = now()
-        if not self.adresse:
-            self.adresse = Adresse.objects.create()
+        if not hasattr(self, 'adresse') or not self.adresse:
+             self.adresse = Adresse.objects.create()
         return super(Profil, self).save(*args, **kwargs)
 
     def get_nom_class(self):
@@ -154,12 +153,12 @@ class Profil(models.Model):
 
 
 
-@receiver(post_save, sender=User)
+@receiver(post_save, sender=Profil)
 def create_user_profile(sender, instance, created, **kwargs):
     if created and instance.is_superuser:
         adresse = Adresse.objects.create()
-        Profil.objects.create(user=instance, adresse=adresse)
-        Panier.objects.create(user=Profil.objects.get(user=instance))
+        Profil.objects.create(adresse=adresse)
+        Panier.objects.create(user=instance)
 
 
 #@receiver(post_save, sender=User)
@@ -644,7 +643,7 @@ class Conversation(models.Model):
         ordering = ('date_creation',)
 
     def __str__(self):
-        return "Conversation de " + self.profil1.user.username + " à " + self.profil2.user.username
+        return "Conversation de " + self.profil1.username + " à " + self.profil2.username
 
     def titre(self):
         return self.__str__()
@@ -657,10 +656,10 @@ class Conversation(models.Model):
     messages = property(messages)
 
     def get_absolute_url(self):
-        return reverse('lireConversation_2noms', kwargs={'destinataire1': self.profil1.user.username, 'destinataire2': self.profil2.user.username})
+        return reverse('lireConversation_2noms', kwargs={'destinataire1': self.profil1.username, 'destinataire2': self.profil2.username})
 
     def save(self, *args, **kwargs):
-        self.slug = get_slug_from_names(self.profil1.user.username, self.profil2.user.username)
+        self.slug = get_slug_from_names(self.profil1.username, self.profil2.username)
         super(Conversation, self).save(*args, **kwargs)
 
 

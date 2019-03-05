@@ -1,9 +1,7 @@
 from django.db import models
 from bourseLibre.models import Profil
 from django.urls import reverse
-from django.contrib.auth.models import User
-
-# from django.contrib.auth.forms import User
+from django.conf import settings
 
 # Create your models here.
 # class Post(models.Model):
@@ -42,7 +40,7 @@ class Article(models.Model):
 #                 })
 
 class Commentaire(models.Model):
-    auteur = models.ForeignKey(User, on_delete=models.CASCADE)
+    auteur = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     titre = models.CharField(max_length=42)
     commentaire = models.TextField()
     article = models.ForeignKey(Article, on_delete=models.CASCADE)

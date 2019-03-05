@@ -171,7 +171,7 @@ HAYSTACK_CONNECTIONS = {
     'PATH': os.path.join(os.path.dirname(__file__), 'search_index'),
   },
 }
-# AUTH_USER_MODEL = 'bourseLibre.models.Producteur'
+AUTH_USER_MODEL = 'bourseLibre.Profil'
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 

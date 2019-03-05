@@ -31,7 +31,7 @@
         {% for profil in profils %}
             var lat = {{profil.adresse.get_latitude}};
             var lon = {{profil.adresse.get_longitude}};
-            var marker = L.marker([lat, lon]).bindPopup('<a href="{% url 'profil' profil.id %}"> {{profil.user.username}}</a>');
+            var marker = L.marker([lat, lon]).bindPopup('<a href="{% url 'profil' profil.id %}"> {{profil.username}}</a>');
             marker.addTo(map);
         {%endfor%}
         map.panTo(new L.LatLng(lat, lon));

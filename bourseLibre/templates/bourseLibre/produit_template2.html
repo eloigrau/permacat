@@ -4,7 +4,7 @@
 
     <div class="card-header">
         <span class="badge float-right {% if produit.estUneOffre%}badge-warning{%else%} badge-danger {%endif%} ">
-            {% if produit.estUneOffre%}Offre ({{produit.souscategorie}} par {{produit.user.user.username}}) {%else%} Demande ({{produit.souscategorie}} par {{produit.user.user.username}}){%endif%}
+            {% if produit.estUneOffre%}Offre ({{produit.souscategorie}} par {{produit.user.username}}) {%else%} Demande ({{produit.souscategorie}} par {{produit.user.username}}){%endif%}
         </span>
     </div>
     <img class="card-img-top" src="{{ produit.avatar.url }}" alt="">
@@ -48,7 +48,7 @@
             <div class="caption textcenter ">
                 <small> ({{ produit.souscategorie }})</small>
                 <h2>{{ produit.nom_produit|truncatechars:12 }} </h2>
-                <p> par: {{ produit.user.user.username }}</p>
+                <p> par: {{ produit.user.username }}</p>
             </div>
         </div>
         </div>
