@@ -157,7 +157,6 @@ class Profil(AbstractUser):
 @receiver(post_save, sender=Profil)
 def create_user_profile(sender, instance, created, **kwargs):
     if created and instance.is_superuser:
-        adresse = Adresse.objects.create()
         Panier.objects.create(user=instance)
 
 
