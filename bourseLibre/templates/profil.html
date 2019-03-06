@@ -47,8 +47,10 @@
 <div class="row">
   <div class="col-md-6">
 
+
+
       {%if request.user.id == user.id %}
-        <a href="{% url 'profil_modifier_user' %}">
+        <a href="{% url 'profil_modifier' %}">
             <button type="button" class="btn btn-sm btn-warning">
                 <span class="glyphicon glyphicon-plus"></span>&nbsp;Modifier
             </button>
@@ -96,19 +98,6 @@
         <td> {{ user.profil.site_web }}</td>
     </tr>
   {% endif %}
-        </tbody>
-    </table>
-
-
-
-      {%if request.user.id == user.id %}
-        <a href="{% url 'profil_modifier' %}">
-            <button type="button" class="btn btn-sm btn-warning">
-                <span class="glyphicon glyphicon-plus"></span>&nbsp;Modifier
-            </button>
-        </a>
-      {%endif%}
-    <table class="table table-condensed tablepanier table-striped"><tbody>
     <tr>
         <td style="width:250px">Description</td>
         <td>{{ user.description }}</td>
