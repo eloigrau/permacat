@@ -98,10 +98,9 @@ class ProfilCreationForm(UserCreationForm):
         fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'inscrit_newsletter']
         exclude = ['user', 'adresse', 'slug']
 
-    # def save(self, commit = True, is_active=False):
-    #     self.is_active=is_active
-    #     profil = super(ProfilCreationForm, self).save(commit)
-    #     return profil
+    def save(self, commit = True, is_active=False):
+         self.is_active=is_active
+         return super(ProfilCreationForm, self).save(commit)
 
 
 # class NewUserCreationForm(UserCreationForm):
@@ -143,7 +142,7 @@ class ProducteurChangeForm(UserChangeForm):
         super(ProducteurChangeForm, self).__init__(*args, **kargs)
 
     class Meta:
-        model = User
+        model = Profil
         fields = ['username', 'email', 'description', 'competences', 'inscrit_newsletter']
 
 

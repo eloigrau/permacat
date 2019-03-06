@@ -417,7 +417,7 @@ class ProductFilter(django_filters.FilterSet):
     # date_debut = django_filters.DateFromToRangeFilter(name='date_debut')
     # date_expiration = django_filters.DateFromToRangeFilter(name='date_expiration')
     categorie = django_filters.ChoiceFilter(label='categorie', lookup_expr='exact', )
-    user__user__username = django_filters.ModelChoiceFilter(label='producteur', queryset=Profil.objects.all())
+    username = django_filters.ModelChoiceFilter(label='producteur', queryset=Profil.objects.all())
     nom_produit = django_filters.CharFilter(label='titre', lookup_expr='contains')
     description = django_filters.CharFilter(label='description', lookup_expr='contains')
     prixmin = django_filters.NumberFilter(label='prix min', lookup_expr='gt', name="prix")
@@ -429,7 +429,7 @@ class ProductFilter(django_filters.FilterSet):
 
     class Meta:
         model = Produit
-        fields = ['categorie', 'user__user__username', 'nom_produit', "description", "prixmin","prixmax","date_debut"]
+        fields = ['categorie', 'user__username', 'nom_produit', "description", "prixmin","prixmax","date_debut"]
         # fields = {
         #      'categorie':['exact'],
         #     'nom_produit':['contains'],
@@ -678,7 +678,7 @@ def getOrCreateConversation(nom1, nom2):
     try:
         convers = Conversation.objects.get(slug=get_slug_from_names(nom1, nom2))
     except Conversation.DoesNotExist:
-        profil_1 = Profil.objects.get(user__username=nom1)
-        profil_2 = Profil.objects.get(user__username=nom2)
+        profil_1 = Profil.objects.get(username=nom1)
+        profil_2 = Profil.objects.get(username=nom2)
         convers = Conversation.objects.create(profil1=profil_1, profil2=profil_2)
     return convers

@@ -40,7 +40,7 @@ class Article(models.Model):
 #                 })
 
 class Commentaire(models.Model):
-    auteur = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE)
     titre = models.CharField(max_length=42)
     commentaire = models.TextField()
     article = models.ForeignKey(Article, on_delete=models.CASCADE)

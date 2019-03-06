@@ -3,7 +3,7 @@
 
 {% block title %}S'enregistrer{% endblock %}
 {% block content %}
-{%comment%}
+
 <div class="jumbotron">
 <div class="row justify-content-sm-center">
 <div class="col-sm-12 col-md-10 col-lg-8 ">
@@ -89,7 +89,7 @@
 </div>
 
 
-{%endcomment%}
+{%comment%}
 <div class="jumbotron"><div class="row justify-content-sm-center"><div class="col-sm-12 col-md-10 col-lg-8 ">
     {% if error_message %}
         <p><strong>{{ error_message }}</strong></p>
@@ -101,7 +101,6 @@
                 <table width="100%">
                 <col style="width:30%">
                 <col style="width:70%">
-                {{ form_user.as_table }}
                 {{ form_profil.as_table }}
                 {{ form_adresse.as_table }}
             </table>
@@ -120,6 +119,7 @@
 </div>
 </div>
 </div>
+{%endcomment%}
 
     {% endblock %}
 

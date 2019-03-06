@@ -62,7 +62,7 @@ def produit_proposer(request, typeProduit):
     if  type_form.is_valid():
        # produit = produit_form.save(commit=False)
         produit = type_form.save(commit=False)
-        produit.user = Profil.objects.get(user=request.user)
+        produit.user = request.user
         produit.categorie = typeProduit
 
         #if produit.photo:
@@ -171,26 +171,21 @@ def merci(request, template_name='merci.html'):
 
 # @login_required(login_url='/auth/login/')
 def profil_courant(request, ):
-    user = get_object_or_404(User, id=request.user.id)
-    return render(request, 'profil.html', {'user': user})
+    return render(request, 'profil.html', {'user': request.user})
 
 
 # @login_required(login_url='/auth/login/')
 def profil(request, user_id):
     try:
-        user = User.objects.get(id=user_id)
+        user = Profil.objects.get(id=user_id)
         return render(request, 'profil.html', {'user': user})
     except User.DoesNotExist:
-        # try:
-        #     user = User.objects.get(username=kwargs['user_username'])
-        #     return render(request, 'profil.html', {'user': user})
-        # except User.DoesNotExist:
             return render(request, 'profil_inconnu.html', {'userid': user_id})
 
 # @login_required(login_url='/auth/login/')
 def profil_nom(request, user_username):
     try:
-        user = User.objects.get(username=user_username)
+        user = Profil.objects.get(username=user_username)
         return render(request, 'profil.html', {'user': user})
     except User.DoesNotExist:
         return render(request, 'profil_inconnu.html', {'userid': user_username})
@@ -348,7 +343,7 @@ class ListeProduit(ListView):
         params = dict(self.request.GET.items())
 
         if "producteur" in params:
-            qs = qs.filter(user__user__username=params['producteur'])
+            qs = qs.filter(user__username=params['producteur'])
         if "categorie" in params:
             qs = qs.filter(categorie=params['categorie'])
         if "souscategorie" in params:
@@ -454,9 +449,8 @@ def fairedon(request):
 def ajouterAuPanier(request, produit_id, quantite):#, **kwargs):
     quantite = float(quantite)
     produit = Produit.objects.get_subclass(pk=produit_id)
-    profil = Profil.objects.get(user__id=request.user.id)
     # try:
-    panier = Panier.objects.get(user=profil, etat="a")
+    panier = Panier.objects.get(user=request.user, etat="a")
     # except ObjectDoesNotExist:
     #     profil = Profil.objects.get(user__id = request.user.id)
     #     panier = Panier(user=profil, )
@@ -466,8 +460,7 @@ def ajouterAuPanier(request, produit_id, quantite):#, **kwargs):
 
 @login_required(login_url='/auth/login/')
 def enlever_du_panier(request, item_id):
-    profil = Profil.objects.get(user__id=request.user.id)
-    panier = Panier.objects.get(user=profil, etat="a")
+    panier = Panier.objects.get(user=request.user, etat="a")
     panier.remove_item(item_id)
     return afficher_panier(request)
 
@@ -475,8 +468,7 @@ def enlever_du_panier(request, item_id):
 @login_required(login_url='/auth/login/')
 def afficher_panier(request):
     # try:
-    profil = Profil.objects.get(user__id=request.user.id)
-    panier = Panier.objects.get(user=profil, etat="a")
+    panier = Panier.objects.get(user=request.user, etat="a")
     # panier = get_object_or_404(Panier, user__id=profil_id, etat="a")
     # except ObjectDoesNotExist:
     #     profil = Profil.objects.get(user__id = request.user.id)
@@ -498,7 +490,7 @@ def chercher(request):
     if recherche:
         produits_list = Produit.objects.filter(Q(description__contains=recherche) | Q(nom_produit__contains=recherche), ).select_subclasses()
         articles_list = Article.objects.filter(Q(titre__contains=recherche) | Q(contenu__contains=recherche), )
-        profils_list = Profil.objects.filter(Q(user__username__contains=recherche)  | Q(description__contains=recherche)| Q(competences__contains=recherche), )
+        profils_list = Profil.objects.filter(Q(username__contains=recherche)  | Q(description__contains=recherche)| Q(competences__contains=recherche), )
     else:
         produits_list = []
         articles_list = []
@@ -515,7 +507,7 @@ def lireConversation(request, destinataire):
     if form.is_valid():
         message = form.save(commit=False)
         message.conversation = conversation
-        message.auteur = Profil.objects.get(user__id=request.user.id)
+        message.auteur = request.user
         message.save()
         return redirect(request.path)
 
@@ -531,7 +523,7 @@ def lireConversation_2noms(request, destinataire1, destinataire2):
     if form.is_valid():
         message = form.save(commit=False)
         message.conversation = conversation
-        message.auteur = Profil.objects.get(user__id=request.user.id)
+        message.auteur = request.user
         message.save()
         return redirect(request.path)
     if destinataire1 ==request.user.username:
@@ -553,5 +545,5 @@ class ListeConversations(ListView):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
 
-        context['conversations'] = Conversation.objects.filter(Q(profil1__user__id=self.request.user.id) | Q(profil2__user__id=self.request.user.id))
+        context['conversations'] = Conversation.objects.filter(Q(profil1__id=self.request.user.id) | Q(profil2__id=self.request.user.id))
         return context

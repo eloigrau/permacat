@@ -58,7 +58,7 @@
 
     <tr>
         <td style="width:250px">Date d'adhésion :</td>
-        <td>{{ user.profil.date_registration | date:"DATE_FORMAT"}}</td>
+        <td>{{ user.date_registration | date:"DATE_FORMAT"}}</td>
     </tr>
     <tr>
         <td style="width:250px">Pseudo :</td>
@@ -70,10 +70,10 @@
         <td>{{ user.get_full_name }}</td>
     </tr>
   {% endif %}
-  {% if user.profil.adresse.telephone %}
+  {% if user.adresse.telephone %}
     <tr>
         <td style="width:250px">Telephone :</td>
-        <td>{{ user.profil.adresse.telephone }}</td>
+        <td>{{ user.adresse.telephone }}</td>
     </tr>
   {% endif %}
   {% if user.email %}
@@ -83,14 +83,14 @@
     </tr>
   {% endif %}
 
-  {% if user.profil.avatar %}
+  {% if user.avatar %}
     <tr>
         <td style="width:250px">Avatar : </td>
         <td>            <img src="{{ produit.avatar.url }}" alt="pas d'image" style="width:128px;height:128px"></td>
     </tr>
   {% endif %}
 
-  {% if user.profil.site_web %}
+  {% if user.site_web %}
     <tr>
         <td style="width:250px">Site_web :</td>
         <td> {{ user.profil.site_web }}</td>
@@ -111,12 +111,12 @@
     <table class="table table-condensed tablepanier table-striped"><tbody>
     <tr>
         <td style="width:250px">Description</td>
-        <td>{{ user.profil.description }}</td>
+        <td>{{ user.description }}</td>
     </tr>
 
     <tr>
         <td style="width:250px">Savoir-faire :</td>
-        <td>{{ user.profil.competences }}</td>
+        <td>{{ user.competences }}</td>
     </tr>
 
         </tbody>
@@ -130,33 +130,33 @@
       {%endif%}
     <table class="table table-condensed tablepanier table-striped">
         <tbody>
-    {%if user.profil.adresse.rue %}
+    {%if user.adresse.rue %}
     <tr>
         <td style="width:250px">Adresse :</td>
-        <td>{{ user.profil.adresse.rue }}, {{ user.profil.adresse.code_postal }}</td>
+        <td>{{ user.adresse.rue }}, {{ user.adresse.code_postal }}</td>
     </tr>
   {% endif %}
-    {%if user.profil.adresse.code_postal %}
+    {%if user.adresse.code_postal %}
     <tr>
         <td style="width:250px">Code postal :</td>
-        <td>{{ user.profil.adresse.code_postal }}</td>
+        <td>{{ user.adresse.code_postal }}</td>
     </tr>
   {% endif %}
-    {%if user.profil.adresse.pays %}
+    {%if user.adresse.pays %}
     <tr>
         <td style="width:250px">Pays :</td>
-        <td>{{ user.profil.adresse.pays }}</td>
+        <td>{{ user.adresse.pays }}</td>
     </tr>
   {% endif %}
-    {%if user.profil.adresse.telephone %}
+    {%if user.adresse.telephone %}
     <tr>
         <td style="width:250px">Téléphone :</td>
-        <td>{{ user.profil.adresse.telephone }}</td>
+        <td>{{ user.adresse.telephone }}</td>
     </tr>
   {% endif %}
     <tr>
         <td style="width:200px">lat/lon :</td>
-        <td>{{ user.profil.adresse.latitude }} / {{ user.profil.adresse.longitude }} </td>
+        <td>{{ user.adresse.latitude }} / {{ user.adresse.longitude }} </td>
     </tr>
         </tbody>
     </table>
@@ -173,8 +173,8 @@
     </style>
       <script type="text/javascript">
         function map_init_basic (map, options) {
-        var lat = {{user.profil.adresse.get_latitude}};
-        var lon = {{user.profil.adresse.get_longitude}};
+        var lat = {{user.adresse.get_latitude}};
+        var lon = {{user.adresse.get_longitude}};
         L.marker([lat, lon]).addTo(map);
         map.panTo(new L.LatLng(lat, lon));
     }
@@ -190,8 +190,8 @@
 
       var map;
       function initMap() {
-      var lat = {{user.profil.adresse.get_latitude}};
-      var lon = {{user.profil.adresse.get_longitude}};
+      var lat = {{user.adresse.get_latitude}};
+      var lon = {{user.adresse.get_longitude}};
 
        map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: lat, lng: lon},
@@ -210,8 +210,8 @@
 <div id="myMap" style="width:80%;height:300px;"></div>
 <script>
 function myMap() {
-      var lat = {{user.profil.adresse.get_latitude}};
-      var lon = {{user.profil.adresse.get_longitude}};
+      var lat = {{user.adresse.get_latitude}};
+      var lon = {{user.adresse.get_longitude}};
 
        map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: lat, lng: lon},

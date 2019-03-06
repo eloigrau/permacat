@@ -33,7 +33,7 @@
         <li>
             <h5 style="text-indent: 20px;">{{ comment.titre }}</h5>
         </li>
-           <p> <small>Posté par: {{ comment.auteur.username }}, {{ comment.date_creation |date:"DATE_FORMAT"}} </small></p>
+           <p> <small>Posté par: {{ comment.auteur_comm.username }}, {{ comment.date_creation |date:"DATE_FORMAT"}} </small></p>
         </div>
         <div class=" col-sm-8 commentaire">
                 <p>{{ comment.commentaire }}</p>

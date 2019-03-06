@@ -37,4 +37,4 @@ class ArticleForm(forms.ModelForm):
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Commentaire
-        exclude = ['article','auteur']
+        exclude = ['article','auteur_comm']

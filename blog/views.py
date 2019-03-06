@@ -17,7 +17,7 @@ def accueil(request):
 def ajouterNouveauPost(request):
         form = ArticleForm(request.POST or None)
         if form.is_valid():
-            article = form.save(request.user.profil)
+            article = form.save(request.user)
             return render(request, 'blog/lireArticle.html', {'article': article})
         return render(request, 'blog/ajouterPost.html', { "form": form, })
 
@@ -63,7 +63,7 @@ class ListeArticles(ListView):
         params = dict(self.request.GET.items())
 
         if "auteur" in params:
-            qs = qs.filter(auteur__user__username=params['auteur'])
+            qs = qs.filter(auteur__username=params['auteur'])
         if "categorie" in params:
             qs = qs.filter(categorie=params['categorie'])
 
@@ -73,8 +73,8 @@ class ListeArticles(ListView):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
 
-        # context['producteur_list'] = Profil.objects.values_list('user__username', flat=True).distinct()
-        context['auteur_list'] = Article.objects.order_by('auteur').values_list('auteur__user__username', flat=True).distinct()
+        # context['producteur_list'] = Profil.objects.values_list('username', flat=True).distinct()
+        context['auteur_list'] = Article.objects.order_by('auteur').values_list('auteur__username', flat=True).distinct()
         context['categorie_list'] = Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
         context['typeFiltre'] = "aucun"
         if 'auteur' in self.request.GET:
