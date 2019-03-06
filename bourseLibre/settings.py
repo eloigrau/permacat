@@ -38,7 +38,7 @@ if DEBUG:
 else:
     SECRET_KEY = os.environ['SECRET_KEY']
 
-ALLOWED_HOSTS = ['127.0.0.1', 'permaccat.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'permacat.herokuapp.com']
 
 # Application definition
 
@@ -131,15 +131,19 @@ TEMPLATES = [
 WSGI_APPLICATION = 'bourseLibre.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-#DATABASES = {
-#   'default': {
-#      'ENGINE': 'django.db.backends.sqlite3',
-#    'NAME': os.path.join(BASE_DIR, 'db.db'),
-#    }
-#}
+locall  = False
+if locall:
+    DATABASES = {
+       'default': {
+          'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.db'),
+        }
+    }
 #try:
-DATABASES = {}
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+#
+else:
+    DATABASES = {}
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 # except:
 

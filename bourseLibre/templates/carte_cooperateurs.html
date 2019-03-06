@@ -11,7 +11,13 @@
 <div class="row textcenter">
   <div class="col-md-8 textcenter">
     <h4>Carte des coopérateurs</h4>
-    <p>  </p>
+        {% for profil in profils %}
+    <p>
+            var lat = {{profil.adresse.get_latitude}};
+            var lon = {{profil.adresse.get_longitude}};
+            var marker = L.marker([lat, lon]).bindPopup('<a href="{% url 'profil' profil.id %}"> {{profil.username}}</a>');
+            marker.addTo(map);</p>
+        {%endfor%}
   </div>
   </div>
 {% endblock %}
