@@ -223,7 +223,7 @@ def profil_contact(request, user_id):
     form = ContactForm(request.POST or None, message=message, titre=titre)
     recepteur = Profil.objects.get(id=user_id)
     if form.is_valid():
-        sujet = request.username +'vous a écrit:', form.cleaned_data['sujet']
+        sujet = request.user.username +'vous a écrit:', form.cleaned_data['sujet']
         message = form.cleaned_data['message']
         send_mail(
             sujet,
