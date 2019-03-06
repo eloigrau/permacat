@@ -6,10 +6,9 @@ from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Pr
 
 
 fieldsCommunsProduits = ['nom_produit', 'souscategorie', 'etat',   'description', 'estUneOffre',
-                'prix',  'unite_prix', 'type_prix', 'date_debut', 'date_expiration', 'stock_initial',]
+                'unite_prix', 'prix',  'type_prix', 'date_debut', 'date_expiration', 'stock_initial',]
 
-# fieldsCommunsProduits = ['type_prix', 'souscategorie', 'etat']
-#
+
 class ProduitCreationForm(forms.ModelForm):
     class Meta:
         model = Produit
