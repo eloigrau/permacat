@@ -44,7 +44,7 @@ def lireArticle(request, slug):
     if form.is_valid():
         comment = form.save(commit=False)
         comment.article = article
-        comment.auteur = request.user
+        comment.auteur_comm = request.user
         comment.save()
         return redirect(request.path)
 
