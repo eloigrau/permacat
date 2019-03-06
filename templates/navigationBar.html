@@ -31,10 +31,10 @@
                          <span class="glyphicon glyphicon-user"></span> profil: {{request.user}}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="nav-link" href="{% url 'profil_courant' %}"><span class="glyphicon glyphicon-user"></span> Voir le profil</a>
-                            <a class="nav-link" href="{% url 'panier_afficher' %}"><span class="glyphicon glyphicon-shopping-bag"></span> Voir le panier</a>
-                            <a class="nav-link" href="{% url 'conversations' %}"><span class="glyphicon glyphicon-conversation"></span> Voir les messages</a>
-                            <a class="nav-link" href="{% url 'afficher_requetes' %}"><span class="glyphicon glyphicon-shopping-cart"></span> Voir les requêtes</a>
+                            <a class="nav-link" href="{% url 'profil_courant' %}"><span class="glyphicon glyphicon-user"></span> Mon profil</a>
+                            <a class="nav-link" href="{% url 'conversations' %}"><span class="glyphicon glyphicon-conversation"></span> Mes messages</a>
+                            <a class="nav-link" href="{% url 'panier_afficher' %}"><span class="glyphicon glyphicon-shopping-bag"></span> Mon panier</a>
+                            <a class="nav-link" href="{% url 'afficher_requetes' %}"><span class="glyphicon glyphicon-shopping-cart"></span> Mes requêtes</a>
                             <a class="nav-link" href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span>logout</a>
                         </div>
                     </li>
@@ -68,7 +68,8 @@
                 </ul>
             {% else %}
                 <ul class="nav navbar-nav mr-auto navbar-left">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span>login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span>Se connecter</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'senregistrer' %}"><span class="glyphicon glyphicon-log-in"></span>S'inscrire</a></li>
                 </ul>
             <ul class="nav navbar-nav justify-content-center">
                     <li class="nav-item dropdown">

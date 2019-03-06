@@ -1,16 +1,11 @@
-{% extends 'base.html' %} 
-{% block title %}Acceuil{% endblock %}
+{% extends 'base.html' %}
 
-			<div class="jumbotron well">
 {% block subtitle %}
-<h1 class = "textcenter rowbienvenue">PermaCat</h1>
-<h3 class = "textcenter rowbienvenue">Benvingut {% if request.user.is_autenticated %}request.user.username{%endif%} al Mercat Lliure </h3>
-<h3 class = "textcenter rowbienvenue">Bienvenue {% if request.user.is_autenticated %}request.user.username{%endif%} au Marché Libre </h3>
-<h4 class = "textcenter rowbienvenue"> Mercat 100% gratuït i lliure !</h4>
+<h3 class = "textcenter rowbienvenue">Benvingut {% if request.user.is_autenticated %}request.user.username{%endif%} </h3>
+<h4 class = "textcenter rowbienvenue">L'association de Permaculture Catalane vous souhaite la bienvenue !</h4>
 
 {% endblock %}
 {% block content %}
-				{%comment%}
 <div class="row">
 		<div class="col-md-4">
 			<h2>
@@ -18,7 +13,7 @@
 			</h2>
 			<p>
 				Ce site vous offre la possibilité d'échanger des biens, des services, de la compagnie ! Parce que la planète s'épuise, parceque le climat s'emballe, parce que les humains souffrent, parce que les animaux souffrent... il faut redonner du sens et du lien
-			entre gens du pays. C'est ici et maintnant qu'il faut agir.
+			entre gens du pays. C'est ici et maintenant qu'il faut agir.
 			</p>
 		</div>
 		<div class="col-md-4">
@@ -34,13 +29,12 @@
 				Mais encore ?
 			</h2>
 			<p>
-				L'entraide en ces temps troubles devient primordiale, à nous de nous organiser...
+				L'entraide est primordiale, à nous de nous organiser...
 			</p>
 			<p>
 				<a class="btn" href="#">en savoir plus...</a>
 			</p>
 		</div>
 	</div>
-				{%endcomment%}
 
 {% endblock %}
