@@ -136,7 +136,7 @@ class ProducteurChangeForm(UserChangeForm):
     competences = forms.CharField(label="Savoir-faire", initial="Par exemple: electricien, bouturage, aromatherapie, etc...",widget=forms.Textarea)
     avatar = forms.ImageField(required=False)
     inscrit_newsletter = forms.BooleanField(required=False)
-
+    password=None
     def __init__(self, *args, **kargs):
         super(ProducteurChangeForm, self).__init__(*args, **kargs)
 
