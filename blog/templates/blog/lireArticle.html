@@ -1,10 +1,18 @@
 {% extends 'blog/baseBlog.html' %}
 {% block subtitle %}
 <div class="row">
-    <div class="col-md-10">
+    <div class="col-md-1">
+        {%if article.auteur == request.user%}
+            <a href="{% url 'blog:modifierArticle' slug=article.slug %}">
+               <button type="button" class="btn btn-sm btn-warning">
+                <span class="glyphicon glyphicon-plus"></span>&nbsp;Modifier
+               </button></a>
+        {%endif%}
+    </div>
+    <div class="col-md-8">
         <p class="infos  textepetit">Dans: <a href="{% url 'blog:accueil'  %}?categorie={{article.categorie}}">{{ article.get_categorie_display }}</a>, rédigé par <a href="{% url 'profil' article.auteur.id %}"> {{ article.auteur.username }}</a>, le {{ article.date|date:"DATE_FORMAT" }}</p>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-1">
         <a  href="{% url 'blog:accueil'  %}">
         <button class="btn btn-info btn-sm textright" >Retour au sommaire</button>
             </a>
@@ -31,7 +39,11 @@
     <div class="row">
         <div class="col-sm-4">
         <li>
-            <h5 style="text-indent: 20px;">{{ comment.titre }}</h5>
+            <h5 style="text-indent: 20px;">{{ comment.titre }}
+            <
+            </h5>
+
+        </a>
         </li>
            <p> <small>Posté par: {{ comment.auteur_comm.username }}, {{ comment.date_creation |date:"DATE_FORMAT"}} </small></p>
         </div>

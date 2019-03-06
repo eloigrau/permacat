@@ -243,7 +243,7 @@ def contact_admins(request):
     form = ContactForm(request.POST or None, envoyeur=request.user.email)
     if form.is_valid():
         sujet = form.cleaned_data['sujet']
-        message = request.username + ' a envoyé le message suivant : \\n' + form.cleaned_data['message']
+        message = request.user.username + ' a envoyé le message suivant : \\n' + form.cleaned_data['message']
         mail_admins(sujet, message)
         if form.cleaned_data['renvoi'] :
             mess = "[MarchéLibre] message envoyé aux administrateurs : \\n"

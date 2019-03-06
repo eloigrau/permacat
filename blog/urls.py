@@ -29,5 +29,6 @@ urlpatterns = [
     # url(r'^article/(?P<slug>.+)$', views.lire, name='lire'),
 
     url(r'^articles/(?P<slug>[-\w]+)$', views.lireArticle, name='lireArticle'),
-    url(r'^ajouterarticle/', views.ajouterNouveauPost, name='ajouterNouvelArticle'),
+    url(r'^modifierArticle/(?P<slug>[-\w]+)$', login_required(views.ModifierArticle.as_view(), login_url='/auth/login/'), name='modifierArticle'),
+    url(r'^ajouterarticle/$', views.ajouterNouveauPost, name='ajouterNouvelArticle'),
 ]

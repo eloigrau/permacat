@@ -34,6 +34,12 @@ class ArticleForm(forms.ModelForm):
         return instance
 
 
+class ArticleChangeForm(forms.ModelForm):
+    class Meta:
+        model = Article
+        fields = ['titre', 'contenu', ]
+
+
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Commentaire

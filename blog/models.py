@@ -16,8 +16,8 @@ from django.conf import settings
     
 class Article(models.Model):
     categorie = models.CharField(max_length=30,         
-        choices=(('Agenda','Agenda'), ('Jardinage','Jardinage'), ('Recette', 'Recette'), ('Histoire', 'Histoire'), ('Bricolage','Bricolage'), ('Culture','Culture'), ('Bon_plan', 'Bon plan'), ('Point', 'Point de vue'), ('autre','autre'),),
-        default='Jardinage', verbose_name="categorie")
+        choices=(('Annonce','Annonce'), ('Agenda','Agenda'), ('Jardinage','Jardinage'), ('Recette', 'Recette'), ('Histoire', 'Histoire'), ('Bricolage','Bricolage'), ('Culture','Culture'), ('Bon_plan', 'Bon plan'), ('Point', 'Point de vue'), ('Annonce','Annonce'), ('Autre','Autre'),),
+        default='Annonce', verbose_name="categorie")
     titre = models.CharField(max_length=100)
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
     slug = models.SlugField(max_length=100)

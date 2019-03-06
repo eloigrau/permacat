@@ -2,10 +2,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 # from django.db.models import Q
 from .models import Article, Commentaire
-from .forms import ArticleForm, CommentForm
+from .forms import ArticleForm, CommentForm, ArticleChangeForm
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView
-from django.db.models import Q
+from django.views.generic import ListView, UpdateView
+#from django.db.models import Q
 
 def accueil(request):
     """ Afficher tous les articles de notre blog """
@@ -22,6 +22,15 @@ def ajouterNouveauPost(request):
         return render(request, 'blog/ajouterPost.html', { "form": form, })
 
 
+# @login_required(login_url='/auth/login/')
+class ModifierArticle(UpdateView):
+    model = Article
+    form_class = ArticleChangeForm
+    template_name_suffix = '_modifier'
+#    fields = ['user','site_web','description', 'competences', 'adresse', 'avatar', 'inscrit_newsletter']
+
+    def get_object(self):
+        return Article.objects.get(slug=self.kwargs['slug'])
 
 # def index(request):
 #     all_posts = Post.objects.all().order_by('-date')
