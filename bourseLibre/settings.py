@@ -67,7 +67,6 @@ INSTALLED_APPS = (
     'schedule','djangobower',
     'widget_tweaks',
     'leaflet',
-    'password_reset',
     #"geoposition",
     #"geodjango",
     #'osm_field',
@@ -224,7 +223,6 @@ EMAIL_HOST_USER = SERVER_EMAIL
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails") # pour password reset
 
 # MANAGERS: It specifies a list of people to send broken link emails for 404 NOT FOUND errors. It's accepts emails in the same format as ADMINS.
 MANAGERS = [
