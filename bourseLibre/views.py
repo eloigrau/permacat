@@ -299,6 +299,7 @@ class profil_modifier_adresse(UpdateView):
     model = Adresse
     form_class = AdresseForm
     template_name_suffix = '_modifier'
+    
 
     def get_object(self):
         return Adresse.objects.get(id=self.request.user.id)
@@ -308,6 +309,7 @@ class profil_modifier(UpdateView):
     model = Profil
     form_class = ProfilCreationForm
     template_name_suffix = '_modifier'
+    fields = ['username','email','first_name','last_name', 'site_web','description', 'competences', 'inscrit_newsletter']
 
     def get_object(self):
         return Profil.objects.get(id=self.request.user.id)
