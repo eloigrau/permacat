@@ -95,7 +95,7 @@ class ProfilCreationForm(UserCreationForm):
     class Meta(UserCreationForm):
         model = Profil
         fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'inscrit_newsletter']
-        exclude = ['user', 'adresse', 'slug']
+        exclude = ['adresse', 'slug']
 
     def save(self, commit = True, is_active=False):
          self.is_active=is_active
@@ -137,6 +137,7 @@ class ProducteurChangeForm(UserChangeForm):
     avatar = forms.ImageField(required=False)
     inscrit_newsletter = forms.BooleanField(required=False)
     password=None
+    
     def __init__(self, *args, **kargs):
         super(ProducteurChangeForm, self).__init__(*args, **kargs)
 
