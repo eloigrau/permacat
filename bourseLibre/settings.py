@@ -66,7 +66,8 @@ INSTALLED_APPS = (
     'rest_framework',
     'schedule','djangobower',
     'widget_tweaks',
-    'leaflet'
+    'leaflet',
+    'password_reset',
     #"geoposition",
     #"geodjango",
     #'osm_field',
@@ -120,7 +121,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.request',
+                'django.template.context_processors.i18n',
+                #'django.template.context_processors.media',
+                #'django.template.context_processors.static',
             ],
             'string_if_invalid': 'Invalid: "%s"',
             'libraries': {'is_numeric': 'bourseLibre.templatetags.app_filters', }
@@ -131,7 +134,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'bourseLibre.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-locall  = False
+locall  = True
 if locall:
     DATABASES = {
        'default': {
@@ -208,15 +211,20 @@ INTERNAL_IPS = ['127.0.0.1']
 
 ########################
 
+
 # Email settings
 SERVER_EMAIL = 'permacat66@gmail.com'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_PASSWORD = os.environ['EMAIL_ADMIN_PWD']
+try:
+    EMAIL_HOST_PASSWORD = os.environ['EMAIL_ADMIN_PWD']
+except:
+    EMAIL_HOST_PASSWORD = 'test'
 EMAIL_HOST_USER = SERVER_EMAIL
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails") # pour password reset
 
 # MANAGERS: It specifies a list of people to send broken link emails for 404 NOT FOUND errors. It's accepts emails in the same format as ADMINS.
 MANAGERS = [

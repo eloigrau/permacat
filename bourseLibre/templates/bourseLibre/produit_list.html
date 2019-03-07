@@ -4,15 +4,6 @@
 {% endblock %}
 {%block subtitle%}
 
-<div class="row justify-content-center">
-    <div class="col-sm-12 textcenter">
-    <a href="{% url 'produit_proposer_entree' %}">
-        <button type="button" class="btn btn-success">
-            <span class="glyphicon glyphicon-plus"></span>&nbsp; Ajouter une offre
-        </button>
-    </a>
-    </div>
-</div>
 
 <div class="row justify-content-center">
     <nav class="navbar navbar-expand-md justify-content-center  navbar-light bg-light">
@@ -27,10 +18,10 @@
                     {{typeOffre}}
                   </button>
                 <div class="dropdown-menu"  aria-labelledby="menuOffreOuDemande">
-                     <a class="dropdown-item"  href="{%url 'produit_lister' %}">Tout</a>
+                     <a class="dropdown-item"  href="{%url 'marche' %}">Tout</a>
                      <div class="dropdown-divider"></div>
-                     <a class="dropdown-item"  href="{% url 'produit_lister_offres' %}">Offres-></a>
-                     <a class="dropdown-item"  href="{% url 'produit_lister_recherches' %}"><-Demandes</a>
+                     <a class="dropdown-item"  href="{% url 'marche_offres' %}">Offres-></a>
+                     <a class="dropdown-item"  href="{% url 'marche_recherches' %}"><-Demandes</a>
                 </div>
                 </li>
             <li class="nav-item" >
@@ -112,10 +103,20 @@
                     {% endfor %}
                 </div>
             </li>
-
+            </ul>
         </div>
     </nav>
     </div>
+<div class="row justify-content-center">
+    <div class="col-sm-12 textcenter">
+    <a href="{% url 'produit_proposer_entree' %}">
+        <button type="button" class="btn btn-success">
+            <span class="glyphicon glyphicon-plus"></span>&nbsp; Ajouter une offre
+        </button>
+    </a>
+    </div>
+</div>
+
 {%comment%}
 <div class="row">
     <div class="btn-group dropright">

@@ -130,7 +130,16 @@ class Profil(AbstractUser):
 
     inscrit_newsletter = models.BooleanField(default=False)
     date_registration = models.DateTimeField(verbose_name="Date de création", editable=False)
-
+    pseudo_june = models.CharField(
+        _('pseudo Monnaie Libre'),
+        default=None,
+        null=True,
+        max_length=150,
+        unique=True,
+        help_text=_('Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
+        #error_messages={
+         #   'unique': _("A user with that username already exists."),
+        )
 
     def __str__(self):
         return self.username
@@ -195,6 +204,8 @@ class Produit(models.Model):  # , BaseProduct):
 
 
     estUneOffre = models.BooleanField(default=True, verbose_name='Offre (cochez) ou Demande (décochez)')
+
+    estPublique = models.BooleanField(default=False, verbose_name='Publique (cochez) ou Interne (décochez)')
 
     objects = InheritanceManager()
 

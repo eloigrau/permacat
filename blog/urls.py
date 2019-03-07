@@ -22,9 +22,9 @@ app_name = 'blog'
 
 urlpatterns = [
     # url(r'^blog/index$', views.index, name='index'),
-    #     url(r'^$', views.accueil, name='accueil'),
-    #     url(r'^$', ListView.as_view(model=Article,), name='accueil2', template_name="accueil.html"),
-    url(r'^acceuil/$', login_required(views.ListeArticles.as_view(), login_url='/auth/login/'), name="accueil"),
+    #     url(r'^$', views.forum, name='forum'),
+    #     url(r'^$', ListView.as_view(model=Article,), name='forum2', template_name="forum.html"),
+    url(r'^acceuil/$', login_required(views.ListeArticles.as_view(), login_url='/auth/login/'), name="forum"),
     # url(r'^newPost/', views.ajouterNouveauPost, name='ajouterNouveauPost'),
     # url(r'^article/(?P<slug>.+)$', views.lire, name='lire'),
 

@@ -41,7 +41,6 @@
 </head>
 
 
-{%comment%}{% include 'navigationBar.html' %}{%endcomment%}
 <body>
 <div class="container-fluid">
 	<div class="row">
@@ -81,10 +80,12 @@
 </section>
     {%endcomment%}
 
-    {% load cookielaw_tags %}
-    {% cookielaw_banner %}
 
 </body>
 <footer class="textcenter">&copy; PermaCat; {% now 'd/m/Y' %}</footer>
+{% if user.is_authenticated %}
+    {% load cookielaw_tags %}
+    {% cookielaw_banner %}
+{%endif%}
 </html>
 {% endspaceless %}

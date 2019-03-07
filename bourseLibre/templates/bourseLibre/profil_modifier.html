@@ -1,10 +1,9 @@
 {% extends 'base.html' %}
 {% block title %}Modifier profil{% endblock %}
 {% block subtitle %}
-Modifier votre profil
+Modifier votre profil (ou <a href="{% url 'change_password' %}">Modifier mon mot de passe</a>)
 {% endblock %}
 
 {% block content %}
-{% csrf_token %}
-{% include 'bourseLibre/modifier_template.html' %}
+{% include 'form_template.html' %}
 {% endblock %}

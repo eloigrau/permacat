@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.urls import path
+from django.contrib.auth import views as auth_views
 
 from . import views
 
@@ -33,26 +34,35 @@ urlpatterns = [
     url(r'^permacat/presentation$', views.presentation_asso, name='presentation_asso'),
     url(r'^permacat/statuts$$', views.statuts, name='statuts'),
     
-    url(r'^admin/', admin.site.urls, name='admin'),
+    url(r'^admin/', login_required(admin.site.urls, login_url='/auth/login/'), name='admin'),
     #path('admin/', admin.site.urls, name='admin'),
     url(r'^merci/$', views.merci, name='merci'),
     url(r'^blog/', include('blog.urls', namespace='bourseLibre.blog')),
     # url(r'^search/', include('haystack.urls'), name='chercher_site'),
     #url(r'^search/', include('haystack.urls'), name='haystack_search'),
     url(r'^chercher/produit/$', login_required(views.chercher, login_url='/auth/login/'), name='chercher'),
-    url(r'^accounts/profil/(?P<user_id>[0-9]+)/$', views.profil, name='profil',),
-    url(r'^accounts/profil/(?P<user_username>[-A-Za-z]+)/$', views.profil_nom, name='profil_nom',),
+    url(r'^accounts/profil/(?P<user_id>[0-9]+)/$', login_required(views.profil, login_url='/auth/login/'), name='profil',),
+    url(r'^accounts/profil/(?P<user_username>[-A-Za-z]+)/$', login_required(views.profil_nom, login_url='/auth/login/'), name='profil_nom',),
     #url(r'^accounts/profile/(<user_id>[a-zA-Z0-9.]+)', views.profil, name='profil',),
-    url(r'^accounts/profile/$', views.profil_courant, name='profil_courant',),
+    url(r'^accounts/profile/$',  login_required(views.profil_courant, login_url='/auth/login/'), name='profil_courant',),
     url(r'^accounts/profil_inconnu/$', views.profil_inconnu, name='profil_inconnu',),
     url(r'^accounts/profil_modifier/$', login_required(views.profil_modifier.as_view(), login_url='/auth/login/'), name='profil_modifier',),
     url(r'^accounts/profil_modifier_user/$', login_required(views.profil_modifier_user.as_view(), login_url='/auth/login/'), name='profil_modifier_user',),
     url(r'^accounts/profil_modifier_adresse/$', login_required(views.profil_modifier_adresse.as_view(), login_url='/auth/login/'), name='profil_modifier_adresse',),
     #url(r'^accounts/profil_contact/(?P<user_id>[0-9]+)$', views.profil_contact, name='profil_contact'),
     #url(r'^accounts/profil_contact/(?P<user_id>[0-9]+)/(?P<message>D+)$', views.profil_contact, name='profil_contact'),
-    url(r'^accounts/profil_contact/(?P<user_id>[0-9]+)/$', views.profil_contact, name='profil_contact',),
+    url(r'^accounts/profil_contact/(?P<user_id>[0-9]+)/$', login_required(views.profil_contact, login_url='/auth/login/'), name='profil_contact',),
     url(r'^register/$', views.register, name='senregistrer',),
     path('auth/', include('django.contrib.auth.urls')),
+    url(r'^auth/password/$', views.change_password, name='change_password'),
+
+    #url(r'password_change/$',auth_views.PasswordChangeView.as_view(template_name='password_change.html',success_url='/accounts/password_change_done')),
+    #url(r'password_change_done/',auth_views.PasswordChangeDoneView.as_view(template_name='password_change_done.html')),
+    #url(r'password_reset/$',auth_views.PasswordResetView.as_view(template_name='password_reset.html',email_template_name='password_reset_email.html',subject_template_name='password_reset_subject.txt',success_url='/accounts/password_reset_done/',from_email='support@yoursite.ma')),
+    #url(r'password_reset_done/',auth_views.PasswordResetDoneView.as_view(template_name='password_reset_done.html')),
+    #url(r'password_reset_confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',auth_views.PasswordResetConfirmView.as_view(template_name='password_reset_confirm.html',success_url='/accounts/password_reset_complete/')),
+    #url(r'password_reset_complete/',auth_views.PasswordResetCompleteView.as_view(template_name='password_reset_complete.html')),
+
     #url(r'^login/$', views.login, {'template_name': 'login.html'},  name='login_user', ),
     #url( r'^login/$',auth_views.LoginView.as_view(template_name="login.html"), name="login_user"),
     #url(r'^passwordchange/$', auth_views.password_change, name='password_change',),
@@ -65,28 +75,28 @@ urlpatterns = [
     url(r'^cooperateurs/$', login_required(views.profil_list, login_url='/auth/login/'), name='profil_list',),
     url(r'^cooperateurs/carte/$', login_required(views.profil_carte, login_url='/auth/login/'), name='profil_carte',),
 
-    url(r'^produits/proposer/(?P<typeProduit>[-A-Za-z]+)/$', login_required(views.produit_proposer, login_url='/auth/login/'), name='produit_proposer', ),
-    url(r'^produits/proposer/', login_required(views.proposerProduit_entree, login_url='/auth/login/'), name='produit_proposer_entree',),
+    url(r'^marche/proposer/(?P<typeProduit>[-A-Za-z]+)/$', login_required(views.produit_proposer, login_url='/auth/login/'), name='produit_proposer', ),
+    url(r'^marche/proposer/', login_required(views.proposerProduit_entree, login_url='/auth/login/'), name='produit_proposer_entree',),
     #url(r'^shop/', include(shop_urls)), # <-- That's the important bit
 
     # url(r'^list$', views.product_list),
     #     url(r'^list2/$', FilterView.as_view(model=Produit, filterset_class=ProductFilter,)),
-    url(r'^produits/lister/', login_required(views.ListeProduit.as_view(), login_url='/auth/login/'),
-        name="produit_lister"),
-    url(r'^produits/lister_offres/', login_required(views.ListeProduit_offres.as_view(), login_url='/auth/login/'),
-        name="produit_lister_offres"),
-    url(r'^produits/lister_recherches/', login_required(views.ListeProduit_recherches.as_view(), login_url='/auth/login/'),
-        name="produit_lister_recherches"),
+    url(r'^marche/lister/', login_required(views.ListeProduit.as_view(), login_url='/auth/login/'),
+        name="marche"),
+    url(r'^marche/lister_offres/', login_required(views.ListeProduit_offres.as_view(), login_url='/auth/login/'),
+        name="marche_offres"),
+    url(r'^marche/lister_recherches/', login_required(views.ListeProduit_recherches.as_view(), login_url='/auth/login/'),
+        name="marche_recherches"),
 
-    url(r'^produits/detail/(?P<produit_id>[0-9]+)/$', views.detailProduit, name='produit_detail',),
+    url(r'^marche/detail/(?P<produit_id>[0-9]+)/$', views.detailProduit, name='produit_detail',),
 
-    url(r'^produits/modifier/(?P<pk>[0-9]+)/$',
+    url(r'^marche/modifier/(?P<pk>[0-9]+)/$',
         login_required(views.ProduitModifier.as_view(), login_url='/auth/login/'), name='produit_modifier', ),
     # url(r'^produits/ajouter/(?P<pk>[0-9]+)/$',
     #     login_required(views.ProduitModifier.as_view(), login_url='/auth/login/'), name='produit_ajouterAuPanier', ),
-    url(r'^produits/contacterProducteur/(?P<producteur_id>[0-9]+)/$',
+    url(r'^marche/contacterProducteur/(?P<producteur_id>[0-9]+)/$',
         login_required(views.produitContacterProducteur, login_url='/auth/login/'), name='produit_contacterProducteur', ),
-    url(r'^produits/supprimer/(?P<pk>[0-9]+)/$',
+    url(r'^marche/supprimer/(?P<pk>[0-9]+)/$',
         login_required(views.ProduitSupprimer.as_view(), login_url='/auth/login/'), name='produit_supprimer', ),
 
     url(r'^panier/afficher/$',
@@ -101,14 +111,16 @@ urlpatterns = [
     url(r'^requetes/afficher/$',
         login_required(views.afficher_requetes, login_url='/auth/login/'), name='afficher_requetes', ),
 
-    url(r'^conversations/(?P<destinataire>[-\w]+)$', views.lireConversation, name='lireConversation'),
-    url(r'^conversations/(?P<destinataire1>[-\w]+)/(?P<destinataire2>[-\w]+)$', views.lireConversation_2noms, name='lireConversation_2noms'),
+    url(r'^conversations/(?P<destinataire>[-\w]+)$', login_required(views.lireConversation, login_url='/auth/login/'), name='lireConversation'),
+    url(r'^conversations/(?P<destinataire1>[-\w]+)/(?P<destinataire2>[-\w]+)$', login_required(views.lireConversation_2noms, login_url='/auth/login/'), name='lireConversation_2noms'),
     url(r'^conversations/$', login_required(views.ListeConversations.as_view(), login_url='/auth/login/'), name='conversations'),
 ]
 
 from django.conf.urls.static import static
 from django.conf import settings
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+include('password_reset.urls')
 
 if settings.DEBUG:
     import debug_toolbar

@@ -14,14 +14,14 @@
         {% if user.is_authenticated %}
         <div class="navbar-collapse collapse justify-content-between  align-items-center w-100"  id="navbarsActuel">
             <ul class="navbar-nav mx-auto text-center justify-content-center">
-                <a role="button"  class="btn btn-success"  href="{% url 'produit_lister' %}" aria-disabled="true">Marché</a>
+                <a role="button"  class="btn btn-success"  href="{% url 'marche' %}" aria-disabled="true">Marché</a>
 
                     <form class="form-inline my-2 my-lg-0 justify-content-center" action="{% url 'chercher' %}" method="get">
                     {% csrf_token %}
                     <input class="form-control fmr-sm-2" name="id_recherche" placeholder="Chercher..." type="text">
                     <button class="btn navbar-btn btn-outline-success my-2 my-sm-0" type="submit" >...</button>
                     </form>
-                <a role="button" class="btn btn-success"  href="{% url 'blog:accueil' %}" aria-disabled="true">Forum</a>
+                <a role="button" class="btn btn-success"  href="{% url 'blog:forum' %}" aria-disabled="true">Forum</a>
             </ul>
 
             <ul class="nav navbar-nav justify-content-center">

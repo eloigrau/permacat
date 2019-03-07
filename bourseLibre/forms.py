@@ -3,9 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm, User
 from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, Profil, Message
 
 
-
-
-fieldsCommunsProduits = ['nom_produit', 'souscategorie', 'etat',   'description', 'estUneOffre',
+fieldsCommunsProduits = ['nom_produit', 'souscategorie', 'etat',   'description', 'estUneOffre', 'estPublique',
                 'unite_prix', 'prix',  'type_prix', 'date_debut', 'date_expiration', 'stock_initial',]
 
 
@@ -89,8 +87,9 @@ class AdresseForm(forms.ModelForm):
         return adresse
 
 class ProfilCreationForm(UserCreationForm):
-    description = forms.CharField(label="Description", help_text="Une description de vous même", widget=forms.Textarea)
-    competences = forms.CharField(label="Savoir-faire", help_text="Par exemple: electricien, bouturage, aromatherapie, etc...", widget=forms.Textarea)
+    username = forms.CharField(label="Pseudonyme*", help_text="Attention les majuscules sont importantes...")
+    description = forms.CharField(label="Description*", help_text="Une description de vous même", widget=forms.Textarea)
+    competences = forms.CharField(label="Savoir-faire*", help_text="Par exemple: electricien, bouturage, aromatherapie, etc...", widget=forms.Textarea)
 
     class Meta(UserCreationForm):
         model = Profil
@@ -195,6 +194,7 @@ class ContactForm(forms.Form):
 
 
 class MessageForm(forms.ModelForm):
+
     class Meta:
         model = Message
         exclude = ['conversation','auteur']
@@ -202,3 +202,8 @@ class MessageForm(forms.ModelForm):
         widgets = {
                 'message': forms.Textarea(attrs={'rows': 2}),
             }
+
+    def __init__(self, request, message=None, *args, **kwargs):
+         super(MessageForm, self).__init__(request, *args, **kwargs)
+         if message:
+             self.fields['message'].initial = message

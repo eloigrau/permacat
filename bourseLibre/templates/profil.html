@@ -7,7 +7,7 @@
 {% leaflet_js %}
 {% leaflet_css %}
 {%endblock%}
-{% block title %}<h3>Profil de {{ user.username }}</h3> {% endblock %}
+{% block title %}Profil de {{ user.username }} {% endblock %}
 {% block subtitle %}
 <div class="row">
   <div class="col-md-12 textcenter">
@@ -35,7 +35,7 @@
           <span class="glyphicon glyphicon-shopping-cart"></span> Mes requêtes
         </a>
         {%endif%}
-        <a href="{% url 'produit_lister' %}?producteur={{ user.username }}" class="btn btn-success">
+        <a href="{% url 'marche' %}?producteur={{ user.username }}" class="btn btn-success">
                 <span class="glyphicon glyphicon-plus"></span>&nbsp; {%if  user.username != request.user.username %}Ses {%else%}Mes {%endif%}propositions
             </a>
         </a>

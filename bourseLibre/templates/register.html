@@ -6,9 +6,16 @@
 
 <div class="jumbotron">
 <div class="row justify-content-sm-center">
+    <h4>Inscrivez-vous ! (les champs avec (*) sont obligatoires)</h4>
+</div>
+<div class="row justify-content-sm-center">
 <div class="col-sm-12 col-md-10 col-lg-8 ">
     <form role="form" action="" method="post" enctype="multipart/form-data">
   {% csrf_token %}
+        {%include 'form_template2.html' with form=form_profil%}
+        {%include 'form_template2.html' with form=form_adresse%}
+
+{%comment%}
   {% for hidden_field in form_profil.hidden_fields %}
     {{ hidden_field }}
   {% endfor %}
@@ -82,6 +89,7 @@
       {% endif %}
     </div>
   {% endfor %}
+{%endcomment%}
 
   <button type="submit" class="btn btn-success">S'enregistrer</button>
 </form>

@@ -13,7 +13,7 @@
 <div class="row align-items-center">
     <div class="col col-md-6">
 		<nav class="breadcrumb textepetit">
-		  <a class="breadcrumb-item glyphicon-chevron-right" href="{% url 'produit_lister' %}">Au marché</a>
+		  <a class="breadcrumb-item glyphicon-chevron-right" href="{% url 'marche' %}">Au marché</a>
 		  <a class="breadcrumb-item glyphicon-chevron-right" href="/produits/lister/?categorie={{produit.categorie}}" >{{produit.categorie}}</a>
 		  <a class="breadcrumb-item glyphicon-chevron-right" href="/produits/lister/?souscategorie={{produit.souscategorie}}">{{produit.souscategorie}}</a>
 		  <a class="breadcrumb-item glyphicon-chevron-right active" href="/produits/lister/?producteur={{produit.user.username}}">{{produit.user.username}}</a>
@@ -155,7 +155,10 @@
 	</div>
 	{%else%}
 	<div class="col-md-4 paddingbase">
-		<a href="{%url 'profil_contact' produit.user.id %}" class="btn btn-success btn-block  btn-lg" type="button">Contacter</a>
+		<a href="{%url 'lireConversation' produit.user.username %}" class="btn btn-success btn-block  btn-lg" type="button">Envoyer un message</a>
+		{%comment%}
+		<a href="{%url 'profil_contact' produit.user.id %}" class="btn btn-success btn-block  btn-lg" type="button">Mail</a>
+		{%endcomment%}
 
 	</div>
 	{%endif%}

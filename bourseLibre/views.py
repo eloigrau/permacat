@@ -23,7 +23,13 @@ from django.db.models import Q
 from django import forms
 
 from blog.models import Article
-from django.core.exceptions import ObjectDoesNotExist
+
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+from django.shortcuts import render, redirect
+
+#from django.core.exceptions import ObjectDoesNotExist
 
 import sys
 from io import BytesIO
@@ -130,7 +136,7 @@ class ProduitModifier(UpdateView):
             # @login_required(login_url='/auth/login/')
 class ProduitSupprimer(DeleteView):
     model = Produit
-    success_url = reverse_lazy('produit_lister')
+    success_url = reverse_lazy('marche')
 
 @login_required(login_url='/auth/login/')
 def proposerProduit_entree(request):
@@ -314,6 +320,22 @@ class profil_modifier(UpdateView):
     def get_object(self):
         return Profil.objects.get(id=self.request.user.id)
 
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('change_password')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'registration/password_changer_form.html', {
+        'form': form
+    })
+
 # @login_required(login_url='/auth/login/')
 def register(request):
     form_adresse = AdresseForm(request.POST or None)
@@ -333,7 +355,6 @@ from django.views.generic.edit import ModelFormMixin
 
 
 
-# @login_required(login_url='/auth/login/')
 class ListeProduit(ListView):
     model = Produit
     context_object_name = "produits_list"
@@ -342,6 +363,8 @@ class ListeProduit(ListView):
 
     def get_qs(self):
         qs = Produit.objects.select_subclasses()
+        if not self.request.user.is_authenticated:
+            qs = qs.filter(estPublique=True)
         params = dict(self.request.GET.items())
 
         if "producteur" in params:
@@ -505,7 +528,20 @@ def lireConversation(request, destinataire):
     conversation = getOrCreateConversation(request.user.username, destinataire)
     messages = Message.objects.filter(conversation=conversation).order_by("-date_creation")
 
-    form = MessageForm(request.POST or None)
+    message = None
+    id_panier = request.GET.get('panier')
+    if id_panier:
+        panier = Panier.objects.get(id=id_panier)
+        id_destinataire = Profil.objects.get(username=destinataire).id
+        message = panier.get_message_demande(int(id_destinataire))
+
+    id_produit = request.GET.get('produit')
+    if id_produit:
+        produit = Produit.objects.get(id=id_produit)
+        message = produit.nom_produit +":" +produit.get_message_demande()
+
+
+    form = MessageForm(request.POST or None, message=message)
     if form.is_valid():
         message = form.save(commit=False)
         message.conversation = conversation
