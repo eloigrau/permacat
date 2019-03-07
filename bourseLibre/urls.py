@@ -34,7 +34,7 @@ urlpatterns = [
     url(r'^permacat/presentation$', views.presentation_asso, name='presentation_asso'),
     url(r'^permacat/statuts$$', views.statuts, name='statuts'),
     
-    url(r'^admin/', login_required(admin.site.urls, login_url='/auth/login/'), name='admin'),
+    url(r'^admin/', admin.site.urls, name='admin',),
     #path('admin/', admin.site.urls, name='admin'),
     url(r'^merci/$', views.merci, name='merci'),
     url(r'^blog/', include('blog.urls', namespace='bourseLibre.blog')),
@@ -53,8 +53,8 @@ urlpatterns = [
     #url(r'^accounts/profil_contact/(?P<user_id>[0-9]+)/(?P<message>D+)$', views.profil_contact, name='profil_contact'),
     url(r'^accounts/profil_contact/(?P<user_id>[0-9]+)/$', login_required(views.profil_contact, login_url='/auth/login/'), name='profil_contact',),
     url(r'^register/$', views.register, name='senregistrer',),
+    url(r'^password/$', views.change_password, name='change_password'),
     path('auth/', include('django.contrib.auth.urls')),
-    url(r'^auth/password/$', views.change_password, name='change_password'),
 
     #url(r'password_change/$',auth_views.PasswordChangeView.as_view(template_name='password_change.html',success_url='/accounts/password_change_done')),
     #url(r'password_change_done/',auth_views.PasswordChangeDoneView.as_view(template_name='password_change_done.html')),
