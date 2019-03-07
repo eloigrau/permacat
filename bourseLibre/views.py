@@ -287,7 +287,7 @@ class profil_modifier_user(UpdateView):
     model = Profil
     form_class = ProducteurChangeForm
     template_name_suffix = '_modifier'
-#    fields = ['user','site_web','description', 'competences', 'adresse', 'avatar', 'inscrit_newsletter']
+    fields = ['username','first_name','last_name', 'site_web','description', 'competences', 'inscrit_newsletter']
 
     def get_object(self):
         return User.objects.get(id=self.request.user.id)
@@ -360,12 +360,12 @@ class ListeProduit(ListView):
         if "offre" in params:
             qs = qs.filter(estUneOffre=params['offre'])
 
-        res = qs.order_by('date_creation', 'categorie', 'user')
+        res = qs.order_by('-date_creation', 'categorie', 'user')
         if "ordre" in params:
             if params['ordre'] == 'categorie':
-                res = qs.order_by('categorie', 'date_creation', 'user')
+                res = qs.order_by('categorie', '-date_creation', 'user')
             elif params['ordre'] == "producteur" :
-                res = qs.order_by('user', 'date_creation', 'categorie', )
+                res = qs.order_by('user', '-date_creation', 'categorie', )
             elif params['ordre'] == "date":
                 res = qs.order_by('-date_creation', 'categorie', 'user', )
 
