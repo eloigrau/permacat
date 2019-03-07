@@ -285,9 +285,9 @@ def produitContacterProducteur(request, produit_id):
 # @login_required(login_url='/auth/login/')
 class profil_modifier_user(UpdateView):
     model = Profil
-    form_class = ProducteurChangeForm
+    #form_class = ProducteurChangeForm
     template_name_suffix = '_modifier'
-    fields = ['username','first_name','last_name', 'site_web','description', 'competences', 'inscrit_newsletter']
+    fields = ['username','email', 'first_name','last_name', 'site_web','description', 'competences', 'inscrit_newsletter']
 
     def get_object(self):
         return User.objects.get(id=self.request.user.id)
@@ -307,7 +307,7 @@ class profil_modifier_adresse(UpdateView):
 # @login_required(login_url='/auth/login/')
 class profil_modifier(UpdateView):
     model = Profil
-    form_class = ProfilCreationForm
+    #form_class = ProfilCreationForm
     template_name_suffix = '_modifier'
     fields = ['username','email','first_name','last_name', 'site_web','description', 'competences', 'inscrit_newsletter']
 
