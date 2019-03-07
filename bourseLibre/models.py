@@ -66,9 +66,9 @@ class Choix():
 
 
 def get_categorie_from_subcat(subcat):
-    for typeProduit, dico in Choix.choix.items():
+    for type_produit, dico in Choix.choix.items():
         if str(subcat) in dico['souscategorie']:
-            return typeProduit
+            return type_produit
     return "Catégorie inconnue (souscategorie : " + str(subcat) +")"
 
 LATITUDE_DEFAUT = '42.6976'

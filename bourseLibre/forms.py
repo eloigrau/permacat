@@ -49,6 +49,19 @@ class Produit_vegetal_CreationForm(forms.ModelForm):
             'date_debut': forms.DateInput(attrs={'type':"date"}, ),
             'date_expiration': forms.DateInput(attrs={'type':"date"})
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        date_debut = cleaned_data.get("date_debut")
+        date_expiration = cleaned_data.get("date_expiration")
+        if date_debut and date_expiration:
+            # Only do something if both fields are valid so far.
+            if date_debut > date_expiration:
+                raise forms.ValidationError(
+                    "La date de fin doit etre après la date de début"
+                )
+        return self.cleaned_data
+
 class Produit_service_CreationForm(forms.ModelForm):
     class Meta:
         model = Produit_service
@@ -57,6 +70,17 @@ class Produit_service_CreationForm(forms.ModelForm):
             'date_debut': forms.DateInput(attrs={'type':"date"}, ),
             'date_expiration': forms.DateInput(attrs={'type':"date"})
         }
+    def clean(self):
+        cleaned_data = super().clean()
+        date_debut = cleaned_data.get("date_debut")
+        date_expiration = cleaned_data.get("date_expiration")
+        if date_debut and date_expiration:
+            # Only do something if both fields are valid so far.
+            if date_debut > date_expiration:
+                raise forms.ValidationError(
+                    "La date de fin doit etre après la date de début"
+                )
+        return self.cleaned_data
 
 
 class Produit_objet_CreationForm(forms.ModelForm):
@@ -67,6 +91,18 @@ class Produit_objet_CreationForm(forms.ModelForm):
             'date_debut': forms.DateInput(attrs={'type':"date"}, ),
             'date_expiration': forms.DateInput(attrs={'type':"date"})
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        date_debut = cleaned_data.get("date_debut")
+        date_expiration = cleaned_data.get("date_expiration")
+        if date_debut and date_expiration:
+            # Only do something if both fields are valid so far.
+            if date_debut > date_expiration:
+                raise forms.ValidationError(
+                    "La date de fin doit etre après la date de début"
+                )
+        return self.cleaned_data
 
 class AdresseForm(forms.ModelForm):
     rue = forms.CharField(label="Adresse", required=False)

@@ -5,7 +5,7 @@
 {% csrf_token %}
 <style>.soustitre,.bodycontenu{background-color: {{ bgcolor }};}</style>
 <div class="row justify-content-center">
-<h5>Quel {{ typeProduit }} proposez-vous ?</h5>
+<h5>Quel {{ type_produit }} proposez-vous ?</h5>
 </div>
 {% endblock %}
 {% block content %}
@@ -17,6 +17,7 @@
 <div class="row-sm-12 row-lg-6 mx-auto "style="display:flex;justify-content:center;align-items:center;">
 
     <form action="" method="post">
+
         <table  border="0" >
     {{ form.as_table }}
     {% if form2 %}

@@ -49,19 +49,19 @@ def statuts(request):
 
 
 @login_required(login_url='/auth/login/')
-def produit_proposer(request, typeProduit):
+def produit_proposer(request, type_produit):
     try:
-        bgcolor = Choix.couleurs[typeProduit]
+        bgcolor = Choix.couleurs[type_produit]
     except:
         bgcolor = None
 
-    if typeProduit == 'aliment':
+    if type_produit == 'aliment':
         type_form = Produit_aliment_CreationForm(request.POST or None, request.FILES or None)
-    elif typeProduit == 'vegetal':
+    elif type_produit == 'vegetal':
         type_form = Produit_vegetal_CreationForm(request.POST or None, request.FILES or None)
-    elif typeProduit == 'service':
+    elif type_produit == 'service':
         type_form = Produit_service_CreationForm(request.POST or None, request.FILES or None)
-    elif typeProduit == 'objet':
+    elif type_produit == 'objet':
         type_form = Produit_objet_CreationForm(request.POST or None, request.FILES or None)
     else:
         raise Exception('Type de produit inconnu (aliment, vegetal, service ou  objet)')
@@ -69,7 +69,7 @@ def produit_proposer(request, typeProduit):
        # produit = produit_form.save(commit=False)
         produit = type_form.save(commit=False)
         produit.user = request.user
-        produit.categorie = typeProduit
+        produit.categorie = type_produit
 
         #if produit.photo:
             #produit.photo = request.FILES['photo']
@@ -101,11 +101,10 @@ def produit_proposer(request, typeProduit):
         # type = type_form.save(commit=False)
         # type.proprietes = produit
         # type.save()
-        return HttpResponseRedirect('/produits/detail/' + str(produit.id))
-    return render(request, 'bourseLibre/produit_proposer.html', {"form": type_form, "bgcolor": bgcolor, "typeProduit":typeProduit})
+        return HttpResponseRedirect('/marche/detail/' + str(produit.id))
+    return render(request, 'bourseLibre/produit_proposer.html', {"form": type_form, "bgcolor": bgcolor, "type_produit":type_produit})
 
 
-# @login_required(login_url='/auth/login/')
 class ProduitModifier(UpdateView):
     model = Produit
     template_name_suffix = '_modifier'
@@ -143,13 +142,6 @@ def proposerProduit_entree(request):
     return render(request, 'bourseLibre/produit_proposer_entree.html', {"couleurs":Choix.couleurs})
 
 
-# @login_required
-# def supprimerProduit(request, produit_id):
-#     produit = Produit.objects.get(pk=produit_id)
-#     produit.delete()
-#     produit = Produit.objects.filter(user=request.user)
-#     return render(request, 'indexProduits.html', {'produit': produit})
-
 @login_required
 def detailProduit(request, produit_id):
     prod = Produit.objects.get_subclass(id=produit_id)
@@ -159,21 +151,6 @@ def detailProduit(request, produit_id):
 def merci(request, template_name='merci.html'):
     return render(request, template_name)
 
-
-# @login_required
-# def index(request):
-#         produits = Produit.objects.filter(user=request.user)
-#         query = request.GET.get("q")
-#         if query:
-#             produits = produits.filter(
-#                 Q(album_title__icontains=query) | 
-#                 Q(artist__icontains=query)
-#             ).distinct()
-#             return render(request, 'index.html', {
-#                 'produits': produits,
-#             })
-#         else:
-#             return render(request, 'index.html', {'produits': produits})
 
 # @login_required(login_url='/auth/login/')
 def profil_courant(request, ):
@@ -351,9 +328,6 @@ def register(request):
     return render(request, 'register.html', {"form_adresse": form_adresse,"form_profil": form_profil,})
 
 
-from django.views.generic.edit import ModelFormMixin
-
-
 
 class ListeProduit(ListView):
     model = Produit
@@ -421,7 +395,6 @@ class ListeProduit(ListView):
             context['typeFiltre'] = "categorie"
         context['typeOffre'] = '<- | ->'
         return context
-
 
 class ListeProduit_offres(ListeProduit):
     def get_queryset(self):
