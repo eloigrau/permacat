@@ -108,7 +108,7 @@ def produit_proposer(request, type_produit):
 class ProduitModifier(UpdateView):
     model = Produit
     template_name_suffix = '_modifier'
-    fields = ['date_debut', 'date_expiration', 'nom_produit', 'description', 'prix', 'unite_prix', 'souscategorie', 'estUneOffre', 'stock_courant','etat','type_prix']# 'souscategorie','etat','type_prix']
+    fields = ['date_debut', 'date_expiration', 'nom_produit', 'description', 'prix', 'unite_prix', 'souscategorie', 'estUneOffre', 'estPublic', 'stock_courant','etat','type_prix']# 'souscategorie','etat','type_prix']
 
     widgets = {
         'date_debut': forms.DateInput(attrs={'type': "date"}),
@@ -504,14 +504,12 @@ def lireConversation(request, destinataire):
     message = None
     id_panier = request.GET.get('panier')
     if id_panier:
-        panier = Panier.objects.get(id=id_panier)
         id_destinataire = Profil.objects.get(username=destinataire).id
-        message = panier.get_message_demande(int(id_destinataire))
+        message = Panier.objects.get(id=id_panier).get_message_demande(int(id_destinataire))
 
     id_produit = request.GET.get('produit')
     if id_produit:
-        produit = Produit.objects.get(id=id_produit)
-        message = produit.nom_produit +":" +produit.get_message_demande()
+        message = Produit.objects.get(id=id_produit).get_message_demande()
 
 
     form = MessageForm(request.POST or None, message=message)

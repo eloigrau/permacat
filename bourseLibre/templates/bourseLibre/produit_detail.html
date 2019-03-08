@@ -141,9 +141,11 @@
 				</span>
 				</div>
 			</div>
+
 		<a onclick="ajouterAuPanier()" class="btn btn-primary btn-lg btn-block " type="button" id="buttonAjouterAuPanier">
 			Ajouter au panier</a></br></br>
-		<a href="{%url 'profil_contact' produit.user.id%}?produit={{produit.id}}" class="btn btn-success btn-block  btn-lg" type="button">Contacter le producteur</a>
+		<a href="{%url 'lireConversation' produit.user.username %}?produit={{produit.id}}" class="btn btn-success btn-block  btn-lg" type="button">Envoyer un message</a>
+
 		</div>
 	</div>
 	{%elif user.id == produit.user.id%}

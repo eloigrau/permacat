@@ -262,7 +262,7 @@ class Produit(models.Model):  # , BaseProduct):
         return"standard"
 
     def get_message_demande(self):
-        return "bonjour, \nconcernant votre offre de '" + self.nom_produit + "', pourriez vous m'indiquer..."
+        return "bonjour, concernant votre offre de '" + self.nom_produit + "', pourriez vous m'indiquer..."
 
 
 class Produit_aliment(Produit):  # , BaseProduct):
@@ -586,7 +586,7 @@ class Panier(models.Model):
                 yield item
 
     def get_message_demande(self, user_id):
-        message= 'Bonjour, je voudrais vous echanger : \n'
+        message= 'Bonjour, je voudrais vous échanger : \n'
         for item in self.get_items_from_user(user_id):
             message += "\t" + str(item.quantite) + "\t" + str(item.produit.nom_produit) +  " pour un total de " + str(item.total_prixEtunite) + "\n"
         message += "Merci !"

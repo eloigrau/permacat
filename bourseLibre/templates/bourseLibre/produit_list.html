@@ -107,6 +107,8 @@
         </div>
     </nav>
     </div>
+
+{% if user.is_authenticated %}
 <div class="row justify-content-center">
     <div class="col-sm-12 textcenter">
     <a href="{% url 'produit_proposer_entree' %}">
@@ -116,6 +118,7 @@
     </a>
     </div>
 </div>
+{%endif%}
 
 {%comment%}
 <div class="row">
