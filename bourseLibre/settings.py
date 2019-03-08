@@ -133,7 +133,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'bourseLibre.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-locall  = False
+locall  = True
 if locall:
     DATABASES = {
        'default': {
@@ -223,6 +223,11 @@ EMAIL_HOST_USER = SERVER_EMAIL
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+GMAIL_SMTP_USER = 'permacat66@gmail.com'
+try:
+    GMAIL_SMTP_PASSWORD = os.environ['EMAIL_ADMIN_PWD']
+except:
+    GMAIL_SMTP_PASSWORD = 'test'
 
 # MANAGERS: It specifies a list of people to send broken link emails for 404 NOT FOUND errors. It's accepts emails in the same format as ADMINS.
 MANAGERS = [
