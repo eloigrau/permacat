@@ -52,6 +52,10 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarAsso">
                             <a class="nav-link" href="{% url 'profil_list' %}"> Coopérateurs</a>
+                           {% if user.is_authenticated %}
+                             <a class="nav-link" href="{% url 'profil_carte' %}"> Carte </a>
+             
+                            {%endif%}
                             <a class="nav-link" href="{% url 'presentation_asso' %}"> Qui sommes nous ?</a>
                             <a class="nav-link" href="{% url 'charte' %}"> Charte </a>
                             <a class="nav-link" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a>
