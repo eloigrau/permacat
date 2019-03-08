@@ -64,8 +64,7 @@ urlpatterns = [
 
     # url(r'^list$', views.product_list),
     #     url(r'^list2/$', FilterView.as_view(model=Produit, filterset_class=ProductFilter,)),
-    url(r'^marche/lister/', login_required(views.ListeProduit.as_view(), login_url='/auth/login/'),
-        name="marche"),
+    url(r'^marche/lister/', views.ListeProduit.as_view(),  name="marche"),
     url(r'^marche/lister_offres/', login_required(views.ListeProduit_offres.as_view(), login_url='/auth/login/'),
         name="marche_offres"),
     url(r'^marche/lister_recherches/', login_required(views.ListeProduit_recherches.as_view(), login_url='/auth/login/'),
@@ -103,6 +102,10 @@ from django.conf.urls.static import static
 from django.conf import settings
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+handler404 = 'bourseLibre.views.handler404'
+handler500 = 'bourseLibre.views.handler500'
+handler400 = 'bourseLibre.views.handler400'
+handler403 = 'bourseLibre.views.handler403'
 
 if settings.DEBUG:
     import debug_toolbar
