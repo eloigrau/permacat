@@ -9,6 +9,13 @@ body {
     /*font-family: serif;*/
     /*font-family: system-ui;*/
 }
+
+@font-face {
+  font-family: 'navbarfont';
+  src: url('../static/font/febfeltscript-bold.ttf')  format("truetype"),
+  local('navbarfont');
+}
+
 .textcenter{
     text-align: center;
 }
@@ -65,7 +72,7 @@ background: linear-gradient(45deg, rgba(179,220,237,1) 0%, rgba(129,222,122,1) 5
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b3dced', endColorstr='#bce0ee', GradientType=1 );
 
     //background-color:#ffffb3;
-    font-family: 'Satisfy', cursive;
+    font-family: 'navbarfont', 'Satisfy', cursive;
 }
 
 p {

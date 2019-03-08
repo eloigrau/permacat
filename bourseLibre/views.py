@@ -71,7 +71,7 @@ def statuts(request):
     return render(request, 'statuts.html')
 
 
-@login_required(login_url='/auth/login/')
+@login_required
 def produit_proposer(request, type_produit):
     try:
         bgcolor = Choix.couleurs[type_produit]
@@ -155,17 +155,16 @@ class ProduitModifier(UpdateView):
     def get_queryset(self):
         return self.model.objects.select_subclasses()
 
-            # @login_required(login_url='/auth/login/')
+            # @login_required
 class ProduitSupprimer(DeleteView):
     model = Produit
     success_url = reverse_lazy('marche')
 
-@login_required(login_url='/auth/login/')
+@login_required
 def proposerProduit_entree(request):
     return render(request, 'bourseLibre/produit_proposer_entree.html', {"couleurs":Choix.couleurs})
 
 
-@login_required
 def detailProduit(request, produit_id):
     prod = Produit.objects.get_subclass(id=produit_id)
     return render(request, 'bourseLibre/produit_detail.html', {'produit': prod})
@@ -175,12 +174,12 @@ def merci(request, template_name='merci.html'):
     return render(request, template_name)
 
 
-# @login_required(login_url='/auth/login/')
+# @login_required
 def profil_courant(request, ):
     return render(request, 'profil.html', {'user': request.user})
 
 
-# @login_required(login_url='/auth/login/')
+# @login_required
 def profil(request, user_id):
     try:
         user = Profil.objects.get(id=user_id)
@@ -188,7 +187,7 @@ def profil(request, user_id):
     except User.DoesNotExist:
             return render(request, 'profil_inconnu.html', {'userid': user_id})
 
-# @login_required(login_url='/auth/login/')
+# @login_required
 def profil_nom(request, user_username):
     try:
         user = Profil.objects.get(username=user_username)
@@ -196,21 +195,21 @@ def profil_nom(request, user_username):
     except User.DoesNotExist:
         return render(request, 'profil_inconnu.html', {'userid': user_username})
 
-# @login_required(login_url='/auth/login/')
+# @login_required
 def profil_inconnu(request):
     return render(request, 'profil_inconnu.html')
 
-# @login_required(login_url='/auth/login/')
+# @login_required
 def profil_list(request):
     profils = Profil.objects.all()
     return render(request, 'cooperateurs.html', {'profils':profils, } )
 
-# @login_required(login_url='/auth/login/')
+# @login_required
 def profil_carte(request):
     profils = Profil.objects.all()
     return render(request, 'carte_cooperateurs.html', {'profils':profils, } )
 
-# @login_required(login_url='/auth/login/')
+# @login_required
 def profil_contact(request, user_id):
     message = None
     titre = None
@@ -271,7 +270,7 @@ def contact_admins(request):
     return render(request, 'contact.html', {'form': form, "isContactProducteur":False})
 
 
-# @login_required(login_url='/auth/login/')
+# @login_required
 def produitContacterProducteur(request, produit_id):
     prod = Produit.objects.get_subclass(pk=produit_id)
     receveur = prod.user
@@ -288,7 +287,7 @@ def produitContacterProducteur(request, produit_id):
     return render(request, 'contact.html', {'form': form, "isContactProducteur":True, "producteur":receveur.user.username})
 
 
-# @login_required(login_url='/auth/login/')
+# @login_required
 class profil_modifier_user(UpdateView):
     model = Profil
     #form_class = ProducteurChangeForm
@@ -300,7 +299,7 @@ class profil_modifier_user(UpdateView):
 
 
 
-# @login_required(login_url='/auth/login/')
+# @login_required
 class profil_modifier_adresse(UpdateView):
     model = Adresse
     form_class = AdresseForm
@@ -310,7 +309,7 @@ class profil_modifier_adresse(UpdateView):
     def get_object(self):
         return Adresse.objects.get(id=self.request.user.id)
 
-# @login_required(login_url='/auth/login/')
+# @login_required
 class profil_modifier(UpdateView):
     model = Profil
     #form_class = ProfilCreationForm
@@ -336,7 +335,7 @@ def change_password(request):
         'form': form
     })
 
-# @login_required(login_url='/auth/login/')
+# @login_required
 def register(request):
     form_adresse = AdresseForm(request.POST or None)
     form_profil = ProfilCreationForm(request.POST or None)
@@ -447,7 +446,7 @@ def charte(request):
 def cgu(request):
     return render(request, 'cgu.html', )
 
-# @login_required(login_url='/auth/login/')
+# @login_required
 def liens(request):
     liens = [
         'https://www.monnaielibreoccitanie.org/',
@@ -466,7 +465,7 @@ def fairedon(request):
 
 
 
-@login_required(login_url='/auth/login/')
+@login_required
 def ajouterAuPanier(request, produit_id, quantite):#, **kwargs):
     quantite = float(quantite)
     produit = Produit.objects.get_subclass(pk=produit_id)
@@ -479,14 +478,14 @@ def ajouterAuPanier(request, produit_id, quantite):#, **kwargs):
     panier.add(produit, produit.unite_prix, quantite)
     return afficher_panier(request)
 
-@login_required(login_url='/auth/login/')
+@login_required
 def enlever_du_panier(request, item_id):
     panier = Panier.objects.get(user=request.user, etat="a")
     panier.remove_item(item_id)
     return afficher_panier(request)
 
 
-@login_required(login_url='/auth/login/')
+@login_required
 def afficher_panier(request):
     # try:
     panier = Panier.objects.get(user=request.user, etat="a")
@@ -499,13 +498,13 @@ def afficher_panier(request):
     return render(request, 'panier.html', {'panier':panier, 'items':items})
 
 
-# @login_required(login_url='/auth/login/')
+# @login_required
 def afficher_requetes(request):
     items = Item.objects.filter( produit__user__id =  request.user.id)
     return render(request, 'requetes.html', {'items':items})
 
 
-@login_required(login_url='/auth/login/')
+@login_required
 def chercher(request):
     recherche = request.GET.get('id_recherche')
     if recherche:
@@ -519,7 +518,7 @@ def chercher(request):
     return render(request, 'chercher.html', {'recherche':recherche, 'articles_list':articles_list, 'produits_list':produits_list, 'profils_list':profils_list})
 
 
-@login_required(login_url='/auth/login/')
+@login_required
 def lireConversation(request, destinataire):
     conversation = getOrCreateConversation(request.user.username, destinataire)
     messages = Message.objects.filter(conversation=conversation).order_by("-date_creation")
@@ -546,7 +545,7 @@ def lireConversation(request, destinataire):
     return render(request, 'lireConversation.html', {'conversation': conversation, 'form': form, 'messages': messages, 'destinataire':destinataire})
 
 
-@login_required(login_url='/auth/login/')
+@login_required
 def lireConversation_2noms(request, destinataire1, destinataire2):
     conversation = getOrCreateConversation(destinataire1, destinataire2)
     messages = Message.objects.filter(conversation=conversation).order_by("-date_creation")
