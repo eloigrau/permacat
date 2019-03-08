@@ -18,7 +18,8 @@
             </ul>
 
             <ul class="navbar-nav mx-auto text-center justify-content-center">
-                <a class="nav-link" href="{% url 'marche' %}">Marché</a>
+
+                <a role="button"  class="btn btn-success"  href="{% url 'marche' %}" aria-disabled="true">Marché</a>
                     <form class="form-inline my-2 my-lg-0 justify-content-center" action="{% url 'chercher' %}" method="get">
                     {% csrf_token %}
                         <input class="form-control fmr-sm-2" name="id_recherche" placeholder="Chercher..." type="text">
@@ -26,7 +27,9 @@
                             <button class="btn navbar-btn btn-light my-2 my-sm-0" type="submit" >...</button>
                         </span>
                     </form>
-                <a class="nav-link" href="{% url 'blog:forum' %}">Forum</a>
+                <a role="button" class="btn btn-success"  href="{% url 'blog:forum' %}" aria-disabled="true">Forum</a>
+
+
             </ul>
 
             <ul class="nav navbar-nav  justify-content-center">
