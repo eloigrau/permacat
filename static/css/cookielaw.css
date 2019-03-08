@@ -4,7 +4,7 @@
  * license that can be found in the LICENSE.txt file.
  */
 ul.tabs.config-tabs a.v-cookielaw-section span { background: url(../images/icon.png) no-repeat 187px 3px; }
-ul.tabs.config-tabs a.v-cookielaw-section.active span { background: #fff url(../images/icon.png) no-repeat 187px 3px; }
+ul.tabs.config-tabs a.v-cookielaw-section.active span { background: #fff url(../img/icon.png) no-repeat 187px 3px; }
 
 .content-header h3.v-cookielaw-header { background: url(../images/icon.png) no-repeat; padding-left: 31px; }
 
