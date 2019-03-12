@@ -122,7 +122,13 @@
     {%if user.adresse.rue %}
     <tr>
         <td style="width:250px">Adresse :</td>
-        <td>{{ user.adresse.rue }}, {{ user.adresse.code_postal }}</td>
+        <td>{{ user.adresse.rue }}</td>
+    </tr>
+  {% endif %}
+    {%if user.adresse.commune %}
+    <tr>
+        <td style="width:250px">Commune :</td>
+        <td>{{ user.adresse.commune }}</td>
     </tr>
   {% endif %}
     {%if user.adresse.code_postal %}

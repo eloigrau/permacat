@@ -7,6 +7,10 @@ Modifier
 {% endblock %}
 {% block content %}
 
+
+{% include 'form_template.html' %}
+
+{% comment %}
 <div class="row-sm-12 row-lg-6 mx-auto">
     <form action="" method="post">
     {% csrf_token %}
@@ -19,6 +23,8 @@ Modifier
         </div>
 </form>
 </div>
+{% endcomment %}
+
 
 {% endblock %}
 

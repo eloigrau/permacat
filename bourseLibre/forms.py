@@ -3,8 +3,8 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm, User
 from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, Profil, Message
 
 
-fieldsCommunsProduits = ['nom_produit', 'souscategorie', 'etat',   'description', 'estUneOffre', 'estPublique',
-                'unite_prix', 'prix',  'type_prix', 'date_debut', 'date_expiration', 'stock_initial',]
+fieldsCommunsProduits = ['nom_produit', 'souscategorie',  'description', 'estUneOffre', 'estPublique',
+                'unite_prix', 'prix',  'type_prix', 'date_debut', 'date_expiration', ]
 
 
 class ProduitCreationForm(forms.ModelForm):
@@ -126,6 +126,7 @@ class ProfilCreationForm(UserCreationForm):
     username = forms.CharField(label="Pseudonyme*", help_text="Attention les majuscules sont importantes...")
     description = forms.CharField(label="Description*", help_text="Une description de vous même", widget=forms.Textarea)
     competences = forms.CharField(label="Savoir-faire*", help_text="Par exemple: electricien, bouturage, aromatherapie, etc...", widget=forms.Textarea)
+    site_web = forms.CharField(label="Site web", initial="http://www.", widget=forms.Textarea)
 
     class Meta(UserCreationForm):
         model = Profil

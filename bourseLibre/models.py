@@ -40,22 +40,22 @@ class Choix():
     choix = {
     'aliment': {
         'souscategorie': ('legumes', 'fruits', 'champignons', 'boisson', 'herbes','condiments', 'viande','poisson','boulangerie','patisserie', 'autre'),
-        'etat': (('frais', 'frais'), ('sec', 'sec'), ('conserve', 'conserve')),
+        #'etat': (('frais', 'frais'), ('sec', 'sec'), ('conserve', 'conserve')),
         'type_prix': typePrixUnite,
     },
     'vegetal': {
-        'souscategorie': ('graines', 'fleurs', 'plantes','autre', 'jeune plan'),
-        'etat': (('frais', 'frais'), ('séché', 'séché')),
+        'souscategorie': ('graines', 'fleurs', 'plantes','jeunes plans', 'purins', 'autre', ),
+        #'etat': (('frais', 'frais'), ('séché', 'séché')),
         'type_prix': typePrixUnite,
     },
     'service': {
         'souscategorie': ('jardinage', 'cuisine', 'éducation', 'soins', 'bien être', 'informatique', 'batiment', 'mecanique', 'autre'),
-        'etat': (('excellent', 'excellent'), ('bon', 'bon'), ('moyen', 'moyen'), ('naze', 'naze')),
+        #'etat': (('excellent', 'excellent'), ('bon', 'bon'), ('moyen', 'moyen'), ('naze', 'naze')),
         'type_prix': (('h', 'heure'), ('un', 'unité')),
     },
     'objet': {
         'souscategorie': ('jardinage', 'outillage', 'vehicule', 'multimedia', 'mobilier','construction','autre'),
-        'etat': (('excellent', 'excellent'), ('bon', 'bon'), ('moyen', 'moyen'), ('mauvais', 'mauvais')),
+        #'etat': (('excellent', 'excellent'), ('bon', 'bon'), ('moyen', 'moyen'), ('mauvais', 'mauvais')),
         'type_prix': typePrixUnite,
     },
     }
@@ -77,6 +77,7 @@ LONGITUDE_DEFAUT = '2.8954'
 class Adresse(models.Model):
     rue = models.CharField(max_length=200, blank=True, null=True)
     code_postal = models.CharField(max_length=5, blank=True, null=True, default="66000")
+    commune = models.CharField(max_length=50,blank=True, null=True, default="Perpignan")
     latitude = models.FloatField(blank=True, null=True, default=LATITUDE_DEFAUT)
     longitude = models.FloatField(blank=True, null=True, default=LONGITUDE_DEFAUT)
     pays = models.CharField(max_length=12, blank=True, null=True, default="France")
@@ -178,15 +179,14 @@ def create_user_profile(sender, instance, created, **kwargs):
 class Produit(models.Model):  # , BaseProduct):
     user = models.ForeignKey(Profil, on_delete=models.CASCADE,)
     date_creation = models.DateTimeField(verbose_name="Date de parution", editable=False)
-    date_debut = models.DateField(verbose_name="Débute le : (mm/jj/an)", null=True, blank=True, default=now, )
-    proposed_renewal_date = datetime.date.today() + datetime.timedelta(weeks=3)
-    date_expiration = models.DateField(verbose_name="Expire le : (jj/mm/an)", blank=True, null=True, default=proposed_renewal_date, )
+    date_debut = models.DateField(verbose_name="Débute le : (mm/jj/an)", null=True, blank=True)
+    #proposed_renewal_date = datetime.date.today() + datetime.timedelta(weeks=3)
+    date_expiration = models.DateField(verbose_name="Expire le : (jj/mm/an)", blank=True, null=True, )#default=proposed_renewal_date, )
     nom_produit = models.CharField(max_length=250)
     description = models.TextField(blank=True, null=True)
     slug = models.SlugField(max_length=100)
 
-    stock_initial = models.FloatField(verbose_name="Quantité disponible", default=1, max_length=250,
-                                      validators=[MinValueValidator(1), ])
+    stock_initial = models.FloatField(default=1, verbose_name="Quantité disponible", max_length=250, validators=[MinValueValidator(1), ])
     stock_courant = models.FloatField(default=1, max_length=250, validators=[MinValueValidator(0), ])
     prix = models.DecimalField(max_digits=4, decimal_places=2, default=1, validators=[MinValueValidator(0), ])
     unite_prix = models.CharField(
@@ -230,7 +230,6 @@ class Produit(models.Model):  # , BaseProduct):
         if not self.id:
             self.date_creation = now()
             self.stock_courant = self.stock_initial
-
         return super(Produit, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -262,7 +261,7 @@ class Produit(models.Model):  # , BaseProduct):
         return"standard"
 
     def get_message_demande(self):
-        return "bonjour, concernant votre offre de '" + self.nom_produit + "', pourriez vous m'indiquer..."
+        return "bonjour, concernant ton annonce de '" + self.nom_produit + "', peux-tu m'indiquer..."
 
 
 class Produit_aliment(Produit):  # , BaseProduct):
@@ -277,11 +276,11 @@ class Produit_aliment(Produit):  # , BaseProduct):
         choices=((cat,cat) for cat in Choix.choix[type]['souscategorie']),
         default=Choix.choix[type]['souscategorie'][0][0]
     )
-    etat = models.CharField(
-        max_length=20,
-        choices=Choix.choix[type]['etat'],
-        default=Choix.choix[type]['etat'][0][0]
-    )
+    #etat = models.CharField(
+    #    max_length=20,
+    #   choices=Choix.choix[type]['etat'],
+    #    default=Choix.choix[type]['etat'][0][0]
+    #)
     type_prix = models.CharField(
         max_length=20,
         choices=Choix.choix[type]['type_prix'],
@@ -313,11 +312,11 @@ class Produit_vegetal(Produit):  # , BaseProduct):
         choices=((cat,cat) for cat in Choix.choix[type]['souscategorie']),
         default=Choix.choix[type]['souscategorie'][0][0]
     )
-    etat = models.CharField(
-        max_length=20,
-        choices=Choix.choix[type]['etat'],
-        default=Choix.choix[type]['etat'][0][0]
-    )
+    #etat = models.CharField(
+    #   max_length=20,
+    #   choices=Choix.choix[type]['etat'],
+    #   default=Choix.choix[type]['etat'][0][0]
+    #)
     type_prix = models.CharField(
         max_length=20,
         choices=Choix.choix[type]['type_prix'],
@@ -349,11 +348,11 @@ class Produit_service(Produit):  # , BaseProduct):
         choices=((cat,cat) for cat in Choix.choix[type]['souscategorie']),
         default=Choix.choix["service"]['souscategorie'][0][0]
     )
-    etat = models.CharField(
-        max_length=20,
-        choices=Choix.choix["service"]['etat'],
-        default=Choix.choix["service"]['etat'][0][0]
-    )
+    #etat = models.CharField(
+    #    max_length=20,
+    #   choices=Choix.choix["service"]['etat'],
+    #   default=Choix.choix["service"]['etat'][0][0]
+    #)
     type_prix = models.CharField(
         max_length=20,
         choices=Choix.choix["service"]['type_prix'],
@@ -385,11 +384,11 @@ class Produit_objet(Produit):  # , BaseProduct):
         choices=((cat,cat) for cat in Choix.choix[type]['souscategorie']),
         default=Choix.choix[type]['souscategorie'][0][0]
     )
-    etat = models.CharField(
-        max_length=20,
-        choices=Choix.choix[type]['etat'],
-        default=Choix.choix[type]['etat'][0][0]
-    )
+    #etat = models.CharField(
+    #   max_length=20,
+    #    choices=Choix.choix[type]['etat'],
+    #   default=Choix.choix[type]['etat'][0][0]
+    #)
     type_prix = models.CharField(
         max_length=20,
         choices=Choix.choix[type]['type_prix'],
@@ -588,7 +587,10 @@ class Panier(models.Model):
     def get_message_demande(self, user_id):
         message= 'Bonjour, je voudrais vous échanger : \n'
         for item in self.get_items_from_user(user_id):
-            message += "\t" + str(item.quantite) + "\t" + str(item.produit.nom_produit) +  " pour un total de " + str(item.total_prixEtunite) + "\n"
+            message += "\t" + str(item.quantite) + "\t" + str(item.produit.nom_produit)
+            if item.total_prixEtunite != 0:
+                message += " pour un total de " + str(item.total_prixEtunite)
+            message        += "\n"
         message += "Merci !"
         return message
 

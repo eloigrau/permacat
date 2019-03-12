@@ -7,18 +7,7 @@ Modifier
 {% endblock %}
 {% block content %}
 
-<div class="row-sm-12 row-lg-6 mx-auto">
-    <form action="" method="post">
-    {% csrf_token %}
-    <table>
-    {{ form.as_table }}
-    </table>
-        <div class="btn-group">
-            <button onclick="window.history.back();" class="btn btn-warning textcenter btn-lg" type="button">Annuler</button>
-                <button type="submit" class="btn btn-success textcenter btn-lg btn-block">Enregistrer les modifictaions</button>
-        </div>
-</form>
-</div>
+{% include 'form_template.html' %}
 
 {% endblock %}
 

@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% load app_filters %}
 {% block title %} {{ produit.nom_produit }} {% endblock %}
+{% block subtitle %}
+
+{% endblock %}
 
 {% block content %}
 
@@ -93,6 +96,7 @@
 						{{ produit.souscategorie }}
 					</td>
 				</tr>
+			{%comment%}
 				<tr>
 					<td class="nomProprieteProduit">
 						Etat / niveau :
@@ -101,6 +105,7 @@
 						{{ produit.etat }}
 					</td>
 				</tr>
+			{%endcomment%}
 				<tr>
 					<td class="nomProprieteProduit">
 						Prix :

@@ -9,14 +9,11 @@
             <button class="navbar-toggler navbar-btn" type="button" data-toggle="collapse" data-target="#navbarsActuel" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-        <a class="navbar-brand" href="{% url 'bienvenue' %}"> PermaCat</a>
+        <a class="navbar-brand" href="{% url 'bienvenue' %}"> Perma.Cat</a>
+
+        <div class="navbar-collapse  collapse justify-content-between  align-items-center w-100"  id="navbarsActuel">
 
         {% if user.is_authenticated %}
-        <div class="navbar-collapse  collapse justify-content-between  align-items-center w-100"  id="navbarsActuel">
-            <ul class="navbar-nav">
-
-            </ul>
-
             <ul class="navbar-nav mx-auto text-center justify-content-center">
 
                 <a role="button"  class="btn btn-success"  href="{% url 'marche' %}" aria-disabled="true">Marché</a>
@@ -78,7 +75,7 @@
                 <ul class="nav navbar-nav mr-auto navbar-left">
                     <li class="nav-item"><a class="nav-link" href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span>Se connecter</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'senregistrer' %}"><span class="glyphicon glyphicon-log-in"></span>S'inscrire</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'marche' %}"><span class="glyphicon glyphicon-log-in"></span>Marche public</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'marche' %}"><span class="glyphicon glyphicon-log-in"></span>Marché public</a></li>
 
                 </ul>
             <ul class="nav navbar-nav justify-content-center">
@@ -94,7 +91,6 @@
                     </li>
             </ul>
                 {% endif %}
-        </ul>
         </div>
 </nav>
 

@@ -124,6 +124,8 @@ def produit_proposer(request, type_produit):
         # type = type_form.save(commit=False)
         # type.proprietes = produit
         # type.save()
+
+        messages.info(request, 'Votre offre a été ajoutée !')
         return HttpResponseRedirect('/marche/detail/' + str(produit.id))
     return render(request, 'bourseLibre/produit_proposer.html', {"form": type_form, "bgcolor": bgcolor, "type_produit":type_produit})
 
@@ -131,7 +133,7 @@ def produit_proposer(request, type_produit):
 class ProduitModifier(UpdateView):
     model = Produit
     template_name_suffix = '_modifier'
-    fields = ['date_debut', 'date_expiration', 'nom_produit', 'description', 'prix', 'unite_prix', 'souscategorie', 'estUneOffre', 'estPublic', 'stock_courant','etat','type_prix']# 'souscategorie','etat','type_prix']
+    fields = ['date_debut', 'date_expiration', 'nom_produit', 'description', 'prix', 'unite_prix', 'souscategorie', 'estUneOffre', 'estPublic', 'type_prix']# 'souscategorie','etat','type_prix']
 
     widgets = {
         'date_debut': forms.DateInput(attrs={'type': "date"}),
