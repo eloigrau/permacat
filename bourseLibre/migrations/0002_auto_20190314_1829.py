@@ -31,12 +31,6 @@ class Migration(migrations.Migration):
             name='commune',
             field=models.CharField(blank=True, default='Perpignan', max_length=50, null=True),
         ),
-
-        migrations.AddField(
-            model_name='profil',
-            name='pseudo_june',
-            field=models.CharField(default=None, help_text='Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.', max_length=150, null=True, unique=True, verbose_name='pseudo Monnaie Libre'),
-        ),
         migrations.AlterField(
             model_name='produit',
             name='date_debut',
