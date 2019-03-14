@@ -544,7 +544,7 @@ def lireConversation(request, destinataire):
         message.save()
         return redirect(request.path)
 
-    return render(request, 'lireConversation.html', {'conversation': conversation, 'form': form, 'messages': messages, 'destinataire':destinataire})
+    return render(request, 'lireConversation.html', {'conversation': conversation, 'form': form, 'messages_echanges': messages, 'destinataire':destinataire})
 
 
 @login_required

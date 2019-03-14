@@ -65,6 +65,7 @@ urlpatterns = [
     # url(r'^list$', views.product_list),
     #     url(r'^list2/$', FilterView.as_view(model=Produit, filterset_class=ProductFilter,)),
     url(r'^marche/$', views.ListeProduit.as_view(),  name="marche"),
+    url(r'^marche/lister/$', views.ListeProduit.as_view(),  name="marche"),
     url(r'^marche/lister_offres/', login_required(views.ListeProduit_offres.as_view()),
         name="marche_offres"),
     url(r'^marche/lister_recherches/', login_required(views.ListeProduit_recherches.as_view()),

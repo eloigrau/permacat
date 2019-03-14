@@ -10,6 +10,9 @@ depuis le {{ conversation.date_creation|date:"SHORT_DATE_FORMAT"}}</p>
 {% block content %}
 
 <div>
+    <input type="hidden" name="Nouveau Message" value="{{ message }}">
+
+<div>
 <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="hidden" name="Nouveau Message" value="{{ message }}">
@@ -18,7 +21,7 @@ depuis le {{ conversation.date_creation|date:"SHORT_DATE_FORMAT"}}</p>
 </div>
 <hr>
 <div class="contenu conversation">
-{% for message in messages %}
+{% for message in messages_echanges %}
     <div class="row {% if message.auteur.username == destinataire %} msg-auteur  {%else%} msg-destinataire{%endif%}">
         <div class="col-sm-3 col-md-3 col-lg-2">
             <p class="infos  textepetit">{{ message.date_creation|date:"d/m/Y, G:i" }}</p>

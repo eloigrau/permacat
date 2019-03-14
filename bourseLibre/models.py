@@ -590,7 +590,7 @@ class Panier(models.Model):
             message += "\t" + str(item.quantite) + "\t" + str(item.produit.nom_produit)
             if item.total_prixEtunite != 0:
                 message += " pour un total de " + str(item.total_prixEtunite)
-            message        += "\n"
+            message        += ", \n"
         message += "Merci !"
         return message
 

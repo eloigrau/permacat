@@ -351,6 +351,12 @@ box-shadow: 0 10px 10px 0px grey;
     border-radius: 0.3em;
     border:1.5px grey solid;
 }
+
+a:link           { color: #000000 }  /* unvisited links       */
+a:visited        { color: #000000 }  /* visited links         */
+a:hover, a:focus { color: grey }    /* user hovers, or focus */
+a:active         { color: #000000 }  /* active links          */
+
 .commentaire{
     border-color: #333;=
     padding:10px;
