@@ -31,11 +31,7 @@ class Migration(migrations.Migration):
             name='commune',
             field=models.CharField(blank=True, default='Perpignan', max_length=50, null=True),
         ),
-        migrations.AddField(
-            model_name='produit',
-            name='estPublique',
-            field=models.BooleanField(default=False, verbose_name='Publique (cochez) ou Interne (décochez)'),
-        ),
+
         migrations.AddField(
             model_name='profil',
             name='pseudo_june',
