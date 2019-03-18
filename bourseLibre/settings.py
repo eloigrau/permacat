@@ -135,7 +135,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'bourseLibre.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-locall  = True
+locall  = False
 if locall:
     DATABASES = {
        'default': {
