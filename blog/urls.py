@@ -30,5 +30,6 @@ urlpatterns = [
 
     url(r'^articles/(?P<slug>[-\w]+)$', views.lireArticle, name='lireArticle'),
     url(r'^modifierArticle/(?P<slug>[-\w]+)$', login_required(views.ModifierArticle.as_view(), login_url='/auth/login/'), name='modifierArticle'),
+    url(r'^supprimerArticle/(?P<slug>[-\w]+)$', login_required(views.SupprimerArticle.as_view(), login_url='/auth/login/'), name='supprimerArticle'),
     url(r'^ajouterarticle/$', views.ajouterNouveauPost, name='ajouterNouvelArticle'),
 ]

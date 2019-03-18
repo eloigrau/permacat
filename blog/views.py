@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect, get_object_or_404
-# from django.db.models import Q
+from django.urls import reverse_lazy
 from .models import Article, Commentaire
 from .forms import ArticleForm, CommentForm, ArticleChangeForm
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView, UpdateView
-#from django.db.models import Q
+from django.views.generic import ListView, UpdateView, DeleteView
 
 def forum(request):
     """ Afficher tous les articles de notre blog """
@@ -27,6 +26,15 @@ class ModifierArticle(UpdateView):
     model = Article
     form_class = ArticleChangeForm
     template_name_suffix = '_modifier'
+#    fields = ['user','site_web','description', 'competences', 'adresse', 'avatar', 'inscrit_newsletter']
+
+    def get_object(self):
+        return Article.objects.get(slug=self.kwargs['slug'])
+
+class SupprimerArticle(DeleteView):
+    model = Article
+    success_url = reverse_lazy('marche')
+    template_name_suffix = '_supprimer'
 #    fields = ['user','site_web','description', 'competences', 'adresse', 'avatar', 'inscrit_newsletter']
 
     def get_object(self):

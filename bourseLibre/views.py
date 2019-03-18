@@ -4,20 +4,16 @@ Created on 25 mai 2017
 
 @author: tchenrezi
 '''
-from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect  # render_to_response,
+from django.shortcuts import HttpResponseRedirect, render, redirect#, render, get_object_or_404, redirect, render_to_response,
 
-from bourseLibre.forms import ProducteurChangeForm
 from .forms import Produit_aliment_CreationForm, Produit_vegetal_CreationForm, Produit_objet_CreationForm, \
     Produit_service_CreationForm, ContactForm, AdresseForm, ProfilCreationForm, MessageForm
 from .models import Profil, Produit, Adresse, Choix, Panier, Item, get_categorie_from_subcat, Conversation, Message, getOrCreateConversation
-# from django.db.models import Q
 from django.contrib.auth.models import User
-#from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.core.mail import mail_admins, send_mail
-# from itertools import chain
 from django.db.models import Q
 
 from django import forms
@@ -27,7 +23,6 @@ from blog.models import Article
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-from django.shortcuts import render, redirect
 
 #from django.core.exceptions import ObjectDoesNotExist
 

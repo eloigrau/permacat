@@ -32,7 +32,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-DEBUG_PROPAGATE_EXCEPTIONS = True
+#DEBUG_PROPAGATE_EXCEPTIONS = True
 
 if DEBUG:
     SECRET_KEY = 'aersdfgsfdgsdthhfhdjd'
@@ -135,12 +135,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'bourseLibre.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-locall  = False
+locall  = True
 if locall:
     DATABASES = {
        'default': {
           'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.db'),
+            'NAME': os.path.join(BASE_DIR, 'db.db'),
         }
     }
 #try:
