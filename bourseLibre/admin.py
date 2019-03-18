@@ -17,7 +17,7 @@ from .models import Profil
 
 class CustomUserAdmin(UserAdmin):
     add_form = ProfilCreationForm
-    form = ProducteurChangeForm
+    #form = ProducteurChangeForm
     model = Profil
     #list_display = ['email', 'username',]
 

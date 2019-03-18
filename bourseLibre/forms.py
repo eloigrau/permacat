@@ -16,7 +16,9 @@ class ProduitCreationForm(forms.ModelForm):
                   'stock_initial', 'unite_prix','prix',]
         widgets = {
             'date_debut': forms.DateInput(attrs={'type':"date"}, ),
-            'date_expiration': forms.DateInput(attrs={'type':"date"})
+            'date_expiration': forms.DateInput(attrs={'type':"date"}),
+            'estUneOffre': forms.RadioSelect(choices=('oui', 'non')),
+            'estPublique': forms.RadioSelect(choices=('oui', 'non')),
         }
 
 

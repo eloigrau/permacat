@@ -4,11 +4,11 @@ from django.utils.text import slugify
 import itertools
 from django.utils.timezone import now
 from django.utils.formats import localize
-
+from tinymce.widgets import TinyMCE
 
 class ArticleForm(forms.ModelForm):
-    contenu = forms.CharField(widget=forms.Textarea(attrs={'cols': 80, 'rows': 10}))
-
+    #contenu = forms.CharField(widget=forms.Textarea(attrs={'cols': 80, 'rows': 10}))
+    contenu = TinyMCE(attrs={'cols': 80, 'rows': 20})
     class Meta:
         model = Article
         fields = ['categorie', 'titre', 'contenu']

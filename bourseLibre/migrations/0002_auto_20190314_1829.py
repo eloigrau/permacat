@@ -56,4 +56,14 @@ class Migration(migrations.Migration):
             name='souscategorie',
             field=models.CharField(choices=[('graines', 'graines'), ('fleurs', 'fleurs'), ('plantes', 'plantes'), ('jeunes plans', 'jeunes plans'), ('purins', 'purins'), ('autre', 'autre')], default='g', max_length=20),
         ),
+        migrations.AddField(
+            model_name='produit',
+            name='estPublique',
+            field=models.BooleanField(default=False, verbose_name='Publique (cochez) ou Interne (décochez)'),
+        ),
+        migrations.AddField(
+            model_name='profil',
+            name='pseudo_june',
+            field=models.CharField(default=None, help_text='Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.', max_length=150, null=True, unique=True, verbose_name='pseudo Monnaie Libre'),
+        ),
     ]

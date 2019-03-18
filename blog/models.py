@@ -1,7 +1,8 @@
 from django.db import models
 from bourseLibre.models import Profil
 from django.urls import reverse
-from django.conf import settings
+#from django.conf import settings
+from tinymce.models import HTMLField
 
 # Create your models here.
 # class Post(models.Model):
@@ -21,7 +22,7 @@ class Article(models.Model):
     titre = models.CharField(max_length=100)
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
     slug = models.SlugField(max_length=100)
-    contenu = models.TextField(null=True)
+    contenu = HTMLField(null=True)
     date = models.DateTimeField(auto_now_add=True, auto_now=False, verbose_name="Date de parution")
     
     class Meta:
