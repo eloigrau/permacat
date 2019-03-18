@@ -1,7 +1,7 @@
 {% extends 'blog/baseBlog.html' %}
 {% block subtitle %}
 <div class="row">
-    <div class="col-md-1">
+    <div class="col-md-2">
         {%if article.auteur == request.user%}
             <a href="{% url 'blog:modifierArticle' slug=article.slug %}">
                <button type="button" class="btn btn-sm btn-warning">
@@ -16,7 +16,7 @@
     <div class="col-md-8">
         <p class="infos  textepetit">Dans: <a href="{% url 'blog:forum'  %}?categorie={{article.categorie}}">{{ article.get_categorie_display }}</a>, rédigé par <a href="{% url 'profil' article.auteur.id %}"> {{ article.auteur.username }}</a>, le {{ article.date|date:"DATE_FORMAT" }}</p>
     </div>
-    <div class="col-md-1">
+    <div class="col-md-2">
         <a  href="{% url 'blog:forum'  %}">
         <button class="btn btn-info btn-sm textright" >Retour au sommaire</button>
             </a>
