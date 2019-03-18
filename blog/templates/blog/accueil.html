@@ -24,7 +24,7 @@
     <a href="{% url 'blog:lireArticle' slug=article.slug %}">
         <h3>{{ article.titre }}</h3>
         <p class="infos"> Catégorie: {{ article.categorie }}, rédigé par {{ article.auteur }}, le {{ article.date|date:"DATE_FORMAT" }}</p>
-        <p class="debutArticle">{{ article.contenu|truncatechars:180 }}</p>
+        <p class="debutArticle">{{ article.contenu | safe |truncatechars:180 }}</p>
     </a>
     {% if not forloop.last %}
     <hr>

@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Permacat {% block title %} {% endblock %}</title>
+    <title>{% block title %} {% endblock %} - Permacat</title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"/>
 
     {%comment%}
@@ -56,12 +56,12 @@
                     <div class="row justify-content-sm-center">
                     <div class="col-sm-12 col-md-11 col-lg-10  textcenter">
                         {% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
                             {% block subtitle %}{% endblock %}
                         </div>
                     </div>
