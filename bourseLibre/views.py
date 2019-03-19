@@ -571,5 +571,6 @@ class ListeConversations(ListView):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
 
-        context['conversations'] = Conversation.objects.filter(Q(profil1__id=self.request.user.id) | Q(profil2__id=self.request.user.id))
+        context['conversations1'] = Conversation.objects.filter(profil1__id=self.request.user.id)
+        context['conversations2'] = Conversation.objects.filter(profil2__id=self.request.user.id)
         return context
