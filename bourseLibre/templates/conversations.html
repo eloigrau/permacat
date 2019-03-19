@@ -6,12 +6,14 @@
 
 <div class="card" >
   <ul class="list-group list-group-flush">
-        {% for conversation in conversations %}
-            <li class="list-group-item"><a href="{{conversation.get_absolute_url}}">{{ conversation.titre}}      </a></li>
+        {% for conversation in conversations1 %}
+            <li class="list-group-item"><a href="{{conversation.get_absolute_url}}">{{ conversation.auteur_2}}      </a></li>
        {% cycle '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
-        {% empty %}
-        <p>Vous n'avez pas encore commencé de conversation... envoyez des messages !</p>
         {% endfor %}
+    {% for conversation in conversations2 %} 
+    <li class="list-group-item"><a href="{{conversation.get_absolute_url}}">{{ conversation.auteur_1}} </a></li> 
+    {% cycle '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
+     {% endfor %}
   </ul>
 </div>
 
