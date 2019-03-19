@@ -49,7 +49,7 @@ class Choix():
         'type_prix': typePrixUnite,
     },
     'service': {
-        'souscategorie': ('jardinage',  'éducation', 'soins', 'bricolage', 'bien être', 'informatique', 'cuisine','batiment', ''mecanique', 'autre'),
+        'souscategorie': ('jardinage',  'éducation', 'santé', 'bricolage', 'informatique', 'cuisine','batiment', 'mécanique', 'autre'),
         #'etat': (('excellent', 'excellent'), ('bon', 'bon'), ('moyen', 'moyen'), ('naze', 'naze')),
         'type_prix': (('h', 'heure'), ('un', 'unité')),
     },
