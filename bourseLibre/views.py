@@ -54,8 +54,6 @@ def handler400(request, exception, template_name="400.html"):   #requete invalid
 
 
 
-
-
 def bienvenue(request):
     return render(request, 'bienvenue.html')
 
@@ -520,18 +518,18 @@ def lireConversation(request, destinataire):
     conversation = getOrCreateConversation(request.user.username, destinataire)
     messages = Message.objects.filter(conversation=conversation).order_by("-date_creation")
 
-    message = None
+    message_defaut = None
     id_panier = request.GET.get('panier')
     if id_panier:
         id_destinataire = Profil.objects.get(username=destinataire).id
-        message = Panier.objects.get(id=id_panier).get_message_demande(int(id_destinataire))
+        message_defaut = Panier.objects.get(id=id_panier).get_message_demande(int(id_destinataire))
 
     id_produit = request.GET.get('produit')
     if id_produit:
-        message = Produit.objects.get(id=id_produit).get_message_demande()
+        message_defaut = Produit.objects.get(id=id_produit).get_message_demande()
 
 
-    form = MessageForm(request.POST or None, message=message)
+    form = MessageForm(request.POST or None, message=message_defaut)
     if form.is_valid():
         message = form.save(commit=False)
         message.conversation = conversation
