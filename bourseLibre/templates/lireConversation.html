@@ -16,19 +16,19 @@ depuis le {{ conversation.date_creation|date:"SHORT_DATE_FORMAT"}}</p>
 <div>
 <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <input type="hidden" name="Nouveau Message" value="{{ message }}">
+    <input type="hidden" name="Nouveau Message" value="{{ message_defaut }}">
     {% include 'form_template.html' %}
 </form>
 </div>
 <hr>
 <div class="contenu conversation">
-{% for message in messages_echanges %}
+{% for mess in messages_echanges %}
     <div class="row {% if message.auteur.username == destinataire %} msg-auteur  {%else%} msg-destinataire{%endif%}">
         <div class="col-sm-3 col-md-3 col-lg-2">
-            <p class="infos  textepetit">{{ message.date_creation|date:"d/m/Y, G:i" }}</p>
+            <p class="infos  textepetit">{{ mess.date_creation|date:"d/m/Y, G:i" }}</p>
         </div>
         <div class=" col-sm-9 col-md-9 col-lg-6 message ">
-                <p>{{ message.message }}</p>
+                <p>{{ mess.message }}</p>
         </div>
     </div>
 {% endfor %}
