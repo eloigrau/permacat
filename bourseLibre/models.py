@@ -661,6 +661,13 @@ class Conversation(models.Model):
         return self.__str__()
 
     titre = property(titre)
+    
+    def auteur_1(self):
+        return "Conversation avec " + self.profil1.username 
+    titre = property(auteur_1)
+    def auteur_2(self):
+        return "Conversation avec " + self.profil2.username 
+    titre = property(auteur_2)
 
     def messages(self):
         return self.__str__()
