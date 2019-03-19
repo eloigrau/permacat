@@ -5,10 +5,11 @@
         <div class="card d-md-flex textcenter offre2" style="background-color:{{ produit.couleur }}; border-color:{%if produit.estUneOffre == True %} lightyellow {%else%} 	lightcoral{%endif%}">
             <div class="card-header offreentete justify-content-center">
                     <div class="col-xs-5 ">
-                         {{produit.user.username}} ({% if produit.user.adresse.commune%}{{produit.user.adresse.commune|truncatechars:10}}{%else%}{{produit.user.adresse.code_postal}}{%endif%})
+                         {{produit.user.username}} ({% if produit.user.adresse.commune%}{{produit.user.adresse.commune|truncatechars:16}}{%else%}{{produit.user.adresse.code_postal}}{%endif%})
                     </div>
                     <div class="col-xs-2">
-                         <span class="badge {% if produit.estUneOffre%}badge-warning{%else%} badge-danger {%endif%}">{% if produit.estUneOffre%}Offre{%else%} Demande {%endif%}
+                         <span class="badge {% if produit.estUneOffre%}badge-warning{%else%} badge-danger {%endif%}">{% if produit.estUneOffre%}Offre{%else%} Demande {%endif%} 
+				 {%if produit.estPublique%} publique {%endif%}
 		                </span>
                     </div>
                     <div class="col-xs-5">
