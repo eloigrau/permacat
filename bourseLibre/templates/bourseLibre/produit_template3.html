@@ -24,7 +24,7 @@
                 {%endcomment%}
                 <h4 class="card-title">{{ produit.nom_produit|truncatechars:25 }} </h4>
                   <p class="card-text text-align-left">
-                    {{ produit.description|truncatewords:10 }}
+                    {{ produit.description|truncatewords:18 }}
                   </p>
                   <p class="card-text">
                     {% if produit.date_debut and produit.date_expiration %}
