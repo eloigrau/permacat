@@ -559,7 +559,7 @@ def lireConversation_2noms(request, destinataire1, destinataire2):
     else:
         raise Exception('l\'utilisateur qui veut acceder a une conversation qui ne le concerne pas')
 
-    return render(request, 'lireConversation.html', {'conversation': conversation, 'form': form, 'messages': messages, 'destinataire':destinataire})
+    return render(request, 'lireConversation.html', {'conversation': conversation, 'form': form, 'messages_echanges': messages, 'destinataire':destinataire})
 
 class ListeConversations(ListView):
     model = Conversation
