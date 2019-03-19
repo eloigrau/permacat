@@ -537,7 +537,7 @@ class Panier(models.Model):
             if quantite == 0:
                 item.delete()
             else:
-                item.quantite =  decimal.Decimal(quantite).quantize(decimal.Decimal('.001'), rounding=decimal.ROUND_HALF_UP)
+                item.quantite =  decimal.Decimal(quantite).quantize(decimal.Decimal('.01'), rounding=decimal.ROUND_HALF_UP)
                 item.save()
 
     def total_quantite(self):
