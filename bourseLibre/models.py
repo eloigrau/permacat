@@ -44,17 +44,17 @@ class Choix():
         'type_prix': typePrixUnite,
     },
     'vegetal': {
-        'souscategorie': ('graines', 'fleurs', 'plantes','jeunes plans', 'purins', 'autre', ),
+        'souscategorie': ('plantes','graines', 'fleurs', 'jeunes plants', 'purins', 'autre', ),
         #'etat': (('frais', 'frais'), ('séché', 'séché')),
         'type_prix': typePrixUnite,
     },
     'service': {
-        'souscategorie': ('jardinage', 'cuisine', 'éducation', 'soins', 'bien être', 'informatique', 'batiment', 'mecanique', 'autre'),
+        'souscategorie': ('jardinage',  'éducation', 'soins', 'bricolage', 'bien être', 'informatique', 'cuisine','batiment', ''mecanique', 'autre'),
         #'etat': (('excellent', 'excellent'), ('bon', 'bon'), ('moyen', 'moyen'), ('naze', 'naze')),
         'type_prix': (('h', 'heure'), ('un', 'unité')),
     },
     'objet': {
-        'souscategorie': ('jardinage', 'outillage', 'vehicule', 'multimedia', 'mobilier','construction','autre'),
+        'souscategorie': ('jardinage', 'outillage', 'vehicule', 'multimedia', 'mobilier','construction','instrument','autre'),
         #'etat': (('excellent', 'excellent'), ('bon', 'bon'), ('moyen', 'moyen'), ('mauvais', 'mauvais')),
         'type_prix': typePrixUnite,
     },
