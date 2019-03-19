@@ -23,8 +23,8 @@
              <img class="card-img-top" alt="Bootstrap Image Preview" src="http://via.placeholder.com/200x200/" />
                 {%endcomment%}
                 <h4 class="card-title">{{ produit.nom_produit|truncatechars:25 }} </h4>
-                  <p class="card-text text-align-left" style="height:180px">
-                    {{ produit.description|truncatewords:18 }}
+                  <p class="card-text text-align-left" style="height:140px">
+                    {{ produit.description|truncatewords:15 }}
                   </p>
                   <p class="card-text">
                     {% if produit.date_debut and produit.date_expiration %}
