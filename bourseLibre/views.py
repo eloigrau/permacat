@@ -229,10 +229,10 @@ def profil_contact(request, user_id):
             sujet,
             message,
             request.user.email,
-            recepteur.user.email,
+            recepteur.email,
             fail_silently=False,
             )
-        return render(request, 'message_envoye.html', {'sujet': form.cleaned_data['sujet'], 'message':message, 'envoyeur':request.user.username + "(" + request.user.email + ")", "destinataire":recepteur.user.username + "(" +recepteur.user.email+ ")"})
+        return render(request, 'message_envoye.html', {'sujet': form.cleaned_data['sujet'], 'message':message, 'envoyeur':request.user.username + "(" + request.uer.email + ")", "destinataire":recepteur.user.username + "(" +recepteur.user.email+ ")"})
         # if renvoi:
         #     mess = "message envoyé a la bourse libre : \\n"
         #     send_mail( sujet,mess + message, envoyeur, to=[envoyeur], fail_silently=False,)
