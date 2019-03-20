@@ -110,7 +110,7 @@ class Adresse(models.Model):
         address += self.code_postal
         if self.commune:
             address += " " + self.commune
-        addresse += ", " + self.pays
+        address += ", " + self.pays
         api_key = "AIzaSyCmGcPj0ti_7aEagETrbJyHPbE3U6gVfSA"
         api_response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(address, api_key))
         api_response_dict = api_response.json()
