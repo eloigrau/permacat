@@ -95,7 +95,7 @@ class Adresse(models.Model):
         return reverse_lazy('profil_courant')
 
     def __str__(self):
-        if self.cmmune:
+        if self.commune:
             return self.commune
         else:
             return self.code_postal
