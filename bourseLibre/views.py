@@ -196,7 +196,7 @@ def profil_inconnu(request):
 
 # @login_required
 def profil_list(request):
-    profils = Profil.objects.all()
+    profils = Profil.objects.all().order_by('username')
     return render(request, 'cooperateurs.html', {'profils':profils, } )
 
 # @login_required
