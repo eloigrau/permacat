@@ -94,11 +94,23 @@ class Adresse(models.Model):
     def get_absolute_url(self):
         return reverse_lazy('profil_courant')
 
+    def __str__(self):
+        if self.cmmune:
+            return self.commune
+        else:
+            return self.code_postal
+
+    def __unicode__(self):
+        return self.__str__()
+    
     def set_latlon_from_adresse(self):
         address = ''
         if self.rue:
             address += self.rue + ", "
-        address += self.code_postal + ", " + self.pays
+        address += self.code_postal + 
+        if self.commune:
+            address += self.commune
+        addresse += ", " + self.pays
         api_key = "AIzaSyCmGcPj0ti_7aEagETrbJyHPbE3U6gVfSA"
         api_response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(address, api_key))
         api_response_dict = api_response.json()
