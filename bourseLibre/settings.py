@@ -36,10 +36,8 @@ DEBUG = False
 
 if DEBUG:
     SECRET_KEY = 'aersdfgsfdgsdthhfhdjd'
-    GAPI_KEY = "AIzaSyCmGcPj0ti_7aEagETrbJyHPbE3U6gVfSA"
 else:
     SECRET_KEY = os.environ['SECRET_KEY']
-    GAPI_KEY = os.environ['GAPI_KEY']
 
 ALLOWED_HOSTS = ['127.0.0.1', 'permacat.herokuapp.com', 'www.perma.cat']
 

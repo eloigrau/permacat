@@ -20,6 +20,7 @@ from django.utils.translation import ugettext_lazy as _
 #from django.contrib.contenttypes.models import ContentType
 import decimal
 
+import os
 import requests
 from stdimage import StdImageField
 
@@ -111,7 +112,7 @@ class Adresse(models.Model):
         if self.commune:
             address += " " + self.commune
         address += ", " + self.pays
-        api_key = "AIzaSyCmGcPj0ti_7aEagETrbJyHPbE3U6gVfSA"
+        api_key = os.environ["GAPI_KEY"]
         api_response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(address, api_key))
         api_response_dict = api_response.json()
 
