@@ -19,6 +19,9 @@ body {
 .textmiddle{
     vertical-align:middle;
 }
+.textleft{
+    vertical-align:middle;
+}
 
 .textitalique{
 font-style: italic;

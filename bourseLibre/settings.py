@@ -214,7 +214,9 @@ LOGOUT_REDIRECT_URL = '/'
 INTERNAL_IPS = ['127.0.0.1']
 
 ########################
-
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 # Email settings
 SERVER_EMAIL = 'permacat66@gmail.com'
