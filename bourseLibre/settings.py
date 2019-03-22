@@ -32,13 +32,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
+locall  = False
 #DEBUG_PROPAGATE_EXCEPTIONS = True
 
 if DEBUG:
     SECRET_KEY = 'aersdfgsfdgsdvcbvcbgbgfthhfhdjd'
 else:
-    #SECRET_KEY = os.environ['SECRET_KEY']
-    SECRET_KEY = 'aersdfgsfdgsdvcbvcbgbgfthhfhdjd'
+    SECRET_KEY = os.environ['SECRET_KEY']
+    #SECRET_KEY = 'aersdfgsfdgsdvcbvcbgbgfthhfhdjd'
 
 ALLOWED_HOSTS = ['permacat.herokuapp.com', 'www.perma.cat']
 
@@ -136,7 +137,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'bourseLibre.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-locall  = True
 if locall:
     DATABASES = {
        'default': {
