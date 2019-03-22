@@ -20,7 +20,7 @@ body {
     vertical-align:middle;
 }
 .textleft{
-    vertical-align:middle;
+    text-align: left;
 }
 
 .textitalique{
