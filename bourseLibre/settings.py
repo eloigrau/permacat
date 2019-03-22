@@ -31,7 +31,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 #DEBUG_PROPAGATE_EXCEPTIONS = True
 
 if DEBUG:
@@ -39,7 +39,7 @@ if DEBUG:
 else:
     SECRET_KEY = os.environ['SECRET_KEY']
 
-ALLOWED_HOSTS = ['127.0.0.1', 'permacat.herokuapp.com', 'www.perma.cat']
+ALLOWED_HOSTS = ['permacat.herokuapp.com', 'www.perma.cat']
 
 # Application definition
 
