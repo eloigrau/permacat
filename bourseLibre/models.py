@@ -134,7 +134,7 @@ class Adresse(models.Model):
 
 class Profil(AbstractUser):
 
-    site_web = models.URLField(blank=True)
+    site_web = models.URLField(null=True, blank=True)
     description = models.TextField(null=True, default="")
     competences = models.TextField(null=True, default="")
     adresse = models.OneToOneField(Adresse, on_delete=models.CASCADE)

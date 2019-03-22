@@ -128,7 +128,7 @@ class ProfilCreationForm(UserCreationForm):
     username = forms.CharField(label="Pseudonyme*", help_text="Attention les majuscules sont importantes...")
     description = forms.CharField(label="Description*", help_text="Une description de vous même", widget=forms.Textarea)
     competences = forms.CharField(label="Savoir-faire*", help_text="Par exemple: electricien, bouturage, aromatherapie, etc...", widget=forms.Textarea)
-    site_web = forms.CharField(label="Site web", initial="http://www.", widget=forms.Textarea)
+    site_web = forms.CharField(label="Site web", help_text="http://")
 
     class Meta(UserCreationForm):
         model = Profil
