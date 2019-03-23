@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profil, Adresse, Produit, Produit_vegetal, Produit_objet, Produit_service, Produit_aliment, Panier, Item, Message, Conversation
+from .models import Profil, Adresse, Produit, Produit_vegetal, Produit_objet, Produit_service, Produit_aliment, Panier, Item, Message, MessageGeneral, Conversation
 from blog.models import Article
 # -*- coding: utf-8 -*-
 from django.contrib import admin
