@@ -98,7 +98,7 @@ urlpatterns = [
     url(r'^conversations/(?P<destinataire1>[-\w]+)/(?P<destinataire2>[-\w]+)$', login_required(views.lireConversation_2noms), name='lireConversation_2noms'),
     url(r'^conversations/$', login_required(views.ListeConversations.as_view()), name='conversations'),
     url(r'^tinymce/', include('tinymce.urls')),
-    url(r'^conversations/agora/$', login_required(views.lireDiscussion), name='lireDiscussion'),
+    url(r'^agora/$', login_required(views.lireDiscussion), name='lireDiscussion'),
 ]
 
 from django.conf.urls.static import static
