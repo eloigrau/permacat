@@ -26,7 +26,6 @@ urlpatterns = [
     #     url(r'^$', ListView.as_view(model=Article,), name='forum2', template_name="forum.html"),
     url(r'^acceuil/$', views.acceuil, name="forum"),
     url(r'^forum/$', login_required(views.ListeArticles.as_view(), login_url='/auth/login/'), name="index"),
-    url(r'^agora/$', views.agora, name="agora"),
     # url(r'^newPost/', views.ajouterNouveauPost, name='ajouterNouveauPost'),
     # url(r'^article/(?P<slug>.+)$', views.lire, name='lire'),
 
