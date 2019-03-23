@@ -367,6 +367,12 @@ a:active         { color: #000000 }  /* active links          */
     border-radius: 0.3em;
 }
 
+.conversation{
+	overflow: auto;
+	width: 100%;
+	height: 600px;
+}
+
 .card-footer{
 position:absolute;
   bottom:0;
@@ -417,7 +423,7 @@ td.nomProprieteProduit{
   //text-decoration: none;
   //font-size: 17px;
 }
-
+c
 .topnav a:hover {
   //background-color: #f0f0f5;
 }
