@@ -29,8 +29,6 @@
 
   {% for field in form.visible_fields %}
     <div class="form-group input-group textcenter" >
-      {{ field.label_tag }}
-
       {% if form.is_bound %}
         {% if field.errors %}
           {% render_field field class="form-control invalid" placeholder=field.label %}
