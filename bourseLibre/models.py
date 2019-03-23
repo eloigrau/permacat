@@ -483,6 +483,10 @@ class Panier(models.Model):
             self.date_creation = now()
         return super(Panier, self).save(*args, **kwargs)
 
+    
+    def __unicode__(self):
+        return u'panier de %s' % (self.user.username) 
+    
     class Meta:
         verbose_name = _('panier')
         verbose_name_plural = _('paniers')
@@ -630,7 +634,7 @@ class Item(models.Model):
         ordering = ('panier',)
 
     def __unicode__(self):
-        return u'%s units of %s' % (self.quantite, self.produit.nom_produit)
+        return u'%s de %s' % (self.quantite, self.produit.nom_produit)
 
     def total_prix(self):
         if self.produit.unite_prix == 'don':
@@ -668,7 +672,7 @@ class Conversation(models.Model):
         ordering = ('date_creation',)
 
     def __str__(self):
-        return "Conversation de " + self.profil1.username + " à " + self.profil2.username
+        return "Conversation entre " + self.profil1.username + " et " + self.profil2.username
 
     def titre(self):
         return self.__str__()
@@ -704,6 +708,15 @@ class Message(models.Model):
 
     def __unicode__(self):
         return self.message
+
+class MessageGeneral(models.Model):
+    message = models.TextField(null=False, blank=False)
+    auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
+    date_creation = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.message
+
 
 
 
