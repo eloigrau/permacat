@@ -52,6 +52,7 @@ admin.site.register(Produit_aliment)
 admin.site.register(Panier)
 admin.site.register(Item)
 admin.site.register(Message)
+admin.site.register(MessageGeneral)
 
 admin.site.register(Conversation)
 admin.site.register(Article)
