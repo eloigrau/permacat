@@ -44,11 +44,12 @@
     </div>
 </div>
     <div class="col-md-3 textcenter">
-        <a href="{% url 'blog:ajouterNouvelArticle' %}">
-            <button type="button" class="btn btn-success">
+        <button type="button" class="btn btn-success" href="{% url 'blog:ajouterNouvelArticle' %}">
                 <span class="glyphicon glyphicon-plus"></span>&nbsp; Ajouter un article
             </button>
-        </a>
+  <button type="button" class="btn btn-primary" href="{% url 'lireDiscussion' %}">
+                 Agora
+            </button>
     </div>
 </div>
 {%endblock%}
