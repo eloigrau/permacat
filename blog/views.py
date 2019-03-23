@@ -12,7 +12,7 @@ def forum(request):
     return render(request, 'blog/forum.html', {'derniers_articles': articles})
 
 def acceuil(request):
-    return render(request, 'blog/acceuil.html'})
+    return render(request, 'blog/acceuil.html')
 
 
 @login_required(login_url='/auth/login/')
