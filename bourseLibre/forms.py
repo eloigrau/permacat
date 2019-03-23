@@ -247,3 +247,14 @@ class MessageForm(forms.ModelForm):
          super(MessageForm, self).__init__(request, *args, **kwargs)
          if message:
              self.fields['message'].initial = message
+
+class MessageGeneralForm(forms.ModelForm):
+
+    class Meta:
+        model = MessageGeneral
+        exclude = ['auteur']
+
+        widgets = {
+                'message': forms.Textarea(attrs={'rows': 1}),
+            }
+
