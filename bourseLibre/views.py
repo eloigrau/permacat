@@ -7,7 +7,7 @@ Created on 25 mai 2017
 from django.shortcuts import HttpResponseRedirect, render, redirect#, render, get_object_or_404, redirect, render_to_response,
 
 from .forms import Produit_aliment_CreationForm, Produit_vegetal_CreationForm, Produit_objet_CreationForm, \
-    Produit_service_CreationForm, ContactForm, AdresseForm, ProfilCreationForm, MessageForm
+    Produit_service_CreationForm, ContactForm, AdresseForm, ProfilCreationForm, MessageForm, MessageGeneralForm
 from .models import Profil, Produit, Adresse, Choix, Panier, Item, get_categorie_from_subcat, Conversation, Message, MessageGeneral, getOrCreateConversation
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
