@@ -33,17 +33,17 @@
 
       {% if form.is_bound %}
         {% if field.errors %}
-          {% render_field field class="form-control invalid" %}
+          {% render_field field class="form-control invalid" placeholder=field.label %}
           {% for error in field.errors %}
             <div class="invalid-feedback">
               {{ error }}
             </div>
           {% endfor %}
         {% else %}
-          {% render_field field class="form-control valid" %}
+          {% render_field field class="form-control valid" placeholder=field.label %}
         {% endif %}
       {% else %}
-        {% render_field field class="form-control" %}
+        {% render_field field class="form-control" placeholder=field.label %}
       {% endif %}
 
       {% if field.help_text %}
