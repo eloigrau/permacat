@@ -2,37 +2,30 @@
 {% block subtitle %}
 
 <div class="row">
-    <div class="col ">
-        Bienvenue sur le blog
-    </div>
-
-    {% if user.is_superuser %}
-    <div class="col textright">
-        <a href="{% url 'blog:ajouterNouvelArticle' %}">
-            <button type="button" class="btn btn-success">
-                <span class="glyphicon glyphicon-plus"></span>&nbsp; Ecrire un post
+    <div class="col textcenter">
+       <h3> Bienvenue sur le forum</h3>
+        <p>Discutons ensemble dans l'
+        <a href="{% url 'lireDiscussion' %}">
+         <button type="button" class="btn btn-success">
+                 Agora
+            </button></a>
+         ou bien venez consulter et réagir aux <a href="{% url 'blog:index' %}">
+        <button type="button" class="btn btn-success" >
+               dernières annonces
             </button>
-        </a>
+            </a>
+            </p>
     </div>
-
-    {% endif %}
+   </div> <
+<div class="row justify-content-center">
+             <div class="col-md-3 textcenter">
+        
+        
+    </div>
 </div>
 {% endblock %}
 {% block content %}
-{% for article in derniers_articles %}
-<div class="article">
-    <a href="{% url 'blog:lireArticle' slug=article.slug %}">
-        <h3>{{ article.titre }}</h3>
-        <p class="infos"> Catégorie: {{ article.categorie }}, rédigé par {{ article.auteur }}, le {{ article.date|date:"DATE_FORMAT" }}</p>
-        <p class="debutArticle">{{ article.contenu | safe |truncatechars:180 }}</p>
-    </a>
-    {% if not forloop.last %}
-    <hr>
-    {%endif%}
-</div>
-{% empty %}
-<p>Aucun article.</p>
-{% endfor %}
+
 
 {% endblock %}
 
