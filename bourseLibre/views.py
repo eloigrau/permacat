@@ -567,7 +567,8 @@ def lireDiscussion(request, ):
     form = MessageGeneralForm(request.POST or None) 
     if form.is_valid(): 
         message = form.save(commit=False) 
-        message.auteur = request.user message.save() 
+        message.auteur = request.user 
+        message.save() 
         return redirect(request.path) 
     return render(request, 'lireDiscussion.html', {'form': form, 'messages_echanges': messages})
 
