@@ -11,6 +11,9 @@ def forum(request):
     articles = Article.objects.all().order_by('-date')  # Nous sélectionnons tous nos articles
     return render(request, 'blog/forum.html', {'derniers_articles': articles})
 
+def acceuil(request):
+    return render(request, 'blog/acceuil.html'})
+
 
 @login_required(login_url='/auth/login/')
 def ajouterNouveauPost(request):
