@@ -1,1 +1,37 @@
-test
+{% extends 'base.html' %}
+{%block message%}{%endblock%}
+{% block subtitle %}
+
+<h3>Agora</h3>
+{% endblock %}
+{% block content %}
+
+<div>
+    <input type="hidden" name="Nouveau Message" value="{{ message }}">
+
+<div>
+<form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="Nouveau Message" value="{{ message_defaut }}">
+    {% include 'form_template.html' %}
+</form>
+</div>
+<hr>
+<div class="contenu conversation">
+{% for mess in messages_echanges %}
+    <div class="row msg-auteur ">
+        <div class="col-sm-3 col-md-3 col-lg-2">
+            <p class="infos  textepetit">{{mess.auteur }}, le: {{ mess.date_creation|date:"d/m/Y, G:i" }}</p>
+        </div>
+        <div class=" col-sm-9 col-md-9 col-lg-6 message ">
+                <p>{{ mess.message }}</p>
+        </div>
+    </div>
+{% endfor %}
+</ol>
+</div>
+
+
+
+{% endblock %}
+
