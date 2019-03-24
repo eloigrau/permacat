@@ -357,7 +357,7 @@ class ListeProduit(ListView):
         if not self.request.user.is_authenticated:
             qs = qs.filter(estPublique=True)
         params = dict(self.request.GET.items())
-
+        
         if "producteur" in params:
             qs = qs.filter(user__username=params['producteur'])
         if "categorie" in params:
@@ -375,6 +375,10 @@ class ListeProduit(ListView):
             qs = qs.filter(unite_prix='don')
         if "offre" in params:
             qs = qs.filter(estUneOffre=params['offre'])
+
+        if "distance" in params:
+            q_ids = [o.id for o in qs if o.distance(request.user.id) < params['distance']] 
+            qs = qs.filter(id__in=q_ids)
 
         res = qs.order_by('-date_creation', 'categorie', 'user')
         if "ordre" in params:
