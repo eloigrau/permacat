@@ -176,8 +176,8 @@ class Profil(AbstractUser):
     def get_absolute_url(self):
         return reverse('profil_courant')#, kwargs={'user_id':self.id})
 
-    def getDistanceCarree(self, profil):
-        degtorad=math.PI/180
+    def getDistance(self, profil):
+        degtorad=3.141592654/180
         x1 = float(self.adresse.latitude)*degtorad
         y1 = float(self.adresse.longitude)*degtorad
         x2 = float(profil.adresse.latitude)*degtorad
