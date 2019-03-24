@@ -176,7 +176,12 @@ class Profil(AbstractUser):
     def get_absolute_url(self):
         return reverse('profil_courant')#, kwargs={'user_id':self.id})
 
-
+    def getDistanceCarree(self, profil):
+        x1 = float(self.adresse.latitude)
+        y1 = float(self.adresse.longitude)
+        x2 = float(profil.adresse.latitude)
+        y2 = float(profil.adresse.longitude)
+        return (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2)
 
 @receiver(post_save, sender=Profil)
 def create_user_profile(sender, instance, created, **kwargs):
