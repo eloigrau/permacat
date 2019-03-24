@@ -401,6 +401,7 @@ class ListeProduit(ListView):
         # context['producteur_list'] = Profil.objects.values_list('user__username', flat=True).distinct()
         context['choixPossibles'] = Choix.choix
         context['ordreTriPossible'] = Choix.ordreTri
+        context['distancesPossible'] = Choix.distances
         context['producteur_list'] = Profil.objects.all()
         context['typeFiltre'] = "aucun"
         # context['form'] = self.form
