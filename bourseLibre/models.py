@@ -17,8 +17,8 @@ from django.contrib.auth.models import AbstractUser
 from django.template.defaultfilters import slugify
 
 from django.utils.translation import ugettext_lazy as _
-#from django.contrib.contenttypes.models import ContentType
-import decimal
+#from django.contrib., contenttypes.models import ContentType
+import decimal, math
 
 import os
 import requests
@@ -177,12 +177,15 @@ class Profil(AbstractUser):
         return reverse('profil_courant')#, kwargs={'user_id':self.id})
 
     def getDistanceCarree(self, profil):
-        x1 = float(self.adresse.latitude)
-        y1 = float(self.adresse.longitude)
-        x2 = float(profil.adresse.latitude)
-        y2 = float(profil.adresse.longitude)
-        return (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2)
-
+        degtorad=math.PI/180
+        x1 = float(self.adresse.latitude)*degtorad
+        y1 = float(self.adresse.longitude)*degtorad
+        x2 = float(profil.adresse.latitude)*degtorad
+        y2 = float(profil.adresse.longitude)*degtorad
+        x = (y2-y1) * math.cos((x1+x2)/2)
+        y = (x2-x1)
+        return math.sqrt(x*x + y*y) * 6371
+    
 @receiver(post_save, sender=Profil)
 def create_user_profile(sender, instance, created, **kwargs):
     if created and instance.is_superuser:
