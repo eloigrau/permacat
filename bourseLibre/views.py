@@ -377,7 +377,8 @@ class ListeProduit(ListView):
             qs = qs.filter(estUneOffre=params['offre'])
 
         if "distance" in params:
-            q_ids = [o.id for o in qs if o.distance(request.user.id) < params['distance']] 
+            distCarree = float(params['distance'])*float(params['distance'])
+            q_ids = [o.id for o in qs if o.getDistanceCarree(request.user) < distCarree] 
             qs = qs.filter(id__in=q_ids)
 
         res = qs.order_by('-date_creation', 'categorie', 'user')
