@@ -201,7 +201,7 @@ def create_user_profile(sender, instance, created, **kwargs):
 class Produit(models.Model):  # , BaseProduct):
     user = models.ForeignKey(Profil, on_delete=models.CASCADE,)
     date_creation = models.DateTimeField(verbose_name="Date de parution", editable=False)
-    date_debut = models.DateField(verbose_name="Débute le : (mm/jj/an)", null=True, blank=True)
+    date_debut = models.DateField(verbose_name="Débute le : (jj/mm/an)", null=True, blank=True)
     #proposed_renewal_date = datetime.date.today() + datetime.timedelta(weeks=3)
     date_expiration = models.DateField(verbose_name="Expire le : (jj/mm/an)", blank=True, null=True, )#default=proposed_renewal_date, )
     nom_produit = models.CharField(max_length=250)
