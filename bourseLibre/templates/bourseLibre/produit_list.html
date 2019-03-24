@@ -98,7 +98,7 @@
                    Trier par...
            </button>
                 <div class="dropdown-menu"  aria-labelledby="menuOrdreTri"  id="idOrdreTri">
-                {% for ordre in ordreTriPossible %}
+                {% for ordre in ordreTriPossibles %}
                  <a class="dropdown-item"  href="?{{ request.GET.urlencode }}&ordre={{ordre}}">{{ordre}}</a>
                     {% endfor %}
                 </div>
@@ -108,8 +108,8 @@
                    Rayon...
            </button>
                 <div class="dropdown-menu"  aria-labelledby="menuDistance"  id="idDistance">
-                {% for distance in distancePossible %}
-                 <a class="dropdown-item"  href="?{{ request.GET.urlencode }}&distance={{distance}}">{{distance}}</a>
+                {% for distance in distancePossibles %}
+                 <a class="dropdown-item"  href="?{{ request.GET.urlencode }}&distance={{distance}}">{{distance}} km</a>
                     {% endfor %}
                 </div>
             </li>
