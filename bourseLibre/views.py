@@ -360,7 +360,7 @@ class ListeProduit(ListView):
         
         if "distance" in params:
             distCarree = float(params['distance'])*float(params['distance'])
-            listProducteurs = [p for p in Profil.objects.all() if p.getDistanceCarree(request.user) < distCarree] 
+            listProducteurs = [p for p in Profil.objects.all() if p.getDistanceCarree(self.request.user) < distCarree] 
             qs = qs.filter(producteur__in=listProducteurs)
 
         if "producteur" in params:
