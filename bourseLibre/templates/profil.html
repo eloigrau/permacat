@@ -153,6 +153,11 @@
         <td style="width:200px">lat/lon :</td>
         <td>{{ user.adresse.latitude }} / {{ user.adresse.longitude }} </td>
     </tr>
+          {% if distance %}
+          <tr>
+        <td style="width:200px">Distance :</td>
+        <td>{{distance }}
+    </tr>{% endif %}
         </tbody>
     </table>
 </div>
