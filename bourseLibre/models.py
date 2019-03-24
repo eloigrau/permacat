@@ -63,7 +63,7 @@ class Choix():
     monnaies = (('don', 'don'), ('troc', 'troc'), ('G1', 'G1'), ('soudaqui', 'soudaqui'), ('SEL', 'SEL'), ('JEU', 'JEU'),  ('heuresT', 'heuresT'),  ('Autre', 'A negocier'))
 
     ordreTri = ['date', 'categorie', 'producteur']
-    distances = [5, 10, 20, 30, 50, 100]
+    distances = ['5', '10', '20', '30', '50', '100']
 
 
 
