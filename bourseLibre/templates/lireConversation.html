@@ -23,7 +23,7 @@ depuis le {{ conversation.date_creation|date:"SHORT_DATE_FORMAT"}}</p>
 <hr>
 <div class="contenu conversation">
 {% for mess in messages_echanges %}
-    <div class="row {% if message.auteur.username == destinataire %} msg-auteur  {%else%} msg-destinataire{%endif%}">
+    <div class="row {% if message.auteur.id == request.user.id %} msg-auteur  {%else%} msg-destinataire{%endif%}">
         <div class="col-sm-3 col-md-3 col-lg-2">
             <p class="infos  textepetit">{{ mess.date_creation|date:"d/m/Y, G:i" }}</p>
         </div>
