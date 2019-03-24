@@ -15,6 +15,7 @@ from django.views.generic import ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.core.mail import mail_admins, send_mail
 from django.db.models import Q
+import math
 
 from django import forms
 
@@ -178,7 +179,7 @@ def profil_courant(request, ):
 def profil(request, user_id):
     try:
         user = Profil.objects.get(id=user_id)
-        distance = sqrt(user.getDistanceCarree(request.user))
+        distance = math.sqrt(user.getDistanceCarree(request.user))
         return render(request, 'profil.html', {'user': user, 'distance':distance})
     except User.DoesNotExist:
             return render(request, 'profil_inconnu.html', {'userid': user_id})
@@ -187,7 +188,7 @@ def profil(request, user_id):
 def profil_nom(request, user_username):
     try:
         user = Profil.objects.get(username=user_username)
-        distance = sqrt(user.getDistanceCarree(request.user))
+        distance = math.sqrt(user.getDistanceCarree(request.user))
         return render(request, 'profil.html', {'user': user, 'distance':distance})
     except User.DoesNotExist:
         return render(request, 'profil_inconnu.html', {'userid': user_username})
