@@ -103,6 +103,17 @@
                     {% endfor %}
                 </div>
             </li>
+<li class="nav-item dropdown active">
+                <button class="btn dropdown-toggle btn-block btn-light" type="button" id="menuDistance" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   Rayon...
+           </button>
+                <div class="dropdown-menu"  aria-labelledby="menuDistance"  id="idDistance">
+                {% for distance in distancePossible %}
+                 <a class="dropdown-item"  href="?{{ request.GET.urlencode }}&distance={{distance}}">{{distance}}</a>
+                    {% endfor %}
+                </div>
+            </li>
+
             </ul>
         </div>
     </nav>
