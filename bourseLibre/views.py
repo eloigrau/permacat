@@ -15,7 +15,6 @@ from django.views.generic import ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.core.mail import mail_admins, send_mail
 from django.db.models import Q
-import math
 
 from django import forms
 
@@ -179,7 +178,7 @@ def profil_courant(request, ):
 def profil(request, user_id):
     try:
         user = Profil.objects.get(id=user_id)
-        distance = math.sqrt(user.getDistanceCarree(request.user))
+        distance = user.getDistanceCarree(request.user)
         return render(request, 'profil.html', {'user': user, 'distance':distance})
     except User.DoesNotExist:
             return render(request, 'profil_inconnu.html', {'userid': user_id})
@@ -188,7 +187,7 @@ def profil(request, user_id):
 def profil_nom(request, user_username):
     try:
         user = Profil.objects.get(username=user_username)
-        distance = math.sqrt(user.getDistanceCarree(request.user))
+        distance = user.getDistanceCarree(request.user)
         return render(request, 'profil.html', {'user': user, 'distance':distance})
     except User.DoesNotExist:
         return render(request, 'profil_inconnu.html', {'userid': user_username})
@@ -362,8 +361,7 @@ class ListeProduit(ListView):
         params = dict(self.request.GET.items())
         
         if "distance" in params:
-            distCarree = float(params['distance'])*float(params['distance'])
-            listProducteurs = [p for p in Profil.objects.all() if p.getDistanceCarree(self.request.user) < distCarree] 
+            listProducteurs = [p for p in Profil.objects.all() if p.getDistancee(self.request.user) < float(params['distance'])] 
             qs = qs.filter(user__in=listProducteurs)
 
         if "producteur" in params:
