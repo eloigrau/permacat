@@ -451,6 +451,10 @@ def cgu(request):
 # @login_required
 def liens(request):
     liens = [
+        'https://colibris-universite.org/mooc-permaculture/wakka.php?wiki=PagePrincipale',
+         'https://ponteillanature.wixsite.com/eco-nature',
+        'https://cce-66.wixsite.com/mysite',
+        'https://jardindenat.wixsite.com/website',
         'https://www.monnaielibreoccitanie.org/',
         'https://www.colibris-lemouvement.org/',
         'https://framasoft.org',
