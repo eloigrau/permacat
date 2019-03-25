@@ -19,7 +19,7 @@ Liste des demandes :
     {% for item in items %}
         {% ifchanged item.panier.user.id  %}
         <tr>
-            <td class="panierTableauStyle textcenter" colspan="5" ><a href="{% url lireConversation' item.panier.user.username%}" class="btn btn-primary " type="button" id="buttonContacterProducteur">
+            <td class="panierTableauStyle textcenter" colspan="5" ><a href="{% url 'lireConversation' item.panier.user.username%}" class="btn btn-primary " type="button" id="buttonContacterProducteur">
 			Contacter {{ item.panier.user.username }} pour échanger :  </a> </td>
         </tr>
         {%endifchanged %}
