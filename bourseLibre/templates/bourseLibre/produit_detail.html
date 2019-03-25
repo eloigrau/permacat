@@ -113,7 +113,7 @@
 					<td class="proprieteProduit">
 						{{ produit.get_prixEtUnite }}
 					</td>
-				</tr>
+				</tr>{%comment%}
 				<tr class="active">
 					<td class="nomProprieteProduit">
 						Stock :
@@ -122,6 +122,7 @@
 						{{ produit.stock_initial}}
 					</td>
 				</tr>
+				{%endcomment%}
 			</tbody>
 		</table>
 	</div>
