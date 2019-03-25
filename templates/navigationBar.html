@@ -17,20 +17,20 @@
             <ul class="navbar-nav mx-auto text-center justify-content-center">
 
                 <a role="button"  class="btn btn-success"  href="{% url 'marche' %}" aria-disabled="true">Marché</a>
-                    <form class="form-inline my-2 my-lg-0 justify-content-center" action="{% url 'chercher' %}" method="get">
-                    {% csrf_token %}
-                        <input class="form-control fmr-sm-2" name="id_recherche" placeholder="Chercher..." type="text">
-                        <span class="input-group-append">
-                            <button class="btn navbar-btn btn-light my-2 my-sm-0" type="submit" >...</button>
-                        </span>
-                    </form>
+                    
                 <a role="button" class="btn btn-success"  href="{% url 'blog:forum' %}" aria-disabled="true">Forum</a>
 
 
             </ul>
 
             <ul class="nav navbar-nav  justify-content-center">
-
+<form class="form-inline my-2 my-lg-0 justify-content-center form-group" action="{% url 'chercher' %}" method="get">
+                    {% csrf_token %}
+                        <input class="form-control fmr-sm-2" name="id_recherche" placeholder="Chercher..." type="text">
+                        <span class="input-group-append">
+                            <button class="btn navbar-btn btn-light my-2 my-sm-0" type="submit" >...</button>
+                        </span>
+                    </form>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="{% url 'profil_courant' %}" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                          <span class="glyphicon glyphicon-user"></span> profil: {{request.user}}
