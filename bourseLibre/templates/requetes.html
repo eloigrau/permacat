@@ -5,6 +5,7 @@ Liste des demandes :
 {% endblock %}
 {% block content %}
 <div class="row">
+	{%if items%}
     <div class="col-md-12">
     <table class="table table-condensed tablepanier table-striped">
         <thead class="thead-inverse">
@@ -31,6 +32,9 @@ Liste des demandes :
         </tr>
 
     {% endfor %}
+		{%else%}
+		<p> Vous n'avez pas de requêtes en cours... faites de meilleures offres !</p>
+		{%endif%}
     {% comment %}
     <tr class="active">
         <td class="table-success">Total</td>
