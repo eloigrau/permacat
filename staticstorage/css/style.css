@@ -89,7 +89,7 @@ section.p3 {
     font-family: 'Satisfy', cursive;
 }
 .navbar-default .navbar-nav > .active > a{
-    border-bottom: 2px solid black;
+    border-bottom: 1px solid black;
     background-color: #FFF !important;
 }
 .contenu{
@@ -336,41 +336,6 @@ td.panierTableauStyle{
 
 
 
-
-.topnav {
-  //position: relative;
-  //overflow: hidden;
-  //background-color: #333;
-}
-
-.topnav a {
-  //float: left;
-  text-align: center;
-  //padding: 10px 12px;
-  //text-decoration: none;
-  //font-size: 17px;
-}
-
-.topnav a:hover {
-  //background-color: #f0f0f5;
-}
-
-.topnav a.active {
-  //background-color: #4CAF50;
-  //color: #99ddff;
-}
-
-.topnav-centered a {
-  float: none;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.topnav-right {
-  float: right;
-}
 
 /* Responsive navigation menu (for mobile devices) */
 @media screen and (max-width: 600px) {

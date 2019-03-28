@@ -115,7 +115,7 @@ section.p3 {
   border: 1px solid rgba(0, 0, 0, 0.8);
 }
 .bs-dark .dropdown-menu > li > a {
-  padding: 6px 20px;
+  //padding: 6px 20px;
   color: rgba(255,255,255,0.80);
 }
 .bs-dark .dropdown-menu > li > a:hover,
