@@ -214,7 +214,7 @@ LOGOUT_REDIRECT_URL = '/'
 INTERNAL_IPS = ['127.0.0.1']
 
 ########################
-#SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = True
 #SESSION_COOKIE_SECURE = True
 #CSRF_COOKIE_SECURE = True
 
@@ -263,11 +263,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 #     'map.provider': 'openstreetmap',
 # }
 
-#GEOPOSITION_GOOGLE_MAPS_API_KEY = ' AIzaSyCmGcPj0ti_7aEagETrbJyHPbE3U6gVfSA '
-
-#GOOGLE_API_KEY = 'AIzaSyCmGcPj0ti_7aEagETrbJyHPbE3U6gVfSA'
-
-#GOOGLE_API_KEY = 'AIzaSyC10StWuCZHLPmSZCyfNEdmgZ7CTqdngy0'
 
 LEAFLET_CONFIG = {
 'DEFAULT_CENTER': (42.7201813, 2.8876436),
@@ -281,20 +276,5 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
     }
 }
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-#         'LOCATION': 'cache_bourseLibre'
-#     }
-# }
 
-
-#STATICFILES_FINDERS= ['djangobower.finders.BowerFinder',]
-#BOWER_COMPONENTS_ROOT = BASE_DIR +'/components/'
-#BOWER_INSTALLED_APPS = (
-#    'jquery',
-#    'jquery-ui',
-#    'bootstrap'
-#)
-
-PHONENUMBER_DEFAULT_REGION = 'INTERNATIONAL'
+PHONENUMBER_DEFAULT_REGION = 'EUROPE'
