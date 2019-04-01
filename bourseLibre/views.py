@@ -28,6 +28,9 @@ from django.views.decorators.debug import sensitive_variables
 from django.views.decorators.debug import sensitive_post_parameters
 
 #from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q,CharField 
+from django.db.models.functions import Lower 
+CharField.register_lookup(Lower, "lower")
 
 import sys
 from io import BytesIO
@@ -516,13 +519,10 @@ def afficher_requetes(request):
     items = Item.objects.filter( produit__user__id =  request.user.id)
     return render(request, 'requetes.html', {'items':items})
 
-from django.db.models import Q,CharField 
-from django.db.models.functions import Lower 
-CharField.register_lookup(Lower, "lower")
 
 @login_required
 def chercher(request):
-    recherche = request.GET.get('id_recherche').lower()
+    recherche = Lower(request.GET.get('id_recherche'))
     if recherche:
         produits_list = Produit.objects.filter(Q(description__lower__contains=recherche) | Q(nom_produit__lower__contains=recherche), ).select_subclasses()
         articles_list = Article.objects.filter(Q(titre__lower__contains=recherche) | Q(contenu__lower__contains=recherche), )
