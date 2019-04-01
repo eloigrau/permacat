@@ -2,8 +2,8 @@
 {% block subtitle %}
 <div class="row">
     <div class="col-md-2">
-        {%if article.auteur == request.user%}
-            <a href="{% url 'blog:modifierProjet' slug=article.slug %}">
+        {%if projet.auteur == request.user%}
+            <a href="{% url 'blog:modifierProjet' slug=projet.slug %}">
                <button type="button" class="btn btn-sm btn-warning">
                 <span class="glyphicon glyphicon-plus"></span>&nbsp;Modifier
                </button></a>
