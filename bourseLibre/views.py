@@ -516,14 +516,17 @@ def afficher_requetes(request):
     items = Item.objects.filter( produit__user__id =  request.user.id)
     return render(request, 'requetes.html', {'items':items})
 
+from django.db.models import Q,CharField 
+from django.db.models.functions import Lower 
+CharField.register_lookup(Lower, "lower")
 
 @login_required
 def chercher(request):
-    recherche = request.GET.get('id_recherche')
+    recherche = request.GET.get('id_recherche').lower()
     if recherche:
-        produits_list = Produit.objects.filter(Q(description__contains=recherche) | Q(nom_produit__contains=recherche), ).select_subclasses()
-        articles_list = Article.objects.filter(Q(titre__contains=recherche) | Q(contenu__contains=recherche), )
-        profils_list = Profil.objects.filter(Q(username__contains=recherche)  | Q(description__contains=recherche)| Q(competences__contains=recherche), )
+        produits_list = Produit.objects.filter(Q(description__lower__contains=recherche) | Q(nom_produit__lower__contains=recherche), ).select_subclasses()
+        articles_list = Article.objects.filter(Q(titre__lower__contains=recherche) | Q(contenu__lower__contains=recherche), )
+        profils_list = Profil.objects.filter(Q(username__lower__contains=recherche)  | Q(description__lower__contains=recherche)| Q(competences__contains=recherche), )
     else:
         produits_list = []
         articles_list = []
