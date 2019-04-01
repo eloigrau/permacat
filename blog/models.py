@@ -47,7 +47,7 @@ class Commentaire(models.Model):
 
 class Projet(models.Model):
     categorie = models.CharField(max_length=30,
-        choices=(('Part','Participation à un évènement'), ('AGO',"Organisation d'une AGO"), ('Proj_long','Projet a long terme'), ('Proj_court','Projet a court terme'),),
+        choices=(('Part','Participation à un évènement'), ('AGO',"Organisation d'une AGO"), ('Projlong','Projet a long terme'), ('Projcourt','Projet a court terme'),),
         default='Part', verbose_name="categorie")
     titre = models.CharField(max_length=100)
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
