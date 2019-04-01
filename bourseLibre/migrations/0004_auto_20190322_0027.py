@@ -27,9 +27,4 @@ class Migration(migrations.Migration):
             name='souscategorie',
             field=models.CharField(choices=[('plantes', 'plantes'), ('graines', 'graines'), ('fleurs', 'fleurs'), ('jeunes plants', 'jeunes plants'), ('purins', 'purins'), ('autre', 'autre')], default='p', max_length=20),
         ),
-        migrations.AddField(
-            model_name='messagegeneral',
-            name='auteur',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
-        ),
     ]
