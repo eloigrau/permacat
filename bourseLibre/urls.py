@@ -99,6 +99,7 @@ urlpatterns = [
     url(r'^conversations/$', login_required(views.ListeConversations.as_view()), name='conversations'),
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^agora/$', login_required(views.lireDiscussion), name='lireDiscussion'),
+    #url(r'^test/acme/acme-challenge/$', login_required(views.acmechallenge), name='acmeChallenge'),
 ]
 
 from django.conf.urls.static import static

@@ -132,7 +132,7 @@ class ProfilCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm):
         model = Profil
-        fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'inscrit_newsletter']
+        fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'inscrit_newsletter', 'membre_permacat', 'accepter_conditions']
         exclude = ['adresse', 'slug']
 
     def save(self, commit = True, is_active=False):

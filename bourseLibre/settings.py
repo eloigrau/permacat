@@ -32,14 +32,19 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-locall  = False
+locall  = True
 #DEBUG_PROPAGATE_EXCEPTIONS = True
+
+#SECURE_SSL_REDIRECT = False
+#SESSION_COOKIE_SECURE = True
+#CSRF_COOKIE_SECURE = True
+#SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 
 if DEBUG:
     SECRET_KEY = 'aersdfgsfdgsdvcbvcbgbgfthhfhdjd'
 else:
-    SECRET_KEY = os.environ['SECRET_KEY']
-    #SECRET_KEY = 'aersdfgsfdgsdvcbvcbgbgfthhfhdjd'
+    #SECRET_KEY = os.environ['SECRET_KEY']
+    SECRET_KEY = 'aersdfgsfdgsdvcbvcbgbgfthhfhdjd'
 
 ALLOWED_HOSTS = ['permacat.herokuapp.com', 'www.perma.cat']
 
@@ -214,9 +219,18 @@ LOGOUT_REDIRECT_URL = '/'
 INTERNAL_IPS = ['127.0.0.1']
 
 ########################
-SECURE_SSL_REDIRECT = False
-#SESSION_COOKIE_SECURE = True
-#CSRF_COOKIE_SECURE = True
+ADMINS = (
+    ('Eloi Grau', 'eloi.grau@perma.cat'),
+)
+MANAGERS = ADMINS
+import re
+IGNORABLE_404_URLS = (
+    re.compile(r'\.(php|cgi)$'),
+    re.compile(r'^/phpmyadmin/'),
+    re.compile(r'^/apple-touch-icon.*\.png$'),
+    re.compile(r'^/favicon\.ico$'),
+    re.compile(r'^/robots\.txt$'),
+)
 
 # Email settings
 SERVER_EMAIL = 'permacat66@gmail.com'

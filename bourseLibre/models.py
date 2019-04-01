@@ -143,7 +143,6 @@ class Profil(AbstractUser):
         'large': (640, 480),
         'thumbnail2': (100, 100, True)})
 
-    inscrit_newsletter = models.BooleanField(default=False)
     date_registration = models.DateTimeField(verbose_name="Date de création", editable=False)
     pseudo_june = models.CharField(
         _('pseudo Monnaie Libre'),
@@ -155,6 +154,9 @@ class Profil(AbstractUser):
         #error_messages={
          #   'unique': _("A user with that username already exists."),
         )
+    inscrit_newsletter = models.BooleanField(default=False)
+    membre_permacat = models.BooleanField(verbose_name="Je souhaite adhérer à l'association 'PermaCat'", default=False)
+    accepter_conditions = models.BooleanField(verbose_name="J'accepte les conditions d'utilisation du site", default=False, null=False )
 
     def __str__(self):
         return self.username

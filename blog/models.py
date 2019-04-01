@@ -33,18 +33,42 @@ class Article(models.Model):
 
     def get_absolute_url(self):
         return reverse('blog:lireArticle', kwargs={'slug':self.slug})
-#     @models.permalink
-#     def get_url(self):
-#         return ('blog_post_detail', (), 
-#                 {
-#                     'slug' :self.slug,
-#                 })
 
 class Commentaire(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE)
     titre = models.CharField(max_length=42)
     commentaire = models.TextField()
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    date_creation = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.titre
+
+
+class Projet(models.Model):
+    categorie = models.CharField(max_length=30,
+        choices=(('Part','Participation à un évènement'), ('AGO',"Organisation d'une AGO"), ('Proj_long','Projet a long terme'), ('Proj_court','Projet a court terme'),),
+        default='Part', verbose_name="categorie")
+    titre = models.CharField(max_length=100)
+    auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
+    slug = models.SlugField(max_length=100)
+    contenu = HTMLField(null=True)
+    date = models.DateTimeField(auto_now_add=True, auto_now=False, verbose_name="Date de parution")
+
+    class Meta:
+        ordering = ('date', )
+
+    def __str__(self):
+        return self.titre
+
+    def get_absolute_url(self):
+        return reverse('blog:lireProjet', kwargs={'slug':self.slug})
+
+class CommentaireProjet(models.Model):
+    auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE)
+    titre = models.CharField(max_length=42)
+    commentaire = models.TextField()
+    projet = models.ForeignKey(Projet, on_delete=models.CASCADE)
     date_creation = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):

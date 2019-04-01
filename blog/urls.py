@@ -32,5 +32,13 @@ urlpatterns = [
     url(r'^article/(?P<slug>[-\w]+)$', views.lireArticle, name='lireArticle'),
     url(r'^modifierArticle/(?P<slug>[-\w]+)$', login_required(views.ModifierArticle.as_view(), login_url='/auth/login/'), name='modifierArticle'),
     url(r'^supprimerArticle/(?P<slug>[-\w]+)$', login_required(views.SupprimerArticle.as_view(), login_url='/auth/login/'), name='supprimerArticle'),
-    url(r'^ajouterarticle/$', views.ajouterNouveauPost, name='ajouterNouvelArticle'),
+    url(r'^ajouterArticle/$', views.ajouterNouveauPost, name='ajouterNouvelArticle'),
+
+    url(r'^projets/$', login_required(views.ListeProjets.as_view(), login_url='/auth/login/'), name="index_projets"),
+    url(r'^projets/(?P<slug>[-\w]+)$', views.lireProjet, name='lireProjet'),
+    url(r'^modifierProjet/(?P<slug>[-\w]+)$',
+        login_required(views.ModifierProjet.as_view(), login_url='/auth/login/'), name='modifierProjet'),
+    url(r'^supprimerProjet/(?P<slug>[-\w]+)$',
+        login_required(views.SupprimerProjet.as_view(), login_url='/auth/login/'), name='supprimerProjet'),
+    url(r'^ajouterProjet/$', views.ajouterNouveauProjet, name='ajouterNouveauProjet'),
 ]

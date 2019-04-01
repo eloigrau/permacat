@@ -1,0 +1,11 @@
+<div class="card article ">
+      <a href="{% url 'blog:lireProjet' slug=projet.slug %}">
+    <div class="card-block">
+        <h4 class="card-title">{{ projet.titre }}</h4>
+        <h6 class="card-subtitle mb-2 text-muted">Catégorie: {{ projet.get_categorie_display }}, rédigé par {{ projet.auteur }}, le {{ projet.date|date:"DATE_FORMAT" }}</h6>
+        <p class="card-text">{{ projet.contenu|truncatechars:180 }}</p>
+  </div>   </a>
+    {% if not forloop.last %}
+    <hr>
+    {%endif%}
+</div>
