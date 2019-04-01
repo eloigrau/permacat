@@ -12,6 +12,14 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.CreateModel(
+            name='MessageGeneral',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('message', models.TextField()),
+                ('date_creation', models.DateTimeField(auto_now_add=True)),
+            ],
+        ),
         migrations.AlterField(
             model_name='produit_objet',
             name='souscategorie',
