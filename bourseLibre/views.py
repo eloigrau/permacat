@@ -522,7 +522,7 @@ def afficher_requetes(request):
 
 @login_required
 def chercher(request):
-    recherche = Lower(request.GET.get('id_recherche'))
+    recherche = str(request.GET.get('id_recherche')).lower()
     if recherche:
         produits_list = Produit.objects.filter(Q(description__lower__contains=recherche) | Q(nom_produit__lower__contains=recherche), ).select_subclasses()
         articles_list = Article.objects.filter(Q(titre__lower__contains=recherche) | Q(contenu__lower__contains=recherche), )
