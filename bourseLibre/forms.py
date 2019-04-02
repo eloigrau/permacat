@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, User
 from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, Profil, Message, MessageGeneral
-
+from captcha.fields import CaptchaField 
 
 fieldsCommunsProduits = ['nom_produit', 'souscategorie',  'description', 'estUneOffre', 'estPublique',
                 'unite_prix', 'prix',  'type_prix', 'date_debut', 'date_expiration', ]
@@ -129,10 +129,11 @@ class ProfilCreationForm(UserCreationForm):
     description = forms.CharField(label="Description*", help_text="Une description de vous même", widget=forms.Textarea)
     competences = forms.CharField(label="Savoir-faire*", help_text="Par exemple: electricien, bouturage, aromatherapie, etc...", widget=forms.Textarea)
     site_web = forms.CharField(label="Site web", help_text="n'oubliez pas le https://", required=False)
+    captcha = CaptchaField()
 
     class Meta(UserCreationForm):
         model = Profil
-        fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'inscrit_newsletter', 'membre_permacat', 'accepter_conditions']
+        fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'inscrit_newsletter', 'membre_permacat', 'accepter_conditions'
         exclude = ['adresse', 'slug']
 
     def save(self, commit = True, is_active=False):
