@@ -76,6 +76,7 @@ INSTALLED_APPS = (
     'widget_tweaks',
     'leaflet',
     'tinymce',
+ 'captcha',
     #"geoposition",
     #"geodjango",
     #'osm_field',
