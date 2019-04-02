@@ -100,6 +100,7 @@ urlpatterns = [
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^agora/$', login_required(views.lireDiscussion), name='lireDiscussion'),
     #url(r'^test/acme/acme-challenge/$', login_required(views.acmechallenge), name='acmeChallenge'),
+    url(r'^captcha/', include('captcha.urls')),
 ]
 
 from django.conf.urls.static import static
