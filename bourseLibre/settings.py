@@ -32,10 +32,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-locall  = True
+locall  = False
 #DEBUG_PROPAGATE_EXCEPTIONS = True
 
-SECURE_SSL_REDIRECT = False
+#SECURE_SSL_REDIRECT = False
 #SESSION_COOKIE_SECURE = True
 #CSRF_COOKIE_SECURE = True
 #SESSION_EXPIRE_AT_BROWSER_CLOSE=True
@@ -44,8 +44,8 @@ if DEBUG:
     SECRET_KEY = 'aersdfgsfdgsdvcbvcbgbgfthhfhdjd'
     #CSRF_COOKIE_DOMAIN=None
 else:
-    #SECRET_KEY = os.environ['SECRET_KEY']
-    SECRET_KEY = 'aersdfgsfdgsdvcbvcbgbgfthhfhdjd'
+    SECRET_KEY = os.environ['SECRET_KEY']
+    #SECRET_KEY = 'aersdfgsfdgsdvcbvcbgbgfthhfhdjd'
     SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 
 ALLOWED_HOSTS = ['permacat.herokuapp.com', 'www.perma.cat']
