@@ -700,7 +700,7 @@ class Conversation(models.Model):
     date_dernierMessage = models.DateTimeField(verbose_name="Date de Modification", auto_now=True)
 
     class Meta:
-        ordering = ('date_creation',)
+        ordering = ('-date_dernierMessage',)
 
     def __str__(self):
         return "Conversation entre " + self.profil1.username + " et " + self.profil2.username
