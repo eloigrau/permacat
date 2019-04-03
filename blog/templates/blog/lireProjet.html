@@ -17,7 +17,7 @@
         <p class="infos  textepetit">Dans: <a href="{% url 'blog:forum'  %}?categorie={{projet.categorie}}">{{ projet.get_categorie_display }}</a>, rédigé par <a href="{% url 'profil' projet.auteur.id %}"> {{ projet.auteur.username }}</a>, le {{ projet.date|date:"DATE_FORMAT" }}</p>
     </div>
     <div class="col-md-2">
-        <a  href="{% url 'blog:forum'  %}">
+        <a  href="{% url 'blog:index_projets'  %}">
         <button class="btn btn-info btn-sm textright" >Retour au sommaire</button>
             </a>
     </div>
@@ -27,7 +27,12 @@
 {% block content %}
 <div class="contenu projet">
 <div class="row" >
-      <h3 style="text-indent: 20px;">  {{ projet.titre }}</h3>
+            <span class="badge {% if projet.estPublic%}badge-warning{%else%} badge-danger {%endif%}">
+                Projet {%if projet.estPublic%}  public {%else%}  permacat  {%endif%}
+            </span>
+</div>
+<div class="row" >
+      <h3 style="text-indent: 20px;">{{ projet.titre }}</h3>
 </div>
 <div class="row">
     {{ projet.contenu  | safe}}

@@ -515,3 +515,10 @@ ul.errorlist{
 .msg-agora {
     background-color:GhostWhite ;
     }
+
+.badge_projet{font-size: 10px
+vertical-align: top;
+top: 10px; //depends on your font-size
+position: relative;
+
+}

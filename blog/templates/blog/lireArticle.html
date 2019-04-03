@@ -17,7 +17,7 @@
         <p class="infos  textepetit">Dans: <a href="{% url 'blog:forum'  %}?categorie={{article.categorie}}">{{ article.get_categorie_display }}</a>, rédigé par <a href="{% url 'profil' article.auteur.id %}"> {{ article.auteur.username }}</a>, le {{ article.date|date:"DATE_FORMAT" }}</p>
     </div>
     <div class="col-md-2">
-        <a  href="{% url 'blog:forum'  %}">
+        <a  href="{% url 'blog:index'  %}">
         <button class="btn btn-info btn-sm textright" >Retour au sommaire</button>
             </a>
     </div>
@@ -27,7 +27,13 @@
 {% block content %}
 <div class="contenu article">
 <div class="row" >
-      <h3 style="text-indent: 20px;">  {{ article.titre }}</h3>
+            <span class="badge {% if article.estPublic%}badge-warning{%else%} badge-danger {%endif%}">
+                Article {%if article.estPublic%} public{%else%}  permacat  {%endif%}
+            </span>
+</div>
+<div class="row" >
+      <h3 style="text-indent: 20px;">
+          {{ article.titre }}</h3>
 </div>
 <div class="row">
     {{ article.contenu  | safe}}
