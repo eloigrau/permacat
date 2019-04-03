@@ -540,7 +540,7 @@ def chercher(request):
 @login_required
 def lireConversation(request, destinataire):
     conversation = getOrCreateConversation(request.user.username, destinataire)
-    messages = Message.objects.filter(conversation=conversation).order_by("-date_creation")
+    messages = Message.objects.filter(conversation=conversation).order_by("date_creation")
 
     message_defaut = None
     id_panier = request.GET.get('panier')
