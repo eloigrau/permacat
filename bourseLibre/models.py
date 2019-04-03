@@ -209,8 +209,8 @@ class Profil(AbstractUser):
 def create_user_profile(sender, instance, created, **kwargs):
     if created and instance.is_superuser:
         Panier.objects.create(user=instance)
-    #elif created:
-     #   instance.is_active=False
+    elif created:
+        instance.is_active=False
 
 
 #@receiver(post_save, sender=User)
@@ -231,7 +231,7 @@ class Produit(models.Model):  # , BaseProduct):
 
     stock_initial = models.FloatField(default=1, verbose_name="Quantité disponible", max_length=250, validators=[MinValueValidator(1), ])
     stock_courant = models.FloatField(default=1, max_length=250, validators=[MinValueValidator(0), ])
-    prix = models.DecimalField(max_digits=4, decimal_places=2, default=1, validators=[MinValueValidator(0), ])
+    prix = models.DecimalField(max_digits=4, decimal_places=2, default=0, blank=True)#, validators=[MinValueValidator(0), ])
     unite_prix = models.CharField(
         max_length=8,
         choices = Choix.monnaies,

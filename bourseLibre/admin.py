@@ -2,46 +2,34 @@ from django.contrib import admin
 from .models import Profil, Adresse, Produit, Produit_vegetal, Produit_objet, Produit_service, Produit_aliment, Panier, Item, Message, MessageGeneral, Conversation
 from blog.models import Article
 # -*- coding: utf-8 -*-
-from django.contrib import admin
-from django import forms
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
-from .models import User
 
 from django.contrib import admin
-from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 
-from .forms import ProfilCreationForm, ProducteurChangeForm
+from .forms import ProfilCreationForm, ProducteurChangeForm_admin
 from .models import Profil
+from django.utils.translation import gettext_lazy as _
+
 
 class CustomUserAdmin(UserAdmin):
     add_form = ProfilCreationForm
-    #form = ProducteurChangeForm
+    form = ProducteurChangeForm_admin
     model = Profil
-    list_display = ['email', 'username',]
+    list_display = ['email', 'username', 'pseudo_june', 'statut_adhesion', 'date_registration', 'last_login',]
+    readonly_fields = ('date_registration','last_login',)
+
+    fieldsets = (
+        (None, {'fields': ('username','description','competences','pseudo_june','statut_adhesion')}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
+        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
+                                       'groups', 'user_permissions')}),
+        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+        )
+
+
 
 admin.site.register(Profil, CustomUserAdmin)
 
-# class MyUserCreationForm(UserCreationForm):
-#     def clean_username(self):
-#         username = self.cleaned_data["username"]
-#         try:
-#             User._default_manager.get(username=username)
-#         except User.DoesNotExist:
-#             return username
-#         raise forms.ValidationError(self.error_messages['duplicate_username'])
-#
-#     class Meta(UserCreationForm.Meta):
-#         model = User
-#
-#
-# class UserAdmin(AuthUserAdmin):
-#     add_form = MyUserCreationForm
-#     update_form_class = UserChangeForm
-#
-# admin.site.unregister(User)
-# admin.site.register(User, UserAdmin)
 
 admin.site.register(Adresse)
 admin.site.register(Produit)

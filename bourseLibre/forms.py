@@ -8,6 +8,9 @@ fieldsCommunsProduits = ['nom_produit', 'souscategorie',  'description', 'estUne
 
 
 class ProduitCreationForm(forms.ModelForm):
+
+    estUneOffre = forms.ChoiceField(choices=((0, "Offre permacat"), (1, "offre publique")), label='', required=True)
+
     class Meta:
         model = Produit
         exclude=('user', )
@@ -23,6 +26,8 @@ class ProduitCreationForm(forms.ModelForm):
 
 
 class Produit_aliment_CreationForm(forms.ModelForm):
+    estUneOffre = forms.ChoiceField(choices=((0, "Offre permacat"), (1, "offre publique")), widget=forms.RadioSelect(), label='', required=True)
+
     class Meta:
         model = Produit_aliment
         fields = fieldsCommunsProduits
@@ -196,6 +201,28 @@ class ProducteurChangeForm(UserChangeForm):
         model = Profil
         fields = ['username', 'email', 'description', 'competences', 'inscrit_newsletter']
 
+
+class ProducteurChangeForm_admin(UserChangeForm):
+    """A form for updating users. Includes all the fields on
+    the user, but replaces the password field with admin's
+    password hash display field.
+    """
+    email = forms.EmailField(label="Email")
+    username = forms.CharField(label="Pseudonyme")
+    description = forms.CharField(label="Description", initial="Une description de vous même", widget=forms.Textarea)
+    competences = forms.CharField(label="Savoir-faire",
+                                  initial="Par exemple: electricien, bouturage, aromatherapie, etc...", required=False,
+                                  widget=forms.Textarea)
+    avatar = forms.ImageField(required=False)
+    inscrit_newsletter = forms.BooleanField(required=False)
+    pseudo_june = forms.CharField(label="pseudo_june",required=False)
+
+    statut_adhesion = forms.ChoiceField(choices=Choix.statut_adhesion)
+    password = None
+
+    class Meta:
+        model = Profil
+        fields = ['username', 'email', 'description', 'competences', 'inscrit_newsletter', 'statut_adhesion', 'pseudo_june', ]
 
 class ContactForm(forms.Form):
     #envoyeur = forms.EmailField(label="Votre adresse mail")

@@ -31,8 +31,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-locall  = False
+DEBUG = False
+locall  = True
 #DEBUG_PROPAGATE_EXCEPTIONS = True
 
 #SECURE_SSL_REDIRECT = False
@@ -66,7 +66,7 @@ INSTALLED_APPS = (
     #'django.contrib.gis',
     'bootstrap','fontawesome','cookielaw',
     'haystack',
-    #'debug_toolbar',
+    'debug_toolbar',
     'model_utils',
     #'address',
     'bourseLibre',
@@ -115,7 +115,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     #'django.core.context_processors.request',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    #'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 
