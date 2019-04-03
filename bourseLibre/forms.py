@@ -225,50 +225,19 @@ class ProducteurChangeForm_admin(UserChangeForm):
         fields = ['username', 'email', 'description', 'competences', 'inscrit_newsletter', 'statut_adhesion', 'pseudo_june', ]
 
 class ContactForm(forms.Form):
-    #envoyeur = forms.EmailField(label="Votre adresse mail")
     sujet = forms.CharField(max_length=100, )
     message = forms.CharField(widget=forms.Textarea, )
     renvoi = forms.BooleanField(label="recevoir une copie",
                                 help_text="Cochez si vous souhaitez obtenir une copie du mail envoyé.", required=False
                                  )
 
-    def __init__(self, request, envoyeur=None, message=None,  titre=None,  *args, **kwargs):
+    def __init__(self, request, message=None,  titre=None,  *args, **kwargs):
          super(ContactForm, self).__init__(request, *args, **kwargs)
-         if envoyeur:
-             self.fields['envoyeur'].initial = envoyeur
          if message:
              self.fields['message'].initial = message
          if titre:
              self.fields['sujet'].initial = titre
 
-    # class UserForm(forms.ModelForm):
-    #     class Meta:
-    #         model = User
-    #         fields = ('first_name', 'last_name', 'email')
-    #
-    # class ProfileForm(forms.ModelForm):
-    #     class Meta:
-    #         model = Profil
-    #         fields = ('site_web', 'description', 'avatar', 'inscrit_newsletter')
-
-    # class ConnexionForm(forms.Form):
-    #     username = forms.CharField(label="Nom d'utilisateur", max_length=30)
-    #     password = forms.CharField(label="Mot de passe", widget=forms.PasswordInput)
-
-#
-# from .models import Place
-#
-#
-# class LocationForm(forms.ModelForm):
-#     class Meta:
-#         model = Place
-#         exclude = ()
-
-
-# class FiltreForm(forms.Form):
-#     demande = forms.ChoiceField(
-#         choices=(('tout','tout'),('offres','offres'),('recherches','recherches')),
-#     )
 
 
 

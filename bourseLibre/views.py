@@ -248,7 +248,7 @@ def profil_contact(request, user_id):
 
 
 def contact_admins(request):
-    form = ContactForm(request.POST or None, envoyeur=request.user.email)
+    form = ContactForm(request.POST or None)
     if form.is_valid():
         sujet = form.cleaned_data['sujet']
         message = request.user.username + ' a envoyé le message suivant : \\n' + form.cleaned_data['message']
@@ -277,7 +277,7 @@ def contact_admins(request):
 def produitContacterProducteur(request, produit_id):
     prod = Produit.objects.get_subclass(pk=produit_id)
     receveur = prod.user
-    form = ContactForm(request.POST or None, envoyeur=request.user.email)
+    form = ContactForm(request.POST or None)
     if form.is_valid():
         sujet =  "[MarchéLibre]" + form.cleaned_data['sujet']
         message = form.cleaned_data['message'] + '(par : ' + request.username + ')'
