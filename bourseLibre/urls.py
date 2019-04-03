@@ -17,8 +17,8 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.urls import path
 #from django.contrib.auth import views as auth_views
-
 from . import views
+from django.views.static import serve
 
 # On import les vues de Django, avec un nom spécifique
 #from django.contrib.auth import views as auth_views
@@ -103,20 +103,18 @@ urlpatterns = [
     url(r'^captcha/', include('captcha.urls')),
 ]
 
-from django.conf.urls.static import static
-from django.conf import settings
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+#from django.conf.urls.static import static
+#from django.conf import settings
+#urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = 'bourseLibre.views.handler404'
 handler500 = 'bourseLibre.views.handler500'
 handler400 = 'bourseLibre.views.handler400'
 handler403 = 'bourseLibre.views.handler403'
 
-if settings.DEBUG:
+LOCALL = False
+if LOCALL:
     import debug_toolbar
     urlpatterns = [url(r'^__debug__/', include(debug_toolbar.urls)),] + urlpatterns
     #urlpatterns += url('',(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}))
-# if settings.DEBUG:
-#     # static files (img, css, javascript, etc.)
-#     urlpatterns += patterns('',
-#         (r'^media/(?P<path>.*)$', 'django.views.static.serve', { 'document_root': settings.MEDIA_ROOT}))
+

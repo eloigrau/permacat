@@ -32,7 +32,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-locall  = False
+LOCALL  = False
 #DEBUG_PROPAGATE_EXCEPTIONS = True
 
 #SECURE_SSL_REDIRECT = False
@@ -66,7 +66,7 @@ INSTALLED_APPS = (
     #'django.contrib.gis',
     'bootstrap','fontawesome','cookielaw',
     'haystack',
-    'debug_toolbar',
+    #'debug_toolbar',
     'model_utils',
     #'address',
     'bourseLibre',
@@ -107,6 +107,7 @@ INSTALLED_APPS = (
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -114,8 +115,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     #'django.core.context_processors.request',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    #'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 
@@ -144,7 +144,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bourseLibre.wsgi.application'
 # Database
-if locall:
+if LOCALL:
     DATABASES = {
        'default': {
           'ENGINE': 'django.db.backends.sqlite3',
@@ -262,7 +262,7 @@ ADMINS = [
 ########################
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/'), )
 MEDIA_URL= '/images/'
