@@ -1,6 +1,6 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm, User
-from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, Profil, Message, MessageGeneral
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, Profil, Message, MessageGeneral, Choix
 from captcha.fields import CaptchaField 
 
 fieldsCommunsProduits = ['nom_produit', 'souscategorie',  'description', 'estUneOffre', 'estPublique',
@@ -28,7 +28,9 @@ class Produit_aliment_CreationForm(forms.ModelForm):
         fields = fieldsCommunsProduits
         widgets = {
             'date_debut': forms.DateInput(attrs={'type':"date"}, ),
-            'date_expiration': forms.DateInput(attrs={'type':"date"})
+            'date_expiration': forms.DateInput(attrs={'type':"date"}),
+            'estUneOffre': forms.RadioSelect(choices=('oui', 'non')),
+            'estPublique': forms.RadioSelect(choices=('oui', 'non')),
         }
 
     def clean(self):
@@ -49,7 +51,9 @@ class Produit_vegetal_CreationForm(forms.ModelForm):
         fields = fieldsCommunsProduits
         widgets = {
             'date_debut': forms.DateInput(attrs={'type':"date"}, ),
-            'date_expiration': forms.DateInput(attrs={'type':"date"})
+            'date_expiration': forms.DateInput(attrs={'type':"date"}),
+            'estUneOffre': forms.RadioSelect(choices=('oui', 'non')),
+            'estPublique': forms.RadioSelect(choices=('oui', 'non')),
         }
 
     def clean(self):
@@ -70,7 +74,9 @@ class Produit_service_CreationForm(forms.ModelForm):
         fields = fieldsCommunsProduits
         widgets = {
             'date_debut': forms.DateInput(attrs={'type':"date"}, ),
-            'date_expiration': forms.DateInput(attrs={'type':"date"})
+            'date_expiration': forms.DateInput(attrs={'type':"date"}),
+            'estUneOffre': forms.RadioSelect(choices=('oui', 'non')),
+            'estPublique': forms.RadioSelect(choices=('oui', 'non')),
         }
     def clean(self):
         cleaned_data = super().clean()
@@ -107,10 +113,10 @@ class Produit_objet_CreationForm(forms.ModelForm):
         return self.cleaned_data
 
 class AdresseForm(forms.ModelForm):
-    rue = forms.CharField(label="Adresse", required=False)
+    rue = forms.CharField(label="Rue*", required=True)
     code_postal = forms.CharField(label="Code postal*", initial="66000")
-    telephone = forms.CharField(label="Téléphone", required=False)
-    pays = forms.CharField(label="Pays", initial="France",required=False)
+    telephone = forms.CharField(label="Téléphone*", required=True)
+    pays = forms.CharField(label="Pays*", initial="France",required=True)
     latitude = forms.FloatField(label="Latitude", initial="42", required=False,widget = forms.HiddenInput())
     longitude = forms.FloatField(label="Longitude", initial="2", required=False,widget = forms.HiddenInput())
 
@@ -131,10 +137,15 @@ class ProfilCreationForm(UserCreationForm):
     site_web = forms.CharField(label="Site web", help_text="n'oubliez pas le https://", required=False)
     captcha = CaptchaField()
 
+    statut_adhesion = forms.ChoiceField(choices=Choix.statut_adhesion, label='', required=True)
+    accepter_conditions = forms.BooleanField(required=True, label="J'ai lu et j'accepte les Conditions Générales d'Utilisation du site",  )
+    pseudo_june = forms.CharField(label="Pseudonyme dans la monnaie libre (Duniter)",  help_text="Si vous avez un compte en June",required=False)
+
+
     class Meta(UserCreationForm):
         model = Profil
-        fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'inscrit_newsletter', 'membre_permacat', 'accepter_conditions'
-        exclude = ['adresse', 'slug']
+        fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'inscrit_newsletter', 'statut_adhesion', 'accepter_conditions']
+        exclude = ['slug', ]
 
     def save(self, commit = True, is_active=False):
         self.is_active=is_active

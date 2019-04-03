@@ -7,11 +7,11 @@
 <div class="card" >
   <ul class="list-group list-group-flush">
         {% for conversation in conversations1 %}
-            <li class="list-group-item"><a href="{{conversation.get_absolute_url}}">{{ conversation.auteur_2}}      </a></li>
+            <li class="list-group-item"><a href="{{conversation.get_absolute_url}}">{{ conversation.auteur_2}}  (dernier message: {{conversation.date_dernierMessage|date:"d/m/Y, G:i"}})   </a></li>
        {% cycle '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
         {% endfor %}
     {% for conversation in conversations2 %} 
-    <li class="list-group-item"><a href="{{conversation.get_absolute_url}}">{{ conversation.auteur_1}} </a></li> 
+    <li class="list-group-item"><a href="{{conversation.get_absolute_url}}">{{ conversation.auteur_1}} (dernier message: {{conversation.date_dernierMessage|date:"d/m/Y, G:i"}}) </a></li>
     {% cycle '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
      {% endfor %}
   </ul>

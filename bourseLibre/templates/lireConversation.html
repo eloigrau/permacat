@@ -10,18 +10,7 @@ depuis le {{ conversation.date_creation|date:"SHORT_DATE_FORMAT"}}</p>
 {% endblock %}
 {% block content %}
 
-<div>
-    <input type="hidden" name="Nouveau Message" value="{{ message }}">
-
-<div>
-<form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type="hidden" name="Nouveau Message" value="{{ message_defaut }}">
-    {% include 'form_template3.html' %}
-</form>
-</div>
-<hr>
-<div class="contenu conversation">
+<div class="contenu conversation" id="idConversation">
 {% for mess in messages_echanges %}
     <div class="row {% if message.auteur.id == request.user.id %} msg-auteur  {%else%} msg-destinataire{%endif%}">
         <div class="col-sm-3 col-md-3 col-lg-2">
@@ -32,9 +21,23 @@ depuis le {{ conversation.date_creation|date:"SHORT_DATE_FORMAT"}}</p>
         </div>
     </div>
 {% endfor %}
-</ol>
 </div>
+    <script>
+    var messageBody = document.querySelector('#idConversation');
+    messageBody.scrollTop = idConversation.scrollHeight - idConversation.clientHeight;
+</script>
 
+<hr>
+<div>
+    <input type="hidden" name="Nouveau Message" value="{{ message }}">
+
+<div>
+<form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="Nouveau Message" value="{{ message_defaut }}">
+    {% include 'form_template3.html' %}
+</form>
+</div>
 
 
 {% endblock %}

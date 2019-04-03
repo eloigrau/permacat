@@ -1,5 +1,5 @@
-
 {% load widget_tweaks %}
+{% load app_filters %}
 
   {% for hidden_field in form.hidden_fields %}
     {{ hidden_field }}
@@ -29,7 +29,7 @@
   {% endif %}
 
   {% for field in form.visible_fields %}
-    <div class="form-group">
+<div class="form-group">
       {{ field.label_tag }}
 
       {% if form.is_bound %}

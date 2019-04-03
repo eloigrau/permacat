@@ -11,7 +11,7 @@ class ArticleForm(forms.ModelForm):
     contenu = TinyMCE(attrs={'cols': 80, 'rows': 20})
     class Meta:
         model = Article
-        fields = ['categorie', 'titre', 'contenu']
+        fields = ['categorie', 'titre', 'contenu', 'estPublic']
 
     def save(self, userProfile):
         instance = super(ArticleForm, self).save(commit=False)
@@ -28,6 +28,8 @@ class ArticleForm(forms.ModelForm):
 
         instance.date = localize(now, use_l10n=True)
         instance.auteur = userProfile
+        if not userProfile.is_permacat:
+            instance.estPublic = True
 
         instance.save()
 
@@ -37,7 +39,7 @@ class ArticleForm(forms.ModelForm):
 class ArticleChangeForm(forms.ModelForm):
     class Meta:
         model = Article
-        fields = ['titre', 'contenu', ]
+        fields = ['titre', 'contenu', 'estPublic', ]
 
 
 class CommentForm(forms.ModelForm):
@@ -52,7 +54,7 @@ class ProjetForm(forms.ModelForm):
     contenu = TinyMCE(attrs={'cols': 80, 'rows': 20})
     class Meta:
         model = Projet
-        fields = ['categorie', 'titre', 'contenu']
+        fields = ['categorie', 'titre', 'contenu', 'estPublic']
 
     def save(self, userProfile):
         instance = super(ProjetForm, self).save(commit=False)
@@ -70,6 +72,9 @@ class ProjetForm(forms.ModelForm):
         instance.date = localize(now, use_l10n=True)
         instance.auteur = userProfile
 
+        if not userProfile.is_permacat:
+            instance.estPublic = True
+
         instance.save()
 
         return instance
@@ -78,7 +83,7 @@ class ProjetForm(forms.ModelForm):
 class ProjetChangeForm(forms.ModelForm):
     class Meta:
         model = Projet
-        fields = ['titre', 'contenu', ]
+        fields = ['titre', 'contenu', 'estPublic']
 
 
 class CommentProjetForm(forms.ModelForm):

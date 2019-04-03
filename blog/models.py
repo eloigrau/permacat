@@ -24,7 +24,8 @@ class Article(models.Model):
     slug = models.SlugField(max_length=100)
     contenu = HTMLField(null=True)
     date = models.DateTimeField(auto_now_add=True, auto_now=False, verbose_name="Date de parution")
-    
+    estPublic = models.BooleanField(default=False, verbose_name='Public (cochez) ou Interne (décochez) [réservé aux membres permacat]')
+
     class Meta:
         ordering = ('date', )
         
@@ -53,7 +54,8 @@ class Projet(models.Model):
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
     slug = models.SlugField(max_length=100)
     contenu = HTMLField(null=True)
-    date = models.DateTimeField(auto_now_add=True, auto_now=False, verbose_name="Date de parution")
+    date = models.DateTimeField(auto_now=True, verbose_name="Date de Modification")
+    estPublic = models.BooleanField(default=False, verbose_name='Public (cochez) ou Interne (décochez) [réservé aux membres permacat]')
 
     class Meta:
         ordering = ('date', )

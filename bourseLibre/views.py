@@ -349,6 +349,8 @@ def register(request):
         adresse = form_adresse.save()
         profil_courant = form_profil.save(commit=False,is_active = False)
         profil_courant.adresse = adresse
+        if profil_courant.statut_adhesion == 2:
+            profil_courant.is_active=False
         profil_courant.save()
         Panier.objects.create(user=profil_courant)
         return render(request, 'userenattente.html')
@@ -365,8 +367,9 @@ class ListeProduit(ListView):
 
     def get_qs(self):
         qs = Produit.objects.select_subclasses()
-        if not self.request.user.is_authenticated:
+        if not self.request.user.is_authenticated or not self.request.user.is_permacat:
             qs = qs.filter(estPublique=True)
+
         params = dict(self.request.GET.items())
         
         if "distance" in params:
@@ -554,6 +557,8 @@ def lireConversation(request, destinataire):
     if form.is_valid():
         message = form.save(commit=False)
         message.conversation = conversation
+        conversation.date_dernierMessage = message.date_creation
+        conversation.save()
         message.auteur = request.user
         message.save()
         return redirect(request.path)
@@ -564,12 +569,14 @@ def lireConversation(request, destinataire):
 @login_required
 def lireConversation_2noms(request, destinataire1, destinataire2):
     conversation = getOrCreateConversation(destinataire1, destinataire2)
-    messages = Message.objects.filter(conversation=conversation).order_by("-date_creation")
+    messages = Message.objects.filter(conversation=conversation).order_by("date_creation")
 
     form = MessageForm(request.POST or None)
     if form.is_valid():
         message = form.save(commit=False)
         message.conversation = conversation
+        conversation.date_dernierMessage = message.date_creation
+        conversation.save()
         message.auteur = request.user
         message.save()
         return redirect(request.path)
@@ -584,7 +591,7 @@ def lireConversation_2noms(request, destinataire1, destinataire2):
 
 @login_required
 def lireDiscussion(request, ): 
-    messages = MessageGeneral.objects.all().order_by("-date_creation") 
+    messages = MessageGeneral.objects.all().order_by("date_creation")
     form = MessageGeneralForm(request.POST or None) 
     if form.is_valid(): 
         message = form.save(commit=False) 
@@ -603,6 +610,6 @@ class ListeConversations(ListView):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
 
-        context['conversations1'] = Conversation.objects.filter(profil1__id=self.request.user.id)
-        context['conversations2'] = Conversation.objects.filter(profil2__id=self.request.user.id)
+        context['conversations1'] = Conversation.objects.filter(profil1__id=self.request.user.id).order_by('-date_dernierMessage')
+        context['conversations2'] = Conversation.objects.filter(profil2__id=self.request.user.id).order_by('-date_dernierMessage')
         return context

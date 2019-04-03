@@ -65,6 +65,10 @@ class Choix():
     ordreTri = ['date', 'categorie', 'producteur']
     distances = ['5', '10', '20', '30', '50', '100']
 
+    statut_adhesion = (('', '-----------'),
+                     (0, _("Je souhaite devenir membre de l'association 'PermaCat' et utiliser le site")),
+                    (1, _("Je souhaite utiliser le site, mais ne pas devenir membre de l'association")),
+                    (2, _("Je suis déjà membre de l'association")))
 
 
 def get_categorie_from_subcat(subcat):
@@ -79,14 +83,13 @@ LONGITUDE_DEFAUT = '2.8954'
 class Adresse(models.Model):
     rue = models.CharField(max_length=200, blank=True, null=True)
     code_postal = models.CharField(max_length=5, blank=True, null=True, default="66000")
-    commune = models.CharField(max_length=50,blank=True, null=True, default="Perpignan")
+    commune = models.CharField(max_length=50, blank=True, null=True, default="Perpignan")
     latitude = models.FloatField(blank=True, null=True, default=LATITUDE_DEFAUT)
     longitude = models.FloatField(blank=True, null=True, default=LONGITUDE_DEFAUT)
     pays = models.CharField(max_length=12, blank=True, null=True, default="France")
-    #telephone = models.CharField(blank=True, null=True)
     phone_regex = RegexValidator(regex=r'^\d{9,10}$', message="Le numero de telephone doit contenir 10 chiffres")
     telephone = models.CharField(validators=[phone_regex,], max_length=10, blank=True)  # validators should be a list
-    from django.core.validators import RegexValidator
+
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
@@ -113,14 +116,16 @@ class Adresse(models.Model):
         if self.commune:
             address += " " + self.commune
         address += ", " + self.pays
-        api_key = os.environ["GAPI_KEY"]
-        api_response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(address, api_key))
-        api_response_dict = api_response.json()
+        try:
+            api_key = os.environ["GAPI_KEY"]
+            api_response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(address, api_key))
+            api_response_dict = api_response.json()
 
-        if api_response_dict['status'] == 'OK':
-            self.latitude = api_response_dict['results'][0]['geometry']['location']['lat']
-            self.longitude = api_response_dict['results'][0]['geometry']['location']['lng']
-
+            if api_response_dict['status'] == 'OK':
+                self.latitude = api_response_dict['results'][0]['geometry']['location']['lat']
+                self.longitude = api_response_dict['results'][0]['geometry']['location']['lng']
+        except:
+            pass
 
     def get_latitude(self):
         if not self.latitude:
@@ -136,27 +141,19 @@ class Adresse(models.Model):
 class Profil(AbstractUser):
 
     site_web = models.URLField(null=True, blank=True)
-    description = models.TextField(null=True, default="")
-    competences = models.TextField(null=True, default="")
+    description = models.TextField(null=True)
+    competences = models.TextField(null=True)
     adresse = models.OneToOneField(Adresse, on_delete=models.CASCADE)
     avatar = StdImageField(null=True, blank=True, upload_to='avatars/', variations={
         'large': (640, 480),
         'thumbnail2': (100, 100, True)})
 
     date_registration = models.DateTimeField(verbose_name="Date de création", editable=False)
-    pseudo_june = models.CharField(
-        _('pseudo Monnaie Libre'),
-        default=None,
-        null=True,
-        max_length=150,
-        unique=True,
-        help_text=_('Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
-        #error_messages={
-         #   'unique': _("A user with that username already exists."),
-        )
-    inscrit_newsletter = models.BooleanField(default=False)
-    membre_permacat = models.BooleanField(verbose_name="Je souhaite adhérer à l'association 'PermaCat'", default=False)
-    accepter_conditions = models.BooleanField(verbose_name="J'accepte les conditions d'utilisation du site", default=False, null=False )
+    pseudo_june = models.CharField(_('pseudo Monnaie Libre'), blank=True, default=None, null=True, max_length=50)
+
+    inscrit_newsletter = models.BooleanField(verbose_name="J'accepte de recevoir des emails de Permacat", default=False)
+    statut_adhesion = models.IntegerField(choices=Choix.statut_adhesion, default="0")
+    accepter_conditions = models.BooleanField(verbose_name="J'ai lu et j'accepte les conditions d'utilisation du site", default=False, null=False)
 
     def __str__(self):
         return self.username
@@ -187,11 +184,33 @@ class Profil(AbstractUser):
         x = (y2-y1) * math.cos((x1+x2)/2)
         y = (x2-x1)
         return math.sqrt(x*x + y*y) * 6371
+
+    @property
+    def statutMembre(self):
+        return self.statut_adhesion
+
+    @property
+    def statutMembre_str(self):
+        if self.statut_adhesion == 0:
+            return "souhaite devenir membre de l'association"
+        elif self.statut_adhesion == 1:
+            return "ne souhaite pas devenir membre"
+        elif self.statut_adhesion == 2:
+            return "membre actif"
+
+    @property
+    def is_permacat(self):
+        if self.statut_adhesion == 2:
+            return True
+        else:
+            return False
     
 @receiver(post_save, sender=Profil)
 def create_user_profile(sender, instance, created, **kwargs):
     if created and instance.is_superuser:
         Panier.objects.create(user=instance)
+    #elif created:
+     #   instance.is_active=False
 
 
 #@receiver(post_save, sender=User)
@@ -229,7 +248,7 @@ class Produit(models.Model):  # , BaseProduct):
 
     estUneOffre = models.BooleanField(default=True, verbose_name='Offre (cochez) ou Demande (décochez)')
 
-    estPublique = models.BooleanField(default=False, verbose_name='Publique (cochez) ou Interne (décochez)')
+    estPublique = models.BooleanField(default=False, verbose_name='Publique (cochez) ou Interne (décochez) [réservé aux membres permacat]')
 
     objects = InheritanceManager()
 
@@ -678,6 +697,7 @@ class Conversation(models.Model):
     profil2 = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='profil2')
     slug = models.CharField(max_length=100)
     date_creation = models.DateTimeField(auto_now_add=True, auto_now=False, verbose_name="Date de parution")
+    date_dernierMessage = models.DateTimeField(verbose_name="Date de Modification", auto_now=True)
 
     class Meta:
         ordering = ('date_creation',)
@@ -689,18 +709,19 @@ class Conversation(models.Model):
         return self.__str__()
 
     titre = property(titre)
-    
-    def auteur_1(self):
-        return "Conversation avec " + self.profil1.username 
-    titre = property(auteur_1)
-    def auteur_2(self):
-        return "Conversation avec " + self.profil2.username 
-    titre = property(auteur_2)
 
+    @property
+    def auteur_1(self):
+        return "Conversation avec " + self.profil1.username
+
+    @property
+    def auteur_2(self):
+        return "Conversation avec " + self.profil2.username
+
+    @property
     def messages(self):
         return self.__str__()
 
-    messages = property(messages)
 
     def get_absolute_url(self):
         return reverse('lireConversation_2noms', kwargs={'destinataire1': self.profil1.username, 'destinataire2': self.profil2.username})

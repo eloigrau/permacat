@@ -1,12 +1,30 @@
 {% extends 'base.html' %}
 {%block message%}{%endblock%}
 {% block subtitle %}
-<div class"col-sm-12 textcenter">
+<div class="col-sm-12 textcenter">
                       <h3>Agora</h3>
     </div>
 
 {% endblock %}
 {% block content %}
+
+<div class="contenu conversation" id="idConversation">
+{% for mess in messages_echanges %}
+    <div class="row msg-agora ">
+        <div class="col-sm-4 col-md-3 col-lg-2">
+            <p class="infos  textepetit">{{ mess.date_creation|date:"d/m/Y, G:i" }}, {{mess.auteur}}</p>
+        </div>
+        <div class=" col-sm-8 col-md-9 col-lg-6 message ">
+                <p>{{ mess.message }}</p>
+        </div>
+    </div>
+{% endfor %}
+</div>
+    <script>
+    var messageBody = document.querySelector('#idConversation');
+    messageBody.scrollTop = idConversation.scrollHeight - idConversation.clientHeight;
+</script>
+<hr>
 
 <div>
     <input type="hidden" name="Nouveau Message" value="{{ message }}">
@@ -16,24 +34,8 @@
     {% csrf_token %}
     <input type="hidden" name="Nouveau Message" value="{{ message_defaut }}">
     {% include 'form_template3.html' %}
-    
 </form>
 </div>
-<hr>
-<div class="contenu conversation">
-{% for mess in messages_echanges %}
-    <div class="row msg-agora ">
-        <div class="col-sm-4 col-md-3 col-lg-2">
-            <p class="infos  textepetit">{{mess.auteur }}, {{ mess.date_creation|date:"d/m/Y, G:i" }}</p>
-        </div>
-        <div class=" col-sm-8 col-md-9 col-lg-6 message ">
-                <p>{{ mess.message }}</p>
-        </div>
-    </div>
-{% endfor %}
-</ol>
-</div>
-
 
 
 {% endblock %}

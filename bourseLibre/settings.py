@@ -32,19 +32,21 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-locall  = False
+locall  = True
 #DEBUG_PROPAGATE_EXCEPTIONS = True
 
-#SECURE_SSL_REDIRECT = False
+SECURE_SSL_REDIRECT = False
 #SESSION_COOKIE_SECURE = True
 #CSRF_COOKIE_SECURE = True
-SESSION_EXPIRE_AT_BROWSER_CLOSE=True
+#SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 
 if DEBUG:
     SECRET_KEY = 'aersdfgsfdgsdvcbvcbgbgfthhfhdjd'
+    #CSRF_COOKIE_DOMAIN=None
 else:
-    SECRET_KEY = os.environ['SECRET_KEY']
-    #SECRET_KEY = 'aersdfgsfdgsdvcbvcbgbgfthhfhdjd'
+    #SECRET_KEY = os.environ['SECRET_KEY']
+    SECRET_KEY = 'aersdfgsfdgsdvcbvcbgbgfthhfhdjd'
+    SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 
 ALLOWED_HOSTS = ['permacat.herokuapp.com', 'www.perma.cat']
 
@@ -76,7 +78,7 @@ INSTALLED_APPS = (
     'widget_tweaks',
     'leaflet',
     'tinymce',
- 'captcha',
+    'captcha',
     #"geoposition",
     #"geodjango",
     #'osm_field',
@@ -131,8 +133,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.request',
-                #'django.template.context_processors.media',
-                #'django.template.context_processors.static',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
             ],
             'string_if_invalid': 'Invalid: "%s"',
             'libraries': {'is_numeric': 'bourseLibre.templatetags.app_filters', }
@@ -142,7 +144,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bourseLibre.wsgi.application'
 # Database
-# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 if locall:
     DATABASES = {
        'default': {
@@ -151,10 +152,8 @@ if locall:
         }
     }
     ALLOWED_HOSTS = ['127.0.0.1']
-#try:
-#
 else:
-    DATABASES = {}
+    DATABASES = dict()
     DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 
@@ -253,23 +252,21 @@ except:
 
 # MANAGERS: It specifies a list of people to send broken link emails for 404 NOT FOUND errors. It's accepts emails in the same format as ADMINS.
 MANAGERS = [
-    ('eloi', 'permacat66@email.com'),
+    ('asso', 'permacat66@email.com'),
 ]
 ADMINS = [
-    ('eloi', 'permacat66@gmail.com'),
+    ('asso', 'permacat66@gmail.com'),
 ]
 
 
 ########################
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
-MEDIA_URL= 'images/'
-MEDIA_ROOT= BASE_DIR + "../staticstorage/images/"
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/'), )
+MEDIA_URL= '/images/'
+MEDIA_ROOT= os.path.join(BASE_DIR, 'static/images/')
 
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

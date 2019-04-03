@@ -71,6 +71,9 @@ class ListeArticles(ListView):
         qs = Article.objects.all()
         params = dict(self.request.GET.items())
 
+        if not self.request.user.is_authenticated or not self.request.user.is_permacat:
+            qs = qs.filter(estPublic=True)
+
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])
         if "categorie" in params:
@@ -149,6 +152,10 @@ class ListeProjets(ListView):
     def get_queryset(self):
         qs = Projet.objects.all()
         params = dict(self.request.GET.items())
+
+        if not self.request.user.is_authenticated or not self.request.user.is_permacat:
+            qs = qs.filter(estPublic=True)
+
 
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])
