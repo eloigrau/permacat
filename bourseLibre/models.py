@@ -632,7 +632,7 @@ class Panier(models.Model):
                 yield item
 
     def get_message_demande(self, user_id):
-        message= 'Bonjour, je voudrais vous échanger : \n'
+        message= 'Bonjour, je suis intéressė par : \n'
         for item in self.get_items_from_user(user_id):
             message += "\t" + str(item.quantite) + "\t" + str(item.produit.nom_produit)
             if item.total_prixEtunite != 0:
