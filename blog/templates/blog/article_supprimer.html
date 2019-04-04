@@ -3,8 +3,8 @@
 {% block content %}
 <form action="" method="post">{% csrf_token %}
     <p>Etes vous sur.e de vouloir supprimer l'article de "{{ article.titre }}"?</p>
-    <input type="button"  onclick="window.history.back();"  value="Cancel" />
-    <input type="submit" value="Confirm" />
+    <input type="button"  onclick="window.history.back();"  value="Annuler" />
+    <input type="submit" value="Confirmer" />
 </form>
 
 {% endblock %}
