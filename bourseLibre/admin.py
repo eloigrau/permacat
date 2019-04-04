@@ -16,10 +16,10 @@ class CustomUserAdmin(UserAdmin):
     form = ProducteurChangeForm_admin
     model = Profil
     list_display = ['email', 'username', 'pseudo_june', 'statut_adhesion', 'date_registration', 'last_login',]
-    readonly_fields = ('date_registration','last_login',)
+    readonly_fields = ('date_registration','last_login','adresse')
 
     fieldsets = (
-        (None, {'fields': ('username','description','competences','pseudo_june','statut_adhesion')}),
+        (None, {'fields': ('username','description','competences','pseudo_june','statut_adhesion','adresse")}),
         (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
                                        'groups', 'user_permissions')}),
