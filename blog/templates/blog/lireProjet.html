@@ -26,8 +26,8 @@
 {% endblock %}
 {% block content %}
 <div class="contenu projet">
-<div class="row" >
-            <span class="badge {% if projet.estPublic%}badge-warning{%else%} badge-danger {%endif%}">
+<div class="row textcenter" >
+            <span class="badge {% if projet.estPublic%}badge-warning{%else%} badge-success {%endif%}">
                 Projet {%if projet.estPublic%}  public {%else%}  permacat  {%endif%}
             </span>
 </div>
