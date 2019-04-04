@@ -16,7 +16,7 @@ var Cookielaw = {
         this.createCookie('cookielaw_accepted', '1', 10 * 365);
 
         if (typeof (window.jQuery) === 'function') {
-            jQuery('#CookielawBanner').slideUp();
+            jQuery('#CookielawBanner').slideToggle();
         } else {
             document.getElementById('CookielawBanner').style.display = 'none';
         }

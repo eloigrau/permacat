@@ -18,9 +18,12 @@
 <div class="row">
     <div class="col-md-12 textcenter">
         {%if  user.username != request.user.username %}
+        
+  {% if request.user.is_permacat %}
         <a href="{% url 'lireConversation' user.username %}" class="btn btn-success">
           <span class="glyphicon glyphicons-conversation"></span> Message
         </a>
+        [%endif%}
         <a href="{% url 'profil_contact' user.id %}" class="btn btn-success">
           <span class="glyphicon glyphicon-envelope"></span> Email
         </a>
@@ -59,12 +62,13 @@
       <table class="table table-condensed tablepanier table-striped"><tbody>
 
     <tr>
-        <td style="width:250px">Date d'adhésion :</td>
-        <td>{{ user.date_registration | date:"DATE_FORMAT"}}</td>
-    </tr>
-    <tr>
         <td style="width:250px">Pseudo :</td>
         <td>{{ user.username }}</td>
+    </tr>
+    {%if request.user.is_permacat %}
+    <tr>
+        <td style="width:250px">Date d'adhésion :</td>
+        <td>{{ user.date_registration | date:"DATE_FORMAT"}}</td>
     </tr>
   {% if user.get_full_name %}
     <tr>
@@ -78,6 +82,7 @@
         <td>{{ user.adresse.telephone }}</td>
     </tr>
   {% endif %}
+  {% endif %}
   {% if user.email %}
     <tr>
         <td style="width:250px">Email :</td>
@@ -85,6 +90,7 @@
     </tr>
   {% endif %}
 
+    {%if request.user.is_permacat %}
   {% if user.avatar %}
     <tr>
         <td style="width:250px">Avatar : </td>
@@ -107,6 +113,7 @@
         <td style="width:250px">Savoir-faire :</td>
         <td>{{ user.competences }}</td>
     </tr>
+  {% endif %}
     <tr>
         <td style="width:250px">Statut</td>
         <td>{{user.statutMembre_str}}</td>
@@ -123,6 +130,7 @@
       {%endif%}
     <table class="table table-condensed tablepanier table-striped">
         <tbody>
+  {% if request.user.is_permacat %}
     {%if user.adresse.rue %}
     <tr>
         <td style="width:250px">Adresse :</td>
@@ -135,12 +143,14 @@
         <td>{{ user.adresse.commune }}</td>
     </tr>
   {% endif %}
+  {% endif %}
     {%if user.adresse.code_postal %}
     <tr>
         <td style="width:250px">Code postal :</td>
         <td>{{ user.adresse.code_postal }}</td>
     </tr>
   {% endif %}
+  {% if request.user.is_permacat %}
     {%if user.adresse.pays %}
     <tr>
         <td style="width:250px">Pays :</td>
@@ -161,11 +171,12 @@
           <tr>
         <td style="width:200px">Distance :</td>
         <td>{{distance | floatformat }} km
-    </tr>{% endif %}
+    </tr>{% endif %}{% endif %}
         </tbody>
     </table>
 </div>
 
+  {% if request.user.is_permacat %}
   <div class="col-md-6">
 
       <style>
@@ -185,51 +196,8 @@
 </script>
 {% leaflet_map "yourmap" callback="window.map_init_basic" %}
 </div>
+    {% endif %}
 </div>
-
-
-      {%comment%}
-    <script>
-
-
-      var map;
-      function initMap() {
-      var lat = {{user.adresse.get_latitude}};
-      var lon = {{user.adresse.get_longitude}};
-
-       map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: lat, lng: lon},
-          zoom: 6
-        });
-      //var marker = new google.maps.Marker({position:{lat: lat, lng: lon}});
-      //marker.setMap(map);
-      }
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC10StWuCZHLPmSZCyfNEdmgZ7CTqdngy0&callback=initMap"
-    async defer></script>
-      {%endcomment%}
-
-{%comment%}
-    <div id="map"></div>
-<div id="myMap" style="width:80%;height:300px;"></div>
-<script>
-function myMap() {
-      var lat = {{user.adresse.get_latitude}};
-      var lon = {{user.adresse.get_longitude}};
-
-       map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: lat, lng: lon},
-          zoom: 6
-        });
-      var marker = new google.maps.Marker({position:{lat:lat, lng:lon}});
-      marker.setMap(map);
-};
-</script>
-
-   <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCmGcPj0ti_7aEagETrbJyHPbE3U6gVfSA&callback=myMap">
-    </script>
-{%endcomment%}
 
 
 {% endblock %}

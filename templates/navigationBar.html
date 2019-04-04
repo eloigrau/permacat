@@ -14,9 +14,26 @@
         <div class="navbar-collapse  collapse justify-content-between  align-items-center w-100"  id="navbarsActuel">
 
         {% if user.is_authenticated %}
-                        <ul class="nav navbar-nav">
-                     <li class="active"> <a class="nav-link" href="{% url 'marche' %}" >Marché</a>
-                   </li><li class="active">  <a class="nav-link" href="{% url 'blog:forum' %}" >Forum</a>
+            <ul class="nav navbar-nav">
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="{% url 'marche' %}" >Marché</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="nav-link" href="{% url 'marche' %}">Toutes les annonces</a>
+                            <a class="nav-link" href="{% url 'marche_offres' %}?">Offres</a>
+                            <a class="nav-link" href="{% url 'marche_recherches' %}?">Demandes</a>
+                            <a class="nav-link" href="{% url 'marche' %}?producteur={{ user.username }}">Mes annonces</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="{% url 'blog:forum' %}" >Forum</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="nav-link" href="{% url 'marche' %}">Agora</a>
+                            <a class="nav-link" href="{% url 'blog:index' %}?">Annonces</a>
+                            <a class="nav-link" href="{% url 'blog:index_projets' %}?">Projets</a>
+                        </div>
+                    </li>
+                    <li class="active">
              </li></ul>
     
    

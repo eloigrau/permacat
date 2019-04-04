@@ -23,6 +23,7 @@
     </div>
 </div>
 
+
 {% endblock %}
 {% block content %}
 <div class="contenu article">
@@ -40,43 +41,41 @@
 </div>
 </div>
 
-{% if commentaires %}
-<hr>
-<div>
-<h3>Commentaires</h3>
-<ol>
-{% for comment in commentaires %}
-    <div class="row">
-        <div class="col-sm-4">
-        <li>
-            <h5 style="text-indent: 20px;">{{ comment.titre }}
-            <
-            </h5>
 
-        </a>
-        </li>
-           <p> <small>Posté par: {{ comment.auteur_comm.username }}, {{ comment.date_creation |date:"DATE_FORMAT"}} </small></p>
+<hr>
+
+<div class="row textcenter">
+    <h4>Commentaires</h4>
+</div>
+
+<div class="contenu commentaires" id="idConversation">
+{% for comment in commentaires %}
+    <div class="row {% if comment.auteur.id == request.user.id %} msg-auteur  {%else%} msg-destinataire{%endif%}">
+
+        <div class="col-sm-3 col-md-3 col-lg-2">
+            <p class="infos  textepetit">{{ comment.date_creation|date:"d/m/Y, G:i" }}, {{comment.auteur_comm}}</p>
         </div>
-        <div class=" col-sm-8 commentaire">
+        <div class=" col-sm-9 col-md-9 col-lg-6 message ">
                 <p>{{ comment.commentaire }}</p>
         </div>
     </div>
 {% endfor %}
-</ol>
 </div>
-{% endif %}
+    <script>
+    var messageBody = document.querySelector('#idConversation');
+    messageBody.scrollTop = idConversation.scrollHeight - idConversation.clientHeight;
+</script>
 
-
-{% if form %}
 <hr>
 <div>
-<h4 class="form-group">Laisser un commentaire :</h4>
+    <input type="hidden" name="Nouveau Message" value="{{ message }}">
+
+<div>
 <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
-    {% csrf_token %} 
-    <input type="hidden" name="Commentaire" value="{{ commentaire }}">
-    {% include 'form_template.html'%}
+    {% csrf_token %}
+    <input type="hidden" name="Nouveau Message" value="{{ message_defaut }}">
+    {% include 'form_template3.html' %}
 </form>
 </div>
-{% endif %}
 
 {% endblock %}

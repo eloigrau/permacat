@@ -101,8 +101,8 @@ class ListeArticles(ListView):
 def ajouterNouveauProjet(request):
         form = ProjetForm(request.POST or None)
         if form.is_valid():
-            article = form.save(request.user)
-            return render(request, 'blog/lireProjet.html', {'projet': article})
+            projet = form.save(request.user)
+            return render(request, 'blog/lireProjet.html', {'projet': projet})
         return render(request, 'blog/ajouterProjet.html', { "form": form, })
 
 
@@ -133,7 +133,7 @@ def lireProjet(request, slug):
     form = CommentProjetForm(request.POST or None)
     if form.is_valid():
         comment = form.save(commit=False)
-        comment.article = projet
+        comment.projet = projet
         comment.auteur_comm = request.user
         comment.save()
         return redirect(request.path)

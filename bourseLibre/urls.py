@@ -45,6 +45,7 @@ urlpatterns = [
     url(r'^accounts/profile/$',  login_required(views.profil_courant), name='profil_courant',),
     url(r'^accounts/profil_inconnu/$', views.profil_inconnu, name='profil_inconnu',),
     url(r'^accounts/profil_modifier/$', login_required(views.profil_modifier.as_view()), name='profil_modifier',),
+    url(r'^accounts/profil_supprimer/$', login_required(views.profil_supprimer.as_view()), name='profil_supprimer',),
     url(r'^accounts/profil_modifier_adresse/$', login_required(views.profil_modifier_adresse.as_view()), name='profil_modifier_adresse',),
     url(r'^accounts/profil_contact/(?P<user_id>[0-9]+)/$', login_required(views.profil_contact), name='profil_contact',),
     url(r'^register/$', views.register, name='senregistrer',),

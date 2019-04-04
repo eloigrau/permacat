@@ -37,13 +37,12 @@ class Article(models.Model):
 
 class Commentaire(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE)
-    titre = models.CharField(max_length=42)
     commentaire = models.TextField()
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     date_creation = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return self.titre
+        return "comm " + str(self.id) + " " + str(self.article)
 
 
 class Projet(models.Model):
@@ -68,10 +67,9 @@ class Projet(models.Model):
 
 class CommentaireProjet(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE)
-    titre = models.CharField(max_length=42)
     commentaire = models.TextField()
     projet = models.ForeignKey(Projet, on_delete=models.CASCADE)
     date_creation = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return self.titre
+        return "comm " + str(self.id) + " " + str(self.projet)

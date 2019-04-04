@@ -322,6 +322,13 @@ class profil_modifier(UpdateView):
     def get_object(self):
         return Profil.objects.get(id=self.request.user.id)
 
+class profil_supprimer(DeleteView):
+    model = Profil
+    success_url = reverse_lazy('bienvenue')
+
+    def get_object(self):
+        return Profil.objects.get(id=self.request.user.id)
+
 @sensitive_variables('password')
 def change_password(request):
     if request.method == 'POST':

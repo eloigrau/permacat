@@ -47,6 +47,9 @@ class CommentForm(forms.ModelForm):
         model = Commentaire
         exclude = ['article','auteur_comm']
 
+        widgets = {
+                'commentaire': forms.Textarea(attrs={'rows': 1}),
+            }
 
 
 class ProjetForm(forms.ModelForm):
@@ -90,3 +93,7 @@ class CommentProjetForm(forms.ModelForm):
     class Meta:
         model = CommentaireProjet
         exclude = ['projet','auteur_comm']
+
+        widgets = {
+                'commentaire': forms.Textarea(attrs={'rows': 1}),
+            }

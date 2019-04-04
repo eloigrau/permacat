@@ -6,4 +6,8 @@ Modifier votre profil (ou <a href="{% url 'change_password' %}">Modifier mon mot
 
 {% block content %}
 {% include 'form_template.html' %}
+
+
+<a href="{%url 'profil_supprimer' %}" class="btn btn-danger btn-lg btn-block" type="button">
+			Supprimer le profil et se désinscrire (attention, irreversible !)</a>
 {% endblock %}
