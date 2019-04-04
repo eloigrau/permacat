@@ -26,7 +26,7 @@ class ProduitCreationForm(forms.ModelForm):
 
 
 class Produit_aliment_CreationForm(forms.ModelForm):
-    estUneOffre = forms.ChoiceField(choices=((0, "Offre permacat"), (1, "offre publique")), widget=forms.RadioSelect(), label='', required=True)
+    estUneOffre = forms.ChoiceField(choices=((0, "Offre permacat"), (1, "offre publique")), label='', required=True)
 
     class Meta:
         model = Produit_aliment
