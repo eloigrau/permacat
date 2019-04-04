@@ -36,7 +36,7 @@ class ModifierArticle(UpdateView):
 
 class SupprimerArticle(DeleteView):
     model = Article
-    success_url = reverse_lazy('marche')
+    success_url = reverse_lazy('blog:index')
     template_name_suffix = '_supprimer'
 #    fields = ['user','site_web','description', 'competences', 'adresse', 'avatar', 'inscrit_newsletter']
 
@@ -118,7 +118,7 @@ class ModifierProjet(UpdateView):
 
 class SupprimerProjet(DeleteView):
     model = Projet
-    success_url = reverse_lazy('forum')
+    success_url = reverse_lazy('blog:index_projets')
     template_name_suffix = '_supprimer'
 #    fields = ['user','site_web','description', 'competences', 'adresse', 'avatar', 'inscrit_newsletter']
 
