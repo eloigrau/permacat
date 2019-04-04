@@ -9,6 +9,8 @@ from tinymce.widgets import TinyMCE
 class ArticleForm(forms.ModelForm):
     #contenu = forms.CharField(widget=forms.Textarea(attrs={'cols': 80, 'rows': 10}))
     contenu = TinyMCE(attrs={'cols': 80, 'rows': 20})
+    estPublic = forms.ChoiceField(choices=((1, "Annonce publique"), (0, "Annonce Permacat")), label='', required=True)
+
     class Meta:
         model = Article
         fields = ['categorie', 'titre', 'contenu', 'estPublic']
@@ -55,6 +57,8 @@ class CommentForm(forms.ModelForm):
 class ProjetForm(forms.ModelForm):
     #contenu = forms.CharField(widget=forms.Textarea(attrs={'cols': 80, 'rows': 10}))
     contenu = TinyMCE(attrs={'cols': 80, 'rows': 20})
+    estPublic = forms.ChoiceField(choices=((1, "Projet public"), (0, "Projet Permacat")), label='', required=True)
+
     class Meta:
         model = Projet
         fields = ['categorie', 'titre', 'contenu', 'estPublic']

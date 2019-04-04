@@ -599,7 +599,7 @@ def lireConversation_2noms(request, destinataire1, destinataire2):
     return render(request, 'lireConversation.html', {'conversation': conversation, 'form': form, 'messages_echanges': messages, 'destinataire':destinataire})
 
 @login_required
-def lireDiscussion(request, ): 
+def agora(request, ):
     messages = MessageGeneral.objects.all().order_by("date_creation")
     form = MessageGeneralForm(request.POST or None) 
     if form.is_valid(): 
@@ -607,7 +607,7 @@ def lireDiscussion(request, ):
         message.auteur = request.user 
         message.save() 
         return redirect(request.path) 
-    return render(request, 'lireDiscussion.html', {'form': form, 'messages_echanges': messages})
+    return render(request, 'agora.html', {'form': form, 'messages_echanges': messages})
 
 class ListeConversations(ListView):
     model = Conversation
