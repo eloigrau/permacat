@@ -39,6 +39,7 @@
 <div class="row">
 	<div class="col-12 paddingbase detailProduit" style="background-color: {{ produit.couleur }}; min-height:200px !important">
 		<span class="badge {% if produit.estUneOffre%}badge-warning{%else%} badge-danger {%endif%}">{% if produit.estUneOffre%}Offre{%else%} Demande {%endif%}
+			{% if produit.estPublique%}publique{%else%} Permacat {%endif%}
 		</span>
 		<div class="row"  >
 			<div class="col-md-10 ">

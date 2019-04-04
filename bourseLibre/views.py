@@ -93,7 +93,9 @@ def produit_proposer(request, type_produit):
         produit.user = request.user
         produit.categorie = type_produit
 
-        #if produit.photo:
+        if not request.user.is_permacat:
+            produit.estPublique = True
+            #if produit.photo:
             #produit.photo = request.FILES['photo']
             #file_type = produit.photo.url.split('.')[-1].lower()
 

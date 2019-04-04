@@ -1,14 +1,15 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, Profil, Message, MessageGeneral, Choix
-from captcha.fields import CaptchaField 
+from captcha.fields import CaptchaField
 
 fieldsCommunsProduits = ['nom_produit', 'souscategorie',  'description', 'estUneOffre', 'estPublique',
                 'unite_prix', 'prix',  'type_prix', 'date_debut', 'date_expiration', ]
 
 
 class ProduitCreationForm(forms.ModelForm):
-    estUneOffre = forms.ChoiceField(choices=((0, "Offre"), (1, "Demande")), label='', required=True)
+    estUneOffre = forms.ChoiceField(choices=((1, "Offre"), (0, "Demande")), label='', required=True)
+    estPublique = forms.ChoiceField(choices=((1, "Annonce publique"), (0, "Annonce réservée aux adhérents")), label='', required=True)
 
     class Meta:
         model = Produit
@@ -19,23 +20,8 @@ class ProduitCreationForm(forms.ModelForm):
         widgets = {
             'date_debut': forms.DateInput(attrs={'type':"date"}, ),
             'date_expiration': forms.DateInput(attrs={'type':"date"}),
-            'estUneOffre': forms.RadioSelect(choices=('oui', 'non')),
-            'estPublique': forms.RadioSelect(choices=('oui', 'non')),
         }
 
-
-class Produit_aliment_CreationForm(forms.ModelForm):
-    estUneOffre = forms.ChoiceField(choices=((1, "Offre"), (0, "Demande")), label='', required=True)
-
-    class Meta:
-        model = Produit_aliment
-        fields = fieldsCommunsProduits
-        widgets = {
-            'date_debut': forms.DateInput(attrs={'type':"date"}, ),
-            'date_expiration': forms.DateInput(attrs={'type':"date"}),
-           # 'estUneOffre': forms.RadioSelect(choices=('oui', 'non')),
-           # 'estPublique': forms.RadioSelect(choices=('oui', 'non')),
-        }
 
     def clean(self):
         cleaned_data = super().clean()
@@ -49,8 +35,19 @@ class Produit_aliment_CreationForm(forms.ModelForm):
                 )
         return self.cleaned_data
 
-class Produit_vegetal_CreationForm(forms.ModelForm):
-    estUneOffre = forms.ChoiceField(choices=((1, "Offre"), (0, "Demande")), label='', required=True)
+class Produit_aliment_CreationForm(ProduitCreationForm):
+
+    class Meta:
+        model = Produit_aliment
+        fields = fieldsCommunsProduits
+        widgets = {
+            'date_debut': forms.DateInput(attrs={'type':"date"}, ),
+            'date_expiration': forms.DateInput(attrs={'type':"date"}),
+        }
+
+
+class Produit_vegetal_CreationForm(ProduitCreationForm):
+
     class Meta:
         model = Produit_vegetal
         fields = fieldsCommunsProduits
@@ -61,20 +58,7 @@ class Produit_vegetal_CreationForm(forms.ModelForm):
             #'estPublique': forms.RadioSelect(choices=('oui', 'non')),
         }
 
-    def clean(self):
-        cleaned_data = super().clean()
-        date_debut = cleaned_data.get("date_debut")
-        date_expiration = cleaned_data.get("date_expiration")
-        if date_debut and date_expiration:
-            # Only do something if both fields are valid so far.
-            if date_debut > date_expiration:
-                raise forms.ValidationError(
-                    "La date de fin doit etre après la date de début"
-                )
-        return self.cleaned_data
-
-class Produit_service_CreationForm(forms.ModelForm):
-    estUneOffre = forms.ChoiceField(choices=((1, "Offre"), (0, "Demande")), label='', required=True)
+class Produit_service_CreationForm(ProduitCreationForm):
     class Meta:
         model = Produit_service
         fields = fieldsCommunsProduits
@@ -84,21 +68,7 @@ class Produit_service_CreationForm(forms.ModelForm):
           #  'estUneOffre': forms.RadioSelect(choices=('oui', 'non')),
            # 'estPublique': forms.RadioSelect(choices=('oui', 'non')),
         }
-    def clean(self):
-        cleaned_data = super().clean()
-        date_debut = cleaned_data.get("date_debut")
-        date_expiration = cleaned_data.get("date_expiration")
-        if date_debut and date_expiration:
-            # Only do something if both fields are valid so far.
-            if date_debut > date_expiration:
-                raise forms.ValidationError(
-                    "La date de fin doit etre après la date de début"
-                )
-        return self.cleaned_data
-
-
-class Produit_objet_CreationForm(forms.ModelForm):
-    estUneOffre = forms.ChoiceField(choices=((1, "Offre"), (0, "Demande")), label='', required=True)
+class Produit_objet_CreationForm(ProduitCreationForm):
     class Meta:
         model = Produit_objet
         fields = fieldsCommunsProduits
@@ -106,18 +76,6 @@ class Produit_objet_CreationForm(forms.ModelForm):
             'date_debut': forms.DateInput(attrs={'type':"date"}, ),
             'date_expiration': forms.DateInput(attrs={'type':"date"})
         }
-
-    def clean(self):
-        cleaned_data = super().clean()
-        date_debut = cleaned_data.get("date_debut")
-        date_expiration = cleaned_data.get("date_expiration")
-        if date_debut and date_expiration:
-            # Only do something if both fields are valid so far.
-            if date_debut > date_expiration:
-                raise forms.ValidationError(
-                    "La date de fin doit etre après la date de début"
-                )
-        return self.cleaned_data
 
 class AdresseForm(forms.ModelForm):
     rue = forms.CharField(label="Rue*", required=True)
@@ -195,7 +153,7 @@ class ProducteurChangeForm(UserChangeForm):
     avatar = forms.ImageField(required=False)
     inscrit_newsletter = forms.BooleanField(required=False)
     password=None
-    
+
     def __init__(self, *args, **kargs):
         super(ProducteurChangeForm, self).__init__(*args, **kargs)
 

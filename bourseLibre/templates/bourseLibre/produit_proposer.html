@@ -1,38 +1,56 @@
-{% extends 'base.html' %}
-{% load app_filters %}
-{% block title %}Partager{% endblock %}
-{% block subtitle %}
-{% csrf_token %}
-<style>.soustitre,.bodycontenu{background-color: {{ bgcolor }};}</style>
-<div class="row justify-content-center">
-<h5>Quel {{ type_produit }} proposez-vous ?</h5>
-</div>
-{% endblock %}
-{% block content %}
-<form class="form-horizontal" role="form" action="" method="post"
-	enctype="multipart/form-data">
-        {% include 'form_template.html'%}
+    {% extends 'base.html' %}
+    {% load app_filters %}
+    {% block title %}Partager{% endblock %}
+    {% block subtitle %}
+    {% csrf_token %}
+    <style>.soustitre,.bodycontenu{background-color: {{ bgcolor }};}</style>
+    <div class="row justify-content-center">
+    <h5>Quel {{ type_produit }} proposez-vous ?</h5>
+    </div>
+    {% endblock %}
+    {% block content %}
+    <form class="form-horizontal" role="form" action="" method="post"
+        enctype="multipart/form-data">
+            {% include 'form_template.html'%}
 
-    {% comment %}
-<div class="row-sm-12 row-lg-6 mx-auto "style="display:flex;justify-content:center;align-items:center;">
+        {% comment %}
 
-    <form action="" method="post">
+    <div class="row-sm-12 row-lg-6 mx-auto "style="display:flex;justify-content:center;align-items:center;">
 
-        <table  border="0" >
-    {{ form.as_table }}
-    {% if form2 %}
-        {{ form2.as_table }}
-    {%endif%}
+        <form action="" method="post">
 
-    </table>
-        <div class="btn-group" style="display:flex;justify-content:center;align-items:center;">
-            <button type="cancel" onclick="window.history.back();" class="btn btn-warning ">Annuler</button>
-            <button type="submit" class="btn btn-success">Offrir / Rechercher</button>
-        </div>
-    {% endcomment %}
-</form>
-</div>
+            <table  border="0" >
+        {{ form.as_table }}
+        {% if form2 %}
+            {{ form2.as_table }}
+        {%endif%}
 
-{% endblock %}
+        </table>
+            <div class="btn-group" style="display:flex;justify-content:center;align-items:center;">
+                <button type="cancel" onclick="window.history.back();" class="btn btn-warning ">Annuler</button>
+                <button type="submit" class="btn btn-success">Offrir / Rechercher</button>
+            </div>
+        {% endcomment %}
+    </form>
 
-{% block comment %}{% endblock %}
+        <script type="text/javascript">
+        $("#id_unite_prix").change(function(){
+            var unite = document.getElementById('id_unite_prix').value;
+            if (unite=="Soudaqui" | unite=="G1" | unite=="heuresT" | unite=="JEU") {
+                document.getElementById('id_prix').style.visibility = "visible";
+                document.getElementById('id_type_prix').style.visibility = "visible";
+            }else{
+                document.getElementById('id_prix').style.visibility = "hidden";
+                document.getElementById('id_type_prix').style.visibility = "hidden";
+            }
+        });
+        {% if not request.user.is_permacat %}
+               var isPublique = document.getElementById('id_estPublique').style.visibility = "hidden";
+
+        {%endif%}
+    </script>
+    </div>
+
+    {% endblock %}
+
+    {% block comment %}{% endblock %}
