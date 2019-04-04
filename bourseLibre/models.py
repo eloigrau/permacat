@@ -60,7 +60,7 @@ class Choix():
         'type_prix': typePrixUnite,
     },
     }
-    monnaies = (('don', 'don'), ('troc', 'troc'), ('G1', 'G1'), ('soudaqui', 'soudaqui'), ('SEL', 'SEL'), ('JEU', 'JEU'),  ('heuresT', 'heuresT'),  ('Autre', 'A negocier'))
+    monnaies = (('don', 'don'), ('troc', 'troc'), ('pret', 'pret'), ('G1', 'G1'), ('soudaqui', 'soudaqui'), ('SEL', 'SEL'), ('JEU', 'JEU'),  ('heuresT', 'heuresT'),  ('Autre', 'A negocier'))
 
     ordreTri = ['date', 'categorie', 'producteur']
     distances = ['5', '10', '20', '30', '50', '100']
