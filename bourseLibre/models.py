@@ -101,9 +101,9 @@ class Adresse(models.Model):
 
     def __str__(self):
         if self.commune:
-            return self.commune
+            return "("+self.id+") "+self.commune 
         else:
-            return self.code_postal
+            return "("+self.id+") "+self.code_postal
 
     def __unicode__(self):
         return self.__str__()
