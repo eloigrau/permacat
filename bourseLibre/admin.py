@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Profil, Adresse, Produit, Produit_vegetal, Produit_objet, Produit_service, Produit_aliment, Panier, Item, Message, MessageGeneral, Conversation
-from blog.models import Article
+from blog.models import Article, Projet, Commentaire, CommentaireProjet
 # -*- coding: utf-8 -*-
 
 from django.contrib import admin
@@ -44,3 +44,6 @@ admin.site.register(MessageGeneral)
 
 admin.site.register(Conversation)
 admin.site.register(Article)
+admin.site.register(Projet)
+admin.site.register(Commentaire)
+admin.site.register(CommentaireProjet)

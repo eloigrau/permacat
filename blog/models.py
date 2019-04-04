@@ -55,6 +55,10 @@ class Projet(models.Model):
     contenu = HTMLField(null=True)
     date = models.DateTimeField(auto_now=True, verbose_name="Date de Modification")
     estPublic = models.BooleanField(default=False, verbose_name='Public (cochez) ou Interne (décochez) [réservé aux membres permacat]')
+    coresponsable = models.CharField(max_length=150, default='', null=True, blank=True)
+    date_modification = models.DateTimeField(verbose_name="Date de dernière modification", auto_now=True)
+    lien_vote = models.URLField(null=True, blank=True, verbose_name='Lien vers le vote (balotilo.org)')
+    lien_document = models.CharField(max_length=300, verbose_name='Lien vers un document explicatif', default='', null=True, blank=True)
 
     class Meta:
         ordering = ('date', )

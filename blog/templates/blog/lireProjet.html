@@ -37,6 +37,49 @@
 <div class="row">
     {{ projet.contenu  | safe}}
 </div>
+<hr>
+    <div class="col-sm-12 paddingbase">
+		<table class="table table-condensed ">
+			<tbody>
+				<tr>
+					<td class="nomProprieteProduit">
+						Co-responsable :
+					</td>
+					<td class="proprieteProduit">
+						{{ projet.coresponsable}}
+					</td>
+				</tr>
+                <tr>
+					<td class="nomProprieteProduit">
+						Dernière modification :
+					</td>
+					<td class="proprieteProduit">
+						{{ projet.date_modification |date:"DATE_FORMAT"}}
+					</td>
+				</tr>
+                    {% if projet.lien_document%}
+                <tr>
+					<td class="nomProprieteProduit">
+						Document :
+					</td>
+					<td class="proprieteProduit">
+						{{ projet.lien_document}}
+					</td>
+				</tr>
+                    {% endif %}
+                    {%if request.user.is_permacat%}
+                <tr>
+					<td class="nomProprieteProduit">
+						Lien pour voter :
+					</td>
+					<td class="proprieteProduit">
+						{{ projet.lien_vote}}
+					</td>
+				</tr>
+                    {% endif %}
+			</tbody>
+		</table>
+	</div>
 </div>
 
 

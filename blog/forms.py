@@ -41,7 +41,7 @@ class ArticleForm(forms.ModelForm):
 class ArticleChangeForm(forms.ModelForm):
     class Meta:
         model = Article
-        fields = ['titre', 'contenu', 'estPublic', ]
+        fields = ['categorie', 'titre', 'contenu', 'estPublic', ]
 
 
 class CommentForm(forms.ModelForm):
@@ -61,7 +61,8 @@ class ProjetForm(forms.ModelForm):
 
     class Meta:
         model = Projet
-        fields = ['categorie', 'titre', 'contenu', 'estPublic']
+        fields = ['categorie','coresponsable', 'titre', 'contenu', 'estPublic', 'lien_document', 'lien_vote',]
+
 
     def save(self, userProfile):
         instance = super(ProjetForm, self).save(commit=False)
@@ -90,7 +91,7 @@ class ProjetForm(forms.ModelForm):
 class ProjetChangeForm(forms.ModelForm):
     class Meta:
         model = Projet
-        fields = ['titre', 'contenu', 'estPublic']
+        fields = ['categorie','coresponsable', 'titre', 'contenu', 'estPublic', 'lien_document', 'lien_vote']
 
 
 class CommentProjetForm(forms.ModelForm):
