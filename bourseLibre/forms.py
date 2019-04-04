@@ -25,7 +25,7 @@ class ProduitCreationForm(forms.ModelForm):
 
 
 class Produit_aliment_CreationForm(forms.ModelForm):
-    estUneOffre = forms.ChoiceField(choices=((0, "Offre"), (1, "Demande")), label='', required=True)
+    estUneOffre = forms.ChoiceField(choices=((1, "Offre"), (0, "Demande")), label='', required=True)
 
     class Meta:
         model = Produit_aliment
@@ -50,7 +50,7 @@ class Produit_aliment_CreationForm(forms.ModelForm):
         return self.cleaned_data
 
 class Produit_vegetal_CreationForm(forms.ModelForm):
-    estUneOffre = forms.ChoiceField(choices=((0, "Offre"), (1, "Demande")), label='', required=True)
+    estUneOffre = forms.ChoiceField(choices=((1, "Offre"), (0, "Demande")), label='', required=True)
     class Meta:
         model = Produit_vegetal
         fields = fieldsCommunsProduits
@@ -74,7 +74,7 @@ class Produit_vegetal_CreationForm(forms.ModelForm):
         return self.cleaned_data
 
 class Produit_service_CreationForm(forms.ModelForm):
-    estUneOffre = forms.ChoiceField(choices=((0, "Offre"), (1, "Demande")), label='', required=True)
+    estUneOffre = forms.ChoiceField(choices=((1, "Offre"), (0, "Demande")), label='', required=True)
     class Meta:
         model = Produit_service
         fields = fieldsCommunsProduits
@@ -98,7 +98,7 @@ class Produit_service_CreationForm(forms.ModelForm):
 
 
 class Produit_objet_CreationForm(forms.ModelForm):
-    estUneOffre = forms.ChoiceField(choices=((0, "Offre"), (1, "Demande")), label='', required=True)
+    estUneOffre = forms.ChoiceField(choices=((1, "Offre"), (0, "Demande")), label='', required=True)
     class Meta:
         model = Produit_objet
         fields = fieldsCommunsProduits
