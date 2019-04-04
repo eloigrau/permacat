@@ -9,7 +9,7 @@ fieldsCommunsProduits = ['nom_produit', 'souscategorie',  'description', 'estUne
 
 class ProduitCreationForm(forms.ModelForm):
 
-    estUneOffre = forms.ChoiceField(choices=((0, "Offre permacat"), (1, "offre publique")), label='', required=True)
+   # estUneOffre = forms.ChoiceField(choices=((0, "Offre permacat"), (1, "offre publique")), label='', required=True)
 
     class Meta:
         model = Produit
