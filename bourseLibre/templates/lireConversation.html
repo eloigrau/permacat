@@ -4,7 +4,7 @@
 <div class="row">
 Messages échangés avec
 <span style="background-color:PapayaWhip;">
-<a href="{% url 'profil' destinataire.id  %}">{{destinataire }}</a>
+<a href="{% url 'profil_nom' destinataire  %}">{{destinataire }}</a>
 </span>
 depuis le {{ conversation.date_creation|date:"SHORT_DATE_FORMAT"}}
     </div>
