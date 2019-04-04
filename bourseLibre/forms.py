@@ -34,8 +34,8 @@ class Produit_aliment_CreationForm(forms.ModelForm):
         widgets = {
             'date_debut': forms.DateInput(attrs={'type':"date"}, ),
             'date_expiration': forms.DateInput(attrs={'type':"date"}),
-            'estUneOffre': forms.RadioSelect(choices=('oui', 'non')),
-            'estPublique': forms.RadioSelect(choices=('oui', 'non')),
+           # 'estUneOffre': forms.RadioSelect(choices=('oui', 'non')),
+           # 'estPublique': forms.RadioSelect(choices=('oui', 'non')),
         }
 
     def clean(self):
