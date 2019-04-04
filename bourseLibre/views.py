@@ -193,7 +193,7 @@ def profil(request, user_id):
 def profil_nom(request, user_username):
     try:
         user = Profil.objects.get(username=user_username)
-        distance = user.getDistanceCarree(request.user)
+        distance = user.getDistance(request.user)
         return render(request, 'profil.html', {'user': user, 'distance':distance})
     except User.DoesNotExist:
         return render(request, 'profil_inconnu.html', {'userid': user_username})
