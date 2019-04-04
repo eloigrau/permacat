@@ -2,11 +2,11 @@
 {%block message%}{%endblock%}
 {% block subtitle %}
 <div class="row">
-Messages échangés avec
+Messages échangés avec 
 <span style="background-color:PapayaWhip;">
 <a href="{% url 'profil_nom' destinataire  %}">{{destinataire }}</a>
 </span>
-depuis le {{ conversation.date_creation|date:"SHORT_DATE_FORMAT"}}
+ depuis le {{ conversation.date_creation|date:"SHORT_DATE_FORMAT"}}
     </div>
 <div class="row">
     <a href="{% url 'conversations' %}" class="btn btn-success"> <span class="glyphicon glyphicon-shopping-cart"></span> Mes conversations </a>
