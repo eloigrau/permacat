@@ -156,6 +156,7 @@ class Profil(AbstractUser):
     inscrit_newsletter = models.BooleanField(verbose_name="J'accepte de recevoir des emails de Permacat", default=False)
     statut_adhesion = models.IntegerField(choices=Choix.statut_adhesion, default="0")
     accepter_conditions = models.BooleanField(verbose_name="J'ai lu et j'accepte les conditions d'utilisation du site", default=False, null=False)
+    accepter_annuaire = models.BooleanField(verbose_name="J'accepte d'apparaitre dans l'annuaire du site et rend mon profil visible par tous", default=True)
 
     def __str__(self):
         return self.username
