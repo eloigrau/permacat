@@ -214,7 +214,8 @@ class MessageForm(forms.ModelForm):
     def __init__(self, request, message=None, *args, **kwargs):
          super(MessageForm, self).__init__(request, *args, **kwargs)
          if message:
-             self.fields['message'].initial = message
+            self.fields['message'].initial = message
+            self.fields['message'].strip = False
 
 class MessageGeneralForm(forms.ModelForm):
 
@@ -226,3 +227,8 @@ class MessageGeneralForm(forms.ModelForm):
                 'message': forms.Textarea(attrs={'rows': 1}),
             }
 
+
+    def __init__(self, request, message=None, *args, **kwargs):
+         super(MessageForm, self).__init__(request, *args, **kwargs)
+         if message:
+            self.fields['message'].strip = False

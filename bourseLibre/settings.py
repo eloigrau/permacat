@@ -195,7 +195,7 @@ SITE_ID = 1
 
 LANGUAGE_CODE = 'fr-fr'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Paris'
 
 USE_I18N = True
 
@@ -219,10 +219,6 @@ LOGOUT_REDIRECT_URL = '/'
 INTERNAL_IPS = ['127.0.0.1']
 
 ########################
-ADMINS = (
-    ('Eloi Grau', 'eloi.grau@perma.cat'),
-)
-MANAGERS = ADMINS
 import re
 IGNORABLE_404_URLS = (
     re.compile(r'\.(php|cgi)$'),
@@ -233,7 +229,7 @@ IGNORABLE_404_URLS = (
 )
 
 # Email settings
-SERVER_EMAIL = 'permacat66@gmail.com'
+SERVER_EMAIL = 'sitepermacat@gmail.com'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 try:
@@ -244,20 +240,16 @@ EMAIL_HOST_USER = SERVER_EMAIL
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-GMAIL_SMTP_USER = 'permacat66@gmail.com'
+GMAIL_SMTP_USER = 'sitepermacat@gmail.com'
 try:
     GMAIL_SMTP_PASSWORD = os.environ['EMAIL_ADMIN_PWD']
 except:
     GMAIL_SMTP_PASSWORD = 'test'
 
-# MANAGERS: It specifies a list of people to send broken link emails for 404 NOT FOUND errors. It's accepts emails in the same format as ADMINS.
-MANAGERS = [
-    ('asso', 'permacat66@email.com'),
-]
-ADMINS = [
-    ('asso', 'permacat66@gmail.com'),
-]
-
+ADMINS = (
+    ('Asso_admin', 'sitepermacat@gmail.com'),
+)
+MANAGERS = ADMINS
 
 ########################
 # Static files (CSS, JavaScript, Images)

@@ -23,13 +23,15 @@
                             <a class="nav-link" href="{% url 'marche_offres' %}?">Offres</a>
                             <a class="nav-link" href="{% url 'marche_recherches' %}?">Demandes</a>
                             <a class="nav-link" href="{% url 'marche' %}?producteur={{ user.username }}">Mes annonces</a>
+                            <span class="nav-link divider" role="separator"></span>
+                            <a class="nav-link" href="{% url 'produit_proposer_entree' %}">Ajouter une annonce</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link" href="{% url 'blog:forum' %}" >Forum</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="nav-link" href="{% url 'agora' %}">Agora</a>
-                            <a class="nav-link" href="{% url 'blog:index' %}?">Annonces</a>
+                            <a class="nav-link" href="{% url 'blog:index' %}?">Articles</a>
                             <a class="nav-link" href="{% url 'blog:index_projets' %}?">Projets</a>
                         </div>
                     </li>

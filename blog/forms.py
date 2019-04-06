@@ -38,11 +38,20 @@ class ArticleForm(forms.ModelForm):
         return instance
 
 
+    def __init__(self, request, message=None, *args, **kwargs):
+         super(ArticleForm, self).__init__(request, *args, **kwargs)
+         if message:
+            self.fields['contenu'].strip = False
+
 class ArticleChangeForm(forms.ModelForm):
     class Meta:
         model = Article
         fields = ['categorie', 'titre', 'contenu', 'estPublic', ]
 
+    def __init__(self, request, message=None, *args, **kwargs):
+         super(ArticleChangeForm, self).__init__(request, *args, **kwargs)
+         if message:
+            self.fields['contenu'].strip = False
 
 class CommentForm(forms.ModelForm):
     class Meta:
@@ -63,6 +72,10 @@ class ProjetForm(forms.ModelForm):
         model = Projet
         fields = ['categorie','coresponsable', 'titre', 'contenu', 'estPublic', 'lien_document', 'lien_vote',]
 
+    def __init__(self, request, message=None, *args, **kwargs):
+         super(ProjetForm, self).__init__(request, *args, **kwargs)
+         if message:
+            self.fields['contenu'].strip = False
 
     def save(self, userProfile):
         instance = super(ProjetForm, self).save(commit=False)
