@@ -62,7 +62,6 @@
     <table class="table table-condensed tableprofils table-striped">
         <thead class="thead-inverse">
             <tr>
-
                 <th>Pseudo</th>
                 <th>Email</th>
                 <th>Code postal</th>
@@ -80,7 +79,6 @@
             <td><a href="{% url 'profil_contact' profil.id %}">{{ profil.email }}</a></td>
             <td><a href="{% url 'profil' profil.id %}">{{ profil.adresse.code_postal }}</a></td>
             <td><a href="{% url 'profil' profil.id %}">{{ profil.adresse.commune }}</a></td>
-            <td><a href="{% url 'profil' profil.id %}">{{ profil.statut }}</a></td>
         </tr>
         {% endfor %}
         </tbody>
