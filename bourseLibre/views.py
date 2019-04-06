@@ -236,11 +236,15 @@ def profil_contact(request, user_id):
     if form.is_valid():
         sujet = request.user.username +' vous a écrit:', form.cleaned_data['sujet']
         message = form.cleaned_data['message']
+        recepteurs = [recepteur.email,]
+        if form.cleaned_data['renvoi'] :
+            recepteurs += request.user.email
+
         send_mail(
             sujet,
             message,
             request.user.email,
-            recepteur.email,
+            recepteurs,
             fail_silently=False,
             )
         #if renvoi:
@@ -260,7 +264,8 @@ def contact_admins(request):
         message = request.user.username + ' a envoyé le message suivant : \\n' + form.cleaned_data['message']
         mail_admins(sujet, message)
         if form.cleaned_data['renvoi'] :
-            mess = "[MarchéLibre] message envoyé aux administrateurs : \\n"
+            mess = "[Permacat] message envoyé aux administrateurs : \\n"
+            copye = []
             send_mail( sujet,mess + message, request.user.email, request.user.email, fail_silently=False,)
 
         #         try:
