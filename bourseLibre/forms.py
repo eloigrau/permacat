@@ -107,8 +107,8 @@ class ProfilCreationForm(UserCreationForm):
     pseudo_june = forms.CharField(label="Pseudonyme dans la monnaie libre (Duniter)",  help_text="Si vous avez un compte en June",required=False)
 
 
-    def __init__(self, *args, **kargs):
-        super(ProfilCreationForm, self).__init__(*args, **kargs)
+    def __init__(self, request, *args, **kargs):
+        super(ProfilCreationForm, self).__init__(request, *args, **kargs)
         self.fields['description'].strip = False
         self.fields['competences'].strip = False
 
@@ -121,29 +121,6 @@ class ProfilCreationForm(UserCreationForm):
         self.is_active=is_active
 
         return super(ProfilCreationForm, self).save(commit)
-
-
-# class NewUserCreationForm(UserCreationForm):
-#     email = forms.EmailField(label="Email", required=False)
-#     username = forms.CharField(label="Pseudonyme*", required=True)
-#     name = forms.CharField(label="Nom complet", required=False)
-#
-#     class Meta(UserCreationForm.Meta):
-#         model = Profil
-#         fields = ['name', 'username', 'email']
-#
-#     def save(self, commit=True, is_active = False):
-#         user = super(NewUserCreationForm, self).save(commit=False)
-#         user.email = self.cleaned_data['email']
-#         user.username =self.cleaned_data['username']
-#         user.set_password(self.cleaned_data['password1'])
-#         user.is_active = is_active
-#         user.is_superuser = False
-#
-#         if commit:
-#             user.save()
-#         return user
-
 
 
 class ProducteurChangeForm(UserChangeForm):
@@ -159,8 +136,8 @@ class ProducteurChangeForm(UserChangeForm):
     inscrit_newsletter = forms.BooleanField(required=False)
     password=None
 
-    def __init__(self, *args, **kargs):
-        super(ProducteurChangeForm, self).__init__(*args, **kargs)
+    def __init__(self, request, *args, **kargs):
+        super(ProducteurChangeForm, self).__init__(request, *args, **kargs)
         self.fields['description'].strip = False
         self.fields['competences'].strip = False
 
@@ -192,6 +169,7 @@ class ProducteurChangeForm_admin(UserChangeForm):
         fields = ['username', 'email', 'description', 'competences', 'inscrit_newsletter', 'statut_adhesion', 'pseudo_june', ]
 
     def __init__(self, request, *args, **kwargs):
+        super(ProducteurChangeForm_admin, self).__init__(request, *args, **kwargs)
         self.fields['description'].strip = False
         self.fields['competences'].strip = False
 
@@ -209,8 +187,6 @@ class ContactForm(forms.Form):
         if titre:
             self.fields['sujet'].initial = titre
         self.fields['message'].strip = False
-
-
 
 
 class MessageForm(forms.ModelForm):

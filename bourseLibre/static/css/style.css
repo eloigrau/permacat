@@ -85,27 +85,27 @@ section.p3 {
   display: block;
 }
 .bs-dark .dropdown-menu {
-  min-width: 200px;
-  padding: 5px 0;
+ // min-width: 200px;
+  //padding: 5px 0;
   margin: 2px 0 0;
   background-color: #000;
-  border: 1px solid rgba(0, 0, 0, 0.7);
-  border: 1px solid rgba(0, 0, 0, .15);
+  //border: 1px solid rgba(0, 0, 0, 0.7);
+  //border: 1px solid rgba(0, 0, 0, .15);
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
           box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
 }
 
 .bs-dark .dropdown-menu .divider {
-  border: 1px solid rgba(0, 0, 0, 0.8);
+  //border: 1px solid rgba(0, 0, 0, 0.8);
 }
 .bs-dark .dropdown-menu > li > a {
-  //padding: 6px 20px;
+  padding: 6px 20px;
   color: rgba(255,255,255,0.80);
 }
 .bs-dark .dropdown-menu > li > a:hover,
 .bs-dark .dropdown-menu > li > a:focus {
   color: rgba(255,255,255,0.70);
-  text-decoration: none;
+//  text-decoration: none;
   background-color: transparent;
 }
 .bs-dark .dropdown-menu > .active > a,

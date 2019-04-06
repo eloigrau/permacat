@@ -47,8 +47,8 @@ class ArticleChangeForm(forms.ModelForm):
         model = Article
         fields = ['categorie', 'titre', 'contenu', 'estPublic', ]
 
-    def __init__(self, request, *args, **kwargs):
-        super(ArticleChangeForm, self).__init__(request, *args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super(ArticleChangeForm, self).__init__(*args, **kwargs)
         self.fields['contenu'].strip = False
 
 class CommentForm(forms.ModelForm):
@@ -60,7 +60,7 @@ class CommentForm(forms.ModelForm):
                 'commentaire': forms.Textarea(attrs={'rows': 1}),
             }
 
-    def __init__(self, request,  *args, **kwargs):
+    def __init__(self, request, *args, **kwargs):
         super(CommentForm, self).__init__(request, *args, **kwargs)
         self.fields['commentaire'].strip = False
 
@@ -106,8 +106,8 @@ class ProjetChangeForm(forms.ModelForm):
         model = Projet
         fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'estPublic', 'lien_document', 'lien_vote']
 
-    def __init__(self, request, *args, **kwargs):
-        super(ProjetChangeForm, self).__init__(request, *args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super(ProjetChangeForm, self).__init__(*args, **kwargs)
         self.fields['contenu'].strip = False
 
 class CommentProjetForm(forms.ModelForm):

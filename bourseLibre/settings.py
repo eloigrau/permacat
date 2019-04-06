@@ -17,6 +17,7 @@ python manage.py migrate --run-syncdb
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+
 try:
     import dj_database_url
 except:
@@ -31,7 +32,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 LOCALL  = False
 try:
     SECRET_KEY = os.environ['SECRET_KEY']
@@ -113,6 +114,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+     'django.middleware.locale.LocaleMiddleware',
     #'django.core.context_processors.request',
     #'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
@@ -198,12 +200,11 @@ TIME_ZONE = 'Europe/Paris'
 
 USE_I18N = True
 
-USE_L10N = False
+USE_L10N = True
 
 USE_TZ = True
 
 DATE_FORMAT = "l d F Y"
-DATE_FORMAT_HEURE = "l d F Y, G:i"
 DATE_FORMAT_COURT = "d F Y"
 DATE_FORMAT_COURT_HEURE = "d F Y, G:i"
 #DATETIME_INPUT_FORMATS = '%d/%m/%Y'
@@ -221,11 +222,11 @@ INTERNAL_IPS = ['127.0.0.1']
 ########################
 import re
 IGNORABLE_404_URLS = (
-    re.compile(r'\.(php|cgi)$'),
-    re.compile(r'^/phpmyadmin/'),
-    re.compile(r'^/apple-touch-icon.*\.png$'),
-    re.compile(r'^/favicon\.ico$'),
-    re.compile(r'^/robots\.txt$'),
+    re.compile('\.(php|cgi)$'),
+    re.compile('^/phpmyadmin/'),
+    re.compile('^/apple-touch-icon.*\.png$'),
+    re.compile('^/favicon\.ico$'),
+    re.compile('^/robots\.txt$'),
 )
 
 # Email settings
@@ -267,7 +268,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static/img/')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-
 # LOCATION_FIELD = {
 #     'map.provider': 'openstreetmap',
 # }
@@ -287,3 +287,13 @@ CACHES = {
 }
 
 PHONENUMBER_DEFAULT_REGION = 'EUROPE'
+
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'locale/'),
+)
+
+gettext =  lambda x: x
+LANGUAGES = (
+   ('fr', gettext('French')),
+   ('ca', gettext('Catalan')),
+)
