@@ -38,10 +38,10 @@ class Migration(migrations.Migration):
             name='lien_vote',
             field=models.URLField(blank=True, null=True, verbose_name='Lien vers le vote (balotilo.org)'),
         ),
-
         migrations.AddField(
             model_name='projet',
-            name='categorie',
-            field=models.CharField(choices=[('Part', 'Participation à un évènement'), ('AGO', "Organisation d'une AGO"), ('Projlong', 'Projet a long terme'), ('Projcourt', 'Projet a court terme')], default='Part', max_length=10, verbose_name='categorie'),
+            name='fichier',
+            field=models.FileField(blank=True, default=None, null=True, upload_to='projets/%Y/%m/'),
         ),
+
     ]

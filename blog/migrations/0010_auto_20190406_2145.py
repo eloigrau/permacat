@@ -17,12 +17,22 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='projet',
-            name='fichier_projet',
+            name='fichier',
             field=models.FileField(blank=True, default=None, null=True, upload_to='projets/%Y/%m/'),
         ),
         migrations.AddField(
             model_name='projet',
             name='statut',
             field=models.CharField(choices=[('prop', 'Proposition'), ('AGO', "Soumis à l'AGO"), ('vote', 'Soumis au vote'), ('accep', 'Accepté'), ('refus', 'Refusé')], default='prop', max_length=5, verbose_name='statut'),
+        ),
+        migrations.AddField(
+            model_name='projet',
+            name='categorie',
+            field=models.CharField(choices=[('Part', 'Participation à un évènement'), ('AGO', "Organisation d'une AGO"), ('Projlong', 'Projet a long terme'), ('Projcourt', 'Projet a court terme')], default='Part', max_length=10, verbose_name='categorie'),
+        ),
+        migrations.RenameField(
+            model_name='projet',
+            old_name='fichier',
+            new_name='fichier_projet',
         ),
     ]
