@@ -97,14 +97,30 @@ class ListeArticles(ListView):
 
 
 
+# @login_required
+# def ajouterNouveauProjet(request):
+#     ModelFormWithFileField
+#         if form.is_valid():
+#             #simple_upload(request, 'fichier_projet')
+#             projet = form.save(request.user)
+#             return render(request, 'blog/lireProjet.html', {'projet': projet})
+#         return render(request, 'blog/ajouterProjet.html', { "form": form, })
+
 @login_required
 def ajouterNouveauProjet(request):
-        form = ProjetForm(request.POST or None)
+    if request.method == 'POST':
+        form = ProjetForm(request.POST, request.FILES)
         if form.is_valid():
+            # file is saved
             projet = form.save(request.user)
             return render(request, 'blog/lireProjet.html', {'projet': projet})
-        return render(request, 'blog/ajouterProjet.html', { "form": form, })
+        else:
+            print(form.errors)
+            return render(request, 'blog/lireProjet.html', {'projet': projet})
 
+    else:
+        form = ProjetForm(request.POST or None, request.FILES or None)
+    return render(request, 'blog/ajouterProjet.html', { "form": form, })
 
 # @login_required
 class ModifierProjet(UpdateView):
@@ -183,14 +199,15 @@ from django.shortcuts import render
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 
-def simple_upload(request):
-    if request.method == 'POST' and request.FILES['myfile']:
-        myfile = request.FILES['myfile']
+def simple_upload(request, nomfichier):
+    if request.method == 'POST' and request.FILES[nomfichier]:
+        myfile = request.FILES[nomfichier]
         fs = FileSystemStorage()
-        filename = fs.save(myfile.name, myfile)
+        file_path = os.path.join(settings.MEDIA_ROOT, myfile.name)
+        filename = fs.save(file_path, myfile)
         uploaded_file_url = fs.url(filename)
-        return render(request, 'core/simple_upload.html', {'uploaded_file_url': uploaded_file_url})
-    return render(request, 'core/simple_upload.html')
+        return render(request, 'simple_upload.html', {'uploaded_file_url': uploaded_file_url})
+    return render(request, 'simple_upload.html')
 
 
 import os

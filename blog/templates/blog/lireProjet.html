@@ -1,4 +1,5 @@
 {% extends 'blog/baseBlog.html' %}
+{% load static %}
 {% block subtitle %}
 <div class="row">
     <div class="col-md-2">
@@ -75,14 +76,15 @@
 					</td>
 				</tr>
                     {% endif %}
-                    {% if projet.fichier%}
+
+                    {% if projet.fichier_projet%}
                 <tr>
 					<td class="nomProprieteProduit">
-						Fichiers :
+						Fichiers : {{ projet.fichier_projet}}
 					</td>
 					<td class="proprieteProduit">
-                        <a  href="{{ projet.fichier.url }}">
-                            <button class="btn btn-info btn-sm textcenter">	{{ projet.fichier.name}}</button>
+                        <a  href="{% static projet.fichier_projet.url %}">
+                            <button class="btn btn-info btn-sm textcenter">	{{ projet.fichier_projet.name}}</button>
                             </a>
 
 					</td>
