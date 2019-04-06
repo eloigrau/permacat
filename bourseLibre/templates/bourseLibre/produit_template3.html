@@ -27,11 +27,6 @@
                     {{ produit.description|truncatewords:15 }}
                   </p>
                   <p class="card-text">
-                    {% if produit.date_debut and produit.date_expiration %}
-                    du {{ produit.date_debut|date:"j/m" }}{% endif%} {% if produit.date_expiration %} au {{ produit.date_expiration|date:"j/m" }}
-                    {%else%}
-                    {% if produit.date_debut %}à partir du {{ produit.date_debut|date:"j/m" }}{% endif%} {% if produit.date_expiration %} jusqu'au {{ produit.date_expiration|date:"j/m" }}{% endif%}
-                    {%endif%}
    {%comment%}
                       {{ produit.photo.thumbnail.url  }}
    {%endcomment%}
@@ -39,6 +34,13 @@
                   </p>
             </div>
             <div class="card-footer" style="height:60px">
+                <p>
+                    {% if produit.date_debut and produit.date_expiration %}
+                    du {{ produit.date_debut|date:"j/m" }}{% endif%} {% if produit.date_expiration %} au {{ produit.date_expiration|date:"j/m" }}
+                    {%else%}
+                    {% if produit.date_debut %}à partir du {{ produit.date_debut|date:"j/m" }}{% endif%} {% if produit.date_expiration %} jusqu'au {{ produit.date_expiration|date:"j/m" }}{% endif%}
+                    {%endif%}
+                </p>
                 <p>
                     {%if produit.estUneOffre %}{{ produit.get_prixEtUnite }} {%endif%}
 

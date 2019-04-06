@@ -31,8 +31,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 LOCALL  = False
+try:
+    SECRET_KEY = os.environ['SECRET_KEY']
+except:
+    LOCALL  = True
+    SECRET_KEY = 'aersd68fgsfdgsdvcbvcb563873gbgfthhfhdjd'
+
 #DEBUG_PROPAGATE_EXCEPTIONS = True
 
 #SECURE_SSL_REDIRECT = False
@@ -40,13 +46,6 @@ LOCALL  = False
 #CSRF_COOKIE_SECURE = True
 #SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 
-if DEBUG:
-    SECRET_KEY = 'aersdfgsfdgsdvcbvcbgbgfthhfhdjd'
-    #CSRF_COOKIE_DOMAIN=None
-else:
-    #SECRET_KEY = os.environ['SECRET_KEY']
-    SECRET_KEY = 'aersdfgsfdgsdvcbvcbgbgfthhfhdjd'
-    SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 
 ALLOWED_HOSTS = ['permacat.herokuapp.com', 'www.perma.cat']
 
@@ -204,6 +203,7 @@ USE_L10N = False
 USE_TZ = True
 
 DATE_FORMAT = "l d F Y"
+DATE_FORMAT_HEURE = "l d F Y, G:i"
 DATE_FORMAT_COURT = "d F Y"
 DATE_FORMAT_COURT_HEURE = "d F Y, G:i"
 #DATETIME_INPUT_FORMATS = '%d/%m/%Y'
