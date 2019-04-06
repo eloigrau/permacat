@@ -49,6 +49,14 @@
 						{{ projet.coresponsable}}
 					</td>
 				</tr>
+				<tr>
+					<td class="nomProprieteProduit">
+						Statut :
+					</td>
+					<td class="proprieteProduit">
+						{{ projet.get_statut_display }}
+					</td>
+				</tr>
                 <tr>
 					<td class="nomProprieteProduit">
 						Dernière modification :
@@ -60,10 +68,31 @@
                     {% if projet.lien_document%}
                 <tr>
 					<td class="nomProprieteProduit">
-						Document :
+						Document en ligne :
 					</td>
 					<td class="proprieteProduit">
 						{{ projet.lien_document}}
+					</td>
+				</tr>
+                    {% endif %}
+                    {% if projet.fichier%}
+                <tr>
+					<td class="nomProprieteProduit">
+						Fichiers :
+					</td>
+					<td class="proprieteProduit">
+                        <a  href="{{ projet.fichier.url }}">
+                            <button class="btn btn-info btn-sm textcenter">	{{ projet.fichier.name}}</button>
+                            </a>
+
+					</td>
+				</tr>
+                <tr>
+					<td class="nomProprieteProduit">
+						Date de téléversement :
+					</td>
+					<td class="proprieteProduit">
+						{{ projet.date_fichier}}
 					</td>
 				</tr>
                     {% endif %}

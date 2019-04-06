@@ -3,6 +3,7 @@ from bourseLibre.models import Profil
 from django.urls import reverse
 #from django.conf import settings
 from tinymce.models import HTMLField
+import datetime
 
     
 class Article(models.Model):
@@ -39,9 +40,12 @@ class Commentaire(models.Model):
 
 
 class Projet(models.Model):
-    categorie = models.CharField(max_length=30,
+    categorie = models.CharField(max_length=10,
         choices=(('Part','Participation à un évènement'), ('AGO',"Organisation d'une AGO"), ('Projlong','Projet a long terme'), ('Projcourt','Projet a court terme'),),
         default='Part', verbose_name="categorie")
+    statut = models.CharField(max_length=5,
+        choices=(('prop','Proposition'), ("AGO","Soumis à l'AGO"), ('vote','Soumis au vote'), ('accep','Accepté'), ('refus','Refusé'), ),
+        default='prop', verbose_name="statut")
     titre = models.CharField(max_length=100)
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
     slug = models.SlugField(max_length=100)
@@ -50,8 +54,10 @@ class Projet(models.Model):
     estPublic = models.BooleanField(default=False, verbose_name='Public (cochez) ou Interne (décochez) [réservé aux membres permacat]')
     coresponsable = models.CharField(max_length=150, default='', null=True, blank=True)
     date_modification = models.DateTimeField(verbose_name="Date de dernière modification", auto_now=True)
-    lien_vote = models.URLField(null=True, blank=True, verbose_name='Lien vers le vote (balotilo.org)')
-    lien_document = models.CharField(max_length=300, verbose_name='Lien vers un document explicatif', default='', null=True, blank=True)
+    lien_vote = models.URLField(verbose_name='Lien vers le vote (balotilo.org)', null=True, blank=True, )
+    lien_document = models.URLField(verbose_name='Lien vers un document explicatif (en ligne)', default='', null=True, blank=True)
+    fichier = models.FileField(upload_to='projets/%Y/%m/', blank=True, default="test", null=True)
+    date_fichier = models.DateTimeField(auto_now=True, blank=True)
 
     class Meta:
         ordering = ('date', )

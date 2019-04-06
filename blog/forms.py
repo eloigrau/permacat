@@ -6,6 +6,7 @@ from django.utils.timezone import now
 from django.utils.formats import localize
 from tinymce.widgets import TinyMCE
 
+
 class ArticleForm(forms.ModelForm):
     #contenu = forms.CharField(widget=forms.Textarea(attrs={'cols': 80, 'rows': 10}))
     contenu = TinyMCE(attrs={'cols': 80, 'rows': 20})
@@ -71,7 +72,7 @@ class ProjetForm(forms.ModelForm):
 
     class Meta:
         model = Projet
-        fields = ['categorie','coresponsable', 'titre', 'contenu', 'estPublic', 'lien_document', 'lien_vote',]
+        fields = ['categorie','coresponsable', 'titre', 'contenu', 'estPublic', 'lien_document', 'fichier', 'lien_vote',]
 
     def __init__(self, request, *args, **kwargs):
         super(ProjetForm, self).__init__(request, *args, **kwargs)
@@ -104,7 +105,7 @@ class ProjetForm(forms.ModelForm):
 class ProjetChangeForm(forms.ModelForm):
     class Meta:
         model = Projet
-        fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'estPublic', 'lien_document', 'lien_vote']
+        fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'estPublic', 'lien_document', 'lien_vote','fichier']
 
     def __init__(self, *args, **kwargs):
         super(ProjetChangeForm, self).__init__(*args, **kwargs)

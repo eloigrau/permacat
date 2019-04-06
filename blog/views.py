@@ -177,3 +177,45 @@ class ListeProjets(ListView):
         if 'categorie' in self.request.GET:
             context['typeFiltre'] = "categorie"
         return context
+
+
+from django.shortcuts import render
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
+
+def simple_upload(request):
+    if request.method == 'POST' and request.FILES['myfile']:
+        myfile = request.FILES['myfile']
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)
+        return render(request, 'core/simple_upload.html', {'uploaded_file_url': uploaded_file_url})
+    return render(request, 'core/simple_upload.html')
+
+
+import os
+from django.http import HttpResponse, Http404
+
+def telecharger(request, path):
+    file_path = os.path.join(settings.MEDIA_ROOT, path)
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+    raise Http404
+
+def upload(request):
+    if request.POST:
+        form = FileForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return render_to_response('project/upload_successful.html')
+    else:
+        form = FileForm()
+    args = {}
+    args.update(csrf(request))
+    args['form'] = form
+
+    return render_to_response('project/create.html', args)
+

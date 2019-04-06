@@ -104,17 +104,17 @@ urlpatterns = [
     url(r'^captcha/', include('captcha.urls')),
 ]
 
-#from django.conf.urls.static import static
-#from django.conf import settings
-#urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+from django.conf import settings
+if settings.DEBUG:
+    from django.conf.urls.static import static
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = 'bourseLibre.views.handler404'
 handler500 = 'bourseLibre.views.handler500'
 handler400 = 'bourseLibre.views.handler400'
 handler403 = 'bourseLibre.views.handler403'
 
-LOCALL = False
-if LOCALL:
+if settings.LOCALL:
     import debug_toolbar
     urlpatterns = [url(r'^__debug__/', include(debug_toolbar.urls)),] + urlpatterns
     #urlpatterns += url('',(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}))
