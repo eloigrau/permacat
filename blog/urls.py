@@ -41,4 +41,5 @@ urlpatterns = [
     url(r'^supprimerProjet/(?P<slug>[-\w]+)$',
         login_required(views.SupprimerProjet.as_view(), login_url='/auth/login/'), name='supprimerProjet'),
     url(r'^ajouterProjet/$', views.ajouterNouveauProjet, name='ajouterNouveauProjet'),
+    url(r'^telecharger_fichier/$', views.telecharger_fichier, name='telecharger_fichier'),
 ]

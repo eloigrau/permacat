@@ -114,10 +114,6 @@ def ajouterNouveauProjet(request):
             # file is saved
             projet = form.save(request.user)
             return render(request, 'blog/lireProjet.html', {'projet': projet})
-        else:
-            print(form.errors)
-            return render(request, 'blog/lireProjet.html', {'projet': projet})
-
     else:
         form = ProjetForm(request.POST or None, request.FILES or None)
     return render(request, 'blog/ajouterProjet.html', { "form": form, })
@@ -195,44 +191,49 @@ class ListeProjets(ListView):
         return context
 
 
-from django.shortcuts import render
-from django.conf import settings
-from django.core.files.storage import FileSystemStorage
-
-def simple_upload(request, nomfichier):
-    if request.method == 'POST' and request.FILES[nomfichier]:
-        myfile = request.FILES[nomfichier]
-        fs = FileSystemStorage()
-        file_path = os.path.join(settings.MEDIA_ROOT, myfile.name)
-        filename = fs.save(file_path, myfile)
-        uploaded_file_url = fs.url(filename)
-        return render(request, 'simple_upload.html', {'uploaded_file_url': uploaded_file_url})
-    return render(request, 'simple_upload.html')
+# from django.shortcuts import render
+# from django.conf import settings
+# from django.core.files.storage import FileSystemStorage
+#
+# def simple_upload(request, nomfichier):
+#     if request.method == 'POST' and request.FILES[nomfichier]:
+#         myfile = request.FILES[nomfichier]
+#         fs = FileSystemStorage()
+#         file_path = os.path.join(settings.MEDIA_ROOT, myfile.name)
+#         filename = fs.save(file_path, myfile)
+#         uploaded_file_url = fs.url(filename)
+#         return render(request, 'simple_upload.html', {'uploaded_file_url': uploaded_file_url})
+#     return render(request, 'simple_upload.html')
 
 
 import os
 from django.http import HttpResponse, Http404
+from django.conf import settings
 
-def telecharger(request, path):
+
+@login_required
+def telecharger_fichier(request):
+    path = request.GET['path']
     file_path = os.path.join(settings.MEDIA_ROOT, path)
     if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
-            response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+            response = HttpResponse(fh.read())
             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
             return response
     raise Http404
 
-def upload(request):
-    if request.POST:
-        form = FileForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return render_to_response('project/upload_successful.html')
-    else:
-        form = FileForm()
-    args = {}
-    args.update(csrf(request))
-    args['form'] = form
-
-    return render_to_response('project/create.html', args)
+#
+# def upload(request):
+#     if request.POST:
+#         form = FileForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             return render_to_response('project/upload_successful.html')
+#     else:
+#         form = FileForm()
+#     args = {}
+#     args.update(csrf(request))
+#     args['form'] = form
+#
+#     return render_to_response('project/create.html', args)
 
