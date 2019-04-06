@@ -56,7 +56,7 @@ class Projet(models.Model):
     date_modification = models.DateTimeField(verbose_name="Date de dernière modification", auto_now=True)
     lien_vote = models.URLField(verbose_name='Lien vers le vote (balotilo.org)', null=True, blank=True, )
     lien_document = models.URLField(verbose_name='Lien vers un document explicatif (en ligne)', default='', null=True, blank=True)
-    fichier = models.FileField(upload_to='projets/%Y/%m/', blank=True, default="test", null=True)
+    #fichier = models.FileField(upload_to='projets/%Y/%m/', blank=True, default=None, null=True)
     date_fichier = models.DateTimeField(auto_now=True, blank=True)
 
     class Meta:
