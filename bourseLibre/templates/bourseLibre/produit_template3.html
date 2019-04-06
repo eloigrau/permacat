@@ -40,8 +40,7 @@
                     {%else%}
                     {% if produit.date_debut %}à partir du {{ produit.date_debut|date:"j/m" }}{% endif%} {% if produit.date_expiration %} jusqu'au {{ produit.date_expiration|date:"j/m" }}{% endif%}
                     {%endif%}
-                </p>
-                <p>
+                    <br/>
                     {%if produit.estUneOffre %}{{ produit.get_prixEtUnite }} {%endif%}
 
                 </p>
