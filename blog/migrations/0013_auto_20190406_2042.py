@@ -10,16 +10,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='projet',
-            name='date_fichier',
-            field=models.DateTimeField(auto_now=True),
-        ),
-        migrations.AddField(
-            model_name='projet',
-            name='statut',
-            field=models.CharField(choices=[('prop', 'Proposition'), ('AGO', "Soumis à l'AGO"), ('vote', 'Soumis au vote'), ('accep', 'Accepté'), ('refus', 'Refusé')], default='prop', max_length=5, verbose_name='statut'),
-        ),
         migrations.AlterField(
             model_name='projet',
             name='categorie',
