@@ -216,12 +216,6 @@ def create_user_profile(sender, instance, created, **kwargs):
         instance.is_active=False
 
 
-#@receiver(post_save, sender=User)
-#def save_user_profile(sender, instance, **kwargs):
-#    instance.profil.save()
-
-
-
 class Produit(models.Model):  # , BaseProduct):
     user = models.ForeignKey(Profil, on_delete=models.CASCADE,)
     date_creation = models.DateTimeField(verbose_name="Date de parution", editable=False)
@@ -742,7 +736,10 @@ class Message(models.Model):
     date_creation = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return self.message
+        return self.auteur + " " + self.date_creation
+
+    def __str__(self):
+        return self.auteur + " " + self.date_creation
 
 class MessageGeneral(models.Model):
     message = models.TextField(null=False, blank=False)
@@ -750,8 +747,10 @@ class MessageGeneral(models.Model):
     date_creation = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return self.message
+        return self.__str__()
 
+    def __str__(self):
+        return "(" + str(self.id) + ") " + str(self.auteur) + " " + str(self.date_creation)
 
 
 

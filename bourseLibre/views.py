@@ -119,7 +119,7 @@ def produit_proposer(request, type_produit):
             # output.seek(0)
             #
             # #change the imagefield value to be the newley modifed image value
-            # produit.photo = InMemoryUploadedFile(output,'ImageField', "%s.jpg" % produit.photo.url.split('.')[0], 'images', sys.getsizeof(output), None)
+            # produit.photo = InMemoryUploadedFile(output,'ImageField', "%s.jpg" % produit.photo.url.split('.')[0], 'media', sys.getsizeof(output), None)
 
         produit.save()
         # type = type_form.save(commit=False)

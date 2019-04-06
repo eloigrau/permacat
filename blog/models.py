@@ -4,16 +4,6 @@ from django.urls import reverse
 #from django.conf import settings
 from tinymce.models import HTMLField
 
-# Create your models here.
-# class Post(models.Model):
-#     title = models.CharField(max_length=64)
-#     date = models.DateTimeField()
-#     author = models.ForeignKey(User)
-#     body = models.TextField()
-#  
-#     def __str__(self):
-#         return "%s (%s)" % (self.title, self.author.name)
-#     
     
 class Article(models.Model):
     categorie = models.CharField(max_length=30,         
@@ -42,7 +32,10 @@ class Commentaire(models.Model):
     date_creation = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return "comm " + str(self.id) + " " + str(self.article)
+        return self.__str__()
+
+    def __str__(self):
+        return "(" + str(self.id) + ") "+ str(self.auteur_comm) + ": " + str(self.article)
 
 
 class Projet(models.Model):
@@ -76,4 +69,7 @@ class CommentaireProjet(models.Model):
     date_creation = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return "comm " + str(self.id) + " " + str(self.projet)
+        return self.__str__()
+
+    def __str__(self):
+        return "(" + str(self.id) + ") "+ str(self.auteur_comm) + ": " + str(self.projet)

@@ -9,7 +9,7 @@ from tinymce.widgets import TinyMCE
 class ArticleForm(forms.ModelForm):
     #contenu = forms.CharField(widget=forms.Textarea(attrs={'cols': 80, 'rows': 10}))
     contenu = TinyMCE(attrs={'cols': 80, 'rows': 20})
-    estPublic = forms.ChoiceField(choices=((1, "Annonce publique"), (0, "Annonce Permacat")), label='', required=True)
+    estPublic = forms.ChoiceField(choices=((1, "Article public"), (0, "Article Permacat")), label='', required=True)
 
     class Meta:
         model = Article

@@ -7,16 +7,15 @@
 <h3 class = "textcenter rowbienvenue">Benvingut {% if request.user.is_autenticated %}request.user.username{%endif%} !</h3>
 <h4 class = "textcenter rowbienvenue">L'association de Permaculture Catalane vous souhaite la bienvenue !</h4>
 <h6 class = "textcenter rowbienvenue">(Site en construction)</h6>
+<h7 class = "textcenter rowbienvenue">(<a href="https://permacat.herokuapp.com/auth/login">se connecter de façon plus sécurisée )</a></h7>
 
 {% endblock %}
 {% block content %}
 <div class="row textcenter">
-	<p><img src="{{STATIC_URL}}/canigo.png/"></p>
-		<p>{{MEDIA_URL}}/canigo.png/</p>
-		<p>{{STATIC_URL}}/canigo.png/</p>
-	<p><img src="{{STATIC_URL}}/canigo2.png/"></p>
-		<p>{{MEDIA_URL}}/canigo2.png/</p>
-		<p>{{STATIC_URL}}/canigo2.png/</p>
+	<div class="col">
+	<p><img src="{{STATIC_URL}}img/Canigo2.jpg"></p>
+	<hr>
+		</div>
 </div>
 <div class="row">
 		<div class="col-md-4">

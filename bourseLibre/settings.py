@@ -44,8 +44,8 @@ if DEBUG:
     SECRET_KEY = 'aersdfgsfdgsdvcbvcbgbgfthhfhdjd'
     #CSRF_COOKIE_DOMAIN=None
 else:
-    SECRET_KEY = os.environ['SECRET_KEY']
-    #SECRET_KEY = 'aersdfgsfdgsdvcbvcbgbgfthhfhdjd'
+    #SECRET_KEY = os.environ['SECRET_KEY']
+    SECRET_KEY = 'aersdfgsfdgsdvcbvcbgbgfthhfhdjd'
     SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 
 ALLOWED_HOSTS = ['permacat.herokuapp.com', 'www.perma.cat']
@@ -65,7 +65,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     #'django.contrib.gis',
     'bootstrap','fontawesome','cookielaw',
-    'haystack',
+    #'haystack',
     #'debug_toolbar',
     'model_utils',
     #'address',
@@ -254,14 +254,18 @@ MANAGERS = ADMINS
 ########################
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/'), )
-MEDIA_URL= '/images/'
-MEDIA_ROOT= os.path.join(BASE_DIR, 'static/images/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+#STATICFILES_DIRS = (os.path.join(BASE_DIR, 'staticfiles'), )
+
+MEDIA_URL = '/static/img/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/img/')
 
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 # LOCATION_FIELD = {
 #     'map.provider': 'openstreetmap',

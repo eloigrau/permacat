@@ -1,4 +1,4 @@
 db.sqlite3
-.idea
-vourseLibre/local_settings.py
 *.sqlite3
+db.db
+venv/
