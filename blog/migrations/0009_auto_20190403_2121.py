@@ -43,5 +43,10 @@ class Migration(migrations.Migration):
             name='fichier',
             field=models.FileField(blank=True, default=None, null=True, upload_to='projets/%Y/%m/'),
         ),
+        migrations.AddField(
+            model_name='projet',
+            name='date_fichier',
+            field=models.DateTimeField(auto_now=True),
+        ),
 
     ]

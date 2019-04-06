@@ -12,11 +12,6 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='projet',
-            name='date_fichier',
-            field=models.DateTimeField(auto_now=True),
-        ),
-        migrations.AddField(
-            model_name='projet',
             name='fichier',
             field=models.FileField(blank=True, default=None, null=True, upload_to='projets/%Y/%m/'),
         ),
