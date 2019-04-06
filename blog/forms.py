@@ -39,19 +39,17 @@ class ArticleForm(forms.ModelForm):
 
 
     def __init__(self, request, message=None, *args, **kwargs):
-         super(ArticleForm, self).__init__(request, *args, **kwargs)
-         if message:
-            self.fields['contenu'].strip = False
+        super(ArticleForm, self).__init__(request, *args, **kwargs)
+        self.fields['contenu'].strip = False
 
 class ArticleChangeForm(forms.ModelForm):
     class Meta:
         model = Article
         fields = ['categorie', 'titre', 'contenu', 'estPublic', ]
 
-    def __init__(self, request, message=None, *args, **kwargs):
-         super(ArticleChangeForm, self).__init__(request, *args, **kwargs)
-         if message:
-            self.fields['contenu'].strip = False
+    def __init__(self, request, *args, **kwargs):
+        super(ArticleChangeForm, self).__init__(request, *args, **kwargs)
+        self.fields['contenu'].strip = False
 
 class CommentForm(forms.ModelForm):
     class Meta:
@@ -62,6 +60,9 @@ class CommentForm(forms.ModelForm):
                 'commentaire': forms.Textarea(attrs={'rows': 1}),
             }
 
+    def __init__(self, request,  *args, **kwargs):
+        super(CommentForm, self).__init__(request, *args, **kwargs)
+        self.fields['commentaire'].strip = False
 
 class ProjetForm(forms.ModelForm):
     #contenu = forms.CharField(widget=forms.Textarea(attrs={'cols': 80, 'rows': 10}))
@@ -72,10 +73,9 @@ class ProjetForm(forms.ModelForm):
         model = Projet
         fields = ['categorie','coresponsable', 'titre', 'contenu', 'estPublic', 'lien_document', 'lien_vote',]
 
-    def __init__(self, request, message=None, *args, **kwargs):
-         super(ProjetForm, self).__init__(request, *args, **kwargs)
-         if message:
-            self.fields['contenu'].strip = False
+    def __init__(self, request, *args, **kwargs):
+        super(ProjetForm, self).__init__(request, *args, **kwargs)
+        self.fields['contenu'].strip = False
 
     def save(self, userProfile):
         instance = super(ProjetForm, self).save(commit=False)
@@ -104,8 +104,11 @@ class ProjetForm(forms.ModelForm):
 class ProjetChangeForm(forms.ModelForm):
     class Meta:
         model = Projet
-        fields = ['categorie','coresponsable', 'titre', 'contenu', 'estPublic', 'lien_document', 'lien_vote']
+        fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'estPublic', 'lien_document', 'lien_vote']
 
+    def __init__(self, request, *args, **kwargs):
+        super(ProjetChangeForm, self).__init__(request, *args, **kwargs)
+        self.fields['contenu'].strip = False
 
 class CommentProjetForm(forms.ModelForm):
     class Meta:
@@ -115,3 +118,7 @@ class CommentProjetForm(forms.ModelForm):
         widgets = {
                 'commentaire': forms.Textarea(attrs={'rows': 1}),
             }
+
+    def __init__(self, request, *args, **kwargs):
+         super(CommentProjetForm, self).__init__(request, *args, **kwargs)
+         self.fields['commentaire'].strip = False

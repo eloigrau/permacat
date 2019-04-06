@@ -107,6 +107,11 @@ class ProfilCreationForm(UserCreationForm):
     pseudo_june = forms.CharField(label="Pseudonyme dans la monnaie libre (Duniter)",  help_text="Si vous avez un compte en June",required=False)
 
 
+    def __init__(self, *args, **kargs):
+        super(ProfilCreationForm, self).__init__(*args, **kargs)
+        self.fields['description'].strip = False
+        self.fields['competences'].strip = False
+
     class Meta(UserCreationForm):
         model = Profil
         fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'inscrit_newsletter', 'statut_adhesion', 'accepter_conditions']
@@ -156,6 +161,8 @@ class ProducteurChangeForm(UserChangeForm):
 
     def __init__(self, *args, **kargs):
         super(ProducteurChangeForm, self).__init__(*args, **kargs)
+        self.fields['description'].strip = False
+        self.fields['competences'].strip = False
 
     class Meta:
         model = Profil
@@ -184,6 +191,10 @@ class ProducteurChangeForm_admin(UserChangeForm):
         model = Profil
         fields = ['username', 'email', 'description', 'competences', 'inscrit_newsletter', 'statut_adhesion', 'pseudo_june', ]
 
+    def __init__(self, request, *args, **kwargs):
+        self.fields['description'].strip = False
+        self.fields['competences'].strip = False
+
 class ContactForm(forms.Form):
     sujet = forms.CharField(max_length=100, )
     message = forms.CharField(widget=forms.Textarea, )
@@ -192,11 +203,12 @@ class ContactForm(forms.Form):
                                  )
 
     def __init__(self, request, message=None,  titre=None,  *args, **kwargs):
-         super(ContactForm, self).__init__(request, *args, **kwargs)
-         if message:
-             self.fields['message'].initial = message
-         if titre:
-             self.fields['sujet'].initial = titre
+        super(ContactForm, self).__init__(request, *args, **kwargs)
+        if message:
+            self.fields['message'].initial = message
+        if titre:
+            self.fields['sujet'].initial = titre
+        self.fields['message'].strip = False
 
 
 
@@ -212,10 +224,10 @@ class MessageForm(forms.ModelForm):
             }
 
     def __init__(self, request, message=None, *args, **kwargs):
-         super(MessageForm, self).__init__(request, *args, **kwargs)
-         if message:
-            self.fields['message'].initial = message
-            self.fields['message'].strip = False
+        super(MessageForm, self).__init__(request, *args, **kwargs)
+        if message:
+           self.fields['message'].initial = message
+        self.fields['message'].strip = False
 
 class MessageGeneralForm(forms.ModelForm):
 
@@ -229,6 +241,5 @@ class MessageGeneralForm(forms.ModelForm):
 
 
     def __init__(self, request, message=None, *args, **kwargs):
-         super(MessageForm, self).__init__(request, *args, **kwargs)
-         if message:
-            self.fields['message'].strip = False
+        super(MessageGeneralForm, self).__init__(request, *args, **kwargs)
+        self.fields['message'].strip = False

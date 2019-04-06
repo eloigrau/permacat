@@ -23,6 +23,7 @@ import decimal, math
 import os
 import requests
 from stdimage import StdImageField
+from datetime import date
 
 # from location_field.models import spatial
 
@@ -40,12 +41,12 @@ class Choix():
 
     choix = {
     'aliment': {
-        'souscategorie': ('legumes', 'fruits', 'champignons', 'boisson', 'herbes','condiments', 'viande','poisson','boulangerie','patisserie', 'autre'),
+        'souscategorie': ('legumes', 'fruits', 'aromates', 'champignons', 'boisson', 'herbes', 'condiments', 'viande', 'poisson', 'boulangerie', 'patisserie', 'autre'),
         #'etat': (('frais', 'frais'), ('sec', 'sec'), ('conserve', 'conserve')),
         'type_prix': typePrixUnite,
     },
     'vegetal': {
-        'souscategorie': ('plantes','graines', 'fleurs', 'jeunes plants', 'purins', 'autre', ),
+        'souscategorie': ('plantes', 'graines', 'fleurs', 'jeunes plants', 'purins', 'autre', ),
         #'etat': (('frais', 'frais'), ('séché', 'séché')),
         'type_prix': typePrixUnite,
     },
@@ -61,6 +62,7 @@ class Choix():
     },
     }
     monnaies = (('don', 'don'), ('troc', 'troc'), ('pret', 'pret'), ('G1', 'G1'), ('soudaqui', 'soudaqui'), ('SEL', 'SEL'), ('JEU', 'JEU'),  ('heuresT', 'heuresT'),  ('Autre', 'A negocier'))
+    monnaies_nonquantifiables =['don', 'troc', 'pret', 'SEl']
 
     ordreTri = ['date', 'categorie', 'producteur']
     distances = ['5', '10', '20', '30', '50', '100']
@@ -256,14 +258,11 @@ class Produit(models.Model):  # , BaseProduct):
     def slug(self):
         return slugify(self.nom_produit)
 
-    # detail_categorie = None
-    # type = "defaut"
-
-    # etat = models.CharField(max_length=20)
-    # type_prix = models.CharField(max_length=20)
-
-    # class Meta:
-    #      abstract = True
+    @property
+    def est_perimee(self):
+        if not self.date_expiration:
+            return False
+        return date.today() > self.date_expiration
 
     def __str__(self):
         return self.nom_produit
@@ -282,7 +281,7 @@ class Produit(models.Model):  # , BaseProduct):
         return Produit.objects.get_subclass(id=self.id).type_prix
 
     def get_unite_prix(self):
-        if self.unite_prix == "don":
+        if self.unite_prix in Choix.monnaies_nonquantifiables:
             return self.unite_prix
         else:
             return Produit.objects.get_subclass(id=self.id).get_unite_prix()
@@ -292,7 +291,7 @@ class Produit(models.Model):  # , BaseProduct):
         return Produit.objects.get_subclass(id=self.id).get_prixEtUnite()
 
     def get_prix(self):
-        if self.unite_prix == "don":
+        if self.unite_prix in Choix.monnaies_nonquantifiables:
             return 0
         else:
             return round(self.prix, 2)
@@ -330,14 +329,14 @@ class Produit_aliment(Produit):  # , BaseProduct):
         default=Choix.choix[type]['type_prix'][0][0], verbose_name="par"
     )
     def get_unite_prix(self):
-        if self.unite_prix == "don":
+        if self.unite_prix in Choix.monnaies_nonquantifiables:
             return self.unite_prix
         else:
-            return self.unite_prix + "/" + self.type_prix
+            return self.unite_prix + "/" + self.get_type_prix_display()
 
     def get_prixEtUnite(self):
-        if self.unite_prix == "don":
-            return 'gratuit'
+        if self.unite_prix in Choix.monnaies_nonquantifiables:
+            return self.unite_prix
         return str(self.get_prix()) + " " + self.get_unite_prix()
 
     def get_souscategorie(self):
@@ -365,15 +364,16 @@ class Produit_vegetal(Produit):  # , BaseProduct):
         choices=Choix.choix[type]['type_prix'],
         default=Choix.choix[type]['type_prix'][0][0], verbose_name="par"
     )
+
     def get_unite_prix(self):
-        if self.unite_prix == "don":
+        if self.unite_prix in Choix.monnaies_nonquantifiables:
             return self.unite_prix
         else:
-            return self.unite_prix + "/" + self.type_prix
+            return self.unite_prix + "/" + self.get_type_prix_display()
 
     def get_prixEtUnite(self):
-        if self.unite_prix == "don":
-            return 'gratuit'
+        if self.unite_prix in Choix.monnaies_nonquantifiables:
+            return self.unite_prix
         return str(self.get_prix()) + " " + self.get_unite_prix()
 
     def get_souscategorie(self):
@@ -401,15 +401,16 @@ class Produit_service(Produit):  # , BaseProduct):
         choices=Choix.choix["service"]['type_prix'],
         default=Choix.choix["service"]['type_prix'][0][0], verbose_name="par"
     )
+
     def get_unite_prix(self):
-        if self.unite_prix == "don":
+        if self.unite_prix in Choix.monnaies_nonquantifiables:
             return self.unite_prix
         else:
-            return self.unite_prix + "/" + self.type_prix
+            return self.unite_prix + "/" + self.get_type_prix_display()
 
     def get_prixEtUnite(self):
-        if self.unite_prix == "don":
-            return 'gratuit'
+        if self.unite_prix in Choix.monnaies_nonquantifiables:
+            return self.unite_prix
         return str(self.get_prix()) + " " + self.get_unite_prix()
 
     def get_souscategorie(self):
@@ -437,15 +438,16 @@ class Produit_objet(Produit):  # , BaseProduct):
         choices=Choix.choix[type]['type_prix'],
         default=Choix.choix[type]['type_prix'][0][0], verbose_name="par"
     )
+
     def get_unite_prix(self):
-        if self.unite_prix == "don":
+        if self.unite_prix in Choix.monnaies_nonquantifiables:
             return self.unite_prix
         else:
-            return self.unite_prix + "/" + self.type_prix
+            return self.unite_prix + "/" + self.get_type_prix_display()
 
     def get_prixEtUnite(self):
-        if self.unite_prix == "don":
-            return 'gratuit'
+        if self.unite_prix in Choix.monnaies_nonquantifiables:
+            return self.unite_prix
         return str(self.get_prix()) + " " + self.get_unite_prix()
 
     def get_souscategorie(self):
