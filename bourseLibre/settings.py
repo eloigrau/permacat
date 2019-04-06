@@ -31,7 +31,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 LOCALL  = False
 try:
     SECRET_KEY = os.environ['SECRET_KEY']
@@ -241,6 +241,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 GMAIL_SMTP_USER = 'sitepermacat@gmail.com'
+EMAIL_SUBJECT_PREFIX = "[PermaCat]"
 try:
     GMAIL_SMTP_PASSWORD = os.environ['EMAIL_ADMIN_PWD']
 except:

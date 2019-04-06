@@ -736,10 +736,10 @@ class Message(models.Model):
     date_creation = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return self.auteur + " " + self.date_creation
+        return self.__str()
 
     def __str__(self):
-        return self.auteur + " " + self.date_creation
+        return "(" + str(self.id) + ") " + str(self.auteur) + " " + str(self.date_creation)
 
 class MessageGeneral(models.Model):
     message = models.TextField(null=False, blank=False)
