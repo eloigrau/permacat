@@ -10,9 +10,38 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
+        migrations.RemoveField(
+            model_name='commentaire',
+            name='titre',
+        ),
+        migrations.RemoveField(
+            model_name='commentaireprojet',
+            name='titre',
+        ),
+        migrations.AddField(
             model_name='projet',
-            name='date',
-            field=models.DateTimeField(auto_now=True, verbose_name='Date de Modification'),
+            name='coresponsable',
+            field=models.CharField(blank=True, default='', max_length=150, null=True),
+        ),
+        migrations.AddField(
+            model_name='projet',
+            name='date_modification',
+            field=models.DateTimeField(auto_now=True, verbose_name='Date de dernière modification'),
+        ),
+        migrations.AddField(
+            model_name='projet',
+            name='lien_document',
+            field=models.URLField(blank=True, default='', null=True, verbose_name='Lien vers un document explicatif (en ligne)'),
+        ),
+        migrations.AddField(
+            model_name='projet',
+            name='lien_vote',
+            field=models.URLField(blank=True, null=True, verbose_name='Lien vers le vote (balotilo.org)'),
+        ),
+
+        migrations.AddField(
+            model_name='projet',
+            name='categorie',
+            field=models.CharField(choices=[('Part', 'Participation à un évènement'), ('AGO', "Organisation d'une AGO"), ('Projlong', 'Projet a long terme'), ('Projcourt', 'Projet a court terme')], default='Part', max_length=10, verbose_name='categorie'),
         ),
     ]

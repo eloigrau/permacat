@@ -20,4 +20,9 @@ class Migration(migrations.Migration):
             name='estPublic',
             field=models.BooleanField(default=False, verbose_name='Public (cochez) ou Interne (décochez) [réservé aux membres permacat]'),
         ),
+        migrations.AlterField(
+            model_name='projet',
+            name='date',
+            field=models.DateTimeField(auto_now=True, verbose_name='Date de Modification'),
+        ),
     ]
