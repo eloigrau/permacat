@@ -33,14 +33,16 @@
 
                   </p>
             </div>
-            <div class="card-footer" style="height:80px">
+            <div class="card-footer offre_footer" ">
                 <p>
+            {% if produit.date_debut or produit.date_expiration %}
                     {% if produit.date_debut and produit.date_expiration %}
                     du {{ produit.date_debut|date:"j/m" }}{% endif%} {% if produit.date_expiration %} au {{ produit.date_expiration|date:"j/m" }}
                     {%else%}
                     {% if produit.date_debut %}à partir du {{ produit.date_debut|date:"j/m" }}{% endif%} {% if produit.date_expiration %} jusqu'au {{ produit.date_expiration|date:"j/m" }}{% endif%}
                     {%endif%}
                     <br/>
+            {%endif%}
                     {%if produit.estUneOffre %}{{ produit.get_prixEtUnite }} {%endif%}
 
                 </p>

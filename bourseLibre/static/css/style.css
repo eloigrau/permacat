@@ -347,6 +347,10 @@ position:absolute;
   padding-bottom:80px;
  }
 
+.offre_footer{
+  height:85px;
+ }
+
 .row-flex {
   display: flex;
   align-items: center;
