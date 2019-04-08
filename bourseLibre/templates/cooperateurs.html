@@ -7,11 +7,6 @@
     <div class="col-sm-12 textcenter">
         <div class="btn-group btn-group-justified">
             {% if request.user.is_permacat %}
-
-         <a href="{% url 'blog:index' %}">
-               Articles
-            </button>
-            </a>
             <a href="{% url 'profil_carte_adherents' %}" >
                 <button type="button" class="btn btn-primary" >Carte des adhérents</button>
                 </a>
@@ -23,13 +18,15 @@
     </div>
 </div>
 
+{% endblock %}
+{% block content %}
+
+{% if request.user.is_permacat %}
 <div class="row">
     <div class="col-sm-12 textcenter">
         <h3>Les adhérents permacat</h3>
     </div>
 </div>
-{% endblock %}
-{% block content %}
 <div class="row">
     <div class="col-md-12">
     <table class="table table-condensed tableprofils table-striped">
@@ -59,6 +56,8 @@
     </table>
     </div>
     </div>
+
+{% endif %}
 <hr>
 
 <div class="row">

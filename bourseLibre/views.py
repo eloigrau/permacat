@@ -207,7 +207,7 @@ def profil_inconnu(request):
 # @login_required
 def profil_list(request):
     profils_permacat = Profil.objects.filter(accepter_annuaire=True, statut_adhesion=2).order_by('username')
-    profils = Profil.objects.filter(accepter_annuaire=True).exclude(statut_adhesion=2).order_by('username')
+    profils = Profil.objects.filter(accepter_annuaire=True).order_by('username')
     return render(request, 'cooperateurs.html', {'profils':profils, 'profils_permacat':profils_permacat, } )
 
 # @login_required

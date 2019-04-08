@@ -236,7 +236,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 try:
     EMAIL_HOST_PASSWORD = os.environ['EMAIL_ADMIN_PWD']
 except:
-    EMAIL_HOST_PASSWORD = 'permaiole66'
+    EMAIL_HOST_PASSWORD = 'gg'
 EMAIL_HOST_USER = SERVER_EMAIL
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
