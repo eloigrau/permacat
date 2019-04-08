@@ -18,7 +18,7 @@ class Article(models.Model):
     estPublic = models.BooleanField(default=False, verbose_name='Public (cochez) ou Interne (décochez) [réservé aux membres permacat]')
 
     date_dernierMessage = models.DateTimeField(verbose_name="Date du dernier message", auto_now=True)
-    dernierMessage = models.CharField(max_length=100, default="", blank=True, null=True)
+    dernierMessage = models.CharField(max_length=100, default=None, blank=True, null=True)
 
     class Meta:
         ordering = ('date', )

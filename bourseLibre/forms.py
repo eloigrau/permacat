@@ -136,8 +136,8 @@ class ProducteurChangeForm(UserChangeForm):
     inscrit_newsletter = forms.BooleanField(required=False)
     password=None
 
-    def __init__(self, request, *args, **kargs):
-        super(ProducteurChangeForm, self).__init__(request, *args, **kargs)
+    def __init__(self, *args, **kargs):
+        super(ProducteurChangeForm, self).__init__(*args, **kargs)
         self.fields['description'].strip = False
         self.fields['competences'].strip = False
 
@@ -168,8 +168,8 @@ class ProducteurChangeForm_admin(UserChangeForm):
         model = Profil
         fields = ['username', 'email', 'description', 'competences', 'inscrit_newsletter', 'statut_adhesion', 'pseudo_june', ]
 
-    def __init__(self, request, *args, **kwargs):
-        super(ProducteurChangeForm_admin, self).__init__(request, *args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super(ProducteurChangeForm_admin, self).__init__(*args, **kwargs)
         self.fields['description'].strip = False
         self.fields['competences'].strip = False
 
@@ -180,8 +180,8 @@ class ContactForm(forms.Form):
                                 help_text="Cochez si vous souhaitez obtenir une copie du mail envoyé.", required=False
                                  )
 
-    def __init__(self, request, message=None,  titre=None,  *args, **kwargs):
-        super(ContactForm, self).__init__(request, *args, **kwargs)
+    def __init__(self, message=None,  titre=None,  *args, **kwargs):
+        super(ContactForm, self).__init__(*args, **kwargs)
         if message:
             self.fields['message'].initial = message
         if titre:
