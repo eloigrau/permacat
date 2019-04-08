@@ -33,6 +33,7 @@
                             <a class="nav-link" href="{% url 'agora' %}">Agora</a>
                             <a class="nav-link" href="{% url 'blog:index' %}?">Articles</a>
                             <a class="nav-link" href="{% url 'blog:index_projets' %}?">Projets</a>
+                            <a class="nav-link" href="{% url 'conversations' %}"><span class="glyphicon glyphicon-conversation"></span> Mes messages</a>
                         </div>
                     </li>
                     <li class="active">
@@ -54,7 +55,6 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="nav-link" href="{% url 'profil_courant' %}"><span class="glyphicon glyphicon-user"></span> Mon profil</a>
-                            <a class="nav-link" href="{% url 'conversations' %}"><span class="glyphicon glyphicon-conversation"></span> Mes messages</a>
                             <a class="nav-link" href="{% url 'panier_afficher' %}"><span class="glyphicon glyphicon-shopping-bag"></span> Mon panier</a>
                             <a class="nav-link" href="{% url 'afficher_requetes' %}"><span class="glyphicon glyphicon-shopping-cart"></span> Mes requêtes</a>
                             <a class="nav-link" href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span>Se déconnecter</a>

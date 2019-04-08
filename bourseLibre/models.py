@@ -709,11 +709,11 @@ class Conversation(models.Model):
 
     @property
     def auteur_1(self):
-        return "Conversation avec " + self.profil1.username
+        return self.profil1.username
 
     @property
     def auteur_2(self):
-        return "Conversation avec " + self.profil2.username
+        return self.profil2.username
 
     @property
     def messages(self):
