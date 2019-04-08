@@ -298,7 +298,7 @@ class Produit(models.Model):  # , BaseProduct):
         return"standard"
 
     def get_message_demande(self):
-        return "bonjour, concernant ton annonce de '" + self.nom_produit + "', peux-tu m'indiquer..."
+        return "[A propos de l'annonce de '" + self.nom_produit + "']: "
 
 
 class Produit_aliment(Produit):  # , BaseProduct):

@@ -1,9 +1,27 @@
 {% extends 'base.html' %}
 {%block message%}{%endblock%}
 {% block subtitle %}
-<div class="col-sm-12 textcenter">
-                      <h3>Agora</h3>
+
+<div class="row">
+<div class="col-sm-9 textcenter">
+    <h3>Agora</h3>
     </div>
+
+    <div class="col-sm-3 textcenter">
+        <div class="btn-group btn-group-justified">
+         <a href="{% url 'blog:index' %}">
+        <button type="button" class="btn btn-primary" >
+               Articles
+            </button>
+            </a>
+         <a href="{% url 'conversations' %}">
+            <button type="button" class="btn btn-primary" >
+               Conversations
+            </button>
+         </a>
+    </div>
+   </div>
+</div>
 
 {% endblock %}
 {% block content %}

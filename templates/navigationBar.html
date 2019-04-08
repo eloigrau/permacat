@@ -28,11 +28,10 @@
                         </div>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="{% url 'blog:forum' %}" >Forum</a>
+                        <a class="nav-link" href="{% url 'agora' %}" >Forum</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="nav-link" href="{% url 'agora' %}">Agora</a>
                             <a class="nav-link" href="{% url 'blog:index' %}?">Articles</a>
-                            <a class="nav-link" href="{% url 'blog:index_projets' %}?">Projets</a>
                             <a class="nav-link" href="{% url 'conversations' %}"><span class="glyphicon glyphicon-conversation"></span> Mes messages</a>
                         </div>
                     </li>
@@ -41,7 +40,7 @@
     
    
                         <ul class="nav navbar-nav navbar-right">
- <li class="nav-item"><form class="form-inline my-2 my-lg-0 justify-content-center form-group" action="{% url 'chercher' %}" method="get">
+                <li class="nav-item"><form class="form-inline my-2 my-lg-0 justify-content-center form-group" action="{% url 'chercher' %}" method="get">
                     {% csrf_token %}
                         <input class="form-control fmr-sm-2" name="id_recherche" placeholder="Chercher..." type="text">
                         <span class="input-group-append">
@@ -65,11 +64,12 @@
                          L'association
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarAsso">
+                            <a class="nav-link" href="{% url 'blog:index_projets' %}"> Projets</a>
                             <a class="nav-link" href="{% url 'profil_list' %}"> Coopérateurs</a>
                            {% if user.is_permacat %}
                              <a class="nav-link" href="{% url 'profil_carte' %}"> Carte </a>
-             
                             {%endif%}
+                            <a class="nav-link" href="{% url 'presentation_asso' %}"> Qui sommes nous ?</a>
                             <a class="nav-link" href="{% url 'charte' %}"> Charte </a>
                             <a class="nav-link" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a>
                         </div>
@@ -99,10 +99,10 @@
                 </ul>
             <ul class="nav navbar-nav justify-content-center">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="{% url 'presentation_asso' %}" id="navbarAsso" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="{% url 'presentation_asso' %}" id="navbarAsso2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             L'association
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarAsso">
+                        <div class="dropdown-menu" aria-labelledby="navbarAsso2">
                             <a class="nav-link" href="{% url 'presentation_asso' %}"> Qui sommes nous ?</a>
                             <a class="nav-link" href="{% url 'charte' %}"> Charte </a>
                             <a class="nav-link" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a>

@@ -1,6 +1,24 @@
 {% extends 'base.html' %}
 {%block subtitle%}
-<p>Liste de vos conversations</p>
+
+<div class="row align-items-center">
+<div class="col-md-8 textcenter">
+<h4>Mes conversations</h4>
+</div>
+    <div class="col-md-4 textcenter">
+        <div class="btn-group btn-group-justified">
+        <a href="{% url 'agora' %}">
+         <button type="button" class="btn btn-primary">
+                 Agora
+            </button></a>
+        <a href="{% url 'blog:index' %}">
+        <button type="button" class="btn btn-primary" >
+               Articles
+            </button>
+            </a>
+    </div>
+
+    </div>
 {%endblock%}
 {% block content %}
 

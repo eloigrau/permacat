@@ -2,7 +2,7 @@
 {%block subtitle%}
 
 <div class="row align-items-center">
-<div class="col-md-9 textcenter">
+<div class="col-md-8 textcenter">
     <div class="btn-group">
         <a href="?">
             <button class="btn {% if typeFiltre == "aucun" %}btn-primary {%endif%}">Tout </button>
@@ -43,21 +43,26 @@
         </div>
     </div>
 </div>
-    <div class="col-md-3 textcenter">
-       
+    <div class="col-md-4 textcenter">
+
+        <div class="btn-group btn-group-justified">
         <a href="{% url 'blog:ajouterNouvelArticle' %}">
         <button type="button" class="btn btn-success" >
                 <span class="glyphicon glyphicon-plus"></span>Ajouter un article
             </button>
             </a>&ensp;
-        <a href="{% url 'agora' %}"
+
+        <a href="{% url 'agora' %}">
          <button type="button" class="btn btn-primary">
                  Agora
             </button></a>
-<a href="{% url 'blog:index_projets' %}"
-         <button type="button" class="btn btn-primary">
-                Projets
-            </button></a>
+         <a href="{% url 'conversations' %}">
+            <button type="button" class="btn btn-primary" >
+               Conversations
+            </button>
+         </a>
+    </div>
+
     </div>
 </div>
 {%endblock%}
