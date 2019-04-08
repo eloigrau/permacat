@@ -10,4 +10,29 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.AddField(
+            model_name='article',
+            name='estArchive',
+            field=models.BooleanField(default=False, verbose_name='Article archivé'),
+        ),
+        migrations.AddField(
+            model_name='projet',
+            name='estArchive',
+            field=models.BooleanField(default=False, verbose_name='Projet archivé'),
+        ),
+        migrations.AlterField(
+            model_name='article',
+            name='dernierMessage',
+            field=models.CharField(blank=True, default=None, max_length=100, null=True),
+        ),
+        migrations.AlterField(
+            model_name='projet',
+            name='categorie',
+            field=models.CharField(choices=[('Part', 'Participation à un évènement'), ('AGO', "Organisation d'une AGO"), ('Projlong', 'Projet a long terme'), ('Projcourt', 'Projet a court terme'), ('Projponct', 'Projet ponctuel')], default='Part', max_length=10, verbose_name='categorie'),
+        ),
+        migrations.AlterField(
+            model_name='projet',
+            name='statut',
+            field=models.CharField(choices=[('prop', 'Proposition en préparation'), ('AGO', "Soumis à l'AGO"), ('vote', 'Soumis au vote'), ('accep', "Accepté par l'association"), ('refus', "Refusé par l'association")], default='prop', max_length=5, verbose_name='statut'),
+        ),
     ]
