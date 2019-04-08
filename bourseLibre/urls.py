@@ -16,16 +16,15 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.urls import path
-#from django.contrib.auth import views as auth_views
 from . import views
-from django.views.static import serve
 
 # On import les vues de Django, avec un nom spécifique
-#from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 
 # admin.autodiscover()
 from django.contrib import admin
+admin.sites.site_header ="Admin "
+admin.sites.site_title ="Admin Permacat"
 # from django_filters.views import FilterView
 # from .models import Produit, ProductFilter
 
@@ -35,6 +34,7 @@ urlpatterns = [
     url(r'^permacat/statuts$$', views.statuts, name='statuts'),
     
     url(r'^admin/', admin.site.urls, name='admin',),
+    url('^', include('django.contrib.auth.urls')),
     url(r'^merci/$', views.merci, name='merci'),
     url(r'^forum/', include('blog.urls', namespace='bourseLibre.blog')),
     # url(r'^search/', include('haystack.urls'), name='chercher_site'),
@@ -49,7 +49,8 @@ urlpatterns = [
     url(r'^accounts/profil_modifier_adresse/$', login_required(views.profil_modifier_adresse.as_view()), name='profil_modifier_adresse',),
     url(r'^accounts/profil_contact/(?P<user_id>[0-9]+)/$', login_required(views.profil_contact), name='profil_contact',),
     url(r'^register/$', views.register, name='senregistrer',),
-    url(r'^password/$', views.change_password, name='change_password'),
+    #url(r'^password/reset/$', views.reset_password, name='reset_password'),
+    url(r'^password/change/$', views.change_password, name='change_password'),
     path('auth/', include('django.contrib.auth.urls')),
 
     url(r'^contact_admins/$', views.contact_admins, name='contact_admins',),
@@ -58,7 +59,8 @@ urlpatterns = [
     url(r'^liens/$', views.liens, name='liens',),
     url(r'^fairedon/$', views.fairedon, name='fairedon',),
     url(r'^cooperateurs/$', login_required(views.profil_list), name='profil_list',),
-    url(r'^cooperateurs/carte/$', login_required(views.profil_carte), name='profil_carte',),
+    url(r'^cooperateurs/carte/inscrits/$', login_required(views.profil_carte), name='profil_carte',),
+    url(r'^cooperateurs/carte/adherents/$', login_required(views.profil_carte_adherents), name='profil_carte_adherents',),
 
     url(r'^marche/proposer/(?P<type_produit>[-A-Za-z]+)/$', login_required(views.produit_proposer), name='produit_proposer', ),
     url(r'^marche/proposer/', login_required(views.proposerProduit_entree), name='produit_proposer_entree',),
@@ -76,15 +78,12 @@ urlpatterns = [
 
     url(r'^marche/modifier/(?P<pk>[0-9]+)/$',
         login_required(views.ProduitModifier.as_view()), name='produit_modifier', ),
-    # url(r'^produits/ajouter/(?P<pk>[0-9]+)/$',
-    #     login_required(views.ProduitModifier.as_view()), name='produit_ajouterAuPanier', ),
     url(r'^marche/contacterProducteur/(?P<producteur_id>[0-9]+)/$',
         login_required(views.produitContacterProducteur), name='produit_contacterProducteur', ),
     url(r'^marche/supprimer/(?P<pk>[0-9]+)/$',
         login_required(views.ProduitSupprimer.as_view()), name='produit_supprimer', ),
 
-    url(r'^panier/afficher/$',
-        login_required(views.afficher_panier), name='panier_afficher', ),
+    url(r'^panier/afficher/$', login_required(views.afficher_panier), name='panier_afficher', ),
 
     url(r'^panier/ajouter/(?P<produit_id>[0-9]+)/(?P<quantite>[0-9]{1,3}([.]{0,1}[0-9]{0,3}))/$',
         login_required(views.ajouterAuPanier), name='produit_ajouterAuPanier', ),
@@ -100,7 +99,6 @@ urlpatterns = [
     url(r'^conversations/$', login_required(views.ListeConversations.as_view()), name='conversations'),
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^agora/$', login_required(views.agora), name='agora'),
-    #url(r'^test/acme/acme-challenge/$', login_required(views.acmechallenge), name='acmeChallenge'),
     url(r'^captcha/', include('captcha.urls')),
 ]
 

@@ -46,7 +46,7 @@ class ArticleForm(forms.ModelForm):
 class ArticleChangeForm(forms.ModelForm):
     class Meta:
         model = Article
-        fields = ['categorie', 'titre', 'contenu', 'estPublic', ]
+        fields = ['categorie', 'titre', 'contenu', 'estPublic', 'estArchive']
 
     def __init__(self, *args, **kwargs):
         super(ArticleChangeForm, self).__init__(*args, **kwargs)
@@ -105,7 +105,7 @@ class ProjetForm(forms.ModelForm):
 class ProjetChangeForm(forms.ModelForm):
     class Meta:
         model = Projet
-        fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'estPublic', 'lien_document','fichier_projet', 'lien_vote']
+        fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'estPublic', 'lien_document','fichier_projet', 'lien_vote', 'estArchive']
 
     def __init__(self, *args, **kwargs):
         super(ProjetChangeForm, self).__init__(*args, **kwargs)

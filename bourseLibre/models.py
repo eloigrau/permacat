@@ -156,7 +156,7 @@ class Profil(AbstractUser):
     inscrit_newsletter = models.BooleanField(verbose_name="J'accepte de recevoir des emails de Permacat", default=False)
     statut_adhesion = models.IntegerField(choices=Choix.statut_adhesion, default="0")
     accepter_conditions = models.BooleanField(verbose_name="J'ai lu et j'accepte les conditions d'utilisation du site", default=False, null=False)
-    accepter_annuaire = models.BooleanField(verbose_name="J'accepte d'apparaitre dans l'annuaire du site et rend mon profil visible par tous", default=True)
+    accepter_annuaire = models.BooleanField(verbose_name="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous", default=True)
 
     def __str__(self):
         return self.username
@@ -242,9 +242,7 @@ class Produit(models.Model):  # , BaseProduct):
     #photo = models.ImageField(blank=True, upload_to="imagesProduits/")
     #photo = StdImageField(upload_to='imagesProduits/', blank=True, variations={'large': (640, 480), 'thumbnail': (100, 100, True)}) # all previous features in one declaration
 
-
     estUneOffre = models.BooleanField(default=True, verbose_name='Offre (cochez) ou Demande (décochez)')
-
     estPublique = models.BooleanField(default=False, verbose_name='Publique (cochez) ou Interne (décochez) [réservé aux membres permacat]')
 
     objects = InheritanceManager()

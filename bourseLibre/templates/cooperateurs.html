@@ -4,17 +4,30 @@
 {% block subtitle %}
 
 <div class="row">
-<div class="col-sm-6">
-    <h3>Les adhérents permacat</h3>
+    <div class="col-sm-12 textcenter">
+        <div class="btn-group btn-group-justified">
+            {% if request.user.is_permacat %}
+
+         <a href="{% url 'blog:index' %}">
+               Articles
+            </button>
+            </a>
+            <a href="{% url 'profil_carte_adherents' %}" >
+                <button type="button" class="btn btn-primary" >Carte des adhérents</button>
+                </a>
+            {% endif %}
+            <a href="{% url 'profil_carte' %}" >
+                <button type="button" class="btn btn-primary" >Carte de tous les inscrits</button>
+            </a>
+        </div>
     </div>
-<div class="col-sm-6 textright">
-    {% if request.user.is_permacat %}
-    <a href="{% url 'profil_carte' %}" class="btn btn-success">
-          <span class="glyphicon glyphicon-map-marker"></span> Afficher la carte
-        </a>
-    {% endif %}
 </div>
+
+<div class="row">
+    <div class="col-sm-12 textcenter">
+        <h3>Les adhérents permacat</h3>
     </div>
+</div>
 {% endblock %}
 {% block content %}
 <div class="row">
@@ -49,12 +62,9 @@
 <hr>
 
 <div class="row">
-<div class="col-sm-6">
+<div class="col-sm-12 textcenter">
     <h3>Les adhérents au site</h3>
     </div>
-<div class="col-sm-6 textright">
-
-</div>
     </div>
 
 <div class="row">

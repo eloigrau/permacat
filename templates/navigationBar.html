@@ -64,11 +64,8 @@
                          L'association
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarAsso">
-                            <a class="nav-link" href="{% url 'blog:index_projets' %}"> Projets</a>
-                            <a class="nav-link" href="{% url 'profil_list' %}"> Coopérateurs</a>
-                           {% if user.is_permacat %}
-                             <a class="nav-link" href="{% url 'profil_carte' %}"> Carte </a>
-                            {%endif%}
+                            <a class="nav-link" href="{% url 'blog:index_projets' %}"> Projets </a>
+                             <a class="nav-link" href="{% url 'profil_carte_adherents' %}"> Carte des adhérents </a>
                             <a class="nav-link" href="{% url 'presentation_asso' %}"> Qui sommes nous ?</a>
                             <a class="nav-link" href="{% url 'charte' %}"> Charte </a>
                             <a class="nav-link" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a>
@@ -76,9 +73,12 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="{% url 'profil_courant' %}" id="navbarAbout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                         Le site
+                         Perma.cat
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarAbout">
+                            <a class="nav-link" href="{% url 'profil_list' %}"> Annuaire </a>
+                             <a class="nav-link" href="{% url 'profil_carte' %}"> Carte </a>
+                            <span class="nav-link divider" role="separator"></span>
                             <a class="nav-link" href="{% url 'contact_admins' %}"> Contacter admins </a>
                             <a class="nav-link" href="{% url 'cgu' %}"> CGU </a>
                             <a class="nav-link" href="{% url 'liens' %}"> Liens </a>
@@ -110,7 +110,7 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="{% url 'profil_courant' %}" id="navbarAbout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                         Le site
+                         Perma.Cat
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarAbout">
                             <a class="nav-link" href="{% url 'cgu' %}"> CGU </a>

@@ -236,7 +236,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 try:
     EMAIL_HOST_PASSWORD = os.environ['EMAIL_ADMIN_PWD']
 except:
-    EMAIL_HOST_PASSWORD = 'test'
+    EMAIL_HOST_PASSWORD = 'permaiole66'
 EMAIL_HOST_USER = SERVER_EMAIL
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
@@ -252,7 +252,7 @@ ADMINS = (
     ('Asso_admin', 'sitepermacat@gmail.com'),
 )
 MANAGERS = ADMINS
-
+BASE_URL = "https://permacat.herokuapp.com"
 ########################
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/

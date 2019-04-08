@@ -103,6 +103,7 @@ class ProfilCreationForm(UserCreationForm):
     captcha = CaptchaField()
 
     statut_adhesion = forms.ChoiceField(choices=Choix.statut_adhesion, label='', required=True)
+    accepter_annuaire = forms.BooleanField(required=False)
     accepter_conditions = forms.BooleanField(required=True, label="J'ai lu et j'accepte les Conditions Générales d'Utilisation du site",  )
     pseudo_june = forms.CharField(label="Pseudonyme dans la monnaie libre (Duniter)",  help_text="Si vous avez un compte en June",required=False)
 
@@ -118,9 +119,9 @@ class ProfilCreationForm(UserCreationForm):
         exclude = ['slug', ]
 
     def save(self, commit = True, is_active=False):
+        return super(ProfilCreationForm, self).save(commit)
         self.is_active=is_active
 
-        return super(ProfilCreationForm, self).save(commit)
 
 
 class ProducteurChangeForm(UserChangeForm):
@@ -134,6 +135,7 @@ class ProducteurChangeForm(UserChangeForm):
     competences = forms.CharField(label="Savoir-faire", initial="Par exemple: electricien, bouturage, aromatherapie, etc...",widget=forms.Textarea)
     avatar = forms.ImageField(required=False)
     inscrit_newsletter = forms.BooleanField(required=False)
+    accepter_annuaire = forms.BooleanField(required=False)
     password=None
 
     def __init__(self, *args, **kargs):

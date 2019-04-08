@@ -82,7 +82,7 @@ class ListeArticles(ListView):
         if "categorie" in params:
             qs = qs.filter(categorie=params['categorie'])
 
-        return qs.order_by('-date', 'categorie','auteur')
+        return qs.order_by('-date_dernierMessage', '-date', 'categorie','auteur')
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -180,7 +180,7 @@ class ListeProjets(ListView):
         if "categorie" in params:
             qs = qs.filter(categorie=params['categorie'])
 
-        return qs.order_by('-date', 'categorie', 'auteur')
+        return qs.order_by('-date_dernierMessage', '-date', 'categorie', 'auteur')
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context

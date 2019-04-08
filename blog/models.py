@@ -1,11 +1,13 @@
 from django.db import models
 from bourseLibre.models import Profil
 from django.urls import reverse
-#from django.conf import settings
 from tinymce.models import HTMLField
-import datetime
 
-    
+
+class Choix():
+    statut_projet = ('prop','Proposition en préparation'), ("AGO","Soumis à l'AGO"), ('vote','Soumis au vote'), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
+    type_projet = ('Part','Participation à un évènement'), ('AGO',"Organisation d'une AGO"), ('Projlong','Projet a long terme'), ('Projcourt','Projet a court terme'),('Projponct','Projet ponctuel'),
+
 class Article(models.Model):
     categorie = models.CharField(max_length=30,         
         choices=(('Annonce','Annonce'), ('Agenda','Agenda'), ('Rencontre','Rencontre'), ('Chantier','Chantier participatif'), ('Jardinage','Jardinage'), ('Recette', 'Recette'), ('Histoire', 'Histoire'), ('Bricolage','Bricolage'), ('Culture','Culture'), ('Bon_plan', 'Bon plan'), ('Point', 'Point de vue'),  ('Autre','Autre'),),
@@ -19,6 +21,7 @@ class Article(models.Model):
 
     date_dernierMessage = models.DateTimeField(verbose_name="Date du dernier message", auto_now=True)
     dernierMessage = models.CharField(max_length=100, default=None, blank=True, null=True)
+    estArchive = models.BooleanField(default=False, verbose_name='Article archivé')
 
     class Meta:
         ordering = ('date', )
@@ -44,10 +47,10 @@ class Commentaire(models.Model):
 
 class Projet(models.Model):
     categorie = models.CharField(max_length=10,
-        choices=(('Part','Participation à un évènement'), ('AGO',"Organisation d'une AGO"), ('Projlong','Projet a long terme'), ('Projcourt','Projet a court terme'),),
+        choices=(Choix.type_projet),
         default='Part', verbose_name="categorie")
     statut = models.CharField(max_length=5,
-        choices=(('prop','Proposition'), ("AGO","Soumis à l'AGO"), ('vote','Soumis au vote'), ('accep','Accepté'), ('refus','Refusé'), ),
+        choices=(Choix.statut_projet ),
         default='prop', verbose_name="statut")
     titre = models.CharField(max_length=100)
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
@@ -64,6 +67,8 @@ class Projet(models.Model):
 
     date_dernierMessage = models.DateTimeField(verbose_name="Date de Modification", auto_now=True)
     dernierMessage = models.CharField(max_length=100, default="", blank=True, null=True)
+
+    estArchive = models.BooleanField(default=False, verbose_name='Projet archivé')
 
     class Meta:
         ordering = ('date', )

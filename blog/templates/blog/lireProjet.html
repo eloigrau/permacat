@@ -28,9 +28,14 @@
 {% block content %}
 <div class="contenu article">
 <div class="row justify-content-center " >
+	<div class="col-sm-6">
             <span class="badge {% if projet.estPublic%}badge-warning{%else%} badge-success {%endif%}">
                 Projet {%if projet.estPublic%}  public {%else%}  permacat  {%endif%}
             </span>
+	</div>
+	<div class="col-sm-6">
+		Statut : {{ if projet.statut }}
+	</div>
 </div>
 <div class="row" >
       <h3 style="text-indent: 20px;">{{ projet.titre }}</h3>
@@ -52,12 +57,13 @@
 				</tr>
 				<tr>
 					<td class="nomProprieteProduit">
-						Statut :
+						Type de projet :
 					</td>
 					<td class="proprieteProduit">
-						{{ projet.get_statut_display }}
+						{{ projet.get_statut_projet_display }}
 					</td>
 				</tr>
+
                 <tr>
 					<td class="nomProprieteProduit">
 						Dernière modification :

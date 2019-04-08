@@ -212,8 +212,14 @@ def profil_list(request):
 
 # @login_required
 def profil_carte(request):
-    profils = Profil.objects.filter(statut_adhesion=2)
-    return render(request, 'carte_cooperateurs.html', {'profils':profils, } )
+    profils = Profil.objects.filter(accepter_annuaire=1)
+    return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': "La carte des coopérateurs" } )
+
+
+# @login_required
+def profil_carte_adherents(request):
+    profils = Profil.objects.filter(Q(statut_adhesion=2, accepter_annuaire=1))
+    return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': "Carte des adhérents Permacat" } )
 
 # @login_required
 def profil_contact(request, user_id):
