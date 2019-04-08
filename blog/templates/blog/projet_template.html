@@ -8,7 +8,8 @@
             {{ projet.titre }}</h4>
         <h6 class="card-subtitle mb-2 text-muted">
             <p>Catégorie: {{ projet.get_categorie_display }}, rédigé par {{ projet.auteur }}, le {{ projet.date|date:"DATE_FORMAT" }}</p>
-          <p>Dernier message : {{ projet.date_dernierMessage|date:"l d F Y, G:i"}} : {{projet.dernierMessage}}</p>
+         {%if not projet.dernierMessage == None %} <p>Dernier message : {{ projet.date_dernierMessage|date:"l d F Y, G:i"}} : {{projet.dernierMessage}}</p>
+            {%endif%}
         </h6>
 
         <p class="card-text">{{ projet.contenu|truncatechars:180 }}</p>

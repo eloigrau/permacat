@@ -8,7 +8,7 @@
             {{ article.titre }}</h4>
         <h6 class="card-subtitle mb-2 text-muted"><p>
                 Catégorie: {{ article.categorie }}, rédigé par {{ article.auteur }}, le {{ article.date|date:"DATE_FORMAT" }}</p>
-              <p class="card-text text-muted"> Dernier message : {{ article.date_dernierMessage|date:"l d F Y, G:i"}} {{article.dernierMessage}}</p>
+             {%if not article.dernierMessage == None %} <p class="card-text text-muted"> Dernier message : {{ article.date_dernierMessage|date:"l d F Y, G:i"}} {{article.dernierMessage}}</p>{%endif%}
             </h6>
         <p class="card-text">{{ article.contenu|truncatechars:180|safe }}</p>
    </div>   </a>
