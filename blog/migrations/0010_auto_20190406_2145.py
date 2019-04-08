@@ -15,4 +15,24 @@ class Migration(migrations.Migration):
             old_name='fichier',
             new_name='fichier_projet',
         ),
+        migrations.AddField(
+            model_name='article',
+            name='date_dernierMessage',
+            field=models.DateTimeField(auto_now=True, verbose_name='Date du dernier message'),
+        ),
+        migrations.AddField(
+            model_name='article',
+            name='dernierMessage',
+            field=models.CharField(blank=True, default='', max_length=100, null=True),
+        ),
+        migrations.AddField(
+            model_name='projet',
+            name='date_dernierMessage',
+            field=models.DateTimeField(auto_now=True, verbose_name='Date de Modification'),
+        ),
+        migrations.AddField(
+            model_name='projet',
+            name='dernierMessage',
+            field=models.CharField(blank=True, default='', max_length=100, null=True),
+        ),
     ]
