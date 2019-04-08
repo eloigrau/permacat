@@ -15,4 +15,9 @@ class Migration(migrations.Migration):
             name='accepter_annuaire',
             field=models.BooleanField(default=True, verbose_name="J'accepte d'apparaitre dans l'annuaire du site et rend mon profil visible par tous"),
         ),
+        migrations.AddField(
+            model_name='conversation',
+            name='dernierMessage',
+            field=models.CharField(blank=True, default=None, max_length=100, null=True),
+        ),
     ]
