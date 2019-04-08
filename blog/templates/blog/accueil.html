@@ -11,27 +11,22 @@
 {% block content %}
 
 <div class="row">
-    <div class="col-md-4 textcenter">
+    <div class="col-sm-12 textcenter">
+        <div class="btn-group btn-group-justified">
         <a href="{% url 'agora' %}">
          <button type="button" class="btn btn-success">
                  Agora
             </button></a>
-    </div>
-    <div class="col-md-4 textcenter">
          <a href="{% url 'blog:index' %}">
         <button type="button" class="btn btn-success" >
                Articles
             </button>
             </a>
-    </div>
-    <div class="col-md-4 textcenter">
          <a href="{% url 'blog:index_projets' %}">
             <button type="button" class="btn btn-success" >
                Projets
             </button>
             </a>
-    </div>
-    <div class="col-md-4">
     </div>
    </div>
 

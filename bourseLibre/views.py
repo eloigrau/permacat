@@ -575,9 +575,10 @@ def lireConversation(request, destinataire):
     if form.is_valid():
         message = form.save(commit=False)
         message.conversation = conversation
-        conversation.date_dernierMessage = message.date_creation
-        conversation.save()
         message.auteur = request.user
+        conversation.date_dernierMessage = message.date_creation
+        conversation.dernierMessage =  "(" + str(message.auteur) + ") " + str(message.message[:50])
+        conversation.save()
         message.save()
         return redirect(request.path)
 
@@ -587,13 +588,14 @@ def lireConversation(request, destinataire):
 @login_required
 def lireConversation_2noms(request, destinataire1, destinataire2):
     conversation = getOrCreateConversation(destinataire1, destinataire2)
-    messages = Message.objects.filter(conversation=conversation).order_by("date_creation")
+    messages_echanges = Message.objects.filter(conversation=conversation).order_by("date_creation")
 
     form = MessageForm(request.POST or None)
     if form.is_valid():
         message = form.save(commit=False)
         message.conversation = conversation
         conversation.date_dernierMessage = message.date_creation
+        conversation.dernierMessage = message.message[:50]
         conversation.save()
         message.auteur = request.user
         message.save()
@@ -605,7 +607,7 @@ def lireConversation_2noms(request, destinataire1, destinataire2):
     else:
         raise Exception('l\'utilisateur qui veut acceder a une conversation qui ne le concerne pas')
 
-    return render(request, 'lireConversation.html', {'conversation': conversation, 'form': form, 'messages_echanges': messages, 'destinataire':destinataire})
+    return render(request, 'lireConversation.html', {'conversation': conversation, 'form': form, 'messages_echanges': messages_echanges, 'destinataire':destinataire})
 
 @login_required
 def agora(request, ):
@@ -622,12 +624,12 @@ class ListeConversations(ListView):
     model = Conversation
     context_object_name = "conversation_list"
     template_name = "conversations.html"
-    paginate_by = 10
+    paginate_by = 1
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
 
-        context['conversations1'] = Conversation.objects.filter(profil1__id=self.request.user.id).order_by('-date_dernierMessage')
-        context['conversations2'] = Conversation.objects.filter(profil2__id=self.request.user.id).order_by('-date_dernierMessage')
+        context['conversations'] = Conversation.objects.filter(Q(profil2__id=self.request.user.id) | Q(profil1__id=self.request.user.id)).order_by('-date_dernierMessage')
+
         return context

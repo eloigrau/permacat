@@ -685,7 +685,6 @@ class Item(models.Model):
 
 
 
-
 def get_slug_from_names(name1, name2):
     return str(slugify(''.join(sorted((name1, name2), key=str.lower))))
 
@@ -695,6 +694,7 @@ class Conversation(models.Model):
     slug = models.CharField(max_length=100)
     date_creation = models.DateTimeField(auto_now_add=True, auto_now=False, verbose_name="Date de parution")
     date_dernierMessage = models.DateTimeField(verbose_name="Date de Modification", auto_now=True)
+    dernierMessage = models.CharField(max_length=100, default=None, blank=True, null=True)
 
     class Meta:
         ordering = ('-date_dernierMessage',)
@@ -729,6 +729,17 @@ class Conversation(models.Model):
 
 
 
+
+def getOrCreateConversation(nom1, nom2):
+    try:
+        convers = Conversation.objects.get(slug=get_slug_from_names(nom1, nom2))
+    except Conversation.DoesNotExist:
+        profil_1 = Profil.objects.get(username=nom1)
+        profil_2 = Profil.objects.get(username=nom2)
+        convers = Conversation.objects.create(profil1=profil_1, profil2=profil_2)
+    return convers
+
+
 class Message(models.Model):
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
     message = models.TextField(null=False, blank=False)
@@ -752,13 +763,3 @@ class MessageGeneral(models.Model):
     def __str__(self):
         return "(" + str(self.id) + ") " + str(self.auteur) + " " + str(self.date_creation)
 
-
-
-def getOrCreateConversation(nom1, nom2):
-    try:
-        convers = Conversation.objects.get(slug=get_slug_from_names(nom1, nom2))
-    except Conversation.DoesNotExist:
-        profil_1 = Profil.objects.get(username=nom1)
-        profil_2 = Profil.objects.get(username=nom2)
-        convers = Conversation.objects.create(profil1=profil_1, profil2=profil_2)
-    return convers

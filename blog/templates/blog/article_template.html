@@ -7,9 +7,11 @@
         <h4 class="card-title">
             {{ article.titre }}</h4>
         <h6 class="card-subtitle mb-2 text-muted">Catégorie: {{ article.categorie }}, rédigé par {{ article.auteur }}, le {{ article.date|date:"DATE_FORMAT" }}</h6>
+              <p class="card-text text-muted">Dernier message : {{ article.date_dernierMessage|date:"l d F Y, G:i"}} : {{article.dernierMessage}}</p>
+
         <p class="card-text">{{ article.contenu|truncatechars:180|safe }}</p>
-  </div>   </a>
+   </div>   </a>
     {% if not forloop.last %}
     <hr>
     {%endif%}
-</div>
+</div

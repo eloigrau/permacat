@@ -17,6 +17,9 @@ class Article(models.Model):
     date = models.DateTimeField(auto_now_add=True, auto_now=False, verbose_name="Date de parution")
     estPublic = models.BooleanField(default=False, verbose_name='Public (cochez) ou Interne (décochez) [réservé aux membres permacat]')
 
+    date_dernierMessage = models.DateTimeField(verbose_name="Date du dernier message", auto_now=True)
+    dernierMessage = models.CharField(max_length=100, default="", blank=True, null=True)
+
     class Meta:
         ordering = ('date', )
         
@@ -58,6 +61,9 @@ class Projet(models.Model):
     lien_document = models.URLField(verbose_name='Lien vers un document explicatif (en ligne)', default='', null=True, blank=True)
     fichier_projet = models.FileField(upload_to='projets/%Y/%m/', blank=True, default=None, null=True)
     date_fichier = models.DateTimeField(auto_now=True, blank=True)
+
+    date_dernierMessage = models.DateTimeField(verbose_name="Date de Modification", auto_now=True)
+    dernierMessage = models.CharField(max_length=100, default="", blank=True, null=True)
 
     class Meta:
         ordering = ('date', )

@@ -55,6 +55,9 @@ def lireArticle(request, slug):
         comment = form.save(commit=False)
         comment.article = article
         comment.auteur_comm = request.user
+        article.date_dernierMessage = comment.date_creation
+        article.dernierMessage = "(" + str(comment.auteur_comm) + ") " + str(comment.commentaire[:50])
+        article.save()
         comment.save()
         return redirect(request.path)
 
@@ -147,6 +150,9 @@ def lireProjet(request, slug):
         comment = form.save(commit=False)
         comment.projet = projet
         comment.auteur_comm = request.user
+        projet.date_dernierMessage = comment.date_creation
+        projet.dernierMessage = "(" + str(comment.auteur_comm) + ") " + str(comment.commentaire[:50])
+        projet.save()
         comment.save()
         return redirect(request.path)
 
@@ -215,12 +221,13 @@ from django.conf import settings
 def telecharger_fichier(request):
     path = request.GET['path']
     file_path = os.path.join(settings.MEDIA_ROOT, path)
+    mess = os.path.exists(file_path)
     if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
             response = HttpResponse(fh.read())
             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
             return response
-    raise Http404
+    return render(request, 'blog/telechargement.html', {'fichier':file_path, 'message': mess})
 
 #
 # def upload(request):
