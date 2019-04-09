@@ -268,8 +268,7 @@ def contact_admins(request):
             mess = "[Permacat] message envoyé aux administrateurs : \\n"
             send_mail( sujet, mess + message, request.user.email, request.user.email, fail_silently=False,)
         return render(request, 'message_envoye.html', {'sujet': sujet, 'message':message, 'envoyeur':request.user.username + "(" + request.uer.email + ")", "destinataire":"administrateurs d"
-                                                                                                                                                                           "u site)"})
-
+                                                                                                                                                                       "u site)"})
     return render(request, 'contact.html', {'form': form, "isContactProducteur":False})
 
 
