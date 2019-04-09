@@ -488,6 +488,8 @@ def liens(request):
 def fairedon(request):
     return render(request, 'fairedon.html', )
 
+def agenda(request):
+    return render(request, 'agenda.html', )
 
 
 @login_required

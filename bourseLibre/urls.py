@@ -58,6 +58,7 @@ urlpatterns = [
     url(r'^cgu/$', views.cgu, name='cgu',),
     url(r'^liens/$', views.liens, name='liens',),
     url(r'^fairedon/$', views.fairedon, name='fairedon',),
+    #url(r'^agenda/$', views.agenda, name='agenda',),
     url(r'^cooperateurs/$', login_required(views.profil_list), name='profil_list',),
     url(r'^cooperateurs/carte/inscrits/$', login_required(views.profil_carte), name='profil_carte',),
     url(r'^cooperateurs/carte/adherents/$', login_required(views.profil_carte_adherents), name='profil_carte_adherents',),
