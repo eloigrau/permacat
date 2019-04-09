@@ -276,6 +276,8 @@ class Produit(models.Model):  # , BaseProduct):
     def get_unite_prix(self):
         if self.unite_prix in Choix.monnaies_nonquantifiables:
             return self.unite_prix
+        elif self.get_prix() == 0:
+            return "gratuit"
         else:
             return Produit.objects.get_subclass(id=self.id).get_unite_prix()
             # return prod.get_unite_prix()
@@ -330,6 +332,8 @@ class Produit_aliment(Produit):  # , BaseProduct):
     def get_prixEtUnite(self):
         if self.unite_prix in Choix.monnaies_nonquantifiables:
             return self.unite_prix
+        elif self.get_prix() == 0:
+            return "gratuit"
         return str(self.get_prix()) + " " + self.get_unite_prix()
 
     def get_souscategorie(self):
@@ -367,6 +371,8 @@ class Produit_vegetal(Produit):  # , BaseProduct):
     def get_prixEtUnite(self):
         if self.unite_prix in Choix.monnaies_nonquantifiables:
             return self.unite_prix
+        elif self.get_prix() == 0:
+            return "gratuit"
         return str(self.get_prix()) + " " + self.get_unite_prix()
 
     def get_souscategorie(self):
@@ -404,6 +410,8 @@ class Produit_service(Produit):  # , BaseProduct):
     def get_prixEtUnite(self):
         if self.unite_prix in Choix.monnaies_nonquantifiables:
             return self.unite_prix
+        elif self.get_prix() == 0:
+            return "gratuit"
         return str(self.get_prix()) + " " + self.get_unite_prix()
 
     def get_souscategorie(self):
@@ -441,6 +449,8 @@ class Produit_objet(Produit):  # , BaseProduct):
     def get_prixEtUnite(self):
         if self.unite_prix in Choix.monnaies_nonquantifiables:
             return self.unite_prix
+        elif self.get_prix() == 0:
+            return "gratuit"
         return str(self.get_prix()) + " " + self.get_unite_prix()
 
     def get_souscategorie(self):
