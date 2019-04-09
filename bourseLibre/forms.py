@@ -182,10 +182,10 @@ class ContactForm(forms.Form):
                                 help_text="Cochez si vous souhaitez obtenir une copie du mail envoyé.", required=False
                                  )
 
-    def __init__(self, message=None,  titre=None,  *args, **kwargs):
+    def __init__(self, msg=None,  titre=None,  *args, **kwargs):
         super(ContactForm, self).__init__(*args, **kwargs)
-        if message:
-            self.fields['message'].initial = message
+        if msg:
+            self.fields['message'].initial = msg
         if titre:
             self.fields['sujet'].initial = titre
         self.fields['message'].strip = False

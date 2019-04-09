@@ -237,7 +237,7 @@ def profil_contact(request, user_id):
         message = produit.get_message_demande()
         titre = "Au sujet de l'offre de " + produit.nom_produit
 
-    form = ContactForm(request.POST or None, message=message, titre=titre)
+    form = ContactForm(request.POST, message, titre)
     recepteur = Profil.objects.get(id=user_id)
     if form.is_valid():
         sujet = request.user.username +' vous a écrit:', form.cleaned_data['sujet']
@@ -253,13 +253,8 @@ def profil_contact(request, user_id):
             recepteurs,
             fail_silently=False,
             )
-        #if renvoi:
-        #    mess = "message envoyé a la bourse libre : \\n"
-         #   send_mail(sujet,mess + message, request.user, to=[request.user], fail_silently=False,)
         return render(request, 'message_envoye.html', {'sujet': form.cleaned_data['sujet'], 'message':message, 'envoyeur':request.user.username + "(" + request.uer.email + ")", "destinataire":recepteur.user.username + "(" +recepteur.user.email+ ")"})
-        # if renvoi:
-        #     mess = "message envoyé a la bourse libre : \\n"
-        #     send_mail( sujet,mess + message, envoyeur, to=[envoyeur], fail_silently=False,)
+
     return render(request, 'profil_contact.html', {'form': form, 'recepteur':recepteur})
 
 
