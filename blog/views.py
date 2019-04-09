@@ -221,12 +221,14 @@ from django.conf import settings
 def telecharger_fichier(request):
     path = request.GET['path']
     file_path = os.path.join(settings.MEDIA_ROOT, path)
-    mess = os.path.exists(file_path)
     if os.path.exists(file_path):
+        mess = "fichier OK"
         with open(file_path, 'rb') as fh:
             response = HttpResponse(fh.read())
             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
             return response
+    else:
+        mess = "Fichier introuvable"
     return render(request, 'blog/telechargement.html', {'fichier':file_path, 'message': mess})
 
 #
