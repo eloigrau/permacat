@@ -103,10 +103,11 @@ class AdresseForm(forms.ModelForm):
 
 class ProfilCreationForm(UserCreationForm):
     username = forms.CharField(label="Pseudonyme*", help_text="Attention les majuscules sont importantes...")
-    description = forms.CharField(label="Description*", help_text="Une description de vous même", widget=forms.Textarea)
-    competences = forms.CharField(label="Savoir-faire*", help_text="Par exemple: electricien, bouturage, aromatherapie, etc...", widget=forms.Textarea)
+    description = forms.CharField(label="Description*", help_text="Une description de vous même", widget=SummernoteWidget)
+    competences = forms.CharField(label="Savoir-faire*", help_text="Par exemple: electricien, bouturage, aromatherapie, etc...", widget=SummernoteWidget)
     site_web = forms.CharField(label="Site web", help_text="n'oubliez pas le https://", required=False)
     captcha = CaptchaField()
+    email= forms.EmailField(label="Email*",)
 
     statut_adhesion = forms.ChoiceField(choices=Choix.statut_adhesion, label='', required=True)
     accepter_annuaire = forms.BooleanField(required=False, label="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous")
@@ -124,6 +125,7 @@ class ProfilCreationForm(UserCreationForm):
         fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'inscrit_newsletter', 'accepter_annuaire', 'statut_adhesion', 'accepter_conditions']
         exclude = ['slug', ]
 
+
     def save(self, commit = True, is_active=False):
         return super(ProfilCreationForm, self).save(commit)
         self.is_active=is_active
@@ -137,8 +139,8 @@ class ProducteurChangeForm(UserChangeForm):
     """
     email = forms.EmailField(label="Email")
     username = forms.CharField(label="Pseudonyme")
-    description = forms.CharField(label="Description", help_text="Une description de vous même", widget=forms.Textarea)
-    competences = forms.CharField(label="Savoir-faire", help_text="Par exemple: electricien, bouturage, aromatherapie, etc...",widget=forms.Textarea)
+    description = forms.CharField(label="Description", help_text="Une description de vous même",widget=SummernoteWidget)
+    competences = forms.CharField(label="Savoir-faire", help_text="Par exemple: electricien, bouturage, aromatherapie, etc...",widget=SummernoteWidget)
     inscrit_newsletter = forms.BooleanField(required=False)
     accepter_annuaire = forms.BooleanField(required=False, label="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous")
     password=None

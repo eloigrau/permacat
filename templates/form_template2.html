@@ -34,16 +34,9 @@
   {% for field in form.visible_fields %}
 <div class="form-group">
     {% with tyype=field|field_type %}
-    {% if tyype != 'TextInput' %}
-    {% if tyype != 'TinyMCE' %}
-    {% if tyype != 'Textarea' %}
-    {% if tyype != 'URLInput' %}
+    {% if entete %}
 {{field.label_tag}}
     {%endif%}
-    {%endif%}
-    {%endif%}
-    {%endif%}
-    {% if tyype != 'SummernoteWidget' %}
       {% if form.is_bound %}
         {% if field.errors %}
           {% render_field field class="form-control invalid" %}
@@ -53,12 +46,17 @@
             </div>
           {% endfor %}
         {% else %}
+    {% if tyype != 'SummernoteWidget' %}
           {% render_field field class="form-control valid" placeholder=field.label%}
         {% endif %}
+        {% endif %}
       {% else %}
+    {% if tyype != 'SummernoteWidget' %}
         {% render_field field class="form-control" placeholder=field.label %}
       {% endif %}
+      {% endif %}
 
+    {% if tyype != 'SummernoteWidget' %}
       {% if field.help_text %}
         <small class="form-text text-muted">{{ field.help_text }}</small>
       {% endif %}

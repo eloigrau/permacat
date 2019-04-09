@@ -5,7 +5,7 @@ import itertools
 from django.utils.timezone import now
 from django.utils.formats import localize
 #from tinymce.widgets import TinyMCE
-from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
+from django_summernote.widgets import SummernoteWidget
 
 class ArticleForm(forms.ModelForm):
    # contenu = TinyMCE(attrs={'cols': 80, 'rows': 20})
@@ -121,6 +121,9 @@ class ProjetChangeForm(forms.ModelForm):
     class Meta:
         model = Projet
         fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'estPublic', 'lien_document','fichier_projet', 'lien_vote', 'estArchive']
+        widgets = {
+            'contenu': SummernoteWidget(),
+        }
 
     def __init__(self, *args, **kwargs):
         super(ProjetChangeForm, self).__init__(*args, **kwargs)

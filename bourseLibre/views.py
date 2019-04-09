@@ -15,7 +15,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.core.mail import mail_admins, send_mail
-from django.db.models import Q
+from django_summernote.widgets import SummernoteWidget
 
 from django import forms
 
@@ -139,7 +139,8 @@ class ProduitModifier(UpdateView):
 
     widgets = {
         'date_debut': forms.DateInput(attrs={'type': "date"}),
-        'date_expiration': forms.DateInput(attrs={'type': "date"})
+        'date_expiration': forms.DateInput(attrs={'type': "date"}),
+        'description': SummernoteWidget(),
     }
 
 
