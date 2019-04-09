@@ -5,7 +5,7 @@ from tinymce.models import HTMLField
 
 
 class Choix():
-    statut_projet = ('prop','Proposition en préparation'), ("AGO","Soumis à l'AGO"), ('vote','Soumis au vote'), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
+    statut_projet = ('prop','Proposition de projet'), ("AGO","Soumis à l'AGO"), ('vote','Soumis au vote'), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
     type_projet = ('Part','Participation à un évènement'), ('AGO',"Organisation d'une AGO"), ('Projlong','Projet a long terme'), ('Projcourt','Projet a court terme'),('Projponct','Projet ponctuel'),
 
 class Article(models.Model):

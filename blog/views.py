@@ -56,7 +56,7 @@ def lireArticle(request, slug):
         comment.article = article
         comment.auteur_comm = request.user
         article.date_dernierMessage = comment.date_creation
-        article.dernierMessage = "(" + str(comment.auteur_comm) + ") " + str(comment.commentaire[:50])
+        article.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(comment.commentaire))[:96] + "..."
         article.save()
         comment.save()
         return redirect(request.path)
@@ -151,7 +151,7 @@ def lireProjet(request, slug):
         comment.projet = projet
         comment.auteur_comm = request.user
         projet.date_dernierMessage = comment.date_creation
-        projet.dernierMessage = "(" + str(comment.auteur_comm) + ") " + str(comment.commentaire[:50])
+        projet.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(comment.commentaire))[:96] + "..."
         projet.save()
         comment.save()
         return redirect(request.path)
