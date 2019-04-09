@@ -482,19 +482,19 @@ def cgu(request):
 # @login_required
 def liens(request):
     liens = [
-        'https://colibris-universite.org/mooc-permaculture/wakka.php?wiki=PagePrincipale',
-         'https://ponteillanature.wixsite.com/eco-nature',
-        'https://cce-66.wixsite.com/mysite',
-        'https://jardindenat.wixsite.com/website',
         'http://sel66.free.fr',
         'https://www.monnaielibreoccitanie.org/',
+        'http://lejeu.org/',
+        'http://soudaqui.cat/wordpress/',
         'https://www.colibris-lemouvement.org/',
+        'https://colibris-universite.org/mooc-permaculture/wakka.php?wiki=PagePrincipale',
+        'https://ponteillanature.wixsite.com/eco-nature',
+        'https://cce-66.wixsite.com/mysite',
+        'https://jardindenat.wixsite.com/website',
         'https://framasoft.org',
         'http://www.le-message.org/?lang=fr',
         'https://reporterre.net/',
-        'https://www.helloasso.com/associations/mlcpo/collectes/soudaqui-la-monnaie-locale-des-p-o-c-est-maintenant',
         'https://la-bas.org/',
-        'https://colibris-universite.org/mooc-permaculture/wakka.php?wiki=PagePrincipale',
     ]
     return render(request, 'liens.html', {'liens':liens})
 

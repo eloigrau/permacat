@@ -71,7 +71,7 @@ class ListeArticles(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        qs = Article.objects.all()
+        qs = Article.objects.filter(estArchive=False)
         params = dict(self.request.GET.items())
 
         if not self.request.user.is_authenticated or not self.request.user.is_permacat:
@@ -168,7 +168,7 @@ class ListeProjets(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        qs = Projet.objects.all()
+        qs = Projet.objects.filter(estArchive=False)
         params = dict(self.request.GET.items())
 
         if not self.request.user.is_authenticated or not self.request.user.is_permacat:

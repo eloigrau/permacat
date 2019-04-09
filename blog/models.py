@@ -21,7 +21,7 @@ class Article(models.Model):
 
     date_dernierMessage = models.DateTimeField(verbose_name="Date du dernier message", auto_now=True)
     dernierMessage = models.CharField(max_length=100, default=None, blank=True, null=True)
-    estArchive = models.BooleanField(default=False, verbose_name='Article archivé')
+    estArchive = models.BooleanField(default=False, verbose_name="Archiver l'artcle (il n'apparaitra plus)")
 
     class Meta:
         ordering = ('date', )
@@ -68,7 +68,7 @@ class Projet(models.Model):
     date_dernierMessage = models.DateTimeField(verbose_name="Date de Modification", auto_now=True)
     dernierMessage = models.CharField(max_length=100, default="", blank=True, null=True)
 
-    estArchive = models.BooleanField(default=False, verbose_name='Projet archivé')
+    estArchive = models.BooleanField(default=False, verbose_name="Archiver le projet (il n'apparaitra plus)")
 
     class Meta:
         ordering = ('date', )
