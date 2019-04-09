@@ -226,7 +226,7 @@
 {% block content %}
 
 {%comment%}
-<div class="row listOffres">
+<div class="card-deck listOffres">
     {% for produit in produits_list %}
         {% include "bourseLibre/produit_template3.html" with produit=produit %}
        {% cycle '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
@@ -240,25 +240,7 @@
     {% endfor %}
 </div><!-- The final deck is closed here, outside the loop -->
 
-
-{% if is_paginated %}
-<div class="row justify-content-center">
-        <div class="pagination">
-            <span class="page-links">
-                {% if page_obj.has_previous %}
-                    <a href="page={{ page_obj.previous_page_number }}"><<</a>
-                {% endif %}
-                <span class="page-current">
-                    Page {{ page_obj.number }}/{{ page_obj.paginator.num_pages }}
-                </span>
-                {% if page_obj.has_next %}
-                    <a href="page={{ page_obj.next_page_number }}">>></a>
-                {% endif %}
-            </span>
-        </div>
-</div>
-    {% endif %}
-
+{%include 'pagination.html' %}
 
 
 {% endblock %}
