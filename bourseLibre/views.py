@@ -266,21 +266,8 @@ def contact_admins(request):
         mail_admins(sujet, message)
         if form.cleaned_data['renvoi'] :
             mess = "[Permacat] message envoyé aux administrateurs : \\n"
-            copye = []
-            send_mail( sujet,mess + message, request.user.email, request.user.email, fail_silently=False,)
-
-        #         try:
-        #             f.save()
-        #             print("success")
-        #             messages.add_message(request, messages.SUCCESS, 'Feedback sent!')
-        #         except:
-        #             print("failed")
-        #             messages.add_message(request, messages.INFO, 'Unable to send feedback. Try agian')
-
-        #         send_mail( sujet,message, envoyeur, to=['labourselibre@gmail.com'], fail_silently=False,)
-        #         if renvoi:
-        #             mess = "message envoyé a la bourse libre : \\n"
-        #             send_mail( sujet,mess + message, envoyeur, to=[envoyeur], fail_silently=False,)
+            send_mail( sujet, mess + message, request.user.email, request.user.email, fail_silently=False,)
+        return render(request, 'message_envoye.html', {'sujet': sujet, 'message':message, 'envoyeur':request.user.username + "(" + request.uer.email + ")", "destinataire":"administrateurs du site)"})
 
     return render(request, 'contact.html', {'form': form, "isContactProducteur":False})
 
