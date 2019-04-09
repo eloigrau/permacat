@@ -72,7 +72,7 @@
               {%if request.user.is_permacat or request.user == user%}
                   {% if user.adresse.telephone %}
                     <tr>
-                        <td style="width:250px">Telephone ^:</td>
+                        <td style="width:250px">Telephone *:</td>
                         <td>{{ user.adresse.telephone }}</td>
                     </tr>
                   {% endif %}
@@ -85,28 +85,28 @@
             {%if request.user.is_permacat or request.user == user %}
                   {% if user.avatar %}
                     <tr>
-                        <td style="width:250px">Avatar : </td>
+                        <td style="width:250px">Avatar *: </td>
                         <td><img src="{{ produit.avatar.url }}" alt="pas d'image" style="width:128px;height:128px"></td>
                     </tr>
                   {% endif %}
 
                   {% if user.site_web %}
                     <tr>
-                        <td style="width:250px">Site_web :</td>
+                        <td style="width:250px">Site_web *:</td>
                         <td> {{ user.site_web }}</td>
                     </tr>
                   {% endif %}
                     <tr>
-                        <td style="width:250px">Description</td>
+                        <td style="width:250px">Description *:</td>
                         <td>{{ user.description }}</td>
                     </tr>
 
                     <tr>
-                        <td style="width:250px">Savoir-faire :</td>
+                        <td style="width:250px">Savoir-faire *:</td>
                         <td>{{ user.competences }}</td>
                     </tr>
                     <tr>
-                        <td style="width:250px">Statut</td>
+                        <td style="width:250px">Statut *:</td>
                         <td>{{user.statutMembre_str}}</td>
                     </tr>
             {% endif %}
@@ -126,7 +126,7 @@
             {% if request.user == user %}
                 {%if user.adresse.rue %}
                 <tr>
-                    <td style="width:250px">Adresse *:</td>
+                    <td style="width:250px">Adresse ^:</td>
                     <td>{{ user.adresse.rue }}</td>
                 </tr>
                 {% endif %}
@@ -146,20 +146,14 @@
             {% if user.accepter_annuaire or request.user == user %}
                 {%if user.adresse.pays %}
                     <tr>
-                        <td style="width:250px">Pays :</td>
+                        <td style="width:250px">Pays ^:</td>
                         <td>{{ user.adresse.pays }}</td>
-                    </tr>
-                {% endif %}
-                {%if user.adresse.telephone %}
-                    <tr>
-                        <td style="width:250px">Téléphone :</td>
-                        <td>{{ user.adresse.telephone }}</td>
                     </tr>
                 {% endif %}
 
                 {%if request.user == user %}
                 <tr>
-                    <td style="width:200px">lat/lon *:</td>
+                    <td style="width:200px">lat/lon ^:</td>
                     <td>{{ user.adresse.latitude }} / {{ user.adresse.longitude }} </td>
                 </tr>
                 {% endif %}
@@ -173,7 +167,7 @@
         {% endif %}
     </tbody>
     </table>
-      <small>Les champs notés par un * ne sont visibles que par vous. Les champs notés par un ^ ne sont visibles que par les membres "permacat"</small>
+      <small>Les champs notés par un ^ ne sont visibles que par vous. Les champs notés par un * ne sont visibles que par les membres "permacat"</small>
 </div>
 
   {% if request.user.is_permacat %}
