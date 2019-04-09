@@ -29,7 +29,7 @@
 {% endblock %}
 {% block content %}
 <div class="contenu article">
-<div class="row justify-content-center " >
+<div class="row " >
 	<div class="col-sm-6">
             <span class="badge {% if projet.estPublic%}badge-warning{%else%} badge-success {%endif%}">
                 Projet {%if projet.estPublic%}  public {%else%}  permacat  {%endif%}
@@ -64,7 +64,7 @@
 						Type de projet :
 					</td>
 					<td class="proprieteProduit">
-						{{ projet.get_statut_projet_display }}
+						{{ projet.get_categorie_display }}
 					</td>
 				</tr>
 
