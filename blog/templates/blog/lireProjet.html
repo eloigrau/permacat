@@ -93,7 +93,7 @@
 						Fichiers : {{ projet.fichier_projet}}
 					</td>
 					<td class="proprieteProduit">
-                        <a  href="{% url 'blog:telechargerFichier' %}?path={{ projet.fichier_projet.url}}">
+                        <a  href="{{ projet.fichier_projet.url}}">
                             <button class="btn btn-info btn-sm textcenter">	{{ projet.fichier_projet.name}}</button>
                             </a>
 
