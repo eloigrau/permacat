@@ -32,8 +32,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-LOCALL  = False
+DEBUG = True
+LOCALL = False
 try:
     SECRET_KEY = os.environ['SECRET_KEY']
 except:
@@ -79,6 +79,7 @@ INSTALLED_APPS = (
     'leaflet',
     'tinymce',
     'captcha',
+'django_summernote',
     #"geoposition",
     #"geodjango",
     #'osm_field',
@@ -297,3 +298,71 @@ LANGUAGES = (
    ('fr', gettext('French')),
    ('ca', gettext('Catalan')),
 )
+
+SUMMERNOTE_CONFIG = {
+    # Using SummernoteWidget - iframe mode, default
+    'iframe': True,
+
+    # Or, you can set it as False to use SummernoteInplaceWidget by default - no iframe mode
+    # In this case, you have to load Bootstrap/jQuery stuff by manually.
+    # Use this when you're already using Bootstraip/jQuery based themes.
+    'iframe': False,
+
+    # You can put custom Summernote settings
+    'summernote': {
+        # As an example, using Summernote Air-mode
+        'airMode': False,
+
+        # Change editor size
+        'width': '100%',
+        'height': '480',
+
+        # Use proper language setting automatically (default)
+        'lang': 'fr-FR',
+},
+
+# Need authentication while uploading attachments.
+'attachment_require_authentication': True,
+
+# You can disable attachment feature.
+'disable_attachment': False,
+
+# Set `True` to return attachment paths in absolute URIs.
+'attachment_absolute_uri': False,
+
+# You can add custom css/js for SummernoteWidget.
+'css': (
+),
+'js': (
+),
+
+# You can also add custom css/js for SummernoteInplaceWidget.
+# !!! Be sure to put {{ form.media }} in template before initiate summernote.
+'css_for_inplace': (
+),
+'js_for_inplace': (
+),
+
+# Codemirror as codeview
+# If any codemirror settings are defined, it will include codemirror files automatically.
+'css': (
+    '//cdnjs.cloudflare.com/ajax/libs/codemirror/5.29.0/theme/monokai.min.css',
+),
+'codemirror': {
+    'mode': 'htmlmixed',
+    'lineNumbers': 'true',
+
+    # You have to include theme file in 'css' or 'css_for_inplace' before using it.
+    'theme': 'monokai',
+},
+
+# Lazy initialize
+# If you want to initialize summernote at the bottom of page, set this as True
+# and call `initSummernote()` on your page.
+'lazy': True,
+
+# To use external plugins,
+# Include them within `css` and `js`.
+#'js': {
+#},
+}

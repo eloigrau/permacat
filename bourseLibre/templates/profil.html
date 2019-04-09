@@ -167,7 +167,7 @@
         {% endif %}
     </tbody>
     </table>
-      <small>Les champs notés par un ^ ne sont visibles que par vous. Les champs notés par un * ne sont visibles que par les membres "permacat"</small>
+      <small> {% if  request.user == user %}Les champs notés par un ^ ne sont visibles que par vous. {%endif%}Les champs notés par un * ne sont visibles que par les membres "permacat"</small>
 </div>
 
   {% if request.user.is_permacat %}

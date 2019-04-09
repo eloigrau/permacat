@@ -7,7 +7,8 @@ Created on 25 mai 2017
 from django.shortcuts import HttpResponseRedirect, render, redirect#, render, get_object_or_404, redirect, render_to_response,
 
 from .forms import Produit_aliment_CreationForm, Produit_vegetal_CreationForm, Produit_objet_CreationForm, \
-    Produit_service_CreationForm, ContactForm, AdresseForm, ProfilCreationForm, MessageForm, MessageGeneralForm
+    Produit_service_CreationForm, ContactForm, AdresseForm, ProfilCreationForm, MessageForm, MessageGeneralForm, \
+    ProducteurChangeForm
 from .models import Profil, Produit, Adresse, Choix, Panier, Item, get_categorie_from_subcat, Conversation, Message, MessageGeneral, getOrCreateConversation
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -292,9 +293,9 @@ def produitContacterProducteur(request, produit_id):
 # @login_required
 class profil_modifier_user(UpdateView):
     model = Profil
-    #form_class = ProducteurChangeForm
+    form_class = ProducteurChangeForm
     template_name_suffix = '_modifier'
-    fields = ['username','email', 'first_name','last_name', 'site_web','description', 'competences', 'inscrit_newsletter']
+    fields = ['username', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'accepter_annuaire', 'inscrit_newsletter']
 
     def get_object(self):
         return User.objects.get(id=self.request.user.id)
@@ -314,9 +315,9 @@ class profil_modifier_adresse(UpdateView):
 # @login_required
 class profil_modifier(UpdateView):
     model = Profil
-    #form_class = ProfilCreationForm
+    form_class = ProducteurChangeForm
     template_name_suffix = '_modifier'
-    fields = ['username','email','first_name','last_name', 'site_web','description', 'competences', 'inscrit_newsletter']
+    #fields = ['username','email','first_name','last_name', 'site_web','description', 'competences', 'inscrit_newsletter']
 
     def get_object(self):
         return Profil.objects.get(id=self.request.user.id)

@@ -6,9 +6,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.validators import MinValueValidator
 from django.utils.timezone import now
-# from django.utils.formats import localize
-#from address.models import AddressField
-import datetime
 from model_utils.managers import InheritanceManager
 import django_filters
 from django.urls import reverse, reverse_lazy
@@ -17,21 +14,14 @@ from django.contrib.auth.models import AbstractUser
 from django.template.defaultfilters import slugify
 
 from django.utils.translation import ugettext_lazy as _
-#from django.contrib., contenttypes.models import ContentType
 import decimal, math
+from tinymce.models import HTMLField
 
 import os
 import requests
 from stdimage import StdImageField
 from datetime import date
 
-# from location_field.models import spatial
-
-#from django.contrib.gis.db import models as models_gis
-# from django.contrib.gis.geos import Point
-#from geoposition.fields import GeopositionField
-
-#from django.contrib.gis.db.models import GeoManager
 
 class Choix():
     #couleurs = {'aliment':'#D8C457','vegetal':'#4CAF47','service':'#BE373A','objet':'#5B4694'}
@@ -222,7 +212,7 @@ class Produit(models.Model):  # , BaseProduct):
     date_debut = models.DateField(verbose_name="Débute le : (jj/mm/an)", null=True, blank=True)
     #proposed_renewal_date = datetime.date.today() + datetime.timedelta(weeks=3)
     date_expiration = models.DateField(verbose_name="Expire le : (jj/mm/an)", blank=True, null=True, )#default=proposed_renewal_date, )
-    nom_produit = models.CharField(max_length=250)
+    nom_produit = models.CharField(max_length=250, verbose_name="Titre de l'annonce")
     description = models.TextField(blank=True, null=True)
     slug = models.SlugField(max_length=100)
 
@@ -639,7 +629,7 @@ class Panier(models.Model):
     def get_message_demande(self, user_id):
         message= 'Bonjour, je suis intéressė par : \n'
         for item in self.get_items_from_user(user_id):
-            message += "\t" + str(item.quantite) + "\t" + str(item.produit.nom_produit)
+            message += "\t" + str(float(item.quantite)) + "\t" + str(item.produit.nom_produit)
             if item.total_prixEtunite != 0:
                 message += " pour un total de " + str(item.total_prixEtunite)
             message        += ", \n"
@@ -669,7 +659,7 @@ class Item(models.Model):
         ordering = ('panier',)
 
     def __unicode__(self):
-        return u'%s de %s' % (self.quantite, self.produit.nom_produit)
+        return u'%s de %s' % (float(self.quantite), self.produit.nom_produit)
 
     def total_prix(self):
         if self.produit.unite_prix == 'don':

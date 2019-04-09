@@ -1,5 +1,8 @@
 {% extends 'blog/baseBlog.html' %}
 {% load static %}
+{%block header%}
+{{ form.media }}
+{%endblock%}
 {% block subtitle %}
 <div class="row">
     <div class="col-md-2">
@@ -45,7 +48,9 @@
       <h3 style="text-indent: 20px;">{{ projet.titre }}</h3>
 </div>
 <div class="row">
-    {{ projet.contenu  | safe}}
+<div class="col">
+    {{ projet.contenu|safe}}
+</div>
 </div>
 <hr>
     <div class="col-sm-12 paddingbase">
@@ -127,7 +132,7 @@
 <hr>
 
 <div class="row textcenter">
-    <h4>Salon de discussion</h4>
+    <h4>Discussion autour du projet :</h4>
 </div>
 
 <div class="contenu commentaires" id="idConversation">

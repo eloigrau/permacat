@@ -29,12 +29,15 @@ admin.sites.site_title ="Admin Permacat"
 # from .models import Produit, ProductFilter
 
 urlpatterns = [
+    url(r'^tinymce/', include('tinymce.urls')),
+    url(r'^summernote/', include('django_summernote.urls')),
+    url(r'^captcha/', include('captcha.urls')),
+    url('^', include('django.contrib.auth.urls')),
     url(r'^$', views.bienvenue, name='bienvenue'),
     url(r'^permacat/presentation$', views.presentation_asso, name='presentation_asso'),
     url(r'^permacat/statuts$$', views.statuts, name='statuts'),
     
     url(r'^admin/', admin.site.urls, name='admin',),
-    url('^', include('django.contrib.auth.urls')),
     url(r'^merci/$', views.merci, name='merci'),
     url(r'^forum/', include('blog.urls', namespace='bourseLibre.blog')),
     # url(r'^search/', include('haystack.urls'), name='chercher_site'),
@@ -98,9 +101,8 @@ urlpatterns = [
     url(r'^conversations/(?P<destinataire>[-\w]+)$', login_required(views.lireConversation), name='lireConversation'),
     url(r'^conversations/(?P<destinataire1>[-\w]+)/(?P<destinataire2>[-\w]+)$', login_required(views.lireConversation_2noms), name='lireConversation_2noms'),
     url(r'^conversations/$', login_required(views.ListeConversations.as_view()), name='conversations'),
-    url(r'^tinymce/', include('tinymce.urls')),
+
     url(r'^agora/$', login_required(views.agora), name='agora'),
-    url(r'^captcha/', include('captcha.urls')),
 ]
 
 from django.conf import settings

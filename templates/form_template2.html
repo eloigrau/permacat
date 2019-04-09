@@ -1,5 +1,8 @@
 {% load widget_tweaks %}
 {% load app_filters %}
+{%block header%}
+{{ form.media }}
+{%endblock%}
 
   {% for hidden_field in form.hidden_fields %}
     {{ hidden_field }}
@@ -30,8 +33,17 @@
 
   {% for field in form.visible_fields %}
 <div class="form-group">
-      {{ field.label_tag }}
-
+    {% with tyype=field|field_type %}
+    {% if tyype != 'TextInput' %}
+    {% if tyype != 'TinyMCE' %}
+    {% if tyype != 'Textarea' %}
+    {% if tyype != 'URLInput' %}
+{{field.label_tag}}
+    {%endif%}
+    {%endif%}
+    {%endif%}
+    {%endif%}
+    {% if tyype != 'SummernoteWidget' %}
       {% if form.is_bound %}
         {% if field.errors %}
           {% render_field field class="form-control invalid" %}
@@ -41,15 +53,20 @@
             </div>
           {% endfor %}
         {% else %}
-          {% render_field field class="form-control valid" %}
+          {% render_field field class="form-control valid" placeholder=field.label%}
         {% endif %}
       {% else %}
-        {% render_field field class="form-control" %}
+        {% render_field field class="form-control" placeholder=field.label %}
       {% endif %}
 
       {% if field.help_text %}
         <small class="form-text text-muted">{{ field.help_text }}</small>
       {% endif %}
+    {%else%}
+    {{field}}
+      {% endif %}
+
+    {%endwith%}
     </div>
   {% endfor %}
 

@@ -4,17 +4,20 @@ from django.utils.text import slugify
 import itertools
 from django.utils.timezone import now
 from django.utils.formats import localize
-from tinymce.widgets import TinyMCE
-
+#from tinymce.widgets import TinyMCE
+from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
 
 class ArticleForm(forms.ModelForm):
-    #contenu = forms.CharField(widget=forms.Textarea(attrs={'cols': 80, 'rows': 10}))
-    contenu = TinyMCE(attrs={'cols': 80, 'rows': 20})
+   # contenu = TinyMCE(attrs={'cols': 80, 'rows': 20})
     estPublic = forms.ChoiceField(choices=((1, "Article public"), (0, "Article Permacat")), label='', required=True)
 
     class Meta:
         model = Article
         fields = ['categorie', 'titre', 'contenu', 'estPublic']
+        widgets = {
+            'contenu': SummernoteWidget(),
+           # 'bar': SummernoteInplaceWidget(),
+        }
 
     def save(self, userProfile):
         instance = super(ArticleForm, self).save(commit=False)
@@ -44,19 +47,26 @@ class ArticleForm(forms.ModelForm):
         self.fields['contenu'].strip = False
 
 class ArticleChangeForm(forms.ModelForm):
+    estPublic = forms.ChoiceField(choices=((1, "Annonce publique"), (0, "Annonce réservée aux adhérents")), label='', required=True)
+
     class Meta:
         model = Article
         fields = ['categorie', 'titre', 'contenu', 'estPublic', 'estArchive']
+        widgets = {
+            'contenu': SummernoteWidget(),
+        }
 
     def __init__(self, *args, **kwargs):
         super(ArticleChangeForm, self).__init__(*args, **kwargs)
         self.fields['contenu'].strip = False
 
 class CommentForm(forms.ModelForm):
+    #commentaire = TinyMCE(attrs={'cols': 1, 'rows': 1, 'height':10 })
+
     class Meta:
         model = Commentaire
         exclude = ['article','auteur_comm']
-
+        #
         widgets = {
                 'commentaire': forms.Textarea(attrs={'rows': 1}),
             }
@@ -67,12 +77,15 @@ class CommentForm(forms.ModelForm):
 
 class ProjetForm(forms.ModelForm):
     #contenu = forms.CharField(widget=forms.Textarea(attrs={'cols': 80, 'rows': 10}))
-    contenu = TinyMCE(attrs={'cols': 80, 'rows': 20})
+    #contenu = TinyMCE(attrs={'cols': 80, 'rows': 20})
     estPublic = forms.ChoiceField(choices=((1, "Projet public"), (0, "Projet Permacat")), label='', required=True)
 
     class Meta:
         model = Projet
         fields = ['categorie','coresponsable', 'titre', 'contenu', 'estPublic', 'lien_document', 'fichier_projet', 'lien_vote',]
+        widgets = {
+            'contenu': SummernoteWidget(),
+        }
 
     def __init__(self, request, *args, **kwargs):
         super(ProjetForm, self).__init__(request, *args, **kwargs)
@@ -103,6 +116,8 @@ class ProjetForm(forms.ModelForm):
 
 
 class ProjetChangeForm(forms.ModelForm):
+    estPublic = forms.ChoiceField(choices=((1, "Annonce publique"), (0, "Annonce réservée aux adhérents")), label='', required=True)
+
     class Meta:
         model = Projet
         fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'estPublic', 'lien_document','fichier_projet', 'lien_vote', 'estArchive']

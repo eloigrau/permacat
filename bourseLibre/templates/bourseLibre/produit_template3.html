@@ -9,7 +9,7 @@
                     </div>
                     <div class="col-xs-2">
                          <span class="badge {% if produit.estUneOffre%}badge-warning{%else%} badge-danger {%endif%}">{% if produit.estUneOffre%}Offre{%else%} Demande {%endif%} 
-				 {%if produit.estPublique%} publique{%else%} Permacat {%endif%} {% if produit.est_perimee %} périmée {% endif %}
+				 {%if produit.estPublique%} publique{%else%} Permacat {%endif%} {% if produit.est_perimee %} (expirée) {% endif %}
 		                </span>
                     </div>
                     <div class="col-xs-5">
@@ -24,7 +24,7 @@
                 {%endcomment%}
                 <h4 class="card-title">{{ produit.nom_produit|truncatechars:35 }} </h4>
                   <p class="card-text text-align-left" style="height:120px">
-                    {{ produit.description|truncatewords:15 }}
+                    {{ produit.description|striptags|truncatechars:120 }}
                   </p>
                   <p class="card-text">
    {%comment%}

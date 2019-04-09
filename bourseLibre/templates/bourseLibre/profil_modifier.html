@@ -1,14 +1,17 @@
 {% extends 'base.html' %}
-{% block title %}Modifier profil{% endblock %}
+{% block title %}Modifier mon profil{% endblock %}
 {% block subtitle %}
 Modifier votre profil (ou <a href="{% url 'change_password' %}">Modifier mon mot de passe</a>)
 {% endblock %}
 
 {% block content %}
+
+ <div class="container textleft">
 {% include 'form_template.html' %}
 
-<hr>
+ </div>
 
+<hr>
 <a href="{%url 'profil_supprimer' %}" class="btn btn-danger btn-lg btn-block" type="button">
 			Supprimer mon profil, mes messages, mes requetes, mes annonces et se désinscrire (attention, irreversible !)</a>
 {% endblock %}

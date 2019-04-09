@@ -13,3 +13,8 @@ def is_numeric(value):
 def is_checkbox(field):
   return field.field.widget.__class__.__name__ == CheckboxInput().__class__.__name__
 
+
+@register.filter(name='field_type')
+def field_type(field):
+    return field.field.widget.__class__.__name__
+

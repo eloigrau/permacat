@@ -7,132 +7,23 @@
 {% block content %}
 
 <div class="jumbotron">
-<div class="row justify-content-sm-center">
-    <h4>Inscrivez-vous ! (les champs avec (*) sont obligatoires)</h4>
-</div>
-<div class="row justify-content-sm-center">
-<div class="col-sm-12 col-md-10 col-lg-8 ">
-        {% if error_message %}
-        <p><strong>{{ error_message }}</strong></p>
-    {% endif %}
-    <form role="form" action="" method="post" enctype="multipart/form-data">
-  {% csrf_token %}
-        {%include 'form_template2.html' with form=form_adresse%}
-        {%include 'form_template2.html' with form=form_profil%}
-
-{%comment%}
-  {% for hidden_field in form_profil.hidden_fields %}
-    {{ hidden_field }}
-  {% endfor %}
-
-  {% if form_profil.non_field_errors %}
-    <div class="alert alert-danger" role="alert">
-      {% for error in form_profil.non_field_errors %}
-        {{ error }}
-      {% endfor %}
+    <div class="row justify-content-sm-center">
+        <h4>Inscrivez-vous ! (les champs avec (*) sont obligatoires)</h4>
     </div>
-  {% endif %}
-
-  {% for field in form_profil.visible_fields %}
-    <div class="form-group">
-      {{ field.label_tag }}
-
-      {% if form_profil.is_bound %}
-        {% if field.errors %}
-          {% render_field field class="form-control invalid" %}
-          {% for error in field.errors %}
-            <div class="invalid-feedback">
-              {{ error }}
-            </div>
-          {% endfor %}
-        {% else %}
-          {% render_field field class="form-control valid" %}
-        {% endif %}
-      {% else %}
-        {% render_field field class="form-control" %}
-      {% endif %}
-
-      {% if field.help_text %}
-        <small class="form-text text-muted">{{ field.help_text }}</small>
-      {% endif %}
-    </div>
-  {% endfor %}
-
-  {% for hidden_field in form_adresse.hidden_fields %}
-    {{ hidden_field }}
-  {% endfor %}
-
-  {% if form_adresse.non_field_errors %}
-    <div class="alert alert-danger" role="alert">
-      {% for error in form_adresse.non_field_errors %}
-        {{ error }}
-      {% endfor %}
-    </div>
-  {% endif %}
-
-  {% for field in form_adresse.visible_fields %}
-    <div class="form-group">
-      {{ field.label_tag }}
-
-      {% if form_adresse.is_bound %}
-        {% if field.errors %}
-          {% render_field field class="form-control invalid" %}
-          {% for error in field.errors %}
-            <div class="invalid-feedback">
-              {{ error }}
-            </div>
-          {% endfor %}
-        {% else %}
-          {% render_field field class="form-control valid" %}
-        {% endif %}
-      {% else %}
-        {% render_field field class="form-control" %}
-      {% endif %}
-
-      {% if field.help_text %}
-        <small class="form-text text-muted">{{ field.help_text }}</small>
-      {% endif %}
-    </div>
-  {% endfor %}
-{%endcomment%}
-
-  <button type="submit" class="btn btn-success">S'enregistrer</button>
-</form>
-</div>
-</div>
+    <div class="row justify-content-sm-center">
+        <div class="col-sm-12 col-md-10 col-lg-8 ">
+            <form role="form" action="" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+                {%include 'form_template2.html' with form=form_adresse%}
+                {%include 'form_template2.html' with form=form_profil%}
 
 
-{%comment%}
-<div class="jumbotron"><div class="row justify-content-sm-center"><div class="col-sm-12 col-md-10 col-lg-8 ">
-    {% if error_message %}
-        <p><strong>{{ error_message }}</strong></p>
-    {% endif %}
-        <div class="col align-self-center">
-    <form class="form-horizontal " role="form" action="" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="container-fluid">
-                <table width="100%">
-                <col style="width:30%">
-                <col style="width:70%">
-                {{ form_profil.as_table }}
-                {{ form_adresse.as_table }}
-            </table>
-
+          <button type="submit" class="btn btn-success">S'enregistrer</button>
+        </form>
         </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-success">Submit</button>
-            </div>
-        </div>
-    </form>
-        </div>
-<div class="panel-footer">
-    Déjà membre ? <a href="{% url 'login' %}">clique ici</a> pour te connecter.
+    </div>
 </div>
-</div>
-</div>
-</div>
-{%endcomment%}
+
 
     {% endblock %}
 

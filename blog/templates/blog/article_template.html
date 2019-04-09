@@ -1,3 +1,5 @@
+
+{% load app_filters %}
     <div class="card article ">
       <a href="{% url 'blog:lireArticle' slug=article.slug %}">
     <div class="card-block">
@@ -10,7 +12,7 @@
                 Catégorie: {{ article.categorie }}, rédigé par {{ article.auteur }}, le {{ article.date|date:"DATE_FORMAT" }}</p>
              {%if not article.dernierMessage == None %} <p class="card-text text-muted"> Dernier message : {{ article.date_dernierMessage|date:"l d F Y, G:i"}} {{article.dernierMessage}}</p>{%endif%}
             </h6>
-        <p class="card-text">{{ article.contenu|truncatechars:180|safe }}</p>
+        <p class="card-text">{{ article.contenu|truncatechars:150|safe }}</p>
    </div>   </a>
     {% if not forloop.last %}
     <hr>

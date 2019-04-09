@@ -2,12 +2,15 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, Profil, Message, MessageGeneral, Choix
 from captcha.fields import CaptchaField
+#from tinymce.widgets import TinyMCE
+from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
 
-fieldsCommunsProduits = ['nom_produit', 'souscategorie',  'description', 'estUneOffre', 'estPublique',
+fieldsCommunsProduits = ['souscategorie', 'nom_produit',  'description', 'estUneOffre', 'estPublique',
                 'unite_prix', 'prix',  'type_prix', 'date_debut', 'date_expiration', ]
 
 
 class ProduitCreationForm(forms.ModelForm):
+    #description = TinyMCE(attrs={'cols': 80, 'rows': 20})
     estUneOffre = forms.ChoiceField(choices=((1, "Offre"), (0, "Demande")), label='', required=True)
     estPublique = forms.ChoiceField(choices=((1, "Annonce publique"), (0, "Annonce réservée aux adhérents")), label='', required=True)
 
@@ -20,6 +23,7 @@ class ProduitCreationForm(forms.ModelForm):
         widgets = {
             'date_debut': forms.DateInput(attrs={'type':"date"}, ),
             'date_expiration': forms.DateInput(attrs={'type':"date"}),
+            'description': SummernoteWidget(),
         }
 
 
@@ -43,6 +47,7 @@ class Produit_aliment_CreationForm(ProduitCreationForm):
         widgets = {
             'date_debut': forms.DateInput(attrs={'type':"date"}, ),
             'date_expiration': forms.DateInput(attrs={'type':"date"}),
+            'description': SummernoteWidget(),
         }
 
 
@@ -54,8 +59,7 @@ class Produit_vegetal_CreationForm(ProduitCreationForm):
         widgets = {
             'date_debut': forms.DateInput(attrs={'type':"date"}, ),
             'date_expiration': forms.DateInput(attrs={'type':"date"}),
-            #'estUneOffre': forms.RadioSelect(choices=('oui', 'non')),
-            #'estPublique': forms.RadioSelect(choices=('oui', 'non')),
+            'description': SummernoteWidget(),
         }
 
 class Produit_service_CreationForm(ProduitCreationForm):
@@ -65,6 +69,7 @@ class Produit_service_CreationForm(ProduitCreationForm):
         widgets = {
             'date_debut': forms.DateInput(attrs={'type':"date"}, ),
             'date_expiration': forms.DateInput(attrs={'type':"date"}),
+            'description': SummernoteWidget(),
           #  'estUneOffre': forms.RadioSelect(choices=('oui', 'non')),
            # 'estPublique': forms.RadioSelect(choices=('oui', 'non')),
         }
@@ -74,7 +79,8 @@ class Produit_objet_CreationForm(ProduitCreationForm):
         fields = fieldsCommunsProduits
         widgets = {
             'date_debut': forms.DateInput(attrs={'type':"date"}, ),
-            'date_expiration': forms.DateInput(attrs={'type':"date"})
+            'date_expiration': forms.DateInput(attrs={'type':"date"}),
+            'description': SummernoteWidget(),
         }
 
 class AdresseForm(forms.ModelForm):
@@ -103,7 +109,7 @@ class ProfilCreationForm(UserCreationForm):
     captcha = CaptchaField()
 
     statut_adhesion = forms.ChoiceField(choices=Choix.statut_adhesion, label='', required=True)
-    accepter_annuaire = forms.BooleanField(required=False)
+    accepter_annuaire = forms.BooleanField(required=False, label="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous")
     accepter_conditions = forms.BooleanField(required=True, label="J'ai lu et j'accepte les Conditions Générales d'Utilisation du site",  )
     pseudo_june = forms.CharField(label="Pseudonyme dans la monnaie libre (Duniter)",  help_text="Si vous avez un compte en June",required=False)
 
@@ -131,11 +137,10 @@ class ProducteurChangeForm(UserChangeForm):
     """
     email = forms.EmailField(label="Email")
     username = forms.CharField(label="Pseudonyme")
-    description = forms.CharField(label="Description", initial="Une description de vous même", widget=forms.Textarea)
-    competences = forms.CharField(label="Savoir-faire", initial="Par exemple: electricien, bouturage, aromatherapie, etc...",widget=forms.Textarea)
-    avatar = forms.ImageField(required=False)
+    description = forms.CharField(label="Description", help_text="Une description de vous même", widget=forms.Textarea)
+    competences = forms.CharField(label="Savoir-faire", help_text="Par exemple: electricien, bouturage, aromatherapie, etc...",widget=forms.Textarea)
     inscrit_newsletter = forms.BooleanField(required=False)
-    accepter_annuaire = forms.BooleanField(required=False)
+    accepter_annuaire = forms.BooleanField(required=False, label="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous")
     password=None
 
     def __init__(self, *args, **kargs):
@@ -145,7 +150,7 @@ class ProducteurChangeForm(UserChangeForm):
 
     class Meta:
         model = Profil
-        fields = ['username', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'inscrit_newsletter', 'accepter_annuaire']
+        fields = ['username', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'accepter_annuaire', 'inscrit_newsletter']
 
 
 class ProducteurChangeForm_admin(UserChangeForm):
@@ -161,6 +166,7 @@ class ProducteurChangeForm_admin(UserChangeForm):
                                   widget=forms.Textarea)
     avatar = forms.ImageField(required=False)
     inscrit_newsletter = forms.BooleanField(required=False)
+    accepter_annuaire = forms.BooleanField(required=False)
     pseudo_june = forms.CharField(label="pseudo_june",required=False)
 
     statut_adhesion = forms.ChoiceField(choices=Choix.statut_adhesion)
@@ -168,7 +174,7 @@ class ProducteurChangeForm_admin(UserChangeForm):
 
     class Meta:
         model = Profil
-        fields = ['username', 'email', 'description', 'competences', 'inscrit_newsletter', 'statut_adhesion', 'pseudo_june', ]
+        fields = ['username', 'email', 'description', 'competences', 'inscrit_newsletter', 'statut_adhesion', 'pseudo_june', 'accepter_annuaire']
 
     def __init__(self, *args, **kwargs):
         super(ProducteurChangeForm_admin, self).__init__(*args, **kwargs)

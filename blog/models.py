@@ -12,12 +12,12 @@ class Article(models.Model):
     categorie = models.CharField(max_length=30,         
         choices=(('Annonce','Annonce'), ('Agenda','Agenda'), ('Rencontre','Rencontre'), ('Chantier','Chantier participatif'), ('Jardinage','Jardinage'), ('Recette', 'Recette'), ('Histoire', 'Histoire'), ('Bricolage','Bricolage'), ('Culture','Culture'), ('Bon_plan', 'Bon plan'), ('Point', 'Point de vue'),  ('Autre','Autre'),),
         default='Annonce', verbose_name="categorie")
-    titre = models.CharField(max_length=100)
+    titre = models.CharField(max_length=100,)
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
     slug = models.SlugField(max_length=100)
-    contenu = HTMLField(null=True)
+    contenu = models.TextField(null=True)
     date = models.DateTimeField(auto_now_add=True, auto_now=False, verbose_name="Date de parution")
-    estPublic = models.BooleanField(default=False, verbose_name='Public (cochez) ou Interne (décochez) [réservé aux membres permacat]')
+    estPublic = models.BooleanField(default=False, verbose_name='Public ou réservé aux membres permacat')
 
     date_dernierMessage = models.DateTimeField(verbose_name="Date du dernier message", auto_now=True)
     dernierMessage = models.CharField(max_length=100, default=None, blank=True, null=True)
@@ -55,7 +55,7 @@ class Projet(models.Model):
     titre = models.CharField(max_length=100)
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
     slug = models.SlugField(max_length=100)
-    contenu = HTMLField(null=True)
+    contenu = models.TextField(null=True)
     date = models.DateTimeField(auto_now=True, verbose_name="Date de Modification")
     estPublic = models.BooleanField(default=False, verbose_name='Public (cochez) ou Interne (décochez) [réservé aux membres permacat]')
     coresponsable = models.CharField(max_length=150, default='', null=True, blank=True)

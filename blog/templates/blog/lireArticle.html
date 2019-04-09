@@ -1,4 +1,5 @@
 {% extends 'blog/baseBlog.html' %}
+
 {% block subtitle %}
 <div class="row">
     <div class="col-md-2">
@@ -39,7 +40,9 @@
           {{ article.titre }}</h3>
 </div>
 <div class="row">
-    {{ article.contenu  | safe}}
+<div class="col">
+   {{ article.contenu |safe}}
+</div>
 </div>
 </div>
 
@@ -47,7 +50,7 @@
 <hr>
 
 <div class="row textcenter">
-    <h4>Salon de discussion</h4>
+    <h4>Discussion</h4>
 </div>
 
 <div class="contenu commentaires" id="idConversation">
@@ -58,7 +61,7 @@
             <p class="infos  textepetit">{{ comment.date_creation|date:"d/m/Y, G:i" }}, {{comment.auteur_comm}}</p>
         </div>
         <div class=" col-sm-9 col-md-9 col-lg-6 message ">
-                <p>{{ comment.commentaire }}</p>
+                <div class="col">{{ comment.commentaire|safe}}</div>
         </div>
     </div>
 {% endfor %}
