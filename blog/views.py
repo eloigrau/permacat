@@ -121,15 +121,17 @@ def ajouterNouveauProjet(request):
         form = ProjetForm(request.POST or None, request.FILES or None)
     return render(request, 'blog/ajouterProjet.html', { "form": form, })
 
-# @login_required
 class ModifierProjet(UpdateView):
     model = Projet
     form_class = ProjetChangeForm
     template_name_suffix = '_modifier'
-#    fields = ['user','site_web','description', 'competences', 'adresse', 'avatar', 'inscrit_newsletter']
+    #fields = ['user','site_web','description', 'competences', 'adresse', 'avatar', 'inscrit_newsletter']
 
     def get_object(self):
         return Projet.objects.get(slug=self.kwargs['slug'])
+
+    def form_valid(self, form):
+       return super(ModifierProjet, self).form_valid(form)
 
 class SupprimerProjet(DeleteView):
     model = Projet
