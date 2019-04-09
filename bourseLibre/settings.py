@@ -77,7 +77,7 @@ INSTALLED_APPS = (
     'schedule','djangobower',
     'widget_tweaks',
     'leaflet',
-    'tinymce',
+    #'tinymce',
     'captcha',
 'django_summernote',
     #"geoposition",
@@ -306,10 +306,11 @@ SUMMERNOTE_CONFIG = {
     # Or, you can set it as False to use SummernoteInplaceWidget by default - no iframe mode
     # In this case, you have to load Bootstrap/jQuery stuff by manually.
     # Use this when you're already using Bootstraip/jQuery based themes.
-    'iframe': False,
+    #'iframe': False,
 
     # You can put custom Summernote settings
     'summernote': {
+
         # As an example, using Summernote Air-mode
         'airMode': False,
 
@@ -320,12 +321,23 @@ SUMMERNOTE_CONFIG = {
         # Use proper language setting automatically (default)
         'lang': 'fr-FR',
 },
+"toolbar": [
+    ['style', ['bold', 'italic', 'underline', 'clear']],
+    ['font', ['strikethrough', 'superscript', 'subscript']],
+    ['fontsize', ['fontsize']],
+    ['fontSizes', ['8', '9', '10', '11', '12', '14', '18', '22', '24', '36', '48', '64', '82', '150']],
+    ['color', ['color']],
+    ['para', ['ul', 'ol', 'paragraph']],
+    ['height', ['height']],
+    ['link', ['link', 'picture', 'video', 'hr',]],
+    ['misc', [ 'undo', 'redo', 'help','readmore' ]],
 
+],
 # Need authentication while uploading attachments.
 'attachment_require_authentication': True,
 
 # You can disable attachment feature.
-'disable_attachment': False,
+'disable_attachment': True,
 
 # Set `True` to return attachment paths in absolute URIs.
 'attachment_absolute_uri': False,

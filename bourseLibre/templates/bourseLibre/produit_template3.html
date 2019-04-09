@@ -1,4 +1,5 @@
 {%comment%}<div class="col-sm-12 col-md-6 col-lg-4 offre justify-content-between flex-item" >{%endcomment%}
+    {% load app_filters %}
 
     <div class="card-deck offre justify-content-between" onclick="window.location.href='{% url 'produit_detail' produit.id %}'" style="cursor: pointer">
 
@@ -24,7 +25,7 @@
                 {%endcomment%}
                 <h4 class="card-title">{{ produit.nom_produit|truncatechars:35 }} </h4>
                   <p class="card-text text-align-left" style="height:120px">
-                    {{ produit.description|striptags|truncatechars:120 }}
+                    {{ produit.description|striptags|nbsp|truncatechars:120 }}
                   </p>
                   <p class="card-text">
    {%comment%}

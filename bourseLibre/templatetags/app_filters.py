@@ -1,9 +1,10 @@
 from django import template
 from django.forms import CheckboxInput
+from django.utils.safestring import mark_safe
 
 register = template.Library()
 
-typesSansEntete = ['TinyMCE' , 'Textarea', 'URLInput', 'EmailInput' ]
+typesAvecEntete = ['Textarea', 'Select', " NumberInput", "DateInput", "SummernoteWidget" ]
 
 @register.filter(is_safe=True)
 def is_numeric(value):
@@ -20,5 +21,10 @@ def field_type(field):
     return field.field.widget.__class__.__name__
 
 @register.filter(name='field_entete')
-def field_entete(field):
-    return field.field.widget.__class__.__name__ not in typesSansEntete
+def field_sansentete(field):
+    type= str(field.field.widget.__class__.__name__)
+    return (type in typesAvecEntete)
+
+@register.filter(name='nbsp')
+def nbsp(value):
+    return mark_safe("&nbsp;".join(value.split(' ')))

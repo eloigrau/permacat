@@ -26,17 +26,17 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 
 from django.views.decorators.debug import sensitive_variables
-from django.views.decorators.debug import sensitive_post_parameters
+#from django.views.decorators.debug import sensitive_post_parameters
 
 #from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q,CharField 
 from django.db.models.functions import Lower 
 CharField.register_lookup(Lower, "lower")
 
-import sys
-from io import BytesIO
-from django.core.files.uploadedfile import InMemoryUploadedFile
-from PIL import Image
+#import sys
+#from io import BytesIO
+#from django.core.files.uploadedfile import InMemoryUploadedFile
+#from PIL import Image
 #from braces.views import LoginRequiredMixin
 
 def handler404(request, template_name="404.html"):  #page not found

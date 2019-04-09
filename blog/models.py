@@ -1,7 +1,7 @@
 from django.db import models
 from bourseLibre.models import Profil
 from django.urls import reverse
-from tinymce.models import HTMLField
+#from tinymce.models import HTMLField
 
 
 class Choix():
