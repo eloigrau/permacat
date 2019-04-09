@@ -62,56 +62,60 @@
         <td style="width:250px">Pseudo :</td>
         <td>{{ user.username }}</td>
     </tr>
-    {%if request.user.is_permacat or request.user == user %}
-      {% if user.get_full_name %}
+    {%if user.accepter_annuaire  or request.user == user %}
+        {%if request.user.is_permacat or request.user == user %}
+          {% if user.get_full_name %}
+            <tr>
+                <td style="width:250px">Nom :</td>
+                <td>{{ user.get_full_name }}</td>
+            </tr>
+          {% endif %}
+          {% if user.adresse.telephone %}
+            <tr>
+                <td style="width:250px">Telephone :</td>
+                <td>{{ user.adresse.telephone }}</td>
+            </tr>
+          {% endif %}
+        {% endif %}
         <tr>
-            <td style="width:250px">Nom :</td>
-            <td>{{ user.get_full_name }}</td>
-        </tr>
-      {% endif %}
-      {% if user.adresse.telephone %}
-        <tr>
-            <td style="width:250px">Telephone :</td>
-            <td>{{ user.adresse.telephone }}</td>
-        </tr>
-      {% endif %}
-  {% endif %}
-    <tr>
-        <td style="width:250px">Email :</td>
-        <td>{{ user.email }}</td>
-    </tr>
-
-    {%if request.user.is_permacat or request.user == user %}
-      {% if user.avatar %}
-        <tr>
-            <td style="width:250px">Avatar : </td>
-            <td>            <img src="{{ produit.avatar.url }}" alt="pas d'image" style="width:128px;height:128px"></td>
-        </tr>
-      {% endif %}
-
-      {% if user.site_web %}
-        <tr>
-            <td style="width:250px">Site_web :</td>
-            <td> {{ user.site_web }}</td>
-        </tr>
-      {% endif %}
-        <tr>
-            <td style="width:250px">Description</td>
-            <td>{{ user.description }}</td>
+            <td style="width:250px">Email :</td>
+            <td>{{ user.email }}</td>
         </tr>
 
-        <tr>
-            <td style="width:250px">Savoir-faire :</td>
-            <td>{{ user.competences }}</td>
-        </tr>
-  {% endif %}
-    <tr>
-        <td style="width:250px">Statut</td>
-        <td>{{user.statutMembre_str}}</td>
-    </tr>
+        {%if request.user.is_permacat or request.user == user %}
+          {% if user.avatar %}
+            <tr>
+                <td style="width:250px">Avatar : </td>
+                <td>            <img src="{{ produit.avatar.url }}" alt="pas d'image" style="width:128px;height:128px"></td>
+            </tr>
+          {% endif %}
+
+          {% if user.site_web %}
+            <tr>
+                <td style="width:250px">Site_web :</td>
+                <td> {{ user.site_web }}</td>
+            </tr>
+          {% endif %}
+            <tr>
+                <td style="width:250px">Description</td>
+                <td>{{ user.description }}</td>
+            </tr>
+
+            <tr>
+                <td style="width:250px">Savoir-faire :</td>
+                <td>{{ user.competences }}</td>
+            </tr>
+            <tr>
+                <td style="width:250px">Statut</td>
+                <td>{{user.statutMembre_str}}</td>
+            </tr>
+            {% endif %}
+        {% endif %}
+    {% endif %}
 
         </tbody>
     </table>
+    {%if user.accepter_annuaire  or request.user == user %}
       {%if request.user.id == user.id %}
         <a href="{% url 'profil_modifier_adresse' %}">
             <button type="button" class="btn btn-sm btn-warning">
@@ -119,54 +123,60 @@
             </button>
         </a>
       {%endif%}
-    <table class="table table-condensed tablepanier table-striped">
-        <tbody>
-  {% if request.user.is_permacat or request.user == user %}
-        {%if user.adresse.rue %}
+        <table class="table table-condensed tablepanier table-striped">
+            <tbody>
+            {% if request.user.is_permacat or request.user == user %}
+            {%if user.adresse.rue %}
+            <tr>
+                <td style="width:250px">Adresse :</td>
+                <td>{{ user.adresse.rue }}</td>
+            </tr>
+          {% endif %}
+            {%if user.adresse.commune %}
+            <tr>
+                <td style="width:250px">Commune :</td>
+                <td>{{ user.adresse.commune }}</td>
+            </tr>
+          {% endif %}
+      {% endif %}
+        {%if user.adresse.code_postal %}
         <tr>
-            <td style="width:250px">Adresse :</td>
-            <td>{{ user.adresse.rue }}</td>
+            <td style="width:250px">Code postal :</td>
+            <td>{{ user.adresse.code_postal }}</td>
         </tr>
       {% endif %}
-        {%if user.adresse.commune %}
-        <tr>
-            <td style="width:250px">Commune :</td>
-            <td>{{ user.adresse.commune }}</td>
-        </tr>
-      {% endif %}
-  {% endif %}
-    {%if user.adresse.code_postal %}
-    <tr>
-        <td style="width:250px">Code postal :</td>
-        <td>{{ user.adresse.code_postal }}</td>
-    </tr>
-  {% endif %}
-  {% if request.user.is_permacat or request.user == user %}
-        {%if user.adresse.pays %}
-        <tr>
-            <td style="width:250px">Pays :</td>
-            <td>{{ user.adresse.pays }}</td>
-        </tr>
-      {% endif %}
-        {%if user.adresse.telephone %}
-        <tr>
-            <td style="width:250px">Téléphone :</td>
-            <td>{{ user.adresse.telephone }}</td>
-        </tr>
-      {% endif %}
-        <tr>
-            <td style="width:200px">lat/lon :</td>
-            <td>{{ user.adresse.latitude }} / {{ user.adresse.longitude }} </td>
-        </tr>
-        {% if distance %}
-              <tr>
-            <td style="width:200px">Distance <small>(à vol d'oiseau)</small> :</td>
-            <td>{{distance | floatformat }} km
-        </tr>
+      {% if request.user.is_permacat or request.user == user %}
+            {%if user.adresse.rue and request.user == user %}
+                <tr>
+                    <td style="width:250px">Rue :</td>
+                    <td>{{ user.adresse.rue }}</td>
+                </tr>
+            {% endif %}
+            {%if user.adresse.pays %}
+                <tr>
+                    <td style="width:250px">Pays :</td>
+                    <td>{{ user.adresse.pays }}</td>
+                </tr>
+            {% endif %}
+            {%if user.adresse.telephone %}
+                <tr>
+                    <td style="width:250px">Téléphone :</td>
+                    <td>{{ user.adresse.telephone }}</td>
+                </tr>
+            {% endif %}
+            <tr>
+                <td style="width:200px">lat/lon :</td>
+                <td>{{ user.adresse.latitude }} / {{ user.adresse.longitude }} </td>
+            </tr>
+            {% if distance %}
+            <tr>
+                <td style="width:200px">Distance <small>(à vol d'oiseau)</small> :</td>
+                <td>{{distance | floatformat }} km
+            </tr>
+            {% endif %}
         {% endif %}
-  {% endif %}
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 </div>
 
   {% if request.user.is_permacat %}
