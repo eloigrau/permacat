@@ -569,7 +569,7 @@ def lireConversation(request, destinataire):
         message.conversation = conversation
         message.auteur = request.user
         conversation.date_dernierMessage = message.date_creation
-        conversation.dernierMessage =  "(" + str(message.auteur) + ") " + str(message.message[:50])
+        conversation.dernierMessage =  "(" + str(message.auteur) + ") " + str(message.message[:50]) + "..."
         conversation.save()
         message.save()
         return redirect(request.path)
