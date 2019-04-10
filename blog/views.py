@@ -71,8 +71,12 @@ class ListeArticles(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        qs = Article.objects.filter(estArchive=False)
         params = dict(self.request.GET.items())
+
+        if "archives" in params and params['archives']:
+            qs = Article.objects.filter(estArchive=True)
+        else:
+            qs = Article.objects.filter(estArchive=False)
 
         if not self.request.user.is_authenticated or not self.request.user.is_permacat:
             qs = qs.filter(estPublic=True)
@@ -92,10 +96,14 @@ class ListeArticles(ListView):
         context['auteur_list'] = Article.objects.order_by('auteur').values_list('auteur__username', flat=True).distinct()
         context['categorie_list'] = Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
         context['typeFiltre'] = "aucun"
+        #context['ordreTriPossibles'] =  ['date dernier message', 'categorie', ]
+
         if 'auteur' in self.request.GET:
             context['typeFiltre'] = "auteur"
         if 'categorie' in self.request.GET:
             context['typeFiltre'] = "categorie"
+        if 'archives' in self.request.GET:
+            context['typeFiltre'] = "archives"
         return context
 
 
@@ -170,12 +178,16 @@ class ListeProjets(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        qs = Projet.objects.filter(estArchive=False)
+
         params = dict(self.request.GET.items())
+
+        if "archives" in params and params['archives']:
+            qs = Projet.objects.filter(estArchive=True)
+        else:
+            qs = Projet.objects.filter(estArchive=False)
 
         if not self.request.user.is_authenticated or not self.request.user.is_permacat:
             qs = qs.filter(estPublic=True)
-
 
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])
@@ -196,6 +208,8 @@ class ListeProjets(ListView):
             context['typeFiltre'] = "auteur"
         if 'categorie' in self.request.GET:
             context['typeFiltre'] = "categorie"
+        if 'archives' in self.request.GET:
+            context['typeFiltre'] = "archives"
         return context
 
 

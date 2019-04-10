@@ -7,6 +7,9 @@
         <a href="?">
             <button class="btn {% if typeFiltre == "aucun" %}btn-primary {%endif%}">Tout </button>
         </a>
+        <a href="?archives=True">
+            <button class="btn {% if typeFiltre == 'archives' %}btn-primary{%else%}btn-light {%endif%}">Archives </button>
+        </a>
         <div class="btn-group">
             <a {% if request.GET.auteur %} href="{%url 'profil_nom' request.GET.auteur %}"
                 {%else%}href="#" {%endif%}>

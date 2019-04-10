@@ -36,7 +36,7 @@
     {% with tyype=field|field_type %}
     {% with entete=field|field_entete %}
     {% if entete %}
-{{field.label_tag}}
+        {{field.label_tag}}
     {%endif%}
       {% if form.is_bound %}
         {% if field.errors %}
@@ -47,13 +47,20 @@
             </div>
           {% endfor %}
         {% else %}
-    {% if tyype != 'SummernoteWidget' %}
+        {% if tyype != 'SummernoteWidget' %}
           {% render_field field class="form-control valid" placeholder=field.label%}
+        {% endif %}
+        {% if tyype == 'CheckboxInput' %}
+          {{field}}{{field.label}}
         {% endif %}
         {% endif %}
       {% else %}
     {% if tyype != 'SummernoteWidget' %}
+        {% if tyype == 'CheckboxInput' %}
+          {{field}}{{field.label}}
+        {% else %}
         {% render_field field class="form-control" placeholder=field.label %}
+        {% endif %}
       {% endif %}
       {% endif %}
 

@@ -323,14 +323,12 @@ SUMMERNOTE_CONFIG = {
 },
 "toolbar": [
     ['style', ['bold', 'italic', 'underline', 'clear']],
-    ['font', ['strikethrough', 'superscript', 'subscript']],
     ['fontsize', ['fontsize']],
-    ['fontSizes', ['8', '9', '10', '11', '12', '14', '18', '22', '24', '36', '48', '64', '82', '150']],
+    ['fontSizes', ['8', '9', '10', '11', '12', '14', '18', '22', '24', '36']],
     ['color', ['color']],
     ['para', ['ul', 'ol', 'paragraph']],
-    ['height', ['height']],
     ['link', ['link', 'picture', 'video', 'hr',]],
-    ['misc', [ 'undo', 'redo', 'help','readmore' ]],
+    ['misc', [ 'undo', 'redo', 'help','fullscreen', 'codeview',  'readmore']],
 
 ],
 # Need authentication while uploading attachments.
