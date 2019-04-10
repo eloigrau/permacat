@@ -4,6 +4,8 @@
 {% load leaflet_tags %}
 {%endblock%}
 {%block header %}
+{% load static %}
+{% load staticfiles %}
 {% leaflet_js %}
 {% leaflet_css %}
 {%endblock%}
@@ -28,11 +30,25 @@
     }
     </style>
       <script type="text/javascript">
+
         function map_init_basic (map, options) {
+        var LeafIcon = L.Icon.extend({
+            options: {
+               iconSize:     [38, 95],
+               shadowSize:   [50, 64],
+               iconAnchor:   [22, 94],
+               shadowAnchor: [4, 62],
+               popupAnchor:  [-3, -76]
+            }
+        });
+        var greenIcon = LeafIcon({
+          iconUrl: "{% static 'img/leaf-green.png' %}",
+          shadowUrl: "{% static 'img/leaf-shadow.png' %}",
+        });
         {% for profil in profils %}
             var lat = {{profil.adresse.get_latitude}};
             var lon = {{profil.adresse.get_longitude}};
-            var marker = L.marker([lat, lon]).bindPopup('<a href="{% url 'profil' profil.id %}"> {{profil.username}}</a>');
+            var marker = L.marker([lat, lon], {icon: greenIcon}).bindPopup('<a href="{% url 'profil' profil.id %}"> {{profil.username}}</a>');
             marker.addTo(map);
         {%endfor%}
         map.panTo(new L.LatLng(lat, lon));
