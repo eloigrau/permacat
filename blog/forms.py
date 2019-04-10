@@ -42,7 +42,7 @@ class ArticleForm(forms.ModelForm):
         return instance
 
 
-    def __init__(self, request, message=None, *args, **kwargs):
+    def __init__(self, request, *args, **kwargs):
         super(ArticleForm, self).__init__(request, *args, **kwargs)
         self.fields['contenu'].strip = False
 

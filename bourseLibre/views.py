@@ -244,17 +244,20 @@ def profil_contact(request, user_id):
     recepteur = Profil.objects.get(id=user_id)
     if form.is_valid():
         sujet = request.user.username +' vous a écrit:', form.cleaned_data['sujet']
-        message = form.cleaned_data['message']
+        message_txt = ""
+        message_html = form.cleaned_data['msg']
         recepteurs = [recepteur.email,]
         if form.cleaned_data['renvoi'] :
             recepteurs += request.user.email
 
         send_mail(
             sujet,
-            message,
+            message_txt,
             request.user.email,
             recepteurs,
+            html_message=message_html,
             fail_silently=False,
+            content_subtype = "html"
             )
         return render(request, 'message_envoye.html', {'sujet': form.cleaned_data['sujet'], 'message':message, 'envoyeur':request.user.username + "(" + request.uer.email + ")", "destinataire":recepteur.user.username + "(" +recepteur.user.email+ ")"})
 
@@ -265,21 +268,24 @@ def contact_admins(request):
         form = ContactForm(request.POST or None, )
         if form.is_valid():
             sujet = form.cleaned_data['sujet']
-            message = request.user.username + ' a envoyé le message suivant : \\n' + form.cleaned_data['msg']
+            message_txt = request.user.username + " a envoyé le message suivant : "
+            message_html = form.cleaned_data['msg']
             try:
-                mail_admins(sujet, message)
+                mail_admins(sujet, message_txt, html_message=message_html)
                 if form.cleaned_data['renvoi']:
                     mess = "[Permacat] message envoyé aux administrateurs : \\n"
-                    send_mail(sujet, mess + message, request.user.email, request.user.email, fail_silently=False, )
+                    send_mail(sujet, mess + message_txt, request.user.email, request.user.email, fail_silently=False, html_message=message_html, content_subtype="html")
 
-                return render(request, 'message_envoye.html', {'sujet': sujet, 'msg': message,
+                return render(request, 'message_envoye.html', {'sujet': sujet, 'msg': message_txt + "; " + message_html,
                                                        'envoyeur': request.user.username + "(" + request.user.email + ")",
                                                        "destinataire": "administrateurs "})
             except BadHeaderError:
                 return render(request, 'erreur.html', {'msg':'Invalid header found.'})
+
+            return render(request, 'erreur.html', {'msg':"Une ereur s'est produite"})
     else:
         form = ContactForm()
-        return render(request, 'contact.html', {'form': form, "isContactProducteur":False})
+    return render(request, 'contact.html', {'form': form, "isContactProducteur":False})
 
 
 
