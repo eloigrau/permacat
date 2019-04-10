@@ -226,42 +226,44 @@ def profil_carte_adherents(request):
 
 @login_required
 def profil_contact(request, user_id):
-    message = None
-    titre = None
-    id_panier = request.GET.get('panier')
-    if id_panier:
-        panier = Panier.objects.get(id=id_panier)
-        message = panier.get_message_demande(int(user_id))
-        titre = "Proposition d'échange"
-
-    id_produit = request.GET.get('produit')
-    if id_produit:
-        produit = Produit.objects.get(id=id_produit)
-        message = produit.get_message_demande()
-        titre = "Au sujet de l'offre de " + produit.nom_produit
-
-    form = ContactForm(request.POST, message, titre)
     recepteur = Profil.objects.get(id=user_id)
-    if form.is_valid():
-        sujet = request.user.username +' vous a écrit:', form.cleaned_data['sujet']
-        message_txt = ""
-        message_html = form.cleaned_data['msg']
-        recepteurs = [recepteur.email,]
-        if form.cleaned_data['renvoi'] :
-            recepteurs += request.user.email
+    if request.method == 'POST':
+        form = ContactForm(request.POST or None, )
+        if form.is_valid():
+            sujet = request.user.username +' vous a écrit:', form.cleaned_data['sujet']
+            message_txt = ""
+            message_html = form.cleaned_data['msg']
+            recepteurs = [recepteur.email,]
+            if form.cleaned_data['renvoi'] :
+                recepteurs += request.user.email
 
-        send_mail(
-            sujet,
-            message_txt,
-            request.user.email,
-            recepteurs,
-            html_message=message_html,
-            fail_silently=False,
-            content_subtype = "html"
-            )
-        return render(request, 'message_envoye.html', {'sujet': form.cleaned_data['sujet'], 'message':message, 'envoyeur':request.user.username + "(" + request.uer.email + ")", "destinataire":recepteur.user.username + "(" +recepteur.user.email+ ")"})
-
+            send_mail(
+                sujet,
+                message_txt,
+                request.user.email,
+                recepteurs,
+                html_message=message_html,
+                fail_silently=False,
+                )
+            return render(request, 'message_envoye.html', {'sujet': form.cleaned_data['sujet'], 'msg':message_html, 'envoyeur':request.user.username + " (" + request.uer.email + ")", "destinataire":recepteur.user.username + " (" +recepteur.user.email+ ")"})
+    else:
+        form = ContactForm()
     return render(request, 'profil_contact.html', {'form': form, 'recepteur':recepteur})
+
+    #message = None
+    #titre = None
+    # id_panier = request.GET.get('panier')
+    # if id_panier:
+    #     panier = Panier.objects.get(id=id_panier)
+    #     message = panier.get_message_demande(int(user_id))
+    #     titre = "Proposition d'échange"
+    #
+    # id_produit = request.GET.get('produit')
+    # if id_produit:
+    #     produit = Produit.objects.get(id=id_produit)
+    #     message = produit.get_message_demande()
+    #     titre = "Au sujet de l'offre de " + produit.nom_produit
+
 
 def contact_admins(request):
     if request.method == 'POST':
@@ -274,7 +276,7 @@ def contact_admins(request):
                 mail_admins(sujet, message_txt, html_message=message_html)
                 if form.cleaned_data['renvoi']:
                     mess = "[Permacat] message envoyé aux administrateurs : \\n"
-                    send_mail(sujet, mess + message_txt, request.user.email, request.user.email, fail_silently=False, html_message=message_html, content_subtype="html")
+                    send_mail(sujet, mess + message_txt, request.user.email, request.user.email, fail_silently=False, html_message=message_html)
 
                 return render(request, 'message_envoye.html', {'sujet': sujet, 'msg': message_txt + "; " + message_html,
                                                        'envoyeur': request.user.username + "(" + request.user.email + ")",

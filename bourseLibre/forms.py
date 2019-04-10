@@ -185,9 +185,9 @@ class ProducteurChangeForm_admin(UserChangeForm):
 
 class ContactForm(forms.Form):
     sujet = forms.CharField(max_length=100, label="Sujet",)
-    msg = forms.CharField(label="Message",widget=SummernoteWidget)
+    msg = forms.CharField(label="Message", widget=SummernoteWidget)
     renvoi = forms.BooleanField(label="recevoir une copie",
-                                help_text="Cochez si vous souhaitez obtenir une copie du mail envoyé.", required=False
+                                     help_text="Cochez si vous souhaitez obtenir une copie du mail envoyé.", required=False
                                  )
 
 
