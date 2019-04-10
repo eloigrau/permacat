@@ -219,9 +219,9 @@ def profil_carte(request):
 
 @login_required
 def profil_carte_adherents(request):
-    if request.user.is_permacat:
-        return reverse_lazy('login')
-    profils = Profil.objects.filter(Q(statut_adhesion=2, accepter_annuaire=1))
+    if not request.user.is_permacat:
+        return redirect('login')
+    profils = Profil.objects.filter(statut_adhesion=2, accepter_annuaire=1)
     return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': "Carte des adhérents Permacat" } )
 
 @login_required
