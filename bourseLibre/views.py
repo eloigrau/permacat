@@ -273,7 +273,7 @@ def contact_admins(request):
                     send_mail(sujet, mess + message, request.user.email, request.user.email, fail_silently=False, )
 
                 return render(request, 'message_envoye.html', {'sujet': sujet, 'msg': message,
-                                                       'envoyeur': request.user.username + "(" + request.uer.email + ")",
+                                                       'envoyeur': request.user.username + "(" + request.user.email + ")",
                                                        "destinataire": "administrateurs "})
             except BadHeaderError:
                 return render(request, 'erreur.html', {'msg':'Invalid header found.'})
