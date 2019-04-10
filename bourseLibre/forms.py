@@ -184,19 +184,12 @@ class ProducteurChangeForm_admin(UserChangeForm):
         self.fields['competences'].strip = False
 
 class ContactForm(forms.Form):
-    sujet = forms.CharField(max_length=100, )
-    message = forms.CharField(widget=forms.Textarea, )
+    sujet = forms.CharField(max_length=100, label="Sujet",)
+    msg = forms.CharField(label="Message",widget=SummernoteWidget)
     renvoi = forms.BooleanField(label="recevoir une copie",
                                 help_text="Cochez si vous souhaitez obtenir une copie du mail envoyé.", required=False
                                  )
 
-    def __init__(self, msg=None,  titre=None,  *args, **kwargs):
-        super(ContactForm, self).__init__(*args, **kwargs)
-        if msg:
-            self.fields['message'].initial = msg
-        if titre:
-            self.fields['sujet'].initial = titre
-        self.fields['message'].strip = False
 
 
 class MessageForm(forms.ModelForm):

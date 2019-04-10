@@ -14,7 +14,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from django.core.mail import mail_admins, send_mail
+from django.core.mail import mail_admins, send_mail, BadHeaderError
 from django_summernote.widgets import SummernoteWidget
 
 from django import forms
@@ -58,8 +58,6 @@ def handler400(request, template_name="400.html"):   #requete invalide
     response = render(request, "400.html")
     response.status_code = 400
     return response
-
-
 
 def bienvenue(request):
     return render(request, 'bienvenue.html')
@@ -262,8 +260,32 @@ def profil_contact(request, user_id):
 
     return render(request, 'profil_contact.html', {'form': form, 'recepteur':recepteur})
 
-
 def contact_admins(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST or None, )
+        if form.is_valid():
+            sujet = form.cleaned_data['sujet']
+            message = request.user.username + ' a envoyé le message suivant : \\n' + form.cleaned_data['msg']
+            try:
+                mail_admins(sujet, message)
+                if form.cleaned_data['renvoi']:
+                    mess = "[Permacat] message envoyé aux administrateurs : \\n"
+                    send_mail(sujet, mess + message, request.user.email, request.user.email, fail_silently=False, )
+
+                return render(request, 'message_envoye.html', {'sujet': sujet, 'msg': message,
+                                                       'envoyeur': request.user.username + "(" + request.uer.email + ")",
+                                                       "destinataire": "administrateurs "})
+            except BadHeaderError:
+                return render(request, 'erreur.html', {'msg':'Invalid header found.'})
+    else:
+        form = ContactForm()
+        return render(request, 'contact.html', {'form': form, "isContactProducteur":False})
+
+
+
+
+
+def contact_admins2(request):
     form = ContactForm(request.POST or None)
     if form.is_valid():
         sujet = form.cleaned_data['sujet']
