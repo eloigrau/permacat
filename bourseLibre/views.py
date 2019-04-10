@@ -314,7 +314,6 @@ class profil_modifier_adresse(UpdateView):
     def get_object(self):
         return Adresse.objects.get(id=self.request.user.id)
 
-@login_required
 class profil_modifier(UpdateView):
     model = Profil
     form_class = ProducteurChangeForm
