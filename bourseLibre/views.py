@@ -170,6 +170,7 @@ def proposerProduit_entree(request):
     return render(request, 'bourseLibre/produit_proposer_entree.html', {"couleurs":Choix.couleurs})
 
 
+@login_required
 def detailProduit(request, produit_id):
     prod = Produit.objects.get_subclass(id=produit_id)
     return render(request, 'bourseLibre/produit_detail.html', {'produit': prod})
@@ -179,12 +180,12 @@ def merci(request, template_name='merci.html'):
     return render(request, template_name)
 
 
-# @login_required
+@login_required
 def profil_courant(request, ):
     return render(request, 'profil.html', {'user': request.user})
 
 
-# @login_required
+@login_required
 def profil(request, user_id):
     try:
         user = Profil.objects.get(id=user_id)
@@ -193,7 +194,7 @@ def profil(request, user_id):
     except User.DoesNotExist:
             return render(request, 'profil_inconnu.html', {'userid': user_id})
 
-# @login_required
+@login_required
 def profil_nom(request, user_username):
     try:
         user = Profil.objects.get(username=user_username)
@@ -202,28 +203,30 @@ def profil_nom(request, user_username):
     except User.DoesNotExist:
         return render(request, 'profil_inconnu.html', {'userid': user_username})
 
-# @login_required
+@login_required
 def profil_inconnu(request):
     return render(request, 'profil_inconnu.html')
 
-# @login_required
+@login_required
 def profil_list(request):
     profils_permacat = Profil.objects.filter(accepter_annuaire=True, statut_adhesion=2).order_by('username')
     profils = Profil.objects.filter(accepter_annuaire=True).order_by('username')
     return render(request, 'cooperateurs.html', {'profils':profils, 'profils_permacat':profils_permacat, } )
 
-# @login_required
+@login_required
 def profil_carte(request):
     profils = Profil.objects.filter(accepter_annuaire=1)
     return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': "La carte des coopérateurs" } )
 
 
-# @login_required
+@login_required
 def profil_carte_adherents(request):
+    if request.user.is_permacat:
+        return reverse_lazy('login')
     profils = Profil.objects.filter(Q(statut_adhesion=2, accepter_annuaire=1))
     return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': "Carte des adhérents Permacat" } )
 
-# @login_required
+@login_required
 def profil_contact(request, user_id):
     message = None
     titre = None
@@ -274,7 +277,7 @@ def contact_admins(request):
     return render(request, 'contact.html', {'form': form, "isContactProducteur":False})
 
 
-# @login_required
+@login_required
 def produitContacterProducteur(request, produit_id):
     prod = Produit.objects.get_subclass(pk=produit_id)
     receveur = prod.user
@@ -291,7 +294,7 @@ def produitContacterProducteur(request, produit_id):
     return render(request, 'contact.html', {'form': form, "isContactProducteur":True, "producteur":receveur.user.username})
 
 
-# @login_required
+@login_required
 class profil_modifier_user(UpdateView):
     model = Profil
     form_class = ProducteurChangeForm
@@ -302,8 +305,6 @@ class profil_modifier_user(UpdateView):
         return User.objects.get(id=self.request.user.id)
 
 
-
-# @login_required
 class profil_modifier_adresse(UpdateView):
     model = Adresse
     form_class = AdresseForm
@@ -313,7 +314,7 @@ class profil_modifier_adresse(UpdateView):
     def get_object(self):
         return Adresse.objects.get(id=self.request.user.id)
 
-# @login_required
+@login_required
 class profil_modifier(UpdateView):
     model = Profil
     form_class = ProducteurChangeForm
@@ -346,8 +347,6 @@ def change_password(request):
     return render(request, 'registration/password_changer_form.html', {
         'form': form
     })
-
-# @login_required
 
 @sensitive_variables('user', 'password')
 def register(request):
@@ -468,7 +467,7 @@ def charte(request):
 def cgu(request):
     return render(request, 'cgu.html', )
 
-# @login_required
+@login_required
 def liens(request):
     liens = [
         'http://sel66.free.fr',
@@ -527,7 +526,7 @@ def afficher_panier(request):
     return render(request, 'panier.html', {'panier':panier, 'items':items})
 
 
-# @login_required
+@login_required
 def afficher_requetes(request):
     items = Item.objects.filter( produit__user__id =  request.user.id)
     return render(request, 'requetes.html', {'items':items})

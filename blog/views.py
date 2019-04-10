@@ -6,6 +6,7 @@ from .forms import ArticleForm, CommentForm, ArticleChangeForm, ProjetForm, Proj
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
 
+@login_required
 def forum(request):
     """ Afficher tous les articles de notre blog """
     articles = Article.objects.all().order_by('-date')  # Nous sélectionnons tous nos articles
