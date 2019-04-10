@@ -66,7 +66,9 @@
                         <div class="dropdown-menu" aria-labelledby="navbarAsso">
                             <a class="nav-link" href="{% url 'blog:index_projets' %}"> Projets </a>
                            {%comment%}  <a class="nav-link" href="{% url 'agenda' %}"> Agenda </a>{%endcomment%}
+                            {%if request.user.is_permacat %}
                              <a class="nav-link" href="{% url 'profil_carte_adherents' %}"> Carte des adhérents </a>
+                            {% endif%}
                             <a class="nav-link" href="{% url 'presentation_asso' %}"> Qui sommes nous ?</a>
                             <a class="nav-link" href="{% url 'charte' %}"> Charte </a>
                             <a class="nav-link" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a>
