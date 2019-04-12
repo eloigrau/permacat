@@ -8,8 +8,8 @@ from django.shortcuts import HttpResponseRedirect, render, redirect#, render, ge
 
 from .forms import Produit_aliment_CreationForm, Produit_vegetal_CreationForm, Produit_objet_CreationForm, \
     Produit_service_CreationForm, ContactForm, AdresseForm, ProfilCreationForm, MessageForm, MessageGeneralForm, \
-    ProducteurChangeForm
-from .models import Profil, Produit, Adresse, Choix, Panier, Item, get_categorie_from_subcat, Conversation, Message, MessageGeneral, getOrCreateConversation
+    ProducteurChangeForm, MessageGeneralPermacatForm
+from .models import Profil, Produit, Adresse, Choix, Panier, Item, get_categorie_from_subcat, Conversation, Message, MessageGeneral, MessageGeneralPermacat, getOrCreateConversation
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
@@ -230,7 +230,7 @@ def profil_contact(request, user_id):
     if request.method == 'POST':
         form = ContactForm(request.POST or None, )
         if form.is_valid():
-            sujet = request.user.username +' vous a écrit:', form.cleaned_data['sujet']
+            sujet = "[permacat] "+ request.user.username +' vous a écrit: ', form.cleaned_data['sujet']
             message_txt = ""
             message_html = form.cleaned_data['msg']
             recepteurs = [recepteur.email,]
@@ -639,6 +639,17 @@ def agora(request, ):
         message.save() 
         return redirect(request.path) 
     return render(request, 'agora.html', {'form': form, 'messages_echanges': messages})
+
+@login_required
+def agora_permacat(request, ):
+    messages = MessageGeneralPermacat.objects.all().order_by("date_creation")
+    form = MessageGeneralForm(request.POST or None)
+    if form.is_valid():
+        message = form.save(commit=False)
+        message.auteur = request.user
+        message.save()
+        return redirect(request.path)
+    return render(request, 'agora_permacat.html', {'form': form, 'messages_echanges': messages})
 
 class ListeConversations(ListView):
     model = Conversation

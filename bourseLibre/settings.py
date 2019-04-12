@@ -79,7 +79,7 @@ INSTALLED_APPS = (
     'leaflet',
     #'tinymce',
     'captcha',
-'django_summernote',
+    'django_summernote',
     #"geoposition",
     #"geodjango",
     #'osm_field',

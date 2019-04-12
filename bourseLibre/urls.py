@@ -103,6 +103,7 @@ urlpatterns = [
     url(r'^conversations/$', login_required(views.ListeConversations.as_view()), name='conversations'),
 
     url(r'^agora/$', login_required(views.agora), name='agora'),
+    url(r'^agora_permacat/$', login_required(views.agora_permacat), name='agora_permacat'),
 ]
 
 from django.conf import settings

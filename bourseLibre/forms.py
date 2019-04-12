@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, Profil, Message, MessageGeneral, Choix
+from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, Profil, Message, MessageGeneral, Choix, MessageGeneralPermacat
 from captcha.fields import CaptchaField
 #from tinymce.widgets import TinyMCE
 from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
@@ -206,19 +206,26 @@ class MessageForm(forms.ModelForm):
         super(MessageForm, self).__init__(request, *args, **kwargs)
         if message:
            self.fields['message'].initial = message
-        self.fields['message'].strip = False
 
 class MessageGeneralForm(forms.ModelForm):
-
     class Meta:
         model = MessageGeneral
         exclude = ['auteur']
 
         widgets = {
+            'message': forms.Textarea(attrs={'rows': 1}),
+        }
+
+    #def __init__(self, request, message=None, *args, **kwargs):
+    #    super(MessageGeneralForm, self).__init__(request, *args, **kwargs)
+
+
+class MessageGeneralPermacatForm(forms.ModelForm):
+
+    class Meta:
+        model = MessageGeneralPermacat
+        exclude = ['auteur']
+
+        widgets = {
                 'message': forms.Textarea(attrs={'rows': 1}),
             }
-
-
-    def __init__(self, request, message=None, *args, **kwargs):
-        super(MessageGeneralForm, self).__init__(request, *args, **kwargs)
-        self.fields['message'].strip = False

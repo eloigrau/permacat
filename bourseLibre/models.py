@@ -41,7 +41,7 @@ class Choix():
         'type_prix': typePrixUnite,
     },
     'service': {
-        'souscategorie': ('jardinage',  'éducation', 'santé', 'bricolage', 'informatique', 'cuisine','batiment', 'mécanique', 'autre'),
+        'souscategorie': ('jardinage',  'éducation', 'santé', 'bricolage', 'informatique', 'hebergement','cuisine','batiment', 'mécanique', 'autre'),
         #'etat': (('excellent', 'excellent'), ('bon', 'bon'), ('moyen', 'moyen'), ('naze', 'naze')),
         'type_prix': (('h', 'heure'), ('un', 'unité')),
     },
@@ -761,3 +761,14 @@ class MessageGeneral(models.Model):
     def __str__(self):
         return "(" + str(self.id) + ") " + str(self.auteur) + " " + str(self.date_creation)
 
+
+class MessageGeneralPermacat(models.Model):
+    message = models.TextField(null=False, blank=False)
+    auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
+    date_creation = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.__str__()
+
+    def __str__(self):
+        return "(" + str(self.id) + ") " + str(self.auteur) + " " + str(self.date_creation)
