@@ -643,7 +643,7 @@ def agora(request, ):
 @login_required
 def agora_permacat(request, ):
     messages = MessageGeneralPermacat.objects.all().order_by("date_creation")
-    form = MessageGeneralForm(request.POST or None)
+    form = MessageGeneralPermacatForm(request.POST or None)
     if form.is_valid():
         message = form.save(commit=False)
         message.auteur = request.user
