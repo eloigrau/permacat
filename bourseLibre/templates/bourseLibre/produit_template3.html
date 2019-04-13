@@ -1,6 +1,5 @@
-{%comment%}<div class="col-sm-12 col-md-6 col-lg-4 offre justify-content-between flex-item" >{%endcomment%}
-    {% load app_filters %}
-
+   {% load app_filters %}
+<div class="infinite-item">
     <div class="card-deck offre justify-content-between" onclick="window.location.href='{% url 'produit_detail' produit.id %}'" style="cursor: pointer">
 
         <div class="card d-md-flex textcenter offre2" style="{% if produit.est_perimee %} background-color:grey;{% else %} background-color:{{ produit.couleur }}; border-color:{%if produit.estUneOffre == True %} lightyellow {%else%} 	lightcoral{%endif%}{%endif%}">
@@ -47,12 +46,12 @@
                     {%if produit.estUneOffre %}{{ produit.get_prixEtUnite }} {%endif%}
 
                 </p>
-   {%comment%}
-                <p  class="btn btn-primary {%if produit.estUneOffre %}couleurOffre{%else%}couleurdemande{%endif%}"
-                   role="button">détails...
-   {%endcomment%}
+
                 </p>
             </div>
         </div>
-   {%comment%} </a>{%endcomment%}
+   {%comment%}
+    </a>
+{%endcomment%}
 </div>
+   </div>

@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
+    {% load static %}
 
+    {%block header %}
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/infinite.min.js' %}"></script
+    {%endblock%}
 {% block title %}Au Marché
 
 {% endblock %}
@@ -234,14 +239,35 @@
      {% endfor %}
 </div>
 {%endcomment%}
-
-<div class="card-deck listOffres">
+<div class="card-deck listOffres infinite-container">
     {% for produit in produits_list %}
         {% include "bourseLibre/produit_template3.html" with produit=produit %}
     {% endfor %}
-</div><!-- The final deck is closed here, outside the loop -->
+</div>
 
+  {% if page_obj.has_next %}
+    <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}">Plus...</a>
+  {% endif %}
+
+  <div class="loading textcenter" style="display: none;">
+    Chargement...
+  </div>
+
+  <script>
+    var infinite = new Waypoint.Infinite({
+      element: $('.infinite-container')[0],
+      onBeforePageLoad: function () {
+        $('.loading').show();
+      },
+      onAfterPageLoad: function ($items) {
+        $('.loading').hide();
+      }
+    });
+  </script>
+
+{%comment%}
 {%include 'pagination.html' %}
+{%endcomment%}
 
 
 {% endblock %}
