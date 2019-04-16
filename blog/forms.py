@@ -51,7 +51,7 @@ class ArticleChangeForm(forms.ModelForm):
 
     class Meta:
         model = Article
-        fields = ['categorie', 'titre', 'contenu', 'estPublic', 'estArchive']
+        fields = ['categorie', 'titre', 'contenu', 'estPublic', 'estModifiable', 'estArchive']
         widgets = {
             'contenu': SummernoteWidget(),
         }
@@ -69,6 +69,7 @@ class CommentForm(forms.ModelForm):
         exclude = ['article','auteur_comm']
         #
         widgets = {
+         #  'commentaire': SummernoteWidget(),
                 'commentaire': forms.Textarea(attrs={'rows': 1}),
             }
 

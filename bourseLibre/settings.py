@@ -327,7 +327,7 @@ SUMMERNOTE_CONFIG = {
     ['fontSizes', ['8', '9', '10', '11', '12', '14', '18', '22', '24', '36']],
     ['color', ['color']],
     ['para', ['ul', 'ol', 'paragraph']],
-    ['link', ['link', 'picture', 'video', 'hr',]],
+    ['link', ['link', 'picture', 'video', 'table', 'hr',]],
     ['misc', [ 'undo', 'redo', 'help','fullscreen', 'codeview',  'readmore']],
 
 ],
