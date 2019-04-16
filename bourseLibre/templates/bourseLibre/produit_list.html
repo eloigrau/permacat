@@ -245,29 +245,7 @@
     {% endfor %}
 </div>
 
-  {% if page_obj.has_next %}
-    <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}">Plus...</a>
-  {% endif %}
-
-  <div class="loading textcenter" style="display: none;">
-    Chargement...
-  </div>
-
-  <script>
-    var infinite = new Waypoint.Infinite({
-      element: $('.infinite-container')[0],
-      onBeforePageLoad: function () {
-        $('.loading').show();
-      },
-      onAfterPageLoad: function ($items) {
-        $('.loading').hide();
-      }
-    });
-  </script>
-
-{%comment%}
 {%include 'pagination.html' %}
-{%endcomment%}
 
 
 {% endblock %}

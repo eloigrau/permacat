@@ -1,4 +1,10 @@
 {% extends 'blog/baseBlog.html' %}
+    {% load static %}
+
+    {%block header %}
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/infinite.min.js' %}"></script
+    {%endblock%}
 {%block subtitle%}
 
 <div class="row align-items-center">
@@ -81,13 +87,13 @@
 {%endblock%}
 {% block content %}
 
+<div class="infinite-container">
 {% for article in article_list %}
         {% include "blog/article_template.html" with article=article %}
-       {% cycle '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
 {% empty %}
 <p>Aucun article.</p>
 {% endfor %}
-
+</div>
 
 {%include 'pagination.html' %}
 
