@@ -13,7 +13,7 @@ class ArticleForm(forms.ModelForm):
 
     class Meta:
         model = Article
-        fields = ['categorie', 'titre', 'contenu', 'estPublic']
+        fields = ['categorie', 'titre', 'contenu', 'estPublic', 'estModifiable']
         widgets = {
             'contenu': SummernoteWidget(),
            # 'bar': SummernoteInplaceWidget(),
@@ -47,7 +47,7 @@ class ArticleForm(forms.ModelForm):
         self.fields['contenu'].strip = False
 
 class ArticleChangeForm(forms.ModelForm):
-    estPublic = forms.ChoiceField(choices=((1, "Annonce publique"), (0, "Annonce réservée aux adhérents")), label='', required=True)
+    estPublic = forms.ChoiceField(choices=((1, "Article public"), (0, "Article réserve aux adhérents")), label='', required=True)
 
     class Meta:
         model = Article
@@ -55,6 +55,7 @@ class ArticleChangeForm(forms.ModelForm):
         widgets = {
             'contenu': SummernoteWidget(),
         }
+
 
     def __init__(self, *args, **kwargs):
         super(ArticleChangeForm, self).__init__(*args, **kwargs)

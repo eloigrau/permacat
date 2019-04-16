@@ -3,7 +3,7 @@
 {% block subtitle %}
 <div class="row">
     <div class="col-md-2">
-        {%if article.auteur == request.user%}
+        {%if article.auteur == request.user %}
 		<div class="btn-group">
             <a href="{% url 'blog:modifierArticle' slug=article.slug %}">
                <button type="button" class="btn btn-sm btn-warning">
@@ -14,6 +14,11 @@
                 <span class="glyphicon glyphicon-plus"></span>&nbsp;Supprimer
                </button></a>
         </div>
+        {%elif article.estModifiable%}
+            <a href="{% url 'blog:modifierArticle' slug=article.slug %}">
+               <button type="button" class="btn btn-sm btn-warning">
+                <span class="glyphicon glyphicon-plus"></span>&nbsp;Modifier
+               </button></a>
         {%endif%}
     </div>
     <div class="col-md-8">

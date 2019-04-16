@@ -18,6 +18,7 @@ class Article(models.Model):
     contenu = models.TextField(null=True)
     date = models.DateTimeField(auto_now_add=True, auto_now=False, verbose_name="Date de parution")
     estPublic = models.BooleanField(default=False, verbose_name='Public ou réservé aux membres permacat')
+    estModifiable = models.BooleanField(default=False, verbose_name="Modifiable par n'importe qui")
 
     date_dernierMessage = models.DateTimeField(verbose_name="Date du dernier message", auto_now=True)
     dernierMessage = models.CharField(max_length=100, default=None, blank=True, null=True)
