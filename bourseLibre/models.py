@@ -51,8 +51,8 @@ class Choix():
         'type_prix': typePrixUnite,
     },
     }
-    monnaies = (('don', 'don'), ('troc', 'troc'), ('pret', 'pret'), ('G1', 'G1'), ('Soudaqui', 'Soudaqui'), ('SEL', 'SEL'), ('JEU', 'JEU'),  ('heuresT', 'heuresT'),  ('Autre', 'A negocier'))
-    monnaies_nonquantifiables =['don', 'troc', 'pret', 'SEl']
+    monnaies = (('don', 'don'), ('troc', 'troc'), ('pret', 'prêt'), ('G1', 'G1'), ('Soudaqui', 'Soudaqui'), ('SEL', 'SEL'), ('JEU', 'JEU'),  ('heuresT', 'heuresT'),  ('Autre', 'A négocier'))
+    monnaies_nonquantifiables =['don', 'troc', 'pret', 'SEl', 'Autre']
 
     ordreTri = ['date', 'categorie', 'producteur']
     distances = ['5', '10', '20', '30', '50', '100']
@@ -321,7 +321,7 @@ class Produit_aliment(Produit):  # , BaseProduct):
 
     def get_prixEtUnite(self):
         if self.unite_prix in Choix.monnaies_nonquantifiables:
-            return self.unite_prix
+            return self.get_unite_prix_display()
         elif self.get_prix() == 0:
             return "gratuit"
         return str(self.get_prix()) + " " + self.get_unite_prix()
@@ -360,7 +360,7 @@ class Produit_vegetal(Produit):  # , BaseProduct):
 
     def get_prixEtUnite(self):
         if self.unite_prix in Choix.monnaies_nonquantifiables:
-            return self.unite_prix
+            return self.get_unite_prix_display()
         elif self.get_prix() == 0:
             return "gratuit"
         return str(self.get_prix()) + " " + self.get_unite_prix()
@@ -393,13 +393,13 @@ class Produit_service(Produit):  # , BaseProduct):
 
     def get_unite_prix(self):
         if self.unite_prix in Choix.monnaies_nonquantifiables:
-            return self.unite_prix
+            return self.get_unite_prix_display()
         else:
             return self.unite_prix + "/" + self.get_type_prix_display()
 
     def get_prixEtUnite(self):
         if self.unite_prix in Choix.monnaies_nonquantifiables:
-            return self.unite_prix
+            return self.get_unite_prix_display()
         elif self.get_prix() == 0:
             return "gratuit"
         return str(self.get_prix()) + " " + self.get_unite_prix()
@@ -432,13 +432,13 @@ class Produit_objet(Produit):  # , BaseProduct):
 
     def get_unite_prix(self):
         if self.unite_prix in Choix.monnaies_nonquantifiables:
-            return self.unite_prix
+            return self.get_unite_prix_display()
         else:
             return self.unite_prix + "/" + self.get_type_prix_display()
 
     def get_prixEtUnite(self):
         if self.unite_prix in Choix.monnaies_nonquantifiables:
-            return self.unite_prix
+            return self.get_unite_prix_display()
         elif self.get_prix() == 0:
             return "gratuit"
         return str(self.get_prix()) + " " + self.get_unite_prix()
