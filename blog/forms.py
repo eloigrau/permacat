@@ -84,7 +84,7 @@ class ProjetForm(forms.ModelForm):
 
     class Meta:
         model = Projet
-        fields = ['categorie','coresponsable', 'titre', 'contenu', 'estPublic', 'lien_document', 'fichier_projet', 'lien_vote',]
+        fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'statut', 'estPublic', 'lien_document', 'fichier_projet', 'lien_vote',]
         widgets = {
             'contenu': SummernoteWidget(),
         }
