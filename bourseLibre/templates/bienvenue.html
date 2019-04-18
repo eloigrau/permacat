@@ -7,7 +7,7 @@
 {% block subtitle %}
 <h3 class = "textcenter rowbienvenue">Benvingut {% if request.user.is_autenticated %}request.user.username{%endif%} !</h3>
 <h4 class = "textcenter rowbienvenue">{% trans "L'association de Permaculture Catalane vous souhaite la bienvenue !" %}</h4>
-<h6 class = "textcenter rowbienvenue">({% trans "Site en construction"%})</h6>
+
 {% if not request.user.is_authenticated %}
 <h7 class = "textcenter rowbienvenue">(<a href="https://permacat.herokuapp.com/auth/login">{% trans "connexion sécurisée" %}</a>)</h7>
 
@@ -20,6 +20,7 @@
 	<hr>
 		</div>
 </div>
+<h6 class = "textcenter rowbienvenue">({% trans "Site en construction"%})</h6>
 <div class="row">
 		<div class="col-md-4">
 			<h2>
