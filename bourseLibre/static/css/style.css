@@ -50,12 +50,6 @@ margin-bottom: 30px;
     text-align:center;
 }
 
-.navbarMenu {
-    border-radius: 0.2em;
-    border: 0px solid #053200;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
 p {
     margin: .5em 0;
 }
@@ -84,9 +78,7 @@ section.p3 {
     //background-color: #FFF !important;
 }
 
-.dropdown:hover>.dropdown-menu {
-  display: block;
-}
+
 
 .bs-dark .dropdown-menu {
  // min-width: 200px;
@@ -318,6 +310,7 @@ a:visited        { color: #000000 }  /* visited links         */
 a:hover, a:focus { color: grey }    /* user hovers, or focus */
 a:active         { color: #000000 }  /* active links          */
 
+
 .commentaire{
     border-color: #333;=
     padding:10px;
@@ -407,22 +400,30 @@ ul.errorlist{
     color:red;
 }
 
+@media (min-width: 767px) {
+  .navbar-custom .dropdown:hover .dropdown-menu {
+    display: block;
+  }
+}
+.btn-group{
+    white-space: normal;
+}
 /* Responsive navigation menu (for mobile devices) */
 @media screen and (max-width: 600px) {
   table,
   tbody,
   tr,
   td {
-    display: block;
+    //display: block;
     width: auto!important;
-    /* parceque tu as mis des style inline grrr */
   }
-
-  .topnav a, .topnav-right {
-    float: none;
-    display: block;
-  }
-
+.foo {
+      visibility:collapse;
+ display: none;
+}
+.btn-group{
+    white-space: normal;
+}
     .row{
         margin-right: 0px;
         margin-left: 0px;
@@ -458,6 +459,12 @@ ul.errorlist{
     padding-right: 0px;
     padding-left: 0px;
 
+}
+
+.menuNavbar{
+
+  visibility: hidden;
+  display: none;
 }
 }
 

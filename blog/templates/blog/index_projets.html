@@ -53,13 +53,11 @@
     </div>
 </div>
     <div class="col-md-3 textcenter">
-        {% if request.user.is_permacat %}
         <a href="{% url 'blog:ajouterNouveauProjet' %}">
         <button type="button" class="btn btn-success" >
                 <span class="glyphicon glyphicon-plus"></span>&nbsp; Ajouter un projet
             </button>
             </a>
-        {%endif%}
     </div>
 </div>
 {%endblock%}

@@ -34,7 +34,8 @@ urlpatterns = [
     url(r'^captcha/', include('captcha.urls')),
     url('^', include('django.contrib.auth.urls')),
     url(r'^$', views.bienvenue, name='bienvenue'),
-    url(r'^permacat/presentation$', views.presentation_asso, name='presentation_asso'),
+    url(r'^permacat/presentation/$', views.presentation_asso, name='presentation_asso'),
+    url(r'^site/presentation/$', views.presentation_site, name='presentation_site'),
     url(r'^permacat/statuts$$', views.statuts, name='statuts'),
     
     url(r'^admin/', admin.site.urls, name='admin',),

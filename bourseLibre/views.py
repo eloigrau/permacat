@@ -65,6 +65,9 @@ def bienvenue(request):
 def presentation_asso(request):
     return render(request, 'presentation_asso.html')
 
+def presentation_site(request):
+    return render(request, 'presentation_site.html')
+
 def statuts(request):
     return render(request, 'statuts.html')
 

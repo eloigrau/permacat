@@ -84,9 +84,9 @@ class Produit_objet_CreationForm(ProduitCreationForm):
         }
 
 class AdresseForm(forms.ModelForm):
-    rue = forms.CharField(label="Rue*", required=True)
+    rue = forms.CharField(label="Rue", required=False)
     code_postal = forms.CharField(label="Code postal*", initial="66000")
-    telephone = forms.CharField(label="Téléphone*", required=True)
+    telephone = forms.CharField(label="Téléphone", required=False)
     pays = forms.CharField(label="Pays*", initial="France",required=True)
     latitude = forms.FloatField(label="Latitude", initial="42", required=False,widget = forms.HiddenInput())
     longitude = forms.FloatField(label="Longitude", initial="2", required=False,widget = forms.HiddenInput())
@@ -103,8 +103,8 @@ class AdresseForm(forms.ModelForm):
 
 class ProfilCreationForm(UserCreationForm):
     username = forms.CharField(label="Pseudonyme*", help_text="Attention les majuscules sont importantes...")
-    description = forms.CharField(label="Description*", help_text="Une description de vous même", widget=SummernoteWidget)
-    competences = forms.CharField(label="Savoir-faire*", help_text="Par exemple: electricien, bouturage, aromatherapie, etc...", widget=SummernoteWidget)
+    description = forms.CharField(label="Description", help_text="Une description de vous même", required=False, widget=forms.Textarea)
+    competences = forms.CharField(label="Savoir-faire", help_text="Par exemple: electricien, bouturage, aromatherapie, etc...", required=False, widget=forms.Textarea, )
     site_web = forms.CharField(label="Site web", help_text="n'oubliez pas le https://", required=False)
     captcha = CaptchaField()
     email= forms.EmailField(label="Email*",)

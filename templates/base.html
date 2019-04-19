@@ -71,7 +71,7 @@
                 <div class="panel-title soustitre">
                     <div class="row justify-content-sm-center">
                     <div class="col-sm-12 col-md-11 col-lg-10  textcenter">
-                       {%block message%} {% if messages %}
+                       {%block message%} {% if messages2 %}
                         <ul class="messages">
                             {% for message in messages %}
                             <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>

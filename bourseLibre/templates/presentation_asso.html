@@ -3,8 +3,22 @@
 
 			<div class="jumbotron well">
 {% block subtitle %}
-<h1 class = "textcenter rowbienvenue">PermaCat</h1>
-<h3 class = "textcenter rowbienvenue">Qui sommes nous ?</h3>
+
+<h2 class = "textcenter rowbienvenue">PermaCat</h2>
+
+				<div class="row">
+				<div class="col-sm-12">
+				<div class="btn-group">
+				<a href="{% url 'blog:index_projets' %}" class="btn btn-success">   Projets         </a>
+				{%if request.user.is_permacat %}
+				 <a class="btn btn-success" href="{% url 'profil_carte_adherents' %}"> Carte des adhérents </a>
+				 <a class="btn btn-success" href="{% url 'agora_permacat' %}"> Agora permacat </a>
+				{% endif%}
+				<a class="btn btn-success" href="{% url 'charte' %}"> Charte </a>
+				<a class="btn btn-success" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a>
+				</div>
+				</div></div>
+<h4 class = "textcenter rowbienvenue">Qui sommes nous ?</h4>
 {% endblock %}
 {% block content %}
 				<div class="row">
