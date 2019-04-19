@@ -12,58 +12,41 @@
         </button>
         <a class="navbar-brand" href="{% url 'bienvenue' %}"> Perma.Cat</a>
 
-        <div class="navbar-collapse collapse justify-content-between  align-items-center w-100"  id="navbarsActuel">
+        <li class="navbar-collapse collapse justify-content-between  align-items-center w-100"  id="navbarsActuel">
 
         {% if user.is_authenticated %}
             <ul class="nav navbar-nav">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="{% url 'marche' %}" >Marché</a>
-                    <div class="dropdown-menu visible-md" id="menuNavbar1" aria-labelledby="navbarDropdownMenuLink" >
-                        <a class="nav-link dropdown-item" href="{% url 'marche' %}">Toutes les annonces</a>
-                        <a class="nav-link dropdown-item" href="{% url 'marche_offres' %}?">Offres</a>
-                        <a class="nav-link dropdown-item" href="{% url 'marche_recherches' %}?">Demandes</a>
-                        <a class="nav-link dropdown-item" href="{% url 'marche' %}?producteur={{ user.username }}">Mes annonces</a>
-                        <span class="nav-link divider" role="separator"></span>
-                        <a class="nav-link dropdown-item" href="{% url 'produit_proposer_entree' %}">Ajouter une annonce</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle " href="{% url 'agora' %}" >Forum</a>
-                    <div class="dropdown-menu  visible-md" id="menuNavbar2" aria-labelledby="navbarDropdownMenuLink2">
-                        <a class="nav-link" href="{% url 'agora' %}">Agora</a>
-                        <a class="nav-link" href="{% url 'blog:index' %}?">Articles</a>
-                        <a class="nav-link" href="{% url 'conversations' %}"><span class="glyphicon glyphicon-conversation"></span> Conversations privées</a>
-                    </div>
-                </li>
-                <li class="active">
-             </li></ul>
-    
-   
-                        <ul class="nav navbar-nav navbar-right">
-                <li class="nav-item"><form class="form-inline my-2 my-lg-0 justify-content-center form-group navbar-form " action="{% url 'chercher' %}" method="get" role = "search">
-                    {% csrf_token %}
-                        <input class="form-control fmr-sm-2" name="id_recherche" placeholder="Chercher..." type="text">
-                        <span class="input-group-append">
-                            <button class="btn navbar-btn btn-light my-2 my-sm-0" type="submit" >...</button>
-                        </span>
-                    </form> </li>
-                            
+
+
+  <li class="nav-item dropdown">
+       <a  data-toggle="dropdown" class="nav-link dropdown-toggle" href="{% url 'marche' %}"  aria-haspopup="true" aria-expanded="false">Marché <span class="caret"></span></a>
+
+        <ul class="dropdown-menu">
+            <a  class="nav-link  dropdown-item" href="{% url 'marche' %}">Toutes les annonces</a>
+             <a  class="nav-link dropdown-item" href="{% url 'marche_offres' %}?">Offres</a>
+            <a class="nav-link  dropdown-item" href="{% url 'marche_recherches' %}?">Demandes</a></li>
+             <a class="nav-link  dropdown-item" href="{% url 'marche' %}?producteur={{ user.username }}">Mes annonces</a>
+            <li class="divider"></li>
+
+                        <a class="nav-link " href="{% url 'produit_proposer_entree' %}">Ajouter une annonce</a>
+
+        </ul>
+    </li>
+ <li class="nav-item dropdown">
+       <a data-toggle="dropdown" class="nav-link dropdown-toggle" href="{% url 'agora' %}" aria-haspopup="true" aria-expanded="false" >Forum <span class="caret"></span></a>
+
+        <ul class="dropdown-menu">
+  <a class="nav-link" href="{% url 'agora' %}">Agora</a>
+                       <a class="nav-link" href="{% url 'blog:index' %}?">Articles</a>
+                  <a class="nav-link" href="{% url 'conversations' %}"><span class="glyphicon glyphicon-conversation"></span> Conversations privées</a>
+        </ul>
+    </li>
+
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="{% url 'profil_courant' %}" id="navbarDropdownMenuLink">
-                         <span class="glyphicon glyphicon-user"></span> profil: {{request.user}}
-                        </a>
-                        <div class="dropdown-menu disabled-nav-item" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="nav-link" href="{% url 'profil_courant' %}"><span class="fa fa-wrench"></span>Mon profil</a>
-                            <a class="nav-link" href="{% url 'panier_afficher' %}"><span class="glyphicon glyphicon-shopping-bag"></span> Mon panier</a>
-                            <a class="nav-link" href="{% url 'afficher_requetes' %}"><span class="glyphicon glyphicon-shopping-cart"></span> Mes requêtes</a>
-                            <a class="nav-link" href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span>Se déconnecter</a>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="{% url 'presentation_asso' %}" id="navbarAsso">
+                        <a class="nav-link dropdown-toggle  btn-block" href="{% url 'presentation_asso' %}" id="navbarAsso" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"   >
                          L'association
                         </a>
-                        <div class="dropdown-menu disabled-nav-item" aria-labelledby="navbarAsso">
+                        <div class="dropdown-menu " aria-labelledby="navbarAsso">
                             <a class="nav-link" href="{% url 'blog:index_projets' %}"> Projets </a>
                            {%comment%}  <a class="nav-link" href="{% url 'agenda' %}"> Agenda </a>{%endcomment%}
                             {%if request.user.is_permacat %}
@@ -76,11 +59,12 @@
                             <a class="nav-link" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a>
                         </div>
                     </li>
+
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="{% url 'presentation_site' %}" id="navbarAbout2" >
+                        <a class="nav-link dropdown-toggle" href="{% url 'presentation_site' %}" id="navbarAbout2" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" >
                          Le site
                         </a>
-                        <div class="dropdown-menu disabled-nav-item" aria-labelledby="navbarAbout2">
+                        <div class="dropdown-menu" aria-labelledby="navbarAbout2">
                             <a class="nav-link" href="{% url 'profil_list' %}"> Annuaire </a>
                              <a class="nav-link" href="{% url 'profil_carte' %}"> Carte </a>
                             <span class="nav-link divider" role="separator"></span>
@@ -91,10 +75,34 @@
                             <a class="nav-link" href="{% url 'fairedon' %}"> Faire un don</a>
                         </div>
                     </li>
+            </ul>
+   
+                        <ul class="nav navbar-nav navbar-right">
+
+                     <li class="nav-item">
+                         <form class="form-inline my-2 my-lg-0 justify-content-center form-group navbar-form " action="{% url 'chercher' %}" method="get" role = "search">
+                    {% csrf_token %}
+                        <input class="form-control fmr-sm-2" name="id_recherche" placeholder="Chercher..." type="text">
+                        <span class="input-group-append">
+                            <button class="btn navbar-btn btn-light my-2 my-sm-0" type="submit" >...</button>
+                        </span>
+                    </form>
+                     </li>
                     {% if user.is_superuser %}
                     {% load admin_urls %}
                     <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">admin</a></li>
                     {% endif %}
+
+                   <li class="nav-item dropdown">
+                       <a data-toggle="dropdown" class="nav-link dropdown-toggle " href="{% url 'profil_courant' %}" aria-haspopup="true" aria-expanded="false"  >
+                           Profil: {{request.user}} <span class="caret"></span></a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="nav-link" href="{% url 'profil_courant' %}"><span class="fa fa-wrench"></span>Mon profil</a>
+                            <a class="nav-link" href="{% url 'panier_afficher' %}"><span class="glyphicon glyphicon-shopping-bag"></span> Mon panier</a>
+                            <a class="nav-link" href="{% url 'afficher_requetes' %}"><span class="glyphicon glyphicon-shopping-cart"></span> Mes requêtes</a>
+                            <a class="nav-link" href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span>Se déconnecter</a>
+                        </div>
+                    </li>
                 </ul>
             {% else %}
                 <ul class="nav navbar-nav mr-auto navbar-left">
@@ -127,8 +135,5 @@
             </ul>
                 {% endif %}
         </div>
-        </div>
 </nav>
-<script>
-</script>
 {% endblock %}

@@ -92,7 +92,7 @@ section.p3 {
 }
 
 .bs-dark .dropdown-menu .divider {
-  //border: 1px solid rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.8);
 }
 .bs-dark .dropdown-menu > li > a {
   padding: 6px 20px;
@@ -400,11 +400,6 @@ ul.errorlist{
     color:red;
 }
 
-@media (min-width: 767px) {
-  .navbar-custom .dropdown:hover .dropdown-menu {
-    display: block;
-  }
-}
 .btn-group{
     white-space: normal;
 }
@@ -414,7 +409,7 @@ ul.errorlist{
   tbody,
   tr,
   td {
-    //display: block;
+    display: block;
     width: auto!important;
   }
 .foo {
