@@ -52,7 +52,7 @@
                            {%comment%}  <a class="nav-link" href="{% url 'agenda' %}"> Agenda </a>{%endcomment%}
                             {%if request.user.is_permacat %}
                              <a class="nav-link" href="{% url 'annuaire_permacat' %}"> Annuaire des adhérents </a>
-                             <a class="nav-link" href="{% url 'profil_carte_adherents' %}"> Carte des adhérents </a>
+                             <a class="nav-link" href="{% url 'carte_permacat' %}"> Carte des adhérents </a>
                              <a class="nav-link" href="{% url 'agora_permacat' %}"> Agora permacat </a>
                             {% endif%}
                             <span class="nav-link divider" role="separator"></span>
