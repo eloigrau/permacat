@@ -63,9 +63,10 @@ urlpatterns = [
     url(r'^liens/$', views.liens, name='liens',),
     url(r'^fairedon/$', views.fairedon, name='fairedon',),
     #url(r'^agenda/$', views.agenda, name='agenda',),
-    url(r'^cooperateurs/$', login_required(views.profil_list), name='profil_list',),
-    url(r'^cooperateurs/carte/inscrits/$', login_required(views.profil_carte), name='profil_carte',),
-    url(r'^cooperateurs/carte/adherents/$', login_required(views.profil_carte_adherents), name='profil_carte_adherents',),
+    url(r'^cooperateurs/annuaire/$', login_required(views.annuaire), name='annuaire',),
+    url(r'^cooperateurs/annuaire_permacat/$', login_required(views.annuaire_permacat), name='annuaire_permacat',),
+    url(r'^cooperateurs/carte/$', login_required(views.carte), name='carte',),
+    url(r'^cooperateurs/carte_permacat/$', login_required(views.carte_permacat), name='carte_permacat',),
 
     url(r'^marche/proposer/(?P<type_produit>[-A-Za-z]+)/$', login_required(views.produit_proposer), name='produit_proposer', ),
     url(r'^marche/proposer/', login_required(views.proposerProduit_entree), name='produit_proposer_entree',),

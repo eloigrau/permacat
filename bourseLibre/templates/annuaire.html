@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Coopérateurs
+{% endblock %}
+<div class="row">
+<div class="col-sm-12 textcenter">
+    <h3>Les adhérents au site</h3>
+    </div>
+    </div>
+{% block subtitle %}
+
+<div class="row">
+    <div class="col-sm-12 textcenter">
+        <div class="btn-group btn-group-justified">
+            {% if request.user.is_permacat %}
+            <a href="{% url 'annuaire_permacat' %}" >
+                <button type="button" class="btn btn-primary" >Liste des adhérents Permacat</button>
+                </a>
+            {% endif %}
+            <a href="{% url 'carte' %}" >
+                <button type="button" class="btn btn-primary" >Carte des inscrits</button>
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-12">
+    <table class="table table-condensed tableprofils table-striped">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Pseudo</th>
+                <th>Email</th>
+                <th>Code postal</th>
+                <th>Commune</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for profil in profils %}
+        <tr>
+           {%comment%} <td>
+                <img src="{{ profil.avatar.get_absolute_url }}" alt="pas d'image" style="width:100px;height:100px" href="{% url 'profil' profil.id %}">
+            </td>
+            {%endcomment%}
+            <td><a href="{% url 'profil' profil.id %}">{{ profil.username }}</a></td>
+            <td><a href="{% url 'profil' profil.id %}">{{ profil.email }}</a></td>
+            <td><a href="{% url 'profil' profil.id %}">{{ profil.adresse.code_postal }}</a></td>
+            <td><a href="{% url 'profil' profil.id %}">{{ profil.adresse.commune }}</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    </div>
+{% endblock %}

@@ -19,7 +19,7 @@
 
 
   <li class="nav-item dropdown">
-       <a  data-toggle="dropdown" class="nav-link dropdown-toggle" href="{% url 'marche' %}"  aria-haspopup="true" aria-expanded="false">Marché <span class="caret"></span></a>
+       <a  data-toggle="dropdown" class="nav-link dropdown-toggle" href="{% url 'marche' %}"  aria-haspopup="true" aria-expanded="false">Le Marché <span class="caret"></span></a>
 
         <ul class="dropdown-menu">
             <a  class="nav-link  dropdown-item" href="{% url 'marche' %}">Toutes les annonces</a>
@@ -33,7 +33,8 @@
         </ul>
     </li>
  <li class="nav-item dropdown">
-       <a data-toggle="dropdown" class="nav-link dropdown-toggle" href="{% url 'agora' %}" aria-haspopup="true" aria-expanded="false" >Forum <span class="caret"></span></a>
+       <a data-toggle="dropdown" class="nav-link dropdown-toggle" href="{% url 'agora' %}" aria-haspopup="true" aria-expanded="false" >
+           Le Forum <span class="caret"></span></a>
 
         <ul class="dropdown-menu">
   <a class="nav-link" href="{% url 'agora' %}">Agora</a>
@@ -50,6 +51,7 @@
                             <a class="nav-link" href="{% url 'blog:index_projets' %}"> Projets </a>
                            {%comment%}  <a class="nav-link" href="{% url 'agenda' %}"> Agenda </a>{%endcomment%}
                             {%if request.user.is_permacat %}
+                             <a class="nav-link" href="{% url 'annuaire_permacat' %}"> Annuaire des adhérents </a>
                              <a class="nav-link" href="{% url 'profil_carte_adherents' %}"> Carte des adhérents </a>
                              <a class="nav-link" href="{% url 'agora_permacat' %}"> Agora permacat </a>
                             {% endif%}
@@ -65,8 +67,8 @@
                          Le site
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarAbout2">
-                            <a class="nav-link" href="{% url 'profil_list' %}"> Annuaire </a>
-                             <a class="nav-link" href="{% url 'profil_carte' %}"> Carte </a>
+                            <a class="nav-link" href="{% url 'annuaire' %}"> Annuaire </a>
+                             <a class="nav-link" href="{% url 'carte' %}"> Carte </a>
                             <span class="nav-link divider" role="separator"></span>
                             <a class="nav-link" href="{% url 'contact_admins' %}"> Contacter admins </a>
                             <a class="nav-link" href="{% url 'cgu' %}"> CGU </a>
