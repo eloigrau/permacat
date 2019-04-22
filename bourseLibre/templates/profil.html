@@ -19,11 +19,9 @@
     <div class="col-md-12 textcenter">
         {% if  user.username != request.user.username %}
 
-            {% if request.user.is_permacat %}
             <a href="{% url 'lireConversation' user.username %}" class="btn btn-success">
               <span class="glyphicon glyphicons-conversation"></span> Message
             </a>
-            {%endif%}
             <a href="{% url 'profil_contact' user.id %}" class="btn btn-success">
               <span class="glyphicon glyphicon-envelope"></span> Email
             </a>
@@ -69,19 +67,28 @@
                     <td>{{ user.get_full_name }}</td>
                 </tr>
               {% endif %}
-              {%if request.user.is_permacat or request.user == user%}
-                  {% if user.adresse.telephone %}
-                    <tr>
-                        <td style="width:250px">Telephone *:</td>
-                        <td>{{ user.adresse.telephone }}</td>
-                    </tr>
-                  {% endif %}
+              {% if user.adresse.telephone %}
+                <tr>
+                    <td style="width:250px">Telephone *:</td>
+                    <td>{{ user.adresse.telephone }}</td>
+                </tr>
               {% endif %}
             <tr>
                 <td style="width:250px">Email :</td>
                 <td>{{ user.email }}</td>
             </tr>
 
+                    <tr>
+                        <td style="width:250px">Description :</td>
+                        <td>{{ user.description|safe }}</td>
+                    </tr>
+
+                  {% if user.site_web %}
+                    <tr>
+                        <td style="width:250px">Site_web *:</td>
+                        <td> {{ user.site_web }}</td>
+                    </tr>
+                  {% endif %}
             {%if request.user.is_permacat or request.user == user %}
                   {% if user.avatar %}
                     <tr>
@@ -90,16 +97,6 @@
                     </tr>
                   {% endif %}
 
-                  {% if user.site_web %}
-                    <tr>
-                        <td style="width:250px">Site_web *:</td>
-                        <td> {{ user.site_web }}</td>
-                    </tr>
-                  {% endif %}
-                    <tr>
-                        <td style="width:250px">Description *:</td>
-                        <td>{{ user.description|safe }}</td>
-                    </tr>
 
                     <tr>
                         <td style="width:250px">Savoir-faire *:</td>
@@ -187,9 +184,21 @@
             </style>
               <script type="text/javascript">
                 function map_init_basic (map, options) {
+
+          var greenIcon = L.icon({
+            iconUrl: '{% static 'img/leafgreen.png' %}',
+            shadowUrl: '{% static 'img/leafshadow.png' %}',
+
+            iconSize:     [38, 95], // size of the icon
+            shadowSize:   [50, 64], // size of the shadow
+            iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+            shadowAnchor: [4, 62],  // the same for the shadow
+            popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+        });
+
                 var lat = {{user.adresse.get_latitude}};
                 var lon = {{user.adresse.get_longitude}};
-                L.marker([lat, lon]).addTo(map);
+                L.marker([lat, lon], {icon: greenIcon}).addTo(map);
                 map.panTo(new L.LatLng(lat, lon));
             }
         </script>
