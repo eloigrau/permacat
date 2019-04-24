@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from .models import Article, Commentaire, Projet, CommentaireProjet
+from .models import Article, Commentaire, Projet, CommentaireProjet, Choix
 from .forms import ArticleForm, CommentForm, ArticleChangeForm, ProjetForm, ProjetChangeForm, CommentProjetForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
@@ -95,7 +95,8 @@ class ListeArticles(ListView):
 
         # context['producteur_list'] = Profil.objects.values_list('username', flat=True).distinct()
         context['auteur_list'] = Article.objects.order_by('auteur').values_list('auteur__username', flat=True).distinct()
-        context['categorie_list'] = Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
+        cat= Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
+        context['categorie_list'] = [x[1] for x in Choix.type_annonce if x[0] in cat]
         context['typeFiltre'] = "aucun"
         #context['ordreTriPossibles'] =  ['date dernier message', 'categorie', ]
 
@@ -203,7 +204,8 @@ class ListeProjets(ListView):
 
         # context['producteur_list'] = Profil.objects.values_list('username', flat=True).distinct()
         context['auteur_list'] = Projet.objects.order_by('auteur').values_list('auteur__username', flat=True).distinct()
-        context['categorie_list'] = Projet.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
+        cat = Projet.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
+        context['categorie_list'] = [x[1] for x in Choix.type_annonce if x[0] in cat]
         context['typeFiltre'] = "aucun"
         if 'auteur' in self.request.GET:
             context['typeFiltre'] = "auteur"

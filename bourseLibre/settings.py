@@ -331,6 +331,25 @@ SUMMERNOTE_CONFIG = {
     ['misc', [ 'undo', 'redo', 'help','fullscreen', 'codeview',  'readmore']],
 
 ],
+"popover": {
+  "image": [
+    ['imagesize', ['imageSize100', 'imageSize50', 'imageSize25']],
+    ['float', ['floatLeft', 'floatRight', 'floatNone']],
+    ['remove', ['removeMedia']]
+  ],
+  "link": [
+    ['link', ['linkDialogShow', 'unlink']]
+  ],
+  "air": [
+    ['color', ['color']],
+    ['font', ['bold', 'underline', 'clear']],
+    ['para', ['ul', 'paragraph']],
+    ['table', ['table']],
+    ['insert', ['link', 'picture']]
+  ]
+},
+
+
 # Need authentication while uploading attachments.
 'attachment_require_authentication': True,
 

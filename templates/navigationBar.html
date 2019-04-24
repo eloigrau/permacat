@@ -1,11 +1,11 @@
 
 {% block navBar %}
     {%comment%}
-<div class="topnav navbar-expand-sm navbar-light navbarMenu fixed-top">
-<nav class="navbar navbar-dark bg-dark bs-dark navbar-expand-lg justify-content-center fixed-top navbarMenu">
+<ul class="topnav navbar-expand-sm navbar-light navbarMenu fixed-top">
+<nav class="navbar navbar-dark bs-dark navbar-expand-lg justify-content-center navbarMenu">
     {%endcomment%}
 
-<nav class="navbar navbar-dark bg-dark bs-dark navbar-expand-lg justify-content-center fixed-top navbarMenu">
+<nav class="navbar  navbar-dark bs-dark bg-dark navbar-expand-lg justify-content-center fixed-top navbarMenu">
     <div class="container-fluid">
         <button class="navbar-toggler navbar-btn" type="button" data-toggle="collapse" data-target="#navbarsActuel" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -22,13 +22,13 @@
        <a  data-toggle="dropdown" class="nav-link dropdown-toggle" href="{% url 'marche' %}"  aria-haspopup="true" aria-expanded="false">Le Marché <span class="caret"></span></a>
 
         <ul class="dropdown-menu">
-            <a  class="nav-link  dropdown-item" href="{% url 'marche' %}">Toutes les annonces</a>
-             <a  class="nav-link dropdown-item" href="{% url 'marche_offres' %}?">Offres</a>
-            <a class="nav-link  dropdown-item" href="{% url 'marche_recherches' %}?">Demandes</a></li>
-             <a class="nav-link  dropdown-item" href="{% url 'marche' %}?producteur={{ user.username }}">Mes annonces</a>
+            <li><a  class="nav-link  dropdown-item" href="{% url 'marche' %}">Toutes les annonces</a></li>
+             <li><a  class="nav-link dropdown-item" href="{% url 'marche_offres' %}?">Offres</a></li>
+            <li><a class="nav-link  dropdown-item" href="{% url 'marche_recherches' %}?">Demandes</a></li>
+            <li> <a class="nav-link  dropdown-item" href="{% url 'marche' %}?producteur={{ user.username }}">Mes annonces</a></li>
             <li class="divider"></li>
 
-                        <a class="nav-link " href="{% url 'produit_proposer_entree' %}">Ajouter une annonce</a>
+                       <li> <a class="nav-link dropdown-item" href="{% url 'produit_proposer_entree' %}">Ajouter une annonce</a></li>
 
         </ul>
     </li>
@@ -37,9 +37,9 @@
            Le Forum <span class="caret"></span></a>
 
         <ul class="dropdown-menu">
-  <a class="nav-link" href="{% url 'agora' %}">Agora</a>
-                       <a class="nav-link" href="{% url 'blog:index' %}?">Articles</a>
-                  <a class="nav-link" href="{% url 'conversations' %}"><span class="glyphicon glyphicon-conversation"></span> Conversations privées</a>
+            <li><a class="nav-link dropdown-item" href="{% url 'agora' %}">Agora</a></li>
+            <li> <a class="nav-link dropdown-item" href="{% url 'blog:index' %}?">Articles</a></li>
+             <li><a class="nav-link dropdown-item" href="{% url 'conversations' %}"><span class="glyphicon glyphicon-conversation"></span> Conversations privées</a></li>
         </ul>
     </li>
 
@@ -47,38 +47,38 @@
                         <a class="nav-link dropdown-toggle  btn-block" href="{% url 'presentation_asso' %}" id="navbarAsso" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"   >
                          L'association
                         </a>
-                        <div class="dropdown-menu " aria-labelledby="navbarAsso">
+                        <ul class="dropdown-menu " aria-labelledby="navbarAsso">
                             {%if request.user.is_permacat %}
-                             <a class="nav-link" href="{% url 'agora_permacat' %}"> Agora permacat </a>
+                            <li> <a class="nav-link dropdown-item" href="{% url 'agora_permacat' %}"> Agora permacat </a></li>
                             {% endif%}
-                            <a class="nav-link" href="{% url 'blog:index_projets' %}"> Projets </a>
+                            <li><a class="nav-link dropdown-item" href="{% url 'blog:index_projets' %}"> Projets </a></li>
                            {%comment%}  <a class="nav-link" href="{% url 'agenda' %}"> Agenda </a>{%endcomment%}
                             {%if request.user.is_permacat %}
-                            <span class="nav-link divider" role="separator"></span>
-                             <a class="nav-link" href="{% url 'annuaire_permacat' %}"> Annuaire  </a>
-                             <a class="nav-link" href="{% url 'carte_permacat' %}"> Carte  </a>
+                           <li>  <span class="nav-link divider" role="separator"></span></li>
+                            <li> <a class="nav-link dropdown-item" href="{% url 'annuaire_permacat' %}"> Annuaire  </a></li>
+                             <li><a class="nav-link dropdown-item" href="{% url 'carte_permacat' %}"> Carte  </a></li>
                             {% endif%}
-                            <span class="nav-link divider" role="separator"></span>
-                            <a class="nav-link" href="{% url 'presentation_asso' %}"> Qui sommes nous ?</a>
-                            <a class="nav-link" href="{% url 'charte' %}"> Charte </a>
-                            <a class="nav-link" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a>
-                        </div>
+                            <li> <span class="nav-link divider" role="separator"></span></li>
+                           <li> <a class="nav-link dropdown-item" href="{% url 'presentation_asso' %}"> Qui sommes nous ?</a></li>
+                           <li> <a class="nav-link dropdown-item" href="{% url 'charte' %}"> Charte </a></li>
+                           <li> <a class="nav-link dropdown-item" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a></li>
+                        </ul>
                     </li>
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="{% url 'presentation_site' %}" id="navbarAbout2" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" >
                          Le site
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarAbout2">
-                            <a class="nav-link" href="{% url 'annuaire' %}"> Annuaire </a>
-                             <a class="nav-link" href="{% url 'carte' %}"> Carte </a>
-                            <span class="nav-link divider" role="separator"></span>
-                            <a class="nav-link" href="{% url 'contact_admins' %}"> Contacter admins </a>
-                            <a class="nav-link" href="{% url 'cgu' %}"> CGU </a>
-                            <a class="nav-link" href="{% url 'liens' %}"> Liens </a>
-                            <span class="nav-link divider" role="separator"></span>
-                            <a class="nav-link" href="{% url 'fairedon' %}"> Faire un don</a>
-                        </div>
+                        <ul class="dropdown-menu" aria-labelledby="navbarAbout2">
+                           <li> <a class="nav-link dropdown-item" href="{% url 'annuaire' %}"> Annuaire </a></li>
+                            <li> <a class="nav-link dropdown-item" href="{% url 'carte' %}"> Carte </a></li>
+                            <li> <span class="nav-link divider" role="separator"></span></li>
+                           <li> <a class="nav-link dropdown-item" href="{% url 'contact_admins' %}"> Contacter admins </a></li>
+                           <li> <a class="nav-link dropdown-item" href="{% url 'cgu' %}"> CGU </a></li>
+                           <li> <a class="nav-link dropdown-item" href="{% url 'liens' %}"> Liens </a></li>
+                            <li> <span class="nav-link divider" role="separator"></span></li>
+                           <li> <a class="nav-link dropdown-item" href="{% url 'fairedon' %}"> Faire un don</a></li>
+                        </ul>
                     </li>
             </ul>
    
@@ -101,12 +101,12 @@
                    <li class="nav-item dropdown">
                        <a data-toggle="dropdown" class="nav-link dropdown-toggle " href="{% url 'profil_courant' %}" aria-haspopup="true" aria-expanded="false"  >
                            Profil: {{request.user}} <span class="caret"></span></a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="nav-link" href="{% url 'profil_courant' %}"><span class="fa fa-wrench"></span>Mon profil</a>
-                            <a class="nav-link" href="{% url 'panier_afficher' %}"><span class="glyphicon glyphicon-shopping-bag"></span> Mon panier</a>
-                            <a class="nav-link" href="{% url 'afficher_requetes' %}"><span class="glyphicon glyphicon-shopping-cart"></span> Mes requêtes</a>
-                            <a class="nav-link" href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span>Se déconnecter</a>
-                        </div>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                           <li> <a class="nav-link dropdown-item" href="{% url 'profil_courant' %}"><span class="fa fa-wrench"></span>Mon profil</a></li>
+                           <li> <a class="nav-link dropdown-item" href="{% url 'panier_afficher' %}"><span class="glyphicon glyphicon-shopping-bag"></span> Mon panier</a></li>
+                           <li> <a class="nav-link dropdown-item" href="{% url 'afficher_requetes' %}"><span class="glyphicon glyphicon-shopping-cart"></span> Mes requêtes</a></li>
+                           <li> <a class="nav-link dropdown-item" href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span>Se déconnecter</a></li>
+                        </ul>
                     </li>
                 </ul>
             {% else %}
@@ -120,22 +120,22 @@
                         <a class="nav-link dropdown-toggle" href="{% url 'presentation_asso' %}" id="navbarAsso2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             L'association
                         </a>
-                        <div class="dropdown-menu disabled-nav-item" aria-labelledby="navbarAsso2">
-                            <a class="nav-link" href="{% url 'presentation_asso' %}"> Qui sommes nous ?</a>
-                            <a class="nav-link" href="{% url 'charte' %}"> Charte </a>
-                            <a class="nav-link" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a>
-                        </div>
+                        <ul class="dropdown-menu disabled-nav-item" aria-labelledby="navbarAsso2">
+                           <li> <a class="nav-link" href="{% url 'presentation_asso' %}"> Qui sommes nous ?</a></li>
+                           <li> <a class="nav-link" href="{% url 'charte' %}"> Charte </a></li>
+                           <li> <a class="nav-link" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a></li>
+                        </ul>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="{% url 'profil_courant' %}" id="navbarAbout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                          Le site
                         </a>
-                        <div class="dropdown-menu disabled-nav-item" aria-labelledby="navbarAbout">
-                            <a class="nav-link" href="{% url 'cgu' %}"> CGU </a>
-                            <a class="nav-link" href="{% url 'liens' %}"> Liens </a>
-                            <span class="nav-link divider" role="separator"></span>
-                            <a class="nav-link" href="{% url 'fairedon' %}"> Faire un don</a>
-                        </div>
+                        <ul class="dropdown-menu disabled-nav-item" aria-labelledby="navbarAbout">
+                           <li> <a class="nav-link" href="{% url 'cgu' %}"> CGU </a></li>
+                           <li> <a class="nav-link" href="{% url 'liens' %}"> Liens </a></li>
+                           <li> <span class="nav-link divider" role="separator"></span></li>
+                           <li> <a class="nav-link" href="{% url 'fairedon' %}"> Faire un don</a></li>
+                        </ul>
                     </li>
             </ul>
                 {% endif %}
