@@ -32,13 +32,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
 LOCALL = False
 try:
     SECRET_KEY = os.environ['SECRET_KEY']
+    DEBUG = False
 except:
     LOCALL  = True
     SECRET_KEY = 'aersd68fgsfdgsdvcbvcb563873gbgfthhfhdjd'
+    DEBUG = True
 
 #DEBUG_PROPAGATE_EXCEPTIONS = True
 

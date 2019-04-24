@@ -45,8 +45,8 @@
                 <span class="sr-only">Toggle Dropdown</span>
               </button>
             <div class="dropdown-menu"  aria-labelledby="menuCategorie"  id=idCategorie">
-                {% for categorie in categorie_list %}
-                  <a class="dropdown-item" href="?categorie={{categorie}}">{{categorie}}</a>
+                {% for cat_id, cat_nom in categorie_list %}
+                  <a class="dropdown-item" href="?categorie={{cat_id}}">{{cat_nom}}</a>
                 {% endfor %}
             </div>
         </div>
