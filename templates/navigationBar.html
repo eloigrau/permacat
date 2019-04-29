@@ -37,7 +37,7 @@
            Le Forum <span class="caret"></span></a>
 
         <ul class="dropdown-menu">
-            <li><a class="nav-link dropdown-item" href="{% url 'agora' %}">Agora</a></li>
+            <li><a class="nav-link dropdown-item" href="{% url 'agora' %}">Salon</a></li>
             <li> <a class="nav-link dropdown-item" href="{% url 'blog:index' %}?">Articles</a></li>
              <li><a class="nav-link dropdown-item" href="{% url 'conversations' %}"><span class="glyphicon glyphicon-conversation"></span> Conversations privées</a></li>
         </ul>
@@ -49,7 +49,7 @@
                         </a>
                         <ul class="dropdown-menu " aria-labelledby="navbarAsso">
                             {%if request.user.is_permacat %}
-                            <li> <a class="nav-link dropdown-item" href="{% url 'agora_permacat' %}"> Agora permacat </a></li>
+                            <li> <a class="nav-link dropdown-item" href="{% url 'agora_permacat' %}"> Salon permacat </a></li>
                             {% endif%}
                             <li><a class="nav-link dropdown-item" href="{% url 'blog:index_projets' %}"> Projets </a></li>
                            {%comment%}  <a class="nav-link" href="{% url 'agenda' %}"> Agenda </a>{%endcomment%}

@@ -207,7 +207,7 @@ class ListeProjets(ListView):
         cat = Projet.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
         context['categorie_list'] = [x for x in Choix.type_projet if x[0] in cat]
         context['typeFiltre'] = "aucun"
-        if 'auteur' in self.request.GET:
+        if 'auteur_id' in self.request.GET:
             context['typeFiltre'] = "auteur"
         if 'categorie' in self.request.GET:
             context['typeFiltre'] = "categorie"
