@@ -9,7 +9,7 @@
         <h4 class="card-title">
             {{ projet.titre }}</h4>
         <h6 class="card-subtitle mb-2 text-muted">
-            <p class="text-muted">Catégorie: <em>{{ projet.get_categorie_display }}</em>, rédigé par {{ projet.auteur }}, le {{ projet.date|date:"DATE_FORMAT" }}</p>
+            <p class="text-muted">Catégorie: <em>{{ projet.get_categorie_display }}</em>, rédigé par {{ projet.auteur }}, dernière modification le {{ projet.date|date:"DATE_FORMAT" }}</p>
          {%if not projet.dernierMessage == None %} <p class="text-muted2">Dernier message : {{ projet.date_dernierMessage|date:"l d F Y, G:i"}} : {{projet.dernierMessage}}</p>
             {%endif%}
         </h6>
