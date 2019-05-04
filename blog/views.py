@@ -49,7 +49,7 @@ class SupprimerArticle(DeleteView):
 @login_required
 def lireArticle(request, slug):
     article = get_object_or_404(Article, slug=slug)
-    commentaires = Commentaire.objects.filter(article=article)
+    commentaires = Commentaire.objects.filter(article=article).order_by("date_creation")
 
     form = CommentForm(request.POST or None)
     if form.is_valid():
@@ -155,7 +155,7 @@ class SupprimerProjet(DeleteView):
 @login_required
 def lireProjet(request, slug):
     projet = get_object_or_404(Projet, slug=slug)
-    commentaires = CommentaireProjet.objects.filter(projet=projet)
+    commentaires = CommentaireProjet.objects.filter(projet=projet).order_by("date_creation")
 
     form = CommentProjetForm(request.POST or None)
     if form.is_valid():

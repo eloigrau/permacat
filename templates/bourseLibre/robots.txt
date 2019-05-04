@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /
+Disallow: admin/
+Disallow: accounts/
+
+User-agent: *
+Allow: /bienvenue

@@ -34,6 +34,7 @@ urlpatterns = [
     url(r'^captcha/', include('captcha.urls')),
     url('^', include('django.contrib.auth.urls')),
     url(r'^$', views.bienvenue, name='bienvenue'),
+    url(r'bienvenue/^$', views.bienvenue, name='bienvenue'),
     url(r'^permacat/presentation/$', views.presentation_asso, name='presentation_asso'),
     url(r'^site/presentation/$', views.presentation_site, name='presentation_site'),
     url(r'^permacat/statuts$$', views.statuts, name='statuts'),
@@ -106,6 +107,19 @@ urlpatterns = [
 
     url(r'^agora/$', login_required(views.agora), name='agora'),
     url(r'^agora_permacat/$', login_required(views.agora_permacat), name='agora_permacat'),
+
+    #url(r'^devices?$', FCMDeviceAuthorizedViewSet.as_view({'post': 'create'}), name='create_fcm_device'),
+    #path('firebase-messaging-sw.js', views.ServiceWorkerView.as_view(), name='service_worker')
+
+    #path('send_push', views.send_push),
+#    path('webpush/', include('webpush.urls')),
+    #url(r'^webpush/', include('webpush.urls'))
+    #url('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
+    #url(r"^notifications/", include("pinax.notifications.urls", namespace="pinax_notifications")),
+
+]
+urlpatterns += [
+    url(r'^robots\.txt$', TemplateView.as_view(template_name="bourseLibre/robots.txt", content_type='text/plain')),
 ]
 
 from django.conf import settings

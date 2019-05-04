@@ -1,6 +1,5 @@
 from django.apps import AppConfig
 
-
 class BourseLibreConfig(AppConfig):
     name = 'bourseLibre'
 

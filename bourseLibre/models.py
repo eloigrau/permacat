@@ -23,6 +23,8 @@ from stdimage import StdImageField
 from datetime import date
 
 
+DEGTORAD=3.141592654/180
+
 class Choix():
     #couleurs = {'aliment':'#D8C457','vegetal':'#4CAF47','service':'#BE373A','objet':'#5B4694'}
     #couleurs = {'aliment':'#80B2C0','vegetal':'#A9CB52','service':'#E66562','objet':'#D8AD57'}
@@ -169,11 +171,10 @@ class Profil(AbstractUser):
         return reverse('profil_courant')#, kwargs={'user_id':self.id})
 
     def getDistance(self, profil):
-        degtorad=3.141592654/180
-        x1 = float(self.adresse.latitude)*degtorad
-        y1 = float(self.adresse.longitude)*degtorad
-        x2 = float(profil.adresse.latitude)*degtorad
-        y2 = float(profil.adresse.longitude)*degtorad
+        x1 = float(self.adresse.latitude)*DEGTORAD
+        y1 = float(self.adresse.longitude)*DEGTORAD
+        x2 = float(profil.adresse.latitude)*DEGTORAD
+        y2 = float(profil.adresse.longitude)*DEGTORAD
         x = (y2-y1) * math.cos((x1+x2)/2)
         y = (x2-x1)
         return math.sqrt(x*x + y*y) * 6371

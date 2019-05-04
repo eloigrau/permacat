@@ -10,9 +10,8 @@ from .forms import Produit_aliment_CreationForm, Produit_vegetal_CreationForm, P
     Produit_service_CreationForm, ContactForm, AdresseForm, ProfilCreationForm, MessageForm, MessageGeneralForm, \
     ProducteurChangeForm, MessageGeneralPermacatForm
 from .models import Profil, Produit, Adresse, Choix, Panier, Item, get_categorie_from_subcat, Conversation, Message, MessageGeneral, MessageGeneralPermacat, getOrCreateConversation
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView, UpdateView, DeleteView
+from django.views.generic import ListView, UpdateView, DeleteView, View
 from django.urls import reverse_lazy
 from django.core.mail import mail_admins, send_mail, BadHeaderError
 from django_summernote.widgets import SummernoteWidget
