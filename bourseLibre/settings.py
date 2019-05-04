@@ -81,6 +81,8 @@ INSTALLED_APPS = (
     #'tinymce',
     'captcha',
     'django_summernote',
+    #'notifications',
+    #'webpush',
     #"geoposition",
     #"geodjango",
     #'osm_field',
@@ -396,3 +398,9 @@ SUMMERNOTE_CONFIG = {
 #'js': {
 #},
 }
+
+# WEBPUSH_SETTINGS = {
+#     "VAPID_PUBLIC_KEY": "BLyCoFZY_vO7P7xHVJg27iqbDaLhfRQfg_sKbE1kx4NBZ1zLEgXy8VWUYn3yFbUQoPte99fUnH8KV-2wt-cZlk0",
+#     "VAPID_PRIVATE_KEY":"P26Rpbr7yJT6fNBbgo8H_7t0ueiQFsoyl9RsJvqIYyE",
+#     "VAPID_ADMIN_EMAIL": "sitepermacat@gmail.com"
+# }

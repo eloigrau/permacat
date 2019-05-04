@@ -29,7 +29,18 @@ from django.views.decorators.debug import sensitive_variables
 
 #from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q,CharField 
-from django.db.models.functions import Lower 
+from django.db.models.functions import Lower
+
+#from fcm_django.models import FCMDevice
+# from django.http.response import JsonResponse, HttpResponse
+# from django.views.decorators.http import require_GET, require_POST
+# from django.shortcuts import get_object_or_404
+# from django.contrib.auth.models import User
+# from django.views.decorators.csrf import csrf_exempt
+# from webpush import send_user_notification
+# import json
+
+
 CharField.register_lookup(Lower, "lower")
 
 #import sys
@@ -653,7 +664,13 @@ def agora_permacat(request, ):
     if form.is_valid():
         message = form.save(commit=False)
         message.auteur = request.user
+
         message.save()
+
+        devices = FCMDevice.objects.filter(user__inscrit_newsletter=True)
+        res = devices.send_message("[permacat] Nouveau message", message.message[:20] + '...')
+
+
         return redirect(request.path)
     return render(request, 'agora_permacat.html', {'form': form, 'messages_echanges': messages})
 
@@ -670,3 +687,27 @@ class ListeConversations(ListView):
         context['conversations'] = Conversation.objects.filter(Q(profil2__id=self.request.user.id) | Q(profil1__id=self.request.user.id)).order_by('-date_dernierMessage')
 
         return context
+
+
+# class ServiceWorkerView(View):
+#     def get(self, request, *args, **kwargs):
+#         return render(request, 'fcmtest/firebase-messaging-sw.js', content_type="application/x-javascript")
+#
+# @require_POST
+# @csrf_exempt
+# def send_push(request):
+#     try:
+#         body = request.body
+#         data = json.loads(body)
+#
+#         if 'head' not in data or 'body' not in data or 'id' not in data:
+#             return JsonResponse(status=400, data={"message": "Invalid data format"})
+#
+#         user_id = data['id']
+#         user = get_object_or_404(User, pk=user_id)
+#         payload = {'head': data['head'], 'body': data['body']}
+#         send_user_notification(user=user, payload=payload, ttl=1000)
+#
+#         return JsonResponse(status=200, data={"message": "Web push successful"})
+#     except TypeError:
+#         return JsonResponse(status=500, data={"message": "An error occurred"})

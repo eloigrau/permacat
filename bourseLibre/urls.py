@@ -17,16 +17,18 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.urls import path
 from . import views
+from django.views.generic import TemplateView
+#from fcm_django.api.rest_framework import FCMDeviceAuthorizedViewSet
 
 # On import les vues de Django, avec un nom spécifique
 from django.contrib.auth.decorators import login_required
 
 # admin.autodiscover()
 from django.contrib import admin
+
 admin.sites.site_header ="Admin "
 admin.sites.site_title ="Admin Permacat"
-# from django_filters.views import FilterView
-# from .models import Produit, ProductFilter
+
 
 urlpatterns = [
     url(r'^tinymce/', include('tinymce.urls')),

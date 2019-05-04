@@ -101,7 +101,7 @@ class Adresse(models.Model):
 
     def __unicode__(self):
         return self.__str__()
-    
+
     def set_latlon_from_adresse(self):
         address = ''
         if self.rue:
@@ -149,6 +149,8 @@ class Profil(AbstractUser):
     statut_adhesion = models.IntegerField(choices=Choix.statut_adhesion, default="0")
     accepter_conditions = models.BooleanField(verbose_name="J'ai lu et j'accepte les conditions d'utilisation du site", default=False, null=False)
     accepter_annuaire = models.BooleanField(verbose_name="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous", default=True)
+
+    #device_registration_id =  models.CharField(_('device reg id'), blank=True, default=None, null=True, max_length=100)
 
     def __str__(self):
         return self.username
