@@ -36,7 +36,8 @@ urlpatterns = [
     url(r'^captcha/', include('captcha.urls')),
     url('^', include('django.contrib.auth.urls')),
     url(r'^$', views.bienvenue, name='bienvenue'),
-    url(r'bienvenue/^$', views.bienvenue, name='bienvenue'),
+    url(r'bienvenue/$', views.bienvenue, name='bienvenue'),
+    url(r'gallerie/$', views.gallerie, name='gallerie'),
     url(r'^permacat/presentation/$', views.presentation_asso, name='presentation_asso'),
     url(r'^site/presentation/$', views.presentation_site, name='presentation_site'),
     url(r'^permacat/statuts$$', views.statuts, name='statuts'),
@@ -118,7 +119,7 @@ urlpatterns = [
     #url(r'^webpush/', include('webpush.urls'))
     #url('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
     #url(r"^notifications/", include("pinax.notifications.urls", namespace="pinax_notifications")),
-
+    url(r'^activity/', include('actstream.urls')),
 ]
 urlpatterns += [
     url(r'^robots\.txt$', TemplateView.as_view(template_name="bourseLibre/robots.txt", content_type='text/plain')),

@@ -81,6 +81,7 @@ INSTALLED_APPS = (
     #'tinymce',
     'captcha',
     'django_summernote',
+    'actstream',
     #'notifications',
     #'webpush',
     #"geoposition",
@@ -404,3 +405,11 @@ SUMMERNOTE_CONFIG = {
 #     "VAPID_PRIVATE_KEY":"P26Rpbr7yJT6fNBbgo8H_7t0ueiQFsoyl9RsJvqIYyE",
 #     "VAPID_ADMIN_EMAIL": "sitepermacat@gmail.com"
 # }
+
+ACTSTREAM_SETTINGS = {
+    #'MANAGER': 'myapp.managers.MyActionManager',
+    'FETCH_RELATIONS': True,
+    'USE_PREFETCH': True,
+    'USE_JSONFIELD': True,
+    'GFK_FETCH_DEPTH': 1,
+}

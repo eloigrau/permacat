@@ -15,6 +15,7 @@ from django.views.generic import ListView, UpdateView, DeleteView, View
 from django.urls import reverse_lazy
 from django.core.mail import mail_admins, send_mail, BadHeaderError
 from django_summernote.widgets import SummernoteWidget
+from random import choice
 
 from django import forms
 
@@ -70,13 +71,18 @@ def handler400(request, template_name="400.html"):   #requete invalide
     return response
 
 def bienvenue(request):
-    return render(request, 'bienvenue.html')
+    nums = ['01', '02', '03', '04', '07', '10', '11', '12', '13', '15', '17', '20', '21', '23', ]
+    nomImage = 'img/flo/resized0' +  choice(nums)+'.png'
+    return render(request, 'bienvenue.html', {'nomImage':nomImage})
 
 def presentation_asso(request):
     return render(request, 'presentation_asso.html')
 
 def presentation_site(request):
     return render(request, 'presentation_site.html')
+
+def gallerie(request):
+    return render(request, 'gallerie.html')
 
 def statuts(request):
     return render(request, 'statuts.html')

@@ -5,21 +5,24 @@
  <script src="{% static 'js/cookielaw.js'%}" type="text/javascript"></script>
 {%endblock%}
 {% block subtitle %}
+{%comment%}
 <h3 class = "textcenter rowbienvenue">Benvingut {% if request.user.is_autenticated %}request.user.username{%endif%} !</h3>
+{%endcomment%}
 <h4 class = "textcenter rowbienvenue">{% trans "L'association de Permaculture Catalane vous souhaite la bienvenue !" %}</h4>
 
 {% if not request.user.is_authenticated %}
 <h7 class = "textcenter rowbienvenue">(<a href="https://permacat.herokuapp.com/auth/login">{% trans "connexion sécurisée" %}</a>)</h7>
-
 {%endif%}
 {% endblock %}
 {% block content %}
+
 <div class="row textcenter">
 	<div class="col">
-	<p><img src="{{STATIC_URL}}img/Canigo.jpg" width="100%"></p>
-	<hr>
-		</div>
+		<p><a  href="{% url 'gallerie' %}" ><img src="{{STATIC_URL}}{{nomImage}}" style="max-width: 100%; height: auto;"></a></p>
+
+	</div>
 </div>
+<hr>
 <h6 class = "textcenter rowbienvenue">({% trans "Site en construction"%})</h6>
 <div class="row">
 		<div class="col-md-4">

@@ -12,7 +12,7 @@ from django.urls import reverse, reverse_lazy
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractUser
 from django.template.defaultfilters import slugify
-
+from actstream import action
 from django.utils.translation import ugettext_lazy as _
 import decimal, math
 from tinymce.models import HTMLField
@@ -293,6 +293,10 @@ class Produit(models.Model):  # , BaseProduct):
     def get_message_demande(self):
         return "[A propos de l'annonce de '" + self.nom_produit + "']: "
 
+def produit_handler(sender, instance, created, **kwargs):
+    action.send(instance, verb='Nouveau produit !')
+
+post_save.connect(produit_handler, sender=Produit)
 
 class Produit_aliment(Produit):  # , BaseProduct):
     type = 'aliment'
