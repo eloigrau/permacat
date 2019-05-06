@@ -46,7 +46,7 @@ except:
 #SECURE_SSL_REDIRECT = False
 #SESSION_COOKIE_SECURE = True
 #CSRF_COOKIE_SECURE = True
-#SESSION_EXPIRE_AT_BROWSER_CLOSE=True
+SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 
 
 ALLOWED_HOSTS = ['permacat.herokuapp.com', 'www.perma.cat']
@@ -120,6 +120,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
      'django.middleware.locale.LocaleMiddleware',
+   # 'bourseLibre.middleware.SetLastVisitMiddleware'
     #'django.core.context_processors.request',
     #'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]

@@ -12,10 +12,9 @@ from django.urls import reverse, reverse_lazy
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractUser
 from django.template.defaultfilters import slugify
-from actstream import action
 from django.utils.translation import ugettext_lazy as _
 import decimal, math
-from tinymce.models import HTMLField
+#from tinymce.models import HTMLField
 
 import os
 import requests
@@ -143,6 +142,7 @@ class Profil(AbstractUser):
         'thumbnail2': (100, 100, True)})
 
     date_registration = models.DateTimeField(verbose_name="Date de création", editable=False)
+    #derniere_visite = models.DateTimeField(verbose_name="Derniere connexion", editable=False, default=now())
     pseudo_june = models.CharField(_('(optionnel) pseudo Monnaie Libre'), blank=True, default=None, null=True, max_length=50)
 
     inscrit_newsletter = models.BooleanField(verbose_name="J'accepte de recevoir des emails de Permacat", default=False)

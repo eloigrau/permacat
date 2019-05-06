@@ -38,7 +38,7 @@
 <div class="contenu conversation" id="idConversation">
 {% for mess in messages_echanges %}
     {% ifchanged %}
-    <div class="row msg-date ">
+    <div class="row msg-date textcenter">
         <div class="col-sm-12">
             <p class="infos">{{ mess.date_creation|date:"DATE_FORMAT" }}</p>
         </div>

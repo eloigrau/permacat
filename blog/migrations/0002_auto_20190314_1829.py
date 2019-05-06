@@ -25,11 +25,6 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(default=0, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
             preserve_default=False,
         ),
-        migrations.AlterField(
-            model_name='article',
-            name='contenu',
-            field=tinymce.models.HTMLField(null=True),
-        ),
         migrations.AddField(
             model_name='article',
             name='auteur',

@@ -2,7 +2,8 @@
 
 
 
-    <li class="list-group-item"></li><a href="{%if action.data.url %}{{ action.data.url }} {%endif%}">({{action.timestamp|date:"d/m/Y, G:i"}}) {{action.actor}}
+{%ifchanged %}<li class="list-group-item textcenter" >Le {{action.timestamp|date:"DATE_FORMAT"}}</li>{%endifchanged %}
+<li class="list-group-item"  style="{% if request.user.last_login < action.timestamp %}background-color:#b8b894"{%endif%}><a href="{%if action.data.url %}{{ action.data.url }} {%endif%}"><small>({{action.timestamp|date:"G:i"}})</small> {{action.actor}}
         {%if action.description %}{{action.description}}{% endif %}</a></li>
 
 {% comment %}

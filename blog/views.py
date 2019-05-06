@@ -68,7 +68,7 @@ def lireArticle(request, slug):
         url = article.get_absolute_url()
         suffix = "_permacat" if article.estPublic else ""
         action.send(request.user, verb='article_message'+suffix, action_object=article, url=url,
-                    description="a ajouté un message à l'article %s" % article.titre)
+                    description="a réagi à l'article %s" % article.titre)
         return redirect(request.path)
 
     return render(request, 'blog/lireArticle.html', {'article': article, 'form': form, 'commentaires':commentaires},)
@@ -184,7 +184,7 @@ def lireProjet(request, slug):
         url = projet.get_absolute_url()
         suffix = "_permacat" if projet.estPublic else ""
         action.send(request.user, verb='projet_message'+suffix, action_object=projet, url=url,
-                    description="a ajouté un message au projet '%s'" % projet.titre)
+                    description="a réagit au projet '%s'" % projet.titre)
         return redirect(request.path)
 
     return render(request, 'blog/lireProjet.html', {'projet': projet, 'form': form, 'commentaires':commentaires},)
