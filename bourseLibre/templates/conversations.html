@@ -25,11 +25,11 @@
 <div class="card" >
   <ul class="list-group list-group-flush">
         {% for conversation in conversations %}
-            <li class="list-group-item"><a href="{{conversation.get_absolute_url}}">
-                <p>{% if conversation.profil1 == request.user %} {{ conversation.auteur_2}}  {%else%} {{ conversation.auteur_1}}{%endif%} </p>
-               <p class="info">dernier message: {{conversation.date_dernierMessage|date:"l d F Y, G:i"}}{%if conversation.dernierMessage%} :  {{ conversation.dernierMessage|truncatechars:100}}{%endif%}</p>
-
-            </a></li>
+            <li class="list-group-item">
+                <a href="{{conversation.get_absolute_url}}">
+                <p>{% if conversation.profil1 == request.user %} {{ conversation.auteur_2}}  {%else%} {{ conversation.auteur_1}}{%endif%}, dernier message: {{conversation.date_dernierMessage|date:"l d F Y, G:i"}}{%if conversation.dernierMessage%} :  {{ conversation.dernierMessage|truncatechars:100}}{%endif%}</p>
+            </a>
+            </li>
        {% cycle '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
         {% endfor %}
   </ul>
