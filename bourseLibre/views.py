@@ -231,7 +231,7 @@ def annuaire_permacat(request):
 @login_required
 def carte(request):
     profils = Profil.objects.filter(accepter_annuaire=1)
-    return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': "La carte des coopérateurs" } )
+    return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': "La carte des coopérateurs*" } )
 
 
 @login_required
@@ -239,7 +239,7 @@ def carte_permacat(request):
     if not request.user.is_permacat:
         return render('erreur.html', {"msg":"Vous devez etre membre permacat pour afficher la carte des membres"})
     profils = Profil.objects.filter(statut_adhesion=2, accepter_annuaire=1)
-    return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': "Carte des adhérents Permacat" } )
+    return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': "Carte des adhérents Permacat*" } )
 
 @login_required
 def profil_contact(request, user_id):

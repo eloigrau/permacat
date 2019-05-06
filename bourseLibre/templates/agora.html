@@ -37,13 +37,21 @@
 
 <div class="contenu conversation" id="idConversation">
 {% for mess in messages_echanges %}
+    {% ifchanged %}
+    <div class="row msg-date ">
+        <div class="col-sm-12">
+            <p class="infos textcenter">{{ mess.date_creation|date:"DATE_FORMAT" }}</p>
+        </div>
+    </div>
+    {% endifchanged %}
     <div class="row msg-agora ">
-        <div class="col-sm-4 col-md-3 col-lg-2">
-            <p class="infos  textepetit">{{ mess.date_creation|date:"d/m/Y, G:i" }}, <a href="{% url 'profil' mess.auteur.id %}"> {{mess.auteur}}</a></p>
-        </div>
-        <div class=" col-sm-8 col-md-9 col-lg-10 message ">
-                <p>{{ mess.message }}</p>
-        </div>
+    <div class="col-sm-2 col-md-3 col-lg-1">
+        <p class="infos  textepetit textcenter">
+            {{ mess.date_creation|date:"G:i" }}, <a href="{% url 'profil' mess.auteur.id %}"> {{mess.auteur}}</a> </p>
+    </div>
+    <div class=" col-sm-8 col-md-9 col-lg-10 message ">
+            <p>{{ mess.message }}</p>
+    </div>
     </div>
 {% endfor %}
 </div>

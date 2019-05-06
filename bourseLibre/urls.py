@@ -76,14 +76,14 @@ urlpatterns = [
 
     # url(r'^list$', views.product_list),
     #     url(r'^list2/$', FilterView.as_view(model=Produit, filterset_class=ProductFilter,)),
-    url(r'^marche/$', views.ListeProduit.as_view(),  name="marche"),
-    url(r'^marche/lister/$', views.ListeProduit.as_view(),  name="marche"),
+    url(r'^marche/$', login_required(views.ListeProduit.as_view()),  name="marche"),
+    url(r'^marche/lister/$', login_required(views.ListeProduit.as_view()),  name="marche"),
     url(r'^marche/lister_offres/', login_required(views.ListeProduit_offres.as_view()),
         name="marche_offres"),
     url(r'^marche/lister_recherches/', login_required(views.ListeProduit_recherches.as_view()),
         name="marche_recherches"),
 
-    url(r'^marche/detail/(?P<produit_id>[0-9]+)/$', views.detailProduit, name='produit_detail',),
+    url(r'^marche/detail/(?P<produit_id>[0-9]+)/$', login_required(views.detailProduit), name='produit_detail',),
 
     url(r'^marche/modifier/(?P<pk>[0-9]+)/$',
         login_required(views.ProduitModifier.as_view()), name='produit_modifier', ),

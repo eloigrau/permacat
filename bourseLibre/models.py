@@ -170,7 +170,7 @@ class Profil(AbstractUser):
         return "Profil"
 
     def get_absolute_url(self):
-        return reverse('profil_courant')#, kwargs={'user_id':self.id})
+        return reverse('profil', kwargs={'user_id':self.id})
 
     def getDistance(self, profil):
         x1 = float(self.adresse.latitude)*DEGTORAD
@@ -519,10 +519,6 @@ class Panier(models.Model):
         verbose_name = _('panier')
         verbose_name_plural = _('paniers')
         ordering = ('-date_creation',)
-
-    def __unicode__(self):
-        #return unicode(self.date_creation)
-        return self.date_creation
 
     def __iter__(self):
         for item in self.item_set.all():

@@ -3,7 +3,7 @@ from .models import Article, Commentaire, Projet, CommentaireProjet
 from django.utils.text import slugify
 import itertools
 from django.utils.timezone import now
-from django.utils.formats import localize
+#from django.utils.formats import localize
 #from tinymce.widgets import TinyMCE
 from django_summernote.widgets import SummernoteWidget
 
@@ -32,7 +32,6 @@ class ArticleForm(forms.ModelForm):
             # Truncate the original slug dynamically. Minus 1 for the hyphen.
             instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
 
-        instance.date = localize(now, use_l10n=True)
         instance.auteur = userProfile
         if not userProfile.is_permacat:
             instance.estPublic = True
@@ -60,6 +59,11 @@ class ArticleChangeForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ArticleChangeForm, self).__init__(*args, **kwargs)
         self.fields['contenu'].strip = False
+
+    def save(self,):
+        instance = super(ArticleChangeForm, self).save(commit=False)
+        instance.date_modification = now
+        return instance
 
 class CommentForm(forms.ModelForm):
     #commentaire = TinyMCE(attrs={'cols': 1, 'rows': 1, 'height':10 })
@@ -106,7 +110,6 @@ class ProjetForm(forms.ModelForm):
             # Truncate the original slug dynamically. Minus 1 for the hyphen.
             instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
 
-        instance.date = localize(now, use_l10n=True)
         instance.auteur = userProfile
 
         if not userProfile.is_permacat:
@@ -130,6 +133,11 @@ class ProjetChangeForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProjetChangeForm, self).__init__(*args, **kwargs)
         self.fields['contenu'].strip = False
+
+    def save(self,):
+        instance = super(ProjetChangeForm, self).save(commit=False)
+        instance.date_modification = now
+        return instance
 
 class CommentProjetForm(forms.ModelForm):
     class Meta:

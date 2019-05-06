@@ -1,13 +1,15 @@
 from django.db import models
 from bourseLibre.models import Profil
 from django.urls import reverse
+from django.utils import timezone
 #from tinymce.models import HTMLField
 
 
 class Choix():
-    statut_projet = ('prop','Proposition de projet'), ("AGO","Soumis à l'AGO"), ('vote','Soumis au vote'), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
-    type_projet = ('Part','Participation à un évènement'), ('AGO',"Organisation d'une AGO"), ('Projlong','Projet a long terme'), ('Projcourt','Projet a court terme'),('Projponct','Projet ponctuel'),
+    statut_projet = ('prop','Proposition de projet'), ("AGO","Fiche prpojet soumise à l'AGO"), ('vote','Soumis au vote'), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
+    type_projet = ('Part','Participation à un évènement'), ('AGO',"Organisation d'une AGO"), ('Projlong','Projet a long terme'), ('Projcourt','Projet a court terme'), ('Projponct','Projet ponctuel'),
     type_annonce = ('Annonce','Annonce'), ('Agenda','Agenda'), ('Rencontre','Rencontre'), ('Entraide','Entraide'), ('Chantier','Chantier participatif'), ('Jardinage','Jardinage'), ('Recette', 'Recette'), ('Bricolage','Bricolage'), ('Culture','Culture'), ('Bon_plan', 'Bon plan'), ('Point', 'Point de vue'),  ('Autre','Autre'),
+
 class Article(models.Model):
     categorie = models.CharField(max_length=30,         
         choices=(Choix.type_annonce),
@@ -16,7 +18,8 @@ class Article(models.Model):
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
     slug = models.SlugField(max_length=100)
     contenu = models.TextField(null=True)
-    date = models.DateTimeField(auto_now_add=True, auto_now=False, verbose_name="Date de parution")
+    date_creation = models.DateTimeField(verbose_name="Date de parution", default=timezone.now)
+    date_modification = models.DateTimeField(verbose_name="Date de modification", default=timezone.now)
     estPublic = models.BooleanField(default=False, verbose_name='Public ou réservé aux membres permacat')
     estModifiable = models.BooleanField(default=False, verbose_name="Modifiable par n'importe qui")
 
@@ -25,13 +28,20 @@ class Article(models.Model):
     estArchive = models.BooleanField(default=False, verbose_name="Archiver l'article")
 
     class Meta:
-        ordering = ('date', )
+        ordering = ('-date_creation', )
         
     def __str__(self):
         return self.titre
 
     def get_absolute_url(self):
         return reverse('blog:lireArticle', kwargs={'slug':self.slug})
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.date_creation = timezone.now()
+        return super(Article, self).save(*args, **kwargs)
+
 
 class Commentaire(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE)
@@ -57,10 +67,10 @@ class Projet(models.Model):
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
     slug = models.SlugField(max_length=100)
     contenu = models.TextField(null=True)
-    date = models.DateTimeField(auto_now=True, verbose_name="Date de Modification")
+    date_creation = models.DateTimeField(verbose_name="Date de parution", default=timezone.now)
+    date_modification = models.DateTimeField(verbose_name="Date de modification", default=timezone.now)
     estPublic = models.BooleanField(default=False, verbose_name='Public (cochez) ou Interne (décochez) [réservé aux membres permacat]')
-    coresponsable = models.CharField(max_length=150, default='', null=True, blank=True)
-    date_modification = models.DateTimeField(verbose_name="Date de dernière modification", auto_now=True)
+    coresponsable = models.CharField(max_length=150, verbose_name="Référent du projet", default='', null=True, blank=True)
     lien_vote = models.URLField(verbose_name='Lien vers le vote (balotilo.org)', null=True, blank=True, )
     lien_document = models.URLField(verbose_name='Lien vers un document explicatif (en ligne)', default='', null=True, blank=True)
     fichier_projet = models.FileField(upload_to='projets/%Y/%m/', blank=True, default=None, null=True)
@@ -72,13 +82,19 @@ class Projet(models.Model):
     estArchive = models.BooleanField(default=False, verbose_name="Archiver le projet")
 
     class Meta:
-        ordering = ('date', )
+        ordering = ('-date_creation', )
 
     def __str__(self):
         return self.titre
 
     def get_absolute_url(self):
         return reverse('blog:lireProjet', kwargs={'slug':self.slug})
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.date_creation = timezone.now()
+        return super(Article, self).save(*args, **kwargs)
 
 class CommentaireProjet(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE)

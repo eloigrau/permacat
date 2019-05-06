@@ -470,15 +470,20 @@ ul.errorlist{
 
 .msg-destinataire{
     indent:30px;
-    background-color:PapayaWhip ;
+    background-color:#bbff99 ;
     }
 
+
 .msg-auteur {
-    background-color:PeachPuff ;
+    background-color:#99ff66 ;
     }
 
 .msg-agora {
     background-color:GhostWhite ;
+    }
+
+.msg-date {
+    background-color:#ffe699 ;
     }
 
 .badge_projet{

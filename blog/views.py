@@ -9,7 +9,7 @@ from django.views.generic import ListView, UpdateView, DeleteView
 @login_required
 def forum(request):
     """ Afficher tous les articles de notre blog """
-    articles = Article.objects.all().order_by('-date')  # Nous sélectionnons tous nos articles
+    articles = Article.objects.all().order_by('-date_dernierMessage')  # Nous sélectionnons tous nos articles
     return render(request, 'blog/forum.html', {'derniers_articles': articles})
 
 def acceuil(request):
@@ -87,7 +87,7 @@ class ListeArticles(ListView):
         if "categorie" in params:
             qs = qs.filter(categorie=params['categorie'])
 
-        return qs.order_by('-date_dernierMessage', '-date', 'categorie','auteur')
+        return qs.order_by('-date_dernierMessage', '-date_creation', 'categorie','auteur')
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -196,7 +196,7 @@ class ListeProjets(ListView):
         if "categorie" in params:
             qs = qs.filter(categorie=params['categorie'])
 
-        return qs.order_by('-date_dernierMessage', '-date', 'categorie', 'auteur')
+        return qs.order_by('-date_dernierMessage', '-date_creation', 'categorie', 'auteur')
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
