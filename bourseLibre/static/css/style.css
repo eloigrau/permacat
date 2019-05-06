@@ -465,6 +465,9 @@ ul.errorlist{
   visibility: hidden;
   display: none;
 }
+.carte-notif{
+   width:20rem;
+}
 }
 
 
