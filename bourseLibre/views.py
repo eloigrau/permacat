@@ -74,7 +74,7 @@ def handler400(request, template_name="400.html"):   #requete invalide
     return response
 
 def bienvenue(request):
-    nums = ['01', '02', '03', '04', '07', '10', '11', '12', '13', '15', '17', '20', '21', '23', ]
+    nums = ['01', '02', '03', '04', '07', '10', '11', '13', '15', '17', '20', '21', '23', ]
     nomImage = 'img/flo/resized0' +  choice(nums)+'.png'
     return render(request, 'bienvenue.html', {'nomImage':nomImage})
 
@@ -144,7 +144,8 @@ def produit_proposer(request, type_produit):
 
         produit.save()
         url = produit.get_absolute_url()
-        action.send(request.user, verb='ajoutOffre', action_object=produit, url=url,
+        suffix = "" if produit.estPublique else "_permacat"
+        action.send(request.user, verb='ajout_offre'+suffix, action_object=produit, url=url,
                     description="a ajouté une offre au marché")
         # type = type_form.save(commit=False)
         # type.proprietes = produit
@@ -666,10 +667,17 @@ def lireConversation_2noms(request, destinataire1, destinataire2):
 
 @login_required
 def notifications(request):
-    salons = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_permacat'))
-    articles = Action.objects.filter(Q(verb='article_nouveau') | Q(verb='article_message'))
-    projets = Action.objects.filter(Q(verb='projet_nouveau') | Q(verb='projet_message'))
-    offres = Action.objects.filter(Q(verb='ajoutOffre'))
+    if request.user.is_permacat:
+        salons      = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_permacat'))
+        articles    = Action.objects.filter(Q(verb='article_nouveau_permacat') | Q(verb='article_message_permacat')|Q(verb='article_nouveau') | Q(verb='article_message'))
+        projets     = Action.objects.filter(Q(verb='projet_nouveau_permacat') | Q(verb='projet_message_permacat')|Q(verb='projet_nouveau') | Q(verb='projet_message'))
+        offres      = Action.objects.filter(Q(verb='ajout_offre') | Q(verb='ajout_offre_permacat'))
+    else:
+        salons      = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_permacat'))
+        articles    = Action.objects.filter(Q(verb='article_nouveau') | Q(verb='article_message'))
+        projets     = Action.objects.filter(Q(verb='projet_nouveau') | Q(verb='projet_message'))
+        offres      = Action.objects.filter(Q(verb='ajout_offre'))
+
     return render(request, 'notifications.html', {'salons': salons, 'articles': articles,'projets': projets, 'offres':offres})
 
 

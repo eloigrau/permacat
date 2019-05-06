@@ -294,11 +294,6 @@ class Produit(models.Model):  # , BaseProduct):
     def get_message_demande(self):
         return "[A propos de l'annonce de '" + self.nom_produit + "']: "
 
-def produit_handler(sender, instance, created, **kwargs):
-    action.send(instance, verb='Nouveau produit !')
-
-post_save.connect(produit_handler, sender=Produit)
-
 class Produit_aliment(Produit):  # , BaseProduct):
     type = 'aliment'
     couleur = models.CharField(

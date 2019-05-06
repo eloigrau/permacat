@@ -22,9 +22,9 @@ def ajouterNouveauPost(request):
     form = ArticleForm(request.POST or None)
     if form.is_valid():
         article = form.save(request.user)
-
         url = article.get_absolute_url()
-        action.send(request.user, verb='article_nouveau', action_object=article, url=url,
+        suffix = "" if article.estPublic else "_permacat"
+        action.send(request.user, verb='article_nouveau'+suffix, action_object=article, url=url,
                     description="a ajouté un article : %s" % article.titre)
         return render(request, 'blog/lireArticle.html', {'article': article})
     return render(request, 'blog/ajouterPost.html', { "form": form, })
@@ -66,7 +66,8 @@ def lireArticle(request, slug):
         article.save()
         comment.save()
         url = article.get_absolute_url()
-        action.send(request.user, verb='article_message', action_object=article, url=url,
+        suffix = "_permacat" if article.estPublic else ""
+        action.send(request.user, verb='article_message'+suffix, action_object=article, url=url,
                     description="a ajouté un message à l'article %s" % article.titre)
         return redirect(request.path)
 
@@ -135,7 +136,9 @@ def ajouterNouveauProjet(request):
             # file is saved
             projet = form.save(request.user)
             url = projet.get_absolute_url()
-            action.send(request.user, verb='projet_nouveau', action_object=projet, url=url,
+
+            suffix = "" if projet.estPublic else "_permacat"
+            action.send(request.user, verb='projet_nouveau'+suffix, action_object=projet, url=url,
                     description="a ajouté un projet : %s" % projet.titre)
             return render(request, 'blog/lireProjet.html', {'projet': projet})
     else:
@@ -179,7 +182,8 @@ def lireProjet(request, slug):
         comment.save()
 
         url = projet.get_absolute_url()
-        action.send(request.user, verb='projet_message', action_object=projet, url=url,
+        suffix = "_permacat" if projet.estPublic else ""
+        action.send(request.user, verb='projet_message'+suffix, action_object=projet, url=url,
                     description="a ajouté un message au projet %s" % projet.titre)
         return redirect(request.path)
 
