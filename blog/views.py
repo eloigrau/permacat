@@ -139,7 +139,7 @@ def ajouterNouveauProjet(request):
 
             suffix = "" if projet.estPublic else "_permacat"
             action.send(request.user, verb='projet_nouveau'+suffix, action_object=projet, url=url,
-                    description="a ajouté un projet : %s" % projet.titre)
+                    description="a ajouté un projet : '%s'" % projet.titre)
             return render(request, 'blog/lireProjet.html', {'projet': projet})
     else:
         form = ProjetForm(request.POST or None, request.FILES or None)
@@ -184,7 +184,7 @@ def lireProjet(request, slug):
         url = projet.get_absolute_url()
         suffix = "_permacat" if projet.estPublic else ""
         action.send(request.user, verb='projet_message'+suffix, action_object=projet, url=url,
-                    description="a ajouté un message au projet %s" % projet.titre)
+                    description="a ajouté un message au projet '%s'" % projet.titre)
         return redirect(request.path)
 
     return render(request, 'blog/lireProjet.html', {'projet': projet, 'form': form, 'commentaires':commentaires},)
