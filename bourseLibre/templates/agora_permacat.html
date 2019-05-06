@@ -40,14 +40,14 @@
         {% ifchanged %}
         <div class="row msg-date ">
             <div class="col-sm-12">
-                <p class="infos textcenter">{{ mess.date_creation|date:"DATE_FORMAT" }}</p>
+                <p class="infos ">{{ mess.date_creation|date:"DATE_FORMAT" }}</p>
             </div>
         </div>
         {% endifchanged %}
         <div class="row msg-agora ">
         <div class="col-sm-2 col-md-3 col-lg-1">
-            <p class="infos  textepetit textcenter">
-                {{ mess.date_creation|date:"G:i" }}, <a href="{% url 'profil' mess.auteur.id %}"> {{mess.auteur}}</a> </p>
+            <p class="infos  textepetit ">
+                {{ mess.date_creation|date:"G:i" }}{% ifchanged %}, <a href="{% url 'profil' mess.auteur.id %}"> {{mess.auteur}}</a>{% endifchanged %} </p>
         </div>
         <div class=" col-sm-8 col-md-9 col-lg-10 message ">
                 <p>{{ mess.message }}</p>
