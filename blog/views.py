@@ -5,6 +5,7 @@ from .models import Article, Commentaire, Projet, CommentaireProjet, Choix
 from .forms import ArticleForm, CommentForm, ArticleChangeForm, ProjetForm, ProjetChangeForm, CommentProjetForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
+from actstream import action
 
 @login_required
 def forum(request):
@@ -18,11 +19,15 @@ def acceuil(request):
 
 @login_required
 def ajouterNouveauPost(request):
-        form = ArticleForm(request.POST or None)
-        if form.is_valid():
-            article = form.save(request.user)
-            return render(request, 'blog/lireArticle.html', {'article': article})
-        return render(request, 'blog/ajouterPost.html', { "form": form, })
+    form = ArticleForm(request.POST or None)
+    if form.is_valid():
+        article = form.save(request.user)
+
+        url = article.get_absolute_url()
+        action.send(request.user, verb='article_nouveau', action_object=article, url=url,
+                    description="a ajouté un article : %s" % article.titre)
+        return render(request, 'blog/lireArticle.html', {'article': article})
+    return render(request, 'blog/ajouterPost.html', { "form": form, })
 
 
 # @login_required
@@ -60,6 +65,9 @@ def lireArticle(request, slug):
         article.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(comment.commentaire))[:96] + "..."
         article.save()
         comment.save()
+        url = article.get_absolute_url()
+        action.send(request.user, verb='article_message', action_object=article, url=url,
+                    description="a ajouté un message à l'article %s" % article.titre)
         return redirect(request.path)
 
     return render(request, 'blog/lireArticle.html', {'article': article, 'form': form, 'commentaires':commentaires},)
@@ -126,6 +134,9 @@ def ajouterNouveauProjet(request):
         if form.is_valid():
             # file is saved
             projet = form.save(request.user)
+            url = projet.get_absolute_url()
+            action.send(request.user, verb='projet_nouveau', action_object=projet, url=url,
+                    description="a ajouté un projet : %s" % projet.titre)
             return render(request, 'blog/lireProjet.html', {'projet': projet})
     else:
         form = ProjetForm(request.POST or None, request.FILES or None)
@@ -166,12 +177,13 @@ def lireProjet(request, slug):
         projet.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(comment.commentaire))[:96] + "..."
         projet.save()
         comment.save()
+
+        url = projet.get_absolute_url()
+        action.send(request.user, verb='projet_message', action_object=projet, url=url,
+                    description="a ajouté un message au projet %s" % projet.titre)
         return redirect(request.path)
 
     return render(request, 'blog/lireProjet.html', {'projet': projet, 'form': form, 'commentaires':commentaires},)
-
-
-
 
 class ListeProjets(ListView):
     model = Projet

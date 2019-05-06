@@ -12,9 +12,10 @@ from .forms import Produit_aliment_CreationForm, Produit_vegetal_CreationForm, P
 from .models import Profil, Produit, Adresse, Choix, Panier, Item, get_categorie_from_subcat, Conversation, Message, MessageGeneral, MessageGeneralPermacat, getOrCreateConversation
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView, View
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.core.mail import mail_admins, send_mail, BadHeaderError
 from django_summernote.widgets import SummernoteWidget
+from actstream import action
 from random import choice
 
 from django import forms
@@ -24,6 +25,7 @@ from blog.models import Article
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.models import Group
 
 from django.views.decorators.debug import sensitive_variables
 #from django.views.decorators.debug import sensitive_post_parameters
@@ -32,6 +34,7 @@ from django.views.decorators.debug import sensitive_variables
 from django.db.models import Q,CharField 
 from django.db.models.functions import Lower
 
+from actstream.models import Action
 #from fcm_django.models import FCMDevice
 # from django.http.response import JsonResponse, HttpResponse
 # from django.views.decorators.http import require_GET, require_POST
@@ -140,6 +143,9 @@ def produit_proposer(request, type_produit):
             # produit.photo = InMemoryUploadedFile(output,'ImageField', "%s.jpg" % produit.photo.url.split('.')[0], 'media', sys.getsizeof(output), None)
 
         produit.save()
+        url = produit.get_absolute_url()
+        action.send(request.user, verb='ajoutOffre', action_object=produit, url=url,
+                    description="a ajouté une offre au marché")
         # type = type_form.save(commit=False)
         # type.proprietes = produit
         # type.save()
@@ -355,7 +361,7 @@ class profil_modifier_user(UpdateView):
     fields = ['username', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'accepter_annuaire', 'inscrit_newsletter']
 
     def get_object(self):
-        return User.objects.get(id=self.request.user.id)
+        return Profil.objects.get(id=self.request.user.id)
 
 
 class profil_modifier_adresse(UpdateView):
@@ -623,6 +629,9 @@ def lireConversation(request, destinataire):
         conversation.dernierMessage =  "(" + str(message.auteur) + ") " + str(message.message[:50]) + "..."
         conversation.save()
         message.save()
+        url = conversation.get_absolute_url()
+        action.send(request.user, verb='envoi_salon_prive', action_object=conversation, url=url,
+                    description="a envoyé un message privé")
         return redirect(request.path)
 
     return render(request, 'lireConversation.html', {'conversation': conversation, 'form': form, 'messages_echanges': messages, 'destinataire':destinataire})
@@ -642,6 +651,9 @@ def lireConversation_2noms(request, destinataire1, destinataire2):
         conversation.save()
         message.auteur = request.user
         message.save()
+        url = conversation.get_absolute_url()
+        action.send(request.user, verb='envoi_salon_prive', action_object=conversation, url=url,
+                    description="a envoyé un message privé")
         return redirect(request.path)
     if destinataire1 ==request.user.username:
         destinataire = destinataire2
@@ -653,13 +665,25 @@ def lireConversation_2noms(request, destinataire1, destinataire2):
     return render(request, 'lireConversation.html', {'conversation': conversation, 'form': form, 'messages_echanges': messages_echanges, 'destinataire':destinataire})
 
 @login_required
+def notifications(request):
+    salons = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_permacat'))
+    articles = Action.objects.filter(Q(verb='article_nouveau') | Q(verb='article_message'))
+    projets = Action.objects.filter(Q(verb='projet_nouveau') | Q(verb='projet_message'))
+    offres = Action.objects.filter(Q(verb='ajoutOffre'))
+    return render(request, 'notifications.html', {'salons': salons, 'articles': articles,'projets': projets, 'offres':offres})
+
+
+@login_required
 def agora(request, ):
     messages = MessageGeneral.objects.all().order_by("date_creation")
     form = MessageGeneralForm(request.POST or None) 
     if form.is_valid(): 
         message = form.save(commit=False) 
         message.auteur = request.user 
-        message.save() 
+        message.save()
+        group, created = Group.objects.get_or_create(name='tous')
+        url = reverse('agora')
+        action.send(request.user, verb='envoi_salon', action_object=message, target=group, url=url, description="a envoyé un message dans le salon public")
         return redirect(request.path) 
     return render(request, 'agora.html', {'form': form, 'messages_echanges': messages})
 
@@ -672,9 +696,14 @@ def agora_permacat(request, ):
         message.auteur = request.user
 
         message.save()
+        group, created = Group.objects.get_or_create(name='permacat')
+        url = reverse('agora_permacat')
+        action.send(request.user, verb='envoi_salon_permacat', action_object=message, target=group, url=url,
+                    description="a envoyé un message dans le salon Permacat")
 
-        devices = FCMDevice.objects.filter(user__inscrit_newsletter=True)
-        res = devices.send_message("[permacat] Nouveau message", message.message[:20] + '...')
+        #
+        # devices = FCMDevice.objects.filter(user__inscrit_newsletter=True)
+        # res = devices.send_message("[permacat] Nouveau message", message.message[:20] + '...')
 
 
         return redirect(request.path)

@@ -258,6 +258,7 @@ class Produit(models.Model):  # , BaseProduct):
         if not self.id:
             self.date_creation = now()
             self.stock_courant = self.stock_initial
+
         return super(Produit, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -641,10 +642,6 @@ class Panier(models.Model):
 
 class ItemManager(models.Manager):
     def get(self, *args, **kwargs):
-        # if 'produit' in kwargs:
-        #     kwargs['produit'] = Produit.objects.get(type(kwargs['produit'])).select_subclasses()
-        #     kwargs['object_id'] = kwargs['produit'].pk
-        #     del(kwargs['produit'])
         return super(ItemManager, self).get(*args, **kwargs)
 
 
@@ -764,6 +761,11 @@ class MessageGeneral(models.Model):
     def __str__(self):
         return "(" + str(self.id) + ") " + str(self.auteur) + " " + str(self.date_creation)
 
+#
+# def mg_handler(sender, instance, created, **kwargs):
+#     action.send(instance, verb='envoi')
+#
+# post_save.connect(mg_handler, sender=MessageGeneral)
 
 class MessageGeneralPermacat(models.Model):
     message = models.TextField(null=False, blank=False)

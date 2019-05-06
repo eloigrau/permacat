@@ -1,0 +1,17 @@
+
+
+
+
+    <li class="list-group-item"></li><a href="{%if action.data.url %}{{ action.data.url }} {%endif%}">({{action.timestamp|date:"d/m/Y, G:i"}}) {{action.actor}}
+        {%if action.description %}{{action.description}}{% endif %}</a></li>
+
+{% comment %}
+    <div class="card notification ">
+
+        <div class="card-block">
+        <p class="card-text">
+        </p>
+        </div>
+      </a>
+    </div>
+{% endcomment %}

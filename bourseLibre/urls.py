@@ -38,6 +38,7 @@ urlpatterns = [
     url(r'^$', views.bienvenue, name='bienvenue'),
     url(r'bienvenue/$', views.bienvenue, name='bienvenue'),
     url(r'gallerie/$', views.gallerie, name='gallerie'),
+    url(r'notifications/$', views.notifications, name='notifications'),
     url(r'^permacat/presentation/$', views.presentation_asso, name='presentation_asso'),
     url(r'^site/presentation/$', views.presentation_site, name='presentation_site'),
     url(r'^permacat/statuts$$', views.statuts, name='statuts'),

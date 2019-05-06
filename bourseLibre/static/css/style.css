@@ -470,12 +470,12 @@ ul.errorlist{
 
 .msg-destinataire{
     indent:30px;
-    background-color:#bbff99 ;
+    background-color:#ddffcc ;
     }
 
 
 .msg-auteur {
-    background-color:#99ff66 ;
+    background-color:#bbff99 ;
     }
 
 .msg-agora {
@@ -483,9 +483,11 @@ ul.errorlist{
     }
 
 .msg-date {
-    background-color:#ffe699 ;
+    background-color:#e6e6e6 ;
     }
-
+.carte-notif{
+   width:50rem;
+}
 .badge_projet{
 font-size: 10px;
 vertical-align: top;

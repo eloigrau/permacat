@@ -94,7 +94,7 @@ class Projet(models.Model):
         ''' On save, update timestamps '''
         if not self.id:
             self.date_creation = timezone.now()
-        return super(Article, self).save(*args, **kwargs)
+        return super(Projet, self).save(*args, **kwargs)
 
 class CommentaireProjet(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE)
