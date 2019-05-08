@@ -94,6 +94,7 @@ class Projet(models.Model):
         ''' On save, update timestamps '''
         if not self.id:
             self.date_creation = timezone.now()
+
         return super(Projet, self).save(*args, **kwargs)
 
 class CommentaireProjet(models.Model):

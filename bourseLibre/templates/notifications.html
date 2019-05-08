@@ -55,6 +55,20 @@
 {% endfor %}
   </ul>
 </div>
+    {%comment%}
+<div class="card carte-notif">
+  <div class="card-header textcenter" style="background-color:#6a8d73" style="background-color:#6a8d73">
+    Projets
+  </div>
+  <ul class="list-group list-group-flush " >
+{% for action in conversations %}
+    {% include "notifications_template.html" with action=action %}
+{% empty %}
+    <p>Aucun nouveau message pour l'instant.</p>
+{% endfor %}
+  </ul>
+</div>
+    {%endcomment%}
 </div>
 
 

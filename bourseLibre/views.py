@@ -631,8 +631,8 @@ def lireConversation(request, destinataire):
         conversation.save()
         message.save()
         url = conversation.get_absolute_url()
-        action.send(request.user, verb='envoi_salon_prive', action_object=conversation, url=url,
-                    description="a envoyé un message privé")
+        action.send(request.user, verb='envoi_salon_prive', action_object=conversation, url=url, group=destinataire,
+                    description="vous a envoyé un message privé")
         return redirect(request.path)
 
     return render(request, 'lireConversation.html', {'conversation': conversation, 'form': form, 'messages_echanges': messages, 'destinataire':destinataire})
@@ -640,45 +640,27 @@ def lireConversation(request, destinataire):
 
 @login_required
 def lireConversation_2noms(request, destinataire1, destinataire2):
-    conversation = getOrCreateConversation(destinataire1, destinataire2)
-    messages_echanges = Message.objects.filter(conversation=conversation).order_by("date_creation")
-
-    form = MessageForm(request.POST or None)
-    if form.is_valid():
-        message = form.save(commit=False)
-        message.conversation = conversation
-        conversation.date_dernierMessage = message.date_creation
-        conversation.dernierMessage = message.message[:50]
-        conversation.save()
-        message.auteur = request.user
-        message.save()
-        url = conversation.get_absolute_url()
-        action.send(request.user, verb='envoi_salon_prive', action_object=conversation, url=url,
-                    description="a envoyé un message privé")
-        return redirect(request.path)
-    if destinataire1 ==request.user.username:
-        destinataire = destinataire2
-    elif destinataire2 ==request.user.username:
-        destinataire = destinataire1
+    if request.user.username==destinataire1:
+        return lireConversation(request, destinataire2)
     else:
-        raise Exception('l\'utilisateur qui veut acceder a une conversation qui ne le concerne pas')
-
-    return render(request, 'lireConversation.html', {'conversation': conversation, 'form': form, 'messages_echanges': messages_echanges, 'destinataire':destinataire})
+        return lireConversation(request, destinataire1)
 
 @login_required
 def notifications(request):
     if request.user.is_permacat:
         salons      = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_permacat'))
-        articles    = Action.objects.filter(Q(verb='article_nouveau_permacat') | Q(verb='article_message_permacat')|Q(verb='article_nouveau') | Q(verb='article_message'))
-        projets     = Action.objects.filter(Q(verb='projet_nouveau_permacat') | Q(verb='projet_message_permacat')|Q(verb='projet_nouveau') | Q(verb='projet_message'))
+        articles    = Action.objects.filter(Q(verb='article_nouveau_permacat') | Q(verb='article_message_permacat')|Q(verb='article_nouveau') | Q(verb='article_message')| Q(verb='article_modifier')| Q(verb='article_modifier_permacat'))
+        projets     = Action.objects.filter(Q(verb='projet_nouveau_permacat') | Q(verb='projet_message_permacat')|Q(verb='projet_nouveau') | Q(verb='projet_message')| Q(verb='projet_modifier')| Q(verb='projet_modifier_permacat'))
         offres      = Action.objects.filter(Q(verb='ajout_offre') | Q(verb='ajout_offre_permacat'))
     else:
         salons      = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_permacat'))
-        articles    = Action.objects.filter(Q(verb='article_nouveau') | Q(verb='article_message'))
-        projets     = Action.objects.filter(Q(verb='projet_nouveau') | Q(verb='projet_message'))
+        articles    = Action.objects.filter(Q(verb='article_nouveau') | Q(verb='article_message')| Q(verb='article_modifier'))
+        projets     = Action.objects.filter(Q(verb='projet_nouveau') | Q(verb='projet_message')| Q(verb='projet_modifier'))
         offres      = Action.objects.filter(Q(verb='ajout_offre'))
 
-    return render(request, 'notifications.html', {'salons': salons, 'articles': articles,'projets': projets, 'offres':offres})
+   # conversations = Action.objects.filter(Q(verb='envoi_salon_prive'))
+
+    return render(request, 'notifications.html', {'salons': salons, 'articles': articles,'projets': projets, 'offres':offres,})# 'conversations':conversations})
 
 
 @login_required

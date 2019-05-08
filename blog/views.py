@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
 from django.urls import reverse_lazy
 from .models import Article, Commentaire, Projet, CommentaireProjet, Choix
 from .forms import ArticleForm, CommentForm, ArticleChangeForm, ProjetForm, ProjetChangeForm, CommentProjetForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
 from actstream import action
+
+from django.utils.timezone import now
+
 
 @login_required
 def forum(request):
@@ -39,6 +42,16 @@ class ModifierArticle(UpdateView):
 
     def get_object(self):
         return Article.objects.get(slug=self.kwargs['slug'])
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.date_modification = now()
+        self.object.save()
+        url = self.object.get_absolute_url()
+        suffix = "_permacat" if self.object.estPublic else ""
+        action.send(self.request.user, verb='article_modifier'+suffix, action_object=self.object, url=url,
+                     description="a modifié l'article '%s'" % self.object.titre)
+        return HttpResponseRedirect(self.get_success_url())
 
 class SupprimerArticle(DeleteView):
     model = Article
@@ -155,7 +168,14 @@ class ModifierProjet(UpdateView):
         return Projet.objects.get(slug=self.kwargs['slug'])
 
     def form_valid(self, form):
-       return super(ModifierProjet, self).form_valid(form)
+        self.object = form.save()
+        self.object.date_modification = now()
+        self.object.save()
+        url = self.object.get_absolute_url()
+        suffix = "_permacat" if self.object.estPublic else ""
+        action.send(self.request.user, verb='projet_modifier'+suffix, action_object=self.object, url=url,
+                     description="a modifié le projet '%s'" % self.object.titre)
+        return HttpResponseRedirect(self.get_success_url())
 
 class SupprimerProjet(DeleteView):
     model = Projet
@@ -180,7 +200,6 @@ def lireProjet(request, slug):
         projet.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(comment.commentaire))[:96] + "..."
         projet.save()
         comment.save()
-
         url = projet.get_absolute_url()
         suffix = "_permacat" if projet.estPublic else ""
         action.send(request.user, verb='projet_message'+suffix, action_object=projet, url=url,

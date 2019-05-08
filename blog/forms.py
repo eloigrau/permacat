@@ -60,10 +60,11 @@ class ArticleChangeForm(forms.ModelForm):
         super(ArticleChangeForm, self).__init__(*args, **kwargs)
         self.fields['contenu'].strip = False
 
-    def save(self,):
-        instance = super(ArticleChangeForm, self).save(commit=False)
-        instance.date_modification = now
-        return instance
+#     def save(self,):
+#         instance = super(ArticleChangeForm, self).save(commit=False)
+#         instance.date_modification = now
+# #        instance.save()
+#         return instance
 
 class CommentForm(forms.ModelForm):
     #commentaire = TinyMCE(attrs={'cols': 1, 'rows': 1, 'height':10 })
@@ -133,11 +134,12 @@ class ProjetChangeForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProjetChangeForm, self).__init__(*args, **kwargs)
         self.fields['contenu'].strip = False
-
-    def save(self,):
-        instance = super(ProjetChangeForm, self).save(commit=False)
-        instance.date_modification = now
-        return instance
+    #
+    # def save(self,):
+    #     instance = super(ProjetChangeForm, self).save(commit=False)
+    #     instance.date_modification = now
+    #     instance.save()
+    #     return instance
 
 class CommentProjetForm(forms.ModelForm):
     class Meta:
