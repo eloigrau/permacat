@@ -1,6 +1,6 @@
 
-{%ifchanged %}<li class="list-group-item textcenter" >Le {{action.timestamp|date:"DATE_FORMAT"}}</li>{%endifchanged %}
-<li class="list-group-item"  style="{% if request.user.last_login < action.timestamp %}background-color:#b8b894{%endif%}">
+{%ifchanged %}<li class="list-group-item textcenter "  style="background-color:#b8b894"  >Le {{action.timestamp|date:"DATE_FORMAT"}}</li>{%endifchanged %}
+<li class="list-group-item"  style="{% if request.user.last_login > action.timestamp %}background-color:#e0e0d1{%endif%}">
     <a href="{%if action.data.url %}{{ action.data.url }} {%endif%}">({{action.timestamp|date:"G:i"}}) {{action.actor}}
         {%if action.description %}{{action.description}}{% endif %}</a></li>
 
