@@ -34,7 +34,7 @@ from django.views.decorators.debug import sensitive_variables
 from django.db.models import Q,CharField 
 from django.db.models.functions import Lower
 
-from actstream.models import Action
+from actstream.models import Action, any_stream
 #from fcm_django.models import FCMDevice
 # from django.http.response import JsonResponse, HttpResponse
 # from django.views.decorators.http import require_GET, require_POST
@@ -108,6 +108,7 @@ def produit_proposer(request, type_produit):
         type_form = Produit_objet_CreationForm(request.POST or None, request.FILES or None)
     else:
         raise Exception('Type de produit inconnu (aliment, vegetal, service ou  objet)')
+
     if  type_form.is_valid():
        # produit = produit_form.save(commit=False)
         produit = type_form.save(commit=False)
@@ -116,40 +117,12 @@ def produit_proposer(request, type_produit):
 
         if not request.user.is_permacat:
             produit.estPublique = True
-            #if produit.photo:
-            #produit.photo = request.FILES['photo']
-            #file_type = produit.photo.url.split('.')[-1].lower()
-
-            #if file_type not in IMAGE_FILE_TYPES:
-            #    context = {
-            #        'produit': produit, 'form': produit,
-            #        'error_message': 'Image file must be PNG, JPG, or JPEG',
-            #    }
-            #    return render(request, 'bourseLibre/produit_proposer.html', context)
-
-            # #Opening the uploaded image
-            # im = Image.open(produit.photo)
-            #
-            # output = BytesIO()
-            #
-            # #Resize/modify the image
-            # im = im.resize( (100,100) )
-            #
-            # #after modifications, save it to the output
-            # im.save(output, format='JPEG', quality=100)
-            # output.seek(0)
-            #
-            # #change the imagefield value to be the newley modifed image value
-            # produit.photo = InMemoryUploadedFile(output,'ImageField', "%s.jpg" % produit.photo.url.split('.')[0], 'media', sys.getsizeof(output), None)
-
         produit.save()
         url = produit.get_absolute_url()
         suffix = "" if produit.estPublique else "_permacat"
+        offreOuDemande = "offre" if produit.estUneOffre else "demande"
         action.send(request.user, verb='ajout_offre'+suffix, action_object=produit, url=url,
-                    description="a ajouté une offre au marché")
-        # type = type_form.save(commit=False)
-        # type.proprietes = produit
-        # type.save()
+                    description="a ajouté une "+offreOuDemande+" au marché")
 
         messages.info(request, 'Votre offre a été ajoutée !')
         return HttpResponseRedirect('/marche/detail/' + str(produit.id))
@@ -632,7 +605,7 @@ def lireConversation(request, destinataire):
         message.save()
         url = conversation.get_absolute_url()
         action.send(request.user, verb='envoi_salon_prive', action_object=conversation, url=url, group=destinataire,
-                    description="vous a envoyé un message privé")
+                    description="a envoyé un message privé à " + destinataire)
         return redirect(request.path)
 
     return render(request, 'lireConversation.html', {'conversation': conversation, 'form': form, 'messages_echanges': messages, 'destinataire':destinataire})
@@ -648,19 +621,19 @@ def lireConversation_2noms(request, destinataire1, destinataire2):
 @login_required
 def notifications(request):
     if request.user.is_permacat:
-        salons      = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_permacat'))
-        articles    = Action.objects.filter(Q(verb='article_nouveau_permacat') | Q(verb='article_message_permacat')|Q(verb='article_nouveau') | Q(verb='article_message')| Q(verb='article_modifier')| Q(verb='article_modifier_permacat'))
-        projets     = Action.objects.filter(Q(verb='projet_nouveau_permacat') | Q(verb='projet_message_permacat')|Q(verb='projet_nouveau') | Q(verb='projet_message')| Q(verb='projet_modifier')| Q(verb='projet_modifier_permacat'))
-        offres      = Action.objects.filter(Q(verb='ajout_offre') | Q(verb='ajout_offre_permacat'))
+        salons      = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_permacat'))[:12]
+        articles    = Action.objects.filter(Q(verb='article_nouveau_permacat') | Q(verb='article_message_permacat')|Q(verb='article_nouveau') | Q(verb='article_message')| Q(verb='article_modifier')| Q(verb='article_modifier_permacat'))[:12]
+        projets     = Action.objects.filter(Q(verb='projet_nouveau_permacat') | Q(verb='projet_message_permacat')|Q(verb='projet_nouveau') | Q(verb='projet_message')| Q(verb='projet_modifier')| Q(verb='projet_modifier_permacat'))[:12]
+        offres      = Action.objects.filter(Q(verb='ajout_offre') | Q(verb='ajout_offre_permacat'))[:12]
     else:
-        salons      = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_permacat'))
-        articles    = Action.objects.filter(Q(verb='article_nouveau') | Q(verb='article_message')| Q(verb='article_modifier'))
-        projets     = Action.objects.filter(Q(verb='projet_nouveau') | Q(verb='projet_message')| Q(verb='projet_modifier'))
-        offres      = Action.objects.filter(Q(verb='ajout_offre'))
+        salons      = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_permacat'))[:12]
+        articles    = Action.objects.filter(Q(verb='article_nouveau') | Q(verb='article_message')| Q(verb='article_modifier'))[:12]
+        projets     = Action.objects.filter(Q(verb='projet_nouveau') | Q(verb='projet_message')| Q(verb='projet_modifier'))[:12]
+        offres      = Action.objects.filter(Q(verb='ajout_offre'))[:12]
 
-   # conversations = Action.objects.filter(Q(verb='envoi_salon_prive'))
+    conversations = any_stream(request.user).filter(Q(verb='envoi_salon_prive',))[:12]
 
-    return render(request, 'notifications.html', {'salons': salons, 'articles': articles,'projets': projets, 'offres':offres,})# 'conversations':conversations})
+    return render(request, 'notifications.html', {'salons': salons, 'articles': articles,'projets': projets, 'offres':offres, 'conversations':conversations})
 
 
 @login_required

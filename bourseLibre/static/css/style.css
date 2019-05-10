@@ -258,6 +258,12 @@ section.p3 {
     width-min:350px;
     margin:-5px;
 }
+.notif{
+    padding-bottom:40px;
+}
+.notif2{
+    box-shadow: 0 10px 10px 0px grey;
+}
 
 .offre a:link, a:visited, a:hover{
     color: black;
@@ -489,7 +495,8 @@ ul.errorlist{
     background-color:#e6e6e6 ;
     }
 .carte-notif{
-   width:50rem;
+   width:30rem;
+    margin: 20px;
 }
 .badge_projet{
 font-size: 10px;

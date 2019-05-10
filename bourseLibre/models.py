@@ -142,7 +142,6 @@ class Profil(AbstractUser):
         'thumbnail2': (100, 100, True)})
 
     date_registration = models.DateTimeField(verbose_name="Date de création", editable=False)
-    #derniere_visite = models.DateTimeField(verbose_name="Derniere connexion", editable=False, default=now())
     pseudo_june = models.CharField(_('(optionnel) pseudo Monnaie Libre'), blank=True, default=None, null=True, max_length=50)
 
     inscrit_newsletter = models.BooleanField(verbose_name="J'accepte de recevoir des emails de Permacat", default=False)

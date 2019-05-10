@@ -1,5 +1,5 @@
 {% extends 'blog/baseBlog.html' %}
-
+{% load activity_tags %}
 {% block subtitle %}
 <div class="row">
     <div class="col-md-2">
@@ -20,6 +20,17 @@
                 <span class="glyphicon glyphicon-plus"></span>&nbsp;Modifier
                </button></a>
         {%endif%}
+        <a href="{% follow_url article %}">
+            <button type="button" class="btn btn-sm btn-warning">
+                <span class="glyphicon glyphicon-plus"></span>&nbsp;
+                    {% if request.user|is_following:article %}
+                        stop following
+                    {% else %}
+                        follow
+                    {% endif %}
+
+               </button>
+</a>
     </div>
     <div class="col-md-8">
         <p class="infos  textepetit">Dans: <a href="{% url 'blog:forum'  %}?categorie={{article.categorie}}">{{ article.get_categorie_display }}</a>, rédigé par <a href="{% url 'profil' article.auteur.id %}"> {{ article.auteur.username }}</a>, le {{ article.date_creation|date:"DATE_FORMAT" }}</p>
