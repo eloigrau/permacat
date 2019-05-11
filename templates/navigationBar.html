@@ -18,7 +18,7 @@
               Le Marché
         </a>
 
-        <ul class="dropdown-menu">
+        <ul class="dropdown-menu textcenter">
             <li><a  class="nav-link  dropdown-item" href="{% url 'marche' %}">Toutes les annonces</a></li>
              <li><a  class="nav-link dropdown-item" href="{% url 'marche_offres' %}?">Offres</a></li>
             <li><a class="nav-link  dropdown-item" href="{% url 'marche_recherches' %}?">Demandes</a></li>
@@ -32,7 +32,7 @@
            <a data-toggle="dropdown" class="nav-link dropdown-toggle" href="{% url 'agora' %}" aria-haspopup="true" aria-expanded="false" >
                {% fontawesome_icon 'comments' %} Le Forum </a>
 
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu textcenter">
                 <li><a class="nav-link dropdown-item" href="{% url 'agora' %}">Salon</a></li>
                 <li> <a class="nav-link dropdown-item" href="{% url 'blog:index' %}?">Articles</a></li>
                  <li><a class="nav-link dropdown-item" href="{% url 'conversations' %}"> Conversations privées</a></li>
@@ -65,7 +65,7 @@
             <a class="nav-link dropdown-toggle" href="{% url 'presentation_site' %}" id="navbarAbout2" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" >
              {% fontawesome_icon 'globe' %} Le site
             </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarAbout2">
+            <ul class="dropdown-menu textcenter" aria-labelledby="navbarAbout2">
                <li> <a class="nav-link dropdown-item" href="{% url 'annuaire' %}"> Annuaire </a></li>
                 <li> <a class="nav-link dropdown-item" href="{% url 'carte' %}"> Carte </a></li>
                 <li> <span class="nav-link divider" role="separator"></span></li>
@@ -98,7 +98,7 @@
        <li class="nav-item dropdown">
            <a data-toggle="dropdown" class="nav-link dropdown-toggle " href="{% url 'profil_courant' %}" aria-haspopup="true" aria-expanded="false"  >
               {% fontawesome_icon 'user' %} Profil: {{request.user}} </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <ul class="dropdown-menu textcenter" aria-labelledby="navbarDropdownMenuLink">
                <li> <a class="nav-link dropdown-item" href="{% url 'profil_courant' %}">Mon profil</a></li>
                <li> <a class="nav-link dropdown-item" href="{% url 'panier_afficher' %}">Mon panier</a></li>
                <li> <a class="nav-link dropdown-item" href="{% url 'afficher_requetes' %}">Mes requêtes</a></li>
@@ -109,16 +109,16 @@
     </ul>
 {% else %}
     <ul class="nav navbar-nav mr-auto navbar-left">
-        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span>Se connecter</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'senregistrer' %}"><span class="glyphicon glyphicon-log-in"></span>S'inscrire</a></li>
+        <li class="nav-item"><a href="https://permacat.herokuapp.com/auth/login"> {% fontawesome_icon 'user' %} Se connecter</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'senregistrer' %}"> {% fontawesome_icon 'address-card' %} S'inscrire</a></li>
 
     </ul>
-    <ul class="nav navbar-nav justify-content-center">
+    <ul class="nav navbar-nav ">
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="{% url 'presentation_asso' %}" id="navbarAsso2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                L'association
+               {% fontawesome_icon 'link' %}  L'association
             </a>
-            <ul class="dropdown-menu disabled-nav-item" aria-labelledby="navbarAsso2">
+            <ul class="dropdown-menu textcenter" aria-labelledby="navbarAsso2">
                <li> <a class="nav-link" href="{% url 'presentation_asso' %}"> Qui sommes nous ?</a></li>
                <li> <a class="nav-link" href="{% url 'charte' %}"> Charte </a></li>
                <li> <a class="nav-link" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a></li>
@@ -126,9 +126,9 @@
         </li>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="{% url 'profil_courant' %}" id="navbarAbout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-             Le site
+             {% fontawesome_icon 'globe' %} Le site
             </a>
-            <ul class="dropdown-menu disabled-nav-item" aria-labelledby="navbarAbout">
+            <ul class="dropdown-menu textcenter" aria-labelledby="navbarAbout">
                <li> <a class="nav-link" href="{% url 'cgu' %}"> CGU </a></li>
                <li> <a class="nav-link" href="{% url 'liens' %}"> Liens </a></li>
                <li> <span class="nav-link divider" role="separator"></span></li>
