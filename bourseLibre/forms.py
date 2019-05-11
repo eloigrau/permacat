@@ -103,8 +103,8 @@ class AdresseForm(forms.ModelForm):
 
 class ProfilCreationForm(UserCreationForm):
     username = forms.CharField(label="Pseudonyme*", help_text="Attention les majuscules sont importantes...")
-    description = forms.CharField(label="Description", help_text="Une description de vous même", required=False, widget=forms.Textarea)
-    competences = forms.CharField(label="Savoir-faire", help_text="Par exemple: electricien, bouturage, aromatherapie, etc...", required=False, widget=forms.Textarea, )
+    description = forms.CharField(label=None, help_text="Une description de vous même", required=False, widget=forms.Textarea)
+    competences = forms.CharField(label=None, help_text="Par exemple: electricien, bouturage, aromatherapie, etc...", required=False, widget=forms.Textarea, )
     site_web = forms.CharField(label="Site web", help_text="n'oubliez pas le https://", required=False)
     captcha = CaptchaField()
     email= forms.EmailField(label="Email*",)

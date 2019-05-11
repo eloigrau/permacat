@@ -4,7 +4,7 @@ from django.utils.safestring import mark_safe
 
 register = template.Library()
 
-typesAvecEntete = ['Textarea', 'Select', " NumberInput", "DateInput", "SummernoteWidget" ]
+typesAvecEntete = ['Select', " NumberInput", "DateInput", "SummernoteWidget" ]#'Textarea',
 
 @register.filter(is_safe=True)
 def is_numeric(value):
