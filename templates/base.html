@@ -2,6 +2,7 @@
 {% load staticfiles %}
 {% load i18n %}
 {% load l10n %}
+{% load fontawesome %}
 {%block header_document %}
 {%endblock%}
 {% spaceless %}
@@ -31,7 +32,7 @@
 
 	<script src="{% static 'js/tether.min.js' %}"></script>
 
-
+    {% fontawesome_stylesheet %}
    <script src="{% static 'js/popper.min.js' %}"></script>
    <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/bourseLibre.js' %}"></script>

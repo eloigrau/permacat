@@ -23,6 +23,11 @@
                Articles
             </button>
             </a>
+         <a href="{% url 'blog:index_projets' %}">
+        <button type="button" class="btn btn-primary" >
+               Projets
+            </button>
+            </a>
          <a href="{% url 'conversations' %}">
             <button type="button" class="btn btn-primary" >
                Conversations
@@ -44,7 +49,7 @@
         </div>
     </div>
     {% endifchanged %}
-    <div class="row msg-agora ">
+    <div class="row {% ifequal mess.auteur.id request.user.id %} msg-auteur  {%else%} msg-destinataire{%endifequal%} ">
         <div class="col-sm-2 col-md-3 col-lg-1">
             <p class="infos  textepetit ">
                 {{ mess.date_creation|date:"G:i" }}{% ifchanged %}, <a href="{% url 'profil' mess.auteur.id %}"> {{mess.auteur}}</a>{% endifchanged %} </p>

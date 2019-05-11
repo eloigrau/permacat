@@ -621,17 +621,17 @@ def lireConversation_2noms(request, destinataire1, destinataire2):
 @login_required
 def notifications(request):
     if request.user.is_permacat:
-        salons      = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_permacat'))[:12]
-        articles    = Action.objects.filter(Q(verb='article_nouveau_permacat') | Q(verb='article_message_permacat')|Q(verb='article_nouveau') | Q(verb='article_message')| Q(verb='article_modifier')| Q(verb='article_modifier_permacat'))[:12]
-        projets     = Action.objects.filter(Q(verb='projet_nouveau_permacat') | Q(verb='projet_message_permacat')|Q(verb='projet_nouveau') | Q(verb='projet_message')| Q(verb='projet_modifier')| Q(verb='projet_modifier_permacat'))[:12]
-        offres      = Action.objects.filter(Q(verb='ajout_offre') | Q(verb='ajout_offre_permacat'))[:12]
+        salons      = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_permacat'))[:10]
+        articles    = Action.objects.filter(Q(verb='article_nouveau_permacat') | Q(verb='article_message_permacat')|Q(verb='article_nouveau') | Q(verb='article_message')| Q(verb='article_modifier')| Q(verb='article_modifier_permacat'))[:10]
+        projets     = Action.objects.filter(Q(verb='projet_nouveau_permacat') | Q(verb='projet_message_permacat')|Q(verb='projet_nouveau') | Q(verb='projet_message')| Q(verb='projet_modifier')| Q(verb='projet_modifier_permacat'))[:10]
+        offres      = Action.objects.filter(Q(verb='ajout_offre') | Q(verb='ajout_offre_permacat'))[:10]
     else:
-        salons      = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_permacat'))[:12]
-        articles    = Action.objects.filter(Q(verb='article_nouveau') | Q(verb='article_message')| Q(verb='article_modifier'))[:12]
-        projets     = Action.objects.filter(Q(verb='projet_nouveau') | Q(verb='projet_message')| Q(verb='projet_modifier'))[:12]
-        offres      = Action.objects.filter(Q(verb='ajout_offre'))[:12]
+        salons      = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_permacat'))[:10]
+        articles    = Action.objects.filter(Q(verb='article_nouveau') | Q(verb='article_message')| Q(verb='article_modifier'))[:10]
+        projets     = Action.objects.filter(Q(verb='projet_nouveau') | Q(verb='projet_message')| Q(verb='projet_modifier'))[:10]
+        offres      = Action.objects.filter(Q(verb='ajout_offre'))[:10]
 
-    conversations = any_stream(request.user).filter(Q(verb='envoi_salon_prive',))[:12]
+    conversations = any_stream(request.user).filter(Q(verb='envoi_salon_prive',))[:10]
 
     return render(request, 'notifications.html', {'salons': salons, 'articles': articles,'projets': projets, 'offres':offres, 'conversations':conversations})
 

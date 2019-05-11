@@ -414,3 +414,4 @@ ACTSTREAM_SETTINGS = {
     'USE_JSONFIELD': True,
     'GFK_FETCH_DEPTH': 1,
 }
+#FONTAWESOME_CSS_URL = STATIC_URL + 'css/fontawesome.min.css'
