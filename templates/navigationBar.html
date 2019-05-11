@@ -15,7 +15,7 @@
       <li class="nav-item dropdown">
           <a  data-toggle="dropdown" class="nav-link dropdown-toggle" href="{% url 'marche' %}"  aria-haspopup="true" aria-expanded="false">
               {% fontawesome_icon 'shopping-basket' %}
-              Le Marché <span class="caret"></span>
+              Le Marché
         </a>
 
         <ul class="dropdown-menu">
@@ -33,7 +33,7 @@
                {% fontawesome_icon 'comments' %} Le Forum </a>
 
             <ul class="dropdown-menu">
-                <li><a class="nav-link dropdown-item" href="{% url 'agora' %}"><i class="fa fa-comments"></i>Salon</a></li>
+                <li><a class="nav-link dropdown-item" href="{% url 'agora' %}">Salon</a></li>
                 <li> <a class="nav-link dropdown-item" href="{% url 'blog:index' %}?">Articles</a></li>
                  <li><a class="nav-link dropdown-item" href="{% url 'conversations' %}"> Conversations privées</a></li>
             </ul>
@@ -97,11 +97,12 @@
         <li class="nav-item"><a class="nav-link" href="{% url 'notifications' %}">{% fontawesome_icon 'bell' %}  Notifications</a></li>
        <li class="nav-item dropdown">
            <a data-toggle="dropdown" class="nav-link dropdown-toggle " href="{% url 'profil_courant' %}" aria-haspopup="true" aria-expanded="false"  >
-              {% fontawesome_icon 'user' %} Profil: {{request.user}} <span class="caret"></span></a>
+              {% fontawesome_icon 'user' %} Profil: {{request.user}} </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-               <li> <a class="nav-link dropdown-item" href="{% url 'profil_courant' %}"><span class="fa fa-wrench"></span>Mon profil</a></li>
-               <li> <a class="nav-link dropdown-item" href="{% url 'panier_afficher' %}"><span class="glyphicon glyphicon-shopping-bag"></span> Mon panier</a></li>
-               <li> <a class="nav-link dropdown-item" href="{% url 'afficher_requetes' %}"><span class="glyphicon glyphicon-shopping-cart"></span> Mes requêtes</a></li>
+               <li> <a class="nav-link dropdown-item" href="{% url 'profil_courant' %}">Mon profil</a></li>
+               <li> <a class="nav-link dropdown-item" href="{% url 'panier_afficher' %}">Mon panier</a></li>
+               <li> <a class="nav-link dropdown-item" href="{% url 'afficher_requetes' %}">Mes requêtes</a></li>
+                 <li><a class="nav-link dropdown-item" href="{% url 'conversations' %}">Mes conversations</a></li>
                <li> <a class="nav-link dropdown-item" href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span>Se déconnecter</a></li>
             </ul>
         </li>
