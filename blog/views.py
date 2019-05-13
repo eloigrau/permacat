@@ -67,6 +67,9 @@ class SupprimerArticle(DeleteView):
 @login_required
 def lireArticle(request, slug):
     article = get_object_or_404(Article, slug=slug)
+    if not article.estPublic and not request.user.is_permacat:
+        return render(request, 'notPermacat.html',)
+
     commentaires = Commentaire.objects.filter(article=article).order_by("date_creation")
 
     form = CommentForm(request.POST or None)
@@ -189,6 +192,10 @@ class SupprimerProjet(DeleteView):
 @login_required
 def lireProjet(request, slug):
     projet = get_object_or_404(Projet, slug=slug)
+
+    if not projet.estPublic and not request.user.is_permacat:
+        return render(request, 'notPermacat.html',)
+
     commentaires = CommentaireProjet.objects.filter(projet=projet).order_by("date_creation")
 
     form = CommentProjetForm(request.POST or None)

@@ -170,6 +170,8 @@ def proposerProduit_entree(request):
 @login_required
 def detailProduit(request, produit_id):
     prod = Produit.objects.get_subclass(id=produit_id)
+    if not prod.estPublique and not request.user.is_permacat:
+        return render(request, 'notPermacat.html',)
     return render(request, 'bourseLibre/produit_detail.html', {'produit': prod})
 
 
