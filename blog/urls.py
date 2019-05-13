@@ -21,9 +21,6 @@ from django.contrib.auth.decorators import login_required
 app_name = 'blog'
 
 urlpatterns = [
-    # url(r'^blog/index$', views.index, name='index'),
-    #     url(r'^$', views.forum, name='forum'),
-    #     url(r'^$', ListView.as_view(model=Article,), name='forum2', template_name="forum.html"),
     url(r'^acceuil/$', views.acceuil, name="forum"),
     url(r'^articles/$', login_required(views.ListeArticles.as_view(), login_url='/auth/login/'), name="index"),
     # url(r'^newPost/', views.ajouterNouveauPost, name='ajouterNouveauPost'),
@@ -42,5 +39,4 @@ urlpatterns = [
         login_required(views.SupprimerProjet.as_view(), login_url='/auth/login/'), name='supprimerProjet'),
     url(r'^ajouterProjet/$', views.ajouterNouveauProjet, name='ajouterNouveauProjet'),
     url(r'^telecharger_fichier/$', views.telecharger_fichier, name='telechargerFichier'),
-
 ]
