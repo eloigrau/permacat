@@ -21,7 +21,7 @@ Coopérateurs
     <div class="col-sm-4 ">
         <h5>{{mails.titre}} </h5>
     </div>
-    <div class="col-sm-4 " id="{{mails.type}}">{% for profil in mails.profils %}<a href="{% url 'profil' profil.id%}" download>{{profil.email}}</a>, {% endfor %} </div>
+    <div class="col-sm-4 " id="{{mails.type}}">{% for profil in mails.profils %}<a href="{% url 'profil' profil.id%}">{{profil.email}}</a>, {% endfor %} </div>
     <div class="col-sm-4">  <button onclick="copyToClipboard('#{{mails.type}}')">Copier</button>
     </div>
 </div>
