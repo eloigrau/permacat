@@ -41,6 +41,7 @@
                 <th>Email</th>
                 <th>Code postal</th>
                 <th>Commune</th>
+                <th>Cotisation à jour</th>
             </tr>
         </thead>
         <tbody>
@@ -54,6 +55,7 @@
             <td><a href="{% url 'profil' profil.id %}">{{ profil.email }}</a></td>
             <td><a href="{% url 'profil' profil.id %}">{{ profil.adresse.code_postal }}</a></td>
             <td><a href="{% url 'profil' profil.id %}">{{ profil.adresse.commune }}</a></td>
+            <td><a href="{% url 'profil' profil.id %}">{{ profil.cotisation_a_jour_str }}</a></td>
         </tr>
         {% endfor %}
         </tbody>
