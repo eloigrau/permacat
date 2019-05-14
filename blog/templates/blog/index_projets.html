@@ -56,7 +56,7 @@
             <a {% if request.GET.permacat %}  href="?permacat=True"
                 {%else%}href="#" {%endif%}>
                 <button type="button" class="btn {% if request.GET.permacat %}btn-primary{%endif%}">
-                {% if request.GET.permacat %}{% if request.GET.permacat == "True" %}Permacat {%else%}Public{%endif%}{%else%}Statut{%endif%}
+                {% if request.GET.permacat %}{% if request.GET.permacat == "True" %}Permacat {%else%}Public{%endif%}{%else%}Type{%endif%}
                 </button>
             </a>
              <button type="button" class="btn {% if request.GET.permacat %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"

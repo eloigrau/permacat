@@ -8,7 +8,8 @@ from django.shortcuts import HttpResponseRedirect, render, redirect#, render, ge
 
 from .forms import Produit_aliment_CreationForm, Produit_vegetal_CreationForm, Produit_objet_CreationForm, \
     Produit_service_CreationForm, ContactForm, AdresseForm, ProfilCreationForm, MessageForm, MessageGeneralForm, \
-    ProducteurChangeForm, MessageGeneralPermacatForm
+    ProducteurChangeForm, MessageGeneralPermacatForm, Produit_aliment_modifier_form, Produit_service_modifier_form, \
+    Produit_objet_modifier_form, Produit_vegetal_modifier_form
 from .models import Profil, Produit, Adresse, Choix, Panier, Item, get_categorie_from_subcat, Conversation, Message, MessageGeneral, MessageGeneralPermacat, getOrCreateConversation
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView, View
@@ -25,7 +26,7 @@ from blog.models import Article
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 
 from django.views.decorators.debug import sensitive_variables
 #from django.views.decorators.debug import sensitive_post_parameters
@@ -143,13 +144,13 @@ class ProduitModifier(UpdateView):
 
     def get_form_class(self):
         if self.object.categorie == 'aliment':
-            return Produit_aliment_CreationForm
+            return Produit_aliment_modifier_form
         elif self.object.categorie == 'vegetal':
-            return Produit_vegetal_CreationForm
+            return Produit_vegetal_modifier_form
         elif self.object.categorie == 'service':
-            return Produit_service_CreationForm
+            return Produit_service_modifier_form
         elif self.object.categorie == 'objet':
-            return Produit_objet_CreationForm
+            return Produit_objet_modifier_form
         else:
             raise Exception('Type de produit inconnu (aliment, vegetal, service ou  objet)')
         return get_produitForm(self.request, self.object.categorie)

@@ -9,7 +9,7 @@ from django_summernote.widgets import SummernoteWidget
 
 class ArticleForm(forms.ModelForm):
    # contenu = TinyMCE(attrs={'cols': 80, 'rows': 20})
-    estPublic = forms.ChoiceField(choices=((1, "Article public"), (0, "Article Permacat")), label='', required=True)
+    estPublic = forms.ChoiceField(choices=((1, "Article public"), (0, "Article Permacat")), label='', required=True, )
 
     class Meta:
         model = Article
@@ -59,6 +59,9 @@ class ArticleChangeForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ArticleChangeForm, self).__init__(*args, **kwargs)
         self.fields['contenu'].strip = False
+        self.fields["estPublic"].choices=((1, "Article public"), (0, "Article réservé aux adhérents")) if kwargs['instance'].estPublic else ((0, "Article réserve aux adhérents"),(1, "Article public"), )
+
+
 
 #     def save(self,):
 #         instance = super(ArticleChangeForm, self).save(commit=False)
@@ -122,7 +125,7 @@ class ProjetForm(forms.ModelForm):
 
 
 class ProjetChangeForm(forms.ModelForm):
-    estPublic = forms.ChoiceField(choices=((1, "Annonce publique"), (0, "Annonce réservée aux adhérents")), label='', required=True)
+    estPublic = forms.ChoiceField(choices=((1, "Projet public"), (0, "Projet réservé aux adhérents")), label='', required=True)
 
     class Meta:
         model = Projet
@@ -134,12 +137,9 @@ class ProjetChangeForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProjetChangeForm, self).__init__(*args, **kwargs)
         self.fields['contenu'].strip = False
-    #
-    # def save(self,):
-    #     instance = super(ProjetChangeForm, self).save(commit=False)
-    #     instance.date_modification = now
-    #     instance.save()
-    #     return instance
+        self.fields["estPublic"].choices = ((1, "Article public"), (0, "Article réserve aux adhérents")) if kwargs[
+            'instance'].estPublic else ((0, "Projet réservé aux adhérents"), (1, "Projet public"),)
+
 
 class CommentProjetForm(forms.ModelForm):
     class Meta:

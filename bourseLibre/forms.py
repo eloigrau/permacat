@@ -9,6 +9,8 @@ fieldsCommunsProduits = ['souscategorie', 'nom_produit',  'description', 'estUne
                 'unite_prix', 'prix',  'type_prix', 'date_debut', 'date_expiration', ]
 
 
+
+
 class ProduitCreationForm(forms.ModelForm):
     #description = TinyMCE(attrs={'cols': 80, 'rows': 20})
     estUneOffre = forms.ChoiceField(choices=((1, "Offre"), (0, "Demande")), label='', required=True)
@@ -50,6 +52,15 @@ class Produit_aliment_CreationForm(ProduitCreationForm):
             'description': SummernoteWidget(),
         }
 
+class Produit_aliment_modifier_form(Produit_aliment_CreationForm):
+
+    def __init__(self, *args, **kwargs):
+        super(Produit_aliment_modifier_form, self).__init__(*args, **kwargs)
+        self.fields["estPublique"].choices = ((1, "Annonce publique"), (0, "Annonce réservée aux adhérents")) if kwargs[
+            'instance'].estPublique else ((0, "Annonce réservée aux adhérents"),(1, "Annonce publique"),)
+        self.fields["estUneOffre"].choices = ((1, "Offre"), (0, "Demande")) if kwargs[
+            'instance'].estUneOffre else ((0, "Demande"), (1, "Offre"), )
+
 
 class Produit_vegetal_CreationForm(ProduitCreationForm):
 
@@ -62,6 +73,15 @@ class Produit_vegetal_CreationForm(ProduitCreationForm):
             'description': SummernoteWidget(),
         }
 
+class Produit_vegetal_modifier_form(Produit_vegetal_CreationForm):
+
+    def __init__(self, *args, **kwargs):
+        super(Produit_vegetal_modifier_form, self).__init__(*args, **kwargs)
+        self.fields["estPublique"].choices = ((1, "Annonce publique"), (0, "Annonce réservée aux adhérents")) if kwargs[
+            'instance'].estPublique else ((0, "Annonce réservée aux adhérents"),(1, "Annonce publique"),)
+        self.fields["estUneOffre"].choices = ((1, "Offre"), (0, "Demande")) if kwargs[
+            'instance'].estUneOffre else ((0, "Demande"), (1, "Offre"), )
+
 class Produit_service_CreationForm(ProduitCreationForm):
     class Meta:
         model = Produit_service
@@ -70,9 +90,18 @@ class Produit_service_CreationForm(ProduitCreationForm):
             'date_debut': forms.DateInput(attrs={'type':"date"}, ),
             'date_expiration': forms.DateInput(attrs={'type':"date"}),
             'description': SummernoteWidget(),
-          #  'estUneOffre': forms.RadioSelect(choices=('oui', 'non')),
-           # 'estPublique': forms.RadioSelect(choices=('oui', 'non')),
         }
+
+class Produit_service_modifier_form(Produit_service_CreationForm):
+
+    def __init__(self, *args, **kwargs):
+        super(Produit_service_modifier_form, self).__init__(*args, **kwargs)
+        self.fields["estPublique"].choices = ((1, "Annonce publique"), (0, "Annonce réservée aux adhérents")) if \
+        kwargs[
+            'instance'].estPublique else ((0, "Annonce réservée aux adhérents"), (1, "Annonce publique"),)
+        self.fields["estUneOffre"].choices = ((1, "Offre"), (0, "Demande")) if kwargs[
+            'instance'].estUneOffre else ((0, "Demande"), (1, "Offre"),)
+
 class Produit_objet_CreationForm(ProduitCreationForm):
     class Meta:
         model = Produit_objet
@@ -82,6 +111,15 @@ class Produit_objet_CreationForm(ProduitCreationForm):
             'date_expiration': forms.DateInput(attrs={'type':"date"}),
             'description': SummernoteWidget(),
         }
+
+class Produit_objet_modifier_form(Produit_objet_CreationForm):
+
+    def __init__(self, *args, **kwargs):
+        super(Produit_objet_modifier_form, self).__init__(*args, **kwargs)
+        self.fields["estPublique"].choices = ((1, "Annonce publique"), (0, "Annonce réservée aux adhérents")) if kwargs[
+            'instance'].estPublique else ((0, "Annonce réservée aux adhérents"),(1, "Annonce publique"),)
+        self.fields["estUneOffre"].choices = ((1, "Offre"), (0, "Demande")) if kwargs[
+            'instance'].estUneOffre else ((0, "Demande"), (1, "Offre"), )
 
 class AdresseForm(forms.ModelForm):
     rue = forms.CharField(label="Rue", required=False)

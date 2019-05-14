@@ -53,6 +53,10 @@ class ModifierArticle(UpdateView):
                      description="a modifié l'article '%s'" % self.object.titre)
         return HttpResponseRedirect(self.get_success_url())
 
+
+    def save(self):
+        return super(ModifierArticle, self).save()
+
 class SupprimerArticle(DeleteView):
     model = Article
     success_url = reverse_lazy('blog:index')
