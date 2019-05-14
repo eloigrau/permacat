@@ -1,4 +1,8 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block header %}
+<script src="{% static 'js/sorttable.js' %}"></script>
+{% endblock %}
 {% block title %}Coopérateurs
 {% endblock %}
 {% block subtitle %}
@@ -32,7 +36,7 @@
     <table class="table table-condensed tableprofils table-striped">
         <thead class="thead-inverse">
             <tr>
-                
+
                 <th>Pseudo</th>
                 <th>Email</th>
                 <th>Code postal</th>

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block subtitle %}
+<h4 class = "textcenter rowbienvenue">{% trans "Administration et fichiers de l'association" %}</h4>
+
+{% endblock %}
+{% block content %}
+
+<div class="row textcenter">
+	<div class="col-sm-12">
+        <a href="{% url 'listeContacts' %}">
+         <button type="button" class="btn btn-primary">
+                 Liste des emails
+            </button>
+		</a>
+	</div>
+</div>
+<hr>
+<div class="row textcenter">
+	<div class="col-sm-12">
+        <a href="{{STATIC_URL}}admin/coucou.txt">
+         <button type="button" class="btn btn-success">
+                 Télécharger les statuts, la charte et le règlement intérieur
+            </button>
+		</a>
+	</div>
+</div>
+<hr>
+<div class="row textcenter">
+	<div class="col-sm-12">
+        <a href="{{STATIC_URL}}admin/coucou.txt">
+         <button type="button" class="btn btn-success">
+                Télécharger un RIB
+            </button>
+		</a>
+	</div>
+</div>
+<hr>
+<div class="row textcenter">
+	<div class="col-sm-12">
+        <a href="{{STATIC_URL}}admin/coucou.txt">
+         <button type="button" class="btn btn-success">
+               Télécharger le bilan comptable
+            </button>
+		</a>
+	</div>
+</div>
+{% endblock %}
+
+

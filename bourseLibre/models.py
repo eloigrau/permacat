@@ -146,6 +146,7 @@ class Profil(AbstractUser):
 
     inscrit_newsletter = models.BooleanField(verbose_name="J'accepte de recevoir des emails de Permacat", default=False)
     statut_adhesion = models.IntegerField(choices=Choix.statut_adhesion, default="0")
+    cotisation_a_jour = models.BooleanField(verbose_name="Cotisation à jour", default=False)
     accepter_conditions = models.BooleanField(verbose_name="J'ai lu et j'accepte les conditions d'utilisation du site", default=False, null=False)
     accepter_annuaire = models.BooleanField(verbose_name="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous", default=True)
 
@@ -199,7 +200,15 @@ class Profil(AbstractUser):
             return True
         else:
             return False
-    
+
+    @property
+    def cotisation_a_jour_str(self):
+       return "oui" if self.cotisation_a_jour else "non"
+
+    @property
+    def inscrit_newsletter_str(self):
+       return "oui" if self.inscrit_newsletter else "non"
+
 @receiver(post_save, sender=Profil)
 def create_user_profile(sender, instance, created, **kwargs):
     if created and instance.is_superuser:

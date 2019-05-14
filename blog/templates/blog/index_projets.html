@@ -50,6 +50,25 @@
                 {% endfor %}
             </div>
         </div>
+
+        {% if request.user.is_permacat %}
+        <div class="btn-group">
+            <a {% if request.GET.permacat %}  href="?permacat=True"
+                {%else%}href="#" {%endif%}>
+                <button type="button" class="btn {% if request.GET.permacat %}btn-primary{%endif%}">
+                {% if request.GET.permacat %}{% if request.GET.permacat == "True" %}Permacat {%else%}Public{%endif%}{%else%}Statut{%endif%}
+                </button>
+            </a>
+             <button type="button" class="btn {% if request.GET.permacat %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+               data-target = "#idPermacat">
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+            <div class="dropdown-menu"  aria-labelledby="menuStatut"  id=idPermacat">
+                  <a class="dropdown-item" href="?permacat=True">Permacat</a>
+                  <a class="dropdown-item" href="?permacat=False">Public</a>
+            </div>
+        </div>
+        {% endif %}
     </div>
 </div>
     <div class="col-md-3 textcenter">

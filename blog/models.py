@@ -8,7 +8,7 @@ from django.utils import timezone
 class Choix():
     statut_projet = ('prop','Proposition de projet'), ("AGO","Fiche prpojet soumise à l'AGO"), ('vote','Soumis au vote'), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
     type_projet = ('Part','Participation à un évènement'), ('AGO',"Organisation d'une AGO"), ('Projlong','Projet a long terme'), ('Projcourt','Projet a court terme'), ('Projponct','Projet ponctuel'),
-    type_annonce = ('Annonce','Annonce'), ('Agenda','Agenda'), ('Rencontre','Rencontre'), ('Entraide','Entraide'), ('Chantier','Chantier participatif'), ('Jardinage','Jardinage'), ('Recette', 'Recette'), ('Bricolage','Bricolage'), ('Culture','Culture'), ('Bon_plan', 'Bon plan'), ('Point', 'Point de vue'),  ('Autre','Autre'),
+    type_annonce = ('Annonce','Annonce'), ('Administratif','Administratif'), ('Agenda','Agenda'), ('Rencontre','Rencontre'), ('Entraide','Entraide'), ('Chantier','Chantier participatif'), ('Jardinage','Jardinage'), ('Recette', 'Recette'), ('Bricolage','Bricolage'), ('Culture','Culture'), ('Bon_plan', 'Bon plan'), ('Point', 'Point de vue'),  ('Autre','Autre'),
 
 class Article(models.Model):
     categorie = models.CharField(max_length=30,         

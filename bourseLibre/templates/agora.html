@@ -45,7 +45,7 @@
     {% ifchanged %}
     <div class="row msg-date textcenter">
         <div class="col-sm-12">
-            <p class="infos">{{ mess.date_creation|date:"DATE_FORMAT" }}</p>
+            <p class="infos">{{ mess.date_creation|date:"l d F" }}</p>
         </div>
     </div>
     {% endifchanged %}

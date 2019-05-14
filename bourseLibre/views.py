@@ -217,9 +217,33 @@ def annuaire_permacat(request):
     return render(request, 'annuaire_permacat.html', {'profils':profils_permacat, } )
 
 @login_required
+def listeContacts(request):
+    if not request.user.is_permacat:
+        return render(request, "notPermacat.html")
+    listeMails = [
+        {"type":'user_newsletter' ,"profils":Profil.objects.filter(inscrit_newsletter=True), "titre":"Liste des inscrits à la newsletter : "},
+        {"type":'user_adherent' , "profils":Profil.objects.filter(statut_adhesion=2), "titre":"Liste des adhérents : "},
+        {"type":'user_futur_adherent', "profils":Profil.objects.filter(statut_adhesion=0), "titre":"Liste des personnes qui veulent adhérer à Permacat :"}
+    ]
+    return render(request, 'listeContacts.html', {"listeMails":listeMails})
+
+@login_required
 def carte(request):
     profils = Profil.objects.filter(accepter_annuaire=1)
     return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': "La carte des coopérateurs*" } )
+
+
+@login_required
+def admin_asso(request):
+    if not request.user.is_permacat:
+        return render(request, "notPermacat.html")
+
+    listeFichers = [
+        {"titre": "Télécharger le bilan comptable", "url": "{{STATIC_ROOT]]/admin/coucou.txt"},
+        {"titre":"Télécharger un RIB", "url":"{{STATIC_ROOT]]/admin/bilan.txt" },
+        {"titre":"Télécharger les statuts et règlement intérieur", "url":"{{STATIC_ROOT]]/admin/statuts.txt" },
+    ]
+    return render(request, 'admin_asso.html', {"listeFichers":listeFichers} )
 
 
 @login_required
@@ -435,6 +459,12 @@ class ListeProduit(ListView):
         if "offre" in params:
             qs = qs.filter(estUneOffre=params['offre'])
 
+        if "permacat" in params and self.request.user.is_permacat:
+            if params['permacat'] == "True":
+                qs = qs.filter(estPublique=False)
+            else:
+                qs = qs.filter(estPublique=True)
+
         res = qs.order_by('-date_creation', 'categorie', 'user')
         if "ordre" in params:
             if params['ordre'] == 'categorie':
@@ -613,6 +643,7 @@ def lireConversation(request, destinataire):
     return render(request, 'lireConversation.html', {'conversation': conversation, 'form': form, 'messages_echanges': messages, 'destinataire':destinataire})
 
 
+
 @login_required
 def lireConversation_2noms(request, destinataire1, destinataire2):
     if request.user.username==destinataire1:
@@ -634,6 +665,10 @@ def notifications(request):
         offres      = Action.objects.filter(Q(verb='ajout_offre'))[:10]
 
     conversations = any_stream(request.user).filter(Q(verb='envoi_salon_prive',))[:10]
+
+    articles = [art for i, art in enumerate(articles) if i == 0 or (art.description != articles[i-1].description)]
+    projets = [art for i, art in enumerate(projets) if i == 0 or (art.description != projets[i-1].description)]
+    offres = [art for i, art in enumerate(offres) if i == 0 or (art.description != offres[i-1].description)]
 
     return render(request, 'notifications.html', {'salons': salons, 'articles': articles,'projets': projets, 'offres':offres, 'conversations':conversations})
 

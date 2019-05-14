@@ -111,6 +111,12 @@ class ListeArticles(ListView):
             qs = qs.filter(auteur__username=params['auteur'])
         if "categorie" in params:
             qs = qs.filter(categorie=params['categorie'])
+        if "permacat" in params  and self.request.user.is_permacat:
+            if params['permacat'] == "True":
+                qs = qs.filter(estPublic=False)
+            else:
+                qs = qs.filter(estPublic=True)
+
 
         return qs.order_by('-date_dernierMessage', '-date_creation', 'categorie','auteur')
 
@@ -129,6 +135,8 @@ class ListeArticles(ListView):
             context['typeFiltre'] = "auteur"
         if 'categorie' in self.request.GET:
             context['typeFiltre'] = "categorie"
+        if 'permacat' in self.request.GET:
+            context['typeFiltre'] = "permacat"
         if 'archives' in self.request.GET:
             context['typeFiltre'] = "archives"
         return context
@@ -237,6 +245,11 @@ class ListeProjets(ListView):
             qs = qs.filter(auteur__username=params['auteur'])
         if "categorie" in params:
             qs = qs.filter(categorie=params['categorie'])
+        if "permacat" in params and self.request.user.is_permacat:
+            if params['permacat'] == "True":
+                qs = qs.filter(estPublic=False)
+            else:
+                qs = qs.filter(estPublic=True)
 
         return qs.order_by('-date_dernierMessage', '-date_creation', 'categorie', 'auteur')
 
@@ -253,6 +266,8 @@ class ListeProjets(ListView):
             context['typeFiltre'] = "auteur"
         if 'categorie' in self.request.GET:
             context['typeFiltre'] = "categorie"
+        if 'permacat' in self.request.GET:
+            context['typeFiltre'] = "permacat"
         if 'archives' in self.request.GET:
             context['typeFiltre'] = "archives"
         return context

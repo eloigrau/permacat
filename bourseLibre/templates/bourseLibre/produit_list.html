@@ -99,6 +99,22 @@
         {%endif%}
 
 
+        {% if request.user.is_permacat %}
+        <div class="btn-group">
+                <button type="button" class="btn {% if request.GET.permacat %}btn-primary{%endif%}">
+                {% if request.GET.permacat %}{% if request.GET.permacat == "True" %}Permacat {%else%}Public{%endif%}{%else%}Statut{%endif%}
+                </button>
+             <button type="button" class="btn {% if request.GET.permacat %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+               data-target = "#idPermacat">
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+            <div class="dropdown-menu"  aria-labelledby="menuStatut"  id=idPermacat">
+                  <a class="dropdown-item" href="?permacat=True">Permacat</a>
+                  <a class="dropdown-item" href="?permacat=False">Public</a>
+            </div>
+        </div>
+        {%endif%}
+
             <li class="nav-item dropdown active">
                 <button class="btn dropdown-toggle btn-block btn-light" type="button" id="menuOrdreTri" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                    Trier par...
@@ -109,7 +125,7 @@
                     {% endfor %}
                 </div>
             </li>
-<li class="nav-item dropdown active">
+            <li class="nav-item dropdown active">
                 <button class="btn dropdown-toggle btn-block btn-light" type="button" id="menuDistance" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                    Rayon...
            </button>
@@ -137,108 +153,9 @@
 </div>
 {%endif%}
 
-{%comment%}
-<div class="row">
-    <div class="btn-group dropright">
-        <div class="btn-group">
-            <a href="?categorie=aliment">
-                <button class="btn {% if categorie_parent == 'aliment' %}btn-primary {%endif%}">{%if souscategorie and categorie_parent == 'aliment'%}{{souscategorie}}{%else%}Aliment {%endif%}</button>
-            </a>
-              <button type="button" class="btn {% if categorie_parent == 'aliment' %}btn-primary {%endif%} dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="sr-only">Toggle Dropdown</span>
-              </button>
-            <div class="dropdown-menu"  aria-labelledby="menuAliment">
-                 <a class="dropdown-item"  href="?categorie=aliment">tous les aliments</a>
-                <div class="dropdown-divider"></div>
-                {% for souscat in choixPossibles.aliment.souscategorie %}
-                 <a class="dropdown-item"  href="?souscategorie={{souscat}}">{{souscat}}</a>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="btn-group">
-            <a href="?categorie=vegetal">
-            <button class="btn {% if categorie_parent == 'vegetal' %}btn-primary {%endif%}">{%if souscategorie and categorie_parent == 'vegetal' %}{{souscategorie}}{%else%}Végétal{%endif%} </button>
-            </a>
-              <button type="button" class="btn {% if categorie_parent == 'vegetal' %}btn-primary {%endif%} dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-              data-target = "#idvegetal">
-            <span class="sr-only">Toggle Dropdown</span>
-              </button>
-            <div class="dropdown-menu"  aria-labelledby="menuvegetal" id="idvegetal">
-                 <a class="dropdown-item"  href="?categorie=vegetal">tous les végétaux</a>
-                <div class="dropdown-divider"></div>
-                {% for souscat in choixPossibles.vegetal.souscategorie %}
-                 <a class="dropdown-item"  href="?souscategorie={{souscat}}">{{souscat}}</a>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="btn-group">
-            <a href="?categorie=service">
-            <button class="btn {% if categorie_parent == 'service' %}btn-primary {%endif%}">{%if souscategorie and categorie_parent == 'service' %}{{souscategorie}}{%else%}Service{%endif%} </button>
-            </a>
-              <button type="button" class="btn {% if categorie_parent == 'service' %}btn-primary {%endif%} dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-              data-target = "#idService">
-            <span class="sr-only">Toggle Dropdown</span>
-              </button>
-            <div class="dropdown-menu"  aria-labelledby="menuService" id="idService">
-                 <a class="dropdown-item"  href="?categorie=service">tous les services</a>
-                <div class="dropdown-divider"></div>
-                {% for souscat in choixPossibles.service.souscategorie %}
-                 <a class="dropdown-item"  href="?souscategorie={{souscat}}">{{souscat}}</a>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="btn-group">
-            <a href="?categorie=objet">
-                <button class="btn {% if categorie_parent == 'objet' %}btn-primary {%endif%}">{%if souscategorie and categorie_parent == 'objet' %}{{souscategorie}}{%else%}Objet{%endif%} </button>
-            </a>
-              <button type="button" class="btn {% if categorie_parent == 'objet' %}btn-primary {%endif%} dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-               data-target = "#idObjet">
-            <span class="sr-only">Toggle Dropdown</span>
-              </button>
-            <div class="dropdown-menu"  aria-labelledby="menuObjet"  id="idObjet">
-                 <a class="dropdown-item"  href="?categorie=objet">tous les objets</a>
-                <div class="dropdown-divider"></div>
-                {% for souscat in choixPossibles.objet.souscategorie %}
-                 <a class="dropdown-item"  href="?souscategorie={{souscat}}">{{souscat}}</a>
-                {% endfor %}
-            </div>
-        </div>
-
-        {%if producteur_list %}
-        <div class="btn-group">
-            <a {% if request.GET.producteur %} href="{%url 'profil_nom' request.GET.producteur %}"
-                {%else%}href="#" {%endif%}>
-                <button type="button" class="btn {% if request.GET.producteur %}btn-primary{%endif%}">
-                {% if request.GET.producteur %} Par: {{request.GET.producteur}} {%else%}Producteur{%endif%}
-                </button>
-            </a>
-             <button type="button" class="btn {% if request.GET.producteur %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-               data-target = "#idProducteur">
-                <span class="sr-only">Toggle Dropdown</span>
-              </button>
-            <div class="dropdown-menu"  aria-labelledby="menuProducteur"  id="idProducteur">
-                {% for producteur in producteur_list %}
-                  <a class="dropdown-item" href="?producteur={{producteur}}">{{producteur}}</a>
-                {% endfor %}
-            </div>
-        </div>
-
-        {%endif%}
-    </div>
-</div>
-
-{%endcomment%}
 {%endblock subtitle%}
 {% block content %}
 
-{%comment%}
-<div class="card-deck listOffres">
-    {% for produit in produits_list %}
-        {% include "bourseLibre/produit_template3.html" with produit=produit %}
-       {% cycle '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
-     {% endfor %}
-</div>
-{%endcomment%}
 <div class="card-deck listOffres infinite-container">
     {% for produit in produits_list %}
         {% include "bourseLibre/produit_template3.html" with produit=produit %}

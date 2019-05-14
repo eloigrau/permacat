@@ -46,6 +46,7 @@
         <ul class="dropdown-menu textcenter" aria-labelledby="navbarAsso">
             {%if request.user.is_permacat %}
             <li> <a class="nav-link dropdown-item" href="{% url 'agora_permacat' %}"> Salon permacat </a></li>
+                <li> <a class="nav-link dropdown-item" href="{% url 'blog:index' %}?permacat=True">Articles permacat</a></li>
             {% endif%}
             <li><a class="nav-link dropdown-item" href="{% url 'blog:index_projets' %}"> Projets </a></li>
            {%comment%}  <a class="nav-link" href="{% url 'agenda' %}"> Agenda </a>{%endcomment%}
@@ -53,6 +54,7 @@
            <li>  <span class="nav-link divider" role="separator"></span></li>
             <li> <a class="nav-link dropdown-item" href="{% url 'annuaire_permacat' %}"> Annuaire  </a></li>
              <li><a class="nav-link dropdown-item" href="{% url 'carte_permacat' %}"> Carte  </a></li>
+             <li><a class="nav-link dropdown-item" href="{% url 'admin_asso' %}"> Administration  </a></li>
             {% endif%}
             <li> <span class="nav-link divider" role="separator"></span></li>
            <li> <a class="nav-link dropdown-item" href="{% url 'presentation_asso' %}"> Qui sommes nous ?</a></li>
