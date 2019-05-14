@@ -10,11 +10,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='profil',
-            name='cotisation_a_jour',
-            field=models.BooleanField(default=False, verbose_name='Cotisation à jour'),
-        ),
         migrations.AlterField(
             model_name='produit',
             name='date_debut',
