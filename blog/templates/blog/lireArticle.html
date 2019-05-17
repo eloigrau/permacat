@@ -44,11 +44,11 @@
 
         <a href="{% url 'blog:suivre_article' article.slug %}">
             {% if request.user|is_following:article %}
-            <button type="button" class="btn btn-light" data-toggle="tooltip" data-placement="bottom" title=" Cliquez pour arreter de recevoir des notifications concernant cet article par mail">
+            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title=" Cliquez pour arreter de recevoir des notifications concernant cet article par mail">
                  {% fontawesome_icon 'envelope-open' %} Suivi
             </button>
             {% else %}
-            <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom" title=" Cliquez pour recevoir les notifications concernant cet article par mail">
+            <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title=" Cliquez pour recevoir les notifications concernant cet article par mail">
                  {% fontawesome_icon 'envelope' %} Non suivi
             </button>
             {% endif %}

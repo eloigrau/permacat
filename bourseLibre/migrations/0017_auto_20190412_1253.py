@@ -26,4 +26,9 @@ class Migration(migrations.Migration):
             name='souscategorie',
             field=models.CharField(choices=[('jardinage', 'jardinage'), ('éducation', 'éducation'), ('santé', 'santé'), ('bricolage', 'bricolage'), ('informatique', 'informatique'), ('hebergement', 'hebergement'), ('cuisine', 'cuisine'), ('batiment', 'batiment'), ('mécanique', 'mécanique'), ('autre', 'autre')], default='j', max_length=20),
         ),
+        migrations.AddField(
+            model_name='profil',
+            name='cotisation_a_jour',
+            field=models.BooleanField(default=False, verbose_name='Cotisation à jour'),
+        ),
     ]

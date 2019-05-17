@@ -25,9 +25,4 @@ class Migration(migrations.Migration):
             name='pseudo_june',
             field=models.CharField(blank=True, default=None, max_length=50, null=True, verbose_name='(optionnel) pseudo Monnaie Libre'),
         ),
-        migrations.AddField(
-            model_name='profil',
-            name='cotisation_a_jour',
-            field=models.BooleanField(default=False, verbose_name='Cotisation à jour'),
-        ),
     ]
