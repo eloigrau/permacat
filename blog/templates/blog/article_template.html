@@ -1,12 +1,22 @@
 
-{% load app_filters %}
+{% load activity_tags %}
+{% load fontawesome %}
 <div class="infinite-item">
 <div class="card article ">
   <a href="{% url 'blog:lireArticle' slug=article.slug %}">
     <div class="card-block">
-        <span class="badge {% if article.estPublic%}badge-warning{%else%} badge-success {%endif%}">
-            Article {%if article.estPublic%} public{%else%}  permacat  {%endif%}
+        <span class="badge {% if article.estPublic%}badge-warning{%else%} badge-success {%endif%}" data-toggle="tooltip" data-placement="bottom" title="Article {%if article.estPublic%}visible par tous les inscrits{%else%}visible par les membres de Permacat seulement{%endif%}">
+            Article {%if article.estPublic%} public{%else%}  Permacat  {%endif%}
         </span>
+            {% if request.user|is_following:article %}
+            <span class="badge btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous recevez des notifications concernant cet article par mail">
+                 {% fontawesome_icon 'envelope-open' %} Suivi
+            </span>
+            {% else %}
+            <span class="badge btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous ne recevez pas de notifications concernant cet article par mail">
+                 {% fontawesome_icon 'envelope' %} Non suivi
+            </span>
+            {% endif %}
         <h4 class="card-title">
             {{ article.titre }}</h4>
         <h6 class="card-subtitle mb-2 ">

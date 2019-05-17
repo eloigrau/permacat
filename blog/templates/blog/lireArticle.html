@@ -1,8 +1,10 @@
 {% extends 'blog/baseBlog.html' %}
 {% load activity_tags %}
+{% load fontawesome %}
 {% block subtitle %}
 <div class="row">
     <div class="col-md-2">
+        <p>
         {%if article.auteur == request.user %}
 		<div class="btn-group">
             <a href="{% url 'blog:modifierArticle' slug=article.slug %}">
@@ -20,6 +22,8 @@
                 <span class="glyphicon glyphicon-plus"></span>&nbsp;Modifier
                </button></a>
         {%endif%}
+
+
         {%comment%}
         <a href="{% follow_url article %}">
             <button type="button" class="btn btn-sm btn-warning">
@@ -33,14 +37,30 @@
                </button>
 </a>
         {%endcomment%}
+    </p>
     </div>
     <div class="col-md-8">
-        <p class="infos  textepetit">Dans: <a href="{% url 'blog:forum'  %}?categorie={{article.categorie}}">{{ article.get_categorie_display }}</a>, rédigé par <a href="{% url 'profil' article.auteur.id %}"> {{ article.auteur.username }}</a>, le {{ article.date_creation|date:"DATE_FORMAT" }}</p>
+        <p class="infos  textepetit">Dans: <a href="{% url 'blog:forum'  %}?categorie={{article.categorie}}">{{ article.get_categorie_display }}</a>, rédigé par <a href="{% url 'profil' article.auteur.id %}"> {{ article.auteur.username }}</a>, le {{ article.date_creation|date:"DATE_FORMAT" }};
+
+        <a href="{% url 'blog:suivre_article' article.slug %}">
+            {% if request.user|is_following:article %}
+            <button type="button" class="btn btn-light" data-toggle="tooltip" data-placement="bottom" title=" Cliquez pour arreter de recevoir des notifications concernant cet article par mail">
+                 {% fontawesome_icon 'envelope-open' %} Suivi
+            </button>
+            {% else %}
+            <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom" title=" Cliquez pour recevoir les notifications concernant cet article par mail">
+                 {% fontawesome_icon 'envelope' %} Non suivi
+            </button>
+            {% endif %}
+        </a>
+        </p>
     </div>
     <div class="col-md-2">
+        <p>
         <a  href="{% url 'blog:index'  %}">
         <button class="btn btn-info btn-sm textright" >Retour au sommaire</button>
             </a>
+        </p>
     </div>
 </div>
 

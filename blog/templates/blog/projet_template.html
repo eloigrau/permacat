@@ -1,11 +1,22 @@
 
+{% load activity_tags %}
+{% load fontawesome %}
 <div class="infinite-item">
-    <div class="card article ">
-      <a href="{% url 'blog:lireProjet' slug=projet.slug %}">
+<div class="card article ">
+  <a href="{% url 'blog:lireProjet' slug=projet.slug %}">
     <div class="card-block">
-        <span class="badge {% if projet.estPublic%}badge-warning{%else%} badge-success {%endif%}" style="vertical-align: top">
+        <span class="badge {% if projet.estPublic%}badge-warning{%else%} badge-success {%endif%}" data-toggle="tooltip" data-placement="bottom" title="Projet {%if projet.estPublic%}visible par tous les inscrits{%else%}visible par les membres de Permacat seulement{%endif%}">
                 Projet {%if projet.estPublic%} public{%else%}  Permacat  {%endif%}
             </span>
+            {% if request.user|is_following:projet %}
+            <span class="badge btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous recevez des notifications concernant ce projet par mail">
+                 {% fontawesome_icon 'envelope-open' %} Suivi
+            </span>
+            {% else %}
+            <span class="badge btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous ne recevez pas de notifications concernant ce projet par mail">
+                 {% fontawesome_icon 'envelope' %} Non suivi
+            </span>
+            {% endif %}
         <h4 class="card-title">
             {{ projet.titre }}</h4>
         <h6 class="card-subtitle mb-2 text-muted">
@@ -14,11 +25,11 @@
             {%endif%}
         </h6>
 
-        <p class="card-text">{{ projet.contenu|safe|striptags|truncatechars:200 }}</p>
-
-  </div>   </a>
+        <div class="card-text">{{ projet.contenu|safe|striptags|truncatechars:200 }}</div>
+    </div>
+  </a>
 </div>
 </div>
-    {% if not forloop.last %}
-    <hr>
-    {%endif%}
+{% if not forloop.last %}
+<hr>
+{%endif%}

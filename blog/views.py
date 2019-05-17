@@ -5,10 +5,12 @@ from .models import Article, Commentaire, Projet, CommentaireProjet, Choix
 from .forms import ArticleForm, CommentForm, ArticleChangeForm, ProjetForm, ProjetChangeForm, CommentProjetForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
-from actstream import action
+from actstream import actions, action, models
 
 from django.utils.timezone import now
 
+from django.contrib.contenttypes.models import ContentType
+from django.views.decorators.csrf import csrf_exempt
 
 @login_required
 def forum(request):
@@ -326,3 +328,30 @@ def telecharger_fichier(request):
 #
 #     return render_to_response('project/create.html', args)
 
+
+@login_required
+@csrf_exempt
+def suivre_projet(request, slug, actor_only=True):
+    """
+    """
+    projet = get_object_or_404(Projet, slug=slug)
+
+    if projet in models.following(request.user):
+        actions.unfollow(request.user, projet)
+    else:
+        actions.follow(request.user, projet, actor_only=actor_only)
+    return redirect(projet)
+
+
+@login_required
+@csrf_exempt
+def suivre_article(request, slug, actor_only=True):
+    """
+    """
+    article = get_object_or_404(Article, slug=slug)
+
+    if article in models.following(request.user):
+        actions.unfollow(request.user, article)
+    else:
+        actions.follow(request.user, article, actor_only=actor_only)
+    return redirect(article)

@@ -1,28 +1,50 @@
 {% extends 'blog/baseBlog.html' %}
 {% load static %}
+{% load fontawesome %}
+{% load activity_tags %}
 {% block subtitle %}
 <div class="row">
     <div class="col-md-2">
+        <p>
         {%if projet.auteur == request.user%}
 		<div class="btn-group">
+
             <a href="{% url 'blog:modifierProjet' slug=projet.slug %}">
                <button type="button" class="btn btn-sm btn-warning">
-                <span class="glyphicon glyphicon-plus"></span>&nbsp;Modifier
+               &nbsp;Modifier
                </button></a>
             <a href="{% url 'blog:supprimerProjet' slug=projet.slug %}">
                <button type="button" class="btn btn-sm btn-danger">
-                <span class="glyphicon glyphicon-plus"></span>&nbsp;Supprimer
+               &nbsp;Supprimer
                </button></a>
 		</div>
         {%endif%}
+
+</p>
     </div>
     <div class="col-md-8">
-        <p class="infos  textepetit">Dans: <a href="{% url 'blog:index_projets'  %}?categorie={{projet.categorie}}">{{ projet.get_categorie_display }}</a>, rédigé par <a href="{% url 'profil' projet.auteur.id %}"> {{ projet.auteur.username }}</a>, le {{ projet.date_creation|date:"DATE_FORMAT" }}</p>
+        <p class="infos  textepetit">Dans: <a href="{% url 'blog:index_projets'  %}?categorie={{projet.categorie}}">{{ projet.get_categorie_display }}</a>, rédigé par <a href="{% url 'profil' projet.auteur.id %}"> {{ projet.auteur.username }}</a>, le {{ projet.date_creation|date:"DATE_FORMAT" }}
+
+
+        <a href="{% url 'blog:suivre_projet' projet.slug %}">
+            {% if request.user|is_following:projet %}
+            <button type="button" class="btn btn-light" data-toggle="tooltip" data-placement="bottom" title=" Cliquez pour arreter de recevoir des notifications concernant ce projet par mail">
+                 {% fontawesome_icon 'envelope-open' %} Suivi
+            </button>
+            {% else %}
+            <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom" title=" Cliquez pour recevoir les notifications concernant ce projet par mail">
+                 {% fontawesome_icon 'envelope' %} Non suivi
+            </button>
+            {% endif %}
+        </a>
+        </p>
     </div>
     <div class="col-md-2">
+        <p>
         <a  href="{% url 'blog:index_projets'  %}">
         <button class="btn btn-info btn-sm textright" >Retour au sommaire</button>
             </a>
+        </p>
     </div>
 </div>
 

@@ -2,8 +2,12 @@ from django.db import models
 from bourseLibre.models import Profil
 from django.urls import reverse
 from django.utils import timezone
+from django.core.mail import send_mass_mail
 #from tinymce.models import HTMLField
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
+from actstream.models import followers
 
 class Choix():
     statut_projet = ('prop','Proposition de projet'), ("AGO","Fiche prpojet soumise à l'AGO"), ('vote','Soumis au vote'), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
@@ -96,6 +100,26 @@ class Projet(models.Model):
             self.date_creation = timezone.now()
 
         return super(Projet, self).save(*args, **kwargs)
+
+
+@receiver(post_save,  sender=Projet)
+def save_projet(instance, **kwargs):
+    titre = "Permacat - Articles"
+    message = "<a href='www.perma.cat/" + instance.get_absolute_url + "'>L'article '" +  instance.titre + "' a été modifié</a>"+\
+              "\n vous recevez cet email, car vous avez choisi de suivre cet article sur le site Permacat"
+    emails = [suiv.email for suiv in followers(instance)]
+    send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
+
+@receiver(post_save,  sender=Article)
+def save_projet(instance, **kwargs):
+    titre = "Permacat - Projets"
+    message = "<a href='www.perma.cat/" + str(instance.get_absolute_url) + "'>L'article '" +  instance.titre + "' a été modifié</a>"+\
+              "\n vous recevez cet email, car vous avez choisi de suivre ce projet sur le site Permacat"
+   # emails = [(titre, message, "asso@perma.cat", (suiv.email, )) for suiv in followers(instance)]
+    emails = [suiv.email for suiv in followers(instance)]
+    send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
+
+
 
 class CommentaireProjet(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE)
