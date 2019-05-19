@@ -669,7 +669,6 @@ def notifications(request):
 
     articles = [art for i, art in enumerate(articles) if i == 0 or (art.description != articles[i-1].description)]
     projets = [art for i, art in enumerate(projets) if i == 0 or (art.description != projets[i-1].description)]
-    offres = [art for i, art in enumerate(offres) if i == 0 or (art.description != offres[i-1].description)]
 
     return render(request, 'notifications.html', {'salons': salons, 'articles': articles,'projets': projets, 'offres':offres, 'conversations':conversations})
 
