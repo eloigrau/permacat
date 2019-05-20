@@ -28,6 +28,8 @@ urlpatterns = [
 
     url(r'^article/(?P<slug>[-\w]+)$', views.lireArticle, name='lireArticle'),
     url(r'^modifierArticle/(?P<slug>[-\w]+)$', login_required(views.ModifierArticle.as_view(), login_url='/auth/login/'), name='modifierArticle'),
+    url(r'^suiveursArticle/(?P<slug>[-\w]+)$', views.articles_suivis, name='suiveursArticle'),
+    url(r'^suiveursProjet/(?P<slug>[-\w]+)$', views.projets_suivis, name='suiveursProjet'),
     url(r'^supprimerArticle/(?P<slug>[-\w]+)$', login_required(views.SupprimerArticle.as_view(), login_url='/auth/login/'), name='supprimerArticle'),
     url(r'^ajouterArticle/$', views.ajouterNouveauPost, name='ajouterNouvelArticle'),
 

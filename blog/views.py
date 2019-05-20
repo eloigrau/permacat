@@ -6,10 +6,11 @@ from .forms import ArticleForm, CommentForm, ArticleChangeForm, ProjetForm, Proj
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
 from actstream import actions, action, models
+from actstream.models import followers
 
 from django.utils.timezone import now
 
-from django.contrib.contenttypes.models import ContentType
+#from django.contrib.contenttypes.models import ContentType
 from django.views.decorators.csrf import csrf_exempt
 
 @login_required
@@ -355,3 +356,16 @@ def suivre_article(request, slug, actor_only=True):
     else:
         actions.follow(request.user, article, actor_only=actor_only)
     return redirect(article)
+
+
+@login_required
+def projets_suivis(request, slug):
+    projet = Projet.objects.get(slug=slug)
+    suiveurs = followers(projet)
+    return render(request, "blog/projets_suivis.html", {'suiveurs': suiveurs, "projet":projet})
+
+@login_required
+def articles_suivis(request, slug):
+    article = Article.objects.get(slug=slug)
+    suiveurs = followers(article)
+    return render(request, 'blog/articles_suivis.html', {'suiveurs': suiveurs, "article":article, })

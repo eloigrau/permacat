@@ -35,7 +35,7 @@ from django.views.decorators.debug import sensitive_variables
 from django.db.models import Q,CharField 
 from django.db.models.functions import Lower
 
-from actstream.models import Action, any_stream
+from actstream.models import Action, any_stream, following
 #from fcm_django.models import FCMDevice
 # from django.http.response import JsonResponse, HttpResponse
 # from django.views.decorators.http import require_GET, require_POST
@@ -670,7 +670,13 @@ def notifications(request):
     articles = [art for i, art in enumerate(articles) if i == 0 or (art.description != articles[i-1].description)]
     projets = [art for i, art in enumerate(projets) if i == 0 or (art.description != projets[i-1].description)]
 
-    return render(request, 'notifications.html', {'salons': salons, 'articles': articles,'projets': projets, 'offres':offres, 'conversations':conversations})
+    return render(request, 'notifications/notifications.html', {'salons': salons, 'articles': articles,'projets': projets, 'offres':offres, 'conversations':conversations})
+
+
+@login_required
+def mesSuivis(request):
+    actions = following(request.user)
+    return render(request, 'notifications/mesSuivis.html', {'actions': actions, })
 
 
 @login_required

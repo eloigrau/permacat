@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load activity_tags %}
+{% block subtitle %}
+<h4 class = "textcenter "> Article : <a href="{{article.get_absolute_url}}" >{{article.titre}}</a>
+</h4>
+
+{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+<div class="card-deck notif justify-content-between">
+
+  <div class="card carte-notif notif2  d-md-flex textcenter ">
+    <div class="card-header textcenter justify-content-center" style="background-color:#8eaf9d">
+      Liste des abonnés :
+    </div>
+      <div class="card-block"  >
+        <ul class="list-group list-group-flush">
+          {% for suiveur in suiveurs%}
+          <li class="list-group-item"  style="{% if request.user.last_login > action.timestamp %}background-color:#ffffe6{%endif%}"> <a href="{% url 'profil' suiveur.id %}">{{suiveur}}</a></li>
+          {%empty%}
+           <li class="list-group-item"  style="{% if request.user.last_login > action.timestamp %}background-color:#ffffe6{%endif%}"> Pas d'abonné à cet article</li>
+          {% endfor %}
+        </ul>
+      </div>
+  </div>
+</div>
+</div>
+{% endblock %}

@@ -10,11 +10,11 @@
         </span>
             {% if request.user|is_following:article %}
             <span class="badge btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous recevez des notifications concernant cet article par mail">
-                 {% fontawesome_icon 'envelope-open' %} Suivi
+                 {% fontawesome_icon 'bell' %}
             </span>
             {% else %}
             <span class="badge btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous ne recevez pas de notifications concernant cet article par mail">
-                 {% fontawesome_icon 'envelope' %} Non suivi
+                 {% fontawesome_icon 'bell-slash' %}
             </span>
             {% endif %}
         <h4 class="card-title">

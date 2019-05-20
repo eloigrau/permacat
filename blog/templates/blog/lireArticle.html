@@ -45,13 +45,18 @@
         <a href="{% url 'blog:suivre_article' article.slug %}">
             {% if request.user|is_following:article %}
             <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title=" Cliquez pour arreter de recevoir des notifications concernant cet article par mail">
-                 {% fontawesome_icon 'envelope-open' %} Suivi
+                 {% fontawesome_icon 'bell' %} Suivi
             </button>
             {% else %}
             <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title=" Cliquez pour recevoir les notifications concernant cet article par mail">
-                 {% fontawesome_icon 'envelope' %} Non suivi
+                 {% fontawesome_icon 'bell-slash' %} Non suivi
             </button>
             {% endif %}
+        </a>
+        <a href="{% url 'blog:suiveursArticle' article.slug %}">
+            <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title=" Cliquez pour recevoir les notifications concernant cet article par mail">
+                 {% fontawesome_icon 'eye' %}
+            </button>
         </a>
         </p>
     </div>
