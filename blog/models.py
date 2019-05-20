@@ -104,17 +104,19 @@ class Projet(models.Model):
 
 @receiver(post_save,  sender=Projet)
 def on_save_projet(instance, **kwargs):
-    titre = "Permacat - Articles"
-    message = "<a href='www.perma.cat/" + instance.get_absolute_url() + "'> L'article '" +  instance.titre + "' a été modifié</a>"+\
-              "\n vous recevez cet email, car vous avez choisi de suivre cet article sur le site Permacat"
+    titre = "Permacat - Projet  actualisé"
+    message = " Le pojet '" +  instance.titre + "' a été modifié (ou quelqu'un a commenté)"+ \
+              "\n Vous pouvez y accéder en suivant ce lien : www.perma.cat/" + instance.get_absolute_url() + \
+              "\n vous recevez cet email, car vous avez choisi de suivre cet article sur le site www.Perma.cat"
     emails = [suiv.email for suiv in followers(instance)]
     send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
 
 @receiver(post_save,  sender=Article)
 def on_save_article(instance, **kwargs):
-    titre = "Permacat - Projets"
-    message = "<a href='www.perma.cat/" + str(instance.get_absolute_url()) + "'> L'article '" +  instance.titre + "' a été modifié</a>"+\
-              "\n vous recevez cet email, car vous avez choisi de suivre ce projet sur le site Permacat"
+    titre = "Permacat - Article actualisé"
+    message = "L'article '" +  instance.titre + "' a été modifié" +\
+              "\n Vous pouvez y accéder en suivant ce lien : www.perma.cat" + instance.get_absolute_url() + \
+              "\n vous recevez cet email, car vous avez choisi de suivre ce projet sur le site www.Perma.cat"
    # emails = [(titre, message, "asso@perma.cat", (suiv.email, )) for suiv in followers(instance)]
     emails = [suiv.email for suiv in followers(instance)]
     send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
