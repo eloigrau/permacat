@@ -106,7 +106,7 @@ class Projet(models.Model):
 def on_save_projet(instance, **kwargs):
     titre = "Permacat - Projet  actualisé"
     message = " Le pojet '" +  instance.titre + "' a été modifié (ou quelqu'un a commenté)"+ \
-              "\n Vous pouvez y accéder en suivant ce lien : www.perma.cat/" + instance.get_absolute_url() + \
+              "\n Vous pouvez y accéder en suivant ce lien : www.perma.cat" + instance.get_absolute_url() + \
               "\n vous recevez cet email, car vous avez choisi de suivre cet article sur le site www.Perma.cat"
     emails = [suiv.email for suiv in followers(instance)]
     send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
