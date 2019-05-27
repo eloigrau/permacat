@@ -102,11 +102,7 @@
 <div class="infinite-container">
 {% for article in article_list %}
         {% include "blog/article_template.html" with article=article %}
-{% empty %}
-<p>Aucun article.</p>
 {% endfor %}
 </div>
-
-{%include 'pagination.html' %}
 
 {% endblock %}
