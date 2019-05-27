@@ -214,6 +214,9 @@ def annuaire(request):
 
 @login_required
 def annuaire_permacat(request):
+    if not request.user.is_permacat:
+        return render(request, "notPermacat.html")
+
     profils_permacat = Profil.objects.filter(accepter_annuaire=True, statut_adhesion=2).order_by('username')
     return render(request, 'annuaire_permacat.html', {'profils':profils_permacat, } )
 
@@ -250,7 +253,7 @@ def admin_asso(request):
 @login_required
 def carte_permacat(request):
     if not request.user.is_permacat:
-        return render('erreur.html', {"msg":"Vous devez etre membre permacat pour afficher la carte des membres"})
+        return render(request, "notPermacat.html")
     profils = Profil.objects.filter(statut_adhesion=2, accepter_annuaire=1)
     return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': "Carte des adhérents Permacat*" } )
 
@@ -626,7 +629,6 @@ def lireConversation(request, destinataire):
     if id_produit:
         message_defaut = Produit.objects.get(id=id_produit).get_message_demande()
 
-
     form = MessageForm(request.POST or None, message=message_defaut)
     if form.is_valid():
         message = form.save(commit=False)
@@ -667,8 +669,8 @@ def notifications(request):
 
     conversations = any_stream(request.user).filter(Q(verb='envoi_salon_prive',))[:10]
 
-    articles = [art for i, art in enumerate(articles) if i == 0 or (art.description != articles[i-1].description)]
-    projets = [art for i, art in enumerate(projets) if i == 0 or (art.description != projets[i-1].description)]
+    articles = [art for i, art in enumerate(articles) if i == 0 or (art.description != articles[i-1].description  and art.actor_content_type_id != articles[i-1].actor_content_type_id)]
+    projets = [art for i, art in enumerate(projets) if i == 0 or (art.description != projets[i-1].description and art.actor_content_type_id != projets[i-1].actor_content_type_id ) ]
 
     return render(request, 'notifications/notifications.html', {'salons': salons, 'articles': articles,'projets': projets, 'offres':offres, 'conversations':conversations})
 
@@ -695,6 +697,8 @@ def agora(request, ):
 
 @login_required
 def agora_permacat(request, ):
+    if not request.user.is_permacat:
+        return render(request, "notPermacat.html")
     messages = MessageGeneralPermacat.objects.all().order_by("date_creation")
     form = MessageGeneralPermacatForm(request.POST or None)
     if form.is_valid():
@@ -706,10 +710,6 @@ def agora_permacat(request, ):
         url = reverse('agora_permacat')
         action.send(request.user, verb='envoi_salon_permacat', action_object=message, target=group, url=url,
                     description="a envoyé un message dans le salon Permacat")
-
-        #
-        # devices = FCMDevice.objects.filter(user__inscrit_newsletter=True)
-        # res = devices.send_message("[permacat] Nouveau message", message.message[:20] + '...')
 
 
         return redirect(request.path)

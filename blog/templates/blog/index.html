@@ -91,7 +91,11 @@
     </div>
 
     </div>
+
 </div>
+    {%if not request.user.is_permacat %}
+    <p>Comme vous n'êtes pas membre de l'association, vous n'avez pas accès aux articles "Permacat", désolé... Rejoignez-nous !</p>
+    {%endif%}
 {%endblock%}
 {% block content %}
 

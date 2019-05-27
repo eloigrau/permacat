@@ -153,6 +153,10 @@
 </div>
 {%endif%}
 
+    {%if not request.user.is_permacat %}
+    <p>Comme vous n'êtes pas membre de l'association, vous n'avez pas accès aux offres "Permacat", désolé... Rejoignez-nous !</p>
+    {%endif%}
+
 {%endblock subtitle%}
 {% block content %}
 
