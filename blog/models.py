@@ -19,8 +19,7 @@ class Choix():
         'Culture':"#ffc4c8", 'Bon_plan':"#bccacf", 'Point':"#87bfae", 'Autre':"#bcb4b4"
     }
     couleurs_projets = {
-        'Part':"#d0e8da", 'AGO':"#dcc0de", 'Projlong':"#d1d0dc", 'Projcourt':"#c7c0be",
-        'Projponct':"#e4f9d4",
+        'Part':"#d0e8da", 'AGO':"#dcc0de", 'Projlong':"#d1d0dc", 'Projcourt':"#ffc09f", 'Projponct':"#e4f9d4",
     }
 
 class Article(models.Model):
