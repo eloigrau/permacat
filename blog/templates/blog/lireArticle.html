@@ -40,7 +40,7 @@
     </p>
     </div>
     <div class="col-md-8">
-        <p class="infos  textepetit">Dans: <a href="{% url 'blog:forum'  %}?categorie={{article.categorie}}">{{ article.get_categorie_display }}</a>, rédigé par <a href="{% url 'profil' article.auteur.id %}"> {{ article.auteur.username }}</a>, le {{ article.date_creation|date:"DATE_FORMAT" }};
+        <p class="infos  textepetit">Dans: <a href="{% url 'blog:index'  %}?categorie={{article.categorie}}"  style="background-color:{{article.get_couleur}}">{{ article.get_categorie_display }}</a>, rédigé par <a href="{% url 'profil' article.auteur.id %}"> {{ article.auteur.username }}</a>, le {{ article.date_creation|date:"DATE_FORMAT" }};
 
         <a href="{% url 'blog:suivre_article' article.slug %}">
             {% if request.user|is_following:article %}
@@ -78,7 +78,7 @@
                 Article {%if article.estPublic%} public {%else%}  permacat  {%endif%}
             </span>
 </div>
-<div class="row" style="background-color:{{article.get_couleur}}">
+<div class="row">
       <h3 style="text-indent: 30px;">
           {{ article.titre }}</h3>
 </div>

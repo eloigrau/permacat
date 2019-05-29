@@ -23,7 +23,7 @@
 </p>
     </div>
     <div class="col-md-8">
-        <p class="infos  textepetit">Dans: <a href="{% url 'blog:index_projets'  %}?categorie={{projet.categorie}}">{{ projet.get_categorie_display }}</a>, rédigé par <a href="{% url 'profil' projet.auteur.id %}"> {{ projet.auteur.username }}</a>, le {{ projet.date_creation|date:"DATE_FORMAT" }}
+        <p class="infos  textepetit">Dans: <a href="{% url 'blog:index_projets'  %}?categorie={{projet.categorie}}"  style="background-color:{{projet.get_couleur}}">{{ projet.get_categorie_display }}</a>, rédigé par <a href="{% url 'profil' projet.auteur.id %}"> {{ projet.auteur.username }}</a>, le {{ projet.date_creation|date:"DATE_FORMAT" }}
 
 
         <a href="{% url 'blog:suivre_projet' projet.slug %}">
@@ -68,7 +68,7 @@
                </button>
 	</div>
 </div>
-<div class="row" style="background-color:{{projet.get_couleur}}">
+<div class="row">
       <h3 style="text-indent: 30px;">{{ projet.titre }}</h3>
 </div>
 <div class="row">
