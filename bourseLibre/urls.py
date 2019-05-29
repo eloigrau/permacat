@@ -43,7 +43,7 @@ urlpatterns = [
     url(r'notifications/$', views.notifications, name='notifications'),
     url(r'^permacat/presentation/$', views.presentation_asso, name='presentation_asso'),
     url(r'^site/presentation/$', views.presentation_site, name='presentation_site'),
-    url(r'^permacat/statuts$$', views.statuts, name='statuts'),
+    url(r'^permacat/statuts/$', views.statuts, name='statuts'),
     
     url(r'^admin/', admin.site.urls, name='admin',),
     url(r'^merci/$', views.merci, name='merci'),
@@ -72,6 +72,7 @@ urlpatterns = [
     #url(r'^agenda/$', views.agenda, name='agenda',),
     url(r'^cooperateurs/annuaire/$', login_required(views.annuaire), name='annuaire',),
     url(r'^cooperateurs/listeContacts/$', login_required(views.listeContacts), name='listeContacts',),
+    url(r'^cooperateurs/listeFollowers/$', login_required(views.listeFollowers), name='listeFollowers',),
     url(r'^cooperateurs/annuaire_permacat/$', login_required(views.annuaire_permacat), name='annuaire_permacat',),
     url(r'^cooperateurs/carte/$', login_required(views.carte), name='carte',),
     url(r'^cooperateurs/carte_permacat/$', login_required(views.carte_permacat), name='carte_permacat',),

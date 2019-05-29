@@ -35,7 +35,7 @@ from django.views.decorators.debug import sensitive_variables
 from django.db.models import Q,CharField 
 from django.db.models.functions import Lower
 
-from actstream.models import Action, any_stream, following
+from actstream.models import Action, any_stream, following,followers
 #from fcm_django.models import FCMDevice
 # from django.http.response import JsonResponse, HttpResponse
 # from django.views.decorators.http import require_GET, require_POST
@@ -213,7 +213,8 @@ def profil_inconnu(request):
 @login_required
 def annuaire(request):
     profils = Profil.objects.filter(accepter_annuaire=True).order_by('username')
-    return render(request, 'annuaire.html', {'profils':profils, } )
+    nb_profils = len(Profil.objects.all())
+    return render(request, 'annuaire.html', {'profils':profils, "nb_profils":nb_profils} )
 
 @login_required
 def annuaire_permacat(request):
@@ -221,7 +222,8 @@ def annuaire_permacat(request):
         return render(request, "notPermacat.html")
 
     profils_permacat = Profil.objects.filter(accepter_annuaire=True, statut_adhesion=2).order_by('username')
-    return render(request, 'annuaire_permacat.html', {'profils':profils_permacat, } )
+    nb_profils = len(Profil.objects.filter(statut_adhesion=2))
+    return render(request, 'annuaire_permacat.html', {'profils':profils_permacat,"nb_profils": nb_profils } )
 
 @login_required
 def listeContacts(request):
@@ -233,6 +235,22 @@ def listeContacts(request):
         {"type":'user_futur_adherent', "profils":Profil.objects.filter(statut_adhesion=0), "titre":"Liste des personnes qui veulent adhérer à Permacat :"}
     ]
     return render(request, 'listeContacts.html', {"listeMails":listeMails})
+
+@login_required
+def listeFollowers(request):
+    if not request.user.is_permacat:
+        return render(request, "notPermacat.html")
+    listeArticles = []
+    for art in Article.objects.all():
+        suiveurs = followers(art)
+        if suiveurs:
+            listeArticles.append({"titre": art.titre, "url": art.get_absolute_url(), "followers": suiveurs, })
+    for art in Projet.objects.all():
+        suiveurs = followers(art)
+        if suiveurs:
+            listeArticles.append({"titre": art.titre, "url": art.get_absolute_url(), "followers": suiveurs, })
+
+    return render(request, 'listeFollowers.html', {"listeArticles":listeArticles})
 
 @login_required
 def carte(request):

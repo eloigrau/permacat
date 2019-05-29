@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block header %}
+<script src="{% static 'js/sorttable.js' %}"></script>
+{% endblock %}
+{% block title %}
+Coopérateurs
+{% endblock %}
+{% block subtitle %}
+<div class="row">
+    <div class="col-sm-12 textcenter">
+        <h3>Liste de tous les followers</h3>
+    </div>
+</div>
+
+{% endblock %}
+{% block content %}
+
+{% for article in listeArticles %}
+<div class="row justify-content-center">
+    <div class="col-sm-6 ">
+        <p> <a href="{{article.url}}">{{article.titre}} : </a>
+        {%for user in article.followers%}
+            {{user.username}}
+            {% if not forloop.last %}, {% endif%}
+        {%endfor%}
+        </p>
+    </div>
+</div>
+<hr>
+{%endfor%}
+
+{% endblock %}
