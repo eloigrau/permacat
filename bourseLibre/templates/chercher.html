@@ -25,7 +25,15 @@
 </div>
 <hr>
 
-<p>Producteurs trouvés  ({{profils_list|length}})</p>
+<p>Projets trouvés  ({{projets_list|length}})</p>
+<div class="row listOffres">
+    {% for projet in projets_list %}
+        {% include "blog/projet_template.html" with projet=projet %}
+    {% cycle '' '' '' '<div class="clearfix visible-lg"></div>' %}
+    {% endfor %}
+</div>
+<hr>
+<p>Producteurs trouvés  (description ou competence) ({{profils_list|length}})</p>
 <div class="row listOffres">
     <div class="col-md-12">
     <table class="table table-condensed tableprofils table-striped">

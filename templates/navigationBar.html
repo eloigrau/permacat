@@ -15,7 +15,7 @@
       <li class="nav-item dropdown">
           <a  data-toggle="dropdown" class="nav-link dropdown-toggle" href="{% url 'marche' %}"  aria-haspopup="true" aria-expanded="false">
               {% fontawesome_icon 'shopping-basket' %}
-              Le Marché
+              Alter Marché
         </a>
 
         <ul class="dropdown-menu textcenter">
@@ -67,9 +67,10 @@
                <li> <a class="nav-link dropdown-item" href="{% url 'annuaire' %}"> Annuaire </a></li>
                 <li> <a class="nav-link dropdown-item" href="{% url 'carte' %}"> Carte </a></li>
                 <li> <span class="nav-link divider" role="separator"></span></li>
-               <li> <a class="nav-link dropdown-item" href="{% url 'contact_admins' %}"> Contacter admins </a></li>
+               <li> <a class="nav-link dropdown-item" href="{% url 'faq' %}"> FAQ </a></li>
                <li> <a class="nav-link dropdown-item" href="{% url 'cgu' %}"> CGU </a></li>
                <li> <a class="nav-link dropdown-item" href="{% url 'liens' %}"> Liens </a></li>
+               <li> <a class="nav-link dropdown-item" href="{% url 'contact_admins' %}"> Contacter admins </a></li>
                 <li> <span class="nav-link divider" role="separator"></span></li>
                <li> <a class="nav-link dropdown-item" href="{% url 'fairedon' %}"> Faire un don</a></li>
             </ul>
@@ -83,7 +84,7 @@
         {% csrf_token %}
             <input class="form-control fmr-sm-2" name="id_recherche" placeholder="Chercher..." type="text">
             <span class="input-group-append">
-                <button class="btn navbar-btn btn-light my-2 my-sm-0" type="submit" >...</button>
+                <button class="btn navbar-btn btn-light my-2 my-sm-0" type="submit" >{% fontawesome_icon 'search' %}</button>
             </span>
         </form>
          </li>

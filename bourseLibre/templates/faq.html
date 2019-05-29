@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% block subtitle %}
+<h4><b>Bienvenue dans la FAQ !</b></h4>
+<h5>(Foire aux questions, ou Frequently Asked Questions)</h5>
+	<p class="'textcenter">N'hésitez pas à poser vos questions dans <a href="../forum/article/faq-du-site">l'article consacré</a></p>
+
+{% endblock %}
+{% block content %}
+
+<div class="accordion" id="accordionFaq">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+         Comment est organisé le site ?
+        </button>
+      </h5>
+    </div>
+
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionFaq">
+      <div class="card-body">
+      <p>Il y a&nbsp; en haut à droite une barre de recherche à droite, et le menu "profil" et 4 menus en haut à gauche:</p>
+<ul><li><u>Le marché :</u> là où vous pouvez voir les offres et demandes en cours, avec la possibilité d'ajouter ou de modifier une offre qui vous appartient</li>
+	<li><u>Le forum </u>:ici, vous pouvez discuter, sur le salon de discussion général, ou bien en privé. Vous pouvez aussi lire et ajouter des "articles" (un article peut porter sur n'importe quel sujet et de toute nature: texte, liens, photos, information, question, propositions, annonce d'évènement, etc.</li>
+	<li><u>L'association </u>: cette section regroupe les informations relatives à l'association "Permacat" (statuts, charte, présentation, et projets).</li>
+	<li><u>Le site :</u> dans ce menu, vous trouverez les informations relatives au site, Condition Générales d'Utilisation, annuaires des inscrits, etc.</li>
+</ul></div>
+    </div>
+  </div>
+
+
+  <div class="card">
+    <div class="card-header" id="heading4">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse4" aria-expanded="false" aria-controls="collapseThree">
+         Qu'est-ce qu'un "Altermarché" ?
+        </button>
+      </h5>
+    </div>
+    <div id="collapse4" class="collapse" aria-labelledby="headingThree" data-parent="#accordionFaq">
+      <div class="card-body">
+       C'est un marché en monnaie alternatives (June, SEL, Soudaqui, troc, etc. - hors euro)
+      </div>
+    </div>
+  </div>
+
+
+  <div class="card">
+    <div class="card-header" id="heading5">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse5" aria-expanded="false" aria-controls="collapseThree">
+         Qu'est-ce qu'un "Article" ?
+        </button>
+      </h5>
+    </div>
+    <div id="collapse5" class="collapse" aria-labelledby="heading5" data-parent="#accordionFaq">
+      <div class="card-body">
+       C'est une page web de ce site que vous pouvez créer, pour y mettre toute sorte d'information (annoncer une rencontre, discuter autour d'un thème, proposer une recette, etc.)
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" id="heading6">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse6" aria-expanded="false" aria-controls="collapseThree">
+         Qu'est-ce qu'un "Projet" ?
+        </button>
+      </h5>
+    </div>
+    <div id="collapse6" class="collapse" aria-labelledby="heading6" data-parent="#accordionFaq">
+      <div class="card-body">
+       C'est une "action" (à court ou à long terme) proposée par un adhérent au site, qui peut être soutenue par l'association. Pour cela, il faut suivre la procédure indiquée dans le règlement intérieur, remplir la "fiche projet", procéder au(x) vote(s), etc.
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" id="headingTwo">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          je n'arrive pas à mettre une photo dans mon article/projet, pourquoi ?
+        </button>
+      </h5>
+    </div>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionFaq">
+      <div class="card-body">
+        Vérifiez que la taille de votre image ne dépasse pas 2Mo (au mieux : 500ko)
+	  </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" id="headingThree">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+         Je n’apparaîs pas ou pas au bon endroit sur la carte ?
+        </button>
+      </h5>
+    </div>
+    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionFaq">
+      <div class="card-body">
+       Pour apparaitre sur la carte, il faut avoir coché la case "j'accepte d'apparaitre dans l'annuaire/carte" de votre profil. La position du marqueur sur la carte est calculée d'après l'adresse que vous avez indiquée. A chaque changement d'adresse, la position est recalculée.<br>
+	</div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+{% endblock %}

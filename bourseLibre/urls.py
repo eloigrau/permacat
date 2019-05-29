@@ -37,6 +37,7 @@ urlpatterns = [
     url('^', include('django.contrib.auth.urls')),
     url(r'^$', views.bienvenue, name='bienvenue'),
     url(r'bienvenue/$', views.bienvenue, name='bienvenue'),
+    url(r'faq/$', views.faq, name='faq'),
     url(r'gallerie/$', views.gallerie, name='gallerie'),
     url(r'permacat/admin/$', views.admin_asso, name='admin_asso'),
     url(r'notifications/$', views.notifications, name='notifications'),

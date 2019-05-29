@@ -12,7 +12,7 @@ from .forms import Produit_aliment_CreationForm, Produit_vegetal_CreationForm, P
     Produit_objet_modifier_form, Produit_vegetal_modifier_form
 from .models import Profil, Produit, Adresse, Choix, Panier, Item, get_categorie_from_subcat, Conversation, Message, MessageGeneral, MessageGeneralPermacat, getOrCreateConversation
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView, UpdateView, DeleteView, View
+from django.views.generic import ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
 from django.core.mail import mail_admins, send_mail, BadHeaderError
 from django_summernote.widgets import SummernoteWidget
@@ -21,7 +21,7 @@ from random import choice
 
 from django import forms
 
-from blog.models import Article
+from blog.models import Article, Projet
 
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
@@ -87,6 +87,9 @@ def presentation_site(request):
 
 def gallerie(request):
     return render(request, 'gallerie.html')
+
+def faq(request):
+    return render(request, 'faq.html')
 
 def statuts(request):
     return render(request, 'statuts.html')
@@ -410,8 +413,11 @@ def change_password(request):
         'form': form
     })
 
-@sensitive_variables('user', 'password')
+@sensitive_variables('user', 'password1', 'password2')
 def register(request):
+    if request.user.is_authenticated:
+        return render("erreur.html", {"msg":"Vous etes déjà inscrit !"})
+    
     form_adresse = AdresseForm(request.POST or None)
     form_profil = ProfilCreationForm(request.POST or None)
     if form_adresse.is_valid() and form_profil.is_valid():
@@ -606,12 +612,14 @@ def chercher(request):
     if recherche:
         produits_list = Produit.objects.filter(Q(description__icontains=recherche) | Q(nom_produit__lower__contains=recherche), ).select_subclasses()
         articles_list = Article.objects.filter(Q(titre__lower__contains=recherche) | Q(contenu__icontains=recherche), )
+        projets_list = Projet.objects.filter(Q(titre__lower__contains=recherche) | Q(contenu__icontains=recherche), )
         profils_list = Profil.objects.filter(Q(username__lower__contains=recherche)  | Q(description__icontains=recherche)| Q(competences__icontains=recherche), )
     else:
         produits_list = []
         articles_list = []
+        projets_list = []
         profils_list = []
-    return render(request, 'chercher.html', {'recherche':recherche, 'articles_list':articles_list, 'produits_list':produits_list, 'profils_list':profils_list})
+    return render(request, 'chercher.html', {'recherche':recherche, 'articles_list':articles_list, 'produits_list':produits_list, "projets_list": projets_list, 'profils_list':profils_list})
 
 
 @login_required

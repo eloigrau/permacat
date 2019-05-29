@@ -1,6 +1,8 @@
 {% extends 'blog/baseBlog.html' %}
     {% load static %}
+{% load fontawesome %}
 
+{% load activity_tags %}
     {%block header %}
 <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
 <script src="{% static 'js/infinite.min.js' %}"></script>
@@ -67,6 +69,21 @@
         </div>
         {%endif%}
 
+        {%comment%}
+        <div class="btn-group">
+        <a href="{% url 'blog:suivre_article' article.slug %}">
+            {% if request.user|is_following:article %}
+            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title=" Cliquez pour arreter de recevoir des notifications concernant cet article par mail">
+                 {% fontawesome_icon 'bell' %} Suivi
+            </button>
+            {% else %}
+            <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title=" Cliquez pour recevoir les notifications concernant cet article par mail">
+                 {% fontawesome_icon 'bell-slash' %} Non suivi
+            </button>
+            {% endif %}
+        </a>
+        </div>
+        {%endcomment%}
         {%comment%}
         <div class="btn-group">
                 <button class="btn dropdown-toggle btn-block btn-light" type="button" id="menuOrdreTri" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
