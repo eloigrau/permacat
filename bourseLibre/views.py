@@ -329,16 +329,15 @@ def contact_admins(request):
             try:
                 mail_admins(sujet, message_txt, html_message=message_html)
                 if form.cleaned_data['renvoi']:
-                    mess = "[Permacat] message envoyé aux administrateurs : \\n"
-                    send_mail(sujet, mess + message_txt, request.user.email, request.user.email, fail_silently=False, html_message=message_html)
+                    send_mail(sujet, message_txt, request.user.email, request.user.email, fail_silently=False, html_message=message_html)
 
-                return render(request, 'message_envoye.html', {'sujet': sujet, 'msg': message_txt + "; " + message_html,
-                                                       'envoyeur': request.user.username + "(" + request.user.email + ")",
+                return render(request, 'message_envoye.html', {'sujet': sujet, 'msg': message_html,
+                                                       'envoyeur': request.user.username + " (" + request.user.email + ")",
                                                        "destinataire": "administrateurs "})
             except BadHeaderError:
                 return render(request, 'erreur.html', {'msg':'Invalid header found.'})
 
-            return render(request, 'erreur.html', {'msg':"Une ereur s'est produite"})
+            return render(request, 'erreur.html', {'msg':"Désolé, une ereur s'est produite"})
     else:
         form = ContactForm()
     return render(request, 'contact.html', {'form': form, "isContactProducteur":False})

@@ -2,30 +2,30 @@
 {% load activity_tags %}
 {% load fontawesome %}
 <div class="infinite-item">
-<div class="card article ">
+<div class="card article " style="background-color:{{projet.get_couleur}}">
   <a href="{% url 'blog:lireProjet' slug=projet.slug %}">
-    <div class="card-block">
+    <div class="card-block textcenter">
+        <div class="card-header">
+        <h4 >
+            {{ projet.titre }}</h4>
         <span class="badge {% if projet.estPublic%}badge-warning{%else%} badge-success {%endif%}" data-toggle="tooltip" data-placement="bottom" title="Projet {%if projet.estPublic%}visible par tous les inscrits{%else%}visible par les membres de Permacat seulement{%endif%}">
                 Projet {%if projet.estPublic%} public{%else%}  Permacat  {%endif%}
             </span>
             {% if request.user|is_following:projet %}
             <span class="badge btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous recevez des notifications concernant ce projet par mail">
-                 {% fontawesome_icon 'bell' %} Suivi
+                 {% fontawesome_icon 'bell' %}
             </span>
             {% else %}
             <span class="badge btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous ne recevez pas de notifications concernant ce projet par mail">
-                 {% fontawesome_icon 'bell-slash' %} Non suivi
+                 {% fontawesome_icon 'bell-slash' %}
             </span>
             {% endif %}
-        <h4 class="card-title">
-            {{ projet.titre }}</h4>
+        </div>
         <h6 class="card-subtitle mb-2 text-muted">
             <p class="text-muted">Catégorie: <em>{{ projet.get_categorie_display }}</em>, rédigé par {{ projet.auteur }}, le {{ projet.date_creation|date:"DATE_FORMAT" }} {%ifnotequal  article.date_creation article.date_modification %} (modifié le  {{ projet.date_modification|date:"DATE_FORMAT" }} {%endifnotequal%}</p>
          {%if not projet.dernierMessage == None %} <p class="text-muted2">Dernier message : {{ projet.date_dernierMessage|date:"l d F Y, G:i"}} : {{projet.dernierMessage}}</p>
             {%endif%}
         </h6>
-
-        <div class="card-text">{{ projet.contenu|safe|striptags|truncatechars:200 }}</div>
     </div>
   </a>
 </div>
