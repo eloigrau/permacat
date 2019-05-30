@@ -10,12 +10,7 @@
 {%block subtitle%}
 
 <div class="row align-items-center">
-    <nav class="navbar navbar-expand-md justify-content-center  navbar-light bg-light">
-            <div class="navbar-header">
-             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarProduit" aria-controls="navbarProduitContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span></button>
-        </div>
-        <div class="collapse navbar-collapse" id="navbarProduit">
+<div class="col-md-8 textcenter">
     <div class="btn-group">
         <a href="?">
             <button class="btn {% if typeFiltre == "aucun" %}btn-primary {%endif%}">Tout </button>
@@ -99,11 +94,9 @@
                      <a class="dropdown-item"  href="?{{ request.GET.urlencode }}&ordre={{ordre}}">{{ordre}}</a>
                     {% endfor %}
                 </div>
-        </div>
-        {%endcomment%}
+        </div>{%endcomment%}
     </div>
 </div>
-    </div>
     <div class="col-md-4 textcenter">
 
         <div class="btn-group btn-group-justified">
@@ -116,7 +109,6 @@
 
     </div>
 
-</div>
 </div>
     {%if not request.user.is_permacat %}
     <p>Comme vous n'êtes pas membre de l'association, vous n'avez pas accès aux articles "Permacat", désolé... Rejoignez-nous !</p>
