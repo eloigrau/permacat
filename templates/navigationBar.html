@@ -88,7 +88,7 @@
             </span>
         </form>
          </li>
-        {% if user.is_superuser %}
+        {% if request.user.is_superuser %}
         {% load admin_urls %}
         <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">admin</a></li>
         {% endif %}

@@ -56,7 +56,11 @@ class Article(models.Model):
 
     @property
     def get_couleur(self):
-        return Choix.couleurs_annonces[self.categorie]
+        try:
+            return Choix.couleurs_annonces[self.categorie]
+        except:
+            return Choix.couleurs_annonces["Autre"]
+
 
 
 class Commentaire(models.Model):
@@ -115,7 +119,10 @@ class Projet(models.Model):
 
     @property
     def get_couleur(self):
-        return Choix.couleurs_projets[self.categorie]
+        try:
+            return Choix.couleurs_projets[self.categorie]
+        except:
+            return Choix.couleurs_annonces["Autre"]
 
 @receiver(post_save,  sender=Projet)
 def on_save_projet(instance, **kwargs):

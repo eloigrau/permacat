@@ -433,7 +433,7 @@ def change_password(request):
 @sensitive_variables('user', 'password1', 'password2')
 def register(request):
     if request.user.is_authenticated:
-        return render("erreur.html", {"msg":"Vous etes déjà inscrit !"})
+        return render(request, "erreur.html", {"msg":"Vous etes déjà inscrit et authentifié !"})
     
     form_adresse = AdresseForm(request.POST or None)
     form_profil = ProfilCreationForm(request.POST or None)
@@ -676,8 +676,10 @@ def lireConversation(request, destinataire):
 def lireConversation_2noms(request, destinataire1, destinataire2):
     if request.user.username==destinataire1:
         return lireConversation(request, destinataire2)
-    else:
+    elif request.user.username==destinataire2:
         return lireConversation(request, destinataire1)
+    else:
+        return render(request, 'erreur.html', {'msg':"Vous n'êtes pas autorisé à voir cette conversation"})
 
 @login_required
 def notifications(request):
