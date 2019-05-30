@@ -670,7 +670,7 @@ def lireConversation(request, destinataire):
         profil_destinataire = Profil.objects.get(username=destinataire)
         if profil_destinataire in followers(conversation):
             sujet = "Permacat - quelqu'un vous a envoyé une message privé"
-            message = request.user.username + " vous a envoyé un message privé. \n VOus pouvez y accéder en suivant ce lien : http://www.perma.cat" +  url
+            message = request.user.username + " vous a envoyé un message privé. Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" +  url
             send_mail(sujet, message, "asso@perma.cat", [profil_destinataire.email, ], fail_silently=False,)
         return redirect(request.path)
 
