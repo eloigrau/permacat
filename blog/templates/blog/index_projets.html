@@ -8,7 +8,7 @@
 {%block subtitle%}
 
 <div class="row align-items-center">
-<div class="col-md-9 textcenter">
+<div class="col-sm-12 textcenter">
     <div class="btn-group">
             <button class="btn {% if typeFiltre == 'aucun' %}btn-primary {%endif%}">Tout </button>
         <a href="?archives=True">
@@ -69,7 +69,10 @@
         {% endif %}
     </div>
 </div>
-    <div class="col-md-3 textcenter">
+</div>
+
+<div class="row align-items-center">
+<div class="col-sm-12 textcenter">
         <a href="{% url 'blog:ajouterNouveauProjet' %}">
         <button type="button" class="btn btn-success" >
                 <span class="glyphicon glyphicon-plus"></span>&nbsp; Ajouter un projet
