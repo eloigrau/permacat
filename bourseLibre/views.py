@@ -667,11 +667,11 @@ def lireConversation(request, destinataire):
         url = conversation.get_absolute_url()
         action.send(request.user, verb='envoi_salon_prive', action_object=conversation, url=url, group=destinataire,
                     description="a envoyé un message privé à " + destinataire)
-        if destinataire in followers(conversation):
-            profil_destinataire = Profil.objects.get(username=destinataire)
+        profil_destinataire = Profil.objects.get(username=destinataire)
+        if profil_destinataire in followers(conversation):
             sujet = "Permacat - quelqu'un vous a envoyé une message privé"
-            message = request.user.usename + " vous a envoyé un message privé. \n VOus pouvez y accéder en suivant ce lien : http://www.perma.cat" +  url
-            send_mail(sujet, message, "asso@perma.cat", profil_destinataire.email, fail_silently=False,)
+            message = request.user.username + " vous a envoyé un message privé. \n VOus pouvez y accéder en suivant ce lien : http://www.perma.cat" +  url
+            send_mail(sujet, message, "asso@perma.cat", [profil_destinataire.email, ], fail_silently=False,)
         return redirect(request.path)
 
     return render(request, 'lireConversation.html', {'conversation': conversation, 'form': form, 'messages_echanges': messages, 'destinataire':destinataire})
