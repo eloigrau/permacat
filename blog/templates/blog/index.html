@@ -10,7 +10,7 @@
 {%block subtitle%}
 
 <div class="row align-items-center">
-<div class="col-md-8 textcenter">
+<div class="col-sm-12 textcenter">
     <div class="btn-group">
         <a href="?">
             <button class="btn {% if typeFiltre == "aucun" %}btn-primary {%endif%}">Tout </button>
@@ -97,7 +97,10 @@
         </div>{%endcomment%}
     </div>
 </div>
-    <div class="col-md-4 textcenter">
+
+</div>
+<div class="row align-items-center">
+<div class="col-sm-4 textcenter">
 
         <div class="btn-group btn-group-justified">
         <a href="{% url 'blog:ajouterNouvelArticle' %}">
@@ -107,7 +110,7 @@
             </a>&ensp;
     </div>
 
-    </div>
+</div>
 
 </div>
     {%if not request.user.is_permacat %}

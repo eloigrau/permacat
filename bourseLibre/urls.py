@@ -59,6 +59,7 @@ urlpatterns = [
     url(r'^accounts/profil_supprimer/$', login_required(views.profil_supprimer.as_view()), name='profil_supprimer',),
     url(r'^accounts/profil_modifier_adresse/$', login_required(views.profil_modifier_adresse.as_view()), name='profil_modifier_adresse',),
     url(r'^accounts/profil_contact/(?P<user_id>[0-9]+)/$', login_required(views.profil_contact), name='profil_contact',),
+    url(r'^accounts/mesSuivis$', login_required(views.mesSuivis), name='mesSuivis',),
     url(r'^register/$', views.register, name='senregistrer',),
     #url(r'^password/reset/$', views.reset_password, name='reset_password'),
     url(r'^password/change/$', views.change_password, name='change_password'),
@@ -112,6 +113,7 @@ urlpatterns = [
     url(r'^conversations/(?P<destinataire>[-\w.]+)$', login_required(views.lireConversation), name='lireConversation'),
     url(r'^conversations/(?P<destinataire1>[-\w.]+)/(?P<destinataire2>[-\w.]+)$', login_required(views.lireConversation_2noms), name='lireConversation_2noms'),
     url(r'^conversations/$', login_required(views.ListeConversations.as_view()), name='conversations'),
+    url(r'^suivre_conversation/$', views.suivre_conversations, name='suivre_conversations'),
 
     url(r'^agora/$', login_required(views.agora), name='agora'),
     url(r'^agora_permacat/$', login_required(views.agora_permacat), name='agora_permacat'),

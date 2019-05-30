@@ -127,8 +127,9 @@ class Projet(models.Model):
 @receiver(post_save,  sender=Projet)
 def on_save_projet(instance, **kwargs):
     titre = "Permacat - Projet  actualisé"
-    message = " Le projet '" +  instance.titre + "' a été modifié (ou quelqu'un a commenté)"+ \
+    message = " Le projet '" +  instance.titre + "' a été modifié (ou quelqu'un l'a commenté)"+ \
               "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + instance.get_absolute_url() + \
+              "\n------------------------------------------------------------------------------" \
               "\n vous recevez cet email, car vous avez choisi de suivre cet article sur le site http://www.Perma.cat"
     emails = [suiv.email for suiv in followers(instance)]
     try:
@@ -139,7 +140,7 @@ def on_save_projet(instance, **kwargs):
 @receiver(post_save,  sender=Article)
 def on_save_article(instance, **kwargs):
     titre = "Permacat - Article actualisé"
-    message = "L'article '" +  instance.titre + "' a été modifié" +\
+    message = "L'article '" +  instance.titre + "' a été modifié (ou quelqu'un l'a commenté)" +\
               "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + instance.get_absolute_url() + \
               "\n------------------------------------------------------------------------------" \
               "\n vous recevez cet email, car vous avez choisi de suivre ce projet sur le site http://www.Perma.cat"

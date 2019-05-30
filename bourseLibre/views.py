@@ -16,7 +16,6 @@ from django.views.generic import ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
 from django.core.mail import mail_admins, send_mail, BadHeaderError
 from django_summernote.widgets import SummernoteWidget
-from actstream import action
 from random import choice
 
 from django import forms
@@ -27,6 +26,7 @@ from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import Group, User
+from django.views.decorators.csrf import csrf_exempt
 
 from django.views.decorators.debug import sensitive_variables
 #from django.views.decorators.debug import sensitive_post_parameters
@@ -35,6 +35,7 @@ from django.views.decorators.debug import sensitive_variables
 from django.db.models import Q,CharField 
 from django.db.models.functions import Lower
 
+from actstream import actions, action
 from actstream.models import Action, any_stream, following,followers
 #from fcm_django.models import FCMDevice
 # from django.http.response import JsonResponse, HttpResponse
@@ -366,12 +367,12 @@ def produitContacterProducteur(request, produit_id):
     receveur = prod.user
     form = ContactForm(request.POST or None)
     if form.is_valid():
-        sujet =  "[MarchéLibre]" + form.cleaned_data['sujet']
+        sujet =  "[Permacat]" + form.cleaned_data['sujet']
         message = form.cleaned_data['message'] + '(par : ' + request.username + ')'
 
         send_mail( sujet, message, request.user.email, receveur.email, fail_silently=False,)
         if form.cleaned_data['renvoi'] :
-            mess = "[MarchéLibre] message envoyé à : \\n"
+            mess = "[Permacat] message envoyé à : \\n"
             send_mail( sujet,mess + message, request.user.email, request.user.email, fail_silently=False,)
 
     return render(request, 'contact.html', {'form': form, "isContactProducteur":True, "producteur":receveur.user.username})
@@ -666,6 +667,11 @@ def lireConversation(request, destinataire):
         url = conversation.get_absolute_url()
         action.send(request.user, verb='envoi_salon_prive', action_object=conversation, url=url, group=destinataire,
                     description="a envoyé un message privé à " + destinataire)
+        if destinataire in followers(conversation):
+            profil_destinataire = Profil.objects.get(username=destinataire)
+            sujet = "Permacat - quelqu'un vous a envoyé une message privé"
+            message = request.user.usename + " vous a envoyé un message privé. \n VOus pouvez y accéder en suivant ce lien : http://www.perma.cat" +  url
+            send_mail(sujet, message, "asso@perma.cat", profil_destinataire.email, fail_silently=False,)
         return redirect(request.path)
 
     return render(request, 'lireConversation.html', {'conversation': conversation, 'form': form, 'messages_echanges': messages, 'destinataire':destinataire})
@@ -779,3 +785,19 @@ class ListeConversations(ListView):
 #         return JsonResponse(status=200, data={"message": "Web push successful"})
 #     except TypeError:
 #         return JsonResponse(status=500, data={"message": "An error occurred"})
+
+
+@login_required
+@csrf_exempt
+def suivre_conversations(request, actor_only=True):
+    """
+    """
+    conversations = Conversation.objects.filter(Q(profil2__id=request.user.id) | Q(profil1__id=request.user.id))
+    for conv in conversations:
+        if conv in following(request.user):
+            actions.unfollow(request.user, conv)
+        else:
+            actions.follow(request.user, conv, actor_only=actor_only)
+    return redirect('conversations')
+
+

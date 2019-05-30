@@ -5,8 +5,8 @@ from .models import Article, Commentaire, Projet, CommentaireProjet, Choix
 from .forms import ArticleForm, CommentForm, ArticleChangeForm, ProjetForm, ProjetChangeForm, CommentProjetForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
-from actstream import actions, action, models
-from actstream.models import followers
+from actstream import actions, action
+from actstream.models import followers, following
 
 from django.utils.timezone import now
 
@@ -337,7 +337,7 @@ def suivre_projet(request, slug, actor_only=True):
     """
     projet = get_object_or_404(Projet, slug=slug)
 
-    if projet in models.following(request.user):
+    if projet in following(request.user):
         actions.unfollow(request.user, projet)
     else:
         actions.follow(request.user, projet, actor_only=actor_only)
@@ -351,7 +351,7 @@ def suivre_article(request, slug, actor_only=True):
     """
     article = get_object_or_404(Article, slug=slug)
 
-    if article in models.following(request.user):
+    if article in following(request.user):
         actions.unfollow(request.user, article)
     else:
         actions.follow(request.user, article, actor_only=actor_only)

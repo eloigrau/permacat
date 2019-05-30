@@ -16,6 +16,9 @@ from django.utils.translation import ugettext_lazy as _
 import decimal, math
 #from tinymce.models import HTMLField
 
+from actstream import actions, action
+from actstream.models import following
+
 import os
 import requests
 from stdimage import StdImageField
@@ -738,6 +741,19 @@ def getOrCreateConversation(nom1, nom2):
         profil_1 = Profil.objects.get(username=nom1)
         profil_2 = Profil.objects.get(username=nom2)
         convers = Conversation.objects.create(profil1=profil_1, profil2=profil_2)
+
+        conversations = Conversation.objects.filter(Q(profil2=profil_1) | Q(profil1=profil_1))
+        for conv in conversations:
+            if conv in following(profil_1):
+                actions.follow(profil_1, convers)
+                break
+
+        conversations = Conversation.objects.filter(Q(profil2=profil_2) | Q(profil1=profil_2))
+        for conv in conversations:
+            if conv in following(profil_2):
+                actions.follow(profil_2, convers)
+                break
+
     return convers
 
 
