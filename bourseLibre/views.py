@@ -32,7 +32,7 @@ from django.views.decorators.debug import sensitive_variables
 #from django.views.decorators.debug import sensitive_post_parameters
 
 #from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Q,CharField 
+from django.db.models import Q, CharField
 from django.db.models.functions import Lower
 
 from actstream import actions, action
