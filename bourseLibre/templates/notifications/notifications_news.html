@@ -23,13 +23,13 @@
         <b class="textcenter">{{info.jour}}</b>
       {%endif%}
       {% for art in info.infos.0 %}
-        {% include "notifications/notifications_template2.html" with action=art color="#f0a868"%}
+        {% include "notifications/notifications_template2.html" with action=art color="#f8d7b9"%}
       {%endfor%}
       {% for art in info.infos.1 %}
-        {% include "notifications/notifications_template2.html" with action=art  color="#6a8d73"%}
+        {% include "notifications/notifications_template2.html" with action=art  color="#d3ded6"%}
       {%endfor%}
       {% for art in info.infos.2 %}
-        {% include "notifications/notifications_template2.html" with action=art color="#7b904b" %}
+        {% include "notifications/notifications_template2.html" with action=art color="#d3dcbc" %}
       {%endfor%}
 
   {% endfor %}
