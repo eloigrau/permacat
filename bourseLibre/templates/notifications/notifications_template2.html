@@ -1,0 +1,4 @@
+<li class="list-group-item"  style="background-color:{{color}}">
+    <a {%if action.data.url %}href="{{ action.data.url }} "{%endif%}>
+         {{action.actor}} {%if action.description %}{{action.description}}{% endif %}
+        </a></li>

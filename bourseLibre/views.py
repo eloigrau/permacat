@@ -700,12 +700,48 @@ def notifications(request):
         projets     = Action.objects.filter(Q(verb='projet_nouveau') | Q(verb='projet_message')| Q(verb='projet_modifier'))[:10]
         offres      = Action.objects.filter(Q(verb='ajout_offre'))[:10]
 
-    conversations = any_stream(request.user).filter(Q(verb='envoi_salon_prive',))[:10]
-
+    conversations = (any_stream(request.user).filter(Q(verb='envoi_salon_prive',)) | Action.objects.filter(Q(verb='envoi_salon_prive',  description="a envoyé un message privé à " + request.user.username) ))[:10]
     articles = [art for i, art in enumerate(articles) if i == 0 or not (art.description == articles[i-1].description  and art.actor_content_type_id == articles[i-1].actor_content_type_id)]
     projets = [art for i, art in enumerate(projets) if i == 0 or not (art.description == projets[i-1].description and art.actor_content_type_id == projets[i-1].actor_content_type_id ) ]
 
     return render(request, 'notifications/notifications.html', {'salons': salons, 'articles': articles,'projets': projets, 'offres':offres, 'conversations':conversations})
+
+def getInfosJourPrecedent(request, nombreDeJours):
+    from datetime import datetime, timedelta
+    timestamp_from = datetime.now().date() - timedelta(days=nombreDeJours)
+    timestamp_to = datetime.now().date() - timedelta(days=nombreDeJours - 1)
+
+    if request.user.is_permacat:
+        articles    = Action.objects.filter(Q(verb='article_nouveau_permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) | Q(verb='article_nouveau',timestamp__gte = timestamp_from, timestamp__lte = timestamp_to,))
+        projets     = Action.objects.filter(Q(verb='projet_nouveau_permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) |Q(verb='projet_nouveau', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,))
+        offres      = Action.objects.filter(Q(verb='ajout_offre', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) | Q(verb='ajout_offre_permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,))
+    else:
+        articles    = Action.objects.filter(Q(verb='article_nouveau', timestamp__gte = timestamp_from, timestamp__lte = timestamp_to,) | Q(verb='article_modifier', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,))
+        projets     = Action.objects.filter(Q(verb='projet_nouveau', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,))
+        offres      = Action.objects.filter(Q(verb='ajout_offre', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,))
+
+    articles = [art for i, art in enumerate(articles) if i == 0 or not (art.description == articles[i-1].description  and art.actor_content_type_id == articles[i-1].actor_content_type_id)]
+    projets = [art for i, art in enumerate(projets) if i == 0 or not (art.description == projets[i-1].description and art.actor_content_type_id == projets[i-1].actor_content_type_id ) ]
+
+    return articles, projets, offres
+
+def getTexteJourPrecedent(nombreDeJour):
+    if nombreDeJour == 0:
+        return "Aujourd'hui"
+    elif nombreDeJour == 1:
+        return "Hier"
+    elif nombreDeJour == 2:
+        return "Avant-hier"
+    else:
+        return "Il y a " + str(nombreDeJour) + " jours"
+
+@login_required
+def dernieresInfos(request):
+    info_parjour = []
+    for i in range(7):
+        info_parjour.append({"jour":getTexteJourPrecedent(i), "infos":getInfosJourPrecedent(request, i)})
+    return render(request, 'notifications/notifications_news.html', {'info_parjour': info_parjour,})
+
 
 
 @login_required

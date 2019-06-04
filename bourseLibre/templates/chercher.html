@@ -20,7 +20,6 @@
 <div class="row listOffres">
     {% for article in articles_list %}
         {% include "blog/article_template.html" with article=article %}
-    {% cycle '' '' '' '<div class="clearfix visible-lg"></div>' %}
     {% endfor %}
 </div>
 <hr>
@@ -29,7 +28,6 @@
 <div class="row listOffres">
     {% for projet in projets_list %}
         {% include "blog/projet_template.html" with projet=projet %}
-    {% cycle '' '' '' '<div class="clearfix visible-lg"></div>' %}
     {% endfor %}
 </div>
 <hr>
@@ -39,7 +37,6 @@
     <table class="table table-condensed tableprofils table-striped">
         <thead class="thead-inverse">
             <tr>
-                <th>Avatar</th>
                 <th>Pseudo</th>
                 <th>Email</th>
                 <th>Code postal</th>
@@ -48,9 +45,6 @@
         <tbody>
         {% for profil in profils_list %}
         <tr>
-            <td>
-                <img src="{{ profil.avatar.get_absolute_url }}" alt="pas d'image" style="width:100px;height:100px" href="{% url 'profil' profil.id %}">
-            </td>
             <td><a href="{% url 'profil' profil.id %}">{{ profil.username }}</a></td>
             <td><a href="{% url 'profil_contact' profil.id %}">{{ profil.email }}</a></td>
             <td><a href="{% url 'profil' profil.id %}">{{ profil.adresse.code_postal }}</a></td>

@@ -14,6 +14,11 @@
 {% if not request.user.is_authenticated %}
 <h7 class = "textcenter rowbienvenue">(<a href="https://permacat.herokuapp.com/auth/login">{% trans "connexion sécurisée" %}</a>)</h7>
 {%endif%}
+<p class = "textcenter ">
+      <a href="{% url 'dernieresInfos'  %}" class="btn btn-light">
+        {% fontawesome_icon 'newspaper' %}  Ce qu'il y a de nouveau sur le site cette semaine...
+      </a>
+</p>
 {% endblock %}
 {% block content %}
 <div class="row textcenter">
