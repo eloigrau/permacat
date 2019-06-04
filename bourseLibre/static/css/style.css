@@ -308,12 +308,25 @@ section.p3 {
 //background-color: grey;
 border-color: #333;
 box-shadow: 0 10px 10px 0px grey;
- padding:15px;
-    min-height: 150px;
+ padding:10px;
+    min-height: 100px;
     border-radius: 0.3em;
     border:1.5px grey solid;
 }
 
+.article_recherche{
+//background-color: grey;
+border-color: #333;
+box-shadow: 0 10px 10px 0px grey;
+ padding:10px;
+    min-height: 200px;
+    border-radius: 0.3em;
+    border:1.5px grey solid;
+    max-height: 200px;
+    min-width: 250px;
+    max-width: 250px;
+    margin-bottom: 20px;
+}
 a:link           { color: #000000 }  /* unvisited links       */
 a:visited        { color: #000000 }  /* visited links         */
 a:hover, a:focus { color: grey }    /* user hovers, or focus */

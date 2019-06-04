@@ -17,7 +17,7 @@
 <div class="row ">
     {% for article in articles_list %}
 <div class="col ">
-        {% include "blog/article_template.html" with article=article %}
+        {% include "blog/article_template_recherche.html" with article=article %}
 </div>
     {% endfor %}
 </div>
@@ -27,7 +27,7 @@
 <div class="row ">
     {% for projet in projets_list %}
 <div class="col ">
-        {% include "blog/projet_template.html" with projet=projet %}
+        {% include "blog/projet_template_recherche.html" with projet=projet %}
 </div>
     {% endfor %}
 </div>
