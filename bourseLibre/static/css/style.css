@@ -275,6 +275,7 @@ section.p3 {
     max-height: 350px;
     max-width:250px;
     box-shadow: 0 10px 10px 0px grey;
+    padding:5px;
 }
 
 .offre2:hover{
