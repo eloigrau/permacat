@@ -77,6 +77,11 @@
             <span class="badge {% if article.estPublic%}badge-warning{%else%} badge-success {%endif%}">
                 Article {%if article.estPublic%} public {%else%}  permacat  {%endif%}
             </span>
+            {% if article.estArchive%}
+            <span class="badge badge-secondary">
+                archivé
+            </span>
+            {%endif%}
 </div>
 <div class="row">
       <h3 style="text-indent: 30px;">

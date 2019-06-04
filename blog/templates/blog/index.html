@@ -12,7 +12,7 @@
 <div class="row align-items-center">
 <div class="col-sm-12 textcenter">
     <div class="btn-group">
-        <a href="?">
+        <a href="{% url 'blog:index' %}">
             <button class="btn {% if typeFiltre == "aucun" %}btn-primary {%endif%}">Tout </button>
         </a>
         <a href="?archives=True">

@@ -61,6 +61,12 @@
             <span class="badge {% if projet.estPublic%}badge-warning{%else%} badge-success {%endif%}">
                 Projet {%if projet.estPublic%}  public {%else%}  permacat  {%endif%}
             </span>
+
+            {% if article.estArchive%}
+            <span class="badge badge-secondary">
+                archivé
+            </span>
+            {%endif%}
 	</div>
 	<div class="col-sm-6 textright">
                <button type="button" class="btn btn-sm btn-warning">
