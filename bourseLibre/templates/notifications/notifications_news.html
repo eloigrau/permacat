@@ -18,14 +18,6 @@
 
     <ul class="list-group list-group-flush">
   {% for info in info_parjour %}
-        {% if info.infos.0 or info.infos.1 or info.infos.2 %}
-        <hr>
-        <li class="list-group-item textcenter"  style="background-color:#b9b992">
-        <a>
-        <b>{{info.jour}}</b>
-        </a></li>
-
-      {%endif%}
       {% for art in info.infos.0 %}
         {% include "notifications/notifications_template2.html" with action=art color="#f8d7b9"%}
       {%endfor%}
