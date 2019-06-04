@@ -1,7 +1,6 @@
 
 {% load activity_tags %}
 {% load fontawesome %}
-<div class="infinite-item">
 <div class="card article " style="background-color:{{article.get_couleur}}">
   <a href="{% url 'blog:lireArticle' slug=article.slug %}">
     <div class="card-block textcenter" >
@@ -27,7 +26,3 @@
     </div>
   </a>
 </div>
-</div>
-{% if not forloop.last %}
-<hr>
-{%endif%}

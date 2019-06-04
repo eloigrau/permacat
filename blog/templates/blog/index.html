@@ -121,7 +121,12 @@
 
 <div class="infinite-container">
 {% for article in article_list %}
+<div class="infinite-item">
         {% include "blog/article_template.html" with article=article %}
+</div>
+{% if not forloop.last %}
+<hr>
+{% endif %}
 {% endfor %}
 </div>
 

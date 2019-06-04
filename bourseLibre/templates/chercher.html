@@ -1,7 +1,6 @@
 {% extends 'base.html' %} 
 {% block title %}Acceuil{% endblock %}
 
-			<div class="jumbotron well">
 {% block subtitle %}Résultats de la recherche "{{recherche}}"
 {% endblock %}
 {% block content %}
@@ -10,24 +9,26 @@
 <div class="row listOffres">
     {% for produit in produits_list %}
         {% include "bourseLibre/produit_template3.html" with produit=produit %}
-    {% cycle '' '' '' '<div class="clearfix visible-lg"></div>' %}
-
     {% endfor %}
 </div>
 <hr>
 
 <p>Articles trouvés dans le forum ({{articles_list|length}})</p>
-<div class="row listOffres">
+<div class="row ">
     {% for article in articles_list %}
+<div class="col ">
         {% include "blog/article_template.html" with article=article %}
+</div>
     {% endfor %}
 </div>
 <hr>
 
 <p>Projets trouvés  ({{projets_list|length}})</p>
-<div class="row listOffres">
+<div class="row ">
     {% for projet in projets_list %}
+<div class="col ">
         {% include "blog/projet_template.html" with projet=projet %}
+</div>
     {% endfor %}
 </div>
 <hr>
