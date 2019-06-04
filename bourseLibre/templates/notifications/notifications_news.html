@@ -5,7 +5,7 @@
 </h4>
 <p class = "textcenter ">
       <a href="{% url 'notifications'  %}" class="btn btn-success">
-        <span class="glyphicon glyphicons-conversation"></span> Notifications
+        <span class="glyphicon glyphicons-conversation"></span> Toutes les notifications
       </a>
 </p>
 {% endblock %}
@@ -27,7 +27,7 @@
       {% for art in info.infos.1 %}
         {% include "notifications/notifications_template2.html" with action=art  color="#6a8d73"%}
       {%endfor%}
-      {% for art in info.infos..2 %}
+      {% for art in info.infos.2 %}
         {% include "notifications/notifications_template2.html" with action=art color="#7b904b" %}
       {%endfor%}
 
