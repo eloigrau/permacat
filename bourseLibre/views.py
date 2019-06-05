@@ -701,8 +701,8 @@ def notifications(request):
         offres      = Action.objects.filter(Q(verb='ajout_offre'))[:10]
 
     conversations = (any_stream(request.user).filter(Q(verb='envoi_salon_prive',)) | Action.objects.filter(Q(verb='envoi_salon_prive',  description="a envoyé un message privé à " + request.user.username) ))[:10]
-    articles = [art for i, art in enumerate(articles) if i == 0 or not (art.description == articles[i-1].description  and art.actor_content_type_id == articles[i-1].actor_content_type_id)]
-    projets = [art for i, art in enumerate(projets) if i == 0 or not (art.description == projets[i-1].description and art.actor_content_type_id == projets[i-1].actor_content_type_id ) ]
+    articles = [art for i, art in enumerate(articles) if i == 0 or not (art.description == articles[i-1].description  and art.actor == Articles[i-1].actor)]
+    projets = [art for i, art in enumerate(projets) if i == 0 or not (art.description == projets[i-1].description and art.actor == projets[i-1].actor ) ]
 
     return render(request, 'notifications/notifications.html', {'salons': salons, 'articles': articles,'projets': projets, 'offres':offres, 'conversations':conversations})
 
