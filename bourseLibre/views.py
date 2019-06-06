@@ -571,6 +571,7 @@ def liens(request):
         'https://ponteillanature.wixsite.com/eco-nature',
         'https://cce-66.wixsite.com/mysite',
         'https://jardindenat.wixsite.com/website',
+        'https://www.permapat.com',
         'https://framasoft.org',
         'http://www.le-message.org/?lang=fr',
         'https://reporterre.net/',
