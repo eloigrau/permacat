@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load activity_tags %}
+{% block subtitle %}
+<h4 class = "textcenter "> Nos prochaines rencontres Permacat
+</h4>
+{% endblock %}
+{% block content %}
+
+
+<div class="row justify-content-center">
+    <div class="col-sm-12 col-md-10 col-lg-8">
+
+    <ul class="list-group list-group-flush  justify-content-center textcenter">
+        <li class="list-group-item"><a href="{% url 'blog:lireArticle' visioconference" %}>visioconférence Lundi prochain à partir de 19h</a> </li>
+        <li class="list-group-item"><a href="{% url 'blog:lireProjet' lalter-marche-ou-marche-en-monnaies-alternatives %}">Altermarché ; Mercredi 17 juillet </a></li>
+        <li class="list-group-item"><a href="{% url 'blog:lireArticle' rencontres-permacat %}">Rencontre mensuelle (1er dimanche du mois) : dimanche 17 juillet. Le lieu encore à définir pour le mois prochain...</li>
+    </ul>
+    </div>
+</div>
+
+<hr>
+{% endblock %}

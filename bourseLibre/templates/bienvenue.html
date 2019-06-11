@@ -14,21 +14,35 @@
 {% if not request.user.is_authenticated %}
 <h7 class = "textcenter rowbienvenue">(<a href="https://permacat.herokuapp.com/auth/login">{% trans "connexion sécurisée" %}</a>)</h7>
 {%endif%}
+{% endblock %}
+{% block content %}
+
+<div class="card" >
+  <div class="card-header  textcenter">
+		<b>Prochaines rencontres :</b>
+  </div>
+    <ul class="list-group list-group-flush textcenter">
+        <li class="list-group-item"><a href="{% url 'blog:lireArticle' 'visioconference' %}">Visioconférence : lundi prochain à partir de 19h</a> </li>
+        <li class="list-group-item"><a href="{% url 'blog:lireArticle' 'rencontres-permacat' %}">Rencontre mensuelle (1er dimanche du mois) : dimanche 7 juillet. Le lieu reste encore à définir...</li>
+        <li class="list-group-item"><a href="{% url 'blog:lireProjet' 'lalter-marche-ou-marche-en-monnaies-alternatives' %}">Altermarché ; mercredi 17 juillet </a></li>
+    </ul>
+    </div>
+</div>
+
+<div class="row textcenter">
+	<div class="col">
+		<p><a  href="{% url 'gallerie' %}" ><img src="{{STATIC_URL}}{{nomImage}}" style="max-width: 600px; height: auto;"></a></p>
+
+	</div>
+</div>
+<hr>
+<div class="row justify-content-center">
 <p class = "textcenter ">
       <a href="{% url 'dernieresInfos'  %}" class="btn btn-light">
         {% fontawesome_icon 'newspaper' %}  Du nouveau cette semaine...
       </a>
 </p>
-{% endblock %}
-{% block content %}
-<div class="row textcenter">
-	<div class="col">
-		<p><a  href="{% url 'gallerie' %}" ><img src="{{STATIC_URL}}{{nomImage}}" style="max-width: 100%; height: auto;"></a></p>
-
-	</div>
 </div>
-<hr>
-<h6 class = "textcenter rowbienvenue">({% trans "Site en construction"%})</h6>
 <div class="row">
 		<div class="col-md-4">
 			<h2>

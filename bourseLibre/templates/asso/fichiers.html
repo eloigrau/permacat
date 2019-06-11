@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block subtitle %}<h1>Fichiers administratifs à télécharger</h1>{% endblock %}
+
+
+{% block content %}
+<div class="content">
+
+<div class="row justify-content-center" >
+<div class="col-sm-12 col-md-10 col-lg-8" >
+<div class="card" >
+    <ul class="list-group list-group-flush textcenter">
+		{% for fic in fichiers %}
+		<li class="list-group-item" >
+        <a href="{{fic.url}}" download>
+         <button type="button" class="btn btn-success btn-block">
+                 {{fic.titre}}
+            </button>
+		</a>
+		</li>
+{% endfor %}
+
+	</ul>
+
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

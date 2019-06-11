@@ -45,6 +45,9 @@ from actstream.models import Action, any_stream, following,followers
 # from django.views.decorators.csrf import csrf_exempt
 # from webpush import send_user_notification
 # import json
+from os import listdir
+from os.path import isfile, join
+from django.contrib.staticfiles.templatetags.staticfiles import static
 
 
 CharField.register_lookup(Lower, "lower")
@@ -80,8 +83,6 @@ def bienvenue(request):
     nomImage = 'img/flo/resized0' +  choice(nums)+'.png'
     return render(request, 'bienvenue.html', {'nomImage':nomImage})
 
-def presentation_asso(request):
-    return render(request, 'presentation_asso.html')
 
 def presentation_site(request):
     return render(request, 'presentation_site.html')
@@ -269,8 +270,24 @@ def admin_asso(request):
         {"titre":"Télécharger un RIB", "url":"{{STATIC_ROOT]]/admin/bilan.txt" },
         {"titre":"Télécharger les statuts et règlement intérieur", "url":"{{STATIC_ROOT]]/admin/statuts.txt" },
     ]
-    return render(request, 'admin_asso.html', {"listeFichers":listeFichers} )
+    return render(request, 'asso/admin_asso.html', {"listeFichers":listeFichers} )
 
+
+def presentation_asso(request):
+    return render(request, 'asso/presentation_asso.html')
+
+@login_required
+def telechargements_asso(request):
+    if not request.user.is_permacat:
+        return render(request, "notPermacat.html")
+
+    fichiers = [{'titre' : 'Contrat credit mutuel', 'url': static('doc/contrat_credit_mutuel.pdf'),},
+                {'titre' : 'Procès verbal de constitution', 'url': static('doc/PV_constitution.pdf'),},
+                {'titre' : "Recepissé de création de l'asso", 'url': static('doc/recepisse_creation.pdf'),},
+                {'titre' : 'Statuts déposés', 'url': static('doc/statuts.pdf'),},
+                {'titre' : 'RIB', 'url': static('doc/rib.pdf'),},
+                ]
+    return render(request, 'asso/fichiers.html', {'fichiers':fichiers})
 
 @login_required
 def carte_permacat(request):
@@ -554,7 +571,7 @@ class ListeProduit_recherches(ListeProduit):
         return context
 
 def charte(request):
-    return render(request, 'charte.html', )
+    return render(request, 'asso/charte.html', )
 
 def cgu(request):
     return render(request, 'cgu.html', )
@@ -740,9 +757,14 @@ def getTexteJourPrecedent(nombreDeJour):
 @login_required
 def dernieresInfos(request):
     info_parjour = []
-    for i in range(7):
+    for i in range(10):
         info_parjour.append({"jour":getTexteJourPrecedent(i), "infos":getInfosJourPrecedent(request, i)})
     return render(request, 'notifications/notifications_news.html', {'info_parjour': info_parjour,})
+
+
+@login_required
+def prochaines_rencontres(request):
+    return render(request, 'notifications/prochaines_rencontres.html', {})
 
 
 
