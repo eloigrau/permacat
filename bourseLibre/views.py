@@ -317,7 +317,7 @@ def profil_contact(request, user_id):
                 html_message=message_html,
                 fail_silently=False,
                 )
-            return render(request, 'message_envoye.html', {'sujet': form.cleaned_data['sujet'], 'msg':message_html, 'envoyeur':request.user.username + " (" + request.uer.email + ")", "destinataire":recepteur.user.username + " (" +recepteur.user.email+ ")"})
+            return render(request, 'message_envoye.html', {'sujet': form.cleaned_data['sujet'], 'msg':message_html, 'envoyeur':request.user.username + " (" + request.user.email + ")", "destinataire":recepteur.user.username + " (" +recepteur.user.email+ ")"})
     else:
         form = ContactForm()
     return render(request, 'profil_contact.html', {'form': form, 'recepteur':recepteur})
