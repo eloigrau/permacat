@@ -81,7 +81,10 @@ def handler400(request, template_name="400.html"):   #requete invalide
 def bienvenue(request):
     nums = ['01', '02', '03', '04', '07', '10', '11', '13', '15', '17', '20', '21', '23', ]
     nomImage = 'img/flo/resized0' +  choice(nums)+'.png'
-    return render(request, 'bienvenue.html', {'nomImage':nomImage})
+    nbNotif = 0
+    if request.user.is_authenticated:
+        nbNotif = getNbNewNotifications(request)
+    return render(request, 'bienvenue.html', {'nomImage':nomImage, "nbNotif": nbNotif })
 
 
 def presentation_site(request):
@@ -706,8 +709,9 @@ def lireConversation_2noms(request, destinataire1, destinataire2):
     else:
         return render(request, 'erreur.html', {'msg':"Vous n'êtes pas autorisé à voir cette conversation"})
 
+
 @login_required
-def notifications(request):
+def getNotifications(request):
     if request.user.is_permacat:
         salons      = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_permacat'))[:20]
         articles    = Action.objects.filter(Q(verb='article_nouveau_permacat') | Q(verb='article_message_permacat')|Q(verb='article_nouveau') | Q(verb='article_message')| Q(verb='article_modifier')| Q(verb='article_modifier_permacat'))[:20]
@@ -724,6 +728,24 @@ def notifications(request):
     projets = [art for i, art in enumerate(projets) if i == 0 or not (art.description == projets[i-1].description and art.actor == projets[i-1].actor ) ][:10]
     salons = [art for i, art in enumerate(salons) if i == 0 or not (art.description == salons[i-1].description and art.actor == salons[i-1].actor ) ][:10]
 
+
+    return salons, articles, projets, offres, conversations
+
+@login_required
+def getNbNewNotifications(request):
+    salons, articles, projets, offres, conversations = getNotifications(request)
+    articles = [action for action in articles if  request.user.last_login < action.timestamp]
+    projets = [action for action in projets if  request.user.last_login < action.timestamp]
+    offres = [action for action in offres if  request.user.last_login < action.timestamp]
+    conversations = [action for action in conversations if  request.user.last_login < action.timestamp]
+    salons = [action for action in salons if  request.user.last_login < action.timestamp]
+
+    return len(salons)+len( articles)+len( projets)+len( offres)+len(conversations)
+
+
+@login_required
+def notifications(request):
+    salons, articles, projets, offres, conversations = getNotifications(request)
     return render(request, 'notifications/notifications.html', {'salons': salons, 'articles': articles,'projets': projets, 'offres':offres, 'conversations':conversations})
 
 def getInfosJourPrecedent(request, nombreDeJours):

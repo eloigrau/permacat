@@ -83,7 +83,7 @@
     </div>
 </div>
     {%if not request.user.is_permacat %}
-    <p>Comme vous n'êtes pas membre de l'association, vous n'avez pas accès aux projets "Permacat", désolé... Rejoignez-nous !</p>
+<p><small>(vous n'avez pas encore accès aux projets "Permacat"... Rejoignez-nous !)</small></p>
     {%endif%}
 {%endblock%}
 {% block content %}

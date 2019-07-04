@@ -48,7 +48,7 @@ urlpatterns = [
     url(r'^site/presentation/$', views.presentation_site, name='presentation_site'),
     url(r'^permacat/statuts/$', views.statuts, name='statuts'),
     
-    url(r'^admin/', admin.site.urls, name='admin',),
+    url(r'^gestion/', admin.site.urls, name='admin',),
     url(r'^merci/$', views.merci, name='merci'),
     url(r'^forum/', include('blog.urls', namespace='bourseLibre.blog')),
     # url(r'^search/', include('haystack.urls'), name='chercher_site'),
