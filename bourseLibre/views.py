@@ -590,6 +590,7 @@ def liens(request):
         'https://jardindenat.wixsite.com/website',
         'https://www.permapat.com',
         'https://framasoft.org',
+        'https://alternatiba.eu/alternatiba66/',
         'http://www.le-message.org/?lang=fr',
         'https://reporterre.net/',
         'https://la-bas.org/',

@@ -11,9 +11,6 @@
 {%endcomment%}
 <h4 class = "textcenter rowbienvenue">{% trans "L'association de Permaculture Catalane vous souhaite la bienvenue !" %}</h4>
 
-{% if not request.user.is_authenticated %}
-<h7 class = "textcenter rowbienvenue">(<a href="https://permacat.herokuapp.com/auth/login">{% trans "connexion sécurisée" %}</a>)</h7>
-{%endif%}
 {% endblock %}
 {% block content %}
 
