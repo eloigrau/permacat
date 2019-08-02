@@ -20,8 +20,9 @@ def is_checkbox(field):
 def field_type(field):
     return field.field.widget.__class__.__name__
 
+#def field_sansentete(field):
 @register.filter(name='field_entete')
-def field_sansentete(field):
+def field_entete(field):
     type= str(field.field.widget.__class__.__name__)
     return (type in typesAvecEntete)
 

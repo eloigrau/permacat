@@ -1,5 +1,6 @@
 {% extends 'blog/baseBlog.html' %}
 {% load static %}
+{% load blog_filters %}
 {% load fontawesome %}
 {% load activity_tags %}
 {% block subtitle %}
@@ -173,7 +174,7 @@
             <p class="infos  textepetit">{{ comment.date_creation|date:"d/m/Y, G:i" }}{% ifchanged %}, {{comment.auteur_comm}}{% endifchanged %} </p>
         </div>
         <div class=" col-sm-9 col-md-9 col-lg-10 message ">
-                <p>{{ comment.commentaire|safe }}</p>
+                <p>{{ comment.commentaire|safe|url }}</p>
         </div>
     </div>
 {% endfor %}
