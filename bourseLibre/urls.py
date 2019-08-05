@@ -26,6 +26,8 @@ from django.contrib.auth.decorators import login_required
 # admin.autodiscover()
 from django.contrib import admin
 
+from wiki import urls
+
 admin.sites.site_header ="Admin "
 admin.sites.site_title ="Admin Permacat"
 
@@ -36,14 +38,14 @@ urlpatterns = [
     url(r'^captcha/', include('captcha.urls')),
     url('^', include('django.contrib.auth.urls')),
     url(r'^$', views.bienvenue, name='bienvenue'),
-    url(r'bienvenue/$', views.bienvenue, name='bienvenue'),
-    url(r'faq/$', views.faq, name='faq'),
-    url(r'gallerie/$', views.gallerie, name='gallerie'),
-    url(r'permacat/admin/$', views.admin_asso, name='admin_asso'),
-    url(r'permacat/fichiers/$', views.telechargements_asso, name='telechargements_asso'),
-    url(r'notifications/$', views.notifications, name='notifications'),
-    url(r'dernieresInfos/$', views.dernieresInfos, name='dernieresInfos'),
-    url(r'prochaines_rencontres/$', views.prochaines_rencontres, name='prochaines_rencontres'),
+    url(r'^bienvenue/$', views.bienvenue, name='bienvenue'),
+    url(r'^faq/$', views.faq, name='faq'),
+    url(r'^gallerie/$', views.gallerie, name='gallerie'),
+    url(r'^permacat/admin/$', views.admin_asso, name='admin_asso'),
+    url(r'^permacat/fichiers/$', views.telechargements_asso, name='telechargements_asso'),
+    url(r'^notifications/$', views.notifications, name='notifications'),
+    url(r'^dernieresInfos/$', views.dernieresInfos, name='dernieresInfos'),
+    url(r'^prochaines_rencontres/$', views.prochaines_rencontres, name='prochaines_rencontres'),
     url(r'^permacat/presentation/$', views.presentation_asso, name='presentation_asso'),
     url(r'^site/presentation/$', views.presentation_site, name='presentation_site'),
     url(r'^permacat/statuts/$', views.statuts, name='statuts'),
@@ -122,6 +124,9 @@ urlpatterns = [
     url(r'^agora_permacat/$', login_required(views.agora_permacat), name='agora_permacat'),
 
     url(r'^activity/', include('actstream.urls')),
+
+    path(r'wiki/notifications/', include('django_nyt.urls')),
+    path(r'wiki/', include('wiki.urls'))
 ]
 urlpatterns += [
     url(r'^robots\.txt$', TemplateView.as_view(template_name="bourseLibre/robots.txt", content_type='text/plain')),

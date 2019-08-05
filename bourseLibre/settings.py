@@ -95,6 +95,16 @@ INSTALLED_APPS = (
     #'shop',  # The django SHOP application
     #'shop.addressmodel',  # The default Address and country models
     # 'regist#ration'
+    'django.contrib.humanize.apps.HumanizeConfig',
+    'django_nyt.apps.DjangoNytConfig',
+    'mptt',
+    'sekizai',
+    'sorl.thumbnail',
+    'wiki.apps.WikiConfig',
+    'wiki.plugins.attachments.apps.AttachmentsConfig',
+    'wiki.plugins.notifications.apps.NotificationsConfig',
+    'wiki.plugins.images.apps.ImagesConfig',
+    'wiki.plugins.macros.apps.MacrosConfig',
 )
 
 # MIDDLEWARE_CLASSES = (
@@ -142,12 +152,21 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.template.context_processors.media',
                 'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+                "sekizai.context_processors.sekizai",
             ],
             'string_if_invalid': 'Invalid: "%s"',
             'libraries': {'is_numeric': 'bourseLibre.templatetags.app_filters', }
         },
     },
 ]
+'django.contrib.auth.context_processors.auth',
+'django.template.context_processors.debug',
+'django.template.context_processors.i18n',
+'django.template.context_processors.media',
+'django.template.context_processors.request',
+'django.template.context_processors.static',
 
 WSGI_APPLICATION = 'bourseLibre.wsgi.application'
 # Database
@@ -415,3 +434,6 @@ ACTSTREAM_SETTINGS = {
     'GFK_FETCH_DEPTH': 1,
 }
 #FONTAWESOME_CSS_URL = STATIC_URL + 'css/fontawesome.min.css'
+
+WIKI_ACCOUNT_HANDLING = False
+WIKI_ACCOUNT_SIGNUP_ALLOWED = True
