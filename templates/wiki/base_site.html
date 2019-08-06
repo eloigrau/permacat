@@ -10,6 +10,7 @@
 
     <!-- Le styles -->
     <link href="{% static 'wiki/bootstrap/css/wiki-bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
 
     {% render_block "css" %}
 
@@ -25,6 +26,8 @@
     {% block wiki_body %}
 
     {% block wiki_navbar %}
+
+    {% comment %}
     <div class="navbar navbar-fixed-top navbar-inverse">
       <div class="container">
         <div class="navbar-header">
@@ -118,9 +121,10 @@
           </div>
           {% block wiki_header_navlinks %}
           <ul class="nav navbar-nav">
-            <li ><a href="/wiki/">Acceuil</a></li>
+            <li ><a href="/wiki/">Acceuil du wiki</a></li>
           </ul>
           {% endblock %}
+
         </div>
       </div>
     </div>
