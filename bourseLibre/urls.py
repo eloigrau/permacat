@@ -125,8 +125,8 @@ urlpatterns = [
 
     url(r'^activity/', include('actstream.urls')),
 
-    path(r'wiki/notifications/', include('django_nyt.urls')),
-    path(r'wiki/', include('wiki.urls'))
+    path(r'^wiki_ecovillage/notifications/', include('django_nyt.urls')),
+    path(r'^wiki_ecovillage/', include('wiki.urls'))
 ]
 urlpatterns += [
     url(r'^robots\.txt$', TemplateView.as_view(template_name="bourseLibre/robots.txt", content_type='text/plain')),
