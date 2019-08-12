@@ -91,32 +91,25 @@
 <div class="row align-items-center">
 <div class="col-sm-12 textcenter">
 
-        <div class="btn-group btn-group-justified">
         <a href="{% url 'blog:ajouterNouvelArticle' %}">
         <button type="button" class="btn btn-success" >
                 <span class="glyphicon glyphicon-plus"></span>Ajouter un article
             </button>
             </a>&ensp;
+    &nbsp;
+        <a href="{% url 'blog:suivre_articles' %}">
 
-    </div>
-
-        <div class="btn-group">
-            <a href="{% url 'blog:suivre_articles' %}">
-
-            {% if request.user|is_following:suivis %}
-            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour arreter de recevoir un mail à chaque nouvel article">
-                 {% fontawesome_icon 'bell' %} Suivi
-            </button>
-            {% else %}
-            <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour recevoir un mail à chaque nouvel article">
-                 {% fontawesome_icon 'bell-slash' %} Non suivi
-            </button>
-            {% endif %}
-                </a>
-        </div>
-
+        {% if request.user|is_following:suivis %}
+        <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour arreter de recevoir un mail à chaque nouvel article">
+             {% fontawesome_icon 'bell' %}
+        </button>
+        {% else %}
+        <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour recevoir un mail à chaque nouvel article">
+             {% fontawesome_icon 'bell-slash' %}
+        </button>
+        {% endif %}
+            </a>
 </div>
-
 </div>
     {%if not request.user.is_permacat %}
 <p><small>(vous n'avez pas encore accès aux articles "Permacat"... Rejoignez-nous !)</small></p>

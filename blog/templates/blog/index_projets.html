@@ -82,23 +82,20 @@
                 <span class="glyphicon glyphicon-plus"></span>&nbsp; Ajouter un projet
             </button>
             </a>
-
-        <div class="btn-group">
+&nbsp;
             <a href="{% url 'blog:suivre_projets' %}">
 
             {% if request.user|is_following:suivis %}
             <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour arreter de recevoir un mail à chaque nouvel article">
-                 {% fontawesome_icon 'bell' %} Suivi
+                 {% fontawesome_icon 'bell' %}
             </button>
             {% else %}
             <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour recevoir un mail à chaque nouvel article">
-                 {% fontawesome_icon 'bell-slash' %} Non suivi
+                 {% fontawesome_icon 'bell-slash' %}
             </button>
             {% endif %}
                 </a>
-        </div>
-
-    </div>
+</div>
 </div>
     {%if not request.user.is_permacat %}
 <p><small>(vous n'avez pas encore accès aux projets "Permacat"... Rejoignez-nous !)</small></p>
