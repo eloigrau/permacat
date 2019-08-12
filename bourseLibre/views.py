@@ -20,6 +20,7 @@ from django_summernote.widgets import SummernoteWidget
 from random import choice
 
 from django import forms
+from django.http import Http404
 
 from blog.models import Article, Projet
 
@@ -49,7 +50,7 @@ from actstream.models import Action, any_stream, following,followers
 from os import listdir
 from os.path import isfile, join
 from django.contrib.staticfiles.templatetags.staticfiles import static
-
+from django.core.exceptions import ObjectDoesNotExist
 
 CharField.register_lookup(Lower, "lower")
 
@@ -179,7 +180,11 @@ def proposerProduit_entree(request):
 
 @login_required
 def detailProduit(request, produit_id):
-    prod = Produit.objects.get_subclass(id=produit_id)
+    try:
+        prod = Produit.objects.get_subclass(id=produit_id)
+    except ObjectDoesNotExist:
+        raise Http404
+
     if not prod.estPublique and not request.user.is_permacat:
         return render(request, 'notPermacat.html',)
     return render(request, 'bourseLibre/produit_detail.html', {'produit': prod})
