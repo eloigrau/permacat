@@ -44,6 +44,8 @@ urlpatterns = [
 
     url(r'^suivre_article/(?P<slug>[-\w]+)/$', views.suivre_article, name='suivre_article'),
     url(r'^suivre_projet/(?P<slug>[-\w]+)/$', views.suivre_projet, name='suivre_projet'),
+    url(r'^suivre_articles/$', views.suivre_articles, name='suivre_articles'),
+    url(r'^suivre_projets/$', views.suivre_projets, name='suivre_projets'),
 
 
 ]

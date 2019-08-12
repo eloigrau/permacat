@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load activity_tags %}
+{% load fontawesome %}
+{%block subtitle%}
+<h4>Trouver ou commencer une conversation
+</h4>
+{%endblock%}
+{% block content %}
+
+<div class="row align-items-center">
+<div class="col-sm-12 textcenter">
+<form method="post">
+  {% csrf_token %}
+  {% include 'form_template2.html' %}
+
+  <button type="submit" class="btn btn-primary">OK</button>
+</form>
+</div></div>
+
+
+{% endblock %}

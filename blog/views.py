@@ -11,6 +11,7 @@ from actstream.models import followers, following
 from django.utils.timezone import now
 
 #from django.contrib.contenttypes.models import ContentType
+from bourseLibre.models import Suivis
 from django.views.decorators.csrf import csrf_exempt
 
 @login_required
@@ -136,6 +137,7 @@ class ListeArticles(ListView):
         cat= Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
         context['categorie_list'] = [x for x in Choix.type_annonce if x[0] in cat]
         context['typeFiltre'] = "aucun"
+        context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="articles")
         #context['ordreTriPossibles'] =  ['date dernier message', 'categorie', ]
 
         if 'auteur' in self.request.GET:
@@ -277,6 +279,7 @@ class ListeProjets(ListView):
             context['typeFiltre'] = "permacat"
         if 'archives' in self.request.GET:
             context['typeFiltre'] = "archives"
+        context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="projets")
         return context
 
 
@@ -369,3 +372,26 @@ def articles_suivis(request, slug):
     article = Article.objects.get(slug=slug)
     suiveurs = followers(article)
     return render(request, 'blog/articles_suivis.html', {'suiveurs': suiveurs, "article":article, })
+
+
+@login_required
+@csrf_exempt
+def suivre_articles(request, actor_only=True):
+    suivi, created = Suivis.objects.get_or_create(nom_suivi = 'articles')
+
+    if suivi in following(request.user):
+        actions.unfollow(request.user, suivi)
+    else:
+        actions.follow(request.user, suivi, actor_only=actor_only)
+    return redirect('blog:index')
+
+@login_required
+@csrf_exempt
+def suivre_projets(request, actor_only=True):
+    suivi, created = Suivis.objects.get_or_create(nom_suivi = 'projets')
+
+    if suivi in following(request.user):
+        actions.unfollow(request.user, suivi)
+    else:
+        actions.follow(request.user, suivi, actor_only=actor_only)
+    return redirect('blog:index_projets')

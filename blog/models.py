@@ -1,5 +1,5 @@
 from django.db import models
-from bourseLibre.models import Profil
+from bourseLibre.models import Profil, Suivis
 from django.urls import reverse
 from django.utils import timezone
 from django.core.mail import send_mass_mail
@@ -61,6 +61,21 @@ class Article(models.Model):
         except:
             return Choix.couleurs_annonces["Autre"]
 
+
+@receiver(post_save, sender=Article)
+def on_save_articles(instance, created, **kwargs):
+    if created:
+        suivi, created = Suivis.objects.get_or_create(nom_suivi='articles')
+        titre = "Permacat - nouvel article"
+        message = " Un nouvel article a été créé " + \
+                  "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + instance.get_absolute_url() + \
+                  "\n------------------------------------------------------------------------------" \
+                  "\n vous recevez cet email, car vous avez choisi de suivre les articles sur le site http://www.perma.cat"
+        emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv]
+        try:
+            send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
+        except:
+            pass
 
 
 class Commentaire(models.Model):
@@ -131,7 +146,7 @@ def on_save_projet(instance, **kwargs):
               "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + instance.get_absolute_url() + \
               "\n------------------------------------------------------------------------------" \
               "\n vous recevez cet email, car vous avez choisi de suivre cet article sur le site http://www.Perma.cat"
-    emails = [suiv.email for suiv in followers(instance)]
+    emails = [suiv.email for suiv in followers(instance)  if instance.auteur != suiv]
     try:
         send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
     except:
@@ -145,7 +160,7 @@ def on_save_article(instance, **kwargs):
               "\n------------------------------------------------------------------------------" \
               "\n vous recevez cet email, car vous avez choisi de suivre ce projet sur le site http://www.Perma.cat"
    # emails = [(titre, message, "asso@perma.cat", (suiv.email, )) for suiv in followers(instance)]
-    emails = [suiv.email for suiv in followers(instance)]
+    emails = [suiv.email for suiv in followers(instance)  if instance.auteur != suiv]
     try:
         send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
     except:

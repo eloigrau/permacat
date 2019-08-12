@@ -150,10 +150,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.request',
-                'django.template.context_processors.media',
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
-                'django.contrib.messages.context_processors.messages',
                 "sekizai.context_processors.sekizai",
             ],
             'string_if_invalid': 'Invalid: "%s"',
@@ -161,12 +159,7 @@ TEMPLATES = [
         },
     },
 ]
-'django.contrib.auth.context_processors.auth',
-'django.template.context_processors.debug',
-'django.template.context_processors.i18n',
-'django.template.context_processors.media',
-'django.template.context_processors.request',
-'django.template.context_processors.static',
+
 
 WSGI_APPLICATION = 'bourseLibre.wsgi.application'
 # Database
@@ -437,4 +430,6 @@ ACTSTREAM_SETTINGS = {
 #FONTAWESOME_CSS_URL = STATIC_URL + 'css/fontawesome.min.css'
 
 WIKI_ACCOUNT_HANDLING = False
-WIKI_ACCOUNT_SIGNUP_ALLOWED = True
+WIKI_ACCOUNT_SIGNUP_ALLOWED = False
+WIKI_STORAGE_BACKEND = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+WIKI_ATTACHMENTS_STORAGE_BACKEND = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

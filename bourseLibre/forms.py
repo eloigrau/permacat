@@ -246,6 +246,13 @@ class MessageForm(forms.ModelForm):
         if message:
            self.fields['message'].initial = message
 
+class ChercherConversationForm(forms.Form):
+    destinataire = forms.ChoiceField(label='destinataire')
+
+    def __init__(self, user, *args, **kwargs):
+        super(ChercherConversationForm, self).__init__(*args, **kwargs)
+        self.fields['destinataire'].choices = [(i,u) for i, u in enumerate(Profil.objects.all().order_by('username')) if u != user]
+
 class MessageGeneralForm(forms.ModelForm):
     class Meta:
         model = MessageGeneral

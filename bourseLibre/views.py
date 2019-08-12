@@ -9,8 +9,9 @@ from django.shortcuts import HttpResponseRedirect, render, redirect#, render, ge
 from .forms import Produit_aliment_CreationForm, Produit_vegetal_CreationForm, Produit_objet_CreationForm, \
     Produit_service_CreationForm, ContactForm, AdresseForm, ProfilCreationForm, MessageForm, MessageGeneralForm, \
     ProducteurChangeForm, MessageGeneralPermacatForm, Produit_aliment_modifier_form, Produit_service_modifier_form, \
-    Produit_objet_modifier_form, Produit_vegetal_modifier_form
-from .models import Profil, Produit, Adresse, Choix, Panier, Item, get_categorie_from_subcat, Conversation, Message, MessageGeneral, MessageGeneralPermacat, getOrCreateConversation
+    Produit_objet_modifier_form, Produit_vegetal_modifier_form, ChercherConversationForm
+from .models import Profil, Produit, Adresse, Choix, Panier, Item, get_categorie_from_subcat, Conversation, Message, \
+    MessageGeneral, MessageGeneralPermacat, getOrCreateConversation, Suivis
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
@@ -549,6 +550,8 @@ class ListeProduit(ListView):
             context['categorie_parent'] = self.request.GET['categorie']
             context['typeFiltre'] = "categorie"
         context['typeOffre'] = '<- | ->'
+
+        context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="produits")
         return context
 
 class ListeProduit_offres(ListeProduit):
@@ -710,6 +713,29 @@ def lireConversation_2noms(request, destinataire1, destinataire2):
         return render(request, 'erreur.html', {'msg':"Vous n'êtes pas autorisé à voir cette conversation"})
 
 
+class ListeConversations(ListView):
+    model = Conversation
+    context_object_name = "conversation_list"
+    template_name = "conversations.html"
+    paginate_by = 1
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+
+        context['conversations'] = Conversation.objects.filter(Q(profil2__id=self.request.user.id) | Q(profil1__id=self.request.user.id)).order_by('-date_dernierMessage')
+
+        return context
+
+def chercherConversation(request):
+    form = ChercherConversationForm(request.user, request.POST or None,)
+    if form.is_valid():
+        destinataire = form.cleaned_data['destinataire']
+        destinataire = form.fields['destinataire'].choices[int(destinataire)][1].username
+        return redirect('lireConversation', destinataire=destinataire)
+    else:
+        return render(request, 'chercher_conversation.html', {'form': form})
+
 @login_required
 def getNotifications(request):
     if request.user.is_permacat:
@@ -831,19 +857,6 @@ def agora_permacat(request, ):
         return redirect(request.path)
     return render(request, 'agora_permacat.html', {'form': form, 'messages_echanges': messages})
 
-class ListeConversations(ListView):
-    model = Conversation
-    context_object_name = "conversation_list"
-    template_name = "conversations.html"
-    paginate_by = 1
-
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super().get_context_data(**kwargs)
-
-        context['conversations'] = Conversation.objects.filter(Q(profil2__id=self.request.user.id) | Q(profil1__id=self.request.user.id)).order_by('-date_dernierMessage')
-
-        return context
 
 
 # class ServiceWorkerView(View):
@@ -883,4 +896,13 @@ def suivre_conversations(request, actor_only=True):
             actions.follow(request.user, conv, actor_only=actor_only)
     return redirect('conversations')
 
+@login_required
+@csrf_exempt
+def suivre_produits(request, actor_only=True):
+    suivi, created = Suivis.objects.get_or_create(nom_suivi = 'produits')
 
+    if suivi in following(request.user):
+        actions.unfollow(request.user, suivi)
+    else:
+        actions.follow(request.user, suivi, actor_only=actor_only)
+    return redirect('marche')

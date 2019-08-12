@@ -18,13 +18,15 @@ from django.db.models import Q
 #from tinymce.models import HTMLField
 
 from actstream import actions, action
-from actstream.models import following
+from actstream.models import following, followers
 
 import os
 import requests
 from stdimage import StdImageField
 from datetime import date
 
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 DEGTORAD=3.141592654/180
 
@@ -474,6 +476,21 @@ class ItemDoesNotExist(Exception):
 #         fields = ('categorie','nom_produit','description','prix')
 
 
+@receiver(post_save, sender=Produit)
+def on_save_articles(instance, created, **kwargs):
+    if created:
+        suivi, created = Suivis.objects.get_or_create(nom_suivi='produits')
+        titre = "Permacat - nouveau produit"
+        message = " Une nouvelle offre a été postée sur le marché " + \
+                  "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + instance.get_absolute_url() + \
+                  "\n------------------------------------------------------------------------------" \
+                  "\n vous recevez cet email, car vous avez choisi de suivre le marché sur le site http://www.perma.cat"
+        emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv]
+        try:
+            send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
+        except:
+            pass
+
 class ProductFilter(django_filters.FilterSet):
     #nom_produit = django_filters.CharFilter(lookup_expr='iexact')
     # date_creation = django_filters.DateFromToRangeFilter(name='date_creation',)
@@ -797,3 +814,7 @@ class MessageGeneralPermacat(models.Model):
 
     def __str__(self):
         return "(" + str(self.id) + ") " + str(self.auteur) + " " + str(self.date_creation)
+
+
+class Suivis(models.Model):
+    nom_suivi = models.TextField(null=False, blank=False)

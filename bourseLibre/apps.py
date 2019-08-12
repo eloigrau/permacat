@@ -17,6 +17,7 @@ class BourseLibreConfig(AppConfig):
         registry.register(self.get_model('Produit_service'))
         registry.register(self.get_model('Produit_objet'))
         registry.register(self.get_model('Produit_aliment'))
+        registry.register(self.get_model('Suivis'))
         registry.register(Article)
         registry.register(Projet)
         registry.register(Group)
