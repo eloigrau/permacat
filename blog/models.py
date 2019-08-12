@@ -152,6 +152,23 @@ def on_save_projet(instance, **kwargs):
     except:
         pass
 
+
+@receiver(post_save, sender=Projet)
+def on_save_projets(instance, created, **kwargs):
+    if created:
+        suivi, created = Suivis.objects.get_or_create(nom_suivi='projets')
+        titre = "Permacat - nouvel article"
+        message = " Un nouveau projet a été créé !" + \
+                  "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + instance.get_absolute_url() + \
+                  "\n------------------------------------------------------------------------------" \
+                  "\n vous recevez cet email, car vous avez choisi de suivre les articles sur le site http://www.perma.cat"
+        emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv]
+        try:
+            send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
+        except:
+            pass
+
+
 @receiver(post_save,  sender=Article)
 def on_save_article(instance, **kwargs):
     titre = "Permacat - Article actualisé"

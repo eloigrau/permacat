@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from django.contrib.auth.models import User#, AbstractUser
 #from django.utils import timezone
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from django.core.validators import MinValueValidator
 from django.utils.timezone import now
 from model_utils.managers import InheritanceManager
@@ -27,6 +24,8 @@ from datetime import date
 
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+
+from django.core.mail import send_mass_mail
 
 DEGTORAD=3.141592654/180
 
@@ -477,7 +476,70 @@ class ItemDoesNotExist(Exception):
 
 
 @receiver(post_save, sender=Produit)
-def on_save_articles(instance, created, **kwargs):
+def on_save_produits(instance, created, **kwargs):
+    if created:
+        suivi, created = Suivis.objects.get_or_create(nom_suivi='produits')
+        titre = "Permacat - nouveau produit"
+        message = " Une nouvelle offre a été postée sur le marché " + \
+                  "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + instance.get_absolute_url() + \
+                  "\n------------------------------------------------------------------------------" \
+                  "\n vous recevez cet email, car vous avez choisi de suivre le marché sur le site http://www.perma.cat"
+        emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv]
+        try:
+            send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
+        except:
+            pass
+
+
+@receiver(post_save, sender=Produit_aliment)
+def on_save_produits(instance, created, **kwargs):
+    if created:
+        suivi, created = Suivis.objects.get_or_create(nom_suivi='produits')
+        titre = "Permacat - nouveau produit"
+        message = " Une nouvelle offre a été postée sur le marché " + \
+                  "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + instance.get_absolute_url() + \
+                  "\n------------------------------------------------------------------------------" \
+                  "\n vous recevez cet email, car vous avez choisi de suivre le marché sur le site http://www.perma.cat"
+        emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv]
+        try:
+            send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
+        except:
+            pass
+
+
+@receiver(post_save, sender=Produit_objet)
+def on_save_produits(instance, created, **kwargs):
+    if created:
+        suivi, created = Suivis.objects.get_or_create(nom_suivi='produits')
+        titre = "Permacat - nouveau produit"
+        message = " Une nouvelle offre a été postée sur le marché " + \
+                  "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + instance.get_absolute_url() + \
+                  "\n------------------------------------------------------------------------------" \
+                  "\n vous recevez cet email, car vous avez choisi de suivre le marché sur le site http://www.perma.cat"
+        emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv]
+        try:
+            send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
+        except:
+            pass
+
+
+@receiver(post_save, sender=Produit_service)
+def on_save_produits(instance, created, **kwargs):
+    if created:
+        suivi, created = Suivis.objects.get_or_create(nom_suivi='produits')
+        titre = "Permacat - nouveau produit"
+        message = " Une nouvelle offre a été postée sur le marché " + \
+                  "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + instance.get_absolute_url() + \
+                  "\n------------------------------------------------------------------------------" \
+                  "\n vous recevez cet email, car vous avez choisi de suivre le marché sur le site http://www.perma.cat"
+        emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv]
+        try:
+            send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
+        except:
+            pass
+
+@receiver(post_save, sender=Produit_vegetal)
+def on_save_produits(instance, created, **kwargs):
     if created:
         suivi, created = Suivis.objects.get_or_create(nom_suivi='produits')
         titre = "Permacat - nouveau produit"

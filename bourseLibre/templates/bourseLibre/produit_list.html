@@ -150,21 +150,19 @@
             <span class="glyphicon glyphicon-plus"></span>&nbsp; Ajouter une annonce
         </button>
     </a>
-
-        <div class="btn-group">
-            <a href="{% url 'suivre_produits' %}">
-
-            {% if request.user|is_following:suivi %}
-            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour arreter de recevoir un mail à chaque nouvelle annonce">
-                 {% fontawesome_icon 'bell' %} Suivi
-            </button>
-            {% else %}
-            <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour recevoir un mail à chaque nouvelle annonce">
-                 {% fontawesome_icon 'bell-slash' %} Non suivi
-            </button>
-            {% endif %}
-                </a>
-        </div>
+    <div class="btn-group">
+        <a href="{% url 'suivre_produits' %}">
+        {% if request.user|is_following:suivi %}
+        <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour arreter de recevoir un mail à chaque nouvelle annonce">
+             {% fontawesome_icon 'bell' %} Suivi
+        </button>
+        {% else %}
+        <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour recevoir un mail à chaque nouvelle annonce">
+             {% fontawesome_icon 'bell-slash' %} Non suivi
+        </button>
+        {% endif %}
+            </a>
+    </div>
     </div>
 </div>
 {%endif%}
