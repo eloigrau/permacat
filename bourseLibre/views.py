@@ -551,7 +551,7 @@ class ListeProduit(ListView):
             context['typeFiltre'] = "categorie"
         context['typeOffre'] = '<- | ->'
 
-        context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="produits")
+        context['suivi'], created = Suivis.objects.get_or_create(nom_suivi="produits")
         return context
 
 class ListeProduit_offres(ListeProduit):
