@@ -20,7 +20,7 @@ def forum(request):
     articles = Article.objects.all().order_by('-date_dernierMessage')  # Nous sélectionnons tous nos articles
     return render(request, 'blog/forum.html', {'derniers_articles': articles})
 
-def acceuil(request):
+def accueil(request):
     return render(request, 'blog/accueil.html')
 
 

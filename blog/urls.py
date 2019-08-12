@@ -21,7 +21,7 @@ from django.contrib.auth.decorators import login_required
 app_name = 'blog'
 
 urlpatterns = [
-    url(r'^acceuil/$', views.acceuil, name="forum"),
+    url(r'^accueil/$', views.accueil, name="forum"),
     url(r'^articles/$', login_required(views.ListeArticles.as_view(), login_url='/auth/login/'), name="index"),
     # url(r'^newPost/', views.ajouterNouveauPost, name='ajouterNouveauPost'),
     # url(r'^article/(?P<slug>.+)$', views.lire, name='lire'),
