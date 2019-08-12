@@ -431,5 +431,5 @@ ACTSTREAM_SETTINGS = {
 
 WIKI_ACCOUNT_HANDLING = False
 WIKI_ACCOUNT_SIGNUP_ALLOWED = False
-WIKI_STORAGE_BACKEND = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-WIKI_ATTACHMENTS_STORAGE_BACKEND = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#WIKI_STORAGE_BACKEND = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#WIKI_ATTACHMENTS_STORAGE_BACKEND = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

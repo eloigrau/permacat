@@ -547,7 +547,7 @@ def on_save_produits(instance, created, **kwargs):
                   "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + instance.get_absolute_url() + \
                   "\n------------------------------------------------------------------------------" \
                   "\n vous recevez cet email, car vous avez choisi de suivre le marché sur le site http://www.perma.cat"
-        emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv]
+        emails = [suiv.email for suiv in followers(suivi) if instance.user != suiv]
         try:
             send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
         except:
