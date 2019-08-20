@@ -17,8 +17,8 @@
         <div class="col-sm-12 col-md-10 col-lg-8 ">
             <form role="form" action="" method="post" enctype="multipart/form-data">
           {% csrf_token %}
-                {%include 'form_template2.html' with form=form_adresse%}
                 {%include 'form_template2.html' with form=form_profil%}
+                {%include 'form_template2.html' with form=form_adresse%}
 
 
           <button type="submit" class="btn btn-success">S'enregistrer</button>
