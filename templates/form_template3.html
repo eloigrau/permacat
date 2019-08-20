@@ -30,27 +30,48 @@
 
   {% for field in form.visible_fields %}
     <div class="form-group input-group textcenter" >
+    {% with tyype=field|field_type %}
+    {% with entete=field|field_entete %}
+    {% if entete %}
+        {{field.label_tag}}
+    {%endif%}
       {% if form.is_bound %}
         {% if field.errors %}
-          {% render_field field class="form-control invalid" placeholder=field.label %}
+          {% render_field field class="form-control invalid" %}
           {% for error in field.errors %}
             <div class="invalid-feedback">
               {{ error }}
             </div>
           {% endfor %}
         {% else %}
-          {% render_field field class="form-control valid" placeholder=field.label %}
+        {% if tyype != 'SummernoteWidget' %}
+        {% if tyype == 'CheckboxInput' %}
+          {{field}}{{field.label}}
+        {% else %}
+          {% render_field field class="form-control valid" placeholder=field.label%}
+        {% endif %}
+        {% endif %}
         {% endif %}
       {% else %}
+    {% if tyype != 'SummernoteWidget' %}
+        {% if tyype == 'CheckboxInput' %}
+          {{field}}{{field.label}}
+        {% else %}
         {% render_field field class="form-control" placeholder=field.label %}
+        {% endif %}
+      {% endif %}
       {% endif %}
 
+    {% if tyype != 'SummernoteWidget' %}
       {% if field.help_text %}
         <small class="form-text text-muted">{{ field.help_text }}</small>
       {% endif %}
-      <span class="input-group-btn">
-      <button type="submit" class="btn btn-primary">OK</button>
-      </span>
+    {%else%}
+    {{field}}
+      {% endif %}
+
+    {%endwith%}
+    {%endwith%}
 </div>
   {% endfor %}
 

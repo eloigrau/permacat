@@ -1,23 +1,21 @@
 {% extends 'base.html' %} 
 {% block title %}Accueil{% endblock %}
-
-			<div class="jumbotron well">
 {% block subtitle %}
 
 <h2 class = "textcenter rowbienvenue">Le site Perma.Cat</h2>
-				<div class="row">
-				<div class="col-sm-12">
-				<div class="btn-group">
-					<a class="btn btn-success" href="{% url 'profil_list' %}"> Annuaire </a>
-					 <a class="btn btn-success" href="{% url 'carte' %}"> Carte </a>
-					<span class="btn btn-success divider" role="separator"></span>
-					<a class="btn btn-success" href="{% url 'contact_admins' %}"> Contacter admins </a>
-					<a class="btn btn-success" href="{% url 'cgu' %}"> CGU </a>
-					<a class="btn btn-success" href="{% url 'liens' %}"> Liens </a>
-					<span class="btn btn-success divider" role="separator"></span>
-					<a class="btn btn-success" href="{% url 'fairedon' %}"> Faire un don</a>
-				</div>
-				</div></div>
+<div class="row">
+<div class="col-sm-12">
+	<div class="btn-group">
+		<a class="btn btn-success" href="{% url 'profil_list' %}"> Annuaire </a>
+		 <a class="btn btn-success" href="{% url 'carte' %}"> Carte </a>
+		<span class="btn btn-success divider" role="separator"></span>
+		<a class="btn btn-success" href="{% url 'contact_admins' %}"> Contacter admins </a>
+		<a class="btn btn-success" href="{% url 'cgu' %}"> CGU </a>
+		<a class="btn btn-success" href="{% url 'liens' %}"> Liens </a>
+		<span class="btn btn-success divider" role="separator"></span>
+		<a class="btn btn-success" href="{% url 'fairedon' %}"> Faire un don</a>
+	</div>
+</div></div>
 {% endblock %}
 {% block content %}
 <div class="row">

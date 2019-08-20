@@ -40,10 +40,11 @@
           {% endfor %}
         {% else %}
         {% if tyype != 'SummernoteWidget' %}
-          {% render_field field class="form-control valid" placeholder=field.label%}
-        {% endif %}
         {% if tyype == 'CheckboxInput' %}
           {{field}}{{field.label}}
+        {% else %}
+          {% render_field field class="form-control valid" placeholder=field.label%}
+        {% endif %}
         {% endif %}
         {% endif %}
       {% else %}
