@@ -659,9 +659,9 @@ def chercher(request):
     recherche = str(request.GET.get('id_recherche')).lower()
     if recherche:
         produits_list = Produit.objects.filter(Q(description__icontains=recherche) | Q(nom_produit__lower__contains=recherche), ).select_subclasses()
-        articles_list = Article.objects.filter(Q(titre__lower__contains=recherche) | Q(contenu__lower__icontains=recherche), )
-        projets_list = Projet.objects.filter(Q(titre__lower__contains=recherche) | Q(contenu__lower__icontains=recherche), )
-        profils_list = Profil.objects.filter(Q(username__lower__contains=recherche)  | Q(description__lower__icontains=recherche)| Q(competences__lower__icontains=recherche), )
+        articles_list = Article.objects.filter(Q(titre__lower__contains=recherche) | Q(contenu__lower__contains=recherche), )
+        projets_list = Projet.objects.filter(Q(titre__lower__contains=recherche) | Q(contenu__lower__contains=recherche), )
+        profils_list = Profil.objects.filter(Q(username__lower__contains=recherche)  | Q(description__lower__contains=recherche)| Q(competences__lower__icontains=recherche), )
     else:
         produits_list = []
         articles_list = []
