@@ -18,6 +18,10 @@ python manage.py migrate --run-syncdb
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
+try:
+    import dj_database_url
+except:
+    pass
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -31,8 +35,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOCALL = False
 try:
     SECRET_KEY = os.environ['SECRET_KEY']
-    DEBUG = True
-    import dj_database_url
+    DEBUG = False
 except:
     LOCALL  = True
     SECRET_KEY = 'aersd68fgsfdgsdvcbvcb563873gbgfthhfhdjd'
@@ -432,10 +435,9 @@ WIKI_ACCOUNT_SIGNUP_ALLOWED = False
 #WIKI_ATTACHMENTS_STORAGE_BACKEND = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
-SECURE_HSTS_SECONDS = 518400
+#SECURE_HSTS_SECONDS = 518400
 #SECURE_CONTENT_TYPE_NOSNIFF = True
 #SECURE_BROWSER_XSS_FILTER = True
 #SECURE_SSL_REDIRECT  = True
-SESSION_COOKIE_SECURE  = True
+#SESSION_COOKIE_SECURE  = True
 CSRF_COOKIE_SECURE = True
-X_FRAME_OPTIONS = 'DENY'
