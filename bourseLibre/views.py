@@ -300,6 +300,10 @@ def telechargements_asso(request):
     return render(request, 'asso/fichiers.html', {'fichiers':fichiers})
 
 @login_required
+def adhesion_asso(request):
+    return render(request, 'asso/adhesion.html', )
+
+@login_required
 def carte_permacat(request):
     if not request.user.is_permacat:
         return render(request, "notPermacat.html")
