@@ -82,6 +82,7 @@ INSTALLED_APPS = (
     'captcha',
     'django_summernote',
     'actstream',
+    #"visits",
     #'notifications',
     #'webpush',
     #"geoposition",
@@ -101,10 +102,19 @@ INSTALLED_APPS = (
     'sekizai',
     'sorl.thumbnail',
     'wiki.apps.WikiConfig',
-    'wiki.plugins.attachments.apps.AttachmentsConfig',
-    'wiki.plugins.notifications.apps.NotificationsConfig',
+   # 'wiki.plugins.attachments.apps.AttachmentsConfig',
+    #'wiki.plugins.notifications.apps.NotificationsConfig',
+    #'wiki.plugins.images.apps.ImagesConfig',
+    #'wiki.plugins.macros.apps.MacrosConfig',
+
+    #'wiki.plugins.attachments.apps.AttachmentsConfig',
+    #'wiki.plugins.globalhistory.apps.GlobalHistoryConfig',
+    'wiki.plugins.help.apps.HelpConfig',
     'wiki.plugins.images.apps.ImagesConfig',
+    'wiki.plugins.links.apps.LinksConfig',
     'wiki.plugins.macros.apps.MacrosConfig',
+    'wiki.plugins.notifications.apps.NotificationsConfig',
+
 )
 
 # MIDDLEWARE_CLASSES = (
@@ -122,7 +132,7 @@ INSTALLED_APPS = (
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    #'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -130,6 +140,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
      'django.middleware.locale.LocaleMiddleware',
+    #"visits.middleware.BotVisitorMiddleware",
+     #"visits.middleware.CounterMiddleware",
    # 'bourseLibre.middleware.SetLastVisitMiddleware'
     #'django.core.context_processors.request',
     #'debug_toolbar.middleware.DebugToolbarMiddleware',
@@ -187,19 +199,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# HAYSTACK_CONNECTIONS = {
-#     'default': {
-#         'ENGINE': 'haystack.backends.elasticsearch2_backend.Elasticsearch2SearchEngine',
-#         'URL': 'http://127.0.0.1:8000/',
-#         'INDEX_NAME': 'haystack',
-#     },
-# }y
-#HAYSTACK_CONNECTIONS = {
-#    'default': {
-#        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-#        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
-#    },
-#}
 HAYSTACK_CONNECTIONS = {
   'default': {
     'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
@@ -431,8 +430,6 @@ ACTSTREAM_SETTINGS = {
 
 WIKI_ACCOUNT_HANDLING = False
 WIKI_ACCOUNT_SIGNUP_ALLOWED = False
-#WIKI_STORAGE_BACKEND = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-#WIKI_ATTACHMENTS_STORAGE_BACKEND = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 #SECURE_HSTS_SECONDS = 518400
@@ -441,3 +438,4 @@ WIKI_ACCOUNT_SIGNUP_ALLOWED = False
 #SECURE_SSL_REDIRECT  = True
 #SESSION_COOKIE_SECURE  = True
 CSRF_COOKIE_SECURE = True
+

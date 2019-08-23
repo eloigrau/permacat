@@ -20,8 +20,12 @@
 	  <b><a href="{% url 'notifications' %}">Vous avez {{nbNotif}} nouvelle{{ nbNotif|pluralize:",s" }} notification{{ nbNotif|pluralize:",s" }} depuis votre dernière connexion (le {{request.user.last_login|date:"d/m/Y"}})</a></b>
   </div>
 </div>
+
 <hr>
 {%endif%}
+
+
+
 <div class="card" >
   <div class="card-header  textcenter">
 		<b>Prochains rendez-vous (réguliers) :</b>
