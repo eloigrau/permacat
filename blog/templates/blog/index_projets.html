@@ -104,17 +104,18 @@
 {% block content %}
 
 <div class="infinite-container">
-{% for projet in projet_list %}
-<div class="infinite-item">
-        {% include "blog/projet_template.html" with projet=projet %}
-</div>
+    {% for projet in projet_list %}
+    <div class="infinite-item">
+            {% include "blog/projet_template.html" with projet=projet %}
+    </div>
 
-{% if not forloop.last %}
-<hr>
-{% endif %}
-{% empty %}
-<p>Aucun projet pour l'instant.</p>
-{% endfor %}
+    {% if not forloop.last %}
+    <hr>
+    {% endif %}
+    {% empty %}
+    <p>Aucun projet pour l'instant.</p>
+    {% endfor %}
 </div>
+{%include 'pagination.html' %}
 
 {% endblock %}
