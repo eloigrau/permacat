@@ -11,7 +11,7 @@
 				<div class="btn-group">
 				<a href="{% url 'blog:index_projets' %}" class="btn btn-success">   Projets         </a>
 				{%if request.user.is_permacat %}
-				 <a class="btn btn-success" href="{% url 'annuaire_permacat' %}"> Carte des adhérents </a>
+				 <a class="btn btn-success" href="{% url 'annuaire_permacat' %}"> Carte des inscrits </a>
 				 <a class="btn btn-success" href="{% url 'carte_permacat' %}"> Carte des adhérents </a>
 				 <a class="btn btn-success" href="{% url 'agora_permacat' %}"> Salon permacat </a>
 				{% endif%}
