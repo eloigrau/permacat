@@ -293,6 +293,7 @@ def telechargements_asso(request):
     fichiers = [{'titre' : 'Contrat credit mutuel', 'url': static('doc/contrat_credit_mutuel.pdf'),},
                 {'titre' : 'Procès verbal de constitution', 'url': static('doc/PV_constitution.pdf'),},
                 {'titre' : "Recepissé de création de l'asso", 'url': static('doc/recepisse_creation.pdf'),},
+                {'titre' : "Publication au journal officiel", 'url': static('doc/JOAFE_PDF_Unitaire_20190012_01238.pdf'),},
                 {'titre' : 'Statuts déposés', 'url': static('doc/statuts.pdf'),},
                 {'titre' : 'RIB', 'url': static('doc/rib.pdf'),},
                 ]
