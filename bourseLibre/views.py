@@ -599,6 +599,7 @@ def liens(request):
         'https://www.monnaielibreoccitanie.org/',
         'http://lejeu.org/',
         'http://soudaqui.cat/wordpress/',
+         'https://val-respire.wixsite.com/',
         'https://www.colibris-lemouvement.org/',
         'https://colibris-universite.org/mooc-permaculture/wakka.php?wiki=PagePrincipale',
         'https://ponteillanature.wixsite.com/eco-nature',
