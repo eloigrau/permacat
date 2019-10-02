@@ -14,11 +14,11 @@ from django.utils.timezone import now
 from bourseLibre.models import Suivis
 from django.views.decorators.csrf import csrf_exempt
 
-@login_required
-def forum(request):
-    """ Afficher tous les articles de notre blog """
-    articles = Article.objects.all().order_by('-date_dernierMessage')  # Nous sélectionnons tous nos articles
-    return render(request, 'blog/forum.html', {'derniers_articles': articles})
+# @login_required
+# def forum(request):
+#     """ Afficher tous les articles de notre blog """
+#     articles = Article.objects.all().order_by('-date_dernierMessage')  # Nous sélectionnons tous nos articles
+#     return render(request, 'blog/forum.html', {'derniers_articles': articles })
 
 def accueil(request):
     return render(request, 'blog/accueil.html')
@@ -125,8 +125,12 @@ class ListeArticles(ListView):
             else:
                 qs = qs.filter(estPublic=True)
 
+        if "ordreTri" in params:
+            qs = qs.order_by(params['ordreTri'])
+        else:
+            qs = qs.order_by('-date_dernierMessage', '-date_creation', 'categorie', 'auteur')
 
-        return qs.order_by('-date_dernierMessage', '-date_creation', 'categorie','auteur')
+        return qs
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -138,7 +142,8 @@ class ListeArticles(ListView):
         context['categorie_list'] = [x for x in Choix.type_annonce if x[0] in cat]
         context['typeFiltre'] = "aucun"
         context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="articles")
-        #context['ordreTriPossibles'] =  ['date dernier message', 'categorie', ]
+
+        context['ordreTriPossibles'] = ['-date_creation', '-date_dernierMessage', 'categorie', 'auteur', 'titre' ]
 
         if 'auteur' in self.request.GET:
             context['typeFiltre'] = "auteur"
@@ -148,6 +153,8 @@ class ListeArticles(ListView):
             context['typeFiltre'] = "permacat"
         if 'archives' in self.request.GET:
             context['typeFiltre'] = "archives"
+        if 'ordreTri' in self.request.GET:
+            context['typeFiltre'] = "ordreTri"
         return context
 
 
@@ -260,7 +267,12 @@ class ListeProjets(ListView):
             else:
                 qs = qs.filter(estPublic=True)
 
-        return qs.order_by('-date_dernierMessage', '-date_creation', 'categorie', 'auteur')
+        if "ordreTri" in params:
+            qs = qs.order_by(params['ordreTri'])
+        else:
+            qs = qs.order_by('-date_dernierMessage', '-date_creation', 'categorie', 'auteur')
+
+        return qs
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -271,6 +283,8 @@ class ListeProjets(ListView):
         cat = Projet.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
         context['categorie_list'] = [x for x in Choix.type_projet if x[0] in cat]
         context['typeFiltre'] = "aucun"
+
+        context['ordreTriPossibles'] = ['-date_creation', '-date_dernierMessage', 'categorie', 'auteur', 'titre']
         if 'auteur_id' in self.request.GET:
             context['typeFiltre'] = "auteur"
         if 'categorie' in self.request.GET:
@@ -279,6 +293,8 @@ class ListeProjets(ListView):
             context['typeFiltre'] = "permacat"
         if 'archives' in self.request.GET:
             context['typeFiltre'] = "archives"
+        if 'ordreTri' in self.request.GET:
+            context['typeFiltre'] = "ordreTri"
         context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="projets")
         return context
 
