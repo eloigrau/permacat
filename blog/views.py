@@ -32,7 +32,7 @@ def ajouterNouveauPost(request):
         url = article.get_absolute_url()
         suffix = "" if article.estPublic else "_permacat"
         action.send(request.user, verb='article_nouveau'+suffix, action_object=article, url=url,
-                    description="a ajouté un article : %s" % article.titre)
+                    description="a ajouté un article : '%s'" % article.titre)
         return render(request, 'blog/lireArticle.html', {'article': article})
     return render(request, 'blog/ajouterPost.html', { "form": form, })
 
@@ -54,7 +54,7 @@ class ModifierArticle(UpdateView):
         url = self.object.get_absolute_url()
         suffix = "_permacat" if self.object.estPublic else ""
         action.send(self.request.user, verb='article_modifier'+suffix, action_object=self.object, url=url,
-                     description="a modifié l'article '%s'" % self.object.titre)
+                     description="a modifié l'article: '%s'" % self.object.titre)
         return HttpResponseRedirect(self.get_success_url())
 
 
@@ -92,7 +92,7 @@ def lireArticle(request, slug):
         url = article.get_absolute_url()
         suffix = "_permacat" if article.estPublic else ""
         action.send(request.user, verb='article_message'+suffix, action_object=article, url=url,
-                    description="a réagi à l'article %s" % article.titre)
+                    description="a réagi à l'article: '%s'" % article.titre)
         return redirect(request.path)
 
     return render(request, 'blog/lireArticle.html', {'article': article, 'form': form, 'commentaires':commentaires},)
@@ -201,7 +201,7 @@ class ModifierProjet(UpdateView):
         url = self.object.get_absolute_url()
         suffix = "_permacat" if self.object.estPublic else ""
         action.send(self.request.user, verb='projet_modifier'+suffix, action_object=self.object, url=url,
-                     description="a modifié le projet '%s'" % self.object.titre)
+                     description="a modifié le projet: '%s'" % self.object.titre)
         return HttpResponseRedirect(self.get_success_url())
 
 class SupprimerProjet(DeleteView):
@@ -234,7 +234,7 @@ def lireProjet(request, slug):
         url = projet.get_absolute_url()
         suffix = "_permacat" if projet.estPublic else ""
         action.send(request.user, verb='projet_message'+suffix, action_object=projet, url=url,
-                    description="a réagit au projet '%s'" % projet.titre)
+                    description="a réagit au projet: '%s'" % projet.titre)
         return redirect(request.path)
 
     return render(request, 'blog/lireProjet.html', {'projet': projet, 'form': form, 'commentaires':commentaires},)

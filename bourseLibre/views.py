@@ -133,7 +133,7 @@ def produit_proposer(request, type_produit):
         suffix = "" if produit.estPublique else "_permacat"
         offreOuDemande = "offre" if produit.estUneOffre else "demande"
         action.send(request.user, verb='ajout_offre'+suffix, action_object=produit, url=url,
-                    description="a ajouté une "+offreOuDemande+" au marché")
+                    description="a ajouté une "+offreOuDemande+" au marché : '%s'" %(produit.titre))
 
         messages.info(request, 'Votre offre a été ajoutée !')
         return HttpResponseRedirect('/marche/detail/' + str(produit.id))
