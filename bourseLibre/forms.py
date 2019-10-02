@@ -1,9 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, Profil, Message, MessageGeneral, Choix, MessageGeneralPermacat
-from captcha.fields import CaptchaField
+from bourseLibre.captcha_local.fields import CaptchaField
 #from tinymce.widgets import TinyMCE
-from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
+from django_summernote.widgets import SummernoteWidget
 
 fieldsCommunsProduits = ['souscategorie', 'nom_produit',  'description', 'estUneOffre', 'estPublique',
                 'unite_prix', 'prix',  'type_prix', 'date_debut', 'date_expiration', ]

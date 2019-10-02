@@ -102,7 +102,7 @@ class ListeArticles(ListView):
     model = Article
     context_object_name = "article_list"
     template_name = "blog/index.html"
-    paginate_by = 10
+    paginate_by = 30
 
     def get_queryset(self):
         params = dict(self.request.GET.items())
@@ -243,7 +243,7 @@ class ListeProjets(ListView):
     model = Projet
     context_object_name = "projet_list"
     template_name = "blog/index_projets.html"
-    paginate_by = 10
+    paginate_by = 30
 
     def get_queryset(self):
 

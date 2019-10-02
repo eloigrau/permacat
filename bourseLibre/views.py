@@ -487,7 +487,7 @@ class ListeProduit(ListView):
     model = Produit
     context_object_name = "produits_list"
     template_name = "produit_list.html"
-    paginate_by = 20
+    paginate_by = 30
 
     def get_qs(self):
         qs = Produit.objects.select_subclasses()

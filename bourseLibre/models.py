@@ -57,7 +57,7 @@ class Choix():
         'type_prix': typePrixUnite,
     },
     }
-    monnaies = (('don', 'don'), ('troc', 'troc'), ('pret', 'prêt'), ('G1', 'G1'), ('Soudaqui', 'Soudaqui'), ('SEL', 'SEL'), ('JEU', 'JEU'),  ('heuresT', 'heuresT'),  ('Autre', 'A négocier'))
+    monnaies = (('don', 'don'), ('troc', 'troc'), ('pret', 'prêt'), ('G1', 'G1'), ('Soudaqui', 'Soudaqui'), ('SEL', 'SEL'), ('JEU', 'JEU'),  ('HE', 'heureEntraide'),  ('Autre', 'A négocier'))
     monnaies_nonquantifiables =['don', 'troc', 'pret', 'SEl', 'Autre']
 
     ordreTri = ['date', 'categorie', 'producteur']
@@ -169,6 +169,7 @@ class Profil(AbstractUser):
             self.date_registration = now()
         if not hasattr(self, 'adresse') or not self.adresse:
              self.adresse = Adresse.objects.create()
+
         return super(Profil, self).save(*args, **kwargs)
 
     def get_nom_class(self):
@@ -216,6 +217,9 @@ class Profil(AbstractUser):
 
 @receiver(post_save, sender=Profil)
 def create_user_profile(sender, instance, created, **kwargs):
+    for suiv in ['produits', 'articles', 'projets']:
+        suivi, created = Suivis.objects.get_or_create(nom_suivi=suiv)
+        actions.follow(instance, suivi, actor_only=True)
     if created and instance.is_superuser:
         Panier.objects.create(user=instance)
     elif created:
@@ -880,3 +884,10 @@ class MessageGeneralPermacat(models.Model):
 
 class Suivis(models.Model):
     nom_suivi = models.TextField(null=False, blank=False)
+
+    def __unicode__(self):
+        return self.__str__()
+
+    def __str__(self):
+        return str(self.nom_suivi)
+

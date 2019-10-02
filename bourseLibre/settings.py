@@ -93,7 +93,7 @@ INSTALLED_APPS = (
     'widget_tweaks',
     'leaflet',
     #'tinymce',
-    'captcha',
+    'bourseLibre.captcha_local',
     'django_summernote',
     'actstream',
     #"visits",

@@ -35,7 +35,7 @@ admin.sites.site_title ="Admin Permacat"
 urlpatterns = [
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^summernote/', include('django_summernote.urls')),
-    url(r'^captcha/', include('captcha.urls')),
+    url(r'^captcha/', include('bourseLibre.captcha_local.urls')),
     url('^', include('django.contrib.auth.urls')),
     url(r'^$', views.bienvenue, name='bienvenue'),
     url(r'^bienvenue/$', views.bienvenue, name='bienvenue'),
