@@ -238,7 +238,7 @@ class Produit(models.Model):  # , BaseProduct):
 
     stock_initial = models.FloatField(default=1, verbose_name="Quantité disponible", max_length=250, validators=[MinValueValidator(1), ])
     stock_courant = models.FloatField(default=1, max_length=250, validators=[MinValueValidator(0), ])
-    prix = models.DecimalField(max_digits=6, decimal_places=4, default=0, blank=True)#, validators=[MinValueValidator(0), ])
+    prix = models.DecimalField(max_digits=8, decimal_places=2, default=0, blank=True, validators=[MinValueValidator(0), ])
     unite_prix = models.CharField(
         max_length=8,
         choices = Choix.monnaies,
