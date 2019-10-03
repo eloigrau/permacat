@@ -321,7 +321,7 @@ def profil_contact(request, user_id):
             message_html = form.cleaned_data['msg']
             recepteurs = [recepteur.email,]
             if form.cleaned_data['renvoi'] :
-                recepteurs += request.user.email
+                recepteurs = [recepteur.email, request.user.email]
 
             send_mail(
                 sujet,
