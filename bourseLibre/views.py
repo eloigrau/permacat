@@ -316,7 +316,7 @@ def profil_contact(request, user_id):
     if request.method == 'POST':
         form = ContactForm(request.POST or None, )
         if form.is_valid():
-            sujet = "[permacat] "+ request.user.username +' vous a écrit: ', form.cleaned_data['sujet']
+            sujet = "[permacat] "+ request.user.username +' vous a écrit: ' + form.cleaned_data['sujet']
             message_txt = ""
             message_html = form.cleaned_data['msg']
             recepteurs = [recepteur.email,]
