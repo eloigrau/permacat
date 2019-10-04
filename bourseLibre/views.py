@@ -316,12 +316,12 @@ def profil_contact(request, user_id):
     if request.method == 'POST':
         form = ContactForm(request.POST or None, )
         if form.is_valid():
-            sujet = "[permacat] "+ request.user.username +' vous a écrit: ', form.cleaned_data['sujet']
+            sujet = "[permacat] "+ request.user.username +' vous a écrit: ' + form.cleaned_data['sujet']
             message_txt = ""
             message_html = form.cleaned_data['msg']
             recepteurs = [recepteur.email,]
             if form.cleaned_data['renvoi'] :
-                recepteurs += request.user.email
+                recepteurs = [recepteur.email, request.user.email]
 
             send_mail(
                 sujet,
@@ -331,7 +331,7 @@ def profil_contact(request, user_id):
                 html_message=message_html,
                 fail_silently=False,
                 )
-            return render(request, 'message_envoye.html', {'sujet': form.cleaned_data['sujet'], 'msg':message_html, 'envoyeur':request.user.username + " (" + request.user.email + ")", "destinataire":recepteur.user.username + " (" +recepteur.user.email+ ")"})
+            return render(request, 'message_envoye.html', {'sujet': form.cleaned_data['sujet'], 'msg':message_html, 'envoyeur':request.user.username + " (" + request.user.email + ")", "destinataire":recepteur.username + " (" +recepteur.email+ ")"})
     else:
         form = ContactForm()
     return render(request, 'profil_contact.html', {'form': form, 'recepteur':recepteur})
