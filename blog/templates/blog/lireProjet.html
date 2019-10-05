@@ -87,6 +87,7 @@
     <div class="col-sm-12 paddingbase">
 		<table class="table table-condensed ">
 			<tbody>
+                    {% if projet.coresponsable%}
 				<tr>
 					<td class="nomProprieteProduit">
 						Référent :
@@ -95,6 +96,7 @@
 						{{ projet.coresponsable}}
 					</td>
 				</tr>
+                    {% endif %}
 				<tr>
 					<td class="nomProprieteProduit">
 						Type de projet :
