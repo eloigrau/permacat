@@ -145,6 +145,7 @@
 				</tr>
                     {% endif %}
                     {%if request.user.is_permacat%}
+                    {% if projet.lien_vote%}
                 <tr>
 					<td class="nomProprieteProduit">
 						Lien pour voter :
@@ -153,6 +154,7 @@
 						{{ projet.lien_vote}}
 					</td>
 				</tr>
+                    {% endif %}
                     {% endif %}
 			</tbody>
 		</table>
