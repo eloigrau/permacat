@@ -145,7 +145,7 @@ class ProfilCreationForm(UserCreationForm):
     competences = forms.CharField(label=None, help_text="Par exemple: electricien, bouturage, aromatherapie, pépinieriste, etc...", required=False, widget=forms.Textarea, )
     site_web = forms.CharField(label="Site web", help_text="n'oubliez pas le https://", required=False)
     captcha = CaptchaField()
-    email= forms.EmailField(label="Email*",)
+    email = forms.EmailField(label="Email*",)
 
     statut_adhesion = forms.ChoiceField(choices=Choix.statut_adhesion, label='', required=True)
     accepter_annuaire = forms.BooleanField(required=False, label="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous les inscrits")

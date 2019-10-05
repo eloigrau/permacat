@@ -398,12 +398,12 @@ def produitContacterProducteur(request, produit_id):
     receveur = prod.user
     form = ContactForm(request.POST or None)
     if form.is_valid():
-        sujet =  "[Permacat]" + form.cleaned_data['sujet']
+        sujet =  "[Permacat] " + request.user.username + " vous contacte au sujet de: "  + form.cleaned_data['sujet']
         message = form.cleaned_data['message'] + '(par : ' + request.username + ')'
 
         send_mail( sujet, message, request.user.email, receveur.email, fail_silently=False,)
         if form.cleaned_data['renvoi'] :
-            mess = "[Permacat] message envoyé à : \\n"
+            mess = "[Permacat] message envoyé à : "+receveur.email+"\\n"
             send_mail( sujet,mess + message, request.user.email, request.user.email, fail_silently=False,)
 
     return render(request, 'contact.html', {'form': form, "isContactProducteur":True, "producteur":receveur.user.username})
@@ -742,7 +742,7 @@ def chercherConversation(request):
     form = ChercherConversationForm(request.user, request.POST or None,)
     if form.is_valid():
         destinataire = form.cleaned_data['destinataire']
-        destinataire = form.fields['destinataire'].choices[int(destinataire)][1].username
+        destinataire = form.fields['destinataire'].choices[int(destinataire)-1][1].username
         return redirect('lireConversation', destinataire=destinataire)
     else:
         return render(request, 'chercher_conversation.html', {'form': form})

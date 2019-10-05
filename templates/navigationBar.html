@@ -20,10 +20,13 @@
 
         <ul class="dropdown-menu textcenter">
             <li><a  class="nav-link  dropdown-item" href="{% url 'marche' %}">Toutes les annonces</a></li>
+           <li>  <span class="nav-link divider" role="separator"></span></li>
              <li><a  class="nav-link dropdown-item" href="{% url 'marche_offres' %}?">Offres</a></li>
             <li><a class="nav-link  dropdown-item" href="{% url 'marche_recherches' %}?">Demandes</a></li>
+           <li>  <span class="nav-link divider" role="separator"></span></li>
             <li> <a class="nav-link  dropdown-item" href="{% url 'marche' %}?producteur={{ user.username }}">Mes annonces</a></li>
-            <li class="divider"></li>
+               <li> <a class="nav-link dropdown-item" href="{% url 'afficher_requetes' %}">Mes requêtes</a></li>
+           <li>  <span class="nav-link divider" role="separator"></span></li>
             <li> <a class="nav-link dropdown-item" href="{% url 'produit_proposer_entree' %}">Ajouter une annonce</a></li>
 
         </ul>
@@ -102,8 +105,11 @@
               {% fontawesome_icon 'user' %} Profil: {{request.user}} </a>
             <ul class="dropdown-menu textcenter" aria-labelledby="navbarDropdownMenuLink">
                <li> <a class="nav-link dropdown-item" href="{% url 'profil_courant' %}">Mon profil</a></li>
+                <li> <span class="nav-link divider" role="separator"></span></li>
                <li> <a class="nav-link dropdown-item" href="{% url 'panier_afficher' %}">Mon panier</a></li>
+            <li> <a class="nav-link  dropdown-item" href="{% url 'marche' %}?producteur={{ user.username }}">Mes annonces</a></li>
                <li> <a class="nav-link dropdown-item" href="{% url 'afficher_requetes' %}">Mes requêtes</a></li>
+                <li> <span class="nav-link divider" role="separator"></span></li>
                  <li><a class="nav-link dropdown-item" href="{% url 'conversations' %}">Mes conversations</a></li>
                 <li> <span class="nav-link divider" role="separator"></span></li>
                <li> <a class="nav-link dropdown-item" href="{% url 'logout' %}">Se déconnecter</a></li>
