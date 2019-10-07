@@ -17,7 +17,7 @@ def url(value):
     url = find_url(value)
     newvalue = value
     for url_string in url:
-        newurlstring = "<a href='" +url_string+"'>"+url_string+"</a>"
+        newurlstring = "<a href='" +url_string+"'" + " target='_blank'>"+url_string+"</a>"
         newvalue = newvalue.replace(url_string, newurlstring)
     return newvalue
 
