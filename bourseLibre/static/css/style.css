@@ -1,6 +1,6 @@
 
 body {
-    background: #E9E9E9;
+   /* background: #E9E9E9;*/
     margin: auto;
     width: 99%;
     /*padding: 10px;*/
@@ -8,6 +8,8 @@ body {
     /*font-family: cursive;*/
     /*font-family: serif;*/
     /*font-family: system-ui;*/
+    background-image: url("../img/fleur3.jpg");
+    background-repeat: repeat;
 }
 
 .textcenter{
