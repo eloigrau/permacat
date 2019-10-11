@@ -68,9 +68,9 @@ def on_save_articles(instance, created, **kwargs):
         suivi, created = Suivis.objects.get_or_create(nom_suivi='articles')
         titre = "Permacat - nouvel article"
         message = " Un nouvel article a été créé " + \
-                  "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + instance.get_absolute_url() + \
-                  "\n------------------------------------------------------------------------------" \
-                  "\n vous recevez cet email, car vous avez choisi de suivre les articles sur le site http://www.perma.cat"
+                  "\n Vous pouvez y accéder en suivant ce lien : https://permacat.herokuapp.com" + instance.get_absolute_url() + \
+                  "\n\n------------------------------------------------------------------------------" \
+                  "\n vous recevez cet email, car vous avez choisi de suivre les articles sur le site http://www.Perma.Cat/forum/articles/"
         emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv]
         try:
             send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
@@ -143,9 +143,9 @@ class Projet(models.Model):
 def on_save_projet(instance, **kwargs):
     titre = "Permacat - Projet  actualisé"
     message = " Le projet '" +  instance.titre + "' a été modifié (ou quelqu'un l'a commenté)"+ \
-              "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + instance.get_absolute_url() + \
-              "\n------------------------------------------------------------------------------" \
-              "\n vous recevez cet email, car vous avez choisi de suivre cet article sur le site http://www.Perma.cat"
+              "\n Vous pouvez y accéder en suivant ce lien : https://permacat.herokuapp.com" + instance.get_absolute_url() + \
+              "\n\n------------------------------------------------------------------------------" \
+              "\n vous recevez cet email, car vous avez choisi de suivre cet article sur le site http://www.Perma.Cat/forum/projets/"
     emails = [suiv.email for suiv in followers(instance)  if instance.auteur != suiv]
     try:
         send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
@@ -159,9 +159,9 @@ def on_save_projets(instance, created, **kwargs):
         suivi, created = Suivis.objects.get_or_create(nom_suivi='projets')
         titre = "Permacat - nouvel article"
         message = " Un nouveau projet a été créé !" + \
-                  "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + instance.get_absolute_url() + \
-                  "\n------------------------------------------------------------------------------" \
-                  "\n vous recevez cet email, car vous avez choisi de suivre les articles sur le site http://www.perma.cat"
+                  "\n Vous pouvez y accéder en suivant : <a href='https://permacat.herokuapp.com" + instance.get_absolute_url() + "'> ce lien<\a>" +\
+                  "\n\n------------------------------------------------------------------------------" \
+                  "\n vous recevez cet email, car vous avez choisi de suivre les articles sur le site http://www.Perma.Cat/agora/"
         emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv]
         try:
             send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
@@ -174,8 +174,8 @@ def on_save_article(instance, **kwargs):
     titre = "Permacat - Article actualisé"
     message = "L'article '" +  instance.titre + "' a été modifié (ou quelqu'un l'a commenté)" +\
               "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + instance.get_absolute_url() + \
-              "\n------------------------------------------------------------------------------" \
-              "\n vous recevez cet email, car vous avez choisi de suivre ce projet sur le site http://www.Perma.cat"
+              "\n\n------------------------------------------------------------------------------" \
+              "\n vous recevez cet email, car vous avez choisi de suivre ce projet sur le site http://www.Perma.Cat/forum/articles/"
    # emails = [(titre, message, "asso@perma.cat", (suiv.email, )) for suiv in followers(instance)]
     emails = [suiv.email for suiv in followers(instance)  if instance.auteur != suiv]
     try:
