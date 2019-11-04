@@ -30,13 +30,17 @@
 <tbody>
 <tr>
     <td>{{ atelier.get_age_display }}</td><td>{{ atelier.get_difficulte_display }}</td><td>
-    {{ atelier.get_budget_html ]}
     {%for i in atelier.get_budget_length %}
+               {% fontawesome_icon 'link' %}
                {% fontawesome_icon 'euro-sign' %}
-               {%endfor%}</td><td>
-    {%for i in atelier.get_temps %}
+    {%endfor%}
+</td>
+    <td>
+    {%for i in atelier.get_temps_length %}
+               {% fontawesome_icon 'link' %}
                {% fontawesome_icon 'clock' %}
-               {%endfor%}</td>
+    {%endfor%}
+</td>
 </tr>
 </tbody>
 </tr>

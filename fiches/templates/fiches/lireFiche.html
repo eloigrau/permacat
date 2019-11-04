@@ -4,12 +4,7 @@
 {% load fontawesome %}
 {% block subtitle %}
 <div class="row">
-    <div class="col-md-10">
-        <p class="infos  textepetit">Dans: <a href="{% url 'fiches:index'  %}?categorie={{fiche.categorie|categorie}}"  style="background-color:{{fiche.get_couleur}}">{{ fiche.get_categorie_display }}</a>, créée le {{ fiche.date_creation|date:"DATE_FORMAT" }};
-
-        </p>
-    </div>
-    <div class="col-md-2">
+    <div class="col-md-12 textcenter">
         <p>
         <a  href="{% url 'fiches:index'  %}">
         <button class="btn btn-info btn-sm textright" >Retour au sommaire</button>
@@ -22,20 +17,24 @@
 {% endblock %}
 {% block content %}
 <div class="contenu fiche">
+    <div class="row">
+    <div class="col-md-9">
+        <p class="infos  textepetit">Dans: <a href="{% url 'fiches:index'  %}?categorie={{fiche.categorie|categorie}}"  style="background-color:{{fiche.get_couleur}}">{{ fiche.get_categorie_display }}</a>, créée le {{ fiche.date_creation|date:"DATE_FORMAT" }};
 
-    <div class="row">
-        <div class="col textcenter">
-              <h2> {{ fiche.titre }}</h2>
-        </div>
+        </p>
     </div>
-    <div class="row">
-        <div class="col textcenter">
+        <div class="col-md-3 textright">
             <a href="{% url 'fiches:modifierFiche' slug=fiche.slug %}">
                <button type="button" class="btn btn-sm btn-warning">
                  &nbsp;Modifier
                </button></a>
         </div>
      </div>
+    <div class="row">
+        <div class="col textcenter">
+              <h2> {{ fiche.titre }}</h2>
+        </div>
+    </div>
     <div class="row">
         <div class="col">
            {{ fiche.contenu |safe}}
@@ -64,8 +63,8 @@
 {% endfor %}
 </div>
 <hr>
-<div class="contenu commentaires discussion_fiche">
 
+<div class="contenu commentaires discussion_fiche">
 <div id="idConversation">
 {% for comment in commentaires %}
     <div class="row {% if comment.auteur.id == request.user.id %} msg-auteur  {%else%} msg-destinataire{%endif%}">
@@ -84,7 +83,6 @@
     messageBody.scrollTop = idConversation.scrollHeight - idConversation.clientHeight;
 </script>
 
-<hr>
 <div>
     <input type="hidden" name="Nouveau Message" value="{{ message }}">
 

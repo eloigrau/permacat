@@ -98,6 +98,8 @@ class AtelierChangeForm(forms.ModelForm):
 
 class CommentaireFicheForm(forms.ModelForm):
     #commentaire = TinyMCE(attrs={'cols': 1, 'rows': 1, 'height':10 })
+    #commentaire = forms.CharField(label="Laisser un commentaire...")
+    commentaire = forms.CharField(widget=forms.Textarea(attrs={'rows': 1}), label='Laisser un commentaire...')
 
     class Meta:
         model = CommentaireFiche
@@ -105,7 +107,7 @@ class CommentaireFicheForm(forms.ModelForm):
         #
         widgets = {
          #  'commentaire': SummernoteWidget(),
-                'commentaire': forms.Textarea(attrs={'rows': 1}),
+                'commentaire': forms.Textarea(attrs={'rows': 1}, label="Laisser un commentaire..."),
             }
 
     def __init__(self, request, *args, **kwargs):

@@ -134,7 +134,11 @@ class Atelier(models.Model):
 
     @property
     def get_budget_length(self):
-        return range(int(self.budget) + 1)
+        return range(int(self.budget))
+
+    @property
+    def get_temps_length(self):
+        return range(int(self.temps))
 
 class CommentaireFiche(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE)
