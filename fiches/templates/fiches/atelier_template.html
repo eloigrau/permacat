@@ -4,12 +4,11 @@
 <div class="row liste_atelier">
     <div class="col justify-content-center">
     <div class="row">
-        <div class="col-sm-12 textcenter">
+        <div class="col-sm-9 textcenter">
             <h3>{{ atelier.titre }}</h3>
         </div>
     </div>
-<div class="row ">
-    <div class="col-sm-12 textcenter">
+    <div class="col-sm-3 textright">
             <a href="{% url 'fiches:modifierAtelier' slug=atelier.slug %}">
                <button type="button" class="btn btn-sm btn-warning">
                     &nbsp;Modifier
