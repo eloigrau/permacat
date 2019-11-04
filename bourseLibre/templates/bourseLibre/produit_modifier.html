@@ -7,23 +7,37 @@ Modifier
 {% endblock %}
 {% block content %}
 
+<form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+        {% include 'form_template.html' %}
+    </form>
 
-{% include 'form_template.html' %}
 
-{% comment %}
-<div class="row-sm-12 row-lg-6 mx-auto">
-    <form action="" method="post">
-    {% csrf_token %}
-    <table>
-    {{ form.as_table }}
-    </table>
-        <div class="btn-group">
-            <button onclick="window.history.back();" class="btn btn-warning textcenter btn-lg" type="button">Annuler</button>
-                <button type="submit" class="btn btn-success textcenter btn-lg btn-block">Enregistrer les modifictaions</button>
-        </div>
-</form>
-</div>
-{% endcomment %}
+<script type="text/javascript">
+        window.onload = function() {
+          var unite = document.getElementById('id_unite_prix').value;
+            if (unite=="Soudaqui" | unite=="G1" | unite=="heuresT" | unite=="JEU") {
+                document.getElementById('id_prix').style.visibility = "visible";
+                document.getElementById('id_type_prix').style.visibility = "visible";
+            }else{
+                document.getElementById('id_prix').style.visibility = "hidden";
+                document.getElementById('id_type_prix').style.visibility = "hidden";
+            }
+        };
+
+        $("#id_unite_prix").change(function(){
+            var unite = document.getElementById('id_unite_prix').value;
+            if (unite=="Soudaqui" | unite=="G1" | unite=="heuresT" | unite=="JEU") {
+                document.getElementById('id_prix').style.visibility = "visible";
+                document.getElementById('id_type_prix').style.visibility = "visible";
+            }else{
+                document.getElementById('id_prix').style.visibility = "hidden";
+                document.getElementById('id_type_prix').style.visibility = "hidden";
+            }
+        });
+        {% if not request.user.is_permacat %}
+               var isPublique = document.getElementById('id_estPublique').style.visibility = "hidden";
+        {%endif%}
+    </script>
 
 
 {% endblock %}
