@@ -20,7 +20,8 @@ class Choix():
     statut_fiche = ('0', 'proposition'), ('1', "en cours d'écriture"), ("2", "achevée mais pas validée"), ("3", "validée")
     type_difficulte = ('0', 'facile'), ('1', "moyen"), ("2", "difficile")
     type_jauge = ('1', "1"), ("2", "2"), ("3", "3"), ("4", "4"), ("5", "5")
-    type_age = ('0', '3-6 ans'), ('1', "7-11 ans"), ("2", "12 ans et plus")
+    type_temps = ('1', "1h"), ("2", "2h"), ("3", "3h"), ("4", "4h"), ("5", "6h"), ("6", "1 journée"),  ("7", "plusieurs jours"),  ("8", "plusieurs mois"),
+    type_age = ('0', '3-6 ans'), ('1', "7-11 ans"), ("2", "12 ans et plus"), ("3", "3-11ans"), ("2", "12 ans et plus")
     type_atelier = ('0', 'Observation'), ('1', "Experience"), ("2", "Jardinage")
 
     def get_categorie(num):
@@ -95,7 +96,7 @@ class Atelier(models.Model):
                                  choices=(Choix.type_jauge),
                                  default='0', verbose_name="budget")
     temps = models.CharField(max_length=30,
-                                 choices=(Choix.type_jauge),
+                                 choices=(Choix.type_temps),
                                  default='0', verbose_name="temps")
     fiche = models.ForeignKey(Fiche, on_delete=models.CASCADE,)
     date_creation = models.DateTimeField(verbose_name="Date de parution", default=timezone.now)
