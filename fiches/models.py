@@ -128,8 +128,13 @@ class Atelier(models.Model):
     #     return Choix.type_difficulte[int(self.difficulte)][1]
 
     @property
-    def get_budget(self):
+    def get_budget_html(self):
+        return "{% fontawesome_icon 'euro-sign' %}"
         return "{% fontawesome_icon 'euro-sign' %} ".join([" " for i in range(int(self.budget))])
+
+    @property
+    def get_budget_length(self):
+        return range(int(self.budget) + 1)
 
 class CommentaireFiche(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE)

@@ -65,7 +65,7 @@ class ModifierAtelier(UpdateView):
         self.object = form.save()
         self.object.date_modification = now()
         self.object.save()
-        return HttpResponseRedirect(self.object.get_absolute_url())
+        return HttpResponseRedirect(self.object.fiche.get_absolute_url())
 
 
     def save(self):

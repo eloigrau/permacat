@@ -1,11 +1,11 @@
 {% load fontawesome %}
 {% load fiches_filters %}
 
-<div class="row">
+<div class="row liste_atelier">
     <div class="col justify-content-center">
     <div class="row">
         <div class="col-sm-12 textcenter">
-            <h4>{{ atelier.titre }}</h4>
+            <h3>{{ atelier.titre }}</h3>
         </div>
     </div>
 <div class="row ">
@@ -18,15 +18,29 @@
 </div>
     <div class="row">
         <div class="col-sm-12 textcenter">
-           <p>{{ atelier.get_difficulte_display }} {{ atelier.get_age_display }}
-               {%for i in atelier.get_budget %}
+            <table class="greenTable">
+<thead>
+<tr>
+<th>Age</th>
+<th>Difficulté</th>
+<th>Budget</th>
+<th>Temps</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+    <td>{{ atelier.get_age_display }}</td><td>{{ atelier.get_difficulte_display }}</td><td>
+    {{ atelier.get_budget_html ]}
+    {%for i in atelier.get_budget_length %}
                {% fontawesome_icon 'euro-sign' %}
-               {%endfor%}
-               {%for i in atelier.get_temps %}
+               {%endfor%}</td><td>
+    {%for i in atelier.get_temps %}
                {% fontawesome_icon 'clock' %}
-               {%endfor%}
-
-               </p>
+               {%endfor%}</td>
+</tr>
+</tbody>
+</tr>
+</table>
 
         </div>
     </div>

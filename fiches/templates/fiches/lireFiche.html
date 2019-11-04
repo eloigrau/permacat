@@ -22,20 +22,20 @@
 {% endblock %}
 {% block content %}
 <div class="contenu fiche">
+
     <div class="row">
-        <div class="col textright">
+        <div class="col textcenter">
+              <h2> {{ fiche.titre }}</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col textcenter">
             <a href="{% url 'fiches:modifierFiche' slug=fiche.slug %}">
                <button type="button" class="btn btn-sm btn-warning">
                  &nbsp;Modifier
                </button></a>
         </div>
      </div>
-
-    <div class="row">
-        <div class="col textcenter">
-              <h3> {{ fiche.titre }}</h3>
-        </div>
-    </div>
     <div class="row">
         <div class="col">
            {{ fiche.contenu |safe}}
@@ -53,7 +53,6 @@
                 <span class="glyphicon glyphicon-plus"></span>&nbsp;Ajouter un atelier
                </button></a>
         </div>
-<hr>
 {% for atelier in ateliers %}
     <div class="row atelier_list">
     <div class="col">
