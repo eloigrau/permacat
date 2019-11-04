@@ -54,6 +54,7 @@ urlpatterns = [
     url(r'^gestion/', admin.site.urls, name='admin',),
     url(r'^merci/$', views.merci, name='merci'),
     url(r'^forum/', include('blog.urls', namespace='bourseLibre.blog')),
+    url(r'^kit/', include('fiches.urls', namespace='bourseLibre.fiches')),
     # url(r'^search/', include('haystack.urls'), name='chercher_site'),
     #url(r'^search/', include('haystack.urls'), name='haystack_search'),
     url(r'^chercher/produit/$', login_required(views.chercher), name='chercher'),

@@ -31,7 +31,7 @@ urlpatterns = [
     url(r'^suiveursArticle/(?P<slug>[-\w]+)$', views.articles_suivis, name='suiveursArticle'),
     url(r'^suiveursProjet/(?P<slug>[-\w]+)$', views.projets_suivis, name='suiveursProjet'),
     url(r'^supprimerArticle/(?P<slug>[-\w]+)$', login_required(views.SupprimerArticle.as_view(), login_url='/auth/login/'), name='supprimerArticle'),
-    url(r'^ajouterArticle/$', views.ajouterNouveauPost, name='ajouterNouvelArticle'),
+    url(r'^ajouterArticle/$', login_required(views.ajouterNouveauPost), name='ajouterNouvelArticle'),
 
     url(r'^projets/$', login_required(views.ListeProjets.as_view(), login_url='/auth/login/'), name="index_projets"),
     url(r'^projets/(?P<slug>[-\w]+)$', views.lireProjet, name='lireProjet'),

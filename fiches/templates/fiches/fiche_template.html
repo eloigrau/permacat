@@ -1,0 +1,17 @@
+
+{% load activity_tags %}
+{% load fontawesome %}
+<div class="card fiche " style="background-color:{{fiche.get_couleur}}">
+  <a href="{% url 'fiches:lireFiche' slug=fiche.slug %}">
+    <div class="card-block textcenter" >
+        <div class="card-header textcenter">
+            <h4>{{ fiche.titre }}</h4>
+
+        </div>
+        <h6 class="card-subtitle mb-2 ">
+               <p class="text-muted"> Catégorie: <em>{{ fiche.get_categorie_display }}</em>, le {{ fiche.date_creation|date:"DATE_FORMAT" }} {%ifnotequal  fiche.date_creation fiche.date_modification %}(modifié le {{ fiche.date_modification|date:"DATE_FORMAT" }}){%endifnotequal%}</p>
+                    {%if not fiche.dernierMessage == None %} <p class="text-muted2"> Dernier message : {{ fiche.date_dernierMessage|date:"l d F Y, G:i"}} {{fiche.dernierMessage}}</p>{%endif%}
+            </h6>
+    </div>
+  </a>
+</div>

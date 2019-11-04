@@ -1,0 +1,81 @@
+{% extends 'blog/baseBlog.html' %}
+{% load static %}
+{% load blog_filters %}
+{% load fontawesome %}
+
+{% load activity_tags %}
+    {%block header %}
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/infinite.min.js' %}"></script>
+    {%endblock%}
+{%block subtitle%}
+
+<div class="row align-items-center">
+<div class="col-sm-12 textcenter">
+</div></div>
+<div class="row align-items-center">
+<div class="col-sm-12 textcenter">
+    <div class="btn-group">
+        <a href="{% url 'fiches:index' %}">
+            <button class="btn {% if typeFiltre == 'aucun' %}btn-primary {%endif%}">Tout </button>
+        </a>
+        <div class="btn-group">
+            <a {% if request.GET.categorie %}  href="?categorie={{categorie}}"
+                {%else%}href="#" {%endif%}>
+                <button type="button" class="btn {% if request.GET.categorie %}btn-primary{%endif%}">
+                {% if request.GET.categorie %} Catégorie: {{request.GET.categorie}} {%else%}Catégorie{%endif%}
+                </button>
+            </a>
+             <button type="button" class="btn {% if request.GET.categorie %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+               data-target = "#idAuteur">
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+            <div class="dropdown-menu"  aria-labelledby="menuCategorie"  id=idCategorie">
+                {% for categorie_id, cat_nom in categorie_list %}
+                  <a class="dropdown-item" href="?categorie={{categorie_id}}">{{cat_nom}}</a>
+                {% endfor %}
+            </div>
+        </div>
+
+
+        <div class="btn-group">
+                <button class="btn dropdown-toggle btn-block btn-light" type="button" id="menuOrdreTri" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   Trier par...
+           </button>
+                <div class="dropdown-menu"  aria-labelledby="menuOrdreTri"  id="idOrdreTri">
+                    {% for ordre in ordreTriPossibles %}
+                     <a class="dropdown-item"  href="?{{ request.GET.urlencode }}&ordreTri={{ordre}}">{{ordre|ordreTri}}</a>
+                    {% endfor %}
+                </div>
+        </div>
+    </div>
+</div>
+
+</div>
+<div class="row align-items-center">
+<div class="col-sm-12 textcenter">
+
+        <a href="{% url 'fiches:ajouterFiche' %}">
+        <button type="button" class="btn btn-success" >
+                <span class="glyphicon glyphicon-plus"></span>Ajouter une fiche
+            </button>
+            </a>&ensp;
+    &nbsp;
+</div>
+</div>
+
+{%endblock%}
+{% block content %}
+
+<div class="infinite-container">
+    {% for fiche in fiche_list %}
+    <div class="infinite-item">
+            {% include "fiches/fiche_template.html" with fiche=fiche %}
+    <hr>
+    </div>
+
+    {% endfor %}
+</div>
+{%include 'pagination.html' %}
+
+{% endblock %}

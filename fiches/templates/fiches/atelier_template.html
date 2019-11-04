@@ -1,0 +1,29 @@
+
+{% load activity_tags %}
+{% load fontawesome %}
+{% load fiches_filters %}
+<div class="row">
+    <div class="col-md-2">
+        <p>
+            <a href="{% url 'fiches:modifierAtelier' slug=atelier.slug %}">
+               <button type="button" class="btn btn-sm btn-warning">
+                    &nbsp;Modifier
+               </button></a>
+    </p>
+    </div>
+</div>
+<div class="row"><div class="col justify-content-center">
+    <div class="row">
+        <div class="col-md-8 textcenter">
+           <p>{{ atelier.difficulte | difficulte }}, {{ atelier.age | age }}, {{ atelier.budget | budget }}, {{ atelier.temps | temps }}, </p>
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 ">
+            <h4>{{ atelier.titre }}</h4>
+            <p>{{ atelier.contenu }}</p>
+        </div>
+    </div>
+</div>
+</div>

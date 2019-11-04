@@ -86,6 +86,7 @@ INSTALLED_APPS = (
     #'address',
     'bourseLibre',
     'blog',
+    'fiches',
     'django_extensions',
     'django_filters',
     'rest_framework',

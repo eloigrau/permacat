@@ -1,0 +1,119 @@
+{% extends 'blog/baseBlog.html' %}
+{% load activity_tags %}
+{% load blog_filters %}
+{% load fontawesome %}
+{% block subtitle %}
+<div class="row">
+    <div class="col-md-8">
+        <p class="infos  textepetit">Dans: <a href="{% url 'fiches:index'  %}?categorie={{fiche.categorie}}"  style="background-color:{{fiche.get_couleur}}">{{ fiche.get_categorie_display }}</a>, créée le {{ fiche.date_creation|date:"DATE_FORMAT" }};
+
+        </p>
+    </div>
+    <div class="col-md-2">
+        <p>
+        <a  href="{% url 'fiches:index'  %}">
+        <button class="btn btn-info btn-sm textright" >Retour au sommaire</button>
+            </a>
+        </p>
+    </div>
+</div>
+
+
+{% endblock %}
+{% block content %}
+<div class="contenu fiche">
+    <div class="row">
+        <div class="col textcenter">
+    <h4>La fiche</h4>
+        </div></div>
+    <div class="row">
+    <div class="row">
+        <div class="col textcenter">
+            <a href="{% url 'fiches:modifierFiche' slug=fiche.slug %}">
+               <button type="button" class="btn btn-sm btn-warning">
+                <span class="glyphicon glyphicon-plus"></span>&nbsp;Modifier
+               </button></a>
+        </div>
+     </div>
+
+    <div class="row">
+        <div class="col textcenter">
+              <h3> {{ fiche.titre }}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+           {{ fiche.contenu |safe}}
+        </div>
+    </div>
+
+</div>
+
+<hr>
+
+<div class="contenu atelier">
+    <div class="row">
+        <div class="col textcenter">
+    <h4>Les Ateliers</h4>
+        </div></div>
+    <div class="row">
+        <div class="col textcenter">
+            <a href="{% url 'fiches:ajouterAtelier' fiche_slug=fiche.slug%}">
+               <button type="button" class="btn btn-sm btn-warning">
+                <span class="glyphicon glyphicon-plus"></span>&nbsp;Ajouter un atelier
+               </button></a>
+        </div>
+     </div>
+{% for atelier in ateliers %}
+    <div class="row atelier">
+    <div class="col">
+        {% include 'fiches/atelier_template.html' with atelier=atelier %}
+    </div>
+    </div>
+{% endfor %}
+</div>
+<hr>
+
+<div class="contenu commentaires discussion_fiche">
+<div class="row ">
+        <div class="col textcenter">
+    <h4>La Discussion</h4>
+        </div>
+</div>
+
+<div id="idConversation">
+{% for comment in commentaires %}
+    <div class="row {% if comment.auteur.id == request.user.id %} msg-auteur  {%else%} msg-destinataire{%endif%}">
+
+        <div class="col-sm-3 col-md-3 col-lg-2">
+           <p class="infos  textepetit">{{ comment.date_creation|date:"d/m/Y, G:i" }}{% ifchanged %}, {{comment.auteur_comm}}{% endifchanged %}</p>
+        </div>
+        <div class=" col-sm-9 col-md-9 col-lg-10 message ">
+                <div class="col">{{ comment.commentaire|safe|url}}</div>
+        </div>
+    </div>
+{% endfor %}
+</div>
+    <script>
+    var messageBody = document.querySelector('#idConversation');
+    messageBody.scrollTop = idConversation.scrollHeight - idConversation.clientHeight;
+</script>
+
+<hr>
+<div>
+    <input type="hidden" name="Nouveau Message" value="{{ message }}">
+
+<div>
+<form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="Nouveau Message" value="{{ message_defaut }}">
+    {% include 'form_template3.html' %}
+</form>
+</div>
+
+</div>
+    <script>
+    getElementById("id_commentaire_iframe").height = "150px"
+</script>
+
+{% endblock %}

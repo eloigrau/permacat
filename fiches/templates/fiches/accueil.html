@@ -1,0 +1,25 @@
+{% extends 'blog/baseBlog.html' %}
+{% block subtitle %}
+
+<div class="row">
+    <div class="col textcenter">
+       <h3> Bienvenue sur le kit de Permaculture pour les écoles</h3>
+    </div>
+</div>
+
+{% endblock %}
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-12 textcenter">
+        <div class="btn-group btn-group-justified">
+         <a href="{% url 'fiches:index' %}">
+        <button type="button" class="btn btn-success" >
+               Liste des fiches
+            </button>
+         </a>
+    </div>
+   </div>
+
+{% endblock %}
+

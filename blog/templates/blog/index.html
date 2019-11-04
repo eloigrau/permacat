@@ -11,17 +11,25 @@
 {%block subtitle%}
 
 <div class="row align-items-center">
-<div class="col-sm-12 textcenter">
-</div></div>
-<div class="row align-items-center">
-<div class="col-sm-12 textcenter">
-    <div class="btn-group">
+<div class="col-sm-12 textcenter justify-content-center ">
+    <nav class="navbar navbar-expand-md justify-content-center  navbar-light bg-light">
+        <div class="navbar-header">
+             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarProduit" aria-controls="navbarProduitContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span></button>
+        </div>
+        <div class="collapse navbar-collapse  justify-content-center " id="navbarProduit">
+            <ul class="nav navbar-nav justify-content-center ">
+                <li class="nav-item dropdown">
         <a href="{% url 'blog:index' %}">
-            <button class="btn {% if typeFiltre == "aucun" %}btn-primary {%endif%}">Tout </button>
+            <button class="btn {% if typeFiltre == 'aucun' %}btn-primary {%endif%}">Tout </button>
         </a>
+   </li>
+                <li class="nav-item dropdown">
         <a href="?archives=True">
             <button class="btn {% if typeFiltre == 'archives' %}btn-primary{%else%}btn-light {%endif%}">Archives </button>
         </a>
+            </li>
+                <li class="nav-item dropdown">
         <div class="btn-group">
             <a {% if request.GET.auteur %} href="{%url 'profil_nom' request.GET.auteur %}"
                 {%else%}href="#" {%endif%}>
@@ -39,6 +47,9 @@
                 {% endfor %}
             </div>
         </div>
+            </li>
+
+                <li class="nav-item dropdown">
         <div class="btn-group">
             <a {% if request.GET.categorie %}  href="?categorie={{categorie}}"
                 {%else%}href="#" {%endif%}>
@@ -56,8 +67,12 @@
                 {% endfor %}
             </div>
         </div>
+            </li>
+
 
         {% if request.user.is_permacat %}
+
+                <li class="nav-item dropdown">
         <div class="btn-group">
                 <button type="button" class="btn {% if request.GET.permacat %}btn-primary{%endif%}">
                 {% if request.GET.permacat %}{% if request.GET.permacat == "True" %}Permacat {%else%}Public{%endif%}{%else%}Type{%endif%}
@@ -71,8 +86,10 @@
                   <a class="dropdown-item" href="?permacat=False">Public</a>
             </div>
         </div>
+            </li>
         {%endif%}
 
+                <li class="nav-item dropdown">
         <div class="btn-group">
                 <button class="btn dropdown-toggle btn-block btn-light" type="button" id="menuOrdreTri" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                    Trier par...
@@ -83,9 +100,10 @@
                     {% endfor %}
                 </div>
         </div>
+            </li>
     </div>
+    </nav>
 </div>
-
 </div>
 <div class="row align-items-center">
 <div class="col-sm-12 textcenter">
