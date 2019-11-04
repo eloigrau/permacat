@@ -77,12 +77,8 @@ section.p3 {
 }
 
 .bs-dark .dropdown-menu {
- // min-width: 200px;
-  //padding: 5px 0;
   margin: 3px 1px 1px;
   background-color: #000;
-  //border: 1px solid rgba(0, 0, 0, 0.7);
-  //border: 1px solid rgba(0, 0, 0, .15);
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
           box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
 }
@@ -107,7 +103,7 @@ section.p3 {
   outline: 0;
 }
 
-.bs-dark .dropdown-menu > dropdown-item :hover,{
+.bs-dark .dropdown-menu > dropdown-item :hover{
   background-color: grey;
 }
 
@@ -138,7 +134,7 @@ section.p3 {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     min-height: 400px;
     min-width:300px;
-    //border: 0.5px solid #053200;
+    /*border: 0.5px solid #053200;*/
     background: white;
     }
 /*
@@ -169,18 +165,18 @@ section.p3 {
     color:#00004d;
 }
 
-//blog
+/*blog*/
 .infos{
     font-size:small;
 }
 .debutArticle{
-    font-color: red
+    font-color: red;
 }
 .debutArticle a:link, a:visited {
     color: black;
 }
 .titreBlog{
-    text-size: large
+    text-size: large;
 }
 .titreBlog a:link, a:visited {
     color: black;
@@ -189,7 +185,7 @@ section.p3 {
 .dernierMessage{
     background-color:grey;
 }
-//fin blog
+/*fin blog*/
 
 .col_cat{
     padding: 25px;
@@ -246,7 +242,7 @@ section.p3 {
 .offre_entree{
     padding-bottom:4px;
     border-radius: 0.3em;
-    align-items: top;
+    align-items: flex-start ;
     margin:5px;  /* and that, will result in a 10px gap */
     /*border:1px red solid;*/
 }
@@ -257,7 +253,7 @@ section.p3 {
 }
 .offre{
     padding-bottom:30px;
-    width-min:350px;
+    /*min-width:300px;*/
     margin:-5px;
 }
 .notif{
@@ -300,7 +296,7 @@ section.p3 {
 	/*display: -ms-flexbox;*/
 	display: flex;
 	flex:1 1 auto;
-    //padding:5px;
+    /*padding:5px;*/
 }
 
 .detailProduit{
@@ -308,7 +304,7 @@ section.p3 {
 }
 
 .article{
-//background-color: grey;
+/*background-color: grey;*/
 border-color: #333;
 box-shadow: 0 10px 10px 0px grey;
  padding:10px;
@@ -318,7 +314,7 @@ box-shadow: 0 10px 10px 0px grey;
 }
 
 .article_recherche{
-//background-color: grey;
+/*background-color: grey;*/
 border-color: #333;
 box-shadow: 0 10px 10px 0px grey;
  padding:10px;
@@ -337,7 +333,7 @@ a:active         { color: #000000 }  /* active links          */
 
 
 .commentaire{
-    border-color: #333;=
+    border-color: #333;
     padding:10px;
     min-height: 150px;
     border-radius: 0.3em;
@@ -493,7 +489,7 @@ ul.errorlist{
 
 
 .msg-destinataire{
-    indent:30px;
+    /*indent:30px;*/
     background-color:GhostWhite ;
     }
 
@@ -516,7 +512,7 @@ ul.errorlist{
 .badge_projet{
 font-size: 10px;
 vertical-align: top;
-top: 10px; //depends on your font-size
+top: 10px; /*depends on your font-size*/
 position: relative;
 
 }
