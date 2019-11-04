@@ -333,12 +333,12 @@ LANGUAGES = (
 
 SUMMERNOTE_CONFIG = {
     # Using SummernoteWidget - iframe mode, default
-    'iframe': True,
+    #'iframe': True,
 
     # Or, you can set it as False to use SummernoteInplaceWidget by default - no iframe mode
     # In this case, you have to load Bootstrap/jQuery stuff by manually.
     # Use this when you're already using Bootstraip/jQuery based themes.
-    #'iframe': False,
+    'iframe': False,
 
     # You can put custom Summernote settings
     'summernote': {

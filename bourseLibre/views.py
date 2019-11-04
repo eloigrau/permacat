@@ -128,6 +128,7 @@ def produit_proposer(request, type_produit):
 
         if not request.user.is_permacat:
             produit.estPublique = True
+
         produit.save()
         url = produit.get_absolute_url()
         suffix = "" if produit.estPublique else "_permacat"
