@@ -101,7 +101,7 @@ class CommentaireFicheForm(forms.ModelForm):
 
     class Meta:
         model = CommentaireFiche
-        exclude = ['article','auteur_comm']
+        exclude = ['fiche','auteur_comm']
         #
         widgets = {
          #  'commentaire': SummernoteWidget(),

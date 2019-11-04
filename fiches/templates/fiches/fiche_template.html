@@ -1,7 +1,7 @@
 
-{% load activity_tags %}
 {% load fontawesome %}
-<div class="card fiche " style="background-color:{{fiche.get_couleur}}">
+{% load fiches_filters %}
+<div class="card fiche_index " style="background-color:{{fiche.get_couleur}}">
   <a href="{% url 'fiches:lireFiche' slug=fiche.slug %}">
     <div class="card-block textcenter" >
         <div class="card-header textcenter">

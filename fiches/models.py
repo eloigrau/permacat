@@ -11,7 +11,7 @@ from actstream.models import followers
 
 class Choix():
     statut_fiche = ('0','En préparation'), ("1","Intégrée dans le kit"), ('2','En attente' ),
-    type_fiche = ('0','Bases de la permaculture'), ('1',"conception"), ('2','Réalisation'), ('3','Récolte'),
+    type_fiche = ('0','Bases de la permaculture'), ('1',"Conception du jardin"), ('2','Réalisation du jardin'), ('3','Récolter'),
     couleurs_fiches = {
         '0':"#e0f7de", '1':"#dcc0de", '2':"#d4d1de", '3':"#cebacf",
         '4':"#d1ecdc",'5':"#fcf6bd", '6':"#d0f4de", '7':"#fff2a0",
@@ -22,6 +22,19 @@ class Choix():
     type_jauge = ('1', "1"), ("2", "2"), ("3", "3"), ("4", "4"), ("5", "5")
     type_age = ('0', '3-6 ans'), ('1', "7-11 ans"), ("2", "12 ans et plus")
     type_atelier = ('0', 'Observation'), ('1', "Experience"), ("2", "Jardinage")
+
+    def get_categorie(num):
+        return Choix.type_fiche[int(num)][1]
+
+    def get_difficulte(num):
+        return Choix.type_difficulte[int(num)][1]
+
+    def get_age(num):
+        return Choix.type_fiche[int(num)][1]
+
+    def get_typeAtelier(num):
+        return Choix.type_atelier[int(num)][1]
+
 
 
 class Fiche(models.Model):
@@ -109,7 +122,14 @@ class Atelier(models.Model):
             return Choix.couleurs_fiches[self.categorie]
         except:
             return Choix.couleurs_fiches["11"]
+    #
+    # @property
+    # def get_difficulte(self):
+    #     return Choix.type_difficulte[int(self.difficulte)][1]
 
+    @property
+    def get_budget(self):
+        return "{% fontawesome_icon 'euro-sign' %} ".join([" " for i in range(int(self.budget))])
 
 class CommentaireFiche(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE)
@@ -123,17 +143,3 @@ class CommentaireFiche(models.Model):
     def __str__(self):
         return "(" + str(self.id) + ") "+ str(self.auteur_comm) + ": " + str(self.fiche)
 
-
-# @receiver(post_save,  sender=Article)
-# def on_save_article(instance, **kwargs):
-#     titre = "Permacat - Article actualisé"
-#     message = "L'article '" +  instance.titre + "' a été modifié (ou quelqu'un l'a commenté)" +\
-#               "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + instance.get_absolute_url() + \
-#               "\n\n------------------------------------------------------------------------------" \
-#               "\n vous recevez cet email, car vous avez choisi de suivre ce projet sur le site http://www.Perma.Cat/forum/articles/"
-#    # emails = [(titre, message, "asso@perma.cat", (suiv.email, )) for suiv in followers(instance)]
-#     emails = [suiv.email for suiv in followers(instance)  if instance.auteur != suiv]
-#     try:
-#         send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
-#     except:
-#         pass

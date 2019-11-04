@@ -17,7 +17,7 @@
 <div class="col-sm-12 textcenter">
     <div class="btn-group">
         <a href="{% url 'fiches:index' %}">
-            <button class="btn {% if typeFiltre == 'aucun' %}btn-primary {%endif%}">Tout </button>
+            <button class="btn {% if typeFiltre == 'aucun' %}btn-primary {%endif%}">Sommaire </button>
         </a>
         <div class="btn-group">
             <a {% if request.GET.categorie %}  href="?categorie={{categorie}}"
