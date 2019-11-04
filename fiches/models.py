@@ -127,10 +127,10 @@ class Atelier(models.Model):
     # def get_difficulte(self):
     #     return Choix.type_difficulte[int(self.difficulte)][1]
 
-    @property
-    def get_budget_html(self):
-        return "{% fontawesome_icon 'euro-sign' %}"
-        return "{% fontawesome_icon 'euro-sign' %} ".join([" " for i in range(int(self.budget))])
+    # @property
+    # def get_budget_html(self):
+    #     return "{% fontawesome_icon 'euro-sign' %}"
+    #     return "{% fontawesome_icon 'euro-sign' %} ".join([" " for i in range(int(self.budget))])
 
     @property
     def get_budget_length(self):
