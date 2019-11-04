@@ -10,7 +10,6 @@ class FicheForm(forms.ModelForm):
         fields = ['categorie', 'titre', 'contenu', 'en_savoir_plus']
         widgets = {
             'contenu': SummernoteWidget(),
-           # 'bar': SummernoteInplaceWidget(),
         }
 
     def save(self, userProfile):
@@ -39,7 +38,7 @@ class FicheChangeForm(forms.ModelForm):
 
     class Meta:
         model = Fiche
-        fields = ['categorie', 'titre', 'contenu']
+        fields = ['categorie', 'titre', 'contenu', 'en_savoir_plus']
         widgets = {
             'contenu': SummernoteWidget(),
         }
@@ -97,18 +96,16 @@ class AtelierChangeForm(forms.ModelForm):
 
 
 class CommentaireFicheForm(forms.ModelForm):
-    #commentaire = TinyMCE(attrs={'cols': 1, 'rows': 1, 'height':10 })
-    #commentaire = forms.CharField(label="Laisser un commentaire...")
     commentaire = forms.CharField(widget=forms.Textarea(attrs={'rows': 1}), label='Laisser un commentaire...')
 
     class Meta:
         model = CommentaireFiche
         exclude = ['fiche','auteur_comm']
         #
-        widgets = {
+        #widgets = {
          #  'commentaire': SummernoteWidget(),
-                'commentaire': forms.Textarea(attrs={'rows': 1}, label="Laisser un commentaire..."),
-            }
+        #        'commentaire': forms.Textarea(attrs={'rows': 1}),
+         #   }
 
     def __init__(self, request, *args, **kwargs):
         super(CommentaireFicheForm, self).__init__(request, *args, **kwargs)

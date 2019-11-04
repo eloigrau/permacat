@@ -16,7 +16,18 @@
 
 {% endblock %}
 {% block content %}
+
+    <nav class="nav nav-tabs">
+      <a class="nav-item nav-link active" href="#p1" data-toggle="tab">Fiche pratique</a>
+      <a class="nav-item nav-link" href="#p2" data-toggle="tab">Expériences</a>
+      <a class="nav-item nav-link" href="#p3" data-toggle="tab">Discussion</a>
+    </nav>
+
+    <div class="tab-content">
+      <div class="tab-pane fade show active" id="p1">
 <div class="contenu fiche">
+
+
     <div class="row">
     <div class="col-md-9">
         <p class="infos  textepetit">Dans: <a href="{% url 'fiches:index'  %}?categorie={{fiche.categorie|categorie}}"  style="background-color:{{fiche.get_couleur}}">{{ fiche.get_categorie_display }}</a>, créée le {{ fiche.date_creation|date:"DATE_FORMAT" }};
@@ -40,10 +51,15 @@
            {{ fiche.contenu |safe}}
         </div>
     </div>
+    <div class="row">
+        <div class="col">
+           {{ fiche.en_savoir_plus |safe}}
+        </div>
+    </div>
 
 </div>
-
-<hr>
+      </div>
+      <div class="tab-pane fade" id="p2">
 
 <div class="contenu atelier">
         <div class="col textcenter">
@@ -62,8 +78,9 @@
 <hr>{% endif %}
 {% endfor %}
 </div>
-<hr>
+</div>
 
+      <div class="tab-pane fade" id="p3">
 <div class="contenu commentaires discussion_fiche">
 <div id="idConversation">
 {% for comment in commentaires %}
@@ -84,17 +101,19 @@
 </script>
 
 <div>
-    <input type="hidden" name="Nouveau Message" value="{{ message }}">
+        <input type="hidden" name="Nouveau Message" value="{{ message }}">
 
-<div>
-<form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type="hidden" name="Nouveau Message" value="{{ message_defaut }}">
-    {% include 'form_template3.html' %}
-</form>
-</div>
+    <div>
+    <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="Nouveau Message" value="{{ message_defaut }}">
+        {% include 'form_template3.html' %}
+    </form>
+    </div>
 
 </div>
+</div>
+      </div>
     <script>
     getElementById("id_commentaire_iframe").height = "150px"
 </script>
