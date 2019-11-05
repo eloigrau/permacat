@@ -116,6 +116,9 @@ class ListeFiches(ListView):
         if "categorie" in params:
             qs = qs.filter(categorie=params['categorie'])
 
+        if "mc" in params:
+            qs = qs.filter(tags__name__in=[cat for cat in params['mc']])
+
         if "ordreTri" in params:
             qs = qs.order_by(params['ordreTri'])
         else:
@@ -139,4 +142,9 @@ class ListeFiches(ListView):
             context['categorie_courante'] = [x[1] for x in Choix.type_fiche if x[0] == self.request.GET['categorie']][0]
         if 'ordreTri' in self.request.GET:
             context['typeFiltre'] = "ordreTri"
+
+
+        if "mc" in self.request.GET:
+            context['typeFiltre'] = "mc"
+
         return context

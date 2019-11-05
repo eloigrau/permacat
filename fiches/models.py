@@ -2,18 +2,13 @@ from django.db import models
 from bourseLibre.models import Profil, Suivis
 from django.urls import reverse
 from django.utils import timezone
-from django.core.mail import send_mass_mail
-#from tinymce.models import HTMLField
-from django.dispatch import receiver
-from django.db.models.signals import post_save
-
-from actstream.models import followers
+from taggit.managers import TaggableManager
 
 class Choix():
     statut_fiche = ('0','En préparation'), ("1","Intégrée dans le kit"), ('2','En attente' ),
     type_fiche = ('0','Bases de la permaculture'), ('1',"Conception du jardin"), ('2','Réalisation du jardin'), ('3','Récolter'),
     couleurs_fiches = {
-        '2':'#8DC258', '1':'#F7C817', '3':'#F4961D', '0':'#67C6DE',
+        '2':'#6C7884', '1':'#96A5A7', '3':'#434457', '0':'#AED7DC',
         # '0':"#e0f7de", '1':"#dcc0de",
         # '5':"#d1ecdc",'3':"#fcf6bd", '4':"#d0f4de", '7':"#fff2a0",
         # '9':"#ffc4c8", '2':"#bccacf", '10':"#87bfae", '11':"#bcb4b4"
@@ -57,6 +52,8 @@ class Fiche(models.Model):
 
     date_dernierMessage = models.DateTimeField(verbose_name="Date du dernier message", auto_now=True)
     dernierMessage = models.CharField(max_length=100, default=None, blank=True, null=True)
+
+    tags = TaggableManager(verbose_name=("Mots-clés"), help_text=("Une liste de mots clés, séparés par des virgules."),)
 
     class Meta:
         ordering = ('-date_creation', )

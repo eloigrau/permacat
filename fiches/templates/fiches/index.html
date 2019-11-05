@@ -20,7 +20,7 @@
             <a {% if request.GET.categorie %}  href="?categorie={{categorie}}"
                 {%else%}href="#" {%endif%}>
                 <button type="button" class="btn btn-primary">
-                {% if request.GET.categorie %} {{categorie_courante}} {%else%}Sommaire{%endif%}
+                {% if request.GET.categorie %} {{categorie_courante}} {%else%}{% if request.GET.mc %} {{request.GET.mc}} {%else%}Sommaire{%endif%}{%endif%}
                 </button>
             </a>
              <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -28,11 +28,13 @@
                 <span class="sr-only">Toggle Dropdown</span>
               </button>
             <div class="dropdown-menu"  aria-labelledby="menuCategorie"  id=idCategorie">
-                  <a class="dropdown-item" href="{% url 'fiches:index' %}" style="background-color:#577590;">tout</a>
+                  <a class="dropdown-item" href="{% url 'fiches:index' %}" style="background-color:#c0ccd6;">Sommaire</a>
+                  <a class="dropdown-item" href="{% url 'fiches:index' %}?mc=essentiels" style="background-color:#c0ccd6;">Les essentiels</a>
+                  <li>  <span class="nav-link divider" role="separator"></span></li>
                 {% for categorie_id, cat_nom in categorie_list %}
-
                   <a class="dropdown-item" href="?categorie={{categorie_id}}" style="background-color:{{categorie_id|couleur_cat}};">{{cat_nom}}</a>
                 {% endfor %}
+
             </div>
 
         <a href="{% url 'fiches:ajouterFiche' %}">

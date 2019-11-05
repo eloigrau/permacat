@@ -1,6 +1,8 @@
 
 {% load fontawesome %}
 {% load fiches_filters %}
+
+{% comment %}
    <div class="row justify-content-center ">
         <div class="col-sm-12 col-ms-10 col-lg-8 textcenter titre_fiche_index" style="background-color:{{fiche.get_couleur}};">
   <a href="{% url 'fiches:lireFiche' slug=fiche.slug %}">
@@ -9,6 +11,12 @@
         </div>
 </div>
 
+{% endcomment %}
+
+   <div class="row justify-content-center ">
+<div class="col-sm-12 col-ms-10 col-lg-8 textcenter " >
+    <a  href="{% url 'fiches:lireFiche' slug=fiche.slug %}" class="bouton_fiche_index" style="background-color:{{fiche.get_couleur}};">{{ fiche.titre }}</a>
+   </div></div>
 {% comment %}
 <div class="card fiche_index " style="background-color:{{fiche.get_couleur}}">
   <a href="{% url 'fiches:lireFiche' slug=fiche.slug %}">

@@ -98,6 +98,7 @@ INSTALLED_APPS = (
     'bourseLibre.captcha_local',
     'django_summernote',
     'actstream',
+    'taggit',
     #"visits",
     #'notifications',
     #'webpush',
@@ -448,3 +449,4 @@ WIKI_ACCOUNT_HANDLING = False
 WIKI_ACCOUNT_SIGNUP_ALLOWED = False
 
 
+TAGGIT_CASE_INSENSITIVE = True

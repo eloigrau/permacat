@@ -34,6 +34,16 @@
               <h2> {{ fiche.titre }}</h2>
         </div>
     </div>
+
+    <div class="row-sm-12 justify-content-center">
+        <div class="col-sm-12 textcenter fiche_tags">
+            <p> Mots-clés:
+           {% for tag in fiche.tags.names %}
+            {{tag}}{%if not forloop.last%}, {%endif%}
+           {% endfor %}
+           </p>
+        </div>
+    </div>
     <nav class="nav nav-tabs">
       <a class="nav-item nav-link active" href="#p1" data-toggle="tab">Fiche pratique</a>
       <a class="nav-item nav-link" href="#p2" data-toggle="tab">Expériences</a>
@@ -119,7 +129,10 @@
             </div>
         </div>
     </div>
+
+
 </div>
+
     <script>
     getElementById("id_commentaire_iframe").height = "150px"
 </script>

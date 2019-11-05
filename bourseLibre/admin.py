@@ -28,6 +28,15 @@ class CustomUserAdmin(UserAdmin):
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
         )
 
+class MyModelAdmin(admin.ModelAdmin):
+    list_display = ['tag_list']
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).prefetch_related('tags')
+
+    def tag_list(self, obj):
+        return u", ".join(o.name for o in obj.tags.all())
+
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ('titre', 'estPublic', 'estArchive')
 class ProjetAdmin(admin.ModelAdmin):

@@ -7,7 +7,7 @@ from django_summernote.widgets import SummernoteWidget
 class FicheForm(forms.ModelForm):
     class Meta:
         model = Fiche
-        fields = ['categorie', 'titre', 'contenu', 'en_savoir_plus']
+        fields = ['categorie', 'titre', 'contenu', 'en_savoir_plus', 'tags']
         widgets = {
             'contenu': SummernoteWidget(),
         }
@@ -26,6 +26,7 @@ class FicheForm(forms.ModelForm):
             instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
 
         instance.save()
+        instance.save_m2m()
 
         return instance
 
@@ -38,7 +39,7 @@ class FicheChangeForm(forms.ModelForm):
 
     class Meta:
         model = Fiche
-        fields = ['categorie', 'titre', 'contenu', 'en_savoir_plus']
+        fields = ['categorie', 'titre', 'contenu', 'en_savoir_plus', 'tags']
         widgets = {
             'contenu': SummernoteWidget(),
         }
