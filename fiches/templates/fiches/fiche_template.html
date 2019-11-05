@@ -1,6 +1,14 @@
 
 {% load fontawesome %}
 {% load fiches_filters %}
+
+        <div class="textcenter">
+  <a href="{% url 'fiches:lireFiche' slug=fiche.slug %}">
+            <h5>{{ fiche.titre }}</h5>
+  </a>
+        </div>
+
+{% comment %}
 <div class="card fiche_index " style="background-color:{{fiche.get_couleur}}">
   <a href="{% url 'fiches:lireFiche' slug=fiche.slug %}">
     <div class="card-block textcenter" >
@@ -15,3 +23,4 @@
     </div>
   </a>
 </div>
+{% endcomment %}

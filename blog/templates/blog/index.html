@@ -54,7 +54,7 @@
             <a {% if request.GET.categorie %}  href="?categorie={{categorie}}"
                 {%else%}href="#" {%endif%}>
                 <button type="button" class="btn {% if request.GET.categorie %}btn-primary{%endif%}">
-                {% if request.GET.categorie %} Catégorie: {{request.GET.categorie}} {%else%}Catégorie{%endif%}
+                {% if request.GET.categorie %} Catégorie: {{categorie_courante}} {%else%}Catégorie{%endif%}
                 </button>
             </a>
              <button type="button" class="btn {% if request.GET.categorie %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"

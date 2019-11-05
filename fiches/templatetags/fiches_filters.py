@@ -24,3 +24,4 @@ def budget(value):
 @register.filter(is_safe=True)
 def categorie(value):
     return Choix.get_categorie(value)
+

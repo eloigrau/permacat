@@ -38,11 +38,13 @@
             </button>
             {% endif %}
         </a>
+            {% comment %}
         <a href="{% url 'blog:suiveursProjet' projet.slug %}">
             <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title=" Cliquez pour recevoir les notifications concernant cet article par mail">
                  {% fontawesome_icon 'eye' %}
             </button>
         </a>
+            {% endcomment %}
         </p>
     </div>
     <div class="col-md-2">

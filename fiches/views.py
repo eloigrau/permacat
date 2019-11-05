@@ -113,10 +113,13 @@ class ListeFiches(ListView):
         params = dict(self.request.GET.items())
         qs = Fiche.objects.all()
 
+        if "categorie" in params:
+            qs = qs.filter(categorie=params['categorie'])
+
         if "ordreTri" in params:
             qs = qs.order_by(params['ordreTri'])
         else:
-            qs = qs.order_by('-date_dernierMessage', '-date_creation', 'categorie')
+            qs = qs.order_by('-date_dernierMessage', 'date_creation', 'categorie')
 
         return qs
 
@@ -133,6 +136,7 @@ class ListeFiches(ListView):
 
         if 'categorie' in self.request.GET:
             context['typeFiltre'] = "categorie"
+            context['categorie_courante'] = [x[1] for x in Choix.type_fiche if x[0] == self.request.GET['categorie']][0]
         if 'ordreTri' in self.request.GET:
             context['typeFiltre'] = "ordreTri"
         return context
