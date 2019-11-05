@@ -686,7 +686,7 @@ min-height: 350px;
 
 .bouton_fiche_index {
 	box-shadow:inset 0px 1px 0px 0px #d9fbbe;
-	background:linear-gradient(to bottom, #a5cc52 5%, #b8e356 100%);
+	#background:linear-gradient(to bottom, #a5cc52 5%, #b8e356 100%);
 	#background-color:#b8e356;
 	border-radius:10px;
 	border:1px solid #83c41a;
