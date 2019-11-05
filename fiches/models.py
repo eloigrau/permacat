@@ -8,7 +8,7 @@ class Choix():
     statut_fiche = ('0','En préparation'), ("1","Intégrée dans le kit"), ('2','En attente' ),
     type_fiche = ('0','Bases de la permaculture'), ('1',"Conception du jardin"), ('2','Réalisation du jardin'), ('3','Récolter'),
     couleurs_fiches = {
-        '2':'#6C7884', '1':'#96A5A7', '3':'#434457', '0':'#AED7DC',
+        '2':'#4DC490', '1':'#C0EDA0', '3':'#00AA8B', '0':'#FCE79C',
         # '0':"#e0f7de", '1':"#dcc0de",
         # '5':"#d1ecdc",'3':"#fcf6bd", '4':"#d0f4de", '7':"#fff2a0",
         # '9':"#ffc4c8", '2':"#bccacf", '10':"#87bfae", '11':"#bcb4b4"

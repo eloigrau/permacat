@@ -622,9 +622,9 @@ table.greenTable tfoot .links a{
 .titre_fiche_index{
     border: 2px  #D9D9D9;
     border-radius: 25px;
-    margin-bottom:3px;
-    margin-top:3px;
-    padding:15px;
+    margin-bottom:4px;
+    margin-top:4px;
+    padding:17px;
     font-variant: small-caps;
 }
 
@@ -644,44 +644,44 @@ table.greenTable tfoot .links a{
 }
 
 .atelier {
-border: 9px inset rgba(28,110,164,0.65);
-border-radius: 0px 25px 25px 25px;
--webkit-box-shadow: 5px 5px 20px 0px #0D4003;
-box-shadow: 5px 5px 20px 0px #0D4003;
-padding: 10px;
-margin: 12px;
-min-height: 350px;
+    border: 9px inset rgba(28,110,164,0.65);
+    border-radius: 0px 25px 25px 25px;
+    -webkit-box-shadow: 5px 5px 20px 0px #0D4003;
+    box-shadow: 5px 5px 20px 0px #0D4003;
+    padding: 10px;
+    margin: 12px;
+    min-height: 350px;
 }
 
 .ensavoirplus {
-border: 9px inset #B37D00;
-border-radius: 0px 25px 25px 25px;
--webkit-box-shadow: 5px 5px 20px 0px #0D4003;
-box-shadow: 5px 5px 20px 0px #0D4003;
-padding: 10px;
-margin: 12px;
-min-height: 350px;
+    border: 9px inset #B37D00;
+    border-radius: 0px 25px 25px 25px;
+    -webkit-box-shadow: 5px 5px 20px 0px #0D4003;
+    box-shadow: 5px 5px 20px 0px #0D4003;
+    padding: 10px;
+    margin: 12px;
+    min-height: 350px;
 }
 
 .discussion_fiche {
-border: 9px inset #734705;
-border-radius: 0px 25px 25px 25px;
--webkit-box-shadow: 5px 5px 20px 0px #0D4003;
-box-shadow: 5px 5px 20px 0px #0D4003;
-padding: 10px;
-margin: 12px;
-min-height: 350px;
+    border: 9px inset #734705;
+    border-radius: 0px 25px 25px 25px;
+    -webkit-box-shadow: 5px 5px 20px 0px #0D4003;
+    box-shadow: 5px 5px 20px 0px #0D4003;
+    padding: 10px;
+    margin: 12px;
+    min-height: 350px;
 }
 
 
 .fiche {
-border: 9px inset rgba(49,184,0,0.65);
-border-radius: 0px 25px 25px 25px;
--webkit-box-shadow: 5px 5px 20px 0px #0D4003;
-box-shadow: 5px 5px 20px 0px #0D4003;
-padding: 10px;
-margin: 12px;
-min-height: 350px;
+    border: 9px inset rgba(49,184,0,0.65);
+    border-radius: 0px 25px 25px 25px;
+    -webkit-box-shadow: 5px 5px 20px 0px #0D4003;
+    box-shadow: 5px 5px 20px 0px #0D4003;
+    padding: 10px;
+    margin: 12px;
+    min-height: 350px;
 }
 
 
@@ -695,11 +695,13 @@ min-height: 350px;
 	cursor:pointer;
 	color:#ffffff;
 	font-size:15px;
-	font-weight:bold;
+	#font-weight:bold;
 	padding:6px 24px;
 	text-decoration:none;
 	text-shadow:0px 1px 0px #86ae47;
 	width: 100%;
+	padding:8px;
+	margin:2px;
 }
 .bouton_fiche_index:hover {
 	#background:linear-gradient(to bottom, #b8e356 5%, #a5cc52 100%);
