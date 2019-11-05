@@ -13,9 +13,10 @@ class Choix():
     statut_fiche = ('0','En préparation'), ("1","Intégrée dans le kit"), ('2','En attente' ),
     type_fiche = ('0','Bases de la permaculture'), ('1',"Conception du jardin"), ('2','Réalisation du jardin'), ('3','Récolter'),
     couleurs_fiches = {
-        '0':"#e0f7de", '1':"#dcc0de",
-        '5':"#d1ecdc",'3':"#fcf6bd", '4':"#d0f4de", '7':"#fff2a0",
-        '9':"#ffc4c8", '2':"#bccacf", '10':"#87bfae", '11':"#bcb4b4"
+        '2':'#8DC258', '1':'#F7C817', '3':'#F4961D', '0':'#67C6DE',
+        # '0':"#e0f7de", '1':"#dcc0de",
+        # '5':"#d1ecdc",'3':"#fcf6bd", '4':"#d0f4de", '7':"#fff2a0",
+        # '9':"#ffc4c8", '2':"#bccacf", '10':"#87bfae", '11':"#bcb4b4"
     }
     statut_fiche = ('0', 'proposition'), ('1', "en cours d'écriture"), ("2", "achevée mais pas validée"), ("3", "validée")
     type_difficulte = ('0', 'facile'), ('1', "moyen"), ("2", "difficile")
@@ -36,7 +37,8 @@ class Choix():
     def get_typeAtelier(num):
         return Choix.type_atelier[int(num)][1]
 
-
+    def get_couleur_cat(cat):
+            return Choix.couleurs_fiches[cat]
 
 class Fiche(models.Model):
     categorie = models.CharField(max_length=30,         
@@ -48,7 +50,7 @@ class Fiche(models.Model):
     titre = models.CharField(max_length=100,)
     slug = models.SlugField(max_length=100)
     contenu = models.TextField(null=True)
-    en_savoir_plus = models.TextField(null=True)
+    en_savoir_plus = models.TextField(null=True, blank=True,)
 
     date_creation = models.DateTimeField(verbose_name="Date de parution", default=timezone.now)
     date_modification = models.DateTimeField(verbose_name="Date de modification", default=timezone.now)
@@ -74,6 +76,10 @@ class Fiche(models.Model):
     @property
     def get_couleur(self):
             return Choix.couleurs_fiches[self.categorie]
+
+    @property
+    def get_couleur_cat(self,cat):
+            return Choix.couleurs_fiches[cat]
 
 
 class Atelier(models.Model):

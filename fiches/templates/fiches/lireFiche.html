@@ -8,21 +8,29 @@
 {% endblock %}
 {% block content %}
 
- <div class="row">
-    <div class="col-md-9">
-        <p class="infos  textepetit">Dans: <a href="{% url 'fiches:index'  %}?categorie={{fiche.categorie}}"  style="background-color:{{fiche.get_couleur}}">{{ fiche.get_categorie_display }}</a>, créée le {{ fiche.date_creation|date:"DATE_FORMAT" }};
+ <div class="row justify-content-center">
+
+    <div class="col-sm-2">
+
+        <a  href="{% url 'fiches:index'  %}">
+        <button class="btn btn-info btn-sm textright" >Sommaire</button>
+            </a>
+        </p>
+    </div>
+    <div class="col-sm-8 textcenter">
+        <p class="infos  textepetit"><a href="{% url 'fiches:index'  %}?categorie={{fiche.categorie}}"">{{ fiche.get_categorie_display }}</a>, {{ fiche.date_creation|date:"DATE_FORMAT" }};
 
         </p>
     </div>
-        <div class="col-md-3 textright">
+        <div class="col-sm-2 textright">
             <a href="{% url 'fiches:modifierFiche' slug=fiche.slug %}">
                <button type="button" class="btn btn-sm btn-warning">
                  &nbsp;Modifier
                </button></a>
         </div>
      </div>
-    <div class="row">
-        <div class="col textcenter">
+    <div class="row titre_fiche" style="background-color:{{fiche.get_couleur}};">
+        <div class="col textcenter" >
               <h2> {{ fiche.titre }}</h2>
         </div>
     </div>
@@ -36,72 +44,69 @@
 <div class="tab-content">
   <div class="tab-pane fade show active" id="p1">
     <div class="contenu fiche">
-
-
-
-    <div class="row">
-        <div class="col">
-           {{ fiche.contenu |safe}}
+        <div class="row">
+            <div class="col">
+               {{ fiche.contenu |safe}}
+            </div>
         </div>
+
     </div>
+  </div>
 
-</div>
-</div>
-
-      <div class="tab-pane fade" id="p2">
-<div class="contenu atelier">
+<div class="tab-pane fade" id="p2">
+    <div class="contenu atelier">
         <div class="col textcenter">
             <a href="{% url 'fiches:ajouterAtelier' fiche_slug=fiche.slug%}">
                <button type="button" class="btn btn-sm btn-warning">
                 <span class="glyphicon glyphicon-plus"></span>&nbsp;Ajouter un atelier
                </button></a>
         </div>
-{% for atelier in ateliers %}
-    <div class="row atelier_list">
-    <div class="col">
-        {% include 'fiches/atelier_template.html' with atelier=atelier %}
-    </div>
-    </div>
-    {% if not forloop.last %}
-<hr>{% endif %}
-{% endfor %}
-</div>
-</div>
-
-      <div class="tab-pane fade" id="p3">
-<div class="contenu commentaires discussion_fiche">
-<div id="idConversation">
-{% for comment in commentaires %}
-    <div class="row {% if comment.auteur.id == request.user.id %} msg-auteur  {%else%} msg-destinataire{%endif%}">
-
-        <div class="col-sm-3 col-md-3 col-lg-2">
-           <p class="infos  textepetit">{{ comment.date_creation|date:"d/m/Y, G:i" }}{% ifchanged %}, {{comment.auteur_comm}}{% endifchanged %}</p>
+    {% for atelier in ateliers %}
+        <div class="row atelier_list">
+        <div class="col">
+            {% include 'fiches/atelier_template.html' with atelier=atelier %}
         </div>
-        <div class=" col-sm-9 col-md-9 col-lg-10 message ">
-                <div class="col">{{ comment.commentaire|safe|url}}</div>
         </div>
+        {% if not forloop.last %}
+    <hr>{% endif %}
+    {% endfor %}
     </div>
-{% endfor %}
 </div>
-    <script>
-    var messageBody = document.querySelector('#idConversation');
-    messageBody.scrollTop = idConversation.scrollHeight - idConversation.clientHeight;
-</script>
 
-<div>
-        <input type="hidden" name="Nouveau Message" value="{{ message }}">
+<div class="tab-pane fade" id="p3">
+    <div class="contenu commentaires discussion_fiche">
+    <div id="idConversation">
+    {% for comment in commentaires %}
+        <div class="row {% if comment.auteur.id == request.user.id %} msg-auteur  {%else%} msg-destinataire{%endif%}">
+
+            <div class="col-sm-3 col-md-3 col-lg-2">
+               <p class="infos  textepetit">{{ comment.date_creation|date:"d/m/Y, G:i" }}{% ifchanged %}, {{comment.auteur_comm}}{% endifchanged %}</p>
+            </div>
+            <div class=" col-sm-9 col-md-9 col-lg-10 message ">
+                    <div class="col">{{ comment.commentaire|safe|url}}</div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+        <script>
+        var messageBody = document.querySelector('#idConversation');
+        messageBody.scrollTop = idConversation.scrollHeight - idConversation.clientHeight;
+    </script>
 
     <div>
-    <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="hidden" name="Nouveau Message" value="{{ message_defaut }}">
-        {% include 'form_template3.html' %}
-    </form>
-    </div>
+            <input type="hidden" name="Nouveau Message" value="{{ message }}">
 
+        <div>
+        <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="Nouveau Message" value="{{ message_defaut }}">
+            {% include 'form_template3.html' %}
+        </form>
+        </div>
+
+    </div>
+  </div>
 </div>
-</div>
-      </div>
 
 
 
@@ -120,13 +125,4 @@
 </script>
 
 
-<div class="row-sm-12 justify-content-center">
-    <div class="col-md-12 textcenter">
-
-        <a  href="{% url 'fiches:index'  %}">
-        <button class="btn btn-info btn-sm textright" >Retour au sommaire</button>
-            </a>
-        </p>
-    </div>
-</div>
 {% endblock %}

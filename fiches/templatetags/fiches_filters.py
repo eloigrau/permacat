@@ -25,3 +25,8 @@ def budget(value):
 def categorie(value):
     return Choix.get_categorie(value)
 
+
+@register.filter(is_safe=True)
+def couleur_cat(cat):
+    return Choix.get_couleur_cat(cat)
+

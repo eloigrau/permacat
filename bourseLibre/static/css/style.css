@@ -530,52 +530,6 @@ position: relative;
 
 }
 
-
-.atelier {
-border: 9px inset rgba(28,110,164,0.65);
-border-radius: 0px 25px 25px 0px;
--webkit-box-shadow: 5px 5px 20px 0px #0D4003;
-box-shadow: 5px 5px 20px 0px #0D4003;
-padding: 10px;
-margin: 12px;
-}
-
-.ensavoirplus {
-border: 9px inset #B37D00;
-border-radius: 0px 25px 25px 0px;
--webkit-box-shadow: 5px 5px 20px 0px #0D4003;
-box-shadow: 5px 5px 20px 0px #0D4003;
-padding: 10px;
-margin: 12px;
-}
-
-.discussion_fiche {
-border: 9px inset #734705;
-border-radius: 0px 25px 25px 0px;
--webkit-box-shadow: 5px 5px 20px 0px #0D4003;
-box-shadow: 5px 5px 20px 0px #0D4003;
-padding: 10px;
-margin: 12px;
-}
-
-.fiche_index{
-border: 3px inset ;
-border-radius: 0px 25px 25px 0px;
--webkit-box-shadow: 5px 5px 20px 0px #0D4003;
-box-shadow: 5px 5px 20px 0px #0D4003;
-padding: 8px;
-margin: 8px;
-}
-
-.fiche {
-border: 9px inset rgba(49,184,0,0.65);
-border-radius: 0px 25px 25px 0px;
--webkit-box-shadow: 5px 5px 20px 0px #0D4003;
-box-shadow: 5px 5px 20px 0px #0D4003;
-padding: 12px;
-margin: 12px;
-}
-
 table.greenTable {
   font-family: Georgia, serif;
   border: 2px solid #24943A;
@@ -622,8 +576,92 @@ table.greenTable tfoot .links a{
 }
 
 .liste_atelier {
-border: 2px double rgba(28,110,164,0.65);
-border-radius: 7px;
-padding: 12px;
+    border: 2px double rgba(28,110,164,0.65);
+    border-radius: 7px;
+    padding: 12px;
+    margin: 12px;
+}
+
+.body_fiche{
+    font-family: Georgia, serif;
+    background-color:#ffffff;
+    margin-bottom:100px;
+}
+
+.panel_body_fiche{
+    margin-bottom:100px;
+    min-height:500px;
+}
+.titre_fiche{
+    padding: 12px;
+    margin: 12px;
+
+    font-family: Georgia, serif;
+    font-size: 28px;
+    letter-spacing: 1px;
+    word-spacing: 1px;
+    color: #000000;
+    font-weight: 700;
+    text-decoration: none;
+    font-style: normal;
+    font-variant: small-caps;
+    text-transform: none;
+    border: 5px double #D9D9D9;
+    border-radius: 25px;
+}
+.titre_fiche_index{
+    border: 2px  #D9D9D9;
+    border-radius: 25px;
+    margin-bottom:5px;
+    margin-top:5px;
+    min-height:20px;
+}
+.fiche_index{
+border: 3px inset ;
+border-radius: 0px 25px 25px 0px;
+-webkit-box-shadow: 5px 5px 20px 0px #0D4003;
+box-shadow: 5px 5px 20px 0px #0D4003;
+padding: 8px;
+margin: 8px;
+}
+
+.atelier {
+border: 9px inset rgba(28,110,164,0.65);
+border-radius: 0px 25px 25px 25px;
+-webkit-box-shadow: 5px 5px 20px 0px #0D4003;
+box-shadow: 5px 5px 20px 0px #0D4003;
+padding: 10px;
 margin: 12px;
+min-height: 350px;
+}
+
+.ensavoirplus {
+border: 9px inset #B37D00;
+border-radius: 0px 25px 25px 25px;
+-webkit-box-shadow: 5px 5px 20px 0px #0D4003;
+box-shadow: 5px 5px 20px 0px #0D4003;
+padding: 10px;
+margin: 12px;
+min-height: 350px;
+}
+
+.discussion_fiche {
+border: 9px inset #734705;
+border-radius: 0px 25px 25px 25px;
+-webkit-box-shadow: 5px 5px 20px 0px #0D4003;
+box-shadow: 5px 5px 20px 0px #0D4003;
+padding: 10px;
+margin: 12px;
+min-height: 350px;
+}
+
+
+.fiche {
+border: 9px inset rgba(49,184,0,0.65);
+border-radius: 0px 25px 25px 25px;
+-webkit-box-shadow: 5px 5px 20px 0px #0D4003;
+box-shadow: 5px 5px 20px 0px #0D4003;
+padding: 10px;
+margin: 12px;
+min-height: 350px;
 }
