@@ -34,17 +34,17 @@
               <h2> {{ fiche.titre }}</h2>
         </div>
     </div>
-  {% if fiche.tags.names  %}
     <div class="row-sm-12 justify-content-center">
         <div class="col-sm-12  fiche_tags">
-            <p class="textright"> Mots-clés:
+            <p class="textright"> 
+  {% if fiche.tags.names  %}Mots-clés:
            {% for tag in fiche.tags.names %}
             {{tag}}{%if not forloop.last%}, {%endif%}
            {% endfor %}
-           </p>
+           {% endif %}  </p>
         </div>
     </div>
-    {% endif %}
+  
     <nav class="nav nav-tabs">
       <a class="nav-item nav-link active" href="#p1" data-toggle="tab">Fiche pratique</a>
       <a class="nav-item nav-link" href="#p2" data-toggle="tab">Expériences</a>
