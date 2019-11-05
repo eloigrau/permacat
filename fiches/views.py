@@ -117,7 +117,10 @@ class ListeFiches(ListView):
             qs = qs.filter(categorie=params['categorie'])
 
         if "mc" in params:
-            qs = qs.filter(tags__name__in=[cat for cat in params['mc']])
+            if params['mc']=="essentiels":
+                qs = qs.filter(tags__name__in=["essentiel",])
+            else:
+                qs = qs.filter(tags__name__in=[cat for cat in params['mc']])
 
         if "ordreTri" in params:
             qs = qs.order_by(params['ordreTri'])

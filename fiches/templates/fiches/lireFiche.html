@@ -15,7 +15,7 @@
         <a  href="{% url 'fiches:index'  %}">
         <button class="btn btn-info btn-sm textright" >Sommaire</button>
             </a>
-        </p>
+
     </div>
     <div class="col-sm-8 textcenter">
         <p class="infos  textepetit"><a href="{% url 'fiches:index'  %}?categorie={{fiche.categorie}}"">{{ fiche.get_categorie_display }}</a>, {{ fiche.date_creation|date:"DATE_FORMAT" }};
@@ -36,7 +36,7 @@
     </div>
 
     <div class="row-sm-12 justify-content-center">
-        <div class="col-sm-12 textcenter fiche_tags">
+        <div class="col-sm-12 textright fiche_tags">
             <p> Mots-clés:
            {% for tag in fiche.tags.names %}
             {{tag}}{%if not forloop.last%}, {%endif%}
