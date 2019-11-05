@@ -13,9 +13,9 @@ class Choix():
     statut_fiche = ('0','En préparation'), ("1","Intégrée dans le kit"), ('2','En attente' ),
     type_fiche = ('0','Bases de la permaculture'), ('1',"Conception du jardin"), ('2','Réalisation du jardin'), ('3','Récolter'),
     couleurs_fiches = {
-        '0':"#e0f7de", '1':"#dcc0de", '2':"#d4d1de", '3':"#cebacf",
-        '4':"#d1ecdc",'5':"#fcf6bd", '6':"#d0f4de", '7':"#fff2a0",
-        '8':"#ffc4c8", '9':"#bccacf", '10':"#87bfae", '11':"#bcb4b4"
+        '0':"#e0f7de", '1':"#dcc0de",
+        '5':"#d1ecdc",'3':"#fcf6bd", '4':"#d0f4de", '7':"#fff2a0",
+        '9':"#ffc4c8", '2':"#bccacf", '10':"#87bfae", '11':"#bcb4b4"
     }
     statut_fiche = ('0', 'proposition'), ('1', "en cours d'écriture"), ("2", "achevée mais pas validée"), ("3", "validée")
     type_difficulte = ('0', 'facile'), ('1', "moyen"), ("2", "difficile")
@@ -73,10 +73,7 @@ class Fiche(models.Model):
 
     @property
     def get_couleur(self):
-        try:
             return Choix.couleurs_fiches[self.categorie]
-        except:
-            return Choix.couleurs_fiches["11"]
 
 
 class Atelier(models.Model):

@@ -59,10 +59,8 @@
 
 <div class="infinite-container">
     {% for fiche in fiche_list %}
-    <div class="infinite-item">
-        <p>
+    <div class="infinite-item ">
             {% include "fiches/fiche_template.html" with fiche=fiche %}
-        </p>
     </div>
 
     {% endfor %}
