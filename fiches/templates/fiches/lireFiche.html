@@ -17,8 +17,8 @@
             </a>
 
     </div>
-    <div class="col-sm-8 textcenter">
-        <p class="infos  textepetit"><a href="{% url 'fiches:index'  %}?categorie={{fiche.categorie}}"">{{ fiche.get_categorie_display }}</a>, {{ fiche.date_creation|date:"DATE_FORMAT" }};
+    <div class="col-sm-8">
+        <p class="infos  textepetit textcenter "><a href="{% url 'fiches:index'  %}?categorie={{fiche.categorie}}"">{{ fiche.get_categorie_display }}</a>, {{ fiche.date_creation|date:"DATE_FORMAT" }};
 
         </p>
     </div>
@@ -36,8 +36,8 @@
     </div>
 
     <div class="row-sm-12 justify-content-center">
-        <div class="col-sm-12 textright fiche_tags">
-            <p> Mots-clés:
+        <div class="col-sm-12  fiche_tags">
+            <p class="textright"> Mots-clés:
            {% for tag in fiche.tags.names %}
             {{tag}}{%if not forloop.last%}, {%endif%}
            {% endfor %}
