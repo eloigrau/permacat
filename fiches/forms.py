@@ -5,13 +5,14 @@ import itertools
 from django_summernote.widgets import SummernoteWidget
 
 class FicheForm(forms.ModelForm):
+    objectif = forms.CharField(label="Objectif de la fiche", strip=False)
+
     class Meta:
         model = Fiche
         fields = ['categorie', 'titre', 'objectif', 'contenu', 'en_savoir_plus', 'tags']
         widgets = {
             'contenu': SummernoteWidget(),
             'en_savoir_plus': SummernoteWidget(),
-            'objectif': SummernoteWidget(),
         }
 
     def save(self, userProfile):
