@@ -690,15 +690,14 @@ table.greenTable tfoot .links a{
 
 .bouton_fiche_index {
 	box-shadow:inset 0px 1px 0px 0px #d9fbbe;
-	#background:linear-gradient(to bottom, #a5cc52 5%, #b8e356 100%);
-	#background-color:#b8e356;
+	/*#background:linear-gradient(to bottom, #a5cc52 5%, #b8e356 100%);
+	#background-color:#b8e356;*/
 	border-radius:10px;
 	border:1px solid #83c41a;
 	display:inline-block;
 	cursor:pointer;
 	color:#ffffff;
 	font-size:20px;
-    	font-variant: small-caps;
 	#font-weight:bold;
 	padding:6px 24px;
 	text-decoration:none;
@@ -706,6 +705,9 @@ table.greenTable tfoot .links a{
 	width: 100%;
 	padding:12px;
 	margin:2px;
+}
+.bouton_fiche_index_entete{
+    font-variant: none;
 }
 .bouton_fiche_index:hover {
 	#background:linear-gradient(to bottom, #b8e356 5%, #a5cc52 100%);
