@@ -7,10 +7,11 @@ from django_summernote.widgets import SummernoteWidget
 class FicheForm(forms.ModelForm):
     class Meta:
         model = Fiche
-        fields = ['categorie', 'titre', 'contenu', 'en_savoir_plus', 'tags']
+        fields = ['categorie', 'titre', 'objectif', 'contenu', 'en_savoir_plus', 'tags']
         widgets = {
             'contenu': SummernoteWidget(),
             'en_savoir_plus': SummernoteWidget(),
+            'objectif': SummernoteWidget(),
         }
 
     def save(self, userProfile):
@@ -40,10 +41,12 @@ class FicheForm(forms.ModelForm):
         self.fields['contenu'].strip = False
 
 class FicheChangeForm(forms.ModelForm):
+    objectif = forms.CharField(label="Objectif de la fiche")
+
 
     class Meta:
         model = Fiche
-        fields = ['categorie', 'titre', 'contenu', 'en_savoir_plus', 'tags']
+        fields = ['categorie', 'titre', 'objectif', 'contenu', 'en_savoir_plus', 'tags']
         widgets = {
             'contenu': SummernoteWidget(),
             'en_savoir_plus': SummernoteWidget(),

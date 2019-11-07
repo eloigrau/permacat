@@ -55,12 +55,19 @@
 <div class="tab-content">
   <div class="tab-pane fade show active" id="p1">
     <div class="contenu fiche">
+        {% if fiche.objectif%}
+        <div class="row">
+            <div class="col">
+                <p><h6>Objectif :</h6> {{ fiche.objectif |safe}}</p>
+            </div>
+        </div>
+        {% endif %}
+
         <div class="row">
             <div class="col">
                {{ fiche.contenu |safe}}
             </div>
         </div>
-
     </div>
   </div>
 

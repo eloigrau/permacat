@@ -17,7 +17,7 @@ class Choix():
     type_difficulte = ('0', 'facile'), ('1', "moyen"), ("2", "difficile")
     type_jauge = ('1', "1"), ("2", "2"), ("3", "3"), ("4", "4"), ("5", "5")
     type_temps = ('1', "1h"), ("2", "2h"), ("3", "3h"), ("4", "4h"), ("5", "6h"), ("6", "1 journée"),  ("7", "plusieurs jours"),  ("8", "plusieurs mois"),
-    type_age = ('0', '3-6 ans'), ('1', "7-11 ans"), ("2", "12 ans et plus"), ("3", "3-11ans"), ("2", "12 ans et plus")
+    type_age = ('0', '3-6 ans'), ('1', "7-11 ans"), ("2", "12 ans et plus"), ("3", "3-11ans"), ("4", "Tout public")
     type_atelier = ('0', 'Observation'), ('1', "Experience"), ("2", "Jardinage")
 
     def get_categorie(num):
@@ -45,6 +45,7 @@ class Fiche(models.Model):
     titre = models.CharField(max_length=100,)
     slug = models.SlugField(max_length=100)
     contenu = models.TextField(null=True, blank=True)
+    objectif = models.TextField(null=True, blank=True)
     en_savoir_plus = models.TextField(null=True, blank=True,)
 
     date_creation = models.DateTimeField(verbose_name="Date de parution", default=timezone.now)
