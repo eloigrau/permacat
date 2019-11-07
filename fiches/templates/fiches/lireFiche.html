@@ -47,7 +47,7 @@
   
     <nav class="nav nav-tabs">
       <a class="nav-item nav-link active" href="#p1" data-toggle="tab">Fiche pratique</a>
-      <a class="nav-item nav-link" href="#p2" data-toggle="tab">Expériences</a>
+      <a class="nav-item nav-link" href="#ateliers" data-toggle="tab">Ateliers</a>
       <a class="nav-item nav-link" href="#p3" data-toggle="tab">Discussion</a>
       <a class="nav-item nav-link" href="#p4" data-toggle="tab">En savoir plus...</a>
     </nav>
@@ -64,7 +64,7 @@
     </div>
   </div>
 
-<div class="tab-pane fade" id="p2">
+<div class="tab-pane fade" id="ateliers">
     <div class="contenu atelier">
         <div class="col textcenter">
             <a href="{% url 'fiches:ajouterAtelier' fiche_slug=fiche.slug%}">
@@ -73,7 +73,7 @@
                </button></a>
         </div>
     {% for atelier in ateliers %}
-        <div class="row atelier_list">
+        <div class="row atelier_list" id="atelier{{atelier.slug}}">
         <div class="col">
             {% include 'fiches/atelier_template.html' with atelier=atelier %}
         </div>

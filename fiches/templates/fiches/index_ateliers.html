@@ -11,12 +11,12 @@
     {%endblock%}
 {%block subtitle%}
 
+
 <div class="row align-items-center fiche_titre_page_index">
 <div class="col-sm-12 textcenter">
-    <h3>Les fiches pratiques</h3>
+    <h3>Les ateliers</h3>
 </div>
 </div>
-
 <div class="row align-items-center">
 <div class="col-sm-12 textcenter">
     <div class="btn-group">
@@ -31,27 +31,16 @@
             <span class="sr-only">Toggle Dropdown</span>
           </button>
         <div class="dropdown-menu"  aria-labelledby="menuCategorie"  id=idCategorie">
-              <a class="dropdown-item" href="{% url 'fiches:index' %}" style="background-color:#c0ccd6;">Sommaire</a>
-              <a class="dropdown-item" href="{% url 'fiches:index' %}?mc=essentiels" style="background-color:#c0ccd6;">Les essentiels</a>
-              <a class="dropdown-item" href="{% url 'fiches:index_ateliers' %}" style="background-color:#c0ccd6;">Liste des ateliers</a>
+              <a class="dropdown-item" href="{% url 'fiches:index_ateliers' %}" style="background-color:#c0ccd6;">Sommaire</a>
+              <a class="dropdown-item" href="{% url 'fiches:index_ateliers' %}?mc=essentiels" style="background-color:#c0ccd6;">Les essentiels</a>
+              <a class="dropdown-item" href="{% url 'fiches:index' %}" style="background-color:#c0ccd6;">Liste des fiches</a>
               <li>  <span class="nav-link divider" role="separator"></span></li>
             {% for categorie_id, cat_nom in categorie_list %}
               <a class="dropdown-item" href="?categorie={{categorie_id}}" style="background-color:{{categorie_id|couleur_cat}};">{{cat_nom}}</a>
             {% endfor %}
+
         </div>
     </div>
-</div>
-</div>
-
-<div class="row align-items-center">
-<div class="col-sm-12 textcenter">
-    <div class="btn-group">
-        <a href="{% url 'fiches:ajouterFiche' %}">
-        <button type="button" class="btn btn-success" >
-                <span class="glyphicon glyphicon-plus"></span>Ajouter une fiche
-            </button>
-            </a>&ensp;
-</div>
 </div>
 </div>
 
@@ -59,9 +48,13 @@
 {% block content %}
 
 <div class="infinite-container">
-    {% for fiche in fiche_list %}
+    {% for atelier in atelier_list %}
     <div class="infinite-item ">
-            {% include "fiches/fiche_template.html" with fiche=fiche %}
+   <div class="row justify-content-center ">
+<div class="col-sm-12 col-ms-10 col-lg-8 textcenter " >
+    <a  href="{% url 'fiches:lireFiche' slug=atelier.fiche.slug %}#atelier{{atelier.slug}}" class="bouton_fiche_index" style="background-color:{{atelier.fiche.get_couleur}};">{{ atelier.titre }} dans {{ atelier.fiche.titre }} </a>
+   </div>
+   </div>
     </div>
 
     {% endfor %}

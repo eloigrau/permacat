@@ -151,3 +151,52 @@ class ListeFiches(ListView):
             context['typeFiltre'] = "mc"
 
         return context
+
+class ListeAteliers(ListView):
+    model = Atelier
+    context_object_name = "atelier_list"
+    template_name = "fiches/index_ateliers.html"
+    paginate_by = 30
+
+    def get_queryset(self):
+        params = dict(self.request.GET.items())
+        qs = Atelier.objects.all()
+
+        if "categorie" in params:
+            qs = qs.filter(fiche__categorie=params['categorie'])
+
+        if "mc" in params:
+            if params['mc']=="essentiels":
+                qs = qs.filter(fiche__tags__name__in=["essentiel",])
+            else:
+                qs = qs.filter(fiche__tags__name__in=[cat for cat in params['mc']])
+
+        if "ordreTri" in params:
+            qs = qs.order_by(params['ordreTri'])
+        else:
+            qs = qs.order_by('date_creation',)
+
+        return qs
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+
+        cat= Fiche.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
+        context['categorie_list'] = [x for x in Choix.type_fiche if x[0] in cat]
+        context['typeFiltre'] = "aucun"
+        context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="articles")
+
+        context['ordreTriPossibles'] = ['-date_creation', '-date_dernierMessage', 'categorie', 'titre' ]
+
+        if 'categorie' in self.request.GET:
+            context['typeFiltre'] = "categorie"
+            context['categorie_courante'] = [x[1] for x in Choix.type_fiche if x[0] == self.request.GET['categorie']][0]
+        if 'ordreTri' in self.request.GET:
+            context['typeFiltre'] = "ordreTri"
+
+
+        if "mc" in self.request.GET:
+            context['typeFiltre'] = "mc"
+
+        return context

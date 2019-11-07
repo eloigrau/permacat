@@ -44,7 +44,7 @@ class Fiche(models.Model):
         default='proposition', verbose_name="statut de la fiche")
     titre = models.CharField(max_length=100,)
     slug = models.SlugField(max_length=100)
-    contenu = models.TextField(null=True)
+    contenu = models.TextField(null=True, blank=True)
     en_savoir_plus = models.TextField(null=True, blank=True,)
 
     date_creation = models.DateTimeField(verbose_name="Date de parution", default=timezone.now)
@@ -53,7 +53,7 @@ class Fiche(models.Model):
     date_dernierMessage = models.DateTimeField(verbose_name="Date du dernier message", auto_now=True)
     dernierMessage = models.CharField(max_length=100, default=None, blank=True, null=True)
 
-    tags = TaggableManager(verbose_name=("Mots-clés"), help_text=("Une liste de mots clés, séparés par des virgules."),)
+    tags = TaggableManager(verbose_name=("Mots-clés"), help_text=("Une liste de mots clés, séparés par des virgules."), blank=True,)
 
     class Meta:
         ordering = ('-date_creation', )

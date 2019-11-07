@@ -23,6 +23,7 @@ app_name = 'fiches'
 urlpatterns = [
     url(r'^accueil/$', views.accueil, name="acceuil"),
     url(r'^fiches/$', login_required(views.ListeFiches.as_view(), login_url='/auth/login/'), name="index"),
+    url(r'^ateliers/$', login_required(views.ListeAteliers.as_view(), login_url='/auth/login/'), name="index_ateliers"),
     url(r'^fiche/(?P<slug>[-\w]+)$', views.lireFiche, name='lireFiche'),
     url(r'^modifierFiche/(?P<slug>[-\w]+)$', login_required(views.ModifierFiche.as_view(), login_url='/auth/login/'), name='modifierFiche'),
     url(r'^modifierAtelier/(?P<slug>[-\w]+)$', login_required(views.ModifierAtelier.as_view(), login_url='/auth/login/'), name='modifierAtelier'),

@@ -10,7 +10,7 @@
 {% endblock %}
 {% block content %}
 
-<div class="row">
+<div class="row justify-content-center">
     <div class="col-sm-12 textcenter">
         <div class="btn-group btn-group-justified">
          <a href="{% url 'fiches:index' %}">
@@ -21,5 +21,15 @@
     </div>
    </div>
 
+<div class="row justify-content-center" style="margin-top:10px;">
+    <div class="col-sm-12 textcenter">
+        <div class="btn-group btn-group-justified">
+         <a href="{% url 'fiches:index_ateliers' %}">
+        <button type="button" class="btn btn-success" >
+               Liste des ateliers
+            </button>
+         </a>
+    </div>
+   </div>
 {% endblock %}
 
