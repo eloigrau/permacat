@@ -26,7 +26,10 @@ class FicheForm(forms.ModelForm):
             instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
 
         instance.save()
-        instance.save_m2m()
+        try:
+            instance.save_m2m()
+        except:
+            pass
 
         return instance
 
