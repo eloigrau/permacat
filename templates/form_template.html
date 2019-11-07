@@ -2,12 +2,14 @@
 {% load app_filters %}
 {% load widget_tweaks %}
 <div class="row justify-content-sm-center">
-<div class="col-sm-12 col-md-8 col-lg-6 text-center">
+<div class="col-sm-12 col-md-10 col-lg-9 text-center">
 <form method="post">
   {% csrf_token %}
   {% include 'form_template2.html' %}
 
+{% if not boutonAnnuler %}
           <input type="button" class="btn btn-secondary"  onclick="window.history.back();"  value="Annuler" />
+{% endif %}
   <button type="submit" class="btn btn-primary">OK</button>
 </form>
 </div>

@@ -46,6 +46,7 @@ class FicheChangeForm(forms.ModelForm):
         fields = ['categorie', 'titre', 'contenu', 'en_savoir_plus', 'tags']
         widgets = {
             'contenu': SummernoteWidget(),
+            'en_savoir_plus': SummernoteWidget(),
         }
 
 

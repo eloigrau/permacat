@@ -112,6 +112,10 @@
             {% csrf_token %}
             <input type="hidden" name="Nouveau Message" value="{{ message_defaut }}">
             {% include 'form_template3.html' %}
+
+{% block boutonAnnuler %}
+
+{% endblock %}
         </form>
         </div>
 
