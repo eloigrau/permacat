@@ -17,29 +17,33 @@
 </div>
 </div>
 
-<div class="row align-items-center">
+<div class="row">
 <div class="col-sm-12 textcenter">
-    <div class="btn-group">
-        <a {% if request.GET.categorie %}  href="?categorie={{categorie}}"
-            {%else%}href="#" {%endif%}>
-            <button type="button" class="btn btn-primary">
-            {% if request.GET.categorie %} {{categorie_courante}} {%else%}{% if request.GET.mc %} {{request.GET.mc}} {%else%}Sommaire{%endif%}{%endif%}
-            </button>
-        </a>
-         <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-           data-target = "#idAuteur">
-            <span class="sr-only">Toggle Dropdown</span>
-          </button>
-        <div class="dropdown-menu"  aria-labelledby="menuCategorie"  id=idCategorie">
-              <a class="dropdown-item" href="{% url 'fiches:index' %}" style="background-color:#c0ccd6;">Sommaire</a>
-              <a class="dropdown-item" href="{% url 'fiches:index' %}?mc=essentiels" style="background-color:#c0ccd6;">Les essentiels</a>
-              <a class="dropdown-item" href="{% url 'fiches:index_ateliers' %}" style="background-color:#c0ccd6;">Liste des ateliers</a>
-              <li>  <span class="nav-link divider" role="separator"></span></li>
-            {% for categorie_id, cat_nom in categorie_list %}
-              <a class="dropdown-item" href="?categorie={{categorie_id}}" style="background-color:{{categorie_id|couleur_cat}};">{{cat_nom}}</a>
-            {% endfor %}
+    <nav class="navbar navbar-expand-sm navbar-light justify-content-center ">
+        <div class="navbar-header">
+             <button class="navbar-toggler btn btn-block" type="button" data-toggle="collapse" data-target="#navbarProduit" aria-controls="navbarProduitContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span></button>
         </div>
-    </div>
+        <div class="collapse navbar-collapse  justify-content-center " id="navbarProduit">
+            <ul class="nav navbar-nav justify-content-center">
+                <li class="nav-item dropdown">
+                 <button type="button" class="btn btn-block btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                   data-target = "#idCategorie">
+                    {% if request.GET.categorie %} {{categorie_courante}} {%else%}{% if request.GET.mc %} {{request.GET.mc}} {%else%}Sommaire{%endif%}{%endif%}
+                    </button>
+                <div class="dropdown-menu"  aria-labelledby="menuCategorie"  id=idCategorie">
+                      <a class="dropdown-item" href="{% url 'fiches:index' %}" style="background-color:#c0ccd6;">Sommaire</a>
+                      <a class="dropdown-item" href="{% url 'fiches:index' %}?mc=essentiels" style="background-color:#c0ccd6;">Les essentiels</a>
+                      <a class="dropdown-item" href="{% url 'fiches:index_ateliers' %}" style="background-color:#c0ccd6;">Liste des ateliers</a>
+                      <span class="nav-link divider" role="separator"></span>
+                    {% for categorie_id, cat_nom in categorie_list %}
+                      <a class="dropdown-item" href="?categorie={{categorie_id}}" style="background-color:{{categorie_id|couleur_cat}};">{{cat_nom}}</a>
+                    {% endfor %}
+                </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
 </div>
 </div>
 

@@ -101,19 +101,16 @@
 
 
         {% if request.user.is_permacat %}
-        <div class="btn-group">
-                <button type="button" class="btn {% if request.GET.permacat %}btn-primary{%endif%}">
-                {% if request.GET.permacat %}{% if request.GET.permacat == "True" %}Permacat {%else%}Public{%endif%}{%else%}Statut{%endif%}
-                </button>
-             <button type="button" class="btn {% if request.GET.permacat %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+            <li class="nav-item dropdown active">
+             <button type="button" class="btn btn-block {% if request.GET.permacat %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                data-target = "#idPermacat">
-                <span class="sr-only">Toggle Dropdown</span>
+                {% if request.GET.permacat %}{% if request.GET.permacat == "True" %}Permacat {%else%}Public{%endif%}{%else%}Statut{%endif%}
               </button>
-            <div class="dropdown-menu"  aria-labelledby="menuStatut"  id=idPermacat">
-                  <a class="dropdown-item" href="?permacat=True">Permacat</a>
-                  <a class="dropdown-item" href="?permacat=False">Public</a>
-            </div>
-        </div>
+                <div class="dropdown-menu"  aria-labelledby="menuStatut"  id=idPermacat">
+                      <a class="dropdown-item" href="?permacat=True">Permacat</a>
+                      <a class="dropdown-item" href="?permacat=False">Public</a>
+                </div>
+            </li>
         {%endif%}
 
             <li class="nav-item dropdown active">
