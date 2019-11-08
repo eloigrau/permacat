@@ -15,26 +15,18 @@ class Migration(migrations.Migration):
     def gen_uuid(apps, schema_editor):
         max_length = Fiche._meta.get_field('slug').max_length
         for row in Fiche.objects.all():
-            row.slug = orig = slugify(row.titre)[:max_length]
-
-            for x in itertools.count(1):
-                if not Fiche.objects.filter(slug=row.slug).exists():
-                    break
-
-                # Truncate the original slug dynamically. Minus 1 for the hyphen.
-                row.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
+            orig = slugify(row.titre)[:max_length]
+            if not orig or Fiche.objects.filter(slug=row.slug).exists():
+                orig = uuid.uuid4()[:max_length]
+            row.slug = orig
             row.save()
 
         max_length = Atelier._meta.get_field('slug').max_length
         for row in Atelier.objects.all():
-            row.slug = orig = slugify(row.titre)[:max_length]
-
-            for x in itertools.count(1):
-                if not Atelier.objects.filter(slug=row.slug).exists():
-                    break
-
-                # Truncate the original slug dynamically. Minus 1 for the hyphen.
-                row.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
+            orig = slugify(row.titre)[:max_length]
+            if  not orig or Fiche.objects.filter(slug=row.slug).exists():
+                orig = uuid.uuid4()[:max_length]
+            row.slug = orig
             row.save()
 
     operations = [
@@ -50,13 +42,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='fiche',
             name='slug',
-            field=models.SlugField(),
+            field=models.SlugField(max_length=100),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='atelier',
             name='slug',
-            field=models.SlugField(),
+            field=models.SlugField(max_length=100),
             preserve_default=True,
         ),
 
@@ -65,11 +57,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='fiche',
             name='slug',
-            field=models.SlugField(default=uuid.uuid4, unique=True),
+            field=models.SlugField(unique=True),
         ),
         migrations.AlterField(
             model_name='atelier',
             name='slug',
-            field=models.SlugField(default=uuid.uuid4, unique=True),
+            field=models.SlugField(unique=True),
         ),
     ]
