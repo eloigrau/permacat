@@ -36,13 +36,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='fiche',
             name='slug',
-            field=models.SlugField(max_length=100, default=uuid.uuid4),
+            field=models.SlugField(default=uuid.uuid4),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='atelier',
             name='slug',
-            field=models.SlugField(max_length=100, default=uuid.uuid4),
+            field=models.SlugField(default=uuid.uuid4),
             preserve_default=True,
         ),
 
