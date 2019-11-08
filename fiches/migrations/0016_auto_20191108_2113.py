@@ -26,6 +26,7 @@ class Migration(migrations.Migration):
             orig = slugify(row.titre)[:max_length]
             if  not orig or Fiche.objects.filter(slug=row.slug).exists():
                 orig = uuid.uuid4()
+
             row.slug = orig
             row.save()
 
