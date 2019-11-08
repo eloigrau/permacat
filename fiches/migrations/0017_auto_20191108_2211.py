@@ -21,6 +21,16 @@ class Migration(migrations.Migration):
             row.save()
 
     operations = [
+
+        migrations.RemoveField(
+            model_name='fiche',
+            name='slug',
+        ),
+        migrations.RemoveField(
+            model_name='atelier',
+            name='slug',
+        ),
+
         migrations.AddField(
             model_name='fiche',
             name='slug',
