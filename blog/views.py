@@ -33,7 +33,8 @@ def ajouterNouveauPost(request):
         suffix = "" if article.estPublic else "_permacat"
         action.send(request.user, verb='article_nouveau'+suffix, action_object=article, url=url,
                     description="a ajouté un article : '%s'" % article.titre)
-        return render(request, 'blog/lireArticle.html', {'article': article})
+        return redirect(article.get_absolute_url())
+        #return render(request, 'blog/lireArticle.html', {'article': article})
     return render(request, 'blog/ajouterPost.html', { "form": form, })
 
 
@@ -184,7 +185,7 @@ def ajouterNouveauProjet(request):
             suffix = "" if projet.estPublic else "_permacat"
             action.send(request.user, verb='projet_nouveau'+suffix, action_object=projet, url=url,
                     description="a ajouté un projet : '%s'" % projet.titre)
-            return render(request, 'blog/lireProjet.html', {'projet': projet})
+            return redirect(url)
     else:
         form = ProjetForm(request.POST or None, request.FILES or None)
     return render(request, 'blog/ajouterProjet.html', { "form": form, })

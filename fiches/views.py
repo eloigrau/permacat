@@ -19,7 +19,7 @@ def ajouterFiche(request):
     form = FicheForm(request.POST or None)
     if form.is_valid():
         fiche = form.save(request.user)
-        return render(request, 'fiches/lireFiche.html', {'fiche': fiche})
+        return redirect(fiche.get_absolute_url())
     return render(request, 'fiches/fiche_ajouter.html', { "form": form, })
 
 @login_required
@@ -27,8 +27,8 @@ def ajouterAtelier(request, fiche_slug):
     form = AtelierForm(request.POST or None)
     if form.is_valid():
         fiche = Fiche.objects.get(slug=fiche_slug)
-        atelier = form.save(fiche)
-        return render(request, 'fiches/lireFiche.html', {'fiche': atelier.fiche})
+        form.save(fiche)
+        return redirect(fiche.get_absolute_url())
     return render(request, 'fiches/atelier_ajouter.html', { "form": form, })
 
 
@@ -46,8 +46,7 @@ class ModifierFiche(UpdateView):
         self.object = form.save()
         self.object.date_modification = now()
         self.object.save()
-        return HttpResponseRedirect(self.get_success_url())
-
+        return HttpResponseRedirect(self.object.get_absolute_url())
 
     def save(self):
         return super(ModifierFiche, self).save()
@@ -56,7 +55,6 @@ class ModifierAtelier(UpdateView):
     model = Atelier
     form_class = AtelierChangeForm
     template_name_suffix = '_modifier'
-#    fields = ['user','site_web','description', 'competences', 'adresse', 'avatar', 'inscrit_newsletter']
 
     def get_object(self):
         return Atelier.objects.get(slug=self.kwargs['slug'])
@@ -66,7 +64,10 @@ class ModifierAtelier(UpdateView):
         self.object.date_modification = now()
         self.object.save()
         return HttpResponseRedirect(self.object.fiche.get_absolute_url())
+        #return redirect('lireFiche', slug=self.object.fiche.slug)
 
+    def get_success_url(self):
+        return self.object.fiche.get_absolute_url()
 
     def save(self):
         return super(ModifierAtelier, self).save()
@@ -125,7 +126,7 @@ class ListeFiches(ListView):
         if "ordreTri" in params:
             qs = qs.order_by(params['ordreTri'])
         else:
-            qs = qs.order_by('date_creation', '-date_dernierMessage', 'categorie')
+            qs = qs.order_by('categorie', 'numero', '-date_dernierMessage', )
 
         return qs
 

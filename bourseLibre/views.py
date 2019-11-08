@@ -742,8 +742,7 @@ class ListeConversations(ListView):
 def chercherConversation(request):
     form = ChercherConversationForm(request.user, request.POST or None,)
     if form.is_valid():
-        destinataire = form.cleaned_data['destinataire']
-        destinataire = form.fields['destinataire'].choices[int(destinataire)-1][1].username
+        destinataire = (Profil.objects.all().order_by('username'))[int(form.cleaned_data['destinataire'])]
         return redirect('lireConversation', destinataire=destinataire)
     else:
         return render(request, 'chercher_conversation.html', {'form': form})

@@ -42,11 +42,13 @@ class Fiche(models.Model):
     statut = models.CharField(max_length=30,
         choices=(Choix.statut_fiche),
         default='proposition', verbose_name="statut de la fiche")
+    numero = models.PositiveIntegerField(blank=False, default=1)
     titre = models.CharField(max_length=100,)
     slug = models.SlugField(max_length=100)
     contenu = models.TextField(null=True, blank=True)
     objectif = models.TextField(null=True, blank=True)
     en_savoir_plus = models.TextField(null=True, blank=True,)
+
 
     date_creation = models.DateTimeField(verbose_name="Date de parution", default=timezone.now)
     date_modification = models.DateTimeField(verbose_name="Date de modification", default=timezone.now)

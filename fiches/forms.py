@@ -9,7 +9,7 @@ class FicheForm(forms.ModelForm):
 
     class Meta:
         model = Fiche
-        fields = ['categorie', 'titre', 'objectif', 'contenu', 'en_savoir_plus', 'tags']
+        fields = ['categorie', 'numero', 'titre', 'objectif', 'contenu', 'en_savoir_plus', 'tags']
         widgets = {
             'contenu': SummernoteWidget(),
             'en_savoir_plus': SummernoteWidget(),
@@ -47,7 +47,7 @@ class FicheChangeForm(forms.ModelForm):
 
     class Meta:
         model = Fiche
-        fields = ['categorie', 'titre', 'objectif', 'contenu', 'en_savoir_plus', 'tags']
+        fields = ['categorie', 'numero', 'titre', 'objectif', 'contenu', 'en_savoir_plus', 'tags']
         widgets = {
             'contenu': SummernoteWidget(),
             'en_savoir_plus': SummernoteWidget(),
