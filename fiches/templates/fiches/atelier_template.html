@@ -26,9 +26,9 @@
 <tr>
     <td>{{ atelier.get_age_display }}</td><td>{{ atelier.get_difficulte_display }}</td><td>
 
+      <img  style="max-width: 80%; height: auto;" src="{{STATIC_URL}}img/monnaie{{atelier.get_budget}}.png" alt="cout"/>
     {%for i in atelier.get_budget_length %}
                {% fontawesome_icon 'coins' %}
-               {% fontawesome_icon 'link' %}
                {% comment %}{% fontawesome_icon 'euro-sign' %} {% endcomment %}
     {%endfor%}
 
