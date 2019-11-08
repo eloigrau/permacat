@@ -2,6 +2,7 @@
 
 from django.db import migrations, models
 import uuid
+from fiches.models import Fiche, Atelier
 
 
 class Migration(migrations.Migration):
@@ -9,16 +10,39 @@ class Migration(migrations.Migration):
     dependencies = [
         ('fiches', '0016_auto_20191108_2231'),
     ]
+    def gen_uuid(apps, schema_editor):
+        for row in Fiche.objects.all():
+            row.slug = uuid.uuid4()
+            row.save()
+
+        for row in Atelier.objects.all():
+            row.slug = uuid.uuid4()
+            row.save()
 
     operations = [
         migrations.AddField(
             model_name='atelier',
             name='slug',
-            field=models.SlugField(default=uuid.uuid4, max_length=100, unique=True),
+            field=models.SlugField(default=uuid.uuid4),
+            preserve_default=True,
         ),
         migrations.AddField(
             model_name='fiche',
             name='slug',
-            field=models.SlugField(default=uuid.uuid4, max_length=100, unique=True),
+            field=models.SlugField(default=uuid.uuid4),
+            preserve_default=True,
+        ),
+        migrations.RunPython(gen_uuid),
+
+        migrations.AlterField(
+            model_name='atelier',
+            name='slug',
+            field=models.SlugField(default=uuid.uuid4, unique=True, max_length=100),
+        ),
+
+        migrations.AlterField(
+            model_name='fiche',
+            name='slug',
+            field=models.SlugField(default=uuid.uuid4, unique=True, max_length=100),
         ),
     ]
