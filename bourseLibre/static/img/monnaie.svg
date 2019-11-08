@@ -147,9 +147,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8"
-     inkscape:cx="83.708211"
-     inkscape:cy="1058.234"
+     inkscape:zoom="5.6"
+     inkscape:cx="28.862267"
+     inkscape:cy="1061.6632"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -345,28 +345,21 @@
          id="path1274-7"
          inkscape:connector-curvature="0" />
     </g>
-    <g
-       id="g966"
-       transform="matrix(0.90386124,0,0,0.90386124,2.5218095,-0.63044994)"
-       style="fill:#ff00fc;fill-opacity:1"
+    <path
+       style="fill:#ff00fc;fill-opacity:1;stroke:#689800;stroke-width:1.429;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.94920635"
+       d="m 2.1981954,13.213065 8.7326386,7.819422"
+       id="path853"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
        inkscape:export-xdpi="95"
-       inkscape:export-ydpi="95">
-      <path
-         inkscape:export-ydpi="95"
-         inkscape:export-xdpi="95"
-         sodipodi:nodetypes="cc"
-         inkscape:connector-curvature="0"
-         id="path853"
-         d="M -0.35803514,15.315974 9.3034459,23.967105"
-         style="fill:#ff00fc;fill-opacity:1;stroke:#780000;stroke-width:1.58095753;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-      <path
-         inkscape:export-ydpi="95"
-         inkscape:export-xdpi="95"
-         sodipodi:nodetypes="cc"
-         inkscape:connector-curvature="0"
-         id="path855"
-         d="M -0.35803514,23.967105 9.3034459,15.315974"
-         style="fill:#ff00fc;fill-opacity:1;stroke:#780000;stroke-width:1.58095753;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    </g>
+       inkscape:export-ydpi="95" />
+    <path
+       style="fill:#ff00fc;fill-opacity:1;stroke:#689800;stroke-width:1.429;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.94920635"
+       d="M 2.1981954,21.032487 10.930834,13.213065"
+       id="path855"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-xdpi="95"
+       inkscape:export-ydpi="95" />
   </g>
 </svg>
