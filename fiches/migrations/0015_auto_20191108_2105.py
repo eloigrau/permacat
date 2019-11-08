@@ -15,14 +15,4 @@ class Migration(migrations.Migration):
             name='budget',
             field=models.CharField(choices=[('0', '0'), ('1', '1'), ('2', '2'), ('3', '3')], default='0', max_length=30, verbose_name='budget'),
         ),
-        migrations.AlterField(
-            model_name='atelier',
-            name='titre',
-            field=models.CharField(max_length=100, unique=True),
-        ),
-        migrations.AlterField(
-            model_name='fiche',
-            name='titre',
-            field=models.CharField(max_length=100, unique=True),
-        ),
     ]
