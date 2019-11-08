@@ -22,6 +22,18 @@ class Migration(migrations.Migration):
 
     operations = [
 
+        migrations.AddField(
+            model_name='atelier',
+            name='slug',
+            field=models.SlugField(default=uuid.uuid4),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='fiche',
+            name='slug',
+            field=models.SlugField(default=uuid.uuid4),
+            preserve_default=True,
+        ),
         migrations.RunPython(gen_uuid),
 
         migrations.AlterField(

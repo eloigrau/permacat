@@ -15,16 +15,4 @@ class Migration(migrations.Migration):
             name='titre',
             field=models.CharField(max_length=120),
         ),
-        migrations.AddField(
-            model_name='atelier',
-            name='slug',
-            field=models.SlugField(default=uuid.uuid4),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='fiche',
-            name='slug',
-            field=models.SlugField(default=uuid.uuid4),
-            preserve_default=True,
-        ),
     ]
