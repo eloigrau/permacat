@@ -21,8 +21,8 @@ class Migration(migrations.Migration):
                 if not Fiche.objects.filter(slug=row.slug).exists():
                     break
 
-            # Truncate the original slug dynamically. Minus 1 for the hyphen.
-            row.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
+                # Truncate the original slug dynamically. Minus 1 for the hyphen.
+                row.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
             row.save()
 
         max_length = Atelier._meta.get_field('slug').max_length
@@ -30,11 +30,11 @@ class Migration(migrations.Migration):
             row.slug = orig = slugify(row.titre)[:max_length]
 
             for x in itertools.count(1):
-                if not Fiche.objects.filter(slug=row.slug).exists():
+                if not Atelier.objects.filter(slug=row.slug).exists():
                     break
 
-            # Truncate the original slug dynamically. Minus 1 for the hyphen.
-            row.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
+                # Truncate the original slug dynamically. Minus 1 for the hyphen.
+                row.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
             row.save()
 
     operations = [
@@ -50,13 +50,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='fiche',
             name='slug',
-            field=models.SlugField(max_length=100, unique=True),
+            field=models.SlugField(),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='atelier',
             name='slug',
-            field=models.SlugField(max_length=100, unique=True),
+            field=models.SlugField(),
             preserve_default=True,
         ),
 
