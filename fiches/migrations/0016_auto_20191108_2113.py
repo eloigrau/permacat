@@ -15,19 +15,12 @@ class Migration(migrations.Migration):
     def gen_uuid(apps, schema_editor):
         max_length = Fiche._meta.get_field('slug').max_length
         for row in Fiche.objects.all():
-            orig = slugify(row.titre)[:max_length]
-            if not orig or Fiche.objects.filter(slug=row.slug).exists():
-                orig = uuid.uuid4()
-            row.slug = str(orig)[:max_length]
+            row.slug = uuid.uuid4()
             row.save()
 
         max_length = Atelier._meta.get_field('slug').max_length
         for row in Atelier.objects.all():
-            orig = slugify(row.titre)[:max_length]
-            if  not orig or Fiche.objects.filter(slug=row.slug).exists():
-                orig = uuid.uuid4()
-
-            row.slug = str(orig)[:max_length]
+            row.slug = uuid.uuid4()
             row.save()
 
     operations = [
