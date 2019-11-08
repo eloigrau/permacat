@@ -64,9 +64,9 @@
 
 <div class="infinite-container">
     {% for fiche in fiche_list %}
-{% if not forloop.first %}
-{% ifchanged fiche.categorie %}<hr>{% endifchanged %}
-    {% endif %}
+{% ifchanged fiche.categorie %}
+{% if not forloop.first  %}<hr> {% endif %}
+    {% endifchanged %}
     <div class="infinite-item ">
             {% include "fiches/fiche_template.html" with fiche=fiche %}
     </div>
