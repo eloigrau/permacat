@@ -10,6 +10,7 @@ class Migration(migrations.Migration):
     dependencies = [
         ('fiches', '0016_auto_20191108_2231'),
     ]
+
     def gen_uuid(apps, schema_editor):
         for row in Fiche.objects.all():
             row.slug = uuid.uuid4()
@@ -20,18 +21,7 @@ class Migration(migrations.Migration):
             row.save()
 
     operations = [
-        migrations.AddField(
-            model_name='atelier',
-            name='slug',
-            field=models.SlugField(default=uuid.uuid4),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='fiche',
-            name='slug',
-            field=models.SlugField(default=uuid.uuid4),
-            preserve_default=True,
-        ),
+
         migrations.RunPython(gen_uuid),
 
         migrations.AlterField(
