@@ -18,7 +18,7 @@
 
     </div>
     <div class="col-sm-8">
-        <p class="infos  textepetit textcenter "><a href="{% url 'fiches:index'  %}?categorie={{fiche.categorie}}"">{{ fiche.get_categorie_display }}</a>, {{ fiche.date_creation|date:"DATE_FORMAT" }}
+        <p class="infos  textepetit textcenter "><a href="{% url 'fiches:index'  %}?categorie={{fiche.categorie}}">{{ fiche.get_categorie_display }}</a>, {{ fiche.date_creation|date:"DATE_FORMAT" }}
 
         </p>
     </div>

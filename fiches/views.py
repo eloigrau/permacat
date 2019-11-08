@@ -104,6 +104,16 @@ def lireFiche(request, slug):
     return render(request, 'fiches/lireFiche.html', {'fiche': fiche, 'ateliers':ateliers, 'form': form_comment, 'commentaires':commentaires},)
 
 
+@login_required
+def lireAtelier(request, slug):
+    atelier = get_object_or_404(Atelier, slug=slug)
+    return render(request, 'fiches/lireAtelier.html', {'atelier': atelier,},)
+
+@login_required
+def lireAtelier_id(request, id):
+    atelier = get_object_or_404(Atelier, id=id)
+    return render(request, 'fiches/lireAtelier.html', {'atelier': atelier,},)
+
 class ListeFiches(ListView):
     model = Fiche
     context_object_name = "fiche_list"
@@ -175,7 +185,7 @@ class ListeAteliers(ListView):
         if "ordreTri" in params:
             qs = qs.order_by(params['ordreTri'])
         else:
-            qs = qs.order_by('date_creation',)
+            qs = qs.order_by('fiche__numero', 'fiche__categorie',)
 
         return qs
 

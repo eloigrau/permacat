@@ -58,7 +58,7 @@
 <div class="infinite-item ">
    <div class="row justify-content-center ">
     <div class="col-sm-12 col-ms-10 col-lg-8 textcenter " >
-       <a  href="{% url 'fiches:lireFiche' slug=atelier.fiche.slug %}#atelier{{atelier.slug}}" class="bouton_fiche_index" style="background-color:{{atelier.fiche.get_couleur}};"> {{ atelier.titre }}<p class="bouton_fiche_index_entete">({{ atelier.fiche.titre }}) </p></a>
+       <a  href="{% url 'fiches:lireAtelier_id' id=atelier.id %}" class="bouton_fiche_index" style="background-color:{{atelier.fiche.get_couleur}};"> {{ atelier.titre }}<p class="bouton_fiche_index_entete">({{ atelier.fiche.titre }}) </p></a>
     </div>
    </div>
 </div>

@@ -25,6 +25,8 @@ urlpatterns = [
     url(r'^fiches/$', login_required(views.ListeFiches.as_view(), login_url='/auth/login/'), name="index"),
     url(r'^ateliers/$', login_required(views.ListeAteliers.as_view(), login_url='/auth/login/'), name="index_ateliers"),
     url(r'^fiche/(?P<slug>[-\w]+)$', views.lireFiche, name='lireFiche'),
+    url(r'^atelier/(?P<slug>[-\w]+)$', views.lireAtelier, name='lireAtelier'),
+    url(r'^atelier/id/(?P<id>[-\w]+)$', views.lireAtelier_id, name='lireAtelier_id'),
     url(r'^modifierFiche/(?P<slug>[-\w]+)$', login_required(views.ModifierFiche.as_view(), login_url='/auth/login/'), name='modifierFiche'),
     url(r'^modifierAtelier/(?P<slug>[-\w]+)$', login_required(views.ModifierAtelier.as_view(), login_url='/auth/login/'), name='modifierAtelier'),
     url(r'^supprimerFiche/(?P<slug>[-\w]+)$', login_required(views.SupprimerFiche.as_view(), login_url='/auth/login/'), name='supprimerFiche'),

@@ -64,10 +64,12 @@
 
 <div class="infinite-container">
     {% for fiche in fiche_list %}
+{% if not forloop.first %}
+{% ifchanged fiche.categorie %}<hr>{% endifchanged %}
+    {% endif %}
     <div class="infinite-item ">
             {% include "fiches/fiche_template.html" with fiche=fiche %}
     </div>
-
     {% endfor %}
 </div>
 {%include 'pagination.html' %}

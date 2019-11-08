@@ -42,7 +42,7 @@ class FicheForm(forms.ModelForm):
         self.fields['contenu'].strip = False
 
 class FicheChangeForm(forms.ModelForm):
-    objectif = forms.CharField(label="Objectif de la fiche")
+    objectif = forms.CharField(label="Objectif de la fiche", strip=False)
 
 
     class Meta:

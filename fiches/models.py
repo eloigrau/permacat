@@ -44,7 +44,7 @@ class Fiche(models.Model):
         choices=(Choix.statut_fiche),
         default='proposition', verbose_name="statut de la fiche")
     numero = models.PositiveIntegerField(blank=False, default=1)
-    titre = models.CharField(max_length=100,)
+    titre = models.CharField(max_length=100,unique=True)
     slug = models.SlugField(max_length=100)
     contenu = models.TextField(null=True, blank=True)
     objectif = models.TextField(null=True, blank=True)
@@ -87,7 +87,7 @@ class Atelier(models.Model):
     categorie = models.CharField(max_length=30,
                                  choices=(Choix.type_atelier),
                                  default='0', verbose_name="categorie")
-    titre = models.CharField(max_length=100, )
+    titre = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100)
     contenu = models.TextField(null=True)
     age = models.CharField(max_length=30,
