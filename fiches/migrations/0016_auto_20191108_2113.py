@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
             orig = slugify(row.titre)[:max_length]
             if not orig or Fiche.objects.filter(slug=row.slug).exists():
                 orig = uuid.uuid4()
-            row.slug = orig[:max_length]
+            row.slug = str(orig)[:max_length]
             row.save()
 
         max_length = Atelier._meta.get_field('slug').max_length
@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
             if  not orig or Fiche.objects.filter(slug=row.slug).exists():
                 orig = uuid.uuid4()
 
-            row.slug = orig[:max_length]
+            row.slug = str(orig)[:max_length]
             row.save()
 
     operations = [
