@@ -15,12 +15,4 @@ class Migration(migrations.Migration):
             name='titre',
             field=models.CharField(max_length=120),
         ),
-        migrations.RemoveField(
-            model_name='atelier',
-            name='slug',
-        ),
-        migrations.RemoveField(
-            model_name='fiche',
-            name='slug',
-        ),
     ]

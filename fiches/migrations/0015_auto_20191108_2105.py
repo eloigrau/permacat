@@ -15,4 +15,12 @@ class Migration(migrations.Migration):
             name='budget',
             field=models.CharField(choices=[('0', '0'), ('1', '1'), ('2', '2'), ('3', '3')], default='0', max_length=30, verbose_name='budget'),
         ),
+        migrations.RemoveField(
+            model_name='atelier',
+            name='slug',
+        ),
+        migrations.RemoveField(
+            model_name='fiche',
+            name='slug',
+        ),
     ]
