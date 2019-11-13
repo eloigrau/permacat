@@ -12,18 +12,18 @@
 
     <div class="col-sm-2">
 
-        <a  href="{% url 'fiches:index'  %}">
+        <a  href="{%if request.user.is_authenticated %}{% url 'fiches:index'  %}{% endif %}">
         <button class="btn btn-info btn-sm textright" >Sommaire</button>
             </a>
 
     </div>
     <div class="col-sm-8">
-        <p class="infos  textepetit textcenter "><a href="{% url 'fiches:index'  %}?categorie={{fiche.categorie}}">{{ fiche.get_categorie_display }}</a>, {{ fiche.date_creation|date:"DATE_FORMAT" }}
+        <p class="infos  textepetit textcenter "><a href="{%if request.user.is_authenticated %}{% url 'fiches:index'  %}?categorie={{fiche.categorie}}{% endif %}">{{ fiche.get_categorie_display }}</a>, {{ fiche.date_creation|date:"DATE_FORMAT" }}
 
         </p>
     </div>
         <div class="col-sm-2 textright">
-            <a href="{% url 'fiches:modifierFiche' slug=fiche.slug %}">
+            <a href="{%if request.user.is_authenticated %}{% url 'fiches:modifierFiche' slug=fiche.slug %}{% endif %}">
                <button type="button" class="btn btn-sm btn-warning">
                  &nbsp;Modifier
                </button></a>
@@ -74,7 +74,7 @@
 <div class="tab-pane fade" id="ateliers">
     <div class="contenu atelier">
         <div class="col textcenter">
-            <a href="{% url 'fiches:ajouterAtelier' fiche_slug=fiche.slug%}">
+            <a href="{%if request.user.is_authenticated %}{% url 'fiches:ajouterAtelier' fiche_slug=fiche.slug%}{% endif %}">
                <button type="button" class="btn btn-sm btn-warning">
                 <span class="glyphicon glyphicon-plus"></span>&nbsp;Ajouter un atelier
                </button></a>
@@ -110,7 +110,7 @@
         var messageBody = document.querySelector('#idConversation');
         messageBody.scrollTop = idConversation.scrollHeight - idConversation.clientHeight;
     </script>
-
+{%if request.user.is_authenticated %}
     <div>
             <input type="hidden" name="Nouveau Message" value="{{ message }}">
 
@@ -121,12 +121,12 @@
             {% include 'form_template3.html' %}
 
 {% block boutonAnnuler %}
-
 {% endblock %}
         </form>
         </div>
 
     </div>
+{% endif %}
   </div>
 </div>
 

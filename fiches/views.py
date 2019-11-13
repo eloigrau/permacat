@@ -104,12 +104,10 @@ def lireFiche(request, slug):
     return render(request, 'fiches/lireFiche.html', {'fiche': fiche, 'ateliers':ateliers, 'form': form_comment, 'commentaires':commentaires},)
 
 
-@login_required
 def lireAtelier(request, slug):
     atelier = get_object_or_404(Atelier, slug=slug)
     return render(request, 'fiches/lireAtelier.html', {'atelier': atelier,},)
 
-@login_required
 def lireAtelier_id(request, id):
     atelier = get_object_or_404(Atelier, id=id)
     return render(request, 'fiches/lireAtelier.html', {'atelier': atelier,},)
@@ -211,3 +209,31 @@ class ListeAteliers(ListView):
             context['typeFiltre'] = "mc"
 
         return context
+
+def voirFicheTest(request):
+    try:
+        fiche = get_object_or_404(Fiche, slug="44429d18-6e5e-4609-bb5d-84797a50dad4")
+    except:
+        fiche = get_object_or_404(Fiche, slug="ezar")
+
+    commentaires = CommentaireFiche.objects.filter(fiche=fiche).order_by("date_creation")
+    ateliers = Atelier.objects.filter(fiche=fiche).order_by("date_creation")
+
+    if request.user.is_authenticated:
+        form_comment = CommentaireFicheForm(request.POST or None)
+        if form_comment.is_valid():
+            comment = form_comment.save(commit=False)
+            comment.fiche = fiche
+            comment.auteur_comm = request.user
+            fiche.date_dernierMessage = comment.date_creation
+            fiche.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(comment.commentaire))[:96] + "..."
+            fiche.save()
+            comment.save()
+            return redirect(request.path)
+    else:
+        form_comment = None
+
+    return render(request, 'fiches/lireFiche.html', {'fiche': fiche, 'ateliers':ateliers, 'form': form_comment, 'commentaires':commentaires},)
+
+
+    return render(request, 'fiches/lireFiche.html', {'fiche': fiche, 'ateliers':ateliers, 'form': form_comment, 'commentaires':commentaires},)

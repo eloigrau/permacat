@@ -32,4 +32,6 @@ urlpatterns = [
     url(r'^supprimerFiche/(?P<slug>[-\w]+)$', login_required(views.SupprimerFiche.as_view(), login_url='/auth/login/'), name='supprimerFiche'),
     url(r'^ajouterFiche/$', login_required(views.ajouterFiche), name='ajouterFiche'),
     url(r'^ajouterAtelier/(?P<fiche_slug>[-\w]+)$', login_required(views.ajouterAtelier), name='ajouterAtelier'),
+    url(r'^voirFicheTest/$', views.voirFicheTest, name='voirFicheTest'),
+
 ]
