@@ -13,11 +13,7 @@
 
         <div class="btn-group btn-group-justified">
         <a  href="{%if request.user.is_authenticated %}{% url 'fiches:index_ateliers' %}{% endif %}">
-        <button class="btn btn-info btn-sm textright" >Sommaire</button>
-            </a>
-
-        <a  href="{% url 'fiches:lireFiche' slug=atelier.fiche.slug %}">
-        <button class="btn btn-info btn-sm textright" >Retourner à la fiche</button>
+        <button class="btn btn-info btn-sm textright" >Ateliers</button>
             </a>
         </div>
     </div>
