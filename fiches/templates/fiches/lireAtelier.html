@@ -6,6 +6,13 @@
 
 
 {% endblock %}
+
+{% block navbar%}
+{%if not request.user.is_authenticated %}
+{% else %}
+            {% include 'navigationBar.html' %}
+{% endif %}
+{% endblock%}
 {% block content %}
 
  <div class="row justify-content-center">
