@@ -48,7 +48,7 @@ Messages échangés avec <span style="background-color:PapayaWhip;"><a href="{% 
 <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="hidden" name="Nouveau Message" value="{{ message_defaut }}">
-    {% include 'form_template3.html' %}
+    {% include 'form_template3.html'  with boutonAnnuler=False %}
 </form>
 </div>
 

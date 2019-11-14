@@ -49,9 +49,9 @@
         <small class="form-text text-muted">{{ field.help_text }}</small>
       {% endif %}
       <span class="input-group-btn">
-{% block boutonAnnuler %}
+{% if boutonAnnuler %}
           <input type="button" class="btn btn-secondary"  onclick="window.history.back();"  value="Annuler" />
-{% endblock %}
+{% endif %}
       <button type="submit" class="btn btn-primary">OK</button>
       </span>
 </div>
