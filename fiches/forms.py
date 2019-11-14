@@ -75,7 +75,7 @@ class AtelierForm(forms.ModelForm):
         instance.slug = orig = slugify(instance.titre)[:max_length]
 
         for x in itertools.count(1):
-            if not Fiche.objects.filter(slug=instance.slug).exists():
+            if not Atelier.objects.filter(slug=instance.slug).exists():
                 break
 
             # Truncate the original slug dynamically. Minus 1 for the hyphen.

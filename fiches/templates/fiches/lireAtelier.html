@@ -12,7 +12,7 @@
     <div class="col-sm-2">
 
         <div class="btn-group btn-group-justified">
-        <a  href="{% url 'fiches:index_ateliers' %}">
+        <a  href="{%if request.user.is_authenticated %}{% url 'fiches:index_ateliers' %}{% endif %}">
         <button class="btn btn-info btn-sm textright" >Sommaire</button>
             </a>
 
@@ -22,11 +22,11 @@
         </div>
     </div>
     <div class="col-sm-8">
-        <p class="infos  textepetit textcenter "><a href="{% url 'fiches:lireFiche' slug=atelier.fiche.slug %}">Fiche: {{ atelier.fiche.titre }}</a>
+        <p class="infos  textepetit textcenter "><a href="{% url 'fiches:lireFiche' slug=atelier.fiche.slug %}">{% fontawesome_icon 'step-backward' %} Fiche: {{ atelier.fiche.titre }} </a>
         </p>
     </div>
         <div class="col-sm-2 textright">
-            <a href="{% url 'fiches:modifierAtelier' slug=atelier.slug %}">
+            <a href="{%if request.user.is_authenticated %}{% url 'fiches:modifierAtelier' slug=atelier.slug %}{% endif %}">
                <button type="button" class="btn btn-sm btn-warning">
                  &nbsp;Modifier
                </button></a>
