@@ -25,7 +25,7 @@
         </div>
     </div>
     <div class="col-sm-8">
-        <p class="infos  textepetit textcenter "><a href="{% url 'fiches:lireFiche' slug=atelier.fiche.slug %}">{% fontawesome_icon 'step-backward' %} Fiche: {{ atelier.fiche.titre }} </a>
+        <p class="infos  textepetit textcenter "><a href="{%if request.user.is_authenticated %}{% url 'fiches:lireFiche' slug=atelier.fiche.slug %}{%else%}{% url 'fiches:voirFicheTest' %}{%endif%}">{% fontawesome_icon 'step-backward' %} Fiche: {{ atelier.fiche.titre }} </a>
         </p>
     </div>
         <div class="col-sm-2 textright">
