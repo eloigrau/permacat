@@ -159,7 +159,7 @@ def on_save_projets(instance, created, **kwargs):
         suivi, created = Suivis.objects.get_or_create(nom_suivi='projets')
         titre = "Permacat - nouvel article"
         message = " Un nouveau projet a été créé !" + \
-                  "\n Vous pouvez y accéder en suivant : <a href='https://permacat.herokuapp.com" + instance.get_absolute_url() + "'> ce lien<\a>" +\
+                  "\n Vous pouvez y accéder en suivant ce lien : https://permacat.herokuapp.com" + instance.get_absolute_url() +\
                   "\n\n------------------------------------------------------------------------------" \
                   "\n vous recevez cet email, car vous avez choisi de suivre les articles sur le site http://www.Perma.Cat/agora/"
         emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv]

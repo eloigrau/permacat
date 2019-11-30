@@ -21,7 +21,7 @@ from django.contrib.auth.decorators import login_required
 app_name = 'fiches'
 
 urlpatterns = [
-    url(r'^accueil/$', views.accueil, name="acceuil"),
+    url(r'^accueil/$', login_required(views.accueil), name="acceuil"),
     url(r'^fiches/$', login_required(views.ListeFiches.as_view(), login_url='/auth/login/'), name="index"),
     url(r'^ateliers/$', login_required(views.ListeAteliers.as_view(), login_url='/auth/login/'), name="index_ateliers"),
     url(r'^fiche/(?P<slug>[-\w]+)$', views.lireFiche, name='lireFiche'),
