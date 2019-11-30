@@ -1,9 +1,7 @@
 {% extends 'base.html' %}
 {% load activity_tags %}
 {% block subtitle %}
-<h4 class = "textcenter "> Notifications
-
-</h4>
+<h4 class = "textcenter "> Notifications  </h4>
 
 <p class = "textcenter ">
       <a href="{% url 'dernieresInfos'  %}" class="btn btn-success">
@@ -78,7 +76,7 @@
   </div>
   <ul class="list-group list-group-flush " >
 {% activity_stream 'actor' user %}
-{% for action in stream %}
+{% for action in stream|slice:":50" %}
     {% include "notifications/notifications_template.html" with action=action %}
 {% endfor %}
   </ul>
