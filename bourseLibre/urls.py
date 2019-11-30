@@ -93,6 +93,8 @@ urlpatterns = [
     #     url(r'^list2/$', FilterView.as_view(model=Produit, filterset_class=ProductFilter,)),
     url(r'^marche/$', login_required(views.ListeProduit.as_view()),  name="marche"),
     url(r'^marche/lister/$', login_required(views.ListeProduit.as_view()),  name="marche"),
+    url(r'^marche/supprimerProduits_expires_confirmation/$', views.supprimerProduits_expires_confirmation,  name="supprimerProduits_expires_confirmation"),
+    url(r'^marche/supprimerProduits_expires/$', views.supprimerProduits_expires,  name="supprimerProduits_expires"),
     url(r'^marche/lister_offres/', login_required(views.ListeProduit_offres.as_view()),
         name="marche_offres"),
     url(r'^marche/lister_recherches/', login_required(views.ListeProduit_recherches.as_view()),

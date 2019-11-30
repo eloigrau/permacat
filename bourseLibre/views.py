@@ -52,6 +52,8 @@ from os.path import isfile, join
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.core.exceptions import ObjectDoesNotExist
 
+from django.utils.timezone import now
+
 CharField.register_lookup(Lower, "lower")
 
 #import sys
@@ -86,7 +88,9 @@ def bienvenue(request):
     nbNotif = 0
     if request.user.is_authenticated:
         nbNotif = getNbNewNotifications(request)
-    return render(request, 'bienvenue.html', {'nomImage':nomImage, "nbNotif": nbNotif })
+        nbExpires = getNbProduits_expires(request)
+
+    return render(request, 'bienvenue.html', {'nomImage':nomImage, "nbNotif": nbNotif , "nbExpires":nbExpires})
 
 
 def presentation_site(request):
@@ -197,7 +201,8 @@ def merci(request, template_name='merci.html'):
 
 @login_required
 def profil_courant(request, ):
-    return render(request, 'profil.html', {'user': request.user})
+    nbExpires = getNbProduits_expires(request)
+    return render(request, 'profil.html', {'user': request.user, "nbExpires":nbExpires})
 
 
 @login_required
@@ -483,7 +488,7 @@ def register(request):
     return render(request, 'register.html', {"form_adresse": form_adresse,"form_profil": form_profil,})
 
 
-
+from datetime import date
 class ListeProduit(ListView):
     model = Produit
     context_object_name = "produits_list"
@@ -494,8 +499,13 @@ class ListeProduit(ListView):
         qs = Produit.objects.select_subclasses()
         if not self.request.user.is_authenticated or not self.request.user.is_permacat:
             qs = qs.filter(estPublique=True)
-
         params = dict(self.request.GET.items())
+
+        if not "expire" in params:
+            qs = qs.filter(Q(date_expiration__gt=date.today())| Q(date_expiration=None) )
+        else:
+            qs = qs.filter(Q(date_expiration__lt=date.today()) )
+
         
         if "distance" in params:
             listProducteurs = [p for p in Profil.objects.all() if p.getDistance(self.request.user) < float(params['distance'])] 
@@ -837,6 +847,28 @@ def dernieresInfos(request):
     for i in range(15):
         info_parjour.append({"jour":getTexteJourPrecedent(i), "infos":getInfosJourPrecedent(request, i)})
     return render(request, 'notifications/notifications_news.html', {'info_parjour': info_parjour,})
+
+
+@login_required
+def getNbProduits_expires(request):
+    return len(Produit.objects.filter(user=request.user, date_expiration__lt=date.today()))
+
+
+@login_required
+def supprimerProduits_expires_confirmation(request):
+
+    qs = Produit.objects.select_subclasses()
+    produits = qs.filter(user=request.user, date_expiration__lt=date.today())
+    return render(request, 'bourseLibre/produitexpires_confirm_delete.html', {'produits': produits,})
+
+@login_required
+def supprimerProduits_expires(request):
+    produits = Produit.objects.filter(user=request.user, date_expiration__lt=date.today())
+
+    for prod in produits:
+        prod.delete()
+
+    return redirect('bienvenue')
 
 
 @login_required

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Partager{% endblock %}
 {% block subtitle %}
-Vous proposez un...
+<h4>Vous proposez un...</h4>
 {% endblock %}
 {% block content %}
 <style>.col_aliment{background-color: {{ couleurs.aliment }};}
@@ -46,6 +46,8 @@ Vous proposez un...
             </div>
         </a>
     </div>
+    </div>
+<div class="row">
     <div class="col-sm-6 col_cat col_services">
         <a href="{%url 'produit_proposer' type_produit='service' %}">
             <div class="panel-group">
@@ -81,6 +83,7 @@ Vous proposez un...
                 </div>
             </div>
         </a>
+    </div>
     </div>
 </div>
 {% endblock %}

@@ -1,0 +1,29 @@
+
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="row justify-content-center ">
+
+<p>Offres du marché expirées  :</p>
+<div class="row ">
+<div class="col-sm-12 ">
+    {% for produit in produits%}
+        {% include "bourseLibre/produit_template3.html" with produit=produit %}
+    {% endfor %}
+</div>
+</div>
+<div class="row ">
+<div class="col-sm-12 textcenter">
+    <p>Sinon vous pouvez modifier les dates d'expiration de ces produits, ou bien les supprimer manuellement</p>
+    <p>Etes vous sur.e de vouloir supprimer ces offres "?</p>
+
+      <a href="window.history.back();" class="btn btn-info">
+         Annuler
+      </a>
+      <a href="{% url 'supprimerProduits_expires'  %}" class="btn btn-danger">
+         Confirmer
+      </a>
+</div>
+</div>
+</div>
+{% endblock %}

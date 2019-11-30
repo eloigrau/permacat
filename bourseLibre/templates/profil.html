@@ -45,6 +45,17 @@
             </a>
     </div>
   </div>
+{% if  user.username == request.user.username %}
+{% if nbExpires %}
+<hr>
+<div class="row" >
+  <div class="col-sm-12 textcenter" style ="color:#0f7407;">
+	  <b><a href="{% url 'supprimerProduits_expires_confirmation' %}">Vous avez {{nbExpires}} offre{{nbExpires|pluralize:",s"}} du marché qui {{nbExpires|pluralize:"a,ont"}}  expiré. Cliquez ici pour l{{nbExpires|pluralize:"a,es"}} supprimer ou l{{nbExpires|pluralize:"a,es"}}  modifier</a></b>
+  </div>
+</div>
+<hr>
+{%endif%}
+{%endif%}
 {% endblock %}
 
 {% block content %}
