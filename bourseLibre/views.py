@@ -768,6 +768,18 @@ def getNotifications(request):
 
     return salons, articles, projets, offres, conversations
 
+
+@login_required
+def getNotificationsParDate(request):
+    if request.user.is_permacat:
+        actions      = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_permacat')|Q(verb='article_nouveau_permacat') | Q(verb='article_message_permacat')|Q(verb='article_nouveau') | Q(verb='article_message')| Q(verb='article_modifier')| Q(verb='article_modifier_permacat')|Q(verb='projet_nouveau_permacat') | Q(verb='projet_message_permacat')|Q(verb='projet_nouveau') | Q(verb='projet_message')| Q(verb='projet_modifier')| Q(verb='projet_modifier_permacat')).order_by('-timestamp')
+    else:
+        actions      = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_permacat')|Q(verb='article_nouveau') | Q(verb='article_message')| Q(verb='article_modifier')|Q(verb='projet_nouveau') | Q(verb='projet_message')| Q(verb='projet_modifier')|Q(verb='ajout_offre')).order_by('-timestamp')
+
+    actions = [art for i, art in enumerate(actions[:100]) if i == 0 or not (art.description == actions[i-1].description and art.actor == actions[i-1].actor ) ][:30]
+
+    return actions
+
 @login_required
 def getNbNewNotifications(request):
     salons, articles, projets, offres, conversations = getNotifications(request)
@@ -777,13 +789,18 @@ def getNbNewNotifications(request):
     conversations = [action for action in conversations if  request.user.last_login < action.timestamp]
     salons = [action for action in salons if  request.user.last_login < action.timestamp]
 
-    return len(salons)+len( articles)+len( projets)+len( offres)+len(conversations)
+    return len(salons)+len(articles)+len(projets)+len(offres)+len(conversations)
 
 
 @login_required
 def notifications(request):
     salons, articles, projets, offres, conversations = getNotifications(request)
     return render(request, 'notifications/notifications.html', {'salons': salons, 'articles': articles,'projets': projets, 'offres':offres, 'conversations':conversations})
+
+@login_required
+def notificationsParDate(request):
+    actions = getNotificationsParDate(request)
+    return render(request, 'notifications/notificationsParDate.html', {'actions': actions, })
 
 def getInfosJourPrecedent(request, nombreDeJours):
     from datetime import datetime, timedelta
@@ -817,7 +834,7 @@ def getTexteJourPrecedent(nombreDeJour):
 @login_required
 def dernieresInfos(request):
     info_parjour = []
-    for i in range(10):
+    for i in range(15):
         info_parjour.append({"jour":getTexteJourPrecedent(i), "infos":getInfosJourPrecedent(request, i)})
     return render(request, 'notifications/notifications_news.html', {'info_parjour': info_parjour,})
 

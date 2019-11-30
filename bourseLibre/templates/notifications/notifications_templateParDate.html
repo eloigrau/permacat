@@ -1,0 +1,6 @@
+
+{%ifchanged %}<li class="list-group-item textcenter "  style="background-color:#e1e1d0"  >{{action.timestamp|date:"l d F"}}</li>{%endifchanged %}
+<li class="list-group-item"  style="{% if request.user.last_login > action.timestamp %}background-color:#ffffe6{%endif%}">
+    <a {%if action.data.url %}href="{{ action.data.url }} "{%endif%}>({{action.timestamp|date:"G:i"}}) {{action.actor}}
+        {%if action.description %}{{action.description}}{% endif %} {%ifequal action.verb 'started following' %} suit la {{action.target}}{% endifequal %}
+        </a></li>
