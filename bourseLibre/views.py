@@ -86,6 +86,7 @@ def bienvenue(request):
     nums = ['01', '02', '03', '04', '07', '10', '11', '13', '15', '17', '20', '21', '23', ]
     nomImage = 'img/flo/resized0' +  choice(nums)+'.png'
     nbNotif = 0
+    nbExpires = 0
     if request.user.is_authenticated:
         nbNotif = getNbNewNotifications(request)
         nbExpires = getNbProduits_expires(request)
