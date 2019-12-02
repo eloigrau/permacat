@@ -1,0 +1,69 @@
+{% extends 'base2.html' %}
+{% load ateliers_filters %}
+{% load blog_filters %}
+{% load fontawesome %}
+{% block subtitle %}
+
+
+{% endblock %}
+
+{% block navbar%}
+{%if not request.user.is_authenticated %}
+{% else %}
+            {% include 'navigationBar.html' %}
+{% endif %}
+{% endblock%}
+{% block content %}
+
+ <div class="row justify-content-center">
+    <div class="col-sm-6 textleft">
+
+        <div class="btn-group btn-group-justified">
+        <a  href="{%if request.user.is_authenticated %}{% url 'ateliers:index_ateliers' %}{% endif %}">
+        <button class="btn btn-info btn-sm textright" >Sommaire</button>
+            </a>
+        </div>
+    </div>
+        <div class="col-sm-6 textright">
+            <a href="{%if request.user.is_authenticated %}{% url 'ateliers:modifierAtelier' slug=atelier.slug %}{% endif %}">
+               <button type="button" class="btn btn-sm btn-warning">
+                 &nbsp;Modifier
+               </button></a>
+        </div>
+ </div>
+
+
+
+    <div class="row contenu atelier">
+    <div class="col justify-content-center">
+
+
+    <div class="row titre_atelier" style="background-color:{{atelier.atelier.get_couleur}};margin-bottom:15px;">
+        <div class="col textcenter" >
+              <h2> Atelier : {{ atelier.titre }}</h2>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-sm-12 col-md-4 textcenter">
+              <p> categorie : {{ atelier.categorie }}</p>
+              <p> statut : {{ atelier.statut }}</p>
+              <p> objectif : {{ atelier.objectif }}</p>
+              <p> référent : {{ atelier.référent }}</p>
+              <p> matériel : {{ atelier.matériel |safe}}</p>
+              <p> date_atelier : {{ atelier.date_atelier}}</p>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 ">
+            <p>{{ atelier.description|safe}}</p>
+        </div>
+    </div>
+</div>
+</div>
+        </div>
+
+
+
+{% endblock %}

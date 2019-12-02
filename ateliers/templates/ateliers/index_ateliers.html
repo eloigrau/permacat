@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load blog_filters %}
+{% load ateliers_filters %}
+{% load fontawesome %}
+
+{% load activity_tags %}
+    {%block header %}
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/infinite.min.js' %}"></script>
+    {%endblock%}
+{%block subtitle%}
+
+
+<div class="row align-items-center atelier_titre_page_index">
+<div class="col-sm-12 textcenter">
+    <h3>Les ateliers Permacat</h3>
+</div>
+</div>
+
+{% comment %}
+<div class="row">
+<div class="col-sm-12 textcenter">
+    <nav class="navbar navbar-expand-sm navbar-light justify-content-center">
+        <div class="navbar-header">
+             <button class="navbar-toggler btn btn-block" type="button" data-toggle="collapse" data-target="#navbarProduit" aria-controls="navbarProduitContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span></button>
+        </div>
+        <div class="collapse navbar-collapse  justify-content-center " id="navbarProduit">
+            <ul class="nav navbar-nav justify-content-center">
+                <li class="nav-item dropdown">
+                 <button type="button" class="btn btn-block btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                   data-target = "#idCategorie">
+                    {% if request.GET.categorie %} {{categorie_courante}} {%else%}{% if request.GET.mc %} {{request.GET.mc}} {%else%}Sommaire{%endif%}{%endif%}
+                    </button>
+                <div class="dropdown-menu"  aria-labelledby="menuCategorie"  id=idCategorie">
+                      <a class="dropdown-item" href="{% url 'ateliers:index_ateliers' %}" style="background-color:#c0ccd6;">Sommaire</a>
+                      <span class="nav-link divider" role="separator"></span>
+                    {% for categorie_id, cat_nom in categorie_list %}
+                      <a class="dropdown-item" href="?categorie={{categorie_id}}" style="background-color:{{categorie_id|couleur_cat}};">{{cat_nom}}</a>
+                    {% endfor %}
+                </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+</div>
+
+{% endcomment %}
+
+
+<div class="row align-items-center">
+<div class="col-sm-12 textcenter">
+    <div class="btn-group">
+        <a href="{% url 'ateliers:ajouterAtelier' %}">
+        <button type="button" class="btn btn-success" >
+                <span class="glyphicon glyphicon-plus"></span>Ajouter un atelier
+            </button>
+            </a>&ensp;
+</div>
+</div>
+</div>
+
+{%endblock%}
+{% block content %}
+
+<div class="infinite-container">
+    {% for atelier in atelier_list %}
+
+{% ifchanged atelier.atelier.categorie %}
+{% if not forloop.first  %}<hr> {% endif %}{% endifchanged %}
+
+<div class="infinite-item ">
+   <div class="row justify-content-center ">
+    <div class="col-sm-12 col-ms-10 col-lg-8 textcenter " >
+       <a  href="{% url 'ateliers:lireAtelier_id' id=atelier.id %}" class="bouton_atelier_index" style="background-color:{{atelier.atelier.get_couleur}};"> {{ atelier.titre }}</a>
+    </div>
+   </div>
+</div>
+
+    {% endfor %}
+</div>
+{%include 'pagination.html' %}
+
+{% endblock %}
