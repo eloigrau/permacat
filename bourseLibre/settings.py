@@ -35,7 +35,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOCALL = False
 try:
     SECRET_KEY = os.environ['SECRET_KEY']
-    DEBUG = False
+    DEBUG = True
 except:
     LOCALL  = True
     SECRET_KEY = 'aersd68fgsfdgsdvcbvcb563873gbgfthhfhdjd'
