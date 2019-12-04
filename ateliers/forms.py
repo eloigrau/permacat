@@ -5,11 +5,10 @@ import itertools
 from django_summernote.widgets import SummernoteWidget
 
 class AtelierForm(forms.ModelForm):
-    objectif = forms.CharField(label="Objectif de l'atelier", strip=False)
 
     class Meta:
         model = Atelier
-        fields = ['statut', 'categorie', 'titre', 'référent', 'objectif', 'description', 'matériel', 'date_atelier', 'tags']
+        fields = ['statut', 'categorie', 'titre', 'référent', 'description', 'materiel', 'date_atelier', 'tags']
         widgets = {
             'description': SummernoteWidget(),
             'matériel': SummernoteWidget(),
@@ -47,7 +46,7 @@ class AtelierChangeForm(forms.ModelForm):
 
     class Meta:
         model = Atelier
-        fields = ['statut', 'categorie', 'titre', 'référent', 'objectif', 'description', 'matériel', 'date_atelier', 'tags']
+        fields = ['statut', 'categorie', 'titre', 'référent', 'description', 'materiel', 'date_atelier', 'tags']
         widgets = {
             'description': SummernoteWidget(),
             'matériel': SummernoteWidget(),

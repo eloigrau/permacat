@@ -48,8 +48,7 @@ class Atelier(models.Model):
     titre = models.CharField(max_length=120)
     slug = models.SlugField(max_length=100, default=uuid.uuid4)
     description = models.TextField(null=True, blank=True)
-    objectif = models.TextField(null=True, blank=True, verbose_name="Objectif de l'atelier")
-    matériel = models.TextField(null=True, blank=True, verbose_name="Matériel nécessaire")
+    materiel = models.TextField(null=True, blank=True, verbose_name="Matériel nécessaire")
     référent = models.CharField(max_length=120, null=True, blank=True,  verbose_name="Référent(e.s)")
 
     date_atelier = models.DateTimeField(verbose_name="Date prévue", default=timezone.now, blank=True, null=True)
