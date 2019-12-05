@@ -44,11 +44,11 @@
 
 
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle"  id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">  {% fontawesome_icon 'link' %} Les associations </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a class="nav-link dropdown-toggle"  href="{% url 'presentation_asso' %}" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">  {% fontawesome_icon 'link' %} Les associations </a>
+                <ul class="dropdown-menu textcenter " aria-labelledby="navbarDropdownMenuLink">
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" >Permacat</a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu textcenter">
                             <li><a class="nav-link dropdown-item" href="{% url 'blog:index_projets' %}"> Projets </a></li>
                         <li> <a class="nav-link dropdown-item" href="{% url 'agora_permacat' %}"> Salon permacat </a></li>
                             <li> <a class="nav-link dropdown-item" href="{% url 'blog:index' %}?permacat=True">Articles permacat</a></li>

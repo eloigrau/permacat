@@ -652,6 +652,7 @@ def liens(request):
         'https://cce-66.wixsite.com/mysite',
         'https://jardindenat.wixsite.com/website',
         'https://www.permapat.com',
+        'https://permaculturelne.herokuapp.com',
         'https://framasoft.org',
         'https://alternatiba.eu/alternatiba66/',
         'http://www.le-message.org/?lang=fr',
