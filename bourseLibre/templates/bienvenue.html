@@ -9,7 +9,7 @@
 {%comment%}
 <h3 class = "textcenter rowbienvenue">Benvingut {% if request.user.is_autenticated %}request.user.username{%endif%} !</h3>
 {%endcomment%}
-<h4 class = "textcenter rowbienvenue">{% trans "L'association de Permaculture Catalane vous souhaite la bienvenue !" %}</h4>
+<h4 class = "textcenter rowbienvenue">{% trans "Bienvenue sur le site Perma.Cat !" %}</h4>
 
 {% endblock %}
 {% block content %}
@@ -104,7 +104,7 @@
 		</div>
 		<div class="col-md-4">
 			<a href="{% url 'profil_courant' %}" class="btn btn-success">
-          		acceder à mon profil
+          		accéder à mon profil
         	</a>
 		</div>
 </div>
