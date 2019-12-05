@@ -93,9 +93,6 @@ section.p3 {
 
 
 /***********/
-.navbar-nav li:hover > ul.dropdown-menu {
-    display: block;
-}
 .dropdown-submenu {
     position:relative;
 }
