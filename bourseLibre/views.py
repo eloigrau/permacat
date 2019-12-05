@@ -8,10 +8,10 @@ from django.shortcuts import HttpResponseRedirect, render, redirect#, render, ge
 
 from .forms import Produit_aliment_CreationForm, Produit_vegetal_CreationForm, Produit_objet_CreationForm, \
     Produit_service_CreationForm, ContactForm, AdresseForm, ProfilCreationForm, MessageForm, MessageGeneralForm, \
-    ProducteurChangeForm, MessageGeneralPermacatForm, Produit_aliment_modifier_form, Produit_service_modifier_form, \
+    ProducteurChangeForm, MessageGeneralPermacatForm, MessageGeneralRTGForm, Produit_aliment_modifier_form, Produit_service_modifier_form, \
     Produit_objet_modifier_form, Produit_vegetal_modifier_form, ChercherConversationForm
 from .models import Profil, Produit, Adresse, Choix, Panier, Item, get_categorie_from_subcat, Conversation, Message, \
-    MessageGeneral, MessageGeneralPermacat, getOrCreateConversation, Suivis
+    MessageGeneral, MessageGeneralPermacat, MessageGeneralRTG, getOrCreateConversation, Suivis
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
@@ -244,6 +244,15 @@ def annuaire_permacat(request):
     return render(request, 'annuaire_permacat.html', {'profils':profils_permacat,"nb_profils": nb_profils } )
 
 @login_required
+def annuaire_rtg(request):
+    if not request.user.is_rtg:
+        return render(request, "notPermacat.html")
+
+    profils_permacat = Profil.objects.filter(accepter_annuaire=True, statut_adhesion_rtg=2).order_by('username')
+    nb_profils = len(Profil.objects.filter(statut_adhesion_rtg=2))
+    return render(request, 'annuaire_rtg.html', {'profils':profils_permacat,"nb_profils": nb_profils } )
+
+@login_required
 def listeContacts(request):
     if not request.user.is_permacat:
         return render(request, "notPermacat.html")
@@ -254,6 +263,16 @@ def listeContacts(request):
     ]
     return render(request, 'listeContacts.html', {"listeMails":listeMails})
 
+@login_required
+def listeContacts_rtg(request):
+    if not request.user.is_rtg:
+        return render(request, "notRTG.html")
+    listeMails = [
+        {"type":'user_newsletter' ,"profils":Profil.objects.filter(inscrit_newsletter=True), "titre":"Liste des inscrits à la newsletter : "},
+        {"type":'user_adherent' , "profils":Profil.objects.filter(statut_adhesion_rtg=2), "titre":"Liste des adhérents : "},
+        {"type":'user_futur_adherent', "profils":Profil.objects.filter(statut_adhesion_rtg=0), "titre":"Liste des personnes qui veulent adhérer à Permacat :"}
+    ]
+    return render(request, 'listeContacts.html', {"listeMails":listeMails})
 @login_required
 def listeFollowers(request):
     if not request.user.is_permacat:
@@ -288,6 +307,14 @@ def admin_asso(request):
     ]
     return render(request, 'asso/admin_asso.html', {"listeFichers":listeFichers} )
 
+@login_required
+def admin_asso_rtg(request):
+    if not request.user.is_rtg:
+        return render(request, "notRTG.html")
+
+    listeFichers = [
+    ]
+    return render(request, 'asso/admin_asso_rtg.html', {"listeFichers":listeFichers} )
 
 def presentation_asso(request):
     return render(request, 'asso/presentation_asso.html')
@@ -316,6 +343,13 @@ def carte_permacat(request):
         return render(request, "notPermacat.html")
     profils = Profil.objects.filter(statut_adhesion=2, accepter_annuaire=1)
     return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': "Carte des adhérents Permacat*" } )
+
+@login_required
+def carte_rtg(request):
+    if not request.user.is_rtg:
+        return render(request, "notRTG.html")
+    profils = Profil.objects.filter(statut_adhesion_rtg=2, accepter_annuaire=1)
+    return render(request, 'carte_cooperateurs_rtg.html', {'profils':profils, 'titre': "Carte des adhérents Ramène Ta Graine*" } )
 
 @login_required
 def profil_contact(request, user_id):
@@ -918,6 +952,26 @@ def agora_permacat(request, ):
         return redirect(request.path)
     return render(request, 'agora_permacat.html', {'form': form, 'messages_echanges': messages})
 
+
+@login_required
+def agora_rtg(request, ):
+    if not request.user.is_rtg:
+        return render(request, "notRTG.html")
+    messages = MessageGeneralRTG.objects.all().order_by("date_creation")
+    form = MessageGeneralRTGForm(request.POST or None)
+    if form.is_valid():
+        message = form.save(commit=False)
+        message.auteur = request.user
+
+        message.save()
+        group, created = Group.objects.get_or_create(name='rtg')
+        url = reverse('agora_rtg')
+        action.send(request.user, verb='envoi_salon_rtg', action_object=message, target=group, url=url,
+                    description="a envoyé un message dans le salon RameneTaGraine")
+
+
+        return redirect(request.path)
+    return render(request, 'agora_rtg.html', {'form': form, 'messages_echanges': messages})
 
 
 # class ServiceWorkerView(View):

@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, Profil, Message, MessageGeneral, Choix, MessageGeneralPermacat
+from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, Profil, Message, MessageGeneral, Choix, MessageGeneralPermacat, MessageGeneralRTG
 from bourseLibre.captcha_local.fields import CaptchaField
 #from tinymce.widgets import TinyMCE
 from django_summernote.widgets import SummernoteWidget
@@ -148,6 +148,7 @@ class ProfilCreationForm(UserCreationForm):
     email = forms.EmailField(label="Email*",)
 
     statut_adhesion = forms.ChoiceField(choices=Choix.statut_adhesion, label='', required=True)
+    statut_adhesion_rtg = forms.ChoiceField(choices=Choix.statut_adhesion_rtg, label='', required=True)
     accepter_annuaire = forms.BooleanField(required=False, label="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous les inscrits")
     accepter_conditions = forms.BooleanField(required=True, label="J'ai lu et j'accepte les Conditions Générales d'Utilisation du site",  )
     pseudo_june = forms.CharField(label="Pseudonyme dans la monnaie libre (Duniter)",  help_text="Si vous avez un compte en June",required=False)
@@ -160,7 +161,7 @@ class ProfilCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm):
         model = Profil
-        fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'inscrit_newsletter', 'accepter_annuaire', 'statut_adhesion', 'accepter_conditions']
+        fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'inscrit_newsletter', 'accepter_annuaire', 'statut_adhesion', 'statut_adhesion_rtg', 'accepter_conditions']
         exclude = ['slug', ]
 
 
@@ -211,11 +212,12 @@ class ProducteurChangeForm_admin(UserChangeForm):
     pseudo_june = forms.CharField(label="pseudo_june",required=False)
 
     statut_adhesion = forms.ChoiceField(choices=Choix.statut_adhesion)
+    statut_adhesion_rtg = forms.ChoiceField(choices=Choix.statut_adhesion_rtg)
     password = None
 
     class Meta:
         model = Profil
-        fields = ['username', 'email', 'description', 'competences', 'inscrit_newsletter', 'statut_adhesion', 'pseudo_june', 'accepter_annuaire', 'cotisation_a_jour']
+        fields = ['username', 'email', 'description', 'competences', 'inscrit_newsletter', 'statut_adhesion', 'statut_adhesion_rtg', 'pseudo_june', 'accepter_annuaire', 'cotisation_a_jour']
 
     def __init__(self, *args, **kwargs):
         super(ProducteurChangeForm_admin, self).__init__(*args, **kwargs)
@@ -270,6 +272,16 @@ class MessageGeneralPermacatForm(forms.ModelForm):
 
     class Meta:
         model = MessageGeneralPermacat
+        exclude = ['auteur']
+
+        widgets = {
+                'message': forms.Textarea(attrs={'rows': 1}),
+            }
+
+class MessageGeneralRTGForm(forms.ModelForm):
+
+    class Meta:
+        model = MessageGeneralRTG
         exclude = ['auteur']
 
         widgets = {

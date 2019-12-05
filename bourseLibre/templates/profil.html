@@ -118,8 +118,12 @@
                         <td>{{ user.competences|safe }}</td>
                     </tr>
                     <tr>
-                        <td style="width:250px">Statut *:</td>
+                        <td style="width:250px">Statut Permacat *:</td>
                         <td>{{user.statutMembre_str}}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:250px">Statut RameneTaGraine *:</td>
+                        <td>{{user.statutMembre_rtg_str}}</td>
                     </tr>
             {% endif %}
         {% endif %}

@@ -65,9 +65,13 @@ class Choix():
 
     statut_adhesion = (('', '-----------'),
                      (0, _("Je souhaite devenir membre de l'association 'PermaCat' et utiliser le site")),
-                    (1, _("Je souhaite utiliser le site, mais ne pas devenir membre de l'association")),
-                    (2, _("Je suis déjà membre de l'association")))
+                    (1, _("Je souhaite utiliser le site, mais ne pas devenir membre de l'association Permacat")),
+                    (2, _("Je suis déjà membre de l'association Permacat")))
 
+    statut_adhesion_rtg = (('', '-----------'),
+                     (0, _("Je souhaite devenir membre de l'association 'Ramene Ta Graine' et utiliser le site")),
+                    (1, _("Je souhaite utiliser le site, mais ne pas devenir membre de l'association RTG")),
+                    (2, _("Je suis déjà membre de l'association Ramene Ta Graine")))
 
 def get_categorie_from_subcat(subcat):
     for type_produit, dico in Choix.choix.items():
@@ -151,6 +155,7 @@ class Profil(AbstractUser):
 
     inscrit_newsletter = models.BooleanField(verbose_name="J'accepte de recevoir des emails de Permacat", default=False)
     statut_adhesion = models.IntegerField(choices=Choix.statut_adhesion, default="0")
+    statut_adhesion_rtg = models.IntegerField(choices=Choix.statut_adhesion_rtg, default="0")
     cotisation_a_jour = models.BooleanField(verbose_name="Cotisation à jour", default=False)
     accepter_conditions = models.BooleanField(verbose_name="J'ai lu et j'accepte les conditions d'utilisation du site", default=False, null=False)
     accepter_annuaire = models.BooleanField(verbose_name="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous", default=True)
@@ -201,8 +206,27 @@ class Profil(AbstractUser):
             return "membre actif"
 
     @property
+    def statutMembre_rtg(self):
+        return self.statut_adhesion_rtg
+
+    @property
+    def statutMembre_rtg_str(self):
+        if self.statut_adhesion_rtg == 0:
+            return "souhaite devenir membre de l'association"
+        elif self.statut_adhesion_rtg == 1:
+            return "ne souhaite pas devenir membre"
+        elif self.statut_adhesion_rtg == 2:
+            return "membre actif"
+    @property
     def is_permacat(self):
-        if self.statut_adhesion == 2:
+        if self.statut_adhesion_rtg == 2:
+            return True
+        else:
+            return False
+
+    @property
+    def is_rtg(self):
+        if self.statut_adhesion_rtg == 2:
             return True
         else:
             return False
@@ -871,6 +895,18 @@ class MessageGeneral(models.Model):
 # post_save.connect(mg_handler, sender=MessageGeneral)
 
 class MessageGeneralPermacat(models.Model):
+    message = models.TextField(null=False, blank=False)
+    auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
+    date_creation = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.__str__()
+
+    def __str__(self):
+        return "(" + str(self.id) + ") " + str(self.auteur) + " " + str(self.date_creation)
+
+
+class MessageGeneralRTG(models.Model):
     message = models.TextField(null=False, blank=False)
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
     date_creation = models.DateTimeField(auto_now_add=True)

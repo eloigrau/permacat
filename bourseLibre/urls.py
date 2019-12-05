@@ -42,6 +42,7 @@ urlpatterns = [
     url(r'^faq/$', views.faq, name='faq'),
     url(r'^gallerie/$', views.gallerie, name='gallerie'),
     url(r'^permacat/admin/$', views.admin_asso, name='admin_asso'),
+    url(r'^RTG/admin/$', views.admin_asso_rtg, name='admin_asso_rtg'),
     url(r'^permacat/fichiers/$', views.telechargements_asso, name='telechargements_asso'),
     url(r'^permacat/adhesion_asso/$', views.adhesion_asso, name='adhesion_asso'),
     url(r'^notifications/$', views.notifications, name='notifications'),
@@ -82,10 +83,13 @@ urlpatterns = [
     #url(r'^agenda/$', views.agenda, name='agenda',),
     url(r'^cooperateurs/annuaire/$', login_required(views.annuaire), name='annuaire',),
     url(r'^cooperateurs/listeContacts/$', login_required(views.listeContacts), name='listeContacts',),
+    url(r'^cooperateurs/listeContacts_rtg/$', login_required(views.listeContacts_rtg), name='listeContacts_rtg',),
     url(r'^cooperateurs/listeFollowers/$', login_required(views.listeFollowers), name='listeFollowers',),
     url(r'^cooperateurs/annuaire_permacat/$', login_required(views.annuaire_permacat), name='annuaire_permacat',),
+    url(r'^cooperateurs/annuaire_rtg/$', login_required(views.annuaire_rtg), name='annuaire_rtg',),
     url(r'^cooperateurs/carte/$', login_required(views.carte), name='carte',),
     url(r'^cooperateurs/carte_permacat/$', login_required(views.carte_permacat), name='carte_permacat',),
+    url(r'^cooperateurs/carte_rtg/$', login_required(views.carte_rtg), name='carte_rtg',),
 
     url(r'^marche/proposer/(?P<type_produit>[-A-Za-z]+)/$', login_required(views.produit_proposer), name='produit_proposer', ),
     url(r'^marche/proposer/', login_required(views.proposerProduit_entree), name='produit_proposer_entree',),
@@ -130,6 +134,7 @@ urlpatterns = [
 
     url(r'^agora/$', login_required(views.agora), name='agora'),
     url(r'^agora_permacat/$', login_required(views.agora_permacat), name='agora_permacat'),
+    url(r'^agora_rtg/$', login_required(views.agora_rtg), name='agora_rtg'),
 
     url(r'^activity/', include('actstream.urls')),
 

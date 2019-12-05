@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block subtitle %}
+<h4 class = "textcenter rowbienvenue">{% trans "Administration et fichiers de l'association Ramène Ta Graine" %}</h4>
+
+{% endblock %}
+{% block content %}
+
+<div class="row textcenter">
+	<div class="col-sm-12">
+        <a href="{% url 'listeContacts_rtg' %}">
+         <button type="button" class="btn btn-primary">
+                 Liste des emails
+            </button>
+		</a>
+	</div>
+</div>
+<hr>
+
+<hr>
+{% endblock %}
+
+

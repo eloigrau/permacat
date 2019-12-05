@@ -42,31 +42,47 @@
             </ul>
       </li>
 
-    <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="{% url 'presentation_asso' %}" id="navbarAsso" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"   >
-        {% fontawesome_icon 'link' %} L'association
-        </a>
-        <ul class="dropdown-menu textcenter" aria-labelledby="navbarAsso">
-            <li><a class="nav-link dropdown-item" href="{% url 'blog:index_projets' %}"> Projets </a></li>
-            <li> <a class="nav-link dropdown-item" href="{% url 'agora_permacat' %}"> Salon permacat </a></li>
-                <li> <a class="nav-link dropdown-item" href="{% url 'blog:index' %}?permacat=True">Articles permacat</a></li>
-           <li>  <span class="nav-link divider" role="separator"></span></li>
-            {% comment %} <li><a class="nav-link dropdown-item" href="{% url 'wiki:root' %}"> Eco Village </a></li>{% endcomment %}
-             <li><a class="nav-link dropdown-item" href="{% url 'fiches:acceuil' %}"> Fiches de Permaculture </a></li>
-             <li><a class="nav-link dropdown-item" href="{% url 'ateliers:acceuil' %}"> Ateliers </a></li>
 
-           <li>  <span class="nav-link divider" role="separator"></span></li>
-            <li> <a class="nav-link dropdown-item" href="{% url 'annuaire_permacat' %}"> Annuaire  </a></li>
-             <li><a class="nav-link dropdown-item" href="{% url 'carte_permacat' %}"> Carte  </a></li>
-             <li><a class="nav-link dropdown-item" href="{% url 'admin_asso' %}"> Administration  </a></li>
-            <li> <span class="nav-link divider" role="separator"></span></li>
-           <li> <a class="nav-link dropdown-item" href="{% url 'presentation_asso' %}"> Qui sommes nous ?</a></li>
-           <li> <a class="nav-link dropdown-item" href="{% url 'charte' %}"> Charte </a></li>
-           <li> <a class="nav-link dropdown-item" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a></li>
-            <li> <span class="nav-link divider" role="separator"></span></li>
-           <li> <a class="nav-link dropdown-item" href="{% url 'adhesion_asso' %}"> Cotisation en ligne </a></li>
-        </ul>
-    </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle"  id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">  {% fontawesome_icon 'link' %} Les associations </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" >Permacat</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="nav-link dropdown-item" href="{% url 'blog:index_projets' %}"> Projets </a></li>
+                        <li> <a class="nav-link dropdown-item" href="{% url 'agora_permacat' %}"> Salon permacat </a></li>
+                            <li> <a class="nav-link dropdown-item" href="{% url 'blog:index' %}?permacat=True">Articles permacat</a></li>
+                       <li>  <span class="nav-link divider" role="separator"></span></li>
+                        {% comment %} <li><a class="nav-link dropdown-item" href="{% url 'wiki:root' %}"> Eco Village </a></li>{% endcomment %}
+                         <li><a class="nav-link dropdown-item" href="{% url 'fiches:acceuil' %}"> Fiches de Permaculture </a></li>
+                         <li><a class="nav-link dropdown-item" href="{% url 'ateliers:acceuil' %}"> Ateliers </a></li>
+
+                       <li>  <span class="nav-link divider" role="separator"></span></li>
+                        <li> <a class="nav-link dropdown-item" href="{% url 'annuaire_permacat' %}"> Annuaire  </a></li>
+                         <li><a class="nav-link dropdown-item" href="{% url 'carte_permacat' %}"> Carte  </a></li>
+                         <li><a class="nav-link dropdown-item" href="{% url 'admin_asso' %}"> Administration  </a></li>
+                        <li> <span class="nav-link divider" role="separator"></span></li>
+                       <li> <a class="nav-link dropdown-item" href="{% url 'presentation_asso' %}"> Qui sommes nous ?</a></li>
+                       <li> <a class="nav-link dropdown-item" href="{% url 'charte' %}"> Charte </a></li>
+                       <li> <a class="nav-link dropdown-item" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a></li>
+                        <li> <span class="nav-link divider" role="separator"></span></li>
+                       <li> <a class="nav-link dropdown-item" href="{% url 'adhesion_asso' %}"> Cotisation en ligne </a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" >Ramene Ta Graine</a>
+                        <ul class="dropdown-menu">
+                        <li> <a class="nav-link dropdown-item" href="{% url 'agora_rtg' %}"> Salon  </a></li>
+                       <li>  <span class="nav-link divider" role="separator"></span></li>
+                        <li> <a class="nav-link dropdown-item" href="{% url 'annuaire_rtg' %}"> Annuaire  </a></li>
+                         <li><a class="nav-link dropdown-item" href="{% url 'carte_rtg' %}"> Carte  </a></li>
+                         <li><a class="nav-link dropdown-item" href="{% url 'admin_asso_rtg' %}"> Administration  </a></li>
+                        <li> <span class="nav-link divider" role="separator"></span></li>
+                       <li> <a class="nav-link dropdown-item" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
 
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="{% url 'presentation_site' %}" id="navbarAbout2" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" >
@@ -126,15 +142,29 @@
 
     </ul>
     <ul class="nav navbar-nav ">
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="{% url 'presentation_asso' %}" id="navbarAsso2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-               {% fontawesome_icon 'link' %}  L'association
-            </a>
-            <ul class="dropdown-menu textcenter" aria-labelledby="navbarAsso2">
-               <li> <a class="nav-link" href="{% url 'presentation_asso' %}"> Qui sommes nous ?</a></li>
-               <li> <a class="nav-link" href="{% url 'charte' %}"> Charte </a></li>
-            </ul>
-        </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle"  id="navbarDropdownMenuLink_anonyme" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">  {% fontawesome_icon 'link' %} Les associations </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" >Permacat</a>
+                        <ul class="dropdown-menu">
+                       <li> <a class="nav-link dropdown-item" href="{% url 'presentation_asso' %}"> Qui sommes nous ?</a></li>
+                       <li> <a class="nav-link dropdown-item" href="{% url 'charte' %}"> Charte </a></li>
+                       <li> <a class="nav-link dropdown-item" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a></li>
+                        <li> <span class="nav-link divider" role="separator"></span></li>
+                       <li> <a class="nav-link dropdown-item" href="{% url 'adhesion_asso' %}"> Cotisation/don en ligne </a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" >Ramene Ta Graine</a>
+                        <ul class="dropdown-menu">
+                       <li> <a class="nav-link dropdown-item" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="{% url 'profil_courant' %}" id="navbarAbout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
              {% fontawesome_icon 'globe' %} Le site
