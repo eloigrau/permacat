@@ -219,7 +219,7 @@ class Profil(AbstractUser):
             return "membre actif"
     @property
     def is_permacat(self):
-        if self.statut_adhesion_rtg == 2:
+        if self.statut_adhesion == 2:
             return True
         else:
             return False
