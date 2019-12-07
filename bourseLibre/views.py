@@ -246,7 +246,7 @@ def annuaire_permacat(request):
 @login_required
 def annuaire_rtg(request):
     if not request.user.is_rtg:
-        return render(request, "notPermacat.html")
+        return render(request, "notRTG.html")
 
     profils_permacat = Profil.objects.filter(accepter_annuaire=True, statut_adhesion_rtg=2).order_by('username')
     nb_profils = len(Profil.objects.filter(statut_adhesion_rtg=2))
