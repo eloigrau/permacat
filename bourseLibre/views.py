@@ -445,7 +445,7 @@ def produitContacterProducteur(request, produit_id):
         send_mail( sujet, message, request.user.email, receveur.email, fail_silently=False,)
         if form.cleaned_data['renvoi'] :
             mess = "[Permacat] message envoyé à : "+receveur.email+"\\n"
-            send_mail( sujet,mess + message, request.user.email, request.user.email, fail_silently=False,)
+            send_mail( sujet,mess + message, request.user.email, [request.user.email,], fail_silently=False,)
 
     return render(request, 'contact.html', {'form': form, "isContactProducteur":True, "producteur":receveur.user.username})
 
