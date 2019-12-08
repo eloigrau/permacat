@@ -402,7 +402,7 @@ def contact_admins(request):
             try:
                 mail_admins(sujet, message_txt, html_message=message_html)
                 if form.cleaned_data['renvoi']:
-                    send_mail(sujet, message_txt, request.user.email, request.user.email, fail_silently=False, html_message=message_html)
+                    send_mail(sujet, "Vous avez envoyez aux administrateurs du site www.perma.cat le message suivant : " + message_html, request.user.email, [request.user.email,], fail_silently=False, html_message=message_html)
 
                 return render(request, 'message_envoye.html', {'sujet': sujet, 'msg': message_html,
                                                        'envoyeur': request.user.username + " (" + request.user.email + ")",
