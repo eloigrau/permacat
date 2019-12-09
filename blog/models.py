@@ -12,16 +12,17 @@ from actstream.models import followers
 class Choix():
     statut_projet = ('prop','Proposition de projet'), ("AGO","Fiche prpojet soumise à l'AGO"), ('vote','Soumis au vote'), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
     type_projet = ('Part','Participation à un évènement'), ('AGO',"Organisation d'une AGO"), ('Projlong','Projet a long terme'), ('Projcourt','Projet a court terme'), ('Projponct','Projet ponctuel'),
-    type_annonce = ('Annonce','Annonce'), ('Administratif','Administratif'), ('Agenda','Agenda'), ('Entraide','Entraide'), \
-                   ('Chantier','Chantier participatif'), ('Jardinage','Jardinage'), ('Recette', 'Recette'), \
-                   ('Bricolage','Bricolage'), ('Documentation','Documentation'),  ('Projet', 'Projet'),  ('Point', 'Point de vue'),  \
-                   ('Ecovillage', 'Ecovillage'),  ('Serre','Serre collective'),('Altermarché','Altermarché'), ('Autre','Autre'),
+    type_annonce = ('Altermarché','Altermarché'), ('Annonce','Annonce'), ('Administratif','Administratif'), ('Agenda','Agenda'), ('Bricolage','Bricolage'), ('Chantier','Chantier participatif'),\
+                   ('Documentation','Documentation'),('Ecovillage', 'Ecovillage'),  ('Entraide','Entraide'), \
+                    ('Jardinage','Jardinage'),  ('Point', 'Point de vue'), \
+                     ('Projet', 'Projet'),   ('Recette', 'Recette'), \
+                    ('Serre','Serre collective'),('Autre','Autre'),
     couleurs_annonces = {
        # 'Annonce':"#e0f7de", 'Administratif':"#dcc0de", 'Agenda':"#d4d1de", 'Entraide':"#cebacf",
        # 'Chantier':"#d1ecdc",'Jardinage':"#fcf6bd", 'Recette':"#d0f4de", 'Bricolage':"#fff2a0",
        # 'Culture':"#ffc4c8", 'Bon_plan':"#bccacf", 'Point':"#87bfae", 'Autre':"#bcb4b4"
 
-        'Annonce':"#e0f7de",
+        'Annonce':"#fff2a0",
         'Administratif':"#D4CF7D",
         'Agenda':"#E0E3AB",
         'Entraide':"#AFE4C1",

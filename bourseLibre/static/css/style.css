@@ -802,6 +802,14 @@ font:          normal normal 9px/1 "Calibri", sans-serif;
 text-align:    center;
 }
 
+.boutonArticleCategorie{
+border:        1px solid black;
+border-radius: 6px;
+padding:       12px 8px;
+display:       inline-block;
+text-align:    center;
+}
+
 /* CSS - Cascading Style Sheet */
 /* Palette color codes */
 /* Palette URL: http://paletton.com/#uid=6090Z0kminfcRp6kuFktwlXiUcH */
