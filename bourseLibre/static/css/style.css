@@ -118,30 +118,38 @@ section.p3 {
 
 
 
+.bs-dark{
+    text-color:black;
+  background-color: #bff6ba;
+
+}
 .bs-dark .dropdown-menu {
   margin: 3px 1px 1px;
-  background-color: #000;
-  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
-          box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+  background-color: #cff1cc;
+  text-color: black;
+}
+.navbar-light .navbar-nav .nav-link {
+
+    color: rgba(0,0,0,.9);
+
 }
 
 .bs-dark .dropdown-menu .divider {
-  border: 1px solid rgba(0, 0, 0, 0.2);
 }
 .bs-dark .dropdown-menu > li > a {
   padding: 6px 20px;
-  color: rgba(255,255,255,0.80);
+  color: rgba(0,0,0,0.95);
 }
 .bs-dark .dropdown-menu > li > a:hover,
 .bs-dark .dropdown-menu > li > a:focus {
-  color: rgba(255,255,255,0.80);
-  background-color: grey;
+  color: rgba(123, 21, 21, 0.95);
+  background-color: #d8f88a;
 }
 .bs-dark .dropdown-menu > .active > a,
 .bs-dark .dropdown-menu > .active > a:hover,
 .bs-dark .dropdown-menu > .active > a:focus {
-  color: rgba(255,255,255,0.80);
-  background-color: grey;
+  color: rgba(208, 82, 82, 0.95);
+  background-color: #d8f88a;
   outline: 0;
 }
 
