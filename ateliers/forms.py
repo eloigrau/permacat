@@ -10,11 +10,12 @@ class AtelierForm(forms.ModelForm):
 
     class Meta:
         model = Atelier
-        fields = ['statut', 'categorie', 'titre', 'referent', 'description', 'materiel', 'date_atelier', 'tags']
+        fields = ['statut', 'categorie', 'titre', 'referent', 'description', 'materiel', 'date_atelier','heure_atelier']
         widgets = {
             'description': SummernoteWidget(),
-            'matériel': SummernoteWidget(),
+            'materiel': SummernoteWidget(),
             'date_atelier': forms.DateInput(attrs={'type':"date"}),
+            'heure_atelier': forms.TimeInput(attrs={'type':"time", },format='%H:%M'),
         }
 
     def save(self):
@@ -51,11 +52,12 @@ class AtelierChangeForm(forms.ModelForm):
 
     class Meta:
         model = Atelier
-        fields = ['statut', 'categorie', 'titre', 'referent', 'description', 'materiel', 'date_atelier', 'tags']
+        fields = ['statut', 'categorie', 'titre', 'referent', 'description', 'materiel', 'date_atelier',  'heure_atelier']
         widgets = {
             'description': SummernoteWidget(),
-            'matériel': SummernoteWidget(),
+            'materiel': SummernoteWidget(),
             'date_atelier': forms.DateInput(attrs={'type':"date"}),
+            'heure_atelier': forms.TimeInput(attrs={'type':"time", },format='%H:%M'),
         }
 
 

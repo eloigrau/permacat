@@ -45,22 +45,20 @@ class Atelier(models.Model):
     statut = models.CharField(max_length=30,
         choices=(Choix.statut_atelier),
         default='proposition', verbose_name="Statut de l'atelier")
-    titre = models.CharField(max_length=120)
+    titre = models.CharField(verbose_name="Titre de l'atelier",max_length=120)
     slug = models.SlugField(max_length=100, default=uuid.uuid4)
     description = models.TextField(null=True, blank=True)
     materiel = models.TextField(null=True, blank=True, verbose_name="Matériel nécessaire")
     referent = models.CharField(max_length=120, null=True, blank=True,  verbose_name="Référent(e.s)")
 
     date_atelier = models.DateTimeField(verbose_name="Date prévue", default=timezone.now, blank=True, null=True)
+    heure_atelier = models.DateTimeField(verbose_name="Heure prévue", help_text="Heure prévue", default=timezone.now, blank=True, null=True)
 
     date_creation = models.DateTimeField(verbose_name="Date de parution", default=timezone.now)
     date_modification = models.DateTimeField(verbose_name="Date de modification", default=timezone.now)
 
     date_dernierMessage = models.DateTimeField(verbose_name="Date du dernier message", auto_now=True)
     dernierMessage = models.CharField(max_length=100, default=None, blank=True, null=True)
-
-    tags = TaggableManager(verbose_name=("Mots-clés"), help_text=("Une liste de mots clés, séparés par des virgules."), blank=True,)
-
 
     class Meta:
         ordering = ('-date_creation', )
