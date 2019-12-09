@@ -143,13 +143,13 @@ section.p3 {
 .bs-dark .dropdown-menu > li > a:hover,
 .bs-dark .dropdown-menu > li > a:focus {
   color: rgba(0,0,0,0.8);
-  background-color: #a2f592;
+  background-color: #ecfaeb;
 }
 .bs-dark .dropdown-menu > .active > a,
 .bs-dark .dropdown-menu > .active > a:hover,
 .bs-dark .dropdown-menu > .active > a:focus {
   color: rgba(0,0,0,0.8);
-  background-color: #a2f592;
+  background-color: #ecfaeb;
   outline: 0;
 }
 

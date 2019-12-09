@@ -22,11 +22,11 @@ class Choix():
        # 'Chantier':"#d1ecdc",'Jardinage':"#fcf6bd", 'Recette':"#d0f4de", 'Bricolage':"#fff2a0",
        # 'Culture':"#ffc4c8", 'Bon_plan':"#bccacf", 'Point':"#87bfae", 'Autre':"#bcb4b4"
 
-        'Annonce':"#fff2a0",
+        'Annonce':"#d1ecdc",
         'Administratif':"#D4CF7D",
         'Agenda':"#E0E3AB",
         'Entraide':"#AFE4C1",
-        'Chantier':"#d1ecdc",
+        'Chantier':"#fff2a0",
         'Jardinage':"#B2AFE4",
         'Recette':"#d0f4de",
         'Bricolage':"#6E74CF",
@@ -35,8 +35,8 @@ class Choix():
         'Point':"#bccacf",
         'Autre':"#87bfae",
         'Ecovillage':"#cebacf",
-        'Serre':"#FFF82E",
-        'Altermarché':"#fcf6bd",
+        'Serre':"#fffdcc",
+        'Altermarché':"#daffb3",
         #664D00
 
 
