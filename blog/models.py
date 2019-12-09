@@ -31,11 +31,11 @@ class Choix():
         'Bricolage':"#6E74CF",
         'Culture':"#3EA7BB",
         'Bon_plan':"#349D9B",
-        'Point':"#009954",
+        'Point':"#bccacf",
         'Autre':"#87bfae",
-        'Ecovillage':"#B4EB00",
+        'Ecovillage':"#cebacf",
         'Serre':"#FFF82E",
-        'Altermarché':"#C26E00",
+        'Altermarché':"#fcf6bd",
         #664D00
 
 
