@@ -250,6 +250,17 @@ def create_user_profile(sender, instance, created, **kwargs):
         instance.is_active=False
 
 
+class InscriptionNewsletter(models.Model):
+    email = models.EmailField()
+    date_inscription = models.DateTimeField(verbose_name="Date d'inscription", editable=False, auto_now_add=True)
+
+    def __unicode__(self):
+        return self.__str()
+
+    def __str__(self):
+        return str(self.email)
+
+
 class Produit(models.Model):  # , BaseProduct):
     user = models.ForeignKey(Profil, on_delete=models.CASCADE,)
     date_creation = models.DateTimeField(verbose_name="Date de parution", editable=False)

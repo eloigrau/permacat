@@ -1,6 +1,5 @@
 {% extends 'base2.html' %}
 {% load ateliers_filters %}
-{% load blog_filters %}
 {% load fontawesome %}
 {% block subtitle %}
 
@@ -8,15 +7,15 @@
 {% endblock %}
 
 {% block navbar%}
-{%if not request.user.is_authenticated %}
-{% else %}
+    {%if not request.user.is_authenticated %}
+    {% else %}
             {% include 'navigationBar.html' %}
-{% endif %}
+    {% endif %}
 {% endblock%}
 {% block content %}
 
- <div class="row justify-content-center">
-    <div class="col-sm-6 textleft">
+ <div class="row rowcentre">
+    <div class="col-sm-3 textleft">
 
         <div class="btn-group btn-group-justified">
         <a  href="{%if request.user.is_authenticated %}{% url 'ateliers:index_ateliers' %}{% endif %}">
@@ -24,11 +23,42 @@
             </a>
         </div>
     </div>
-        <div class="col-sm-6 textright">
+        <div class="col-sm-6 textcenter">
+            {%if request.user.is_authenticated %}
+                 {% if user_inscrit %}
+                    <p>Vous êtes inscrit à cet atelier
+                    <a href="{% url 'ateliers:annulerInscription' slug=atelier.slug %}">
+                       <button type="button" class="btn btn-sm btn-warning">
+                            se désinscrire
+                       </button>
+                    </a>
+                        </p>
+
+
+                {% else %}
+                    <a href="{% url 'ateliers:inscriptionAtelier' slug=atelier.slug %}">
+                       <button type="button" class="btn btn-sm btn-success">
+                            S'inscrire
+                       </button>
+                    </a>
+                {% endif %}
+            {% else %}
+                <p>Connectez vous pour vous inscrire à l'atelier</p>
+            {% endif %}
+        </div>
+        <div class="col-sm-3 textright">
+            {%if request.user.is_authenticated %}
+            <div class = "btn-group">
             <a href="{%if request.user.is_authenticated %}{% url 'ateliers:modifierAtelier' slug=atelier.slug %}{% endif %}">
                <button type="button" class="btn btn-sm btn-warning">
                  &nbsp;Modifier
                </button></a>
+            <a href="{% url 'ateliers:contacterParticipantsAtelier' slug=atelier.slug %}">
+               <button type="button" class="btn btn-sm btn-warning">
+                 &nbsp;Contacter les participants
+               </button></a>
+            </div>
+            {% endif %}
         </div>
  </div>
 
@@ -44,6 +74,10 @@
         </div>
     </div>
 
+    <div class="col-md-12 textcenter">
+        <p class="infos  textepetit">rédigé le {{ atelier.date_creation|date:"DATE_FORMAT" }}, dernière modification le {{ atelier.date_modification|date:"DATE_FORMAT" }}
+        </p>
+    </div>
 		<hr>
     <div class="row">
         <div class="col-sm-12 ">
@@ -83,7 +117,7 @@
 						Référent :
 					</td>
 					<td class="proprieteAtelier">
-						{{ atelier.référent}}
+						{{ atelier.referent}}
 					</td>
 				</tr>
 				<tr>
@@ -104,6 +138,17 @@
 					{% endif %}
 
 				</tr>
+
+				<tr>
+					<td class="nomProprieteAtelier">
+						Inscrits :
+					</td>
+					<td class="proprieteAtelier">
+                        {% for i in inscrits %}
+                        <a href="{% url 'profil_nom' i %}">{{i}}</a> {%if not forloop.last%}, {% endif %}
+					    {% endfor %}
+					</td>
+				</tr>
 			</tbody>
 		</table>
 	</div>
@@ -112,5 +157,13 @@
         </div>
 
 
+
+<hr>
+
+<div class="row textcenter">
+    <h4>Discussion</h4>
+</div>
+
+{% include 'commentaires.html' %}
 
 {% endblock %}

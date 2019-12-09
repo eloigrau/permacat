@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
 from django.urls import reverse_lazy
 from .models import Article, Commentaire, Projet, CommentaireProjet, Choix
-from .forms import ArticleForm, CommentForm, ArticleChangeForm, ProjetForm, ProjetChangeForm, CommentProjetForm
+from .forms import ArticleForm, CommentaireArticleForm, CommentaireArticleChangeForm, ArticleChangeForm, ProjetForm, ProjetChangeForm, CommentProjetForm, CommentaireProjetChangeForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
 from actstream import actions, action
@@ -81,7 +81,7 @@ def lireArticle(request, slug):
 
     commentaires = Commentaire.objects.filter(article=article).order_by("date_creation")
 
-    form = CommentForm(request.POST or None)
+    form = CommentaireArticleForm(request.POST or None)
     if form.is_valid():
         comment = form.save(commit=False)
         comment.article = article
@@ -416,3 +416,34 @@ def suivre_projets(request, actor_only=True):
     else:
         actions.follow(request.user, suivi, actor_only=actor_only)
     return redirect('blog:index_projets')
+
+
+
+class ModifierCommentaireArticle(UpdateView):
+    model = Commentaire
+    form_class = CommentaireArticleChangeForm
+    template_name = 'modifierCommentaire.html'
+
+    def get_object(self):
+        return Commentaire.objects.get(id=self.kwargs['id'])
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.date_modification = now()
+        self.object.save()
+        return HttpResponseRedirect(self.object.article.get_absolute_url())
+
+
+class ModifierCommentaireProjet(UpdateView):
+    model = CommentaireProjet
+    form_class = CommentaireProjetChangeForm
+    template_name = 'modifierCommentaire.html'
+
+    def get_object(self):
+        return CommentaireProjet.objects.get(id=self.kwargs['id'])
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.date_modification = now()
+        self.object.save()
+        return HttpResponseRedirect(self.object.projet.get_absolute_url())

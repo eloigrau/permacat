@@ -1,24 +1,29 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
 from django.urls import reverse_lazy
-from .models import Atelier, CommentaireAtelier, Choix, Atelier
-from .forms import AtelierForm, CommentaireAtelierForm, AtelierChangeForm, AtelierForm, AtelierChangeForm
+from .models import Atelier, CommentaireAtelier, Choix, Atelier,InscriptionAtelier
+from .forms import AtelierForm, CommentaireAtelierForm, AtelierChangeForm, ContactParticipantsForm, CommentaireAtelierChangeForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
+from django.contrib import messages
+from django.core.mail import send_mail, BadHeaderError
 
 from django.utils.timezone import now
 
-from bourseLibre.models import Suivis
+from bourseLibre.models import Suivis, Profil
 
 def accueil(request):
-    return render(request, 'ateliers/accueil.html')
+    return redirect("ateliers:index_ateliers")
+    #return render(request, 'ateliers/accueil.html')
 
 
 @login_required
 def ajouterAtelier(request):
     form = AtelierForm(request.POST or None)
     if form.is_valid():
-        atelier = form.save(request.user)
+        atelier = form.save(request, commit=False)
+        atelier.auteur = request.user
+        atelier.save()
         return redirect(atelier.get_absolute_url())
     return render(request, 'ateliers/atelier_ajouter.html', { "form": form, })
 
@@ -56,6 +61,8 @@ class SupprimerAtelier(DeleteView):
 def lireAtelier(request, slug):
     atelier = get_object_or_404(Atelier, slug=slug)
     commentaires = CommentaireAtelier.objects.filter(atelier=atelier).order_by("date_creation")
+    inscrits = [x[0] for x in InscriptionAtelier.objects.filter(atelier=atelier).values_list('user__username')]
+    user_inscrit = request.user.username in inscrits
 
     form_comment = CommentaireAtelierForm(request.POST or None)
     if form_comment.is_valid():
@@ -68,7 +75,53 @@ def lireAtelier(request, slug):
         comment.save()
         return redirect(request.path)
 
-    return render(request, 'ateliers/lireAtelier.html', {'atelier': atelier, 'form': form_comment, 'commentaires':commentaires},)
+    return render(request, 'ateliers/lireAtelier.html', {'atelier': atelier, 'form': form_comment, 'commentaires':commentaires, 'user_inscrit': user_inscrit, 'inscrits': inscrits},)
+
+@login_required
+def inscriptionAtelier(request, slug):
+    atelier = get_object_or_404(Atelier, slug=slug)
+    inscript = InscriptionAtelier(user=request.user, atelier=atelier)
+    inscript.save()
+    messages.info(request, 'Vous êtes bien inscrit à cet atelier !')
+    return redirect(atelier.get_absolute_url())
+
+@login_required
+def annulerInscription(request, slug):
+    atelier = get_object_or_404(Atelier, slug=slug)
+    inscript = InscriptionAtelier.objects.filter(user=request.user, atelier=atelier)
+    inscript.delete()
+    return redirect(atelier.get_absolute_url())
+
+@login_required
+def contacterParticipantsAtelier(request, slug):
+    atelier = get_object_or_404(Atelier, slug=slug)
+    form = ContactParticipantsForm(request.POST or None, )
+    if form.is_valid():
+        sujet = "[Permacat] Au sujet de l'atelier Permacat '" + atelier.titre +"'"
+        inscrits = [x[0] for x in InscriptionAtelier.objects.filter(atelier=atelier).values_list('user__email')]
+        referent = Profil.objects.get(username=atelier.referent)
+        inscrits.append(referent)
+        message_html = form.cleaned_data['msg']
+        try:
+            send_mail(sujet, message_html,
+                      request.user.email, inscrits, fail_silently=False,
+                      html_message=message_html)
+
+            if form.cleaned_data['renvoi']:
+                send_mail(sujet,
+                          "Vous avez envoyé aux participants de l'atelier Permacat '" + atelier.titre +"' le message suivant : " + message_html,
+                          request.user.email, [request.user.email, ], fail_silently=False,
+                          html_message=message_html)
+
+            return render(request, 'message_envoye.html', {'sujet': sujet, 'msg': message_html,
+                                                           'envoyeur': request.user.username + " (" + request.user.email + ")",
+                                                           "destinataire": "".join(inscrits)})
+        except BadHeaderError:
+            return render(request, 'erreur.html', {'msg': 'Invalid header found.'})
+
+        return render(request, 'erreur.html', {'msg': "Désolé, une erreur s'est produite lors de l'envoie du mail..."})
+
+    return render(request, 'ateliers/contacterParticipantsAtelier.html', {'atelier': atelier,  'form': form, })
 
 
 @login_required
@@ -138,3 +191,19 @@ class ListeAteliers(ListView):
             context['typeFiltre'] = "mc"
 
         return context
+
+
+
+class ModifierCommentaire(UpdateView):
+    model = CommentaireAtelier
+    form_class = CommentaireAtelierChangeForm
+    template_name = 'modifierCommentaire.html'
+
+    def get_object(self):
+        return CommentaireAtelier.objects.get(id=self.kwargs['id'])
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.date_modification = now()
+        self.object.save()
+        return HttpResponseRedirect(self.object.atelier.get_absolute_url())

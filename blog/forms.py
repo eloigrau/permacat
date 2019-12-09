@@ -69,7 +69,7 @@ class ArticleChangeForm(forms.ModelForm):
 # #        instance.save()
 #         return instance
 
-class CommentForm(forms.ModelForm):
+class CommentaireArticleForm(forms.ModelForm):
     #commentaire = TinyMCE(attrs={'cols': 1, 'rows': 1, 'height':10 })
 
     class Meta:
@@ -82,8 +82,17 @@ class CommentForm(forms.ModelForm):
             }
 
     def __init__(self, request, *args, **kwargs):
-        super(CommentForm, self).__init__(request, *args, **kwargs)
+        super(CommentaireArticleForm, self).__init__(request, *args, **kwargs)
         self.fields['commentaire'].strip = False
+
+class CommentaireArticleChangeForm(forms.ModelForm):
+
+     class Meta:
+         model = Commentaire
+         exclude = ['article', 'auteur_comm']
+         widgets = {
+             'commentaire': SummernoteWidget(),
+         }
 
 class ProjetForm(forms.ModelForm):
     #contenu = forms.CharField(widget=forms.Textarea(attrs={'cols': 80, 'rows': 10}))
@@ -142,6 +151,7 @@ class ProjetChangeForm(forms.ModelForm):
 
 
 class CommentProjetForm(forms.ModelForm):
+
     class Meta:
         model = CommentaireProjet
         exclude = ['projet','auteur_comm']
@@ -153,3 +163,13 @@ class CommentProjetForm(forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
          super(CommentProjetForm, self).__init__(request, *args, **kwargs)
          self.fields['commentaire'].strip = False
+
+
+class CommentaireProjetChangeForm(forms.ModelForm):
+
+     class Meta:
+         model = CommentaireProjet
+         exclude = ['projet', 'auteur_comm']
+         widgets = {
+             'commentaire': SummernoteWidget(),
+         }

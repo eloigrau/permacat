@@ -90,6 +90,9 @@ class Commentaire(models.Model):
     def __str__(self):
         return "(" + str(self.id) + ") "+ str(self.auteur_comm) + ": " + str(self.article)
 
+    @property
+    def get_edit_url(self):
+        return reverse('blog:modifierCommentaireArticle',  kwargs={'id':self.id})
 
 class Projet(models.Model):
     categorie = models.CharField(max_length=10,
@@ -196,3 +199,8 @@ class CommentaireProjet(models.Model):
 
     def __str__(self):
         return "(" + str(self.id) + ") "+ str(self.auteur_comm) + ": " + str(self.projet)
+
+
+    @property
+    def get_edit_url(self):
+        return reverse('blog:modifierCommentaireProjet',  kwargs={'id':self.id})

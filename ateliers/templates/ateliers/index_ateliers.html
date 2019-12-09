@@ -65,7 +65,7 @@
 {%endblock%}
 {% block content %}
 
-<div class="infinite-container">
+<div class="infinite-container ">
     {% for atelier in atelier_list %}
 
 {% ifchanged atelier.atelier.categorie %}
@@ -74,7 +74,7 @@
 <div class="infinite-item ">
    <div class="row justify-content-center ">
     <div class="col-sm-12 col-ms-10 col-lg-8 textcenter " >
-       <a  href="{% url 'ateliers:lireAtelier_id' id=atelier.id %}" class="bouton_atelier_index" style="background-color:{{atelier.atelier.get_couleur}};"> {{ atelier.titre }}</a>
+       <a  href="{% url 'ateliers:lireAtelier_id' id=atelier.id %}" class="boutonAtelier" style="background-color:{{atelier.atelier.get_couleur}};"> {{ atelier.titre }}</a>
     </div>
    </div>
 </div>

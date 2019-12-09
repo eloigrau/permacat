@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from .models import  Adresse, Produit, MessageGeneralPermacat, Panier, Item, Message, MessageGeneral, Conversation
 from blog.models import Article, Projet, Commentaire, CommentaireProjet
-from fiches.models import Fiche, Atelier, CommentaireFiche
+from fiches.models import Fiche, Atelier as atelier_fiche, CommentaireFiche
+from ateliers.models import Atelier, CommentaireAtelier, InscriptionAtelier
 
 
 from django.contrib import admin
@@ -62,5 +63,10 @@ admin.site.register(Commentaire)
 admin.site.register(CommentaireProjet)
 
 admin.site.register(Fiche)
-admin.site.register(Atelier)
 admin.site.register(CommentaireFiche)
+admin.site.register(atelier_fiche)
+
+
+admin.site.register(Atelier)
+admin.site.register(CommentaireAtelier)
+admin.site.register(InscriptionAtelier)

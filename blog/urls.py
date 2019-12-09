@@ -47,5 +47,11 @@ urlpatterns = [
     url(r'^suivre_articles/$', views.suivre_articles, name='suivre_articles'),
     url(r'^suivre_projets/$', views.suivre_projets, name='suivre_projets'),
 
+    url(r'^modifierCommentaireArticle/(?P<id>[0-9]+)$',
+        login_required(views.ModifierCommentaireArticle.as_view(), login_url='/auth/login/'),
+        name='modifierCommentaireArticle'),
+    url(r'^modifierCommentaireProjet/(?P<id>[0-9]+)$',
+        login_required(views.ModifierCommentaireProjet.as_view(), login_url='/auth/login/'),
+        name='modifierCommentaireProjet'),
 
 ]

@@ -44,12 +44,12 @@ class Atelier(models.Model):
         default='0', verbose_name="categorie")
     statut = models.CharField(max_length=30,
         choices=(Choix.statut_atelier),
-        default='proposition', verbose_name="statut de la atelier")
+        default='proposition', verbose_name="Statut de l'atelier")
     titre = models.CharField(max_length=120)
     slug = models.SlugField(max_length=100, default=uuid.uuid4)
     description = models.TextField(null=True, blank=True)
     materiel = models.TextField(null=True, blank=True, verbose_name="Matériel nécessaire")
-    référent = models.CharField(max_length=120, null=True, blank=True,  verbose_name="Référent(e.s)")
+    referent = models.CharField(max_length=120, null=True, blank=True,  verbose_name="Référent(e.s)")
 
     date_atelier = models.DateTimeField(verbose_name="Date prévue", default=timezone.now, blank=True, null=True)
 
@@ -60,8 +60,6 @@ class Atelier(models.Model):
     dernierMessage = models.CharField(max_length=100, default=None, blank=True, null=True)
 
     tags = TaggableManager(verbose_name=("Mots-clés"), help_text=("Une liste de mots clés, séparés par des virgules."), blank=True,)
-
-    participants = models.ManyToManyField(settings.AUTH_USER_MODEL)
 
 
     class Meta:
@@ -102,3 +100,18 @@ class CommentaireAtelier(models.Model):
     def __str__(self):
         return "(" + str(self.id) + ") "+ str(self.auteur_comm) + ": " + str(self.atelier)
 
+    @property
+    def get_edit_url(self):
+        return reverse('ateliers:modifierCommentaireAtelier',  kwargs={'id':self.id})
+
+
+class InscriptionAtelier(models.Model):
+    user = models.ForeignKey(Profil, on_delete=models.CASCADE)
+    atelier = models.ForeignKey(Atelier, on_delete=models.CASCADE)
+    date_inscription = models.DateTimeField(verbose_name="Date d'inscritpion", editable=False, auto_now_add=True)
+
+    def __unicode__(self):
+        return self.__str()
+
+    def __str__(self):
+        return "(" + str(self.id) + ") " + str(self.user) + " " + str(self.date_inscription) + " " + str(self.atelier)

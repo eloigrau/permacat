@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Contact{% endblock %}
+{% block subtitle %}
+<h3 style="text-align:center">Contacter les participants de l'atelier Permacat {{atelier.titre}}
+
+</h3>Vous pouvez, grâce à ce formulaire, envoyer un mail à tous les participants</p>
+     {% endblock %}
+{% block content %}
+
+
+     {% include 'form_template.html'%}
+
+{% endblock %}
+
+    
