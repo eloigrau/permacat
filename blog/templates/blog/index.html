@@ -10,9 +10,18 @@
     {%endblock%}
 {%block subtitle%}
 
+<hr>
 <div class="row align-items-center">
 <div class="col-sm-12 textcenter justify-content-center ">
-    <nav class="navbar navbar-expand-lg justify-content-center  navbar-light bg-light">
+    <div class="btn-block">
+                    {% for categorie_id, cat_nom in categorie_list %}
+                  <a class="btn btn-info btn-small " href="?categorie={{categorie_id}}">{{cat_nom}}</a>
+                {% endfor %}</div>
+</div>
+</div>
+<div class="row align-items-center">
+<div class="col-sm-12 textcenter justify-content-center ">
+    <nav class="navbar justify-content-center  navbar-light bg-light">
         <div class="navbar-header">
              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarProduit" aria-controls="navbarProduitContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span></button>
@@ -38,18 +47,6 @@
             <div class="dropdown-menu"  aria-labelledby="menuAuteur"  id=idAuteur">
                 {% for auteur in auteur_list %}
                   <a class="dropdown-item" href="?auteur={{auteur}}">{{auteur}}</a>
-                {% endfor %}
-            </div>
-            </li>
-
-                <li class="nav-item dropdown">
-             <button type="button" class="btn btn-block {% if request.GET.categorie %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-               data-target = "#idAuteur">
-                {% if request.GET.categorie %} Catégorie: {{categorie_courante}} {%else%}Catégorie{%endif%}
-                </button>
-            <div class="dropdown-menu"  aria-labelledby="menuCategorie"  id=idCategorie">
-                {% for categorie_id, cat_nom in categorie_list %}
-                  <a class="dropdown-item" href="?categorie={{categorie_id}}">{{cat_nom}}</a>
                 {% endfor %}
             </div>
             </li>
@@ -84,6 +81,7 @@
     </nav>
 </div>
 </div>
+<hr>
 <div class="row align-items-center">
 <div class="col-sm-12 textcenter">
 
