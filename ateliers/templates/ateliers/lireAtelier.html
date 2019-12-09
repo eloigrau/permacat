@@ -127,6 +127,9 @@
 					</td>
 					<td class="proprieteAtelier">
 						{{ atelier.date_atelier}}
+					{% if atelier.heure_atelier %}
+						à {{ atelier.heure_atelier}}
+					{% endif %}
 					</td>
 					{% else %}
 					<td class="nomProprieteAtelier">

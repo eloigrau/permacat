@@ -48,7 +48,7 @@ class AtelierForm(forms.ModelForm):
         self.fields['referent'].choices = [(i,u) for i, u in enumerate(Profil.objects.all().order_by('username'))]
 
 class AtelierChangeForm(forms.ModelForm):
-    referent = forms.ChoiceField(label='Référent atelier')
+    referent = forms.ChoiceField(label='Référent(.e) atelier')
 
     class Meta:
         model = Atelier
@@ -56,7 +56,7 @@ class AtelierChangeForm(forms.ModelForm):
         widgets = {
             'description': SummernoteWidget(),
             'materiel': SummernoteWidget(),
-            'date_atelier': forms.DateInput(attrs={'type':"date"}),
+            'date_atelier': forms.DateTimeInput(attrs={'type':"date"}),
             'heure_atelier': forms.TimeInput(attrs={'type':"time", },format='%H:%M'),
         }
 

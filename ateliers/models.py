@@ -51,8 +51,8 @@ class Atelier(models.Model):
     materiel = models.TextField(null=True, blank=True, verbose_name="Matériel nécessaire")
     referent = models.CharField(max_length=120, null=True, blank=True,  verbose_name="Référent(e.s)")
 
-    date_atelier = models.DateTimeField(verbose_name="Date prévue", default=timezone.now, blank=True, null=True)
-    heure_atelier = models.DateTimeField(verbose_name="Heure prévue", help_text="Heure prévue", default=timezone.now, blank=True, null=True)
+    date_atelier = models.DateField(verbose_name="Date prévue", default=timezone.now, blank=True, null=True)
+    heure_atelier = models.TimeField(verbose_name="Heure prévue", help_text="Heure prévue", default=timezone.now, blank=True, null=True)
 
     date_creation = models.DateTimeField(verbose_name="Date de parution", default=timezone.now)
     date_modification = models.DateTimeField(verbose_name="Date de modification", default=timezone.now)
