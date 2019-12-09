@@ -46,6 +46,12 @@ class Choix():
         'Part':"#d0e8da", 'AGO':"#dcc0de", 'Projlong':"#d1d0dc", 'Projcourt':"#ffc09f", 'Projponct':"#e4f9d4",
     }
 
+    def get_couleur(categorie):
+        try:
+            return Choix.couleurs_annonces[categorie]
+        except:
+            return Choix.couleurs_annonces["Autre"]
+
 class Article(models.Model):
     categorie = models.CharField(max_length=30,         
         choices=(Choix.type_annonce),
