@@ -58,26 +58,6 @@ class SupprimerAtelier(DeleteView):
 
 
 @login_required
-def lireAtelier(request, slug):
-    atelier = get_object_or_404(Atelier, slug=slug)
-    commentaires = CommentaireAtelier.objects.filter(atelier=atelier).order_by("date_creation")
-    inscrits = [x[0] for x in InscriptionAtelier.objects.filter(atelier=atelier).values_list('user__username')]
-    user_inscrit = request.user.username in inscrits
-
-    form_comment = CommentaireAtelierForm(request.POST or None)
-    if form_comment.is_valid():
-        comment = form_comment.save(commit=False)
-        comment.atelier = atelier
-        comment.auteur_comm = request.user
-        atelier.date_dernierMessage = comment.date_creation
-        atelier.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(comment.commentaire))[:96] + "..."
-        atelier.save()
-        comment.save()
-        return redirect(request.path)
-
-    return render(request, 'ateliers/lireAtelier.html', {'atelier': atelier, 'form': form_comment, 'commentaires':commentaires, 'user_inscrit': user_inscrit, 'inscrits': inscrits},)
-
-@login_required
 def inscriptionAtelier(request, slug):
     atelier = get_object_or_404(Atelier, slug=slug)
     inscript = InscriptionAtelier(user=request.user, atelier=atelier)
@@ -121,13 +101,24 @@ def contacterParticipantsAtelier(request, slug):
 
         return render(request, 'erreur.html', {'msg': "Désolé, une erreur s'est produite lors de l'envoie du mail..."})
 
-    return render(request, 'ateliers/contacterParticipantsAtelier.html', {'atelier': atelier,  'form': form, })
+    return render(request, 'ateliers/contacterParticipantsAtelier.html', {'atelier': atelier,  'form': form,  })
 
+
+@login_required
+def lireAtelier_slug(request, slug):
+    atelier = get_object_or_404(Atelier, slug=slug)
+    return lireAtelier(request, atelier)
 
 @login_required
 def lireAtelier_id(request, id):
     atelier = get_object_or_404(Atelier, id=id)
+    return lireAtelier(request, atelier)
+
+@login_required
+def lireAtelier(request, atelier):
     commentaires = CommentaireAtelier.objects.filter(atelier=atelier).order_by("date_creation")
+    inscrits = [x[0] for x in InscriptionAtelier.objects.filter(atelier=atelier).values_list('user__username')]
+    user_inscrit = request.user.username in inscrits
 
     form_comment = CommentaireAtelierForm(request.POST or None)
     if form_comment.is_valid():
@@ -140,7 +131,7 @@ def lireAtelier_id(request, id):
         comment.save()
         return redirect(request.path)
 
-    return render(request, 'ateliers/lireAtelier.html', {'atelier': atelier,  'form': form_comment, 'commentaires':commentaires},)
+    return render(request, 'ateliers/lireAtelier.html', {'atelier': atelier,  'form': form_comment, 'commentaires':commentaires, 'user_inscrit': user_inscrit, 'inscrits': inscrits},)
 
 
 class ListeAteliers(ListView):
