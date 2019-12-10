@@ -78,7 +78,7 @@
     <div class="col-sm-12 textcenter justify-content-center ">
         <div class=" justify-content-between">
                             {% for categorie_id, cat_nom, cat_coul in categorie_list %}
-                          <a class=" btn boutonArticleCategorie " style="background:{{cat_coul}};" href="?categorie={{categorie_id}}">{{cat_nom}}</a>
+                          <a class=" btn boutonArticleCategorie " style="background:{{cat_coul}};font-variant: small-caps;{% if request.GET.categorie and cat_nom == categorie_courante %} font-weight: bold;padding:15px 15px;{%endif%}" href="?categorie={{categorie_id}}">{{cat_nom}}</a>
                         {% endfor %}
         </div>
     </div>
