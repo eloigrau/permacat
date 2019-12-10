@@ -46,6 +46,7 @@ urlpatterns = [
     url(r'^permacat/fichiers/$', views.telechargements_asso, name='telechargements_asso'),
     url(r'^permacat/adhesion_asso/$', views.adhesion_asso, name='adhesion_asso'),
     url(r'^notifications/$', views.notifications, name='notifications'),
+    url(r'^notifications/news/$', views.notifications_news, name='notifications_news'),
     url(r'^notificationsParDate/$', views.notificationsParDate, name='notificationsParDate'),
     url(r'^dernieresInfos/$', views.dernieresInfos, name='dernieresInfos'),
     url(r'^prochaines_rencontres/$', views.prochaines_rencontres, name='prochaines_rencontres'),

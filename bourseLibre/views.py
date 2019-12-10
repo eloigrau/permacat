@@ -828,20 +828,30 @@ def getNotificationsParDate(request):
 
 @login_required
 def getNbNewNotifications(request):
-    salons, articles, projets, offres, conversations = getNotifications(request)
-    articles = [action for action in articles if  request.user.last_login < action.timestamp]
-    projets = [action for action in projets if  request.user.last_login < action.timestamp]
-    offres = [action for action in offres if  request.user.last_login < action.timestamp]
-    conversations = [action for action in conversations if  request.user.last_login < action.timestamp]
-    salons = [action for action in salons if  request.user.last_login < action.timestamp]
+    actions = getNotificationsParDate(request)
+    actions = [action for action in actions if  request.user.last_login < action.timestamp]
 
-    return len(salons)+len(articles)+len(projets)+len(offres)+len(conversations)
+    return len(actions)
+
+
+@login_required
+def get_notifications_news(request):
+    actions = getNotificationsParDate(request)
+    actions = [action for action in actions if  request.user.last_login < action.timestamp]
+
+    return actions
 
 
 @login_required
 def notifications(request):
     salons, articles, projets, offres, conversations = getNotifications(request)
     return render(request, 'notifications/notifications.html', {'salons': salons, 'articles': articles,'projets': projets, 'offres':offres, 'conversations':conversations})
+
+@login_required
+def notifications_news(request):
+    actions = get_notifications_news(request)
+    return render(request, 'notifications/notifications_last.html', {'actions':actions})
+
 
 @login_required
 def notificationsParDate(request):

@@ -21,23 +21,18 @@
   </div>
 </div>
 {%endif%}
+<hr>
+<div class="row" >
+  <div class="col-sm-12 textcenter" style ="color:#0f7407;">
 {% if nbNotif %}
-<hr>
-<div class="row" >
-  <div class="col-sm-12 textcenter" style ="color:#0f7407;">
-	  <b><a href="{% url 'notifications' %}">Vous avez {{nbNotif}} nouvelle{{ nbNotif|pluralize:",s" }} notification{{ nbNotif|pluralize:",s" }} depuis votre dernière connexion (le {{request.user.last_login|date:"d/m/Y"}})</a></b>
-  </div>
-</div>
+	  <b><a href="{% url 'notifications_news' %}">Vous avez {{nbNotif}} nouvelle{{ nbNotif|pluralize:",s" }} notification{{ nbNotif|pluralize:",s" }} depuis votre dernière connexion (le {{request.user.last_login|date:"d/m/Y"}})</a></b>
 
-<hr>
 {%else%}
-<div class="row" >
-  <div class="col-sm-12 textcenter" style ="color:#0f7407;">
-	  <b><a href="{% url 'notifications' %}">Notifications</a></b>
+	  <b><a href="{% url 'notifications_news' %}">Notifications</a></b>
+{%endif%}
   </div>
 </div>
 <hr>
-{%endif%}
 
 
 

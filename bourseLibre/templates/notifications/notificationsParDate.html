@@ -1,16 +1,19 @@
 {% extends 'base.html' %}
 {% load activity_tags %}
 {% block subtitle %}
-<h4 class = "textcenter "> Notifications
+<h4 class = "textcenter "> Notifications par date
 
 </h4>
 
 <p class = "textcenter ">
+      <a href="{% url 'notifications'  %}" class="btn btn-success">
+         Notifications par type
+      </a>
       <a href="{% url 'dernieresInfos'  %}" class="btn btn-success">
          Nouveautés
       </a>
       <a href="{% url 'notifications'  %}" class="btn btn-success">
-         Par type
+         Activité récente
       </a>
 </p>
 {% endblock %}
