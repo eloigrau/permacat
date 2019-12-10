@@ -10,18 +10,22 @@ class AtelierForm(forms.ModelForm):
 
     class Meta:
         model = Atelier
-        fields = ['titre', 'statut', 'categorie', 'referent', 'description', 'materiel', 'date_atelier','heure_atelier']
+        fields = ['titre', 'statut', 'categorie', 'referent', 'description', 'materiel', 'date_atelier','heure_atelier','duree_prevue', 'tarif_par_personne']
         widgets = {
             'description': SummernoteWidget(),
             'materiel': SummernoteWidget(),
             'date_atelier': forms.DateInput(attrs={'type':"date"}),
             'heure_atelier': forms.TimeInput(attrs={'type':"time", },format='%H:%M'),
+            'duree_prevue': forms.TimeInput(attrs={'type':"time", },format='%H:%M'),
         }
 
-    def save(self):
+    def save(self, request):
         instance = super(AtelierForm, self).save(commit=False)
         referent = self.cleaned_data['referent']
-        instance.referent = dict(self.fields['referent'].choices)[referent]
+        try:
+            instance.referent = dict(self.fields['referent'].choices)[referent]
+        except:
+            pass
 
 
         max_length = Atelier._meta.get_field('slug').max_length
@@ -33,6 +37,7 @@ class AtelierForm(forms.ModelForm):
             # Truncate the original slug dynamically. Minus 1 for the hyphen.
             instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
 
+        instance.auteur = request.user
         instance.save()
         try:
             instance.save_m2m()
@@ -52,12 +57,13 @@ class AtelierChangeForm(forms.ModelForm):
 
     class Meta:
         model = Atelier
-        fields = [ 'titre', 'statut', 'categorie','referent', 'description', 'materiel', 'date_atelier',  'heure_atelier']
+        fields = [ 'titre', 'statut', 'categorie','referent', 'description', 'materiel', 'date_atelier',  'heure_atelier', 'duree_prevue', 'tarif_par_personne', ]
         widgets = {
             'description': SummernoteWidget(),
             'materiel': SummernoteWidget(),
             'date_atelier': forms.DateTimeInput(attrs={'type':"date"}),
             'heure_atelier': forms.TimeInput(attrs={'type':"time", },format='%H:%M'),
+            'duree_prevue': forms.TimeInput(attrs={'type':"time", },format='%H:%M'),
         }
 
 

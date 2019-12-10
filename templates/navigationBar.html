@@ -1,7 +1,7 @@
 {% load fontawesome %}
 {% block navBar %}
 
-<nav class="navbar navbar-light bs-dark navbar-expand-md justify-content-center fixed-top navbarMenu">
+<nav class="navbar navbar-light bs-dark navbar-expand-xl justify-content-center fixed-top navbarMenu">
     <div class="container-fluid">
         <button class="navbar-toggler navbar-btn" type="button" data-toggle="collapse" data-target="#navbarsActuel" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -15,7 +15,7 @@
       <li class="nav-item dropdown">
           <a  data-toggle="dropdown" class="nav-link dropdown-toggle" href="{% url 'marche' %}"  aria-haspopup="true" aria-expanded="false">
               {% fontawesome_icon 'shopping-basket' %}
-              L'Altermarché
+              Altermarché
         </a>
 
         <ul class="dropdown-menu textcenter">
@@ -33,7 +33,7 @@
       </li>
       <li class="nav-item dropdown">
            <a data-toggle="dropdown" class="nav-link dropdown-toggle" href="{% url 'agora' %}" aria-haspopup="true" aria-expanded="false" >
-               {% fontawesome_icon 'comments' %} Le Forum </a>
+               {% fontawesome_icon 'comments' %} Forum </a>
 
             <ul class="dropdown-menu textcenter">
                 <li> <a class="nav-link dropdown-item" href="{% url 'blog:index' %}?">Articles</a></li>
@@ -44,7 +44,7 @@
 
 
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle"  href="{% url 'presentation_asso' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">  {% fontawesome_icon 'link' %} Les associations </a>
+                <a class="nav-link dropdown-toggle"  href="{% url 'presentation_asso' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">  {% fontawesome_icon 'link' %} Associations </a>
                 <ul class="dropdown-menu textcenter " aria-labelledby="navbarDropdownMenuLink">
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" >Permacat</a>
@@ -73,6 +73,7 @@
                         <a class="dropdown-item dropdown-toggle" >Ramene Ta Graine</a>
                         <ul class="dropdown-menu">
                         <li> <a class="nav-link dropdown-item" href="{% url 'agora_rtg' %}"> Salon  </a></li>
+                        <li> <a class="nav-link dropdown-item" href="https://permaculturelne.herokuapp.com"> Festival Permacultur'Elne  </a></li>
                        <li>  <span class="nav-link divider" role="separator"></span></li>
                         <li> <a class="nav-link dropdown-item" href="{% url 'annuaire_rtg' %}"> Annuaire  </a></li>
                          <li><a class="nav-link dropdown-item" href="{% url 'carte_rtg' %}"> Carte  </a></li>
@@ -86,7 +87,7 @@
 
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="{% url 'presentation_site' %}" id="navbarAbout2" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" >
-             {% fontawesome_icon 'globe' %} Le site
+             {% fontawesome_icon 'globe' %} Site
             </a>
             <ul class="dropdown-menu textcenter" aria-labelledby="navbarAbout2">
                <li> <a class="nav-link dropdown-item" href="{% url 'annuaire' %}"> Annuaire </a></li>

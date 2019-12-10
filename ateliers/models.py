@@ -50,15 +50,18 @@ class Atelier(models.Model):
     description = models.TextField(null=True, blank=True)
     materiel = models.TextField(null=True, blank=True, verbose_name="Matériel nécessaire")
     referent = models.CharField(max_length=120, null=True, blank=True,  verbose_name="Référent(e.s)")
+    auteur = models.ForeignKey(Profil, on_delete=models.CASCADE, null=True)
 
-    date_atelier = models.DateField(verbose_name="Date prévue", default=timezone.now, blank=True, null=True)
-    heure_atelier = models.TimeField(verbose_name="Heure prévue", help_text="Heure prévue", default=timezone.now, blank=True, null=True)
+    date_atelier = models.DateField(verbose_name="Date prévue", help_text="Date prévue",default=timezone.now, blank=True, null=True)
+    heure_atelier = models.TimeField(verbose_name="Heure prévue", help_text="Heure prévue", default="17:00", blank=True, null=True)
 
     date_creation = models.DateTimeField(verbose_name="Date de parution", default=timezone.now)
     date_modification = models.DateTimeField(verbose_name="Date de modification", default=timezone.now)
 
     date_dernierMessage = models.DateTimeField(verbose_name="Date du dernier message", auto_now=True)
     dernierMessage = models.CharField(max_length=100, default=None, blank=True, null=True)
+    duree_prevue = models.TimeField(verbose_name="Durée prévue", help_text="Durée de l'atelier estimée", default="02:00", blank=True, null=True)
+    tarif_par_personne = models.CharField(max_length=30, default='gratuit', help_text="Tarif de l'atelier par personne", verbose_name="Tarif de l'atelier par personne", )
 
     class Meta:
         ordering = ('-date_creation', )
@@ -73,6 +76,12 @@ class Atelier(models.Model):
         ''' On save, update timestamps '''
         if not self.id:
             self.date_creation = timezone.now()
+
+            try:
+                self.auteur
+            except:
+                self.auteur = Profil.objects.first()
+
         return super(Atelier, self).save(*args, **kwargs)
 
     @property

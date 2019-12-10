@@ -294,6 +294,10 @@ class ListeProjets(ListView):
             context['typeFiltre'] = "auteur"
         if 'categorie' in self.request.GET:
             context['typeFiltre'] = "categorie"
+            try:
+                context['categorie_courante'] = [x[1] for x in Choix.type_projet if x[0] == self.request.GET['categorie']][0]
+            except:
+                context['categorie_courante'] = ""
         if 'permacat' in self.request.GET:
             context['typeFiltre'] = "permacat"
         if 'archives' in self.request.GET:

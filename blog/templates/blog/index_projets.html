@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse  justify-content-center " id="navbarProduit">
             <ul class="nav navbar-nav justify-content-center">
                 <li class="nav-item dropdown">
-        <a href="{% url 'blog:index' %}">
+        <a href="{% url 'blog:index_projets' %}">
             <button class="btn btn-block {% if typeFiltre == 'aucun' %}btn-primary {%endif%}">Tout </button>
         </a>
    </li>
@@ -44,7 +44,7 @@
             <li class="nav-item dropdown">
              <button type="button" class="btn  btn-block {% if request.GET.categorie %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                data-target = "#idCategorie">
-                {% if request.GET.categorie %} Catégorie: {{request.GET.categorie}} {%else%}Catégorie{%endif%}
+                {% if request.GET.categorie %} {{categorie_courante}} {%else%}Catégorie{%endif%}
                  </button>
                 <div class="dropdown-menu"  aria-labelledby="menuAuteur"  id=idCategorie">
                 {% for categorie_id, cat_nom in categorie_list %}

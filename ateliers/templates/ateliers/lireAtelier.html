@@ -47,7 +47,7 @@
             {% endif %}
         </div>
         <div class="col-sm-3 textright">
-            {%if request.user.is_authenticated %}
+            {%if request.user.username == atelier.referent or request.user == atelier.auteur  %}
             <div class = "btn-group">
             <a href="{%if request.user.is_authenticated %}{% url 'ateliers:modifierAtelier' slug=atelier.slug %}{% endif %}">
                <button type="button" class="btn btn-sm btn-warning">
@@ -120,26 +120,41 @@
 					</td>
 				</tr>
 				<tr>
-					{% if atelier.date_atelier %}
 					<td class="nomProprieteAtelier">
 						Date prévue :
 					</td>
 					<td class="proprieteAtelier">
+					{% if atelier.date_atelier %}
 						{{ atelier.date_atelier}}
 					{% if atelier.heure_atelier %}
 						à {{ atelier.heure_atelier}}
 					{% endif %}
-					</td>
 					{% else %}
-					<td class="nomProprieteAtelier">
-						Pas encore de date prévue
-					</td>
-					<td class="proprieteAtelier">
-
-					</td>
+						-
 					{% endif %}
+					</td>
 
 				</tr>
+					{% if atelier.duree_prevue %}
+				<tr>
+					<td class="nomProprieteAtelier">
+						Durée prévue :
+					</td>
+					<td class="proprieteAtelier">
+						{{ atelier.duree_prevue}}
+					</td>
+				</tr>
+					{% endif %}
+					{% if atelier.tarif_par_personne %}
+				<tr>
+					<td class="nomProprieteAtelier">
+						Prix par personne:
+					</td>
+					<td class="proprieteAtelier">
+						{{ atelier.tarif_par_personne}}
+					</td>
+				</tr>
+					{% endif %}
 
 				<tr>
 					<td class="nomProprieteAtelier">

@@ -120,9 +120,13 @@ section.p3 {
 
 .bs-dark{
     text-color:black;
-  background-color: #bff6ba;
+  background-image: linear-gradient(#d5f9d2, #97f08f);
+  padding: 10px 8px;
+  border: 1px solid grey;
+   border-radius: 0.4em;
 
 }
+
 .bs-dark .dropdown-menu {
   margin: 3px 1px 1px;
   background-color: #cff1cc;
@@ -149,7 +153,7 @@ section.p3 {
 .bs-dark .dropdown-menu > .active > a:hover,
 .bs-dark .dropdown-menu > .active > a:focus {
   color: rgba(0,0,0,0.8);
-  background-color: #ecfaeb;
+  backgrou-nd-color: #ecfaeb;
   outline: 0;
 }
 
@@ -193,8 +197,11 @@ section.p3 {
     min-height: 400px;
     min-width:300px;
     background: white;
+    margin-top:20px;
+    margin-bottom:20px;
     /*border: 0.5px solid #053200;*/
     }
+}
 /*
 #parent {
     text-align:center;
@@ -483,7 +490,7 @@ ul.errorlist{
     white-space: normal;
 }
 /* Responsive navigation menu (for mobile devices) */
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 800px) {
   table,
   tbody,
   tr,
@@ -533,7 +540,8 @@ ul.errorlist{
 }
 .bodycontenucomplet{
     padding: 0.1px ;
-    border: 0.3px solid #053200;
+
+   /* border: 0.3px solid #053200;*/
     }
 .container-fluid {
     padding-right: 0px;
@@ -786,8 +794,9 @@ border-radius: 6px;
 padding:       12px 30px;
 color:         #000000;
 display:       inline-block;
-font:          normal normal 20px/1 ;
+font:          normal normal 22px/1 ;
 text-align:    center;
+    font-variant: small-caps;
 }
 
 .boutonediter{
@@ -803,11 +812,11 @@ text-align:    center;
 }
 
 .boutonArticleCategorie{
-border:        1px solid black;
-border-radius: 6px;
-padding:       12px 8px;
-display:       inline-block;
-text-align:    center;
+    border:        1px solid grey;
+    border-radius: 6px;
+    padding:       12px 8px;
+    margin:       2px 2px;
+    text-align:    center;
 }
 
 /* CSS - Cascading Style Sheet */

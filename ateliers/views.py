@@ -21,9 +21,7 @@ def accueil(request):
 def ajouterAtelier(request):
     form = AtelierForm(request.POST or None)
     if form.is_valid():
-        atelier = form.save(request, commit=False)
-        atelier.auteur = request.user
-        atelier.save()
+        atelier = form.save(request)
         return redirect(atelier.get_absolute_url())
     return render(request, 'ateliers/atelier_ajouter.html', { "form": form, })
 
