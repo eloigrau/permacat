@@ -8,7 +8,7 @@
         </button>
         <a class="navbar-brand" href="{% url 'bienvenue' %}"> Perma.Cat</a>
 
-        <li class="navbar-collapse collapse justify-content-between  align-items-center w-100"  id="navbarsActuel">
+        <div class="navbar-collapse collapse justify-content-between  align-items-center w-100"  id="navbarsActuel">
 
 {% if user.is_authenticated %}
     <ul class="nav navbar-nav">
@@ -182,7 +182,7 @@
         </li>
     </ul>
 {% endif %}
-</div>
+</div></div>
 </nav>
 <script>
 $('.dropdown-menu a.dropdown-toggle').on('click', function(e) {
