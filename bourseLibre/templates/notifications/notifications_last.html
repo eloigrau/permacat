@@ -4,14 +4,8 @@
 <h4 class = "textcenter "> Notifications récentes </h4>
 
 <p class = "textcenter ">
-      <a href="{% url 'dernieresInfos'  %}" class="btn btn-success">
-         Nouveautés
-      </a>
       <a href="{% url 'notifications'  %}" class="btn btn-success">
          Toutes les notifications
-      </a>
-      <a href="{% url 'notificationsParDate'  %}" class="btn btn-success">
-         Par date
       </a>
 </p>
 {% endblock %}
@@ -20,10 +14,20 @@
 <div class="card-deck notif justify-content-between">
     <div class="card carte-notif notif2  d-md-flex textcenter">
         <ul class="list-group list-group-flush">
+	{%if actions%}
       {% for action in actions %}
           {% include "notifications/notifications_template.html" with action=action %}
       {% endfor %}
+
+		{%else%}
+            <li class="list-group-item textcenter"  >Pas d'activité depuis votre dernière connexion</li>
+		{%endif%}
+            <li class="list-group-item textcenter"  >
+                <a href="{% url 'notificationsParDate'  %}" class="btn btn-success btn-sm">++</a>
+                </li>
+
         </ul>
+
     </div>
 
 </div>

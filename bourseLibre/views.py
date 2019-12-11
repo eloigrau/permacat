@@ -106,6 +106,9 @@ def faq(request):
 def statuts(request):
     return render(request, 'statuts.html')
 
+def statuts_rtg(request):
+    return render(request, 'statuts_rtg.html')
+
 
 @login_required
 def produit_proposer(request, type_produit):
