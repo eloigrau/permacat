@@ -100,7 +100,7 @@ def on_save_articles(instance, created, **kwargs):
         message = " Un nouvel article a été créé " + \
                   "\n Vous pouvez y accéder en suivant ce lien : https://permacat.herokuapp.com" + instance.get_absolute_url() + \
                   "\n\n------------------------------------------------------------------------------" \
-                  "\n vous recevez cet email, car vous avez choisi de suivre les articles sur le site http://www.Perma.Cat/forum/articles/"
+                  "\n vous recevez cet email, car vous avez choisi de suivre les articles (en cliquant sur la cloche) sur le site http://www.Perma.Cat/forum/articles/"
         emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv]
         try:
             send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
@@ -190,11 +190,11 @@ def on_save_projet(instance, **kwargs):
 def on_save_projets(instance, created, **kwargs):
     if created:
         suivi, created = Suivis.objects.get_or_create(nom_suivi='projets')
-        titre = "Permacat - nouvel article"
+        titre = "Permacat - nouveau Projet"
         message = " Un nouveau projet a été créé !" + \
                   "\n Vous pouvez y accéder en suivant ce lien : https://permacat.herokuapp.com" + instance.get_absolute_url() +\
                   "\n\n------------------------------------------------------------------------------" \
-                  "\n vous recevez cet email, car vous avez choisi de suivre les articles sur le site http://www.Perma.Cat/agora/"
+                  "\n vous recevez cet email, car vous avez choisi de suivre les projets (en cliquant sur la cloche)  sur le site http://www.Perma.Cat/forum/projets/"
         emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv]
         try:
             send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
