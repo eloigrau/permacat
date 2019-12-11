@@ -42,14 +42,15 @@
   </div>
     <ul class="list-group list-group-flush textcenter">
         <li class="list-group-item"><a href="{% url 'blog:lireArticle' 'visioconference' %}">Visioconférence : lundi prochain à partir de 20h30</a> </li>
-        <li class="list-group-item"><a href="{% url 'blog:lireArticle' 'rencontres-permacat' %}">Rencontre mensuelle : dimanche 5 janvier (lieu à définir)</li>
-     <li class="list-group-item"><a href="https://permacat.herokuapp.com/forum/projets/lalter-marche-ou-marche-en-monnaies-alternatives"> Altermarché : samedi 21 décembre à Perpignan</li>    </ul>
+		<li class="list-group-item"><a href="{% url 'blog:lireArticle' 'rencontres-permacat' %}">Rencontre mensuelle : dimanche 5 janvier (lieu à définir)</a></li>
+		<li class="list-group-item"><a href="https://permacat.herokuapp.com/forum/projets/lalter-marche-ou-marche-en-monnaies-alternatives"> Altermarché : samedi 21 décembre à Perpignan</a></li>
+	</ul>
     </div>
 </div>
 
 <div class="row textcenter">
 	<div class="col">
-		<p><a  href="{% url 'gallerie' %}" ><img src="{{STATIC_URL}}{{nomImage}}" style="width:100%; max-width: 600px; height: auto;"></a></p>
+		<p><a  href="{% url 'gallerie' %}" ><img src="{{STATIC_URL}}{{nomImage}}" alt="gallerie" style="width:100%; max-width: 600px; height: auto;"></a></p>
 
 	</div>
 </div>
