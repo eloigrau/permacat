@@ -1,13 +1,18 @@
 {% extends 'base.html' %}
 {% load activity_tags %}
 {% block subtitle %}
-<h4 class = "textcenter "> Notifications récentes </h4>
+<h4 class = "textcenter "> Notifications </h4>
 
 <p class = "textcenter ">
       <a href="{% url 'notifications'  %}" class="btn btn-success">
          Toutes les notifications
       </a>
 </p>
+<hr>
+{%if actions%}
+<p class = "textcenter "> depuis la dernière fois que vous avez "marqué comme vu" (le {{request.user.date_notifications|date:"d/m/Y, G:i"}})</p>
+
+{% endif %}
 {% endblock %}
 {% block content %}
 <div class="row justify-content-center"
@@ -20,10 +25,10 @@
       {% endfor %}
 
 		{%else%}
-            <li class="list-group-item textcenter"  >Pas d'activité depuis votre dernière connexion</li>
+            <li class="list-group-item textcenter"  >Pas d'activité nouvelle depuis le {{request.user.date_notifications|date:"d/m/Y, G:i"}}</li>
 		{%endif%}
             <li class="list-group-item textcenter"  >
-                <a href="{% url 'notificationsParDate'  %}" class="btn btn-success btn-sm">++</a>
+                <a href="{% url 'notificationsParDate'  %}" class="btn btn-success btn-sm">Voir toutes les notifications par date</a>
                 </li>
 
         </ul>
@@ -33,4 +38,11 @@
 </div>
 </div>
 
+{%if actions%}
+<p class = "textcenter ">
+      <a href="{% url 'notificationsLues'  %}" class="btn btn-primary">
+         Marquer comme vu
+      </a>
+</p>
+{% endif %}
 {% endblock %}

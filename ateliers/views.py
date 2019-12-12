@@ -12,6 +12,8 @@ from django.utils.timezone import now
 
 from bourseLibre.models import Suivis, Profil
 
+from actstream import actions, action
+
 def accueil(request):
     return redirect("ateliers:index_ateliers")
     #return render(request, 'ateliers/accueil.html')
@@ -22,6 +24,8 @@ def ajouterAtelier(request):
     form = AtelierForm(request.POST or None)
     if form.is_valid():
         atelier = form.save(request)
+        action.send(request.user, verb='atelier_nouveau', action_object=atelier, url=atelier.get_absolute_url(),
+                     description="a ajouté l'atelier: '%s'" % atelier.titre)
         return redirect(atelier.get_absolute_url())
     return render(request, 'ateliers/atelier_ajouter.html', { "form": form, })
 
@@ -39,6 +43,8 @@ class ModifierAtelier(UpdateView):
         self.object = form.save()
         self.object.date_modification = now()
         self.object.save()
+        action.send(self.request.user, verb='atelier_modifier', action_object=self.object, url=self.object.get_absolute_url(),
+                     description="a modifié l'atelier: '%s'" % self.object.titre)
         return HttpResponseRedirect(self.object.get_absolute_url())
 
     def save(self):
@@ -60,6 +66,8 @@ def inscriptionAtelier(request, slug):
     atelier = get_object_or_404(Atelier, slug=slug)
     inscript = InscriptionAtelier(user=request.user, atelier=atelier)
     inscript.save()
+    action.send(request.user, verb='atelier_inscription', action_object=atelier, url=atelier.get_absolute_url(),
+                 description="s'est inscrit à l'atelier: '%s'" % atelier.titre)
     messages.info(request, 'Vous êtes bien inscrit à cet atelier !')
     return redirect(atelier.get_absolute_url())
 
@@ -68,6 +76,8 @@ def annulerInscription(request, slug):
     atelier = get_object_or_404(Atelier, slug=slug)
     inscript = InscriptionAtelier.objects.filter(user=request.user, atelier=atelier)
     inscript.delete()
+    action.send(request.user, verb='atelier_désinscription', action_object=atelier, url=atelier.get_absolute_url(),
+                 description="s'est désinscrit de l'atelier: '%s'" % atelier.titre)
     return redirect(atelier.get_absolute_url())
 
 @login_required
@@ -127,6 +137,9 @@ def lireAtelier(request, atelier):
         atelier.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(comment.commentaire))[:96] + "..."
         atelier.save()
         comment.save()
+        action.send(request.user, verb='atelier_message', action_object=atelier, url=atelier.get_absolute_url(),
+                    description="a réagi à la fiche: '%s'" % atelier.titre)
+
         return redirect(request.path)
 
     return render(request, 'ateliers/lireAtelier.html', {'atelier': atelier,  'form': form_comment, 'commentaires':commentaires, 'user_inscrit': user_inscrit, 'inscrits': inscrits},)

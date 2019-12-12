@@ -48,6 +48,7 @@ urlpatterns = [
     url(r'^notifications/$', views.notifications, name='notifications'),
     url(r'^notifications/news/$', views.notifications_news, name='notifications_news'),
     url(r'^notificationsParDate/$', views.notificationsParDate, name='notificationsParDate'),
+    url(r'^notificationsLues/$', views.notificationsLues, name='notificationsLues'),
     url(r'^dernieresInfos/$', views.dernieresInfos, name='dernieresInfos'),
     url(r'^prochaines_rencontres/$', views.prochaines_rencontres, name='prochaines_rencontres'),
     url(r'^permacat/presentation/$', views.presentation_asso, name='presentation_asso'),

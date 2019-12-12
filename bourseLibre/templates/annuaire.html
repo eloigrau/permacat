@@ -20,7 +20,7 @@
                 <button type="button" class="btn btn-primary" >Liste des adhérents Permacat</button>
                 </a>
             {% endif %}
-            {% if request.user.is_rtgt %}
+            {% if request.user.is_rtg %}
             <a href="{% url 'annuaire_rtg' %}" >
                 <button type="button" class="btn btn-primary" >Liste des adhérents RameneTaGraine</button>
                 </a>

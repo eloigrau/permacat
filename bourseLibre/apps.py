@@ -7,6 +7,8 @@ class BourseLibreConfig(AppConfig):
         from actstream import registry
         from django.contrib.auth.models import Group
         from blog.models import Article, Projet
+        from ateliers.models import Atelier, InscriptionAtelier
+        from fiches.models import Fiche, Atelier as fiche_at
         registry.register(self.get_model('Profil'))
         registry.register(self.get_model('MessageGeneral'))
         registry.register(self.get_model('MessageGeneralPermacat'))
@@ -18,6 +20,10 @@ class BourseLibreConfig(AppConfig):
         registry.register(self.get_model('Produit_objet'))
         registry.register(self.get_model('Produit_aliment'))
         registry.register(self.get_model('Suivis'))
+        registry.register(Atelier)
+        registry.register(InscriptionAtelier)
+        registry.register(Fiche)
+        registry.register(fiche_at)
         registry.register(Article)
         registry.register(Projet)
         registry.register(Group)

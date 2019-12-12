@@ -9,6 +9,7 @@ from django.views.generic import ListView, UpdateView, DeleteView
 from django.utils.timezone import now
 
 from bourseLibre.models import Suivis
+from actstream import actions, action
 
 def accueil(request):
     return render(request, 'fiches/accueil.html')
@@ -19,6 +20,8 @@ def ajouterFiche(request):
     form = FicheForm(request.POST or None)
     if form.is_valid():
         fiche = form.save(request.user)
+        action.send(request.user, verb='fiche_nouveau', action_object=fiche, url=fiche.get_absolute_url(),
+                     description="a ajouté la fiche: '%s'" % fiche.titre)
         return redirect(fiche.get_absolute_url())
     return render(request, 'fiches/fiche_ajouter.html', { "form": form, })
 
@@ -28,6 +31,8 @@ def ajouterAtelier(request, fiche_slug):
     if form.is_valid():
         fiche = Fiche.objects.get(slug=fiche_slug)
         form.save(fiche)
+        action.send(request.user, verb='fiche_ajouter_atelier', action_object=fiche, url=fiche.get_absolute_url(),
+                     description="a ajouté un atelier à la fiche: '%s'" % fiche.titre)
         return redirect(fiche.get_absolute_url())
     return render(request, 'fiches/atelier_ajouter.html', { "form": form, })
 
@@ -46,6 +51,8 @@ class ModifierFiche(UpdateView):
         self.object = form.save()
         self.object.date_modification = now()
         self.object.save()
+        action.send(self.request.user, verb='fiche_modifier', action_object=self.object, url=self.object.get_absolute_url(),
+                     description="a modifié la fiche: '%s'" % self.object.titre)
         return HttpResponseRedirect(self.object.get_absolute_url())
 
     def save(self):
@@ -63,6 +70,8 @@ class ModifierAtelier(UpdateView):
         self.object = form.save()
         self.object.date_modification = now()
         self.object.save()
+        action.send(self.request.user, verb='fiche_atelier_modifier', action_object=self.object, url=self.object.get_absolute_url(),
+                     description="a modifié l'atelier: '%s'" % self.object.titre)
         return HttpResponseRedirect(self.object.fiche.get_absolute_url())
         #return redirect('lireFiche', slug=self.object.fiche.slug)
 
@@ -99,6 +108,9 @@ def lireFiche(request, slug):
         fiche.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(comment.commentaire))[:96] + "..."
         fiche.save()
         comment.save()
+        url = fiche.get_absolute_url()
+        action.send(request.user, verb='fiche_message', action_object=fiche, url=url,
+                    description="a réagi à la fiche: '%s'" % fiche.titre)
         return redirect(request.path)
 
     return render(request, 'fiches/lireFiche.html', {'fiche': fiche, 'ateliers':ateliers, 'form': form_comment, 'commentaires':commentaires},)

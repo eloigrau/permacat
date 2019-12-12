@@ -101,14 +101,19 @@
         {%endif%}
 
 
-        {% if request.user.is_permacat %}
+        {% if request.user.is_permacat or request.user.is_rtg %}
             <li class="nav-item dropdown active">
              <button type="button" class="btn btn-block {% if request.GET.permacat %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                data-target = "#idPermacat">
                 {% if request.GET.permacat %}{% if request.GET.permacat == "True" %}Permacat {%else%}Public{%endif%}{%else%}Statut{%endif%}
               </button>
                 <div class="dropdown-menu"  aria-labelledby="menuStatut"  id=idPermacat">
+        {% if request.user.is_permacat%}
                       <a class="dropdown-item" href="?permacat=True">Permacat</a>
+        {%endif%}
+        {% if request.user.is_rtg %}
+                      <a class="dropdown-item" href="?permacat=True">Ramène Ta Graine</a>
+        {%endif%}
                       <a class="dropdown-item" href="?permacat=False">Public</a>
                 </div>
             </li>

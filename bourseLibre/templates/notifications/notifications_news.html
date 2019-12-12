@@ -15,7 +15,7 @@
          Notifications par date
       </a>
 </p>
-<h6> Voici les projets et articles, ainsi que les offres parus ces 15 derniers jours</h6>
+<h6> Voici les projets, articles, fiches, ateliers ainsi que les offres de l'altermarché parus ces 15 derniers jours</h6>
 {% endblock %}
 {% block content %}
 
@@ -32,6 +32,12 @@
         {% include "notifications/notifications_template2.html" with action=art  color="#d3ded6"%}
       {%endfor%}
       {% for art in info.infos.2 %}
+        {% include "notifications/notifications_template2.html" with action=art color="#d3dcbc" %}
+      {%endfor%}
+      {% for art in info.infos.3 %}
+        {% include "notifications/notifications_template2.html" with action=art color="#d3dcbc" %}
+      {%endfor%}
+      {% for art in info.infos.4 %}
         {% include "notifications/notifications_template2.html" with action=art color="#d3dcbc" %}
       {%endfor%}
 

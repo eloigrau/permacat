@@ -160,6 +160,7 @@ class Profil(AbstractUser):
     accepter_conditions = models.BooleanField(verbose_name="J'ai lu et j'accepte les conditions d'utilisation du site", default=False, null=False)
     accepter_annuaire = models.BooleanField(verbose_name="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous", default=True)
 
+    date_notifications = models.DateTimeField(verbose_name="Date de validationd es notifications",default=now)
     #device_registration_id =  models.CharField(_('device reg id'), blank=True, default=None, null=True, max_length=100)
 
     def __str__(self):
@@ -523,7 +524,7 @@ def on_save_produits(instance, created, **kwargs):
                   "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + instance.get_absolute_url() + \
                   "\n------------------------------------------------------------------------------" \
                   "\n vous recevez cet email, car vous avez choisi de suivre le marché sur le site http://www.perma.cat"
-        emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv]
+        emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv  and (instance.estPublique or suiv.is_permacat)]
         try:
             send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
         except:
@@ -539,7 +540,7 @@ def on_save_produits(instance, created, **kwargs):
                   "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + instance.get_absolute_url() + \
                   "\n------------------------------------------------------------------------------" \
                   "\n vous recevez cet email, car vous avez choisi de suivre le marché sur le site http://www.perma.cat"
-        emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv]
+        emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv and (instance.estPublique or suiv.is_permacat)]
         try:
             send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
         except:
@@ -555,7 +556,7 @@ def on_save_produits(instance, created, **kwargs):
                   "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + instance.get_absolute_url() + \
                   "\n------------------------------------------------------------------------------" \
                   "\n vous recevez cet email, car vous avez choisi de suivre le marché sur le site http://www.perma.cat"
-        emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv]
+        emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv  and (instance.estPublique or suiv.is_permacat)]
         try:
             send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
         except:
@@ -571,7 +572,7 @@ def on_save_produits(instance, created, **kwargs):
                   "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + instance.get_absolute_url() + \
                   "\n------------------------------------------------------------------------------" \
                   "\n vous recevez cet email, car vous avez choisi de suivre le marché sur le site http://www.perma.cat"
-        emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv]
+        emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv  and (instance.estPublique or suiv.is_permacat)]
         try:
             send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
         except:
@@ -586,7 +587,7 @@ def on_save_produits(instance, created, **kwargs):
                   "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + instance.get_absolute_url() + \
                   "\n------------------------------------------------------------------------------" \
                   "\n vous recevez cet email, car vous avez choisi de suivre le marché sur le site http://www.perma.cat"
-        emails = [suiv.email for suiv in followers(suivi) if instance.user != suiv]
+        emails = [suiv.email for suiv in followers(suivi) if instance.user != suiv  and (instance.estPublique or suiv.is_permacat)]
         try:
             send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
         except:
