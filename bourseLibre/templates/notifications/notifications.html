@@ -56,17 +56,6 @@
     </ul>
   </div>
 
-  <div class="card carte-notif notif2  d-md-flex textcenter">
-    <div class="card-header textcenter" style="background-color:#cacaaa" >
-     Mes conversations
-    </div>
-    <ul class="list-group list-group-flush " >
-  {% for action in conversations %}
-      {% include "notifications/notifications_template.html" with action=action %}
-  {% endfor %}
-    </ul>
-  </div>
-
   <div class="card carte-notif notif2  d-md-flex textcenter ">
     <div class="card-header textcenter" style="background-color:#7b904b">
       Fiches de Permaculture
@@ -89,13 +78,25 @@
     </ul>
   </div>
 
+  <div class="card carte-notif notif2  d-md-flex textcenter">
+    <div class="card-header textcenter" style="background-color:#cacaaa" >
+     Mes conversations
+    </div>
+    <ul class="list-group list-group-flush " >
+  {% for action in conversations|slice:":20" %}
+      {% include "notifications/notifications_template.html" with action=action %}
+  {% endfor %}
+    </ul>
+  </div>
+
+
 <div class="card carte-notif notif2  d-md-flex textcenter">
   <div class="card-header textcenter" style="background-color:#b5ca8d" >
     Mes actions
   </div>
   <ul class="list-group list-group-flush " >
 {% activity_stream 'actor' user %}
-{% for action in stream|slice:":50" %}
+{% for action in stream|slice:":20" %}
     {% include "notifications/notifications_template.html" with action=action %}
 {% endfor %}
   </ul>
