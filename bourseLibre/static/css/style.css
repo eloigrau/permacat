@@ -398,7 +398,7 @@ box-shadow: 0 10px 10px 0px grey;
 }
 a:link           { color: #000033 }  /* unvisited links       */
 a:visited        { color: #000066 }  /* visited links         */
-a:hover, a:focus { color: grey }    /* user hovers, or focus */
+a:hover, a:focus { text-shadow: 0.2px 0.2px grey;}    /* user hovers, or focus */
 a:active         { color: #000000 }  /* active links          */
 
 
