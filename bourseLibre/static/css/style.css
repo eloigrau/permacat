@@ -138,6 +138,10 @@ section.p3 {
 
 }
 
+.navbar-menu {
+    font-variant: small-caps;
+}
+
 .bs-dark .dropdown-menu .divider {
 }
 .bs-dark .dropdown-menu > li > a {
@@ -396,8 +400,8 @@ box-shadow: 0 10px 10px 0px grey;
     max-width: 250px;
     margin-bottom: 20px;
 }
-a:link           { color: #000033 }  /* unvisited links       */
-a:visited        { color: #000066 }  /* visited links         */
+a:link           { color: #000055 }  /* unvisited links       */
+a:visited        { color: #000033 }  /* visited links         */
 a:hover, a:focus { text-shadow: 0.2px 0.2px grey;}    /* user hovers, or focus */
 a:active         { color: #000000 }  /* active links          */
 

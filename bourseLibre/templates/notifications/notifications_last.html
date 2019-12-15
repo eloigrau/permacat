@@ -25,7 +25,7 @@
       {% endfor %}
 
 		{%else%}
-            <li class="list-group-item textcenter"  >Pas d'activité nouvelle depuis le {{request.user.date_notifications|date:"d/m/Y, G:i"}}</li>
+            <li class="list-group-item textcenter"  >Pas de nouvelle activité depuis le {{request.user.date_notifications|date:"d/m/Y"}} à {{request.user.date_notifications|G:i"}}</li>
 		{%endif%}
             <li class="list-group-item textcenter"  >
                 <a href="{% url 'notificationsParDate'  %}" class="btn btn-success btn-sm">Voir toutes les notifications par date</a>
@@ -45,4 +45,5 @@
       </a>
 </p>
 {% endif %}
+</div>
 {% endblock %}
