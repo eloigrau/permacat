@@ -49,7 +49,7 @@
 
 <body>
 <div class="container-fluid">
-	<div class="row">
+	<div class="row rowprincipal">
 		<div class="col-xs-12 col-sm-12 col-lg-12">
             {% block navbar%}
             {% include 'navigationBar.html' %}
@@ -94,9 +94,9 @@
 </section>
     {%endcomment%}
 
+<footer class="textcenter">&copy; PermaCat; {% now 'd/m/Y' %}</footer>
 
 </body>
 
-<footer class="textcenter">&copy; PermaCat; {% now 'd/m/Y' %}</footer>
 </html>
 {% endspaceless %}
