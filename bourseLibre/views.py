@@ -884,7 +884,7 @@ def notificationsParDate(request):
 def notificationsLues(request):
     request.user.date_notifications = now()
     request.user.save()
-    return redirect('notifications')
+    return redirect('notifications_news')
 
 def getInfosJourPrecedent(request, nombreDeJours):
     from datetime import datetime, timedelta
