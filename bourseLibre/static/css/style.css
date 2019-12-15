@@ -396,8 +396,8 @@ box-shadow: 0 10px 10px 0px grey;
     max-width: 250px;
     margin-bottom: 20px;
 }
-a:link           { color: #0000cc }  /* unvisited links       */
-a:visited        { color: #000080 }  /* visited links         */
+a:link           { color: #000033 }  /* unvisited links       */
+a:visited        { color: #000066 }  /* visited links         */
 a:hover, a:focus { color: grey }    /* user hovers, or focus */
 a:active         { color: #000000 }  /* active links          */
 
