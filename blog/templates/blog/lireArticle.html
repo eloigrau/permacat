@@ -6,39 +6,10 @@
 <div class="row">
     <div class="col-md-2">
         <p>
-        {%if article.auteur == request.user %}
-		<div class="btn-group">
-            <a href="{% url 'blog:modifierArticle' slug=article.slug %}">
-               <button type="button" class="btn btn-sm btn-warning">
-                <span class="glyphicon glyphicon-plus"></span>&nbsp;Modifier
-               </button></a>
-            <a href="{% url 'blog:supprimerArticle' slug=article.slug %}">
-               <button type="button" class="btn btn-sm btn-danger">
-                <span class="glyphicon glyphicon-plus"></span>&nbsp;Supprimer
-               </button></a>
-        </div>
-        {%elif article.estModifiable%}
-            <a href="{% url 'blog:modifierArticle' slug=article.slug %}">
-               <button type="button" class="btn btn-sm btn-warning">
-                <span class="glyphicon glyphicon-plus"></span>&nbsp;Modifier
-               </button></a>
-        {%endif%}
-
-
-        {%comment%}
-        <a href="{% follow_url article %}">
-            <button type="button" class="btn btn-sm btn-warning">
-                <span class="glyphicon glyphicon-plus"></span>&nbsp;
-                    {% if request.user|is_following:article %}
-                        stop following
-                    {% else %}
-                        follow
-                    {% endif %}
-
-               </button>
-</a>
-        {%endcomment%}
-    </p>
+        <a  href="{% url 'blog:index'  %}">
+        <button class="btn btn-info btn-sm textright" >Retour au sommaire</button>
+            </a>
+        </p>
     </div>
     <div class="col-md-8">
         <p class="infos  textepetit">Dans: <a href="{% url 'blog:index'  %}?categorie={{article.categorie}}"  style="background-color:{{article.get_couleur}}">{{ article.get_categorie_display }}</a>, rédigé par <a href="{% url 'profil' article.auteur.id %}"> {{ article.auteur.username }}</a>, le {{ article.date_creation|date:"DATE_FORMAT" }};
@@ -65,17 +36,32 @@
     </div>
     <div class="col-md-2">
         <p>
-        <a  href="{% url 'blog:index'  %}">
-        <button class="btn btn-info btn-sm textright" >Retour au sommaire</button>
-            </a>
-        </p>
+        {%if article.auteur == request.user %}
+		<div class="btn-group">
+            <a href="{% url 'blog:modifierArticle' slug=article.slug %}">
+               <button type="button" class="btn btn-sm btn-warning">
+                <span class="glyphicon glyphicon-plus"></span>&nbsp;Modifier
+               </button></a>
+            <a href="{% url 'blog:supprimerArticle' slug=article.slug %}">
+               <button type="button" class="btn btn-sm btn-danger">
+                <span class="glyphicon glyphicon-plus"></span>&nbsp;Supprimer
+               </button></a>
+        </div>
+        {%elif article.estModifiable%}
+            <a href="{% url 'blog:modifierArticle' slug=article.slug %}">
+               <button type="button" class="btn btn-sm btn-warning">
+                <span class="glyphicon glyphicon-plus"></span>&nbsp;Modifier
+               </button></a>
+        {%endif%}
+
+    </p>
     </div>
 </div>
 
 
 {% endblock %}
 {% block content %}
-<div class="contenu article">
+<div class="contenu article ">
 <div class="row" >
             <span class="badge {% if article.estPublic%}badge-warning{%else%} badge-success {%endif%}">
                 Article {%if article.estPublic%} public {%else%}  permacat  {%endif%}

@@ -7,21 +7,10 @@
 <div class="row">
     <div class="col-md-2">
         <p>
-        {%if projet.auteur == request.user%}
-		<div class="btn-group">
-
-            <a href="{% url 'blog:modifierProjet' slug=projet.slug %}">
-               <button type="button" class="btn btn-sm btn-warning">
-               &nbsp;Modifier
-               </button></a>
-            <a href="{% url 'blog:supprimerProjet' slug=projet.slug %}">
-               <button type="button" class="btn btn-sm btn-danger">
-               &nbsp;Supprimer
-               </button></a>
-		</div>
-        {%endif%}
-
-</p>
+        <a  href="{% url 'blog:index_projets'  %}">
+        <button class="btn btn-info btn-sm textright" >Retour au sommaire</button>
+            </a>
+        </p>
     </div>
     <div class="col-md-8">
         <p class="infos  textepetit">Dans: <a href="{% url 'blog:index_projets'  %}?categorie={{projet.categorie}}"  style="background-color:{{projet.get_couleur}}">{{ projet.get_categorie_display }}</a>, rédigé par <a href="{% url 'profil' projet.auteur.id %}"> {{ projet.auteur.username }}</a>, le {{ projet.date_creation|date:"DATE_FORMAT" }}
@@ -49,9 +38,19 @@
     </div>
     <div class="col-md-2">
         <p>
-        <a  href="{% url 'blog:index_projets'  %}">
-        <button class="btn btn-info btn-sm textright" >Retour au sommaire</button>
-            </a>
+        {%if projet.auteur == request.user%}
+		<div class="btn-group">
+
+            <a href="{% url 'blog:modifierProjet' slug=projet.slug %}">
+               <button type="button" class="btn btn-sm btn-warning">
+               &nbsp;Modifier
+               </button></a>
+            <a href="{% url 'blog:supprimerProjet' slug=projet.slug %}">
+               <button type="button" class="btn btn-sm btn-danger">
+               &nbsp;Supprimer
+               </button></a>
+		</div>
+        {%endif%}
         </p>
     </div>
 </div>
