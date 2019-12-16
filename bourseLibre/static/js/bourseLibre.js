@@ -47,6 +47,29 @@ $(document).ready(function() {
         var recherche = $('#recherche').val();
         location.href="/search/?"+recherche;
     });
+
+    if ($('#scroll-to-top').length) {
+		var scrollTrigger = 100, // px
+			backToTop = function () {
+				var scrollTop = $(window).scrollTop();
+				if (scrollTop > scrollTrigger) {
+					$('#scroll-to-top').addClass('show');
+				} else {
+					$('#scroll-to-top').removeClass('show');
+				}
+			};
+		backToTop();
+		$(window).on('scroll', function () {
+			backToTop();
+		});
+		$('#scroll-to-top').on('click', function (e) {
+			e.preventDefault();
+			$('html,body').animate({
+				scrollTop: 0
+			}, 700);
+		});
+	}
+
 })
 //$(function() {
 //   $('button').click(function() {
