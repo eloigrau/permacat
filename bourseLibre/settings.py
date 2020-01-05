@@ -35,7 +35,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOCALL = False
 try:
     SECRET_KEY = os.environ['SECRET_KEY']
-    DEBUG = True
+    DEBUG = False
 except:
     LOCALL  = True
     SECRET_KEY = 'aersd68fgsfdgsdvcbvcb563873gbgfthhfhdjd'
@@ -91,7 +91,8 @@ INSTALLED_APPS = (
     'django_extensions',
     'django_filters',
     'rest_framework',
-    'schedule','djangobower',
+    'cal',
+    #'schedule','djangobower',
     'widget_tweaks',
     'leaflet',
     #'tinymce',
@@ -242,8 +243,8 @@ USE_TZ = True
 DATE_FORMAT = "l d F Y"
 DATE_FORMAT_COURT = "d F Y"
 DATE_FORMAT_COURT_HEURE = "d F Y, G:i"
-#DATETIME_INPUT_FORMATS = '%d/%m/%Y'
-#TIME_INPUT_FORMATS = '%H:%M'
+DATETIME_INPUT_FORMATS = '%d/%m/%Y;%H:%M'
+TIME_INPUT_FORMATS = '%d/%m/%Y'
 SHORT_DATE_FORMAT = "d F Y"
 #DATE_INPUT_FORMATS = ('%d/%m/%Y',)
 
@@ -451,3 +452,11 @@ WIKI_ACCOUNT_SIGNUP_ALLOWED = False
 
 
 TAGGIT_CASE_INSENSITIVE = True
+
+BOWER_COMPONENTS_ROOT = '/PROJECT_ROOT/components/'
+BOWER_INSTALLED_APPS = (
+    'jquery',
+    'jquery-ui',
+    'bootstrap'
+)
+

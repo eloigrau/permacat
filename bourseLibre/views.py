@@ -9,9 +9,9 @@ from django.shortcuts import HttpResponseRedirect, render, redirect#, render, ge
 from .forms import Produit_aliment_CreationForm, Produit_vegetal_CreationForm, Produit_objet_CreationForm, \
     Produit_service_CreationForm, ContactForm, AdresseForm, ProfilCreationForm, MessageForm, MessageGeneralForm, \
     ProducteurChangeForm, MessageGeneralPermacatForm, MessageGeneralRTGForm, Produit_aliment_modifier_form, Produit_service_modifier_form, \
-    Produit_objet_modifier_form, Produit_vegetal_modifier_form, ChercherConversationForm
+    Produit_objet_modifier_form, Produit_vegetal_modifier_form, ChercherConversationForm, InscriptionNewsletterForm
 from .models import Profil, Produit, Adresse, Choix, Panier, Item, get_categorie_from_subcat, Conversation, Message, \
-    MessageGeneral, MessageGeneralPermacat, MessageGeneralRTG, getOrCreateConversation, Suivis
+    MessageGeneral, MessageGeneralPermacat, MessageGeneralRTG, getOrCreateConversation, Suivis, InscriptionNewsletter
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
@@ -261,7 +261,8 @@ def listeContacts(request):
         return render(request, "notPermacat.html")
     listeMails = [
         {"type":'user_newsletter' ,"profils":Profil.objects.filter(inscrit_newsletter=True), "titre":"Liste des inscrits à la newsletter : "},
-        {"type":'user_adherent' , "profils":Profil.objects.filter(statut_adhesion=2), "titre":"Liste des adhérents : "},
+         {"type":'anonym_newsletter' ,"profils":InscriptionNewsletter.objects.all(), "titre":"Liste des inscrits anonymes à la newsletter : "},
+      {"type":'user_adherent' , "profils":Profil.objects.filter(statut_adhesion=2), "titre":"Liste des adhérents : "},
         {"type":'user_futur_adherent', "profils":Profil.objects.filter(statut_adhesion=0), "titre":"Liste des personnes qui veulent adhérer à Permacat :"}
     ]
     return render(request, 'listeContacts.html', {"listeMails":listeMails})
@@ -272,6 +273,7 @@ def listeContacts_rtg(request):
         return render(request, "notRTG.html")
     listeMails = [
         {"type":'user_newsletter' ,"profils":Profil.objects.filter(inscrit_newsletter=True), "titre":"Liste des inscrits à la newsletter : "},
+        {"type":'anonym_newsletter' ,"profils":InscriptionNewsletter.objects.all(), "titre":"Liste des inscrits anonymes à la newsletter : "},
         {"type":'user_adherent' , "profils":Profil.objects.filter(statut_adhesion_rtg=2), "titre":"Liste des adhérents : "},
         {"type":'user_futur_adherent', "profils":Profil.objects.filter(statut_adhesion_rtg=0), "titre":"Liste des personnes qui veulent adhérer à Permacat :"}
     ]
@@ -1066,3 +1068,14 @@ def suivre_produits(request, actor_only=True):
     else:
         actions.follow(request.user, suivi, actor_only=actor_only)
     return redirect('marche')
+
+
+
+
+def inscription_newsletter(request):
+    form = InscriptionNewsletterForm(request.POST or None)
+    if form.is_valid():
+        inscription = form.save(commit=False)
+        inscription.save()
+        return render(request, 'merci.html', {'msg' :"Vous êtes inscrits à la newsletter"})
+    return render(request, 'registration/inscription_newsletter.html', {'form':form})

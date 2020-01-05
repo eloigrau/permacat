@@ -7,15 +7,21 @@ from django.utils.timezone import now
 #from tinymce.widgets import TinyMCE
 from django_summernote.widgets import SummernoteWidget
 
+from django.forms import DateTimeInput
+
+
 class ArticleForm(forms.ModelForm):
    # contenu = TinyMCE(attrs={'cols': 80, 'rows': 20})
     estPublic = forms.ChoiceField(choices=((1, "Article public"), (0, "Article Permacat")), label='', required=True, )
 
     class Meta:
         model = Article
-        fields = ['categorie', 'titre', 'contenu', 'estPublic', 'estModifiable']
+        fields = ['categorie', 'titre', 'contenu', 'start_time', 'end_time', 'estPublic', 'estModifiable']
         widgets = {
             'contenu': SummernoteWidget(),
+              'start_time': forms.DateInput(attrs={'type': 'date'}),
+              'end_time': forms.DateInput(attrs={'type': 'date'}),
+
            # 'bar': SummernoteInplaceWidget(),
         }
 
@@ -45,14 +51,17 @@ class ArticleForm(forms.ModelForm):
         super(ArticleForm, self).__init__(request, *args, **kwargs)
         self.fields['contenu'].strip = False
 
+
 class ArticleChangeForm(forms.ModelForm):
     estPublic = forms.ChoiceField(choices=((1, "Article public"), (0, "Article réserve aux adhérents")), label='', required=True)
 
     class Meta:
         model = Article
-        fields = ['categorie', 'titre', 'contenu', 'estPublic', 'estModifiable', 'estArchive']
+        fields = ['categorie', 'titre', 'contenu', 'start_time', 'end_time', 'estPublic', 'estModifiable', 'estArchive']
         widgets = {
             'contenu': SummernoteWidget(),
+              'start_time': forms.DateInput(attrs={'class':'datepicker'}),
+              'end_time': forms.DateInput(attrs={'class':'datepicker'}),
         }
 
 
@@ -60,7 +69,6 @@ class ArticleChangeForm(forms.ModelForm):
         super(ArticleChangeForm, self).__init__(*args, **kwargs)
         self.fields['contenu'].strip = False
         self.fields["estPublic"].choices=((1, "Article public"), (0, "Article réservé aux adhérents")) if kwargs['instance'].estPublic else ((0, "Article réserve aux adhérents"),(1, "Article public"), )
-
 
 
 #     def save(self,):
@@ -85,14 +93,14 @@ class CommentaireArticleForm(forms.ModelForm):
         super(CommentaireArticleForm, self).__init__(request, *args, **kwargs)
         self.fields['commentaire'].strip = False
 
-class CommentaireArticleChangeForm(forms.ModelForm):
 
-     class Meta:
-         model = Commentaire
-         exclude = ['article', 'auteur_comm']
-         widgets = {
-             'commentaire': SummernoteWidget(),
-         }
+
+class CommentaireArticleChangeForm(forms.ModelForm):
+    commentaire = forms.CharField(required=False, widget=SummernoteWidget(attrs={}))
+
+    class Meta:
+     model = Commentaire
+     exclude = ['article', 'auteur_comm']
 
 class ProjetForm(forms.ModelForm):
     #contenu = forms.CharField(widget=forms.Textarea(attrs={'cols': 80, 'rows': 10}))
@@ -101,9 +109,11 @@ class ProjetForm(forms.ModelForm):
 
     class Meta:
         model = Projet
-        fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'statut', 'estPublic', 'lien_document', 'fichier_projet', 'lien_vote',]
+        fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'statut', 'estPublic', 'lien_document', 'fichier_projet', 'start_time', 'end_time',]
         widgets = {
-            'contenu': SummernoteWidget(),
+        'contenu': SummernoteWidget(),
+              'start_time': forms.DateInput(attrs={'class':'datepicker'}),
+              'end_time': forms.DateInput(attrs={'class':'datepicker'}),
         }
 
     def __init__(self, request, *args, **kwargs):
@@ -138,9 +148,11 @@ class ProjetChangeForm(forms.ModelForm):
 
     class Meta:
         model = Projet
-        fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'estPublic', 'lien_document','fichier_projet', 'lien_vote', 'estArchive']
+        fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'estPublic', 'lien_document','fichier_projet', 'start_time', 'end_time', 'estArchive']
         widgets = {
             'contenu': SummernoteWidget(),
+              'start_time': forms.DateInput(attrs={'class':'datepicker'}),
+              'end_time': forms.DateInput(attrs={'class':'datepicker'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -148,7 +160,6 @@ class ProjetChangeForm(forms.ModelForm):
         self.fields['contenu'].strip = False
         self.fields["estPublic"].choices = ((1, "Article public"), (0, "Article réserve aux adhérents")) if kwargs[
             'instance'].estPublic else ((0, "Projet réservé aux adhérents"), (1, "Projet public"),)
-
 
 class CommentProjetForm(forms.ModelForm):
 
@@ -166,6 +177,7 @@ class CommentProjetForm(forms.ModelForm):
 
 
 class CommentaireProjetChangeForm(forms.ModelForm):
+     commentaire = forms.CharField(required=False, widget=SummernoteWidget(attrs={}))
 
      class Meta:
          model = CommentaireProjet

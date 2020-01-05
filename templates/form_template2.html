@@ -1,8 +1,10 @@
 {% load widget_tweaks %}
 {% load app_filters %}
-{%block header%}
+{% block header %}
 {{ form.media }}
-{%endblock%}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+{% endblock %}
 
   {% for hidden_field in form.hidden_fields %}
     {{ hidden_field }}
@@ -25,12 +27,12 @@
 
   {% for field in form.visible_fields %}
 <div class="form-group">
-    {% with tyype=field|field_type %}
-    {% with entete=field|field_entete %}
+{% with tyype=field|field_type %}
+{% with entete=field|field_entete %}
     {% if entete %}
         {{field.label_tag}}
     {%endif%}
-      {% if form.is_bound %}
+    {% if form.is_bound %}
         {% if field.errors %}
           {% render_field field class="form-control invalid" %}
           {% for error in field.errors %}
@@ -39,34 +41,33 @@
             </div>
           {% endfor %}
         {% else %}
+            {% if tyype != 'SummernoteWidget' %}
+                {% if tyype == 'CheckboxInput' %}
+                  {{field}}{{field.label}}
+                {% else %}
+                  {% render_field field class="form-control valid" placeholder=field.label%}
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    {% else %}
         {% if tyype != 'SummernoteWidget' %}
-        {% if tyype == 'CheckboxInput' %}
-          {{field}}{{field.label}}
-        {% else %}
-          {% render_field field class="form-control valid" placeholder=field.label%}
-        {% endif %}
-        {% endif %}
-        {% endif %}
-      {% else %}
-    {% if tyype != 'SummernoteWidget' %}
-        {% if tyype == 'CheckboxInput' %}
-          {{field}}{{field.label}}
-        {% else %}
-        {% render_field field class="form-control" placeholder=field.label %}
-        {% endif %}
-      {% endif %}
-      {% endif %}
+            {% if tyype == 'CheckboxInput' %}
+              {{field}}{{field.label}}
+            {% else %}
+                {% render_field field class="form-control" placeholder=field.label %}
+            {% endif %}
+              {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+              {% endif %}
 
-    {% if tyype != 'SummernoteWidget' %}
-      {% if field.help_text %}
-        <small class="form-text text-muted">{{ field.help_text }}</small>
-      {% endif %}
-    {%else%}
-    {{field}}
-      {% endif %}
+        {%else%}
+            {{field}}
+        {% endif %}
+    {% endif %}
 
-    {%endwith%}
-    {%endwith%}
+{%endwith%}
+{%endwith%}
     </div>
   {% endfor %}
+
 

@@ -69,6 +69,9 @@ class Article(models.Model):
     dernierMessage = models.CharField(max_length=100, default=None, blank=True, null=True)
     estArchive = models.BooleanField(default=False, verbose_name="Archiver l'article")
 
+    start_time = models.DateTimeField(verbose_name="Date de début", null=True,blank=True)
+    end_time = models.DateTimeField(verbose_name="Date de fin",  null=True,blank=True)
+
     class Meta:
         ordering = ('-date_creation', )
         
@@ -124,6 +127,7 @@ class Commentaire(models.Model):
     def get_edit_url(self):
         return reverse('blog:modifierCommentaireArticle',  kwargs={'id':self.id})
 
+
 class Projet(models.Model):
     categorie = models.CharField(max_length=10,
         choices=(Choix.type_projet),
@@ -146,6 +150,10 @@ class Projet(models.Model):
 
     date_dernierMessage = models.DateTimeField(verbose_name="Date de Modification", auto_now=True)
     dernierMessage = models.CharField(max_length=100, default="", blank=True, null=True)
+
+
+    start_time = models.DateTimeField(verbose_name="Date de début",  null=True,blank=True)
+    end_time = models.DateTimeField(verbose_name="Date de fin",  null=True,blank=True)
 
     estArchive = models.BooleanField(default=False, verbose_name="Archiver le projet")
 
@@ -220,7 +228,7 @@ def on_save_article(instance, **kwargs):
 
 class CommentaireProjet(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE)
-    commentaire = models.TextField()
+    commentaire = models.TextField(blank=True)
     projet = models.ForeignKey(Projet, on_delete=models.CASCADE)
     date_creation = models.DateTimeField(auto_now_add=True)
 

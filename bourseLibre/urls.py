@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^summernote/', include('django_summernote.urls')),
     url(r'^captcha/', include('bourseLibre.captcha_local.urls')),
+    path(r'calendrier/', include('cal.urls')),
     url('^', include('django.contrib.auth.urls')),
     url(r'^$', views.bienvenue, name='bienvenue'),
     url(r'^bienvenue/$', views.bienvenue, name='bienvenue'),
@@ -142,7 +143,10 @@ urlpatterns = [
     url(r'^activity/', include('actstream.urls')),
 
     path(r'wiki_ecovillage_notifications/', include('django_nyt.urls')),
-    path(r'wiki_ecovillage/', include('wiki.urls'))
+    path(r'wiki_ecovillage/', include('wiki.urls')),
+
+
+    url(r'^inscription_newsletter/$', views.inscription_newsletter, name='inscription_newsletter', ),
 ]
 urlpatterns += [
     url(r'^robots\.txt$', TemplateView.as_view(template_name="bourseLibre/robots.txt", content_type='text/plain')),

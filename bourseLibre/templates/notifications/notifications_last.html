@@ -15,6 +15,14 @@
 {% endif %}
 {% endblock %}
 {% block content %}
+
+{%if actions%}
+<p class = "textcenter ">
+      <a href="{% url 'notificationsLues'  %}" class="btn btn-primary">
+         Marquer comme vu
+      </a>
+</p>
+{% endif %}
 <div class="row justify-content-center">
 <div class="card-deck notif justify-content-between">
     <div class="card carte-notif notif3  d-md-flex textcenter">
@@ -38,11 +46,4 @@
 </div>
 </div>
 
-{%if actions%}
-<p class = "textcenter ">
-      <a href="{% url 'notificationsLues'  %}" class="btn btn-primary">
-         Marquer comme vu
-      </a>
-</p>
-{% endif %}
 {% endblock %}

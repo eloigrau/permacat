@@ -15,7 +15,7 @@
       <li class="nav-item dropdown">
           <a  data-toggle="dropdown" class="nav-link dropdown-toggle navbar-menu" href="{% url 'marche' %}"  aria-haspopup="true" aria-expanded="false">
               {% fontawesome_icon 'shopping-basket' %}
-              Altermarché
+              Annonces
         </a>
 
         <ul class="dropdown-menu textcenter">
@@ -36,7 +36,7 @@
                {% fontawesome_icon 'comments' %} Forum </a>
 
             <ul class="dropdown-menu textcenter">
-                <li> <a class="nav-link dropdown-item" href="{% url 'blog:index' %}?">Blog</a></li>
+                <li> <a class="nav-link dropdown-item" href="{% url 'blog:index' %}?">Agora</a></li>
                 <li><a class="nav-link dropdown-item" href="{% url 'agora' %}">Salon</a></li>
                  <li><a class="nav-link dropdown-item" href="{% url 'conversations' %}"> Conversations privées</a></li>
             </ul>
@@ -50,12 +50,13 @@
                         <a class="dropdown-item dropdown-toggle" >Permacat</a>
                         <ul class="dropdown-menu textcenter">
                             <li><a class="nav-link dropdown-item" href="{% url 'blog:index_projets' %}"> Projets </a></li>
+                            <li><a class="nav-link dropdown-item" href="{% url 'cal:calendrier' %}"> Calendrier </a></li>
                         <li> <a class="nav-link dropdown-item" href="{% url 'agora_permacat' %}"> Salon permacat </a></li>
                             <li> <a class="nav-link dropdown-item" href="{% url 'blog:index' %}?permacat=True">Articles permacat</a></li>
                        <li>  <span class="nav-link divider" role="separator"></span></li>
                         {% comment %} <li><a class="nav-link dropdown-item" href="{% url 'wiki:root' %}"> Eco Village </a></li>{% endcomment %}
                          <li><a class="nav-link dropdown-item" href="{% url 'fiches:acceuil' %}"> Fiches de Permaculture </a></li>
-                         <li><a class="nav-link dropdown-item" href="{% url 'ateliers:acceuil' %}"> Ateliers </a></li>
+                         <li><a class="nav-link dropdown-item" href="{% url 'ateliers:acceuil' %}"> Ateliers Collectifs</a></li>
 
                        <li>  <span class="nav-link divider" role="separator"></span></li>
                         <li> <a class="nav-link dropdown-item" href="{% url 'annuaire_permacat' %}"> Annuaire  </a></li>

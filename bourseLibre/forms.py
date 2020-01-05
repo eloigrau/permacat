@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, Profil, Message, MessageGeneral, Choix, MessageGeneralPermacat, MessageGeneralRTG
+from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, Profil, Message, MessageGeneral, Choix, MessageGeneralPermacat, MessageGeneralRTG, InscriptionNewsletter
 from bourseLibre.captcha_local.fields import CaptchaField
 #from tinymce.widgets import TinyMCE
 from django_summernote.widgets import SummernoteWidget
@@ -287,3 +287,10 @@ class MessageGeneralRTGForm(forms.ModelForm):
         widgets = {
                 'message': forms.Textarea(attrs={'rows': 1}),
             }
+
+
+class InscriptionNewsletterForm(forms.ModelForm):
+
+    class Meta:
+        model = InscriptionNewsletter
+        fields = ['email']

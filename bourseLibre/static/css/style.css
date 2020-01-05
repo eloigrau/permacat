@@ -893,3 +893,49 @@ text-align:    center;
 .rgba-complement-2 { color: rgba( 74,206,128,1) }
 .rgba-complement-3 { color: rgba( 10,126, 57,1) }
 .rgba-complement-4 { color: rgba( 30, 73, 47,1) }
+
+
+.calendar {
+  width: 98%;
+  /*margin: auto;*/
+  /*font-size: 14px;*/
+}
+
+.calendar tr, .calendar td {
+  border: 1px solid black;
+}
+
+.calendar th {
+  padding: 10px;
+  text-align: center;
+  /*font-size: 18px;*/
+}
+
+.calendar td {
+  width: 200px;
+  height: 150px;
+}
+
+.month {
+ /* font-size: 25px;*/
+}
+
+.date {
+ /* font-size: 16px;*/
+}
+
+.ul_calendar {
+  height: 100%;
+  list-style-type: none;
+  font-size: 1.1em;
+  padding: 1px 3px 1px 3px;
+}
+
+
+.calleft {
+  float: left;
+}
+
+.calright {
+  float: right;
+}

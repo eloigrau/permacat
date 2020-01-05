@@ -11,9 +11,4 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='profil',
-            name='date_notifications',
-            field=models.DateTimeField(default=django.utils.timezone.now, verbose_name='Date de validationd es notifications'),
-        ),
     ]

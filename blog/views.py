@@ -25,7 +25,7 @@ def accueil(request):
 
 
 @login_required
-def ajouterNouveauPost(request):
+def ajouterArticle(request):
     form = ArticleForm(request.POST or None)
     if form.is_valid():
         article = form.save(request.user)
@@ -84,16 +84,17 @@ def lireArticle(request, slug):
     form = CommentaireArticleForm(request.POST or None)
     if form.is_valid():
         comment = form.save(commit=False)
-        comment.article = article
-        comment.auteur_comm = request.user
-        article.date_dernierMessage = comment.date_creation
-        article.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(comment.commentaire))[:96] + "..."
-        article.save()
-        comment.save()
-        url = article.get_absolute_url()
-        suffix = "_permacat" if article.estPublic else ""
-        action.send(request.user, verb='article_message'+suffix, action_object=article, url=url,
-                    description="a réagi à l'article: '%s'" % article.titre)
+        if comment:
+            comment.article = article
+            comment.auteur_comm = request.user
+            article.date_dernierMessage = comment.date_creation
+            article.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(comment.commentaire))[:96] + "..."
+            article.save()
+            comment.save()
+            url = article.get_absolute_url()
+            suffix = "_permacat" if article.estPublic else ""
+            action.send(request.user, verb='article_message'+suffix, action_object=article, url=url,
+                        description="a réagi à l'article: '%s'" % article.titre)
         return redirect(request.path)
 
     return render(request, 'blog/lireArticle.html', {'article': article, 'form': form, 'commentaires':commentaires},)
@@ -433,8 +434,11 @@ class ModifierCommentaireArticle(UpdateView):
 
     def form_valid(self, form):
         self.object = form.save()
-        self.object.date_modification = now()
-        self.object.save()
+        if self.object.commentaire and self.object.commentaire !='<br>':
+            self.object.date_modification = now()
+            self.object.save()
+        else:
+            self.object.delete()
         return HttpResponseRedirect(self.object.article.get_absolute_url())
 
 
@@ -448,6 +452,9 @@ class ModifierCommentaireProjet(UpdateView):
 
     def form_valid(self, form):
         self.object = form.save()
-        self.object.date_modification = now()
-        self.object.save()
+        if self.object.commentaire and self.object.commentaire !='<br>':
+            self.object.date_modification = now()
+            self.object.save()
+        else:
+            self.object.delete()
         return HttpResponseRedirect(self.object.projet.get_absolute_url())

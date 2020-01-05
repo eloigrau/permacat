@@ -160,7 +160,7 @@ class Profil(AbstractUser):
     accepter_conditions = models.BooleanField(verbose_name="J'ai lu et j'accepte les conditions d'utilisation du site", default=False, null=False)
     accepter_annuaire = models.BooleanField(verbose_name="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous", default=True)
 
-    date_notifications = models.DateTimeField(verbose_name="Date de validationd es notifications",default=now)
+    date_notifications = models.DateTimeField(verbose_name="Date de validation des notifications",default=now)
     #device_registration_id =  models.CharField(_('device reg id'), blank=True, default=None, null=True, max_length=100)
 
     def __str__(self):
@@ -249,17 +249,6 @@ def create_user_profile(sender, instance, created, **kwargs):
         Panier.objects.create(user=instance)
     elif created:
         instance.is_active=False
-
-
-class InscriptionNewsletter(models.Model):
-    email = models.EmailField()
-    date_inscription = models.DateTimeField(verbose_name="Date d'inscription", editable=False, auto_now_add=True)
-
-    def __unicode__(self):
-        return self.__str()
-
-    def __str__(self):
-        return str(self.email)
 
 
 class Produit(models.Model):  # , BaseProduct):
@@ -939,3 +928,19 @@ class Suivis(models.Model):
     def __str__(self):
         return str(self.nom_suivi)
 
+
+class InscriptionNewsletter(models.Model):
+    email = models.EmailField()
+    date_inscription = models.DateTimeField(verbose_name="Date d'inscription", editable=False, auto_now_add=True)
+
+    def __unicode__(self):
+        return self.__str()
+
+    def __str__(self):
+        return str(self.email)
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.date_inscription = now()
+        return super(InscriptionNewsletter, self).save(*args, **kwargs)

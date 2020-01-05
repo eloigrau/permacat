@@ -63,6 +63,8 @@
 {% block content %}
 <div class="contenu article ">
 <div class="row" >
+<div class="col-sm-6 textleft" >
+
             <span class="badge {% if article.estPublic%}badge-warning{%else%} badge-success {%endif%}">
                 Article {%if article.estPublic%} public {%else%}  permacat  {%endif%}
             </span>
@@ -71,10 +73,25 @@
                 archivé
             </span>
             {%endif%}
+    </div>
+
+    <div class="col-sm-6 textright" >
+        {%if article.start_time%}
+              <p><a href="{% url 'cal:calendrier' %} ">
+            {%if article.end_time%}
+                Du {{ article.start_time|date:"d/m/Y"  }} au {{ article.end_time|date:"d/m/Y"  }}
+                {%else%}
+                le {{ article.start_time|date:"d/m/Y"  }}
+
+            {% endif %}
+              </a></p>
+        {% endif %}
+    </div>
 </div>
 <div class="row">
-      <h3 style="text-indent: 30px;">
-          {{ article.titre }}</h3>
+<div class="col">
+      <h3 style="text-indent: 30px;"> {{ article.titre }}</h3>
+</div>
 </div>
 <div class="row">
 <div class="col">
