@@ -42,5 +42,4 @@ def calendrier(request):
 
     # Call the formatmonth method, which returns our calendar as a table
     html_cal = mark_safe(cal.formatmonth(withyear=True))
-    print(html_cal)
     return render(request, 'calendrier.html', {'calendar':html_cal, 'prev_month':prev_month(d), 'next_month':next_month(d)})

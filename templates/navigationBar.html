@@ -36,7 +36,7 @@
                {% fontawesome_icon 'comments' %} Forum </a>
 
             <ul class="dropdown-menu textcenter">
-                <li> <a class="nav-link dropdown-item" href="{% url 'blog:index' %}?">Agora</a></li>
+                <li> <a class="nav-link dropdown-item" href="{% url 'blog:index' %}?">Articles</a></li>
                 <li><a class="nav-link dropdown-item" href="{% url 'agora' %}">Salon</a></li>
                  <li><a class="nav-link dropdown-item" href="{% url 'conversations' %}"> Conversations privées</a></li>
             </ul>
@@ -50,7 +50,7 @@
                         <a class="dropdown-item dropdown-toggle" >Permacat</a>
                         <ul class="dropdown-menu textcenter">
                             <li><a class="nav-link dropdown-item" href="{% url 'blog:index_projets' %}"> Projets </a></li>
-                            <li><a class="nav-link dropdown-item" href="{% url 'cal:calendrier' %}"> Calendrier </a></li>
+                            <li><a class="nav-link dropdown-item" href="{% url 'cal:calendrier' %}"> Agenda </a></li>
                         <li> <a class="nav-link dropdown-item" href="{% url 'agora_permacat' %}"> Salon permacat </a></li>
                             <li> <a class="nav-link dropdown-item" href="{% url 'blog:index' %}?permacat=True">Articles permacat</a></li>
                        <li>  <span class="nav-link divider" role="separator"></span></li>
