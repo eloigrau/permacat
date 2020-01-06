@@ -4,14 +4,15 @@
 {% block content %}
 
 <div class="row moiscal">
-    <div class="col-sm-2 textleft">
-	<a class="btn btn-info calleft btn-sm" href="{% url 'cal:calendrier' %}?{{prev_month}}"> << </a>
-    </div>
-         <div class="col-sm-8 "> {{mois|translate_month}} {{annee}}</div>
 
+    <div class="col-sm-12 textcenter">
 
-    <div class="col-sm-2 textright">
-	<a class="btn btn-info calright btn-sm" href="{% url 'cal:calendrier' %}?{{next_month}}"> >> </a>
+        <a class="btn btn-light calleft btn-sm" href="{% url 'cal:calendrier' %}?{{prev_month}}"> << </a>
+
+        {{mois|translate_month}} {{annee}}
+
+        <a class="btn btn-light calright btn-sm" href="{% url 'cal:calendrier' %}?{{next_month}}"> >> </a>
+
     </div>
 </div>
 <div class="row justify-content-center">

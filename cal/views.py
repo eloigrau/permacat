@@ -20,22 +20,22 @@ def get_date(req_day):
 def prev_month(d):
     first = d.replace(day=1)
     prev_month = first - timedelta(days=1)
-    month = 'month=' + str(prev_month.year) + '-' + str(prev_month.month)
+    month = 'mois=' + str(prev_month.year) + '-' + str(prev_month.month)
     return month
 
 def next_month(d):
     days_in_month = monthrange(d.year, d.month)[1]
     last = d.replace(day=days_in_month)
     next_month = last + timedelta(days=1)
-    month = 'month=' + str(next_month.year) + '-' + str(next_month.month)
+    month = 'mois=' + str(next_month.year) + '-' + str(next_month.month)
     return month
 
 def calendrier(request):
     # use today's date for the calendar
-    if not 'month' in request.GET:
+    if not 'mois' in request.GET:
         d = get_date(request.GET.get('day', None))
     else:
-        d = get_date(request.GET.get('month', None))
+        d = get_date(request.GET.get('mois', None))
 
     # Instantiate our calendar class with today's year and date
     cal = Calendar(d.year, d.month)
