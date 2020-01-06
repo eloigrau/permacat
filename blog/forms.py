@@ -112,8 +112,8 @@ class ProjetForm(forms.ModelForm):
         fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'statut', 'estPublic', 'lien_document', 'fichier_projet', 'start_time', 'end_time',]
         widgets = {
         'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'class':'datepicker'}),
-              'end_time': forms.DateInput(attrs={'class':'datepicker'}),
+              'start_time': forms.DateInput(attrs={'class':'date'}),
+              'end_time': forms.DateInput(attrs={'class':'date'}),
         }
 
     def __init__(self, request, *args, **kwargs):
@@ -151,8 +151,8 @@ class ProjetChangeForm(forms.ModelForm):
         fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'estPublic', 'lien_document','fichier_projet', 'start_time', 'end_time', 'estArchive']
         widgets = {
             'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'class':'datepicker'}),
-              'end_time': forms.DateInput(attrs={'class':'datepicker'}),
+              'start_time': forms.DateInput(attrs={'class':'date'}),
+              'end_time': forms.DateInput(attrs={'class':'date'}),
         }
 
     def __init__(self, *args, **kwargs):

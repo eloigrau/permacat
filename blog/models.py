@@ -69,8 +69,8 @@ class Article(models.Model):
     dernierMessage = models.CharField(max_length=100, default=None, blank=True, null=True)
     estArchive = models.BooleanField(default=False, verbose_name="Archiver l'article")
 
-    start_time = models.DateTimeField(verbose_name="Date de début", null=True,blank=True)
-    end_time = models.DateTimeField(verbose_name="Date de fin",  null=True,blank=True)
+    start_time = models.DateTimeField(verbose_name="Date de début", null=True,blank=True, help_text="jj/mm/année")
+    end_time = models.DateTimeField(verbose_name="Date de fin",  null=True,blank=True, help_text="jj/mm/année")
 
     class Meta:
         ordering = ('-date_creation', )
@@ -152,8 +152,8 @@ class Projet(models.Model):
     dernierMessage = models.CharField(max_length=100, default="", blank=True, null=True)
 
 
-    start_time = models.DateTimeField(verbose_name="Date de début",  null=True,blank=True)
-    end_time = models.DateTimeField(verbose_name="Date de fin",  null=True,blank=True)
+    start_time = models.DateTimeField(verbose_name="Date de début",  null=True,blank=True, help_text="jj/mm/année")
+    end_time = models.DateTimeField(verbose_name="Date de fin",  null=True,blank=True, help_text="jj/mm/année")
 
     estArchive = models.BooleanField(default=False, verbose_name="Archiver le projet")
 

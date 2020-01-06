@@ -243,10 +243,10 @@ USE_TZ = True
 DATE_FORMAT = "l d F Y"
 DATE_FORMAT_COURT = "d F Y"
 DATE_FORMAT_COURT_HEURE = "d F Y, G:i"
-DATETIME_INPUT_FORMATS = '%d/%m/%Y;%H:%M'
-TIME_INPUT_FORMATS = '%d/%m/%Y'
-SHORT_DATE_FORMAT = "d F Y"
-#DATE_INPUT_FORMATS = ('%d/%m/%Y',)
+DATETIME_INPUT_FORMATS = ('%d/%m/%Y;%H:%M',)
+TIME_INPUT_FORMATS = ('%d/%m/%Y',)
+SHORT_DATE_FORMAT = ("d F Y",)
+DATE_INPUT_FORMATS = ('%d/%m/%Y',)
 
 
 LOGIN_URL = '/auth/login/'

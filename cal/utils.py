@@ -62,7 +62,7 @@ class Calendar(LocaleHTMLCalendar):
         events_arti = Article.objects.filter(start_time__year=self.year, start_time__month=self.month)
         events_proj = Projet.objects.filter(start_time__year=self.year, start_time__month=self.month)
         events_atel = Atelier.objects.filter(date_atelier__year=self.year, date_atelier__month=self.month)
-        cal = '<table border="0" cellpadding="0" cellspacing="0" class="calendar">\n'
+        cal = '<table border="0" cellpadding="0" cellspacing="0" class="calendar table-condensed">\n'
         cal += self.formatmonthname(self.year, self.month, withyear=withyear)+'\n'
         cal += self.formatweekheader()+'\n'
         for week in self.monthdays2calendar(self.year, self.month):
