@@ -37,10 +37,10 @@ class Calendar(LocaleTextCalendar):
         d = ''
         for event in events_per_day_arti:
             titre = event.titre if len(event.titre)<50 else event.titre[:47] + "..."
-            d += "<div class='btn event'> <a href='"+event.get_absolute_url() +"'>"+titre+'</a> </div>'
+            d += "<div class='event'> <a href='"+event.get_absolute_url() +"'>"+titre+'</a> </div>'
         for event in events_per_day_proj:
             titre = event.titre if len(event.titre)<50 else event.titre[:47] + "..."
-            d += "<div class='btn event'> <a href='"+event.get_absolute_url() +"'>"+titre+'</a> </div>'
+            d += "<div class='event'> <a href='"+event.get_absolute_url() +"'>"+titre+'</a> </div>'
 
         now = datetime.now()
         aujourdhui=0
