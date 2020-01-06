@@ -971,7 +971,6 @@ caption {
 #calendar .weekdays {
 	background: #ffecb3;
 	text-align: center;
-	text-transform: uppercase;
 	line-height: 20px;
 	border: none !important;
 	padding: 10px 6px;

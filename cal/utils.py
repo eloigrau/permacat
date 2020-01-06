@@ -8,10 +8,10 @@ from django.db.models import Q
 
 class Constantes:
     width = 10
-    dicoJour = {"Monday".center(width): "lundi".center(width), "TUESDAY".center(width): "mardi".center(width),
-                "wednesday".center(width): "mercredi".center(width), "thursday".center(width): "jeudi".center(width),
-                "friday".center(width): "vendredi".center(width), "saturday".center(width): "samedi".center(width),
-                "sunday".center(width): "dimanche".center(width)}
+    dicoJour = {"Monday".center(width): "Lundi".center(width), "Tuesday".center(width): "Mardi".center(width),
+                "Wednesday".center(width): "Mercredi".center(width), "Thursday".center(width): "Jeudi".center(width),
+                "Friday".center(width): "Vendredi".center(width), "Saturday".center(width): "Samedi".center(width),
+                "Sunday".center(width): "Dimanche".center(width)}
     dicoMois = {"January".center(width): "Janvier".center(width), "February".center(width): "Février".center(width),
                 "March".center(width): "Mars".center(width), "April".center(width): "Avril".center(width),
                 "May".center(width): "Mai".center(width), "June".center(width): "Juin".center(width),
@@ -81,7 +81,7 @@ class Calendar(LocaleTextCalendar):
         events_atel = Atelier.objects.filter(date_atelier__year=self.year, date_atelier__month=self.month)
 
         try:
-            cal = '<div class="row moiscal"><div class="col-sm-12 ">' + dicoMois[self.formatmonthname(self.year, self.month, withyear=False, width=10)] + " %r"%self.year + '</div></div>\n'
+            cal = '<div class="row moiscal"><div class="col-sm-12 ">' + Constantes.dicoMois[self.formatmonthname(self.year, self.month, withyear=False, width=10)] + " %r"%self.year + '</div></div>\n'
         except:
             cal = '<div class="row moiscal"><div class="col-sm-12 ">' + self.formatmonthname(self.year, self.month, withyear=withyear, width=10) + '</div></div>\n'
 
