@@ -148,17 +148,31 @@
 				</tr>
                     {% endif %}
                     {%if request.user.is_permacat%}
-                    {% if projet.lien_vote%}
+                        {% if projet.lien_vote%}
+                        <tr>
+                            <td class="nomProprieteProduit">
+                                Lien pour voter :
+                            </td>
+                            <td class="proprieteProduit">
+                                {{ projet.lien_vote}}
+                            </td>
+                        </tr>
+                        {% endif %}
+                    {% endif %}
+                {%if projet.end_time or projet.start_time%}
                 <tr>
-					<td class="nomProprieteProduit">
-						Lien pour voter :
-					</td>
-					<td class="proprieteProduit">
-						{{ projet.lien_vote}}
-					</td>
-				</tr>
-                    {% endif %}
-                    {% endif %}
+                    <td class="nomProprieteProduit">Date</td>
+                    <td class="proprieteProduit">
+
+              <a href="{% url 'cal:calendrier' %} ">
+                {%if projet.end_time and projet.start_time != projet.end_time %}
+                    Du {{ projet.start_time|date:"d/m/Y"  }} au {{ projet.end_time|date:"d/m/Y"  }}
+                    {%else%}
+                    le {{ projet.start_time|date:"d/m/Y"  }}
+
+                {% endif %}</td>
+                </tr>
+            {% endif %}
 			</tbody>
 		</table>
 	</div>

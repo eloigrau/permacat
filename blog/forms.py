@@ -2,12 +2,10 @@ from django import forms
 from .models import Article, Commentaire, Projet, CommentaireProjet
 from django.utils.text import slugify
 import itertools
-from django.utils.timezone import now
 #from django.utils.formats import localize
 #from tinymce.widgets import TinyMCE
 from django_summernote.widgets import SummernoteWidget
 
-from django.forms import DateTimeInput
 
 
 class ArticleForm(forms.ModelForm):
@@ -60,8 +58,8 @@ class ArticleChangeForm(forms.ModelForm):
         fields = ['categorie', 'titre', 'contenu', 'start_time', 'end_time', 'estPublic', 'estModifiable', 'estArchive']
         widgets = {
             'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'class':'datepicker'}),
-              'end_time': forms.DateInput(attrs={'class':'datepicker'}),
+              'start_time': forms.DateInput(attrs={'class':'date'}),
+              'end_time': forms.DateInput(attrs={'class':'date'}),
         }
 
 
