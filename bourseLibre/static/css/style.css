@@ -946,7 +946,7 @@ text-align:    center;
   grid-column: 1 / -1;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
- width: 100%;
+    width: 100%;
 }
 
 caption {
@@ -958,7 +958,7 @@ caption {
 }
 
 #calendar a {
-	color: #8e352e;
+	color: #1a3300;
 	text-decoration: none;
 }
 
@@ -969,19 +969,15 @@ caption {
 }
 
 #calendar .weekdays {
-	background: #8e352e;
-}
-
-
-#calendar .weekdays th {
+	background: #ffd24d;
 	text-align: center;
 	text-transform: uppercase;
 	line-height: 20px;
 	border: none !important;
 	padding: 10px 6px;
-	color: #fff;
 	font-size: 13px;
 }
+
 
 #calendar td {
 	min-height: 180px;
@@ -1005,6 +1001,16 @@ caption {
 }
 
 
+#calendar .datecourante {
+	text-align: center;
+	margin-bottom: 5px;
+	background: green;
+	color: #fff;
+	width: 20px;
+	border-radius: 50%;
+  flex: 0 0 auto;
+  align-self: flex-end;
+}
 #calendar .event {
   flex: 0 0 auto;
 	font-size: 13px;
@@ -1027,6 +1033,15 @@ caption {
 #calendar .other-month {
 	background: #f5f5f5;
 	color: #666;
+}
+
+.moiscal{
+  font-size: 130%;
+  font-weight: bold;
+	text-align: center;
+	padding: 10px 6px;
+	background: #ffbf00;
+
 }
 
 /* ============================
