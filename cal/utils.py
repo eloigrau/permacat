@@ -24,11 +24,11 @@ class Calendar(LocaleHTMLCalendar):
 
         d = ''
         for event in events_per_day_arti:
-            titre = event.titre if len(event.titre)<30 else event.titre[:27] + "..."
-            d += "<li style=''> <a href='"+event.get_absolute_url() +"'>"+titre+'</a> </li>'
+            titre = event.titre if len(event.titre)<50 else event.titre[:47] + "..."
+            d += "<div class=' event'> <a href='"+event.get_absolute_url() +"'>"+titre+'</a> </div>'
         for event in events_per_day_proj:
-            titre = event.titre if len(event.titre)<30 else event.titre[:27] + "..."
-            d += "<li style=''> <a href='"+event.get_absolute_url() +"'>"+titre+'</a> </li>'
+            titre = event.titre if len(event.titre)<50 else event.titre[:47] + "..."
+            d += "<div class=' event'> <a href='"+event.get_absolute_url() +"'>"+titre+'</a> </div>'
 
         now = datetime.now()
         if now.year > self.year or (now.year == self.year and now.month > self.month) :
@@ -36,14 +36,14 @@ class Calendar(LocaleHTMLCalendar):
         elif now.year == self.year and now.month == self.month and now.day > day:
             style = "style='background-color:grey'"
         elif now.year == self.year and now.month == self.month and now.day == day:
-            style = "style='background-color:#66ff66'"
+            style = "style='background-color:#66ff66 datecourante'"
         else:
             style = "style='background-color:#ccffcc'"
 
         if day != 0:
-                return "<td "+style+"><span class='date'>"+str(day)+'</span><ul class="ul_calendar">'+str(d)+' </ul></td>'
+                return "<td "+style+" class='day'><span class='date'>"+str(day)+'</span>'+str(d)+'</td>'
 
-        return "<td '></td>"
+        return "<td></td>"
 
     # formats a week as a tr
     def formatweek(self, theweek, events_arti, events_proj, events_per_day_atel):
@@ -52,7 +52,7 @@ class Calendar(LocaleHTMLCalendar):
         for d, weekday in theweek:
             week += self.formatday(d, events_arti, events_proj, events_per_day_atel)
 
-        return "<tr>" + week + ' </tr>'
+        return "<tr class='days'>" + week + ' </tr>'
 
     # formats a month as a table
     # filter events by year and month
@@ -62,9 +62,10 @@ class Calendar(LocaleHTMLCalendar):
         events_arti = Article.objects.filter(start_time__year=self.year, start_time__month=self.month)
         events_proj = Projet.objects.filter(start_time__year=self.year, start_time__month=self.month)
         events_atel = Atelier.objects.filter(date_atelier__year=self.year, date_atelier__month=self.month)
-        cal = '<table border="0" cellpadding="0" cellspacing="0" class="calendar table-condensed">\n'
+        cal = '<table border="0" cellpadding="0" cellspacing="0" class="calendar table-condensed" id="calendar">\n'
         cal += self.formatmonthname(self.year, self.month, withyear=withyear)+'\n'
-        cal += self.formatweekheader()+'\n'
+        s = ''.join(self.formatweekday(i) for i in self.iterweekdays())
+        cal += '<tr class="weekdays">%s</tr>' % s+'\n'
         for week in self.monthdays2calendar(self.year, self.month):
             cal += self.formatweek(week, events_arti, events_proj, events_atel)+'\n'
         cal += '</table>\n'
