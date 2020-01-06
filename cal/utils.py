@@ -7,7 +7,18 @@ from ateliers.models import Atelier
 from django.db.models import Q
 
 class Constantes:
-    dicoJour = {"monday":"lundi", "tuesday":"mardi", "wednesday":"mercredi", "thursday":"jeudi", "friday":"vendredi", "saturday":"samedi", "sunday":"dimanche"}
+    width = 10
+    dicoJour = {"monday".center(width): "lundi".center(width), "tuesday".center(width): "mardi".center(width),
+                "wednesday".center(width): "mercredi".center(width), "thursday".center(width): "jeudi".center(width),
+                "friday".center(width): "vendredi".center(width), "saturday".center(width): "samedi".center(width),
+                "sunday".center(width): "dimanche".center(width)}
+    dicoMois = {"January".center(width): "Janvier".center(width), "February".center(width): "Février".center(width),
+                "March".center(width): "Mars".center(width), "April".center(width): "Avril".center(width),
+                "May".center(width): "Mai".center(width), "June".center(width): "Juin".center(width),
+                "July".center(width): "Juillet".center(width), "August".center(width): "Août".center(width),
+                "September".center(width): "Septembre".center(width), "October".center(width): "Octobre".center(width),
+                "November".center(width): "Novembre".center(width), "December".center(width): "Décembre".center(width),
+                }
 class Calendar(LocaleTextCalendar):
     def __init__(self, year=None, month=None):
         self.year = year
@@ -69,8 +80,11 @@ class Calendar(LocaleTextCalendar):
         events_proj = Projet.objects.filter(start_time__year=self.year, start_time__month=self.month)
         events_atel = Atelier.objects.filter(date_atelier__year=self.year, date_atelier__month=self.month)
 
+        try:
+            cal = '<div class="row moiscal"><div class="col-sm-12 ">' + dicoMois[self.formatmonthname(self.year, self.month, withyear=False, width=10)] + " %r"%self.year + '</div></div>\n'
+        except:
+            cal = '<div class="row moiscal"><div class="col-sm-12 ">' + self.formatmonthname(self.year, self.month, withyear=withyear, width=10) + '</div></div>\n'
 
-        cal = '<div class="row moiscal"><div class="col-sm-12 ">' + self.formatmonthname(self.year, self.month, withyear=withyear, width=15)+ '</div></div>\n'
         cal += '<table  class=" table-condensed" id="calendar">\n'
         #cal += self.formatmonthname(self.year, self.month, withyear=withyear)+'\n'
 
