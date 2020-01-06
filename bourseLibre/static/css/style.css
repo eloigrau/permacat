@@ -996,7 +996,7 @@ caption {
 	width: 20px;
 	border-radius: 50%;
   flex: 0 0 auto;
-  align-self: center;
+  align-self: flex-end;
 }
 
 
@@ -1012,11 +1012,11 @@ caption {
 }
 #calendar .event {
   flex: 0 0 auto;
-	font-size: 13px;
+	font-size: 1.1em;
 	border-radius: 4px;
 	padding: 5px;
 	margin-bottom: 5px;
-	line-height: 14px;
+	line-height: 1.1em;
 	background: #e4f2f2;
 	border: 1px solid #b5dbdc;
 	color: #009aaf;
@@ -1041,6 +1041,7 @@ caption {
 	padding: 10px 6px;
 	background: #aef0a8;
    border-radius: 0.4em;
+    border: 0.5px solid brown;
 
 }
 
