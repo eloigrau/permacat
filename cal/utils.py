@@ -80,12 +80,7 @@ class Calendar(LocaleTextCalendar):
         events_proj = Projet.objects.filter(start_time__year=self.year, start_time__month=self.month)
         events_atel = Atelier.objects.filter(date_atelier__year=self.year, date_atelier__month=self.month)
 
-        try:
-            cal = '<div class="row moiscal"><div class="col-sm-12 ">' + Constantes.dicoMois[self.formatmonthname(self.year, self.month, withyear=False, width=10)] + " %r"%self.year + '</div></div>\n'
-        except:
-            cal = '<div class="row moiscal"><div class="col-sm-12 ">' + self.formatmonthname(self.year, self.month, withyear=withyear, width=10) + '</div></div>\n'
-
-        cal += '<table  class=" table-condensed" id="calendar">\n'
+        cal = '<table  class=" table-condensed" id="calendar">\n'
         #cal += self.formatmonthname(self.year, self.month, withyear=withyear)+'\n'
 
         for i in self.iterweekdays():
