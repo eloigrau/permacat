@@ -8,7 +8,7 @@ from django.db.models import Q
 
 class Constantes:
     width = 10
-    dicoJour = {"monday".center(width): "lundi".center(width), "tuesday".center(width): "mardi".center(width),
+    dicoJour = {"Monday".center(width): "lundi".center(width), "TUESDAY".center(width): "mardi".center(width),
                 "wednesday".center(width): "mercredi".center(width), "thursday".center(width): "jeudi".center(width),
                 "friday".center(width): "vendredi".center(width), "saturday".center(width): "samedi".center(width),
                 "sunday".center(width): "dimanche".center(width)}
