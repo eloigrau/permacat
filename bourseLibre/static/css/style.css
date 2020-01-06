@@ -997,7 +997,7 @@ caption {
 	width: 20px;
 	border-radius: 50%;
   flex: 0 0 auto;
-  align-self: flex-end;
+  align-self: center;
 }
 
 
@@ -1009,7 +1009,7 @@ caption {
 	width: 20px;
 	border-radius: 50%;
   flex: 0 0 auto;
-  align-self: flex-end;
+  align-self: start;
 }
 #calendar .event {
   flex: 0 0 auto;

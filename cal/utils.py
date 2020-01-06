@@ -6,6 +6,8 @@ from blog.models import Article, Projet
 from ateliers.models import Atelier
 from django.db.models import Q
 
+class Constantes:
+    dicoJour = {"monday":"lundi", "tuesday":"mardi", "wednesday":"mercredi", "thursday":"jeudi", "friday":"vendredi", "saturday":"samedi", "sunday":"dimanche"}
 class Calendar(LocaleTextCalendar):
     def __init__(self, year=None, month=None):
         self.year = year
@@ -73,7 +75,11 @@ class Calendar(LocaleTextCalendar):
         #cal += self.formatmonthname(self.year, self.month, withyear=withyear)+'\n'
 
         for i in self.iterweekdays():
-            cal += "<th class='weekdays'>"+ self.formatweekday(i, width=10) + '</th>'
+            try:
+                cal += "<th class='weekdays'>"+ Constantes.dicoJour[self.formatweekday(i, width=10)]+ '</th>'
+            except:
+                cal += "<th class='weekdays'>"+ self.formatweekday(i, width=10)+ '</th>'
+
 
         for week in self.monthdays2calendar(self.year, self.month):
             cal += self.formatweek(week, events_arti, events_proj, events_atel)+'\n'
