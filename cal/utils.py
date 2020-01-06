@@ -38,7 +38,7 @@ class Calendar(LocaleHTMLCalendar):
         elif now.year == self.year and now.month == self.month and now.day == day:
             style = "style='background-color:#66ff66 datecourante'"
         else:
-            style = "style='background-color:#ccffcc'"
+            style = "style='background-color:#ccffcc;'"
 
         if day != 0:
                 return "<td "+style+" class='day'><span class='date'>"+str(day)+'</span>'+str(d)+'</td>'
