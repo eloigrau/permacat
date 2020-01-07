@@ -37,22 +37,22 @@ class Calendar(LocaleTextCalendar):
         d = ''
         for event in events_per_day_arti:
             titre = event.titre if len(event.titre)<50 else event.titre[:47] + "..."
-            d += "<div class=' event'> <a href='"+event.get_absolute_url() +"'>"+titre+'</a> </div>'
+            d += "<div class='event'> <a href='"+event.get_absolute_url() +"'>"+titre+'</a> </div>'
         for event in events_per_day_proj:
             titre = event.titre if len(event.titre)<50 else event.titre[:47] + "..."
-            d += "<div class=' event'> <a href='"+event.get_absolute_url() +"'>"+titre+'</a> </div>'
+            d += "<div class='event'> <a href='"+event.get_absolute_url() +"'>"+titre+'</a> </div>'
 
         now = datetime.now()
         aujourdhui=0
         if now.year > self.year or (now.year == self.year and now.month > self.month) :
-            style = "style='background-color:grey'"
+            style = "style='background-color:#d9d9d9'"
         elif now.year == self.year and now.month == self.month and now.day > day:
-            style = "style='background-color:#bbeebb'"
+            style = "style='background-color:#e6e6e6'"
         elif now.year == self.year and now.month == self.month and now.day == day:
-            style = "style='background-color:#85e085; '"
+            style = "style='background-color:#aeeaae; '"
             aujourdhui=1
         else:
-            style = "style='background-color:#ccffcc;'"
+            style = "style='background-color:#e6ffe6;'"
 
         if day != 0:
             if aujourdhui == 1:
@@ -60,7 +60,7 @@ class Calendar(LocaleTextCalendar):
             else:
                 return "<td "+style+" class='day'><span class='date'>"+str(day)+'</span>'+str(d)+'</td>'
 
-        return "<td class='other-month' style='background-color:lightgrey'></td>"
+        return "<td class='other-month' style='background-color:white'></td>"
 
     # formats a week as a tr
     def formatweek(self, theweek, events_arti, events_proj, events_per_day_atel):
