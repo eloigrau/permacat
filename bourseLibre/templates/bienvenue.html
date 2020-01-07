@@ -13,6 +13,7 @@
 {% block content %}
 
 {% if nbExpires %}
+<hr>
 <div class="row" >
   <div class="col-sm-12 textcenter" style ="color:#0f7407;">
 	  <b><a href="{% url 'supprimerProduits_expires_confirmation' %}">Vous avez {{nbExpires}} offre{{nbExpires|pluralize:",s"}} du marché qui {{nbExpires|pluralize:"a,ont"}}  expiré. Cliquez ici pour l{{nbExpires|pluralize:"a,es"}} supprimer ou l{{nbExpires|pluralize:"a,es"}}  modifier</a></b>
@@ -22,6 +23,7 @@
 {%endif%}
 
  {% if not request.user.is_authenticated %}
+<hr>
 <div class="row" >
   <div class="col-sm-12 textcenter">
 	  <b> <a href="{% url 'inscription_newsletter' %}" class="btn btn-light btn-radius"><i class="fa fa-envelope-o"></i> S'inscrire à la newsletter...</a>
@@ -32,6 +34,7 @@
 <hr>
 {% endif %}
 
+<hr>
 <div class="row" >
   <div class="col-sm-12 textcenter">
 	  <b><a href="{% url 'cal:calendrier' %}">Agenda</a></b>
@@ -60,7 +63,7 @@
   </div>
     <ul class="list-group list-group-flush textcenter">
         <li class="list-group-item"><a href="{% url 'blog:lireArticle' 'visioconference' %}">Visioconférence : lundi prochain à partir de 20h30</a> </li>
-		<li class="list-group-item"><a href="{% url 'blog:lireArticle' 'rencontres-permacat' %}">Rencontre mensuelle : dimanche 5 janvier (lieu à définir)</a></li>
+		<li class="list-group-item"><a href="{% url 'blog:lireArticle' 'rencontres-permacat' %}">Rencontre mensuelle : dimanche 2 février à Collioure</a></li>
 		<li class="list-group-item"><a href="https://permacat.herokuapp.com/forum/projets/lalter-marche-ou-marche-en-monnaies-alternatives"> Altermarché : samedi 11 janvier à Perpignan</a></li>
 	</ul>
     </div>
