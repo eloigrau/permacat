@@ -52,6 +52,7 @@ class AtelierForm(forms.ModelForm):
         super(AtelierForm, self).__init__(request, *args, **kwargs)
         self.fields['description'].strip = False
         self.fields['referent'].choices = [(i,u) for i, u in enumerate(Profil.objects.all().order_by('username'))]
+        self.fields.insert(0, "----------------")
 
 class AtelierChangeForm(forms.ModelForm):
     referent = forms.ChoiceField(label='Référent(.e) atelier')
