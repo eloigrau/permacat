@@ -49,6 +49,7 @@ class Atelier(models.Model):
     slug = models.SlugField(max_length=100, default=uuid.uuid4)
     description = models.TextField(null=True, blank=True)
     materiel = models.TextField(null=True, blank=True, verbose_name="Matériel nécessaire")
+    outils = models.TextField(null=True, blank=True, verbose_name="Outils nécessaire")
     referent = models.CharField(max_length=120, null=True, blank=True,  verbose_name="Référent(e.s)")
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE, null=True)
 

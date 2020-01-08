@@ -112,17 +112,14 @@ def contacterParticipantsAtelier(request, slug):
     return render(request, 'ateliers/contacterParticipantsAtelier.html', {'atelier': atelier,  'form': form,  })
 
 
-@login_required
 def lireAtelier_slug(request, slug):
     atelier = get_object_or_404(Atelier, slug=slug)
     return lireAtelier(request, atelier)
 
-@login_required
 def lireAtelier_id(request, id):
     atelier = get_object_or_404(Atelier, id=id)
     return lireAtelier(request, atelier)
 
-@login_required
 def lireAtelier(request, atelier):
     commentaires = CommentaireAtelier.objects.filter(atelier=atelier).order_by("date_creation")
     inscrits = [x[0] for x in InscriptionAtelier.objects.filter(atelier=atelier).values_list('user__username')]

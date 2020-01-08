@@ -58,8 +58,8 @@ class ArticleChangeForm(forms.ModelForm):
         fields = ['categorie', 'titre', 'contenu', 'start_time', 'end_time', 'estPublic', 'estModifiable', 'estArchive']
         widgets = {
             'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'class':'date'}),
-              'end_time': forms.DateInput(attrs={'class':'date'}),
+              'start_time': forms.DateInput(attrs={'type':"date"}),
+              'end_time': forms.DateInput(attrs={'type':'date'}),
         }
 
 
@@ -110,8 +110,8 @@ class ProjetForm(forms.ModelForm):
         fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'statut', 'estPublic', 'lien_document', 'fichier_projet', 'start_time', 'end_time',]
         widgets = {
         'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'class':'date'}),
-              'end_time': forms.DateInput(attrs={'class':'date'}),
+              'start_time': forms.DateInput(attrs={'type':'date'}),
+              'end_time': forms.DateInput(attrs={'type':'date'}),
         }
 
     def __init__(self, request, *args, **kwargs):
@@ -149,8 +149,8 @@ class ProjetChangeForm(forms.ModelForm):
         fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'estPublic', 'lien_document','fichier_projet', 'start_time', 'end_time', 'estArchive']
         widgets = {
             'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'class':'date'}),
-              'end_time': forms.DateInput(attrs={'class':'date'}),
+              'start_time': forms.DateInput(attrs={'type':'date'}),
+              'end_time': forms.DateInput(attrs={'type':'date'}),
         }
 
     def __init__(self, *args, **kwargs):

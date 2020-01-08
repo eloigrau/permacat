@@ -14,6 +14,7 @@ class AtelierForm(forms.ModelForm):
         widgets = {
             'description': SummernoteWidget(),
             'materiel': SummernoteWidget(),
+            'outils': SummernoteWidget(),
             'date_atelier': forms.DateInput(attrs={'type':"date"}),
             'heure_atelier': forms.TimeInput(attrs={'type':"time", },format='%H:%M'),
             'duree_prevue': forms.TimeInput(attrs={'type':"time", },format='%H:%M'),
@@ -61,6 +62,7 @@ class AtelierChangeForm(forms.ModelForm):
         widgets = {
             'description': SummernoteWidget(),
             'materiel': SummernoteWidget(),
+            'outils': SummernoteWidget(),
             'date_atelier': forms.DateTimeInput(attrs={'type':"date"}),
             'heure_atelier': forms.TimeInput(attrs={'type':"time", },format='%H:%M'),
             'duree_prevue': forms.TimeInput(attrs={'type':"time", },format='%H:%M'),
