@@ -982,6 +982,8 @@ caption {
 	min-height: 180px;
   display: flex;
   flex-direction: column;
+      overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #calendar .days li:hover {

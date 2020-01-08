@@ -5,5 +5,5 @@ from . import views
 
 app_name = 'cal'
 urlpatterns = [
-    url(r'', views.calendrier, name='calendrier'),
+    url(r'', views.agenda, name='agenda'),
 ]

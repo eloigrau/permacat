@@ -49,7 +49,6 @@
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" >PermaCat</a>
                         <ul class="dropdown-menu textcenter">
-                            <li><a class="nav-link dropdown-item" href="{% url 'cal:calendrier' %}"> Agenda </a></li>
                             <li><a class="nav-link dropdown-item" href="{% url 'blog:index_projets' %}"> Projets </a></li>
                             <li> <a class="nav-link dropdown-item" href="{% url 'blog:index' %}?permacat=True">Articles permacat</a></li>
                         <li> <a class="nav-link dropdown-item" href="{% url 'agora_permacat' %}"> Salon permacat </a></li>
@@ -100,12 +99,6 @@
                <li> <a class="nav-link dropdown-item" href="{% url 'contact_admins' %}"> Contacter admins </a></li>
                 <li> <span class="nav-link divider" role="separator"></span></li>
                <li> <a class="nav-link dropdown-item" href="{% url 'fairedon' %}"> Faire un don</a></li>
-            </ul>
-        </li>
-    </ul>
-
-    <ul class="nav navbar-nav navbar-right">
-
          <li class="nav-item">
              <form class="form-inline my-2 my-lg-0 justify-content-center form-group navbar-form " action="{% url 'chercher' %}" method="get" role = "search">
         {% csrf_token %}
@@ -115,12 +108,19 @@
             </span>
         </form>
          </li>
+            </ul>
+        </li>
+    </ul>
+
+    <ul class="nav navbar-nav navbar-right">
+
         {% if request.user.is_superuser %}
         {% load admin_urls %}
         <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">admin</a></li>
         {% endif %}
 
-        <li class="nav-item"><a class="nav-link" href="{% url 'notifications_news' %}">{% fontawesome_icon 'bell' %}  Notifications</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'cal:agenda' %}">{% fontawesome_icon 'calendar' %}  Agenda</a></li>
+       <li class="nav-item"><a class="nav-link" href="{% url 'notifications_news' %}">{% fontawesome_icon 'bell' %}  Notifications</a></li>
        <li class="nav-item dropdown">
            <a data-toggle="dropdown" class="nav-link dropdown-toggle navbar-menu " href="{% url 'profil_courant' %}" aria-haspopup="true" aria-expanded="false"  >
               {% fontawesome_icon 'user' %} Profil: {{request.user}} </a>
@@ -146,6 +146,7 @@
     <ul class="nav navbar-nav ">
 
             <li class="nav-item dropdown">
+
                 <a class="nav-link dropdown-toggle navbar-menu"  id="navbarDropdownMenuLink_anonyme" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">  {% fontawesome_icon 'link' %} Les associations </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <li class="dropdown-submenu">

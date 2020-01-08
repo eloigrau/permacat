@@ -29,18 +29,20 @@ class Calendar(LocaleTextCalendar):
 
     # formats a day as a td
     # filter events by day
-    def formatday(self, day, events_arti, events_proj, events_per_day_atel):
+    def formatday(self, request, day, events_arti, events_proj, events_per_day_atel):
         events_per_day_arti = events_arti.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
         events_per_day_proj = events_proj.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
         events_per_day_atel = events_proj.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
 
         d = ''
         for event in events_per_day_arti:
-            titre = event.titre if len(event.titre)<50 else event.titre[:47] + "..."
-            d += "<div class='event'> <a href='"+event.get_absolute_url() +"'>"+titre+'</a> </div>'
+            if event.estPublic or (not request.user.is_anonymous and request.user.is_permacat):
+                titre = event.titre if len(event.titre)<50 else event.titre[:47] + "..."
+                d += "<div class='event'> <a href='"+event.get_absolute_url() +"'>"+titre+'</a> </div>'
         for event in events_per_day_proj:
-            titre = event.titre if len(event.titre)<50 else event.titre[:47] + "..."
-            d += "<div class='event'> <a href='"+event.get_absolute_url() +"'>"+titre+'</a> </div>'
+            if event.estPublic or (not request.user.is_anonymous and request.user.is_permacat):
+                titre = event.titre if len(event.titre)<50 else event.titre[:47] + "..."
+                d += "<div class='event'> <a href='"+event.get_absolute_url() +"'>"+titre+'</a> </div>'
 
         now = datetime.now()
         aujourdhui=0
@@ -63,17 +65,17 @@ class Calendar(LocaleTextCalendar):
         return "<td class='other-month' style='background-color:white'></td>"
 
     # formats a week as a tr
-    def formatweek(self, theweek, events_arti, events_proj, events_per_day_atel):
+    def formatweek(self, request, theweek, events_arti, events_proj, events_per_day_atel):
         week = ''
 
         for d, weekday in theweek:
-            week += self.formatday(d, events_arti, events_proj, events_per_day_atel)
+            week += self.formatday(request, d, events_arti, events_proj, events_per_day_atel)
 
         return "<tr class='days'>" + week + ' </tr>'
 
     # formats a month as a table
     # filter events by year and month
-    def formatmonth(self, withyear=True):
+    def formatmonth(self, request, withyear=True):
        # events = chain(Article.objects.filter(start_time__year=self.year, start_time__month=self.month), Projet.objects.filter(start_time__year=self.year, start_time__month=self.month))
 
         events_arti = Article.objects.filter(start_time__year=self.year, start_time__month=self.month)
@@ -91,7 +93,7 @@ class Calendar(LocaleTextCalendar):
 
 
         for week in self.monthdays2calendar(self.year, self.month):
-            cal += self.formatweek(week, events_arti, events_proj, events_atel)+'\n'
+            cal += self.formatweek(request, week, events_arti, events_proj, events_atel)+'\n'
         cal += '</table>\n'
         print (cal)
         return cal

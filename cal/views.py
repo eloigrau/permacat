@@ -30,7 +30,7 @@ def next_month(d):
     month = 'mois=' + str(next_month.year) + '-' + str(next_month.month)
     return month
 
-def calendrier(request):
+def agenda(request):
     # use today's date for the calendar
     if not 'mois' in request.GET:
         d = get_date(request.GET.get('day', None))
@@ -41,5 +41,5 @@ def calendrier(request):
     cal = Calendar(d.year, d.month)
 
     # Call the formatmonth method, which returns our calendar as a table
-    html_cal = mark_safe(cal.formatmonth(withyear=True))
+    html_cal = mark_safe(cal.formatmonth(request, withyear=True))
     return render(request, 'calendrier.html', {'calendar':html_cal, 'annee':d.year, 'mois':cal.formatmonthname(d.year, d.month, withyear=False, width=10), 'prev_month':prev_month(d), 'next_month':next_month(d)})

@@ -36,7 +36,7 @@ urlpatterns = [
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^summernote/', include('django_summernote.urls')),
     url(r'^captcha/', include('bourseLibre.captcha_local.urls')),
-    path(r'calendrier/', include('cal.urls')),
+    path(r'agenda/', include('cal.urls')),
     url('^', include('django.contrib.auth.urls')),
     url(r'^$', views.bienvenue, name='bienvenue'),
     url(r'^bienvenue/$', views.bienvenue, name='bienvenue'),

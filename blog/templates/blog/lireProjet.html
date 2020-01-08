@@ -164,7 +164,7 @@
                     <td class="nomProprieteProduit">Date</td>
                     <td class="proprieteProduit">
 
-              <a href="{% url 'cal:calendrier' %} ">
+              <a href="{% url 'cal:agenda' %} ">
                 {%if projet.end_time and projet.start_time != projet.end_time %}
                     Du {{ projet.start_time|date:"d/m/Y"  }} au {{ projet.end_time|date:"d/m/Y"  }}
                     {%else%}
