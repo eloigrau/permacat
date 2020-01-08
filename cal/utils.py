@@ -29,10 +29,10 @@ class Calendar(LocaleTextCalendar):
 
     # formats a day as a td
     # filter events by day
-    def formatday(self, request, day, events_arti, events_proj, events_per_day_atel):
+    def formatday(self, request, day, weekday, events_arti, events_proj, events_atel):
         events_per_day_arti = events_arti.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
         events_per_day_proj = events_proj.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
-        events_per_day_atel = events_proj.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
+        events_per_day_atel = events_atel.filter(Q(date_atelier__day=day))
 
         d = ''
         for event in events_per_day_arti:
@@ -43,6 +43,9 @@ class Calendar(LocaleTextCalendar):
             if event.estPublic or (not request.user.is_anonymous and request.user.is_permacat):
                 titre = event.titre if len(event.titre)<50 else event.titre[:47] + "..."
                 d += "<div class='event'> <a href='"+event.get_absolute_url() +"'>"+titre+'</a> </div>'
+        for event in events_per_day_atel:
+            titre = event.titre if len(event.titre)<50 else event.titre[:47] + "..."
+            d += "<div class='event'> <a href='"+event.get_absolute_url() +"'>"+titre+'</a> </div>'
 
         now = datetime.now()
         aujourdhui=0
@@ -57,6 +60,9 @@ class Calendar(LocaleTextCalendar):
             style = "style='background-color:#e6ffe6;'"
 
         if day != 0:
+            if weekday == 0:
+
+                return "<td "+style+" class='day'><span class='date'>"+str(day)+"</span> <div class='event'> <a href='/forum/article/visioconference'> Visioconférence</a> </div></td>"
             if aujourdhui == 1:
                 return "<td "+style+" class='day'><span class='datecourante'>"+str(day)+'</span>'+str(d)+'</td>'
             else:
@@ -69,7 +75,7 @@ class Calendar(LocaleTextCalendar):
         week = ''
 
         for d, weekday in theweek:
-            week += self.formatday(request, d, events_arti, events_proj, events_per_day_atel)
+            week += self.formatday(request, d, weekday, events_arti, events_proj, events_per_day_atel)
 
         return "<tr class='days'>" + week + ' </tr>'
 
@@ -95,5 +101,4 @@ class Calendar(LocaleTextCalendar):
         for week in self.monthdays2calendar(self.year, self.month):
             cal += self.formatweek(request, week, events_arti, events_proj, events_atel)+'\n'
         cal += '</table>\n'
-        print (cal)
         return cal

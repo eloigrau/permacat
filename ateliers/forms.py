@@ -51,8 +51,9 @@ class AtelierForm(forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
         super(AtelierForm, self).__init__(request, *args, **kwargs)
         self.fields['description'].strip = False
-        self.fields['referent'].choices = [(i,u) for i, u in enumerate(Profil.objects.all().order_by('username'))]
-        self.fields.insert(0, "----------------")
+        listeChoix = [(i+1,u) for i, u in enumerate(Profil.objects.all().order_by('username'))]
+        listeChoix.insert(0, (0, "----------------"))
+        self.fields['referent'].choices = listeChoix
 
 class AtelierChangeForm(forms.ModelForm):
     referent = forms.ChoiceField(label='Référent(.e) atelier')
@@ -73,13 +74,19 @@ class AtelierChangeForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(AtelierChangeForm, self).__init__(*args, **kwargs)
         self.fields['description'].strip = False
-        self.fields['referent'].choices = [(i,u) for i, u in enumerate(Profil.objects.all().order_by('username'))]
+        listeChoix = [(i+1,u) for i, u in enumerate(Profil.objects.all().order_by('username'))]
+        listeChoix.insert(0, (0, kwargs["instance"].referent))
+        self.fields['referent'].choices = listeChoix
 
 
     def save(self):
         instance = super(AtelierChangeForm, self).save(commit=False)
-        referent = int(self.cleaned_data['referent'])
-        instance.referent = dict(self.fields['referent'].choices)[referent].username
+        try:
+            referent = int(self.cleaned_data['referent'])
+            instance.referent = dict(self.fields['referent'].choices)[referent].username
+        except:
+            instance.referent = dict(self.fields['referent'].choices)[referent]
+            pass
         instance.save()
         return instance
 
