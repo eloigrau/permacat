@@ -34,6 +34,7 @@
 <hr>
 {% endif %}
 
+ {% if  request.user.is_authenticated %}
 <hr>
 <div class="row" >
   <div class="col-sm-12 textcenter">
@@ -53,6 +54,7 @@
 {%endif%}
   </div>
 </div>
+ {% endif %}
 <hr>
 
 
