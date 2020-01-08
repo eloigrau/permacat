@@ -79,6 +79,7 @@
             <p>{{ atelier.description|safe}}</p>
         </div>
     </div>
+		{% if atelier.materiel %}
 		<hr>
     <div class="row">
         <div class="col-sm-12 ">
@@ -86,6 +87,8 @@
             <p>{{ atelier.materiel|safe}}</p>
         </div>
     </div>
+		{% endif%}
+		{% if atelier.outils %}
 		<hr>
     <div class="row">
         <div class="col-sm-12 ">
@@ -93,6 +96,7 @@
             <p>{{ atelier.outils|safe}}</p>
         </div>
     </div>
+		{% endif%}
 <div class="col-sm-12 paddingbase">
 		<table class="table table-condensed ">
 			<tbody>
