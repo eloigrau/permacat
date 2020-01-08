@@ -6,19 +6,13 @@
 
 {% endblock %}
 
-{% block navbar%}
-    {%if not request.user.is_authenticated %}
-    {% else %}
-            {% include 'navigationBar.html' %}
-    {% endif %}
-{% endblock%}
 {% block content %}
 
  <div class="row rowcentre">
     <div class="col-sm-3 textleft">
 
         <div class="btn-group btn-group-justified">
-        <a  href="{%if request.user.is_authenticated %}{% url 'ateliers:index_ateliers' %}{% endif %}">
+        <a  href="{% url 'ateliers:index_ateliers' %}">
         <button class="btn btn-info btn-sm textright" >Sommaire</button>
             </a>
         </div>
@@ -43,7 +37,7 @@
                     </a>
                 {% endif %}
             {% else %}
-                <p>Connectez vous pour vous inscrire à l'atelier</p>
+            <p><a href="/auth/login/" >Connectez vous pour vous inscrire à l'atelier</a></p>
             {% endif %}
         </div>
         <div class="col-sm-3 textright">

@@ -123,7 +123,11 @@ def lireAtelier_id(request, id):
 def lireAtelier(request, atelier):
     commentaires = CommentaireAtelier.objects.filter(atelier=atelier).order_by("date_creation")
     inscrits = [x[0] for x in InscriptionAtelier.objects.filter(atelier=atelier).values_list('user__username')]
-    user_inscrit = request.user.username in inscrits
+
+    if not request.user.is_anonymous:
+        user_inscrit = request.user.username in inscrits
+    else:
+        user_inscrit = []
 
     form_comment = CommentaireAtelierForm(request.POST or None)
     if form_comment.is_valid():
