@@ -7,7 +7,7 @@
         <button class="navbar-toggler navbar-btn" type="button" data-toggle="collapse" data-target="#navbarsActuel" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="{% url 'bienvenue' %}"><img  src="{% static 'android-chrome-192x192.png' %}" width="30" height="30" alt="acceuil"/></a>
+        <a class="navbar-brand" href="{% url 'bienvenue' %}"><img  src="{% static 'favicon.ico' %}" width="30" height="30" alt="acceuil"/></a>
         <div class="navbar-collapse collapse justify-content-between  align-items-center w-100"  id="navbarsActuel">
 
 {% if user.is_authenticated %}
