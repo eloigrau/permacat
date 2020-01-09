@@ -23,7 +23,7 @@ Messages échangés avec <span style="background-color:PapayaWhip;"><a href="{% 
         </div>
     </div>
     {% endifchanged %}
-    <div class="row {% ifequal mess.auteur.id request.user.id %} msg-auteur  {%else%} msg-destinataire{%endifequal%}">
+    <div class="row {% if mess.auteur.id == request.user.id %} msg-auteur  {%else%} msg-destinataire{%endif%}">
         <div class="col-sm-2 col-md-3 col-lg-1">
             <p class="infos  textepetit">
                 {{ mess.date_creation|date:"G:i" }} {% ifchanged %}, <a href="{% url 'profil' mess.auteur.id %}"> {{mess.auteur}}</a>{% endifchanged %} </p>

@@ -4,9 +4,67 @@ from django.utils.text import slugify
 import itertools
 #from django.utils.formats import localize
 #from tinymce.widgets import TinyMCE
-from django_summernote.widgets import SummernoteWidget
+from django_summernote.widgets import SummernoteWidget, SummernoteWidgetBase, SummernoteInplaceWidget
+from django.urls import reverse
+from bourseLibre.settings import SUMMERNOTE_CONFIG as summernote_config
+from django.contrib.staticfiles.templatetags.staticfiles import static
 
 
+
+class SummernoteWidgetWithCustomToolbar(SummernoteWidget):
+    def summernote_settings(self):
+        summernote_settings = summernote_config.get('summernote', {}).copy()
+
+        lang = summernote_config['summernote'].get('lang')
+        if not lang:
+            lang = 'fr-FR'
+        summernote_settings.update({
+            'lang': lang,
+            'url': {
+                'language': static('summernote/lang/summernote-' + lang + '.min.js'),
+                'upload_attachment': reverse('django_summernote-upload_attachment'),
+            },
+                # As an example, using Summernote Air-mode
+                'airMode': True,
+                'iFrame': False,
+
+                # Change editor size
+                'width': '100%',
+                'height': '250',
+
+                # Use proper language setting automatically (default)
+
+            "toolbar": [
+                ['style', ['bold', 'italic', 'underline', 'clear', 'style', ]],
+                ['fontsize', ['fontsize']],
+                ['fontSizes', ['8', '9', '10', '11', '12', '14', '18', '22', '24', '36']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['link', ['link', 'picture', 'video', 'table', 'hr', ]],
+                ['misc', ['undo', 'redo', 'help', 'fullscreen', 'codeview', 'readmore']],
+
+            ],
+            "popover": {
+                "image": [
+                    ['imagesize', ['imageSize100', 'imageSize50', 'imageSize25']],
+                    ['float', ['floatLeft', 'floatRight', 'floatNone']],
+                    ['remove', ['removeMedia']]
+                ],
+                "link": [
+                    ['link', ['linkDialogShow', 'unlink']]
+                ],
+                "air": [
+                ['style', ['bold', 'italic', 'underline', 'clear', 'style', ]],
+                ['fontsize', ['fontsize']],
+                ['fontSizes', ['8', '9', '10', '11', '12', '14', '18', '22', '24', '36']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['link', ['link', 'picture', 'video', 'table', 'hr', ]],
+                ['misc', ['undo', 'redo', 'help', 'fullscreen']],
+                ]
+            },
+        })
+        return summernote_settings
 
 class ArticleForm(forms.ModelForm):
    # contenu = TinyMCE(attrs={'cols': 80, 'rows': 20})
@@ -17,8 +75,8 @@ class ArticleForm(forms.ModelForm):
         fields = ['categorie', 'titre', 'contenu', 'start_time', 'end_time', 'estPublic', 'estModifiable']
         widgets = {
             'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'type': 'date'}),
-              'end_time': forms.DateInput(attrs={'type': 'date'}),
+              'start_time': forms.DateInput(attrs={'class': 'date'}),
+              'end_time': forms.DateInput(attrs={'class': 'date'}),
 
            # 'bar': SummernoteInplaceWidget(),
         }
@@ -58,8 +116,8 @@ class ArticleChangeForm(forms.ModelForm):
         fields = ['categorie', 'titre', 'contenu', 'start_time', 'end_time', 'estPublic', 'estModifiable', 'estArchive']
         widgets = {
             'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'type':"date"}),
-              'end_time': forms.DateInput(attrs={'type':'date'}),
+              'start_time': forms.DateInput(attrs={'class':"date", }),
+              'end_time': forms.DateInput(attrs={'class':'date', }),
         }
 
 
@@ -83,8 +141,8 @@ class CommentaireArticleForm(forms.ModelForm):
         exclude = ['article','auteur_comm']
         #
         widgets = {
-         #  'commentaire': SummernoteWidget(),
-                'commentaire': forms.Textarea(attrs={'rows': 1}),
+         'commentaire': SummernoteWidgetWithCustomToolbar(),
+               # 'commentaire': forms.Textarea(attrs={'rows': 1}),
             }
 
     def __init__(self, request, *args, **kwargs):
@@ -110,8 +168,8 @@ class ProjetForm(forms.ModelForm):
         fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'statut', 'estPublic', 'lien_document', 'fichier_projet', 'start_time', 'end_time',]
         widgets = {
         'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'type':'date'}),
-              'end_time': forms.DateInput(attrs={'type':'date'}),
+              'start_time': forms.DateInput(attrs={'class':'date'}),
+              'end_time': forms.DateInput(attrs={'class':'date'}),
         }
 
     def __init__(self, request, *args, **kwargs):
@@ -149,8 +207,8 @@ class ProjetChangeForm(forms.ModelForm):
         fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'estPublic', 'lien_document','fichier_projet', 'start_time', 'end_time', 'estArchive']
         widgets = {
             'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'type':'date'}),
-              'end_time': forms.DateInput(attrs={'type':'date'}),
+              'start_time': forms.DateInput(attrs={'class':'date', }),
+              'end_time': forms.DateInput(attrs={'class':'date', }),
         }
 
     def __init__(self, *args, **kwargs):
@@ -159,6 +217,7 @@ class ProjetChangeForm(forms.ModelForm):
         self.fields["estPublic"].choices = ((1, "Article public"), (0, "Article réserve aux adhérents")) if kwargs[
             'instance'].estPublic else ((0, "Projet réservé aux adhérents"), (1, "Projet public"),)
 
+
 class CommentProjetForm(forms.ModelForm):
 
     class Meta:
@@ -166,7 +225,7 @@ class CommentProjetForm(forms.ModelForm):
         exclude = ['projet','auteur_comm']
 
         widgets = {
-                'commentaire': forms.Textarea(attrs={'rows': 1}),
+                'commentaire': SummernoteWidgetWithCustomToolbar(),
             }
 
     def __init__(self, request, *args, **kwargs):
@@ -175,7 +234,7 @@ class CommentProjetForm(forms.ModelForm):
 
 
 class CommentaireProjetChangeForm(forms.ModelForm):
-     commentaire = forms.CharField(required=False, widget=SummernoteWidget(attrs={}))
+     commentaire = forms.CharField(required=False, widget=SummernoteWidget())
 
      class Meta:
          model = CommentaireProjet

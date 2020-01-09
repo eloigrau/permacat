@@ -47,8 +47,6 @@ from actstream.models import Action, any_stream, following,followers
 # from django.views.decorators.csrf import csrf_exempt
 # from webpush import send_user_notification
 # import json
-from os import listdir
-from os.path import isfile, join
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.core.exceptions import ObjectDoesNotExist
 

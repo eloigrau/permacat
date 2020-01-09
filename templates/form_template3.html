@@ -9,13 +9,13 @@
     {% for field in form %}
         {% for error in field.errors %}
             <div class="alert alert-danger">
-                <strong>{{ error|escape }}</strong>
+                {{field.label}}: <strong>{{ error|escape }}</strong>
             </div>
         {% endfor %}
     {% endfor %}
     {% for error in form.non_field_errors %}
         <div class="alert alert-danger">
-            <strong>{{ error|escape }}</strong>
+           {{field.label}}: <strong>{{ error|escape }}</strong>
         </div>
     {% endfor %}
 {% endif %}
@@ -29,9 +29,56 @@
   {% endif %}
 
   {% for field in form.visible_fields %}
+{% with tyype=field|field_type %}
     <div class="form-group input-group textcenter" >
+     {% if form.is_bound %}
+        {% if field.errors %}
+            {% if tyype != 'SummernoteWidget' and tyype != 'SummernoteWidgetWithCustomToolbar'  %}
+              {% render_field field class="form-control invalid" %}
+              {% for error in field.errors %}
+                <div class="invalid-feedback">
+                  {{ error }}
+                </div>
+              {% endfor %}
+            {% else %}
+
+<div class="container commentaireContainer">
+                {{field}}
+    </div>
+            {% endif %}
+        {% else %}
+            {% if tyype != 'SummernoteWidget' and tyype != 'SummernoteWidgetWithCustomToolbar' %}
+                {% if tyype == 'CheckboxInput' %}
+                  {{field}}{{field.label}}
+                {% else %}
+                  {% render_field field class="form-control valid" placeholder=field.label%}
+                {% endif %}
+            {% else %}
+<div class="container commentaireContainer" placeholder="Commentaire">
+                {{field}}
+    </div>
+            {% endif %}
+        {% endif %}
+    {% else %}
+        {% if tyype != 'SummernoteWidget' and tyype != 'SummernoteWidgetWithCustomToolbar' %}
+            {% if tyype == 'CheckboxInput' %}
+              {{field}}{{field.label}}
+            {% else %}
+                {% render_field field class="form-control" placeholder=field.label %}
+            {% endif %}
+              {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+              {% endif %}
+        {%else%}
+<div class="container commentaireContainer">
+            {{field}}
+    </div>
+        {% endif %}
+    {% endif %}
+     {% comment %}
       {% if form.is_bound %}
         {% if field.errors %}
+
           {% render_field field class="form-control invalid" placeholder=field.label %}
           {% for error in field.errors %}
             <div class="invalid-feedback">
@@ -45,9 +92,13 @@
         {% render_field field class="form-control" placeholder=field.label %}
       {% endif %}
 
+     {% endcomment %}
       {% if field.help_text %}
         <small class="form-text text-muted">{{ field.help_text }}</small>
       {% endif %}
+  {% endwith %}
+  {% endfor %}
+
       <span class="input-group-btn">
 {% if boutonAnnuler %}
           <input type="button" class="btn btn-secondary"  onclick="window.history.back();"  value="Annuler" />
@@ -55,5 +106,6 @@
       <button type="submit" class="btn btn-primary">OK</button>
       </span>
 </div>
-  {% endfor %}
+
+
 

@@ -38,14 +38,14 @@ class Calendar(LocaleTextCalendar):
         for event in events_per_day_arti:
             if event.estPublic or (not request.user.is_anonymous and request.user.is_permacat):
                 titre = event.titre if len(event.titre)<50 else event.titre[:47] + "..."
-                d += "<div class='event'> <a href='"+event.get_absolute_url() +"'>"+titre+'</a> </div>'
+                d += "<div class='event'><i class='fa fa-comments iconleft'></i> <a href='"+event.get_absolute_url() +"'>"+titre+'</a> </div>'
         for event in events_per_day_proj:
             if event.estPublic or (not request.user.is_anonymous and request.user.is_permacat):
                 titre = event.titre if len(event.titre)<50 else event.titre[:47] + "..."
-                d += "<div class='event'> <a href='"+event.get_absolute_url() +"'>"+titre+'</a> </div>'
+                d += "<div class='event'> <i class='fa fa-paper-plane iconleft' ></i> <a href='"+event.get_absolute_url() +"'>"+titre+'</a> </div>'
         for event in events_per_day_atel:
             titre = event.titre if len(event.titre)<50 else event.titre[:47] + "..."
-            d += "<div class='event'> <a href='"+event.get_absolute_url() +"'>"+titre+'</a> </div>'
+            d += "<div class='event'>  <i class='fa fa-wrench iconleft' ></i> <a href='"+event.get_absolute_url() +"'>"+titre+'</a> </div>'
 
         now = datetime.now()
         aujourdhui=0
@@ -60,13 +60,13 @@ class Calendar(LocaleTextCalendar):
             style = "style='background-color:#e6ffe6;'"
 
         if day != 0:
+            ajout=""
             if weekday == 0:
-
-                return "<td "+style+" class='day'><span class='date'>"+str(day)+"</span> <div class='event'> <a href='/forum/article/visioconference'> Visioconférence</a> </div></td>"
+                ajout= "<div class='event'>  <i class='fa fa-comments' ></i> <a href='/forum/article/visioconference'> Visioconférence</a> </div>"
             if aujourdhui == 1:
-                return "<td "+style+" class='day'><span class='datecourante'>"+str(day)+'</span>'+str(d)+'</td>'
+                return "<td "+style+" class='day'><span class='datecourante'>"+str(day)+'</span>'+ajout + str(d)+'</td>'
             else:
-                return "<td "+style+" class='day'><span class='date'>"+str(day)+'</span>'+str(d)+'</td>'
+                return "<td "+style+" class='day'><span class='date'>"+str(day)+'</span>'+ajout +str(d)+ '</td>'
 
         return "<td class='other-month' style='background-color:white'></td>"
 

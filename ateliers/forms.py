@@ -4,6 +4,7 @@ from django.utils.text import slugify
 import itertools
 from django_summernote.widgets import SummernoteWidget
 from bourseLibre.models import Profil
+from blog.forms import SummernoteWidgetWithCustomToolbar
 
 class AtelierForm(forms.ModelForm):
     referent = forms.ChoiceField(label='Référent atelier')
@@ -65,7 +66,7 @@ class AtelierChangeForm(forms.ModelForm):
             'description': SummernoteWidget(),
             'materiel': SummernoteWidget(),
             'outils': SummernoteWidget(),
-            'date_atelier': forms.DateTimeInput(attrs={'type':"date"}),
+            'date_atelier': forms.DateInput(),
             'heure_atelier': forms.TimeInput(attrs={'type':"time", },format='%H:%M'),
             'duree_prevue': forms.TimeInput(attrs={'type':"time", },format='%H:%M'),
         }
@@ -92,16 +93,15 @@ class AtelierChangeForm(forms.ModelForm):
         return instance
 
 class CommentaireAtelierForm(forms.ModelForm):
-    commentaire = forms.CharField(widget=forms.Textarea(attrs={'rows': 1}), label='Laisser un commentaire...')
 
     class Meta:
         model = CommentaireAtelier
         exclude = ['atelier','auteur_comm']
         #
-        #widgets = {
-         #  'commentaire': SummernoteWidget(),
+        widgets = {
+          'commentaire': SummernoteWidgetWithCustomToolbar(),
         #        'commentaire': forms.Textarea(attrs={'rows': 1}),
-         #   }
+           }
 
     def __init__(self, request, *args, **kwargs):
         super(CommentaireAtelierForm, self).__init__(request, *args, **kwargs)

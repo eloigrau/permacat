@@ -9,14 +9,29 @@
 <script src="{% static 'js/infinite.min.js' %}"></script>
     {%endblock%}
 {%block subtitle%}
-
+<p>
+  <a class="btn btn-primary" style="width:180px;" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+    Catégorie
+  </a>
+</p>
+<div class="collapse" id="collapseExample">
+<div class="row align-items-center">
+    <div class="col-sm-12 textcenter justify-content-center ">
+        <div class=" justify-content-between">
+                            {% for categorie_id, cat_nom, cat_coul in categorie_list %}
+            <a class=" btn boutonArticleCategorie " style="background:{{cat_coul}};font-variant: small-caps;{% if request.GET.categorie and cat_nom == categorie_courante %} font-weight: bold;padding:20px 25px;{%endif%}" href="?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+                        {% endfor %}
+        </div>
+    </div>
+</div>
+</div>
 <hr>
 <div class="row align-items-center">
 <div class="col-sm-12 textcenter justify-content-center ">
     <nav class="navbar justify-content-center  navbar-light bg-light">
         <div class="navbar-header">
              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarProduit" aria-controls="navbarProduitContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span></button>
+                Filtrer...</button>
         </div>
         <div class="collapse navbar-collapse  justify-content-center " id="navbarProduit">
             <ul class="nav navbar-nav justify-content-center ">
@@ -71,23 +86,6 @@
             </ul>
     </div>
     </nav>
-</div>
-</div>
-<hr>
-<p>
-  <a class="btn btn-primary" style="width:180px;" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-    Catégorie
-  </a>
-</p>
-<div class="collapse" id="collapseExample">
-<div class="row align-items-center">
-    <div class="col-sm-12 textcenter justify-content-center ">
-        <div class=" justify-content-between">
-                            {% for categorie_id, cat_nom, cat_coul in categorie_list %}
-            <a class=" btn boutonArticleCategorie " style="background:{{cat_coul}};font-variant: small-caps;{% if request.GET.categorie and cat_nom == categorie_courante %} font-weight: bold;padding:20px 25px;{%endif%}" href="?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
-                        {% endfor %}
-        </div>
-    </div>
 </div>
 </div>
 <hr>

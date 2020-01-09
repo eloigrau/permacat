@@ -356,34 +356,34 @@ SUMMERNOTE_CONFIG = {
 
         # Use proper language setting automatically (default)
         'lang': 'fr-FR',
-},
-"toolbar": [
-    ['style', ['bold', 'italic', 'underline', 'clear']],
-    ['fontsize', ['fontsize']],
-    ['fontSizes', ['8', '9', '10', '11', '12', '14', '18', '22', '24', '36']],
-    ['color', ['color']],
-    ['para', ['ul', 'ol', 'paragraph']],
-    ['link', ['link', 'picture', 'video', 'table', 'hr',]],
-    ['misc', [ 'undo', 'redo', 'help','fullscreen', 'codeview',  'readmore']],
+    },
+    "toolbar": [
+        ['style', ['bold', 'italic', 'underline', 'clear', 'style', ]],
+        ['fontsize', ['fontsize']],
+        ['fontSizes', ['8', '9', '10', '11', '12', '14', '18', '22', '24', '36']],
+        ['color', ['color']],
+        ['para', ['ul', 'ol', 'paragraph']],
+        ['link', ['link', 'picture', 'video', 'table', 'hr',]],
+        ['misc', [ 'undo', 'redo', 'help','fullscreen', 'codeview',  'readmore']],
 
-],
-"popover": {
-  "image": [
-    ['imagesize', ['imageSize100', 'imageSize50', 'imageSize25']],
-    ['float', ['floatLeft', 'floatRight', 'floatNone']],
-    ['remove', ['removeMedia']]
-  ],
-  "link": [
-    ['link', ['linkDialogShow', 'unlink']]
-  ],
-  "air": [
-    ['color', ['color']],
-    ['font', ['bold', 'underline', 'clear']],
-    ['para', ['ul', 'paragraph']],
-    ['table', ['table']],
-    ['insert', ['link', 'picture']]
-  ]
-},
+    ],
+    "popover": {
+      "image": [
+        ['imagesize', ['imageSize100', 'imageSize50', 'imageSize25']],
+        ['float', ['floatLeft', 'floatRight', 'floatNone']],
+        ['remove', ['removeMedia']]
+      ],
+      "link": [
+        ['link', ['linkDialogShow', 'unlink']]
+      ],
+      "air": [
+        ['color', ['color']],
+        ['font', ['bold', 'underline', 'clear']],
+        ['para', ['ul', 'paragraph']],
+        ['table', ['table']],
+        ['insert', ['link', 'picture']]
+      ]
+    },
 
 
 # Need authentication while uploading attachments.

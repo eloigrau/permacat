@@ -116,21 +116,24 @@
 						{{ atelier.get_statut_display}}
 					</td>
 				</tr>
+
+					{% if atelier.referent and atelier.referent != "0" %}
 				<tr>
 					<td class="nomProprieteAtelier">
 						Référent :
 					</td>
 					<td class="proprieteAtelier">
-						{{ atelier.referent}}
+						<a href="{% url 'profil_nom' atelier.referent %}" >{{ atelier.referent}}</a>
 					</td>
 				</tr>
+					{% endif %}
 				<tr>
 					<td class="nomProprieteAtelier">
 						Date prévue :
 					</td>
 					<td class="proprieteAtelier">
 					{% if atelier.date_atelier %}
-						{{ atelier.date_atelier}}
+						{{ atelier.date_atelier|date:"DATE_FORMAT"}}
 					{% if atelier.heure_atelier %}
 						à {{ atelier.heure_atelier}}
 					{% endif %}
@@ -167,7 +170,7 @@
 					</td>
 					<td class="proprieteAtelier">
                         {% for i in inscrits %}
-                        <a href="{% url 'profil_nom' i %}">{{i}}</a> {%if not forloop.last%}, {% endif %}
+                        <a href="{% url 'profil_nom' i %}">{{i}}</a>{%if not forloop.last%}, {% endif %}
 					    {% endfor %}
 					</td>
 				</tr>
