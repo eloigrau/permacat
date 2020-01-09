@@ -12,6 +12,24 @@ Coopérateurs
         <h3>Liste de tous les adhérents au site</h3>
     </div>
 </div>
+<div class="row">
+    <div class="col-sm-12 textcenter">
+        <a href="{% url 'contacter_newsletter' %}" >
+                <button type="button" class="btn btn-primary" >Envoyer un mail aux abonnés à la newletter</button>
+                </a>
+
+        {% if request.user.is_permacat %}
+        <a href="{% url 'contacter_adherents' %}" >
+                <button type="button" class="btn btn-primary" >Envoyer un mail aux adhérents Permacat</button>
+                </a>
+        {% endif %}
+        {% if request.user.is_rtg %}
+        <a href="{% url 'contacter_adherents_rtg' %}" >
+                <button type="button" class="btn btn-primary" >Envoyer un mail aux adhérents Ramene Ta Graine</button>
+                </a>
+        {% endif %}
+    </div>
+</div>
 
 {% endblock %}
 {% block content %}

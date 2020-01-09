@@ -15,7 +15,7 @@ from .models import Profil, Produit, Adresse, Choix, Panier, Item, get_categorie
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
-from django.core.mail import mail_admins, send_mail, BadHeaderError
+from django.core.mail import mail_admins, send_mail, BadHeaderError, send_mass_mail
 from django_summernote.widgets import SummernoteWidget
 from random import choice
 
@@ -377,10 +377,10 @@ def profil_contact(request, user_id):
                 html_message=message_html,
                 fail_silently=False,
                 )
-            return render(request, 'message_envoye.html', {'sujet': form.cleaned_data['sujet'], 'msg':message_html, 'envoyeur':request.user.username + " (" + request.user.email + ")", "destinataire":recepteur.username + " (" +recepteur.email+ ")"})
+            return render(request, 'contact/message_envoye.html', {'sujet': form.cleaned_data['sujet'], 'msg':message_html, 'envoyeur':request.user.username + " (" + request.user.email + ")", "destinataire":recepteur.username + " (" +recepteur.email+ ")"})
     else:
         form = ContactForm()
-    return render(request, 'profil_contact.html', {'form': form, 'recepteur':recepteur})
+    return render(request, 'contact/profil_contact.html', {'form': form, 'recepteur':recepteur})
 
     #message = None
     #titre = None
@@ -409,7 +409,7 @@ def contact_admins(request):
                 if form.cleaned_data['renvoi']:
                     send_mail(sujet, "Vous avez envoyé aux administrateurs du site www.perma.cat le message suivant : " + message_html, request.user.email, [request.user.email,], fail_silently=False, html_message=message_html)
 
-                return render(request, 'message_envoye.html', {'sujet': sujet, 'msg': message_html,
+                return render(request, 'contact/message_envoye.html', {'sujet': sujet, 'msg': message_html,
                                                        'envoyeur': request.user.username + " (" + request.user.email + ")",
                                                        "destinataire": "administrateurs "})
             except BadHeaderError:
@@ -418,7 +418,7 @@ def contact_admins(request):
             return render(request, 'erreur.html', {'msg':"Désolé, une ereur s'est produite"})
     else:
         form = ContactForm()
-    return render(request, 'contact.html', {'form': form, "isContactProducteur":False})
+    return render(request, 'contact/contact.html', {'form': form, "isContactProducteur":False})
 
 
 
@@ -433,9 +433,9 @@ def contact_admins2(request):
         if form.cleaned_data['renvoi'] :
             mess = "[Permacat] message envoyé aux administrateurs : \\n"
             send_mail( sujet, mess + message, request.user.email, [request.user.email,], fail_silently=False,)
-        return render(request, 'message_envoye.html', {'sujet': sujet, 'message':message, 'envoyeur':request.user.username + "(" + request.uer.email + ")", "destinataire":"administrateurs d"
+        return render(request, 'contact/message_envoye.html', {'sujet': sujet, 'message':message, 'envoyeur':request.user.username + "(" + request.uer.email + ")", "destinataire":"administrateurs d"
                                                                                                                                                                        "u site)"})
-    return render(request, 'contact.html', {'form': form, "isContactProducteur":False})
+    return render(request, 'contact/contact.html', {'form': form, "isContactProducteur":False})
 
 
 @login_required
@@ -452,7 +452,7 @@ def produitContacterProducteur(request, produit_id):
             mess = "[Permacat] message envoyé à : "+receveur.email+"\\n"
             send_mail( sujet,mess + message, request.user.email, [request.user.email,], fail_silently=False,)
 
-    return render(request, 'contact.html', {'form': form, "isContactProducteur":True, "producteur":receveur.user.username})
+    return render(request, 'contact/contact.html', {'form': form, "isContactProducteur":True, "producteur":receveur.user.username})
 
 
 @login_required
@@ -1080,3 +1080,101 @@ def inscription_newsletter(request):
         inscription.save()
         return render(request, 'merci.html', {'msg' :"Vous êtes inscrits à la newsletter"})
     return render(request, 'registration/inscription_newsletter.html', {'form':form})
+
+
+@login_required
+def contacter_newsletter(request):
+    if not request.user.is_permacat:
+        return render(request, "notPermacat.html")
+
+    if request.method == 'POST':
+        form = ContactForm(request.POST or None, )
+        if form.is_valid():
+            sujet = "[permacat] Newsletter - " +  form.cleaned_data['sujet']
+            message = form.cleaned_data['msg']
+            emails = [profil.email for profil in Profil.objects.filter(inscrit_newsletter=True)] + [profil.email for
+                                                                                                    profil in
+                                                                                                    InscriptionNewsletter.objects.all()]
+
+            try:
+                send_mass_mail([(sujet, message, "asso@perma.cat", emails), ])
+            except:
+                sujet = "[permacat admin] Erreur lors de l'envoi du mail"
+                message_txt = message + '\n'.join(emails)
+
+                try:
+                    mail_admins(sujet, message_txt)
+                except:
+                    print("erreur de la fonction contacterNewsletter (views.py)")
+                    pass
+            return render(request, 'contact/message_envoye.html', {'sujet': form.cleaned_data['sujet'], 'msg': message,
+                                                           'envoyeur': request.user.username + " (" + request.user.email + ")",
+                                                           "destinataires": emails})
+    else:
+        form = ContactForm()
+    return render(request, 'contact/contact_newsletter.html', {'form': form, })
+
+
+
+@login_required
+def contacter_adherents(request):
+    if not request.user.is_permacat:
+        return render(request, "notPermacat.html")
+
+    if request.method == 'POST':
+        form = ContactForm(request.POST or None, )
+        if form.is_valid():
+            sujet = "[permacat] Newsletter - " +  form.cleaned_data['sujet']
+            message = form.cleaned_data['msg']
+            emails = [profil.email for profil in Profil.objects.filter(statut_adhesion=2)]
+
+            try:
+                send_mass_mail([(sujet, message, "asso@perma.cat", emails), ])
+            except:
+                sujet = "[permacat admin] Erreur lors de l'envoi du mail"
+                message_txt = message + '\n'.join(emails)
+
+                try:
+                    mail_admins(sujet, message_txt)
+                except:
+                    print("erreur de la fonction contacterAdherents (views.py)")
+                    pass
+            return render(request, 'contact/message_envoye.html', {'sujet': form.cleaned_data['sujet'], 'msg': message,
+                                                           'envoyeur': request.user.username + " (" + request.user.email + ")",
+                                                           "destinataires": emails})
+    else:
+        form = ContactForm()
+    return render(request, 'contact/contact_adherents.html', {'form': form, })
+
+
+@login_required
+def contacter_adherents_rtg(request):
+    if not request.user.is_rtg:
+        return render(request, "notRTG.html")
+    if request.method == 'POST':
+        form = ContactForm(request.POST or None, )
+        if form.is_valid():
+            sujet = "[RTG] Newsletter - " +  form.cleaned_data['sujet']
+            message = form.cleaned_data['msg']
+            emails = [profil.email for profil in Profil.objects.filter(statut_adhesion_rtg=2)]
+
+            try:
+                send_mass_mail([(sujet, message, "asso@perma.cat", emails), ])
+            except:
+                sujet = "[permacat admin] Erreur lors de l'envoi du mail"
+                message_txt = message + '\n'.join(emails)
+
+                try:
+                    mail_admins(sujet, message_txt)
+                except:
+                    print("erreur de la fonction contacterAdherents (views.py)")
+                    pass
+            return render(request, 'contact/message_envoye.html', {'sujet': form.cleaned_data['sujet'], 'msg': message,
+                                                           'envoyeur': request.user.username + " (" + request.user.email + ")",
+                                                           "destinataires": emails})
+    else:
+        form = ContactForm()
+    return render(request, 'contact/contact_adherents_rtg.html', {'form': form, })
+
+
+

@@ -79,6 +79,7 @@ class AtelierChangeForm(forms.ModelForm):
         self.fields['referent'].choices = listeChoix
 
 
+
     def save(self):
         instance = super(AtelierChangeForm, self).save(commit=False)
         try:

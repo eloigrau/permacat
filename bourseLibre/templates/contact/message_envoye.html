@@ -4,7 +4,12 @@
 <div class="row">
 <div class="col-sm-12">
 <p>De : {{ envoyeur }}</p>
+    {% if destinataire %}
 <p>à : {{ destinataire }}</p>
+    {% endif %}
+    {% if destinataires %}
+<p>à : {% for d in destinataires %}{{ d }}, {% endfor %}</p>
+    {% endif %}
 </div>
 </div>
 <div class="row">

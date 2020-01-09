@@ -95,6 +95,10 @@ urlpatterns = [
     url(r'^cooperateurs/carte_permacat/$', login_required(views.carte_permacat), name='carte_permacat',),
     url(r'^cooperateurs/carte_rtg/$', login_required(views.carte_rtg), name='carte_rtg',),
 
+    url(r'^cooperateurs/contacter_newsletter/$', login_required(views.contacter_newsletter), name='contacter_newsletter',),
+    url(r'^cooperateurs/contacter_adherents/$', login_required(views.contacter_adherents), name='contacter_adherents',),
+    url(r'^cooperateurs/contacter_adherents_rtg/$', login_required(views.contacter_adherents_rtg), name='contacter_adherents_rtg',),
+
     url(r'^marche/proposer/(?P<type_produit>[-A-Za-z]+)/$', login_required(views.produit_proposer), name='produit_proposer', ),
     url(r'^marche/proposer/', login_required(views.proposerProduit_entree), name='produit_proposer_entree',),
 
