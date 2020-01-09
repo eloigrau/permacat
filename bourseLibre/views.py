@@ -839,13 +839,18 @@ def getNotificationsParDate(request):
             Q(verb='article_message_permacat')|Q(verb='article_nouveau') | Q(verb='article_message')|
             Q(verb='article_modifier')| Q(verb='article_modifier_permacat')|Q(verb='projet_nouveau_permacat') |
             Q(verb='projet_message_permacat')|Q(verb='projet_nouveau') | Q(verb='projet_message')| Q(verb='projet_modifier')|
-            Q(verb='projet_modifier_permacat')|Q(verb__startswith='fiche')|Q(verb__startswith='atelier')).order_by('-timestamp')
+            Q(verb='projet_modifier_permacat')|Q(verb__startswith='fiche')|Q(verb__startswith='atelier')|
+            Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)
+        ).order_by('-timestamp')
     else:
         actions      = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_permacat')|
                                              Q(verb='article_nouveau') | Q(verb='article_message')|
                                              Q(verb='article_modifier')|Q(verb='projet_nouveau') |
                                              Q(verb='projet_message')| Q(verb='projet_modifier')|
-                                             Q(verb='ajout_offre')|Q(verb__startswith='fiche')|Q(verb__startswith='atelier')).order_by('-timestamp')
+                                             Q(verb='ajout_offre')|Q(verb__startswith='fiche')|
+                                             Q(verb__startswith='atelier')|
+                                                Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)
+        ).order_by('-timestamp')
 
     actions = [art for i, art in enumerate(actions[:100]) if i == 0 or not (art.description == actions[i-1].description and art.actor == actions[i-1].actor ) ][:50]
 
@@ -903,14 +908,17 @@ def getInfosJourPrecedent(request, nombreDeJours):
         offres      = Action.objects.filter(Q(verb='ajout_offre', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,))
     fiches = Action.objects.filter(verb__startswith='fiche')
     ateliers = Action.objects.filter(Q(verb__startswith='atelier')|Q(verb=''))
+    conversations = (any_stream(request.user).filter(Q(verb='envoi_salon_prive', )) | Action.objects.filter(
+        Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)))[:nbNotif]
 
     articles = [art for i, art in enumerate(articles) if i == 0 or not (art.description == articles[i-1].description  and art.actor == articles[i-1].actor)]
     projets = [art for i, art in enumerate(projets) if i == 0 or not (art.description == projets[i-1].description and art.actor == projets[i-1].actor) ]
     offres = [art for i, art in enumerate(offres) if i == 0 or not (art.description == offres[i-1].description and art.actor == offres[i-1].actor) ]
     fiches = [art for i, art in enumerate(fiches) if i == 0 or not (art.description == fiches[i-1].description and art.actor == fiches[i-1].actor ) ]
     ateliers = [art for i, art in enumerate(ateliers) if i == 0 or not (art.description == ateliers[i-1].description and art.actor == ateliers[i-1].actor ) ]
+    conversations = [art for i, art in enumerate(conversations) if i == 0 or not (art.description == conversations[i-1].description and art.actor == conversations[i-1].actor ) ]
 
-    return articles, projets, offres, fiches, ateliers
+    return articles, projets, offres, fiches, ateliers, conversations
 
 def getTexteJourPrecedent(nombreDeJour):
     if nombreDeJour == 0:
