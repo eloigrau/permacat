@@ -125,7 +125,10 @@ margin-bottom: 30px;
 .bs-dark{
     text-color:black;
   background-image:linear-gradient(90deg, #ffd0cc, #ffe6b3, #fcffcc, #f8ff99, #d9ffcc, #ccffdd, #ccfffb, #ccdbff);
-  border: 1px solid grey;
+    border: 2px inset rgba(28,110,164,0.65);
+    border-radius: 0px 25px 25px 25px;
+    -webkit-box-shadow: 2px 2px 20px 0px #0D4003;
+    box-shadow: 2px 2px 20px 0px #0D4003;
    border-radius: 0.4em;
    line-height: 2.6em;
 

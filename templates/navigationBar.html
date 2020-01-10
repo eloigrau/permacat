@@ -21,8 +21,8 @@
         <ul class="dropdown-menu dropdown-menu1 textcenter nav1-dropdown">
             <li><a  class=" dropdown-item" href="{% url 'marche' %}">Toutes les annonces</a></li>
            <li class="divider" role="separator"/>
-             <li><a  class="dropdown-item" href="{% url 'marche_offres' %}?">Offres</a></li>
-            <li><a class=" dropdown-item" href="{% url 'marche_recherches' %}?">Demandes</a></li>
+             <li><a  class="dropdown-item" href="{% url 'marche_offres' %}">Offres</a></li>
+            <li><a class=" dropdown-item" href="{% url 'marche_recherches' %}">Demandes</a></li>
            <li class="divider" role="separator"/>
             <li> <a class=" dropdown-item" href="{% url 'marche' %}?producteur={{ user.username }}">Mes annonces</a></li>
                <li> <a class="dropdown-item" href="{% url 'afficher_requetes' %}">Mes requêtes</a></li>
@@ -191,7 +191,8 @@
 
     </ul>
 {% endif %}
-</div></div>
+</div>
+    </div>
 </nav>
 <script>
 $('.dropdown-menu a.dropdown-toggle').on('click', function(e) {
