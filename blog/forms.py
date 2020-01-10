@@ -25,7 +25,7 @@ class SummernoteWidgetWithCustomToolbar(SummernoteWidget):
                 'upload_attachment': reverse('django_summernote-upload_attachment'),
             },
                 # As an example, using Summernote Air-mode
-                'airMode': True,
+                'airMode': False,
                 'iFrame': False,
 
                 # Change editor size

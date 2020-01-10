@@ -514,19 +514,8 @@ a:active         { color: #000077 }  /* active links          */
 }
 
 .commentaireContainer{
-    padding: .375rem .75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    background-clip: padding-box;
-    border: 1px solid lightgrey;
-    border-radius: .25rem;
-        border-top-right-radius: 0.25rem;
-        border-bottom-right-radius: 0.25rem;
-
-    transition: border-width .15s ease-in-out,box-shadow .15s ease-in-out;
 
 }
-.commentaireContainer:hover { border-width: 3px; }
 
 .conversation{
 	overflow: auto;
