@@ -780,6 +780,8 @@ table.greenTable tfoot .links a{
     margin: 12px;
 }
 
+
+
 .body_fiche{
     font-family: Georgia, serif;
     background-color:#ffffff;
@@ -794,6 +796,9 @@ table.greenTable tfoot .links a{
 .panel_body_atelier{
     margin-bottom:20px;
     min-height:500px;
+}
+.inscrit_atelier{
+    padding: 15px;
 }
 
 .titre_fiche{
@@ -939,15 +944,10 @@ text-align:    center;
 }
 
 .boutonediter{
-background:    #ffffff;
-background:    linear-gradient(#ffffff, #eeeeee);
 border:        1px solid #b6d7a8;
 border-radius: 6px;
 padding:       1px 2px;
-color:         #000000;
 display:       inline-block;
-font:          normal normal 9px/1 "Calibri", sans-serif;
-text-align:    center;
 }
 
 .boutonArticleCategorie{

@@ -9,7 +9,7 @@
 {% block content %}
 
  <div class="row rowcentre">
-    <div class="col-sm-3 textleft">
+    <div class="col-sm-6 textleft">
 
         <div class="btn-group btn-group-justified">
         <a  href="{% url 'ateliers:index_ateliers' %}">
@@ -17,30 +17,7 @@
             </a>
         </div>
     </div>
-        <div class="col-sm-6 textcenter">
-            {%if request.user.is_authenticated %}
-                 {% if user_inscrit %}
-                    <p>Vous êtes inscrit à cet atelier
-                    <a href="{% url 'ateliers:annulerInscription' slug=atelier.slug %}">
-                       <button type="button" class="btn btn-sm btn-warning">
-                            se désinscrire
-                       </button>
-                    </a>
-                        </p>
-
-
-                {% else %}
-                    <a href="{% url 'ateliers:inscriptionAtelier' slug=atelier.slug %}">
-                       <button type="button" class="btn btn-sm btn-success">
-                            S'inscrire
-                       </button>
-                    </a>
-                {% endif %}
-            {% else %}
-            <p><a href="/auth/login/" >Connectez vous pour vous inscrire à l'atelier</a></p>
-            {% endif %}
-        </div>
-        <div class="col-sm-3 textright">
+        <div class="col-sm-6 textright">
             {%if request.user.username == atelier.referent or request.user == atelier.auteur  %}
             <div class = "btn-group">
             <a href="{%if request.user.is_authenticated %}{% url 'ateliers:modifierAtelier' slug=atelier.slug %}{% endif %}">
@@ -179,9 +156,32 @@
 	</div>
 </div>
 </div>
+<div
+ <div class="row rowcentre inscrit_atelier">
+        <div class="col-sm-12 textcenter">
+            {%if request.user.is_authenticated %}
+                 {% if user_inscrit %}
+                    <p>Vous êtes inscrit à cet atelier
+                    <a href="{% url 'ateliers:annulerInscription' slug=atelier.slug %}">
+                       <button type="button" class="btn btn-warning btn-sm">
+                            Se désinscrire
+                       </button>
+                    </a>
+                        </p>
+
+
+                {% else %}
+                    <a href="{% url 'ateliers:inscriptionAtelier' slug=atelier.slug %}">
+                       <button type="button" class="btn  btn-success btn-lg">
+                            <i class="fa fa-arrow-right"></i> S'inscrire à l'atelier
+                       </button>
+                    </a>
+                {% endif %}
+            {% else %}
+            <p><a href="/auth/login/" >Connectez vous pour vous inscrire à l'atelier</a></p>
+            {% endif %}
         </div>
-
-
+ </div>
 
 <hr>
 
