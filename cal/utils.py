@@ -37,15 +37,15 @@ class Calendar(LocaleTextCalendar):
         d = ''
         for event in events_per_day_arti:
             if event.estPublic or (not request.user.is_anonymous and request.user.is_permacat):
-                titre = event.titre if len(event.titre)<50 else event.titre[:47] + "..."
-                d += "<div class='event'><i class='fa fa-comments iconleft'></i> <a href='"+event.get_absolute_url() +"'>"+titre+'</a> </div>'
+                titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
+                d += "<div class='event'><a href='"+event.get_absolute_url() +"'><i class='fa fa-comments iconleft'></i> "+titre+'</a> </div>'
         for event in events_per_day_proj:
             if event.estPublic or (not request.user.is_anonymous and request.user.is_permacat):
-                titre = event.titre if len(event.titre)<50 else event.titre[:47] + "..."
-                d += "<div class='event'> <i class='fa fa-paper-plane iconleft' ></i> <a href='"+event.get_absolute_url() +"'>"+titre+'</a> </div>'
+                titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
+                d += "<div class='event'>  <a href='"+event.get_absolute_url() +"'><i class='fa fa-paper-plane iconleft' ></i> "+titre+'</a> </div>'
         for event in events_per_day_atel:
-            titre = event.titre if len(event.titre)<50 else event.titre[:47] + "..."
-            d += "<div class='event'>  <i class='fa fa-wrench iconleft' ></i> <a href='"+event.get_absolute_url() +"'>"+titre+'</a> </div>'
+            titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
+            d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-wrench iconleft' ></i> "+titre+'</a> </div>'
 
         now = datetime.now()
         aujourdhui=0
@@ -62,7 +62,7 @@ class Calendar(LocaleTextCalendar):
         if day != 0:
             ajout=""
             if weekday == 0:
-                ajout= "<div class='event'>  <i class='fa fa-comments' ></i> <a href='/forum/article/visioconference'> Visioconférence</a> </div>"
+                ajout= "<div class='event'>  <a href='/forum/article/visioconference'> <i class='fa fa-comments' ></i> Visioconférence</a> </div>"
             if aujourdhui == 1:
                 return "<td "+style+" class='day'><span class='datecourante'>"+str(day)+'</span>'+ajout + str(d)+'</td>'
             else:
