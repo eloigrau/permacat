@@ -2,7 +2,7 @@
 {% load static %}
 {% block navBar %}
 
-<nav class="navbar navbar-light bs-dark navbar-expand-xl justify-content-center navbarMenu">
+<nav class="navbar navbar-light bs-dark navbar-expand-xl justify-content-center navbarMenu dropdown-toggle1">
     <div class="container-fluid">
         <button class="navbar-toggler navbar-btn" type="button" data-toggle="collapse" data-target="#navbarsActuel" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -89,10 +89,6 @@
                 </ul>
             </li>
 
-
-    </ul>
-
-    <ul class="nav navbar-nav navbar-right">
    {% if request.user.is_superuser %}
         {% load admin_urls %}
         <li class="nav-item nav4"><a class="nav-link" href="{% url 'admin:index' %}">admin</a></li>
