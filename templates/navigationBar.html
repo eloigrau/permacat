@@ -52,7 +52,7 @@
                 <ul class="dropdown-menu dropdown-menu1 textcenter nav3-dropdown" aria-labelledby="navbarDropdownMenuLink">
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" >PermaCat</a>
-                        <ul class="dropdown-menu textcenter nav7-dropdown-submenu">
+                        <ul class="dropdown-menu textcenter nav3-dropdown-submenu">
                             <li><a class="dropdown-item" href="{% url 'blog:index_projets' %}"><i class='fa fa-paper-plane iconleft' ></i>  Projets </a></li>
 
                        <li class="divider" role="separator"/>
@@ -75,7 +75,7 @@
                     <li class="divider" role="separator"/>
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" >Ramene Ta Graine</a>
-                        <ul class="dropdown-menu nav7-dropdown-submenu">
+                        <ul class="dropdown-menu nav3-dropdown-submenu">
                         <li> <a class="dropdown-item" href="{% url 'agora_rtg' %}"> Salon  </a></li>
                         <li> <a class="dropdown-item" href="https://permaculturelne.herokuapp.com"> Festival Permacultur'Elne  </a></li>
                        <li class="divider" role="separator"/>
@@ -92,14 +92,12 @@
 
     </ul>
 
-    <ul class="nav navbar-nav topnav-centered">
-        <li class="nav-item nav4 "><a class="nav-link" href="{% url 'cal:agenda' %}">{% fontawesome_icon 'calendar' %}  Agenda</a></li>
-      </ul>
     <ul class="nav navbar-nav navbar-right">
    {% if request.user.is_superuser %}
         {% load admin_urls %}
         <li class="nav-item nav4"><a class="nav-link" href="{% url 'admin:index' %}">admin</a></li>
         {% endif %}
+ <li class="nav-item nav4 "><a class="nav-link" href="{% url 'cal:agenda' %}">{% fontawesome_icon 'calendar' %}  Agenda</a></li>
 
       <li class="nav-item nav5"><a class="nav-link" href="{% url 'notifications_news' %}">{% fontawesome_icon 'bell' %}  Notifications</a></li>
 
@@ -158,7 +156,7 @@
                 <ul class="dropdown-menu nav3-dropdown" aria-labelledby="navbarDropdownMenuLink">
                     <li class="dropdown-submenu nav3-dropdown">
                         <a class="dropdown-item dropdown-toggle" >Permacat</a>
-                        <ul class="dropdown-menu nav7-dropdown-submenu">
+                        <ul class="dropdown-menu nav3-dropdown-submenu">
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso' %}"> Qui sommes nous ?</a></li>
                        <li> <a class="dropdown-item" href="{% url 'charte' %}"> Charte </a></li>
                        <li> <a class="dropdown-item" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a></li>
@@ -171,7 +169,7 @@
                     <li class="divider" role="separator"/>
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" >Ramene Ta Graine</a>
-                        <ul class="dropdown-menu nav7-dropdown-submenu">
+                        <ul class="dropdown-menu nav3-dropdown-submenu">
                        <li> <a class="dropdown-item" href="{% url 'statuts_rtg' %}"> Statuts et règlement intérieur </a></li>
 
                         <li> <a class="dropdown-item" href="https://permaculturelne.herokuapp.com"> Festival Permacultur'Elne  </a></li>
