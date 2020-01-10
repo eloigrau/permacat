@@ -1,0 +1,45 @@
+
+{% load blog_filters %}
+<div class="contenu conversation" id="idConversation">
+{% for mess in messages_echanges %}
+    {% ifchanged %}
+    <div class="row msg-date textcenter">
+        <div class="col-sm-12">
+            <p class="infos">{{ mess.date_creation|date:"l d F" }}</p>
+        </div>
+    </div>
+    {% endifchanged %}
+    <div class="row {% ifequal mess.auteur.id request.user.id %} msg-auteur  {%else%} msg-destinataire{%endifequal%} ">
+        <div class="col-sm-2 col-md-3 col-lg-1">
+            <p class="infos  textepetit ">
+                {{ mess.date_creation|date:"G:i" }}{% ifchanged %}, <a href="{% url 'profil' mess.auteur.id %}"> {{mess.auteur}}</a>{% endifchanged %}
+
+                {% if request.user == mess.auteur %}
+            <a class="boutonediter" href="{{ mess.get_edit_url  }}" role="button">edit</a>
+                {% endif %}
+            </p>
+        </div>
+        <div class=" col-sm-8 col-md-9 col-lg-10 message ">
+                <p>{{ mess.message|safe|url }}</p>
+        </div>
+    </div>
+{% endfor %}
+</div>
+    <script>
+    var messageBody = document.querySelector('#idConversation');
+    messageBody.scrollTop = idConversation.scrollHeight - idConversation.clientHeight;
+</script>
+<hr>
+<h5>Répondre :</h5>
+
+<div>
+    <input type="hidden" name="Nouveau Message" value="{{ message }}">
+
+<div>
+<form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="Nouveau Message" value="{{ message_defaut }}">
+    {% include 'form_template3.html' with boutonAnnuler=False %}
+</form>
+</div>
+

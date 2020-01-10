@@ -152,7 +152,7 @@
 
 		<a onclick="ajouterAuPanier()" class="btn btn-primary btn-lg btn-block " type="button" id="buttonAjouterAuPanier">
 			Ajouter au panier</a></br></br>
-		<a href="{%url 'lireConversation' produit.user.username %}?produit={{produit.id}}" class="btn btn-success btn-block  btn-lg" type="button">Envoyer un message</a>
+		<a href="{%url 'agora_conversation' produit.user.username %}?produit={{produit.id}}" class="btn btn-success btn-block  btn-lg" type="button">Envoyer un message</a>
 
 		</div>
 	</div>
@@ -165,7 +165,7 @@
 	</div>
 	{%else%}
 	<div class="col-md-4 paddingbase">
-		<a href="{%url 'lireConversation' produit.user.username %}" class="btn btn-success btn-block  btn-lg" type="button">Envoyer un message</a>
+		<a href="{%url 'agora_conversation' produit.user.username %}" class="btn btn-success btn-block  btn-lg" type="button">Envoyer un message</a>
 		{%comment%}
 		<a href="{%url 'profil_contact' produit.user.id %}" class="btn btn-success btn-block  btn-lg" type="button">Mail</a>
 		{%endcomment%}

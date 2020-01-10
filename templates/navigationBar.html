@@ -32,13 +32,13 @@
         </ul>
       </li>
       <li class="nav-item dropdown nav2">
-           <a data-toggle="dropdown" class="nav-link dropdown-toggle navbar-menu  " href="{% url 'agora' %}" aria-haspopup="true" aria-expanded="false" >
+           <a data-toggle="dropdown" class="nav-link dropdown-toggle navbar-menu  " href="{% url 'agora_general' %}" aria-haspopup="true" aria-expanded="false" >
                {% fontawesome_icon 'comments' %} Forum </a>
 
             <ul class="dropdown-menu dropdown-menu1 textcenter nav2-dropdown">
                 <li> <a class="dropdown-item" href="{% url 'blog:index' %}?">Articles</a></li>
                 <li class="divider" role="separator"/>
-                <li><a class="dropdown-item" href="{% url 'agora' %}">Salon</a></li>
+                <li><a class="dropdown-item" href="{% url 'agora_general' %}">Salon</a></li>
                 <li> <a class="dropdown-item" href="{% url 'agora_permacat' %}"> Salon PermaCat</a></li>
                 <li> <a class="dropdown-item" href="{% url 'agora_rtg' %}"> Salon Ramene Ta Graine</a></li>
                 <li class="divider" role="separator"/>
@@ -176,6 +176,8 @@
              {% fontawesome_icon 'globe' %} Le site
             </a>
             <ul class="dropdown-menu dropdown-menu1 textcenter nav2-dropdown" aria-labelledby="navbarAbout">
+               <li> <a class="dropdown-item" href="{% url 'contact_admins' %}"> Nous contacter</a></li>
+                    <li class="divider" role="separator"/>
                <li> <a class="dropdown-item" href="{% url 'cgu' %}"> CGU </a></li>
                     <li class="divider" role="separator"/>
                <li> <a class="dropdown-item" href="{% url 'fairedon' %}"> Faire un don</a></li>

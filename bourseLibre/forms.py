@@ -4,6 +4,7 @@ from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Pr
 from bourseLibre.captcha_local.fields import CaptchaField
 #from tinymce.widgets import TinyMCE
 from django_summernote.widgets import SummernoteWidget
+from blog.forms import SummernoteWidgetWithCustomToolbar
 
 fieldsCommunsProduits = ['souscategorie', 'nom_produit',  'description', 'estUneOffre', 'estPublique',
                 'unite_prix', 'prix',  'type_prix', 'date_debut', 'date_expiration', ]
@@ -240,13 +241,16 @@ class MessageForm(forms.ModelForm):
         exclude = ['conversation','auteur']
 
         widgets = {
-                'message': forms.Textarea(attrs={'rows': 2}),
+                'message': SummernoteWidgetWithCustomToolbar(),
             }
 
     def __init__(self, request, message=None, *args, **kwargs):
         super(MessageForm, self).__init__(request, *args, **kwargs)
         if message:
            self.fields['message'].initial = message
+
+
+
 
 class ChercherConversationForm(forms.Form):
     destinataire = forms.ChoiceField(label='destinataire')
@@ -261,7 +265,7 @@ class MessageGeneralForm(forms.ModelForm):
         exclude = ['auteur']
 
         widgets = {
-            'message': forms.Textarea(attrs={'rows': 1}),
+            'message': SummernoteWidgetWithCustomToolbar(),
         }
 
     #def __init__(self, request, message=None, *args, **kwargs):
@@ -275,7 +279,7 @@ class MessageGeneralPermacatForm(forms.ModelForm):
         exclude = ['auteur']
 
         widgets = {
-                'message': forms.Textarea(attrs={'rows': 1}),
+            'message': SummernoteWidgetWithCustomToolbar(),
             }
 
 class MessageGeneralRTGForm(forms.ModelForm):
@@ -285,8 +289,17 @@ class MessageGeneralRTGForm(forms.ModelForm):
         exclude = ['auteur']
 
         widgets = {
-                'message': forms.Textarea(attrs={'rows': 1}),
+            'message': SummernoteWidgetWithCustomToolbar(),
             }
+
+class MessageChangeForm(forms.ModelForm):
+
+    class Meta:
+        model = MessageGeneral
+        exclude = ['auteur']
+        widgets = {
+            'message': SummernoteWidget(),
+        }
 
 
 class InscriptionNewsletterForm(forms.ModelForm):

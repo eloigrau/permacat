@@ -20,12 +20,12 @@
 
         <div class="btn-group btn-group-justified">
         <a  href="{%if request.user.is_authenticated %}{% url 'fiches:index_ateliers' %}{% endif %}">
-        <button class="btn btn-info btn-sm textright" >Ateliers</button>
+        <button class="btn btn-info btn-sm textright" ><i class="fa fa-arrow-left"></i> Ateliers</button>
             </a>
         </div>
     </div>
     <div class="col-sm-8">
-        <p class="infos  textepetit textcenter "><a href="{%if request.user.is_authenticated %}{% url 'fiches:lireFiche' slug=atelier.fiche.slug %}{%else%}{% url 'fiches:voirFicheTest' %}{%endif%}">{% fontawesome_icon 'step-backward' %} Fiche: {{ atelier.fiche.titre }} </a>
+        <p class="infos  textepetit textcenter "><a href="{%if request.user.is_authenticated %}{% url 'fiches:lireFiche' slug=atelier.fiche.slug %}{%else%}{% url 'fiches:voirFicheTest' %}{%endif%}"><i class="fa fa-arrow-left"></i> Fiche: {{ atelier.fiche.titre }} </a>
         </p>
     </div>
         <div class="col-sm-2 textright">

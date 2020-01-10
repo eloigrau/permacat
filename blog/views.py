@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
 from django.urls import reverse_lazy
+from django.utils.html import strip_tags
 from .models import Article, Commentaire, Projet, CommentaireProjet, Choix
 from .forms import ArticleForm, CommentaireArticleForm, CommentaireArticleChangeForm, ArticleChangeForm, ProjetForm, ProjetChangeForm, CommentProjetForm, CommentaireProjetChangeForm
 from django.contrib.auth.decorators import login_required
@@ -88,7 +89,7 @@ def lireArticle(request, slug):
             comment.article = article
             comment.auteur_comm = request.user
             article.date_dernierMessage = comment.date_creation
-            article.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(comment.commentaire))[:96] + "..."
+            article.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(strip_tags(comment.commentaire).replace('&nspb',' ')))[:96] + "..."
             article.save()
             comment.save()
             url = article.get_absolute_url()
@@ -234,7 +235,7 @@ def lireProjet(request, slug):
         comment.projet = projet
         comment.auteur_comm = request.user
         projet.date_dernierMessage = comment.date_creation
-        projet.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(comment.commentaire))[:96] + "..."
+        projet.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(strip_tags(comment.commentaire).replace('&nspb',' ')))[:96] + "..."
         projet.save()
         comment.save()
         url = projet.get_absolute_url()

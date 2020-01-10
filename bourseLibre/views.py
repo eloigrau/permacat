@@ -9,7 +9,8 @@ from django.shortcuts import HttpResponseRedirect, render, redirect#, render, ge
 from .forms import Produit_aliment_CreationForm, Produit_vegetal_CreationForm, Produit_objet_CreationForm, \
     Produit_service_CreationForm, ContactForm, AdresseForm, ProfilCreationForm, MessageForm, MessageGeneralForm, \
     ProducteurChangeForm, MessageGeneralPermacatForm, MessageGeneralRTGForm, Produit_aliment_modifier_form, Produit_service_modifier_form, \
-    Produit_objet_modifier_form, Produit_vegetal_modifier_form, ChercherConversationForm, InscriptionNewsletterForm
+    Produit_objet_modifier_form, Produit_vegetal_modifier_form, ChercherConversationForm, InscriptionNewsletterForm, \
+    MessageChangeForm
 from .models import Profil, Produit, Adresse, Choix, Panier, Item, get_categorie_from_subcat, Conversation, Message, \
     MessageGeneral, MessageGeneralPermacat, MessageGeneralRTG, getOrCreateConversation, Suivis, InscriptionNewsletter
 from django.contrib.auth.decorators import login_required
@@ -36,6 +37,7 @@ from django.views.decorators.debug import sensitive_variables
 #from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q, CharField
 from django.db.models.functions import Lower
+from django.utils.html import strip_tags
 
 from actstream import actions, action
 from actstream.models import Action, any_stream, following,followers
@@ -748,7 +750,7 @@ def lireConversation(request, destinataire):
         message.conversation = conversation
         message.auteur = request.user
         conversation.date_dernierMessage = message.date_creation
-        conversation.dernierMessage =  "(" + str(message.auteur) + ") " + str(message.message[:50]) + "..."
+        conversation.dernierMessage =  "(" + str(message.auteur) + ") " + str(strip_tags(message.message).replace('&nspb',' ')) + "..."
         conversation.save()
         message.save()
         url = conversation.get_absolute_url()
@@ -1184,3 +1186,37 @@ def contacter_adherents_rtg(request):
 
 
 
+@login_required
+def modifier_message(request, id, type):
+    if type == 'general':
+        obj = MessageGeneral.objects.get(id=id)
+    elif type == 'permacat':
+        if not request.user.is_permacat:
+            return render(request, "notPermacat")
+        obj = MessageGeneralPermacat.objects.get(id=id)
+    elif type == 'rtg':
+        if not request.user.is_rtg:
+            return render(request, "notRTG.html")
+        obj = MessageGeneralRTG.objects.get(id=id)
+
+
+    elif type == 'conversation':
+        obj = Message.objects.get(id=id)
+    else:
+        return render(request, 'erreur.html', {'msg':"Le salon que vous cherchez n'existe pas, désolé."})
+
+
+    form = MessageChangeForm(request.POST or None, instance=obj)
+
+    if form.is_valid():
+        object = form.save()
+        if object.message and object.message !='<br>':
+            object.date_modification = now()
+            object.save()
+            return redirect (object.get_absolute_url)
+        else:
+            object.delete()
+            return reverse('agora_general')
+
+
+    return render(request, 'modifierCommentaire.html', {'form': form, })

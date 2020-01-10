@@ -14,7 +14,7 @@ Voici les offres que vous avez selectionnées:
             {%comment%}<td colspan="5" class="panierTableauStyle textcenter" ><a href="{% url 'profil_contact' item.produit.user.id%}?panier={{panier.id}}" class="btn btn-primary " type="button" id="buttonContacterProducteur">
 			Email {{ item.produit.user.username }} </a> </td>
              {%endcomment%}
-            <td colspan="5" class="panierTableauStyle textcenter" ><a href="{% url 'lireConversation' item.produit.user.username%}?panier={{panier.id}}" class="btn btn-primary " type="button" id="buttonContacterProducteur2">
+            <td colspan="5" class="panierTableauStyle textcenter" ><a href="{% url 'agora_conversation' item.produit.user.username%}?panier={{panier.id}}" class="btn btn-primary " type="button" id="buttonContacterProducteur2">
 			Informer {{ item.produit.user.username }} de ma demande </a> </td>
         </tr>
         <tr>

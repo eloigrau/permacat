@@ -4,95 +4,15 @@
 {% block subtitle %}
 
 <div class="row">
-<div class="col-sm-4 textcenter">
-    {%if request.user.is_permacat %}
-         <a href="{% url 'agora' %}">
-        <button type="button" class="btn btn-secondary" >
-              aller au salon public
-            </button>
-            </a>
-     {%endif%}
-    </div>
-<div class="col-sm-4 textcenter">
+<div class="col-sm-12 textcenter">
     <h3>Salon Permacat</h3>
 </div>
-
-<div class="col-sm-4 textcenter">
-        <div class="btn-group btn-group-justified">
-         <a href="{% url 'blog:index' %}">
-        <button type="button" class="btn btn-primary" >
-               Articles
-            </button>
-            </a>
-         <a href="{% url 'blog:index_projets' %}">
-        <button type="button" class="btn btn-primary" >
-               Projets
-            </button>
-            </a>
-         <a href="{% url 'conversations' %}">
-            <button type="button" class="btn btn-primary" >
-               Conversations
-            </button>
-         </a>
-    </div>
-   </div>
 </div>
 
 {% endblock %}
 {% block content %}
 
-<div class="contenu conversation" id="idConversation">
-{% for mess in messages_echanges %}
-        {% ifchanged %}
-        <div class="row msg-date ">
-            <div class="col-sm-12">
-                <p class="infos textcenter">{{ mess.date_creation|date:"l d F" }}</p>
-            </div>
-        </div>
-        {% endifchanged %}
-        <div class="row {% ifequal mess.auteur.id request.user.id %} msg-auteur  {%else%} msg-destinataire{%endifequal%} ">
-        <div class="col-sm-2 col-md-3 col-lg-1">
-            <p class="infos  textepetit ">
-                {{ mess.date_creation|date:"G:i" }}{% ifchanged %}, <a href="{% url 'profil' mess.auteur.id %}"> {{mess.auteur}}</a>{% endifchanged %} </p>
-        </div>
-        <div class=" col-sm-8 col-md-9 col-lg-10 message ">
-                <p>{{ mess.message|safe|url }}</p>
-        </div>
-    </div>
-{% endfor %}
-</div>
-    <script>
-    var messageBody = document.querySelector('#idConversation');
-    messageBody.scrollTop = idConversation.scrollHeight - idConversation.clientHeight;
-</script>
-<hr>
-
-<div>
-    <input type="hidden" name="Nouveau Message" value="{{ message }}">
-
-<div>
-<form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type="hidden" name="Nouveau Message" value="{{ message_defaut }}">
-    {% include 'form_template3.html' with boutonAnnuler=False %}
-</form>
-</div>
-
-{% comment %}
-    <script src="https://www.gstatic.com/firebasejs/5.10.0/firebase.js"></script>
-<script>
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyCbhFTrkzw1uojowZYpD70t_7RZhSnFDfM",
-    authDomain: "permacat.firebaseapp.com",
-    databaseURL: "https://permacat.firebaseio.com",
-    projectId: "permacat",
-    storageBucket: "permacat.appspot.com",
-    messagingSenderId: "583489072306"
-  };
-  firebase.initializeApp(config);
-</script>
-{% endcomment %}
+{% include 'salon.html' %}
 
 {% endblock %}
 

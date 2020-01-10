@@ -133,14 +133,14 @@ urlpatterns = [
     url(r'^requetes/afficher/$',
         login_required(views.afficher_requetes), name='afficher_requetes', ),
 
-    url(r'^conversations/(?P<destinataire>[-\w.]+)$', login_required(views.lireConversation), name='lireConversation'),
+    url(r'^conversations/(?P<destinataire>[-\w.]+)$', login_required(views.lireConversation), name='agora_conversation'),
     url(r'^conversations/(?P<destinataire1>[-\w.]+)/(?P<destinataire2>[-\w.]+)$', login_required(views.lireConversation_2noms), name='lireConversation_2noms'),
     url(r'^conversations/$', login_required(views.ListeConversations.as_view()), name='conversations'),
     url(r'^conversations/chercher/$', login_required(views.chercherConversation), name='chercher_conversation'),
     url(r'^suivre_conversation/$', views.suivre_conversations, name='suivre_conversations'),
     url(r'^suivre_produits/$', views.suivre_produits, name='suivre_produits'),
 
-    url(r'^agora/$', login_required(views.agora), name='agora'),
+    url(r'^agora/$', login_required(views.agora), name='agora_general'),
     url(r'^agora_permacat/$', login_required(views.agora_permacat), name='agora_permacat'),
     url(r'^agora_rtg/$', login_required(views.agora_rtg), name='agora_rtg'),
 
@@ -151,6 +151,8 @@ urlpatterns = [
 
 
     url(r'^inscription_newsletter/$', views.inscription_newsletter, name='inscription_newsletter', ),
+
+    url(r'^modifierMessage/(?P<id>[0-9]+)(?P<type>[-\w.]+)$', views.modifier_message, name='modifierMessage'),
 ]
 urlpatterns += [
     url(r'^robots\.txt$', TemplateView.as_view(template_name="bourseLibre/robots.txt", content_type='text/plain')),

@@ -20,7 +20,7 @@
     <div class="col-md-12 textcenter">
         {% if  user.username != request.user.username %}
 
-            <a href="{% url 'lireConversation' user.username %}" class="btn btn-success">
+            <a href="{% url 'agora_conversation' user.username %}" class="btn btn-success">
               <span class="glyphicon glyphicons-conversation"></span> Message
             </a>
             <a href="{% url 'profil_contact' user.id %}" class="btn btn-success">

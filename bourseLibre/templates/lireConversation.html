@@ -3,12 +3,12 @@
 {%block message%}{%endblock%}
 {% block subtitle %}
 <div class="row">
+<div class="col-sm-2">
+    <a href="{% url 'conversations' %}" class="btn btn-info"> <i class="fa fa-arrow-left"></i> Conversations </a>
+</div>
     <div class="col-sm-10">
 Messages échangés avec <span style="background-color:PapayaWhip;"><a href="{% url 'profil_nom' destinataire  %}"> {{ destinataire }} </a></span> depuis le {{ conversation.date_creation|date:"SHORT_DATE_FORMAT"}}
     </div>
-<div class="col-sm-2">
-    <a href="{% url 'conversations' %}" class="btn btn-success"> <span class="glyphicon glyphicon-shopping-cart"></span> Mes conversations </a>
-</div>
 </div>
 {% endblock %}
 {% block content %}
@@ -26,7 +26,11 @@ Messages échangés avec <span style="background-color:PapayaWhip;"><a href="{% 
     <div class="row {% if mess.auteur.id == request.user.id %} msg-auteur  {%else%} msg-destinataire{%endif%}">
         <div class="col-sm-2 col-md-3 col-lg-1">
             <p class="infos  textepetit">
-                {{ mess.date_creation|date:"G:i" }} {% ifchanged %}, <a href="{% url 'profil' mess.auteur.id %}"> {{mess.auteur}}</a>{% endifchanged %} </p>
+                {{ mess.date_creation|date:"G:i" }} {% ifchanged %}, <a href="{% url 'profil' mess.auteur.id %}"> {{mess.auteur}}</a>{% endifchanged %}
+            {% if request.user == mess.auteur %}
+            <a class="boutonediter" href="{{ mess.get_edit_url  }}" role="button">edit</a>
+            {% endif %}
+            </p>
         </div>
         <div class=" col-sm-8 col-md-9 col-lg-10 message ">
                 <p>{{ mess.message|safe|url }}</p>
@@ -41,6 +45,7 @@ Messages échangés avec <span style="background-color:PapayaWhip;"><a href="{% 
 </script>
 
 <hr>
+<h5>Répondre : </h5>
 <div>
     <input type="hidden" name="Nouveau Message" value="{{ message }}">
 

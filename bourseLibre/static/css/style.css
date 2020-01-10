@@ -540,13 +540,13 @@ a:active         { color: #000077 }  /* active links          */
 .conversation{
 	overflow: auto;
 	width: 100%;
-	height: 400px;
+	max-height: 400px;
 }
 
 .commentaires{
 	overflow: auto;
 	width: 100%;
-	height: 400px;
+	max-height: 400px;
 }
 
 .card-footer{

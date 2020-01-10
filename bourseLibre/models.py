@@ -878,6 +878,16 @@ class Message(models.Model):
     def __str__(self):
         return "(" + str(self.id) + ") " + str(self.auteur) + " " + str(self.date_creation)
 
+    @property
+    def get_edit_url(self):
+        return reverse('modifierMessage',  kwargs={'id':self.id, 'type':'conversation'})
+
+    @property
+    def get_absolute_url(self):
+        return self.conversation.get_absolute_url()
+
+
+
 class MessageGeneral(models.Model):
     message = models.TextField(null=False, blank=False)
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
@@ -888,6 +898,14 @@ class MessageGeneral(models.Model):
 
     def __str__(self):
         return "(" + str(self.id) + ") " + str(self.auteur) + " " + str(self.date_creation)
+
+    @property
+    def get_edit_url(self):
+        return reverse('modifierMessage',  kwargs={'id':self.id, 'type':'general'})
+
+    @property
+    def get_absolute_url(self):
+        return  reverse('agora_general')
 
 #
 # def mg_handler(sender, instance, created, **kwargs):
@@ -907,6 +925,15 @@ class MessageGeneralPermacat(models.Model):
         return "(" + str(self.id) + ") " + str(self.auteur) + " " + str(self.date_creation)
 
 
+    @property
+    def get_edit_url(self):
+        return reverse('modifierMessage',  kwargs={'id':self.id, 'type':'permacat'})
+
+    @property
+    def get_absolute_url(self):
+        return  reverse('agora_permacat')
+
+
 class MessageGeneralRTG(models.Model):
     message = models.TextField(null=False, blank=False)
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
@@ -918,6 +945,13 @@ class MessageGeneralRTG(models.Model):
     def __str__(self):
         return "(" + str(self.id) + ") " + str(self.auteur) + " " + str(self.date_creation)
 
+    @property
+    def get_edit_url(self):
+        return reverse('modifierMessage',  kwargs={'id':self.id, 'type':'rtg'})
+
+    @property
+    def get_absolute_url(self):
+        return  reverse('agora_rtg')
 
 class Suivis(models.Model):
     nom_suivi = models.TextField(null=False, blank=False)
