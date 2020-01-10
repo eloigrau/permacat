@@ -125,7 +125,7 @@ margin-bottom: 30px;
 .bs-dark{
     text-color:black;
   background-image:background-image: linear-gradient(#d5f9d2, #97f08f);
-  background-image:linear-gradient(90deg, #ff5b4d, #ffc34d, #f5ff66, #f3ff4d, #8cff66, #66ff99, #80fff4, #004CFF);
+  background-image:linear-gradient(90deg, #ffd0cc, #ffe6b3, #fcffcc, #f8ff99, #d9ffcc, #ccffdd, #ccfffb, #ccdbff);
   border: 1px solid grey;
    border-radius: 0.4em;
    line-height: 2.8em;
@@ -147,7 +147,7 @@ margin-bottom: 30px;
 .navbar-light .navbar-nav .nav-link {
     color: rgba(0,0,0,.95);
    padding: 10px 10px;
-   min-width:170px;
+   min-width:140px;
 }
 
 .navbar-menu {
@@ -258,7 +258,7 @@ margin-bottom: 30px;
   background-color: blue;
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1250px) {
 
 .bs-dark .dropdown-menu1 {
         right: auto;
@@ -269,13 +269,7 @@ margin-bottom: 30px;
 
     }
 
-.bs-dark .dropdown-toggle1:active {
-  background-image:linear-gradient(#ff5b4d, #ffc34d, #f5ff66, #f3ff4d, #8cff66, #66ff99, #80fff4, #004CFF);
-    }
-.bs-dark{
-  background-image:background-image: linear-gradient(#d5f9d2, #97f08f);
 
-}
     .navbar-light .navbar-nav .nav-link {
         color: rgba(0,0,0,.95);
        padding: 2px 2px;

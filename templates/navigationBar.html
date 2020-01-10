@@ -2,7 +2,7 @@
 {% load static %}
 {% block navBar %}
 
-<nav class="navbar navbar-light bs-dark navbar-expand-xl justify-content-center navbarMenu dropdown-toggle1">
+<nav class="navbar navbar-light bs-dark navbar-expand-xl navbarMenu dropdown-toggle1">
     <div class="container-fluid">
         <button class="navbar-toggler navbar-btn" type="button" data-toggle="collapse" data-target="#navbarsActuel" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -11,7 +11,7 @@
         <div class="navbar-collapse collapse justify-content-between  align-items-center w-100"  id="navbarsActuel">
 
 {% if user.is_authenticated %}
-    <ul class="nav navbar-nav">
+    <ul class="nav navbar-nav  d-flex justify-content-between  w-100">
       <li class="nav-item dropdown nav1">
           <a  data-toggle="dropdown" class="nav-link dropdown-toggle navbar-menu  " href="{% url 'marche' %}"  aria-haspopup="true" aria-expanded="false">
               {% fontawesome_icon 'shopping-basket' %}
