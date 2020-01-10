@@ -9,11 +9,13 @@
 <script src="{% static 'js/infinite.min.js' %}"></script>
     {%endblock%}
 {%block subtitle%}
+
 <p>
-  <a class="btn btn-primary" style="width:180px;" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-    Catégorie
+  <a class="btn {% if request.GET.categorie  %}btn-warning{%else%}btn-primary{%endif%}" style="min-width:180px;" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+    {% if request.GET.categorie  %}Catégorie: {{categorie_courante}} {%else%}Catégorie... {%endif%}
   </a>
 </p>
+
 <div class="collapse" id="collapseExample">
 <div class="row align-items-center">
     <div class="col-sm-12 textcenter justify-content-center ">
@@ -24,14 +26,13 @@
         </div>
     </div>
 </div>
-</div>
-<hr>
-<div class="row align-items-center">
+    <hr>
+    <div class="row align-items-center">
 <div class="col-sm-12 textcenter justify-content-center ">
     <nav class="navbar justify-content-center  navbar-light bg-light">
         <div class="navbar-header">
-             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarProduit" aria-controls="navbarProduitContent" aria-expanded="false" aria-label="Toggle navigation">
-                Filtrer...</button>
+            <a  class="btn btn-info"> <button class=" navbar-toggler " type="button" data-toggle="collapse" data-target="#navbarProduit" aria-controls="navbarProduitContent" aria-expanded="false" aria-label="Toggle navigation">
+                Filtrage...</button></a>
         </div>
         <div class="collapse navbar-collapse  justify-content-center " id="navbarProduit">
             <ul class="nav navbar-nav justify-content-center ">
@@ -88,24 +89,26 @@
     </nav>
 </div>
 </div>
+</div>
+
 <hr>
 <div class="row align-items-center">
 <div class="col-sm-12 textcenter">
 
         <a href="{% url 'blog:ajouterNouvelArticle' %}">
         <button type="button" class="btn  btn-success" >
-                <span class="glyphicon glyphicon-plus"></span>Ajouter un article
+                <i class="fa fa-plus"></i> Ajouter un article
             </button>
             </a>&ensp;
     &nbsp;
         <a href="{% url 'blog:suivre_articles' %}">
 
         {% if request.user|is_following:suivis %}
-        <button type="button" class="btn  btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour arreter de recevoir un mail à chaque nouvel article">
+        <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour arreter de recevoir un mail à chaque nouvel article">
              {% fontawesome_icon 'bell' %}
         </button>
         {% else %}
-        <button type="button" class="btn  btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour recevoir un mail à chaque nouvel article">
+        <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour recevoir un mail à chaque nouvel article">
              {% fontawesome_icon 'bell-slash' %}
         </button>
         {% endif %}

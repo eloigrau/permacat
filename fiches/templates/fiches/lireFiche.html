@@ -83,7 +83,7 @@
             {%if request.user.is_authenticated %}
             <a href="{% url 'fiches:ajouterAtelier' fiche_slug=fiche.slug%}">
                <button type="button" class="btn btn-sm btn-warning">
-                <span class="glyphicon glyphicon-plus"></span>&nbsp;Ajouter un atelier
+                <i class="fa fa-plus"></i> Ajouter un atelier
                </button></a>
             {% endif %}
         </div>
