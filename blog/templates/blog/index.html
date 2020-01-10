@@ -12,7 +12,15 @@
 
 <p>
   <a class="btn {% if request.GET.categorie  %}btn-warning{%else%}btn-primary{%endif%}" style="min-width:180px;" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-    {% if request.GET.categorie  %}Catégorie: {{categorie_courante}} {%else%}Catégorie... {%endif%}
+    {% if request.GET.categorie  %}
+      Articles de la catégorie: {{categorie_courante}}
+      {%elif request.GET.permacat %}
+      Articles Permacat
+      {%elif request.GET.auteur %}
+      Articles de {{request.GET.auteur}}
+      {%elif typeFiltre == 'archives' %}
+      Archives
+      {%else%}Catégorie... {%endif%}
   </a>
 </p>
 
@@ -29,10 +37,10 @@
     <hr>
     <div class="row align-items-center">
 <div class="col-sm-12 textcenter justify-content-center ">
-    <nav class="navbar justify-content-center  navbar-light bg-light">
+    <nav class="navbar justify-content-center navbar-expand-md navbar-light bg-light">
         <div class="navbar-header">
-            <a  class="btn btn-info"> <button class=" navbar-toggler " type="button" data-toggle="collapse" data-target="#navbarProduit" aria-controls="navbarProduitContent" aria-expanded="false" aria-label="Toggle navigation">
-                Filtrage...</button></a>
+           <button class=" navbar-toggler btn btn-info btn-block" type="button" data-toggle="collapse" data-target="#navbarProduit" aria-controls="navbarProduitContent" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="navbar-toggler-icon"></span>Filtrage...</button>
         </div>
         <div class="collapse navbar-collapse  justify-content-center " id="navbarProduit">
             <ul class="nav navbar-nav justify-content-center ">
