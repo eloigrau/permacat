@@ -159,7 +159,7 @@ margin-bottom: 30px;
     height: 0;
     overflow: hidden;
     border-top: 1px solid #e9ecef;
-    margin: 2px 20px;
+    margin: 4px 20px;
 }
 .navbar-light .navbar-nav .nav-item {
 
@@ -194,7 +194,7 @@ margin-bottom: 30px;
  }
 .nav3-dropdown-submenu{
     background-color: #f5ff66;
-    text-align; left;
+    text-align: left;
     padding-top: 0px;
     padding-bottom: 0px;
  }
@@ -265,6 +265,9 @@ margin-bottom: 30px;
 
 @media screen and (max-width: 1300px) {
 
+.nav3-dropdown-submenu{
+    text-align: center;
+    }
 .bs-dark {
 
   background-image:linear-gradient(90deg, #ffd0cc, #ffe6b3, #fcffcc, #ccffdd, #ccdbff);
