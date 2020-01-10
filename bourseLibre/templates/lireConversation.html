@@ -28,7 +28,7 @@ Messages échangés avec <span style="background-color:PapayaWhip;"><a href="{% 
             <p class="infos  textepetit">
                 {{ mess.date_creation|date:"G:i" }} {% ifchanged %}, <a href="{% url 'profil' mess.auteur.id %}"> {{mess.auteur}}</a>{% endifchanged %}
             {% if request.user == mess.auteur %}
-            <a class="boutonediter" href="{{ mess.get_edit_url  }}" role="button"><i class="fa fa-edit"></a>
+                <a class="boutonediter" href="{{ mess.get_edit_url  }}" role="button"><i class="fa fa-edit"></i></a>
             {% endif %}
             </p>
         </div>
