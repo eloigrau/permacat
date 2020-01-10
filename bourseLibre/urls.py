@@ -18,6 +18,7 @@ from django.conf.urls import include, url
 from django.urls import path
 from . import views
 from django.views.generic import TemplateView
+from bourseLibre.views import handler400 as h400, handler403  as h403, handler404  as h404, handler500  as h500
 #from fcm_django.api.rest_framework import FCMDeviceAuthorizedViewSet
 
 # On import les vues de Django, avec un nom spécifique
@@ -26,7 +27,7 @@ from django.contrib.auth.decorators import login_required
 # admin.autodiscover()
 from django.contrib import admin
 
-from wiki import urls
+#from wiki import urls
 
 admin.sites.site_header ="Admin "
 admin.sites.site_title ="Admin Permacat"
@@ -163,10 +164,10 @@ if settings.DEBUG:
     from django.conf.urls.static import static
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-handler404 = 'bourseLibre.views.handler404'
-handler500 = 'bourseLibre.views.handler500'
-handler400 = 'bourseLibre.views.handler400'
-handler403 = 'bourseLibre.views.handler403'
+handler404 = h404
+handler500 = h500
+handler400 = h400
+handler403 = h403
 
 if settings.LOCALL:
     import debug_toolbar

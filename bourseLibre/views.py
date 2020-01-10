@@ -62,22 +62,22 @@ CharField.register_lookup(Lower, "lower")
 #from PIL import Image
 #from braces.views import LoginRequiredMixin
 
-def handler404(request, template_name="404.html"):  #page not found
+def handler404(request, *args, **kwargs):  #page not found
     response = render(request, "404.html")
     response.status_code = 404
     return response
 
-def handler500(request, template_name="500.html"):   #erreur du serveur
+def handler500(request, *args, **kwargs):   #erreur du serveur
     response = render(request, "500.html")
     response.status_code = 500
     return response
 
-def handler403(request, template_name="403.html"):   #non autorisé
+def handler403(request, *args, **kwargs):   #non autorisé
     response = render(request, "403.html")
     response.status_code = 403
     return response
 
-def handler400(request, template_name="400.html"):   #requete invalide
+def handler400(request, *args, **kwargs):   #requete invalide
     response = render(request, "400.html")
     response.status_code = 400
     return response
