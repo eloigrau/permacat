@@ -750,7 +750,7 @@ def lireConversation(request, destinataire):
         message.conversation = conversation
         message.auteur = request.user
         conversation.date_dernierMessage = message.date_creation
-        conversation.dernierMessage =  "(" + str(message.auteur) + ") " + str(strip_tags(message.message).replace('&nspb',' ')) + "..."
+        conversation.dernierMessage =  "(" + str(message.auteur) + ") " + str(strip_tags(message.message).replace('&nspb',' '))[:96] + "..."
         conversation.save()
         message.save()
         url = conversation.get_absolute_url()
