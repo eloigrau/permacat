@@ -22,7 +22,7 @@
                 {{ produit.nom_produit|truncatechars:150 }}
             </h4>
             </div>
-            <div class="card-footer offre_footer" ">
+            <div class="card-footer offre_footer  align-items-center d-flex justify-content-center ">
                 <p>
             {% if produit.date_debut or produit.date_expiration %}
                     {% if produit.date_debut and produit.date_expiration %}

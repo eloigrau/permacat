@@ -532,10 +532,8 @@ margin-bottom: 30px;
 }
 
 .offre2{
-    min-height: 350px;
-    min-width:250px;
-    max-height: 350px;
-    max-width:250px;
+    height: 300px;
+    width:250px;
     box-shadow: 0 10px 10px 0px grey;
     padding:5px;
 }
@@ -547,8 +545,10 @@ margin-bottom: 30px;
     text-decoration: none;
 }
 .offreentete{
-    height:90px;
+    height:80px;
     text-align: center;
+    text-align: center;
+    font-size:small;
 }
 
 .listOffres{
@@ -631,7 +631,8 @@ position:absolute;
  }
 
 .offre_footer{
-  height:85px;
+  height:75px;
+  font-size:small;
  }
 
 .row-flex {
