@@ -3,16 +3,14 @@
 {% load activity_tags %}
 {% load fontawesome %}
 
-    {%block header %}
-<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
-<script src="{% static 'js/infinite.min.js' %}"></script>
-    {%endblock%}
-{% block title %}Au Marché
-
+{% block header %}
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/infinite.min.js' %}"></script>
 {% endblock %}
+
+{% block title %} Au Marché {% endblock %}
+
 {%block subtitle%}
-
-
 <div class="row justify-content-center">
     <nav class="navbar navbar-expand-md justify-content-center  navbar-light bg-light">
         <div class="navbar-header">
@@ -139,7 +137,6 @@
                     {% endfor %}
                 </div>
             </li>
-
             </ul>
         </div>
     </nav>

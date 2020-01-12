@@ -3,16 +3,6 @@
 {% block title %} {{ produit.nom_produit }} {% endblock %}
 {% block subtitle %}
 
-{% endblock %}
-
-{% block content %}
-
-<script>
-  	function ajouterAuPanier() {
-    	var quantite = parseInt($('#quantite').val());
-     location.href="/panier/ajouter/" + {{produit.id}} + "/" + $('#quantite').val()
-  }
-</script>
 <div class="row align-items-center">
     <div class="col col-md-6">
 		<nav class="breadcrumb textepetit">
@@ -35,6 +25,16 @@
 		{% endif %}
     </div>
   </div>
+{% endblock %}
+
+{% block content %}
+
+<script>
+  	function ajouterAuPanier() {
+    	var quantite = parseInt($('#quantite').val());
+     location.href="/panier/ajouter/" + {{produit.id}} + "/" + $('#quantite').val()
+  }
+</script>
 
 <div class="row">
 	<div class="col-12 paddingbase detailProduit" style="background-color: {{ produit.couleur }}; min-height:200px !important">
