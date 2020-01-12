@@ -2,34 +2,37 @@
 <div class="infinite-item">
     <div class="card-deck offre justify-content-between" onclick="window.location.href='{% url 'produit_detail' produit.id %}'" style="cursor: pointer">
 
-        <div class="card d-md-flex textcenter offre2" style="{% if produit.est_perimee %} background-color:grey;{% else %} background-color:{{ produit.couleur }}; border-color:{%if produit.estUneOffre == True %} lightyellow {%else%} 	lightcoral{%endif%}{%endif%}">
+        <div class="card card-block d-flex textcenter offre2" style="{% if produit.est_perimee %} background-color:grey;{% else %} background-color:{{ produit.couleur }}; border-color:{%if produit.estUneOffre == True %} lightyellow {%else%} 	lightcoral{%endif%}{%endif%}">
             <div class="card-header offreentete justify-content-center">
-                <h4 class="card-title">{{ produit.nom_produit|truncatechars:35 }} </h4>
-
                     <div class="col-xs-5 ">
                          {{produit.user.username}} ({% if produit.user.adresse.commune%}{{produit.user.adresse.commune|truncatechars:14}}{%else%}{{produit.user.adresse.code_postal}}{%endif%})
                     </div>
-            </div>
-            <div class="card-block"  >
-                  <p class="card-text text-align-left" style="height:120px">
-                    {{ produit.description|safe|striptags|nbsp|truncatechars:230 }}
-                  </p>
-   {%comment%}
-                  <p class="card-text">
-                      {{ produit.photo.thumbnail.url  }}
-
-                  </p>
-   {%endcomment%}
-            </div>
-            <div class="card-footer offre_footer" >
-                    <div class="col-xs-12">
+                    <div class="col-xs-2">
                          <span class="badge {% if produit.estUneOffre%}badge-warning{%else%} badge-danger {%endif%}">{% if produit.estUneOffre%}Offre{%else%} Demande {%endif%}
 				 {%if produit.estPublique%} publique{%else%} Permacat {%endif%} {% if produit.est_perimee %} (expirée) {% endif %}
 		                </span>
                     </div>
-                    <div class="col-xs-12">
-                    {%if produit.estUneOffre %}{{ produit.get_prixEtUnite }} {%endif%}
+                    <div class="col-xs-5">
+                        {{produit.souscategorie}}
                     </div>
+
+            </div>
+            <div class="card-body align-items-center d-flex justify-content-center">
+            <h4 class="card-title align-items-center">
+                {{ produit.nom_produit|truncatechars:150 }}
+            </h4>
+            </div>
+            <div class="card-footer offre_footer" ">
+                <p>
+            {% if produit.date_debut or produit.date_expiration %}
+                    {% if produit.date_debut and produit.date_expiration %}
+                    du {{ produit.date_debut|date:"j/m" }}{% endif%} {% if produit.date_expiration %} au {{ produit.date_expiration|date:"j/m" }}
+                    {%else%}
+                    {% if produit.date_debut %}à partir du {{ produit.date_debut|date:"j/m" }}{% endif%} {% if produit.date_expiration %} jusqu'au {{ produit.date_expiration|date:"j/m" }}{% endif%}
+                    {%endif%}
+                    <br/>
+            {%endif%}
+                    {%if produit.estUneOffre %}{{ produit.get_prixEtUnite }} {%endif%}
 
                 </p>
 
