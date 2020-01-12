@@ -3,10 +3,10 @@
 {%block message%}{%endblock%}
 {% block subtitle %}
 <div class="row">
-<div class="col-sm-2">
+<div class="col-sm-4">
     <a href="{% url 'conversations' %}" class="btn btn-info"> <i class="fa fa-arrow-left"></i> Conversations </a>
 </div>
-    <div class="col-sm-10">
+    <div class="col-sm-8">
 Messages échangés avec <span style="background-color:PapayaWhip;"><a href="{% url 'profil_nom' destinataire  %}"> {{ destinataire }} </a></span> depuis le {{ conversation.date_creation|date:"SHORT_DATE_FORMAT"}}
     </div>
 </div>
