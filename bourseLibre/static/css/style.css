@@ -63,8 +63,14 @@ ul.errorlist > li {
 }
 
 .rowbienvenue{
-line-height: 2;
-margin-bottom: 30px;
+    line-height: 2;
+    margin-bottom: 15px;
+}
+.imgbienvenue {
+width:auto; max-width:
+500px; height: auto;
+max-height: 400px;
+  border-radius: 5%;
 }
 /*
 .breadcrumb span, .breadcrumb div {display:inline-block!important; float:right!important}*/
@@ -131,13 +137,11 @@ margin-bottom: 30px;
     box-shadow: 2px 2px 20px 0px #0D4003;
    border-radius: 0.4em;
    line-height: 2.6em;
+    margin-bottom:20px;
 
 }
 .dropdown-menu {
     margin: 0rem 0 0;
-    }
-.bs-dark .dropdown-menu {
-  text-color: black;
 }
 .bs-dark .dropdown-menu1 {
     right: auto;
@@ -177,6 +181,13 @@ margin-bottom: 30px;
 .nav1-dropdown{
     background-color: #ff5b4d;
 }
+.cardH1{
+    background-color: #FF1500;
+}
+.card1 > li{
+    background-color: #ff5b4d;
+}
+
 .bs-dark .nav2 > a:hover{
     background-color: #FFAA00;
 }
@@ -186,6 +197,14 @@ margin-bottom: 30px;
 .nav2-dropdown{
     background-color: #ffc34d;
 }
+.cardH2{
+    background-color: #FFAA00;
+}
+.card2 > li{
+    background-color: #ffc34d;
+}
+
+
 .bs-dark .nav3 > a:hover {
     background-color: #EEFF00;
 }
@@ -195,6 +214,12 @@ margin-bottom: 30px;
 .dropdown-menu > nav3-dropdown-submenu > a:hover::after{
     background-color: #f5ff66;
  }
+.cardH3{
+    background-color: #EEFF00;
+}
+.card3 > li{
+    background-color: #f5ff66;
+}
 .nav3-dropdown-submenu{
     background-color: #f5ff66;
     text-align: left;
@@ -204,6 +229,8 @@ margin-bottom: 30px;
 .nav3-dropdown{
     background-color: #f3ff4d;
 }
+
+
 .bs-dark .nav4 > a:hover {
     background-color: #3FFF00;
 }
@@ -213,6 +240,13 @@ margin-bottom: 30px;
 .nav4-dropdown{
     background-color: #8cff66;
 }
+.cardH4{
+    background-color: #3EEFF00;
+}
+.card4 > li{
+    background-color: #8cff66;
+}
+
 .bs-dark .nav5 > a:hover {
     background-color: #00FF55;
 }
@@ -222,6 +256,13 @@ margin-bottom: 30px;
 .nav5-dropdown{
     background-color: #66ff99;
 }
+.cardH5{
+    background-color: #00FF55;
+}
+.card5 > li{
+    background-color: #66ff99;
+}
+
 .bs-dark .nav6 > a:hover {
     background-color: #00FFE9;
 }
@@ -231,6 +272,16 @@ margin-bottom: 30px;
 .nav6-dropdown{
     background-color: #80fff4;
 }
+.nav5-dropdown{
+    background-color: #66ff99;
+}
+.cardH6{
+    background-color: #80fff4;
+}
+.card6 > li{
+    background-color: #66ff99;
+}
+
 .bs-dark .nav7 > a:hover {
     background-color: #004CFF;
 }
@@ -240,6 +291,24 @@ margin-bottom: 30px;
 .nav7-dropdown{
     background-color: #6694ff;
 }
+.cardH7{
+    background-color: #004CFF;
+}
+.card7 > li{
+    background-color: #6694ff;
+}
+
+.cardAcceuil{
+    min-width:500px;
+    padding-bottom: 10px !important;
+}
+@media screen and (max-width: 800px) {
+    .cardAcceuil{
+    min-width:50px;
+        padding-bottom: 10px !important;
+        }
+}
+
 
 .bs-dark .dropdown-menu > li > a {
   padding: 0px 20px;
@@ -254,7 +323,6 @@ margin-bottom: 30px;
 .bs-dark .dropdown-menu > .active > a:hover,
 .bs-dark .dropdown-menu > .active > a:focus {
   color: rgba(0,0,0,0.8);
-  backgrou-nd-color: #ecfaeb;
   outline: 0;
 }
 
@@ -363,13 +431,11 @@ margin-bottom: 30px;
     font-size:small;
 }
 .debutArticle{
-    font-color: red;
 }
 .debutArticle a:link, a:visited {
     color: black;
 }
 .titreBlog{
-    text-size: large;
 }
 .titreBlog a:link, a:visited {
     color: black;
@@ -505,8 +571,7 @@ margin-bottom: 30px;
 /*background-color: grey;*/
 border-color: #333;
 box-shadow: 0 10px 10px 0px grey;
- padding:10px;
-    min-height: 100px;
+ padding:25px;
     border-radius: 0.3em;
     border:1.5px grey solid;
 }
@@ -1219,4 +1284,3 @@ caption {
 {
     padding-right: 5px;  /* width of the image plus a little extra padding */
 }
-

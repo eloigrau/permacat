@@ -7,11 +7,11 @@
 
     <div class="col-sm-12 textcenter">
 
-        <a class="btn btn-light calleft btn-sm" href="{% url 'cal:agenda' %}?{{prev_month}}"> << </a>
+        <a class="btn btn-light calleft btn-sm" href="{% url 'cal:agenda' %}?{{prev_month}}"> <i class="fa fa-arrow-left"></i> </a>
 
         {{mois|translate_month}} {{annee}}
 
-        <a class="btn btn-light calright btn-sm" href="{% url 'cal:agenda' %}?{{next_month}}"> >> </a>
+        <a class="btn btn-light calright btn-sm" href="{% url 'cal:agenda' %}?{{next_month}}">  <i class="fa fa-arrow-right"></i> </a>
 
     </div>
 </div>

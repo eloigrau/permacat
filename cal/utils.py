@@ -93,9 +93,9 @@ class Calendar(LocaleTextCalendar):
 
         for i in self.iterweekdays():
             try:
-                cal += "<th class='weekdays'>"+ Constantes.dicoJour[self.formatweekday(i, width=10)]+ '</th>'
+                cal += "<th  scope='col' class='weekdays'>"+ Constantes.dicoJour[self.formatweekday(i, width=10)]+ '</th>'
             except:
-                cal += "<th class='weekdays'>"+ self.formatweekday(i, width=10)+ '</th>'
+                cal += "<th  scope='col' class='weekdays'>"+ self.formatweekday(i, width=10)+ '</th>'
 
 
         for week in self.monthdays2calendar(self.year, self.month):

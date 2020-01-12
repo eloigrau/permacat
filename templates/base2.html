@@ -70,26 +70,25 @@
             {% include 'navigationBar.html' %}
             {% endblock%}
 
-        <div class="panel  h-100" style="margin-bot:60px;">
-            <div class="panel-heading">
-                <div class="panel-title soustitre">
-                    <div class="row justify-content-sm-center">
-                    <div class="col-sm-12 col-md-11 col-lg-10  textcenter">
-                       {%block message%} {% if messages2 %}
-                        <ul class="messages">
-                            {% for message in messages %}
-                            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                            {% endfor %}
-                        </ul>
-                        {% endif %}
-			    {% endblock %}
-                            {% block subtitle %}{% endblock %}
-                        </div>
-                    </div>
+        <div class="panel  h-100">
+            <div class="panel-title soustitre">
+                <div class="row justify-content-sm-center">
+                <div class="col-sm-12 col-md-11 col-lg-10  textcenter">
+                   {%block message%}
+                    {% if messages2 %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% endblock %}
+                        {% block subtitle %}{% endblock %}
                 </div>
-                <div class="panel-body panel_body_fiche">
-                    {% block content %}{% endblock %}
                 </div>
+            </div>
+            <div class="panel-body panel_body_fiche">
+                {% block content %}{% endblock %}
             </div>
         </div>
     </div>

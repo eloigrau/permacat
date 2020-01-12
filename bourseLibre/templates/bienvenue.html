@@ -6,77 +6,154 @@
  <script src="{% static 'js/cookielaw.js'%}" type="text/javascript"></script>
 {%endblock%}
 {% block subtitle %}
-
-<h4 class = "textcenter rowbienvenue">{% trans "Bienvenue sur le site Perma.Cat !" %}</h4>
-
-{% endblock %}
-{% block content %}
-
-{% if nbExpires %}
-<hr>
-<div class="row" >
-  <div class="col-sm-12 textcenter" style ="color:#0f7407;">
-	  <b><a href="{% url 'supprimerProduits_expires_confirmation' %}">Vous avez {{nbExpires}} offre{{nbExpires|pluralize:",s"}} du marché qui {{nbExpires|pluralize:"a,ont"}}  expiré. Cliquez ici pour l{{nbExpires|pluralize:"a,es"}} supprimer ou l{{nbExpires|pluralize:"a,es"}}  modifier</a></b>
-  </div>
-</div>
-<hr>
-{%endif%}
-
- {% if not request.user.is_authenticated %}
-<hr>
-<div class="row" >
-  <div class="col-sm-12 textcenter">
-	  <b> <a href="{% url 'inscription_newsletter' %}" class="btn btn-light btn-radius"><i class="fa fa-envelope-o"></i> S'inscrire à la newsletter...</a>
-
-	  </b>
-  </div>
-</div>
-<hr>
-{% endif %}
-
- {% if  request.user.is_authenticated %}
-<hr>
-<div class="row" >
-  <div class="col-sm-12 textcenter">
-	  <b><a href="{% url 'cal:agenda' %}">{% fontawesome_icon 'calendar' %} Agenda</a></b>
-  </div>
-</div>
-
-
-<hr>
-<div class="row" >
-  <div class="col-sm-12 textcenter" style ="color:#0f7407;">
-{% if nbNotif %}
-	  <b><a href="{% url 'notifications_news' %}">{% fontawesome_icon 'bell' %}  Vous avez {{nbNotif}} nouvelle{{ nbNotif|pluralize:",s" }} notification{{ nbNotif|pluralize:",s" }} depuis le {{request.user.date_notifications|date:"d/m/Y"}} à {{request.user.date_notifications|date:"G:i"}})</a></b>
-
-{%else%}
-	  <b><a href="{% url 'notifications_news' %}">{% fontawesome_icon 'bell' %}  Notifications</a></b>
-{%endif%}
-  </div>
-</div>
- {% endif %}
-<hr>
-
-
-
-<div class="card" >
-  <div class="card-header  textcenter">
-		<b>Prochains rendez-vous (réguliers) :</b>
-  </div>
-    <ul class="list-group list-group-flush textcenter">
-        <li class="list-group-item"><a href="{% url 'blog:lireArticle' 'visioconference' %}">Visioconférence : lundi prochain à partir de 20h30</a> </li>
-		<li class="list-group-item"><a href="{% url 'blog:lireArticle' 'rencontres-permacat' %}">Rencontre mensuelle : dimanche 2 février à Collioure</a></li>
-		<li class="list-group-item"><a href="https://permacat.herokuapp.com/forum/projets/lalter-marche-ou-marche-en-monnaies-alternatives"> Altermarché : samedi 15 février à Perpignan</a></li>
-	</ul>
-    </div>
-</div>
-
-<div class="row textcenter">
-	<div class="col">
-		<p><a  href="{% url 'gallerie' %}" ><img src="{{STATIC_URL}}{{nomImage}}" alt="gallerie" style="width:100%; max-width: 600px; height: auto;"></a></p>
-
+<div class="row">
+	<div class="col-md-12">
+		<h4 class = "textcenter rowbienvenue">{% trans "Bienvenue sur le site Perma.Cat !" %}</h4>
 	</div>
 </div>
+<div class="row">
+	<div class="col-sm-6">
+		<div class="row textcenter">
+			<div class="col">
+				<a  href="{% url 'gallerie' %}" ><img class="imgbienvenue" src="{{STATIC_URL}}{{nomImage}}" alt="gallerie" ></a>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-6">
+		<div class="row">
+			<div class="col-md-12">
+				{% if nbExpires %}
+					<hr>
+					<div class="row" >
+					  <div class="col-sm-12 textcenter" style ="color:#0f7407;">
+						  <b><a href="{% url 'supprimerProduits_expires_confirmation' %}">Vous avez {{nbExpires}} offre{{nbExpires|pluralize:",s"}} du marché qui {{nbExpires|pluralize:"a,ont"}}  expiré. Cliquez ici pour l{{nbExpires|pluralize:"a,es"}} supprimer ou l{{nbExpires|pluralize:"a,es"}}  modifier</a></b>
+					  </div>
+					</div>
+				{%endif%}
+
+				 {% if not request.user.is_authenticated %}
+					<hr>
+					<div class="row" >
+					  <div class="col-sm-12 textcenter">
+						  <b> <a href="{% url 'inscription_newsletter' %}" class="btn btn-light btn-radius"><i class="fa fa-envelope-o"></i> S'inscrire à la newsletter...</a>
+
+						  </b>
+					  </div>
+					</div>
+
+				{%else%}
+					<hr>
+					<div class="row" >
+					  <div class="col-sm-12 textcenter" style ="color:#0f7407;">
+						{% if nbNotif %}
+						  <b><a href="{% url 'notifications_news' %}">{% fontawesome_icon 'bell' %}  Vous avez {{nbNotif}} nouvelle{{ nbNotif|pluralize:",s" }} notification{{ nbNotif|pluralize:",s" }} depuis le {{request.user.date_notifications|date:"d/m/Y"}} à {{request.user.date_notifications|date:"G:i"}})</a></b>
+
+						{%else%}
+						  <b><a href="{% url 'notifications_news' %}">{% fontawesome_icon 'bell' %}  Notifications</a></b>
+						{%endif%}
+					  </div>
+					</div>
+
+					<hr>
+					<div class="row" >
+					  <div class="col-sm-12 textcenter">
+						  <b><a href="{% url 'cal:agenda' %}">{% fontawesome_icon 'calendar' %} Agenda</a></b>
+					  </div>
+					</div>
+
+				{% endif %}
+
+				<hr>
+				<div class="card" >
+				  <div class="card-header  textcenter">
+						<b>Prochains rendez-vous (réguliers) :</b>
+				  </div>
+					<ul class="list-group list-group-flush textcenter">
+						<li class="list-group-item"><a href="{% url 'blog:lireArticle' 'visioconference' %}">Visioconférence : lundi prochain à partir de 20h30</a> </li>
+						<li class="list-group-item"><a href="{% url 'blog:lireArticle' 'rencontres-permacat' %}">Rencontre mensuelle : dimanche 2 février à Collioure</a></li>
+						<li class="list-group-item"><a href="https://permacat.herokuapp.com/forum/projets/lalter-marche-ou-marche-en-monnaies-alternatives"> Altermarché : samedi 15 février à Perpignan</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}
+
+
+{% block content %}
+
+
+
+ {% if  request.user.is_authenticated %}
+
+<hr>
+
+<div class="card-deck" >
+<div class="card cardAcceuil" >
+  <div class="card-header  textcenter cardH1">
+		<b>Annonces :</b>
+  </div>
+    <ul class="list-group list-group-flush textcenter card1">
+        <li class="list-group-item"><a href="{% url 'marche' %}">Consulter les annonces</a> </li>
+		<li class="list-group-item"><a href="{% url 'produit_proposer_entree' %}">Ajouter une annonce</a></li>
+		<li class="list-group-item"><a href="{% url 'marche' %}?producteur={{ user.username }}">Vos annonces</a></li>
+	</ul>
+</div>
+
+<div class="card cardAcceuil" >
+  <div class="card-header  textcenter cardH2">
+		<b>Forum :</b>
+  </div>
+    <ul class="list-group list-group-flush textcenter card2">
+        <li class="list-group-item"><a href="{% url 'blog:index' %}">Voir les articles</a> </li>
+		<li class="list-group-item"><a href="{% url 'agora_general' %}">Accéder au salon de discussion général</a></li>
+		<li class="list-group-item"><a href="{% url 'agora_general' %}">Accéder à vos conversations privées</a></li>
+	</ul>
+</div>
+
+<div class="card cardAcceuil" >
+  <div class="card-header  textcenter cardH3">
+		<b>L'association Permacat :</b>
+  </div>
+    <ul class="list-group list-group-flush textcenter card3">
+        <li class="list-group-item"><a href="{% url 'blog:index_projets' %}">Les projets de l'association</a> </li>
+		<li class="list-group-item"><a href="{% url 'ateliers:acceuil' %}">Les ateliers collectifs</a></li>
+		<li class="list-group-item"><a href="{% url 'carte_permacat' %}">La carte des adhérents</a></li>
+	</ul>
+</div>
+
+<div class="card cardAcceuil" >
+  <div class="card-header  textcenter cardH6">
+		<b>Sur le site :</b>
+  </div>
+    <ul class="list-group list-group-flush textcenter card6">
+        <li class="list-group-item"><a href="{% url 'blog:index' %}">Voir la carte des inscrits</a> </li>
+        <li class="list-group-item"><a href="{% url 'faq' %}">Foire aux questions</a> </li>
+        <li class="list-group-item"><a href="{% url 'contact_admins' %}">Contacter les administrateurs du site</a> </li>
+	</ul>
+</div>
+
+<div class="card cardAcceuil" >
+  <div class="card-header  textcenter cardH7">
+		<b>Votre profil : </b>
+  </div>
+    <ul class="list-group list-group-flush textcenter card7">
+        <li class="list-group-item"><a href="{% url 'profil_courant' %}">Consulter votre profil</a> </li>
+        <li class="list-group-item"><a href="{% url 'conversations' %}">Consulter vos messages privés</a> </li>
+        <li class="list-group-item"><a href="{% url 'afficher_requetes' %}">Consulter vos requêtes</a> </li>
+	</ul>
+</div>
+
+</div>
+
+ {% endif %}
+
+{% load cookielaw_tags %}
+{% cookielaw_banner %}
+
 {% comment %}
 <hr>
 <div class="row">
@@ -107,9 +184,6 @@
 					</div>
 </div>
 {% endcomment %}
-
-    {% load cookielaw_tags %}
-    {% cookielaw_banner %}
 
 {%comment%}
 <div class="row">
