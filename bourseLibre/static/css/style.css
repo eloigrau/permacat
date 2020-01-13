@@ -45,6 +45,9 @@ body {
 .textleft{
     text-align: left;
 }
+.textsmall{
+    font-size:small;
+}
 
 .textitalique{
 font-style: italic;

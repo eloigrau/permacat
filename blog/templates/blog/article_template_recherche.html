@@ -7,7 +7,7 @@
         <div class="card-header">
             <h4>{{ article.titre }}</h4>
         <span class="badge {% if article.estPublic%}badge-warning{%else%} badge-success {%endif%}" data-toggle="tooltip" data-placement="bottom" title="Article {%if article.estPublic%}visible par tous les inscrits{%else%}visible par les membres de Permacat seulement{%endif%}">
-            Article {%if article.estPublic%} public{%else%}  Permacat  {%endif%}
+             {%if article.estPublic%} public{%else%}  Permacat  {%endif%}
         </span>
         </div>
         <h6 class="card-subtitle mb-2 ">

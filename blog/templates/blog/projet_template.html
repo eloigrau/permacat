@@ -17,5 +17,6 @@
                  {% fontawesome_icon 'bell-slash' %}
             </span>
             {% endif %}
+            <p class="text-muted textsmall">Catégorie: <em>{{ projet.get_categorie_display }}</em>, rédigé par {{ projet.auteur }}, le {{ projet.date_creation|date:"DATE_FORMAT" }} {%ifnotequal  article.date_creation article.date_modification %} (modifié le  {{ projet.date_modification|date:"DATE_FORMAT" }} {%endifnotequal%}</p>
   </a>
 </div>
