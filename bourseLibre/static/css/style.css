@@ -307,8 +307,9 @@ margin-bottom: 30px;
 }
 @media screen and (max-width: 800px) {
     .cardAcceuil{
-    min-width:50px;
+    min-width:160px;
         padding-bottom: 10px !important;
+
         }
 }
 
