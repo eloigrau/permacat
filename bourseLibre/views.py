@@ -911,7 +911,7 @@ def getInfosJourPrecedent(request, nombreDeJours):
     fiches = Action.objects.filter(verb__startswith='fiche')
     ateliers = Action.objects.filter(Q(verb__startswith='atelier')|Q(verb=''))
     conversations = (any_stream(request.user).filter(Q(verb='envoi_salon_prive', )) | Action.objects.filter(
-        Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)))[:nbNotif]
+        Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)))
 
     articles = [art for i, art in enumerate(articles) if i == 0 or not (art.description == articles[i-1].description  and art.actor == articles[i-1].actor)]
     projets = [art for i, art in enumerate(projets) if i == 0 or not (art.description == projets[i-1].description and art.actor == projets[i-1].actor) ]
@@ -983,7 +983,7 @@ def agora(request, ):
         message.auteur = request.user 
         message.save()
         group, created = Group.objects.get_or_create(name='tous')
-        url = reverse('agora')
+        url = reverse('agora_general')
         action.send(request.user, verb='envoi_salon', action_object=message, target=group, url=url, description="a envoyé un message dans le salon public")
         return redirect(request.path) 
     return render(request, 'agora.html', {'form': form, 'messages_echanges': messages})
