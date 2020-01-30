@@ -144,15 +144,14 @@ class ProfilCreationForm(UserCreationForm):
     username = forms.CharField(label="Pseudonyme*", help_text="Attention les majuscules sont importantes...")
     description = forms.CharField(label=None, help_text="Une description de vous même", required=False, widget=forms.Textarea)
     competences = forms.CharField(label=None, help_text="Par exemple: electricien, bouturage, aromatherapie, pépinieriste, etc...", required=False, widget=forms.Textarea, )
-    site_web = forms.CharField(label="Site web", help_text="n'oubliez pas le https://", required=False)
+    site_web = forms.CharField(label="Votre site web (optionnel)", help_text="n'oubliez pas le https://", required=False)
     captcha = CaptchaField()
     email = forms.EmailField(label="Email*",)
 
     statut_adhesion = forms.ChoiceField(choices=Choix.statut_adhesion, label='', required=True)
-    statut_adhesion_rtg = forms.ChoiceField(choices=Choix.statut_adhesion_rtg, label='', required=True)
     accepter_annuaire = forms.BooleanField(required=False, label="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous les inscrits")
     accepter_conditions = forms.BooleanField(required=True, label="J'ai lu et j'accepte les Conditions Générales d'Utilisation du site",  )
-    pseudo_june = forms.CharField(label="Pseudonyme dans la monnaie libre (Duniter)",  help_text="Si vous avez un compte en June",required=False)
+    pseudo_june = forms.CharField(label="Pseudonyme dans la monnaie libre (optionnel)",  help_text="Si vous avez un compte en June",required=False)
 
 
     def __init__(self, request, *args, **kargs):
@@ -162,7 +161,7 @@ class ProfilCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm):
         model = Profil
-        fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'inscrit_newsletter', 'accepter_annuaire', 'statut_adhesion',  'accepter_conditions']
+        fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'statut_adhesion', 'inscrit_newsletter', 'accepter_annuaire',  'accepter_conditions']
         exclude = ['slug', ]
 
 

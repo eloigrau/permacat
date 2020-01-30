@@ -12,14 +12,14 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-sm-6">
+	<div class="col-md-6 col-sm-12">
 		<div class="row textcenter">
 			<div class="col">
 				<a  href="{% url 'gallerie' %}" ><img class="imgbienvenue" src="{{STATIC_URL}}{{nomImage}}" alt="gallerie" ></a>
 			</div>
 		</div>
 	</div>
-	<div class="col-sm-6">
+	<div class="col-md-6 col-sm-12">
 		<div class="row">
 			<div class="col-md-12">
 				{% if nbExpires %}
@@ -46,7 +46,7 @@
 					<div class="row" >
 					  <div class="col-sm-12 textcenter" style ="color:#0f7407;">
 						{% if nbNotif %}
-						  <b><a href="{% url 'notifications_news' %}">{% fontawesome_icon 'bell' %}  Vous avez {{nbNotif}} nouvelle{{ nbNotif|pluralize:",s" }} notification{{ nbNotif|pluralize:",s" }} depuis le {{request.user.date_notifications|date:"d/m/Y"}} à {{request.user.date_notifications|date:"G:i"}})</a></b>
+						  <b><a href="{% url 'notifications_news' %}">{% fontawesome_icon 'bell' %}  Vous avez {{nbNotif}} notification{{ nbNotif|pluralize:",s" }} depuis le {{request.user.date_notifications|date:"d/m/Y"}} à {{request.user.date_notifications|date:"G:i"}})</a></b>
 
 						{%else%}
 						  <b><a href="{% url 'notifications_news' %}">{% fontawesome_icon 'bell' %}  Notifications</a></b>
@@ -93,7 +93,7 @@
 
 <div class="card-deck" >
 <div class="card cardAcceuil" >
-  <div class="card-header  textcenter cardH1">
+  <div class="card-header  textcenter cardH1 ">
 		<b>Annonces :</b>
   </div>
     <ul class="list-group list-group-flush textcenter card1">

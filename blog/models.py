@@ -14,7 +14,7 @@ class Choix():
     type_projet = ('Part','Participation à un évènement'), ('AGO',"Organisation d'une AGO"), ('Projlong','Projet a long terme'), ('Projcourt','Projet a court terme'), ('Projponct','Projet ponctuel'),
     type_annonce = ('Altermarché','Altermarché'), ('Annonce','Annonce'), ('Administratif','Administratif'), ('Agenda','Agenda'), ('Bricolage','Bricolage'), ('Chantier','Chantier participatif'),\
                    ('Documentation','Documentation'),('Ecovillage', 'Ecovillage'),  ('Entraide','Entraide'), \
-                    ('Jardinage','Jardinage'),  ('Point', 'Point de vue'), \
+                    ('Permaculture','Permaculture'),  ('Point', 'Point de vue'), \
                      ('Projet', 'Projet'),   ('Recette', 'Recette'), \
                     ('Serre','Serre collective'),('Autre','Autre'),
     couleurs_annonces = {

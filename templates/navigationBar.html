@@ -39,8 +39,10 @@
                 <li> <a class="dropdown-item" href="{% url 'blog:index' %}?">Articles</a></li>
                 <li class="divider" role="separator"></li>
                 <li><a class="dropdown-item" href="{% url 'agora_general' %}">Salon</a></li>
+
+{% if user.is_permacat %}
                 <li> <a class="dropdown-item" href="{% url 'agora_permacat' %}"> Salon PermaCat</a></li>
-                <li> <a class="dropdown-item" href="{% url 'agora_rtg' %}"> Salon Ramene Ta Graine</a></li>
+{% endif %}
                 <li class="divider" role="separator"></li>
                  <li><a class="dropdown-item" href="{% url 'conversations' %}"> Conversations privées</a></li>
             </ul>
