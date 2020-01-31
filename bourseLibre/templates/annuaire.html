@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_site.html' %}
 {% load static %}
 {% block header %}
 <script src="{% static 'js/sorttable.js' %}"></script>
@@ -18,11 +18,6 @@
             {% if request.user.is_permacat %}
             <a href="{% url 'annuaire_permacat' %}" >
                 <button type="button" class="btn btn-primary" >Liste des adhérents Permacat</button>
-                </a>
-            {% endif %}
-            {% if request.user.is_rtg %}
-            <a href="{% url 'annuaire_rtg' %}" >
-                <button type="button" class="btn btn-primary" >Liste des adhérents RameneTaGraine</button>
                 </a>
             {% endif %}
             <a href="{% url 'carte' %}" >

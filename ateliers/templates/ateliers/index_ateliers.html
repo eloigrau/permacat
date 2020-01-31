@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_ateliers.html' %}
 {% load static %}
 {% load blog_filters %}
 {% load ateliers_filters %}
@@ -74,7 +74,12 @@
 <div class="infinite-item ">
    <div class="row justify-content-center ">
     <div class="col-sm-12 col-ms-10 col-lg-8 textcenter " >
-       <a  href="{% url 'ateliers:lireAtelier_id' id=atelier.id %}" class="boutonAtelier" style="background-color:{{atelier.atelier.get_couleur}};"> {{ atelier.titre }}</a>
+        <a  href="{% url 'ateliers:lireAtelier_id' id=atelier.id %}" class="boutonAtelier" > <div style="background-color:{{atelier.atelier.get_couleur}};
+    font-variant: small-caps;" >{{ atelier.titre }}  </div>
+            {% if atelier.date_atelier %}
+        <p class="textepetit">le {{ atelier.date_atelier|date:"DATE_FORMAT" }}</p>
+        {% endif %}</a>
+
     </div>
    </div>
 </div>
