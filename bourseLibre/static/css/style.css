@@ -154,12 +154,10 @@ section.p3 {
     transform: translate(-50%, 0);
     padding-top: 0px;
     padding-bottom: 0px;
-    font-variant: small-caps;
 }
 .navbar-light .navbar-nav .nav-link {
     color: rgba(0,0,0,.95);
    min-width:140px;
-    font-variant: small-caps;
 }
 
 .navbar-menu {
