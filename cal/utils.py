@@ -27,6 +27,13 @@ class Calendar(LocaleTextCalendar):
         super(Calendar, self).__init__()
 
 
+    def getJourFrançais(self, weekday):
+        jour = self.formatweekday(weekday, width=10)
+        try:
+            return Constantes.dicoJour[jour]
+        except:
+            return jour
+
     # formats a day as a td
     # filter events by day
     def formatday(self, request, day, weekday, events_arti, events_proj, events_atel):
@@ -65,9 +72,9 @@ class Calendar(LocaleTextCalendar):
                 ajout= "<div class='event'>  <a href='/forum/article/visioconference'> <i class='fa fa-comments' ></i> Visioconférence</a> </div>"
 
             if aujourdhui == 1:
-                return "<td "+style+" class='day'><span class=' badge badge-success joursemaine'>"+self.formatweekday(weekday, width=10) + " " + str(day)+ "</span><span class='datecourante'>"+str(day)+'</span>'+ajout + str(d)+'</td>'
+                return "<td "+style+" class='day'><span class=' badge badge-success joursemaine'>"+self.getJourFrançais(weekday) + " " + str(day)+ "</span><span class='datecourante'>"+str(day)+'</span>'+ajout + str(d)+'</td>'
             else:
-                return "<td "+style+" class='day'><span class=' badge badge-dark joursemaine'>"+self.formatweekday(weekday, width=10) + " " + str(day)+ "</span><span class='date'>"+str(day)+'</span>'+ajout +str(d)+ '</td>'
+                return "<td "+style+" class='day'><span class=' badge badge-dark joursemaine'>"+self.getJourFrançais(weekday)  + " " + str(day)+ "</span><span class='date'>"+str(day)+'</span>'+ajout +str(d)+ '</td>'
 
 
         return "<td class='other-month' style='background-color:white'></td>"
@@ -94,10 +101,7 @@ class Calendar(LocaleTextCalendar):
         #cal += self.formatmonthname(self.year, self.month, withyear=withyear)+'\n'
 
         for i in self.iterweekdays():
-            try:
-                cal += "<th  scope='col' class='weekdays'>"+ Constantes.dicoJour[self.formatweekday(i, width=10)]+ '</th>'
-            except:
-                cal += "<th  scope='col' class='weekdays'>"+ self.formatweekday(i, width=10)+ '</th>'
+            cal += "<th  scope='col' class='weekdays'>"+ self.getJourFrançais(i) + '</th>'
 
 
         for week in self.monthdays2calendar(self.year, self.month):
