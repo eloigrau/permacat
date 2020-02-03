@@ -1,5 +1,6 @@
 from django import forms
 from .models import Fiche, CommentaireFiche, Atelier
+from bourseLibre.forms import SummernoteWidgetWithCustomToolbar
 from django.utils.text import slugify
 import itertools
 from django_summernote.widgets import SummernoteWidget
@@ -106,16 +107,16 @@ class AtelierChangeForm(forms.ModelForm):
 
 
 class CommentaireFicheForm(forms.ModelForm):
-    commentaire = forms.CharField(widget=forms.Textarea(attrs={'rows': 1}), label='Laisser un commentaire...')
 
     class Meta:
         model = CommentaireFiche
         exclude = ['fiche','auteur_comm']
         #
-        #widgets = {
+        widgets = {
+         'commentaire': SummernoteWidgetWithCustomToolbar(),
          #  'commentaire': SummernoteWidget(),
         #        'commentaire': forms.Textarea(attrs={'rows': 1}),
-         #   }
+          }
 
     def __init__(self, request, *args, **kwargs):
         super(CommentaireFicheForm, self).__init__(request, *args, **kwargs)

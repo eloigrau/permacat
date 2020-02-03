@@ -100,41 +100,10 @@
 </div>
 
 <div class="tab-pane fade" id="p3">
-    <div class="contenu commentaires discussion_fiche">
-    <div id="idConversation">
-    {% for comment in commentaires %}
-        <div class="row {% if comment.auteur.id == request.user.id %} msg-auteur  {%else%} msg-destinataire{%endif%}">
 
-            <div class="col-sm-3 col-md-3 col-lg-2">
-               <p class="infos  textepetit">{{ comment.date_creation|date:"d/m/Y, G:i" }}{% ifchanged %}, {{comment.auteur_comm}}{% endifchanged %}</p>
-            </div>
-            <div class=" col-sm-9 col-md-9 col-lg-10 message ">
-                    <div class="col">{{ comment.commentaire|safe|url}}</div>
-            </div>
-        </div>
-    {% endfor %}
-    </div>
-        <script>
-        var messageBody = document.querySelector('#idConversation');
-        messageBody.scrollTop = idConversation.scrollHeight - idConversation.clientHeight;
-    </script>
-    <div>
-            <input type="hidden" name="Nouveau Message" value="{{ message }}">
+    <div class="discussion_fiche">
 
-        <div>
-{%if request.user.is_authenticated %}
-        <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <input type="hidden" name="Nouveau Message" value="{{ message_defaut }}">
-            {% include 'form_template3.html' with boutonAnnuler=False %}
-
-        </form>
-{% else %}
-            <p>(Vous devez vous connecter pour poster des commentaires)</p>
-{% endif %}
-        </div>
-
-    </div>
+{% include 'commentaires.html' %}
   </div>
 </div>
 
