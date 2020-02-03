@@ -63,10 +63,12 @@ class Calendar(LocaleTextCalendar):
             ajout=""
             if weekday == 0:
                 ajout= "<div class='event'>  <a href='/forum/article/visioconference'> <i class='fa fa-comments' ></i> Visioconférence</a> </div>"
+
             if aujourdhui == 1:
-                return "<td "+style+" class='day'><span class='datecourante'>"+str(day)+'</span>'+ajout + str(d)+'</td>'
+                return "<td "+style+" class='day'><span class=' badge badge-success joursemaine'>"+self.formatweekday(weekday, width=10) + " " + str(day)+ "</span><span class='datecourante'>"+str(day)+'</span>'+ajout + str(d)+'</td>'
             else:
-                return "<td "+style+" class='day'><span class='date'>"+str(day)+'</span>'+ajout +str(d)+ '</td>'
+                return "<td "+style+" class='day'><span class=' badge badge-dark joursemaine'>"+self.formatweekday(weekday, width=10) + " " + str(day)+ "</span><span class='date'>"+str(day)+'</span>'+ajout +str(d)+ '</td>'
+
 
         return "<td class='other-month' style='background-color:white'></td>"
 

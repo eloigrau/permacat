@@ -1205,6 +1205,11 @@ caption {
   flex: 0 0 auto;
   align-self: start;
 }
+
+#calendar .joursemaine{
+    display:none;
+}
+
 #calendar .event {
   flex: 0 0 auto;
   font-size:16px;
@@ -1256,6 +1261,15 @@ caption {
 		display: none;
 	}
 
+    #calendar .joursemaine{
+        display:block;
+    }
+	#calendar .date {
+        display:none;
+	}
+	#calendar .datecourante {
+        display:none;
+	}
 	#calendar li {
 		height: auto !important;
 		border: 1px solid #ededed;
