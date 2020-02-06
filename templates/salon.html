@@ -12,7 +12,7 @@
     <div class="row {% ifequal mess.auteur.id request.user.id %} msg-auteur  {%else%} msg-destinataire{%endifequal%} ">
         <div class="col-sm-2 col-md-3 col-lg-1">
             <p class="infos  textepetit ">
-                {{ mess.date_creation|date:"G:i" }}{% ifchanged %}, <a href="{% url 'profil' mess.auteur.id %}"> {{mess.auteur}}</a>{% endifchanged %}
+                {% ifchanged %}<a href="{% url 'profil' mess.auteur.id %}"> {{mess.auteur}}</a>, {% endifchanged %}{{ mess.date_creation|date:"G:i" }}
 
                 {% if request.user == mess.auteur  or request.user.is_superuser%}
             <a class="boutonediter" href="{{ mess.get_edit_url  }}" role="button" alt="éditer"><i class="fa fa-edit"></i></a>
@@ -41,5 +41,4 @@
     <input type="hidden" name="Nouveau Message" value="{{ message_defaut }}">
     {% include 'form_template3.html' with boutonAnnuler=False %}
 </form>
-</div>
 
