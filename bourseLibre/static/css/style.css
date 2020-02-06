@@ -392,8 +392,8 @@ section.p3 {
     padding: 1px ;
     border-radius: 0.4em;
     /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
-    min-height: 400px;
-    min-width:300px;
+    min-height: 500px;
+    min-width:200px;
     background: white;
     margin-top:20px;
     margin-bottom:20px;
