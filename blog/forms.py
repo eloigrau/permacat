@@ -75,8 +75,8 @@ class ArticleForm(forms.ModelForm):
         fields = ['categorie', 'titre', 'contenu', 'start_time', 'end_time', 'estPublic', 'estModifiable']
         widgets = {
             'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'class': 'date'}),
-              'end_time': forms.DateInput(attrs={'class': 'date'}),
+              'start_time': forms.DateInput(attrs={'type': 'date'}),
+              'end_time': forms.DateInput(attrs={'type': 'date'}),
 
            # 'bar': SummernoteInplaceWidget(),
         }

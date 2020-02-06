@@ -737,6 +737,10 @@ ul.errorlist{
     padding: 0.1px;
 }
 
+.article{
+ padding:10px 2px 10px 2px;
+}
+
 .bodycontenu{
     padding-bottom: 2em;
     border-radius: 0.1em;
@@ -784,12 +788,12 @@ ul.errorlist{
     background-color:#e6e6e6 ;
     }
 .carte-notif{
-   width:30rem;
+   min-width:16rem;
     margin: 20px;
 }
 .carte-notif-news{
-   min-width:30rem;
-    margin: 20px;
+   min-width:15rem;
+    margin: 15px;
 }
 .badge_projet{
 font-size: 10px;
