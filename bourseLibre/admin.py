@@ -45,6 +45,8 @@ class ProjetAdmin(admin.ModelAdmin):
     list_display = ('titre', 'estPublic', 'estArchive')
 class ProduitAdmin(admin.ModelAdmin):
     list_display = ('nom_produit', 'categorie', 'estUneOffre', 'estPublique', 'unite_prix')
+class Adhesion_permacatAdmin(admin.ModelAdmin):
+    list_display = ('user', 'date_cotisation', 'montant')
 
 admin.site.register(Article, ArticleAdmin)
 admin.site.register(Projet, ProjetAdmin)
@@ -58,7 +60,7 @@ admin.site.register(Message)
 admin.site.register(MessageGeneral)
 admin.site.register(MessageGeneralPermacat)
 admin.site.register(InscriptionNewsletter)
-admin.site.register(Adhesion_permacat)
+admin.site.register(Adhesion_permacat, Adhesion_permacatAdmin)
 
 admin.site.register(Conversation)
 admin.site.register(Commentaire)
