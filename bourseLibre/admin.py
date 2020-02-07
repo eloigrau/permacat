@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from .models import  Adresse, Produit, MessageGeneralPermacat, Panier, Item, Message, MessageGeneral, Conversation, InscriptionNewsletter
+from .models import  Adresse, Produit, MessageGeneralPermacat, Panier, Item, Adhesion_permacat, Message, MessageGeneral, Conversation, InscriptionNewsletter
 from blog.models import Article, Projet, Commentaire, CommentaireProjet
 from fiches.models import Fiche, Atelier as atelier_fiche, CommentaireFiche
 from ateliers.models import Atelier, CommentaireAtelier, InscriptionAtelier
@@ -58,6 +58,7 @@ admin.site.register(Message)
 admin.site.register(MessageGeneral)
 admin.site.register(MessageGeneralPermacat)
 admin.site.register(InscriptionNewsletter)
+admin.site.register(Adhesion_permacat)
 
 admin.site.register(Conversation)
 admin.site.register(Commentaire)

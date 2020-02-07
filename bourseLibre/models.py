@@ -253,7 +253,7 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 class Adhesion_permacat(models.Model):
     user = models.ForeignKey(Profil, on_delete=models.CASCADE)
-    date_cotisation = models.DateTimeField(verbose_name="Date de la cotisation", editable=False, auto_now_add=True)
+    date_cotisation = models.DateField(verbose_name="Date de la cotisation", editable=True, auto_now_add=False)
     montant = models.CharField(max_length=50, blank=True, verbose_name="Montant de l'adhesion")
 
 class Produit(models.Model):  # , BaseProduct):
