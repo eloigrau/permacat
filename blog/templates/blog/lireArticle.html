@@ -109,9 +109,6 @@
 
             {% endif %}
               </a>
-              {% if not dates %}
-              </p>
-            {% endif %}
         {% endif %}
 
 <button type="button" class="btn" data-toggle="modal" data-target="#dates">
@@ -122,6 +119,7 @@
   <div class="modal-dialog textcenter" role="document">
     <div class="modal-content">
       <div class="modal-header">
+          Dates
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -130,10 +128,10 @@
 		  {%for date in dates %}
          <p>{{date.start_time |date:"l d F Y"}}</p>
           {%empty%}
-          Pas de date définie
+          -
           {%endfor%}
         {%if article.auteur == request.user or article.estPublic %}
-          <p><a href="{% url 'blog:ajouterEvenementArticle' id=article.id %}" >Ajouter une date</a></p>
+          <p><a class="btn btn-success" href="{% url 'blog:ajouterEvenementArticle' id=article.id %}" >Ajouter une date</a></p>
         {% endif %}
       </div>
     </div>
