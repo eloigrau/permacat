@@ -249,7 +249,7 @@ class EvenementForm(forms.ModelForm):
 
     class Meta:
         model = Evenement
-        fields = ['titre', 'start_time', 'article', 'end_time', ]
+        fields = ['start_time', 'titre', 'article', 'end_time', ]
         widgets = {
             'start_time': forms.DateInput(attrs={'type': 'date'}),
             'end_time': forms.DateInput(attrs={'type': 'date'}),
@@ -259,7 +259,7 @@ class EvenementForm(forms.ModelForm):
 class EvenementArticleForm(forms.ModelForm):
     class Meta:
         model = Evenement
-        fields = ['titre', 'start_time', 'end_time', ]
+        fields = ['start_time', 'titre', 'end_time', ]
         widgets = {
             'start_time': forms.DateInput(attrs={'type': 'date'}),
             'end_time': forms.DateInput(attrs={'type': 'date'}),
