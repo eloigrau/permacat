@@ -100,8 +100,8 @@
     </div>
 
     <div class="col-sm-6 textright" >
-        <p>
         {%if article.start_time%}
+        <p>
           <a href="{% url 'cal:agenda' %} ">
             {%if article.end_time and article.start_time != article.end_time %}
                 Du {{ article.start_time|date:"d/m/Y"  }} au {{ article.end_time|date:"d/m/Y"  }}
@@ -110,8 +110,11 @@
 
             {% endif %}
               </a>
+          </p>
         {% endif %}
 
+        {%if dates or article.auteur == request.user or article.estPublic %}
+        <p>
             <button type="button" class="btn" data-toggle="modal" data-target="#dates">
              Dates {%if article.start_time %}supplémentaires{%endif%}
             </button>
@@ -140,6 +143,7 @@
             </div>
 
           </p>
+        {% endif %}
     </div>
 </div>
 <div class="row">
