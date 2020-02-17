@@ -130,7 +130,7 @@
                   </div>
                   <div class="modal-body">
                       {%for date in dates %}
-                     <p>{{date.start_time |date:"l d F Y"}}</p>
+                     <p>{{date.start_time |date:"l d F Y"}} : {{date.gettitre}}</p>
                       {%empty%}
                       -
                       {%endfor%}
