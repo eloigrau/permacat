@@ -1222,3 +1222,4 @@ def modifier_message(request, id, type):
 
 
     return render(request, 'modifierCommentaire.html', {'form': form, })
+

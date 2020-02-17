@@ -1,5 +1,5 @@
 from django import forms
-from .models import Article, Commentaire, Projet, CommentaireProjet
+from .models import Article, Commentaire, Projet, CommentaireProjet, Evenement
 from django.utils.text import slugify
 import itertools
 #from django.utils.formats import localize
@@ -168,8 +168,8 @@ class ProjetForm(forms.ModelForm):
         fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'statut', 'estPublic', 'lien_document', 'fichier_projet', 'start_time', 'end_time',]
         widgets = {
         'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'class':'date'}),
-              'end_time': forms.DateInput(attrs={'class':'date'}),
+              'start_time': forms.DateInput(attrs={'type':'date'}),
+              'end_time': forms.DateInput(attrs={'type':'date'}),
         }
 
     def __init__(self, request, *args, **kwargs):
@@ -242,3 +242,33 @@ class CommentaireProjetChangeForm(forms.ModelForm):
          widgets = {
              'commentaire': SummernoteWidget(),
          }
+
+
+class EvenementForm(forms.ModelForm):
+    article = forms.ModelChoiceField(queryset=Article.objects.all() ) #forms.ChoiceField(choices=Article.objects.all())
+
+    class Meta:
+        model = Evenement
+        fields = ['start_time', 'article', 'end_time', ]
+        widgets = {
+            'start_time': forms.DateInput(attrs={'type': 'date'}),
+            'end_time': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+
+class EvenementArticleForm(forms.ModelForm):
+    class Meta:
+        model = Evenement
+        fields = ['start_time', 'end_time', ]
+        widgets = {
+            'start_time': forms.DateInput(attrs={'type': 'date'}),
+            'end_time': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+    def save(self, id_article):
+        instance = super(EvenementArticleForm, self).save(commit=False)
+        article = Article.objects.get(id=id_article)
+        instance.article = article
+        if not Evenement.objects.filter(start_time=instance.start_time, article=article):
+            instance.save()
+        return instance

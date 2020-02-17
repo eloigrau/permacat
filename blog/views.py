@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect, reverse
 from django.urls import reverse_lazy
 from django.utils.html import strip_tags
-from .models import Article, Commentaire, Projet, CommentaireProjet, Choix
-from .forms import ArticleForm, CommentaireArticleForm, CommentaireArticleChangeForm, ArticleChangeForm, ProjetForm, ProjetChangeForm, CommentProjetForm, CommentaireProjetChangeForm
+from .models import Article, Commentaire, Projet, CommentaireProjet, Choix, Evenement
+from .forms import ArticleForm, CommentaireArticleForm, CommentaireArticleChangeForm, ArticleChangeForm, ProjetForm, \
+    ProjetChangeForm, CommentProjetForm, CommentaireProjetChangeForm, EvenementForm, EvenementArticleForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
 from actstream import actions, action
@@ -81,6 +82,7 @@ def lireArticle(request, slug):
         return render(request, 'notPermacat.html',)
 
     commentaires = Commentaire.objects.filter(article=article).order_by("date_creation")
+    dates = Evenement.objects.filter(article=article).order_by("start_time")
 
     form = CommentaireArticleForm(request.POST or None)
     if form.is_valid():
@@ -98,7 +100,12 @@ def lireArticle(request, slug):
                         description="a réagi à l'article: '%s'" % article.titre)
         return redirect(request.path)
 
-    return render(request, 'blog/lireArticle.html', {'article': article, 'form': form, 'commentaires':commentaires},)
+    return render(request, 'blog/lireArticle.html', {'article': article, 'form': form, 'commentaires':commentaires, 'dates':dates},)
+
+@login_required
+def lireArticle_id(request, id):
+    article = get_object_or_404(Article, id=id)
+    return lireArticle(request, slug=article.slug)
 
 
 class ListeArticles(ListView):
@@ -459,3 +466,29 @@ class ModifierCommentaireProjet(UpdateView):
         else:
             self.object.delete()
         return HttpResponseRedirect(self.object.projet.get_absolute_url())
+
+
+@login_required
+def ajouterEvenement(request, date=None):
+    if date:
+        form = EvenementForm(request.POST or None, initial={'start_time': date})
+    else:
+        form = EvenementForm(request.POST or None)
+
+    if form.is_valid():
+        form.save()
+        return redirect('cal:agenda')
+
+    return render(request, 'blog/ajouterEvenement.html', {'form': form, })
+
+
+
+@login_required
+def ajouterEvenementArticle(request, id):
+    form = EvenementArticleForm(request.POST or None)
+
+    if form.is_valid():
+        form.save(id)
+        return lireArticle_id(request, id)
+
+    return render(request, 'blog/ajouterEvenement.html', {'form': form, })

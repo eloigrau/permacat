@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from .models import  Adresse, Produit, MessageGeneralPermacat, Panier, Item, Adhesion_permacat, Message, MessageGeneral, Conversation, InscriptionNewsletter
-from blog.models import Article, Projet, Commentaire, CommentaireProjet
+from blog.models import Article, Projet, Commentaire, CommentaireProjet, Evenement
 from fiches.models import Fiche, Atelier as atelier_fiche, CommentaireFiche
 from ateliers.models import Atelier, CommentaireAtelier, InscriptionAtelier
 
@@ -49,6 +49,7 @@ class Adhesion_permacatAdmin(admin.ModelAdmin):
     list_display = ('user', 'date_cotisation', 'montant')
 
 admin.site.register(Article, ArticleAdmin)
+admin.site.register(Evenement)
 admin.site.register(Projet, ProjetAdmin)
 admin.site.register(Profil, CustomUserAdmin)
 

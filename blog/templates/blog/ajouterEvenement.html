@@ -1,0 +1,30 @@
+{% extends 'blog/baseBlog.html' %}
+
+{% block subtitle %}
+<div class="row justify-content-center">
+	<div class="col col-md-12 textcenter"><h3>Ajouter un événement à l'agenda</h3>
+		<p>L'événement doit être associé à un article du forum. S'il n'existe pas encore, alors <a href="{% url 'blog:ajouterNouvelArticle' %}" >ajoutez un article</a> et spécifiez-y la date directement</p>
+	</div>
+
+	</div>
+{% endblock  %}
+{% block content %}
+{% if error_message %}
+<p>
+	<strong>{{ error_message }}</strong>
+</p>
+{% endif %}
+<div class="row">
+	<div class="col-sm-12">
+<form class="form-horizontal" role="form" action="" method="post"
+	enctype="multipart/form-data">
+	{% csrf_token %} <input type="hidden" name="Evenement" value="{{ article }}"> {% include 'form_template.html'%}
+</form>
+        <script type="text/javascript">
+        {% if not request.user.is_permacat %}
+               var isPublic = document.getElementById('id_estPublic').style.visibility = "hidden";
+        {%endif%}
+    </script>
+</div>
+    </div>
+{% endblock %}
