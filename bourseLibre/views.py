@@ -719,16 +719,21 @@ def afficher_requetes(request):
 def chercher(request):
     recherche = str(request.GET.get('id_recherche')).lower()
     if recherche:
+        from blog.models import Commentaire, CommentaireProjet
         produits_list = Produit.objects.filter(Q(description__icontains=recherche) | Q(nom_produit__lower__contains=recherche), ).select_subclasses()
         articles_list = Article.objects.filter(Q(titre__lower__contains=recherche) | Q(contenu__icontains=recherche), )
         projets_list = Projet.objects.filter(Q(titre__lower__contains=recherche) | Q(contenu__icontains=recherche), )
         profils_list = Profil.objects.filter(Q(username__lower__contains=recherche)  | Q(description__icontains=recherche)| Q(competences__icontains=recherche), )
+        commentaires_list = Commentaire.objects.filter(Q(commentaire__icontains=recherche) )
+        commentairesProjet_list = CommentaireProjet.objects.filter(Q(commentaire__icontains=recherche))
+        salon_list = MessageGeneral.objects.filter(Q(message__icontains=recherche) )
     else:
         produits_list = []
         articles_list = []
         projets_list = []
         profils_list = []
-    return render(request, 'chercher.html', {'recherche':recherche, 'articles_list':articles_list, 'produits_list':produits_list, "projets_list": projets_list, 'profils_list':profils_list})
+        commentaires_list, commentairesProjet_list, salon_list = [],[],[]
+    return render(request, 'chercher.html', {'recherche':recherche, 'articles_list':articles_list, 'produits_list':produits_list, "projets_list": projets_list, 'profils_list':profils_list,'commentaires_list': commentaires_list, 'commentairesProjet_list':commentairesProjet_list, 'salon_list':salon_list})
 
 
 @login_required
