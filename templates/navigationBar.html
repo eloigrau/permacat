@@ -18,7 +18,7 @@
               Annonces
         </a>
 
-        <ul class="dropdown-menu dropdown-menu1 textcenter nav1-dropdown" id="dropdownAnnonces">
+        <ul class="dropdown-menu dropdown-menu1 nav1-dropdown" id="dropdownAnnonces">
             <li><a  class=" dropdown-item" href="{% url 'marche' %}">Toutes les annonces</a></li>
            <li class="divider" role="separator"></li>
              <li><a  class="dropdown-item" href="{% url 'marche_offres' %}">Offres</a></li>
@@ -35,7 +35,7 @@
            <a data-toggle="dropdown" class="nav-link dropdown-toggle navbar-menu  " href="dropdownForum" aria-haspopup="true" aria-expanded="false" >
                {% fontawesome_icon 'comments' %} Forum </a>
 
-            <ul class="dropdown-menu dropdown-menu1 textcenter nav2-dropdown" id="dropdownForum">
+            <ul class="dropdown-menu dropdown-menu1 nav2-dropdown" id="dropdownForum">
                 <li> <a class="dropdown-item" href="{% url 'blog:index' %}?">Articles</a></li>
                 <li class="divider" role="separator"></li>
                 <li><a class="dropdown-item" href="{% url 'agora_general' %}">Salon</a></li>
@@ -52,7 +52,7 @@
                 <a class="nav-link dropdown-toggle navbar-menu "  href="{% url 'presentation_asso' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {% fontawesome_icon 'link' %} Permacat
                 </a>
-                <ul class="dropdown-menu dropdown-menu1 textcenter nav3-dropdown" aria-labelledby="navbarDropdownMenuLink">
+                <ul class="dropdown-menu dropdown-menu1 nav3-dropdown" aria-labelledby="navbarDropdownMenuLink">
                     <li><a class="dropdown-item" href="{% url 'blog:index_projets' %}"><i class='fa fa-paper-plane iconleft' ></i>  Projets </a></li>
 
                        <li class="divider" role="separator"></li>
@@ -86,7 +86,7 @@
             <a class="nav-link dropdown-toggle navbar-menu " href="dropdoownSite" id="navbarAbout2" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" >
              {% fontawesome_icon 'globe' %} Site
             </a>
-            <ul class="dropdown-menu dropdown-menu1 textcenter nav6-dropdown" aria-labelledby="navbarAbout2" id="dropdoownSite">
+            <ul class="dropdown-menu dropdown-menu1 nav6-dropdown" aria-labelledby="navbarAbout2" id="dropdoownSite">
                <li> <a class="dropdown-item" href="{% url 'annuaire' %}"> Annuaire </a></li>
                 <li> <a class="dropdown-item" href="{% url 'carte' %}"> Carte </a></li>
                 <li class="divider" role="separator"></li>
@@ -110,7 +110,7 @@
         <li class="nav-item dropdown nav7">
            <a data-toggle="dropdown" class="nav-link dropdown-toggle  navbar-menu" href="{% url 'profil_courant' %}" aria-haspopup="true" aria-expanded="false"  >
               {% fontawesome_icon 'user' %} Profil: {{request.user}} </a>
-            <ul class="dropdown-menu dropdown-menu1 textcenter nav7-dropdown" aria-labelledby="navbarDropdownMenuLink">
+            <ul class="dropdown-menu dropdown-menu1 nav7-dropdown" aria-labelledby="navbarDropdownMenuLink">
                <li> <a class="dropdown-item" href="{% url 'profil_courant' %}">Mon profil</a></li>
                 <li class="divider" role="separator"></li>
                <li> <a class="dropdown-item" href="{% url 'panier_afficher' %}">Mon panier</a></li>
@@ -145,7 +145,7 @@
             <a class="nav-link dropdown-toggle navbar-menu" href="{% url 'profil_courant' %}" id="navbarAbout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Le site
             </a>
-            <ul class="dropdown-menu dropdown-menu1 textcenter nav2-dropdown" aria-labelledby="navbarAbout">
+            <ul class="dropdown-menu dropdown-menu1  nav2-dropdown" aria-labelledby="navbarAbout">
                <li> <a class="dropdown-item" href="{% url 'contact_admins' %}"> Nous contacter</a></li>
                     <li class="divider" role="separator"></li>
                <li> <a class="dropdown-item" href="{% url 'cgu' %}"> CGU </a></li>

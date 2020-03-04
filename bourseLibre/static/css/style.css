@@ -110,6 +110,7 @@ section.p3 {
     font-family: 'Satisfy', cursive;
 }
 .navbarMenu{
+    text-align:center;
 }
 
 
@@ -148,10 +149,10 @@ section.p3 {
 }
 .bs-dark .dropdown-menu1 {
     right: auto;
-    left: 50%;
-    -webkit-transform: translate(-50%, 0);
-    -o-transform: translate(-50%, 0);
-    transform: translate(-50%, 0);
+   #left: 50%;
+   #-webkit-transform: translate(-50%, 0);
+   #-o-transform: translate(-50%, 0);
+   #transform: translate(-50%, 0);
     padding-top: 0px;
     padding-bottom: 0px;
 }
@@ -223,7 +224,7 @@ section.p3 {
 }
 .nav3-dropdown-submenu{
     background-color: #f5ff66;
-    text-align: left;
+    text-align: center;
     padding-top: 0px;
     padding-bottom: 0px;
  }
@@ -354,6 +355,7 @@ section.p3 {
         transform: translate(0, 0);
     padding: 2px 2px;
 
+    text-align:center;
     }
 
 

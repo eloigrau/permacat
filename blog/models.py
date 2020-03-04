@@ -37,7 +37,7 @@ class Choix():
         'Ecovillage':"#cebacf",
         'Serre':"#fffdcc",
         'Altermarché':"#daffb3",
-        'Documentation':'#664D00',
+        'Documentation':'#ddd0a8',
 
 
 
