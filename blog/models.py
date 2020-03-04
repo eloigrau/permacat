@@ -12,10 +12,10 @@ from actstream.models import followers
 class Choix():
     statut_projet = ('prop','Proposition de projet'), ("AGO","Fiche prpojet soumise à l'AGO"), ('vote','Soumis au vote'), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
     type_projet = ('Part','Participation à un évènement'), ('AGO',"Organisation d'une AGO"), ('Projlong','Projet a long terme'), ('Projcourt','Projet a court terme'), ('Projponct','Projet ponctuel'),
-    type_annonce = ('Altermarché','Altermarché'), ('Annonce','Annonce'), ('Administratif','Administratif'), ('Agenda','Agenda'), ('Bricolage','Bricolage'), ('Chantier','Chantier participatif'),\
+    type_annonce = ('Altermarché','Altermarché'), ('Annonce','Annonce'), ('Administratif','Administratif'), ('Agenda','Agenda'), ('Jardi','Jardi per tots'), ('Chantier','Chantier participatif'),\
                    ('Documentation','Documentation'),('Ecovillage', 'Ecovillage'),  ('Entraide','Entraide'), \
                     ('Permaculture','Permaculture'),  ('Point', 'Point de vue'), \
-                     ('Projet', 'Projet'),   ('Recette', 'Recette'), \
+                     ('KitPerma', 'Kit Perma Ecole'),   ('Recette', 'Recette'), \
                     ('Serre','Serre collective'),('Autre','Autre'),
     couleurs_annonces = {
        # 'Annonce':"#e0f7de", 'Administratif':"#dcc0de", 'Agenda':"#d4d1de", 'Entraide':"#cebacf",
@@ -27,17 +27,17 @@ class Choix():
         'Agenda':"#E0E3AB",
         'Entraide':"#AFE4C1",
         'Chantier':"#fff2a0",
-        'Jardinage':"#B2AFE4",
+        'Jardi':"#B2AFE4",
         'Recette':"#d0f4de",
-        'Bricolage':"#6E74CF",
-        'Culture':"#3EA7BB",
+        'KitPerma':"#6E74CF",
+        'Permaculture':"#3EA7BB",
         'Bon_plan':"#349D9B",
         'Point':"#bccacf",
         'Autre':"#87bfae",
         'Ecovillage':"#cebacf",
         'Serre':"#fffdcc",
         'Altermarché':"#daffb3",
-        #664D00
+        'Documentation':'#664D00',
 
 
 
