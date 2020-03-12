@@ -201,7 +201,7 @@ class ProducteurChangeForm_admin(UserChangeForm):
     """
     email = forms.EmailField(label="Email")
     username = forms.CharField(label="Pseudonyme")
-    description = forms.CharField(label="Description", initial="Une description de vous même", widget=forms.Textarea)
+    description = forms.CharField(label="Description", initial="Une description de vous même", widget=forms.Textarea, required=False)
     competences = forms.CharField(label="Savoir-faire",
                                   initial="Par exemple: electricien, bouturage, aromatherapie, etc...", required=False,
                                   widget=forms.Textarea)
