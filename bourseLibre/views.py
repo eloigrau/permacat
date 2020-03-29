@@ -655,6 +655,7 @@ def cgu(request):
 @login_required
 def liens(request):
     liens = [
+        'https://www.balotilo.org/',
         'http://sel66.free.fr',
         'https://colibris-universite.org/mooc-permaculture/wakka.php?wiki=PagePrincipale',
         'https://ecocharte.herokuapp.com',
