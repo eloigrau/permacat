@@ -242,10 +242,10 @@ def on_save_article(instance, **kwargs):
               "\n\n------------------------------------------------------------------------------" \
               "\n vous recevez cet email, car vous avez choisi de suivre ce projet sur le site http://www.Perma.Cat/forum/articles/"
    # emails = [(titre, message, "asso@perma.cat", (suiv.email, )) for suiv in followers(instance)]
-    emails = [suiv.email for suiv in followers(instance)  if instance.auteur != suiv  and (instance.estPublic or suiv.is_permacat)]
+    emails = [suiv.email for suiv in followers(instance) if instance.auteur != suiv and (instance.estPublic or suiv.is_permacat)]
     try:
         #send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
-        send_mass_mail([(titre, message, "asso@perma.cat", ["sitepermacat@gmùail.com", ]), ])
+        send_mass_mail([(titre, message, "asso@perma.cat", ["sitepermacat@gmail.com", ]), ])
     except:
         pass
 
