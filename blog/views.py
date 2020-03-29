@@ -8,7 +8,7 @@ from .forms import ArticleForm, CommentaireArticleForm, CommentaireArticleChange
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
 from actstream import actions, action
-from actstream.models import followers, following
+from actstream.models import followers, following, action_object_stream, actor_stream
 from django.core.mail import send_mass_mail
 
 from django.utils.timezone import now
@@ -83,6 +83,8 @@ def lireArticle(request, slug):
     commentaires = Commentaire.objects.filter(article=article).order_by("date_creation")
     dates = Evenement.objects.filter(article=article).order_by("start_time")
 
+    actions = action_object_stream(article)
+
     form = CommentaireArticleForm(request.POST or None)
     if form.is_valid():
         comment = form.save(commit=False)
@@ -93,14 +95,14 @@ def lireArticle(request, slug):
             article.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(strip_tags(comment.commentaire).replace('&nspb',' ')))[:96] + "..."
             article.save()
             comment.save()
-            url = article.get_absolute_url()
+            url = article.get_absolute_url()+"#idConversation"
             suffix = "_permacat" if article.estPublic else ""
             action.send(request.user, verb='article_message'+suffix, action_object=article, url=url,
                         description="a réagi à l'article: '%s'" % article.titre)
             envoi_emails_articleouprojet_modifie(article, request.user.username + " a réagit au projet: " +  article.titre)
         return redirect(request.path)
 
-    return render(request, 'blog/lireArticle.html', {'article': article, 'form': form, 'commentaires':commentaires, 'dates':dates},)
+    return render(request, 'blog/lireArticle.html', {'article': article, 'form': form, 'commentaires':commentaires, 'dates':dates, 'actions':actions},)
 
 @login_required
 def lireArticle_id(request, id):
@@ -236,6 +238,7 @@ def lireProjet(request, slug):
         return render(request, 'notPermacat.html',)
 
     commentaires = CommentaireProjet.objects.filter(projet=projet).order_by("date_creation")
+    actions = action_object_stream(projet)
 
     form = CommentProjetForm(request.POST or None)
     if form.is_valid():
@@ -246,14 +249,14 @@ def lireProjet(request, slug):
         projet.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(strip_tags(comment.commentaire).replace('&nspb',' ')))[:96] + "..."
         projet.save()
         comment.save()
-        url = projet.get_absolute_url()
+        url = projet.get_absolute_url()+"#idConversation"
         suffix = "_permacat" if projet.estPublic else ""
         action.send(request.user, verb='projet_message'+suffix, action_object=projet, url=url,
                     description="a réagit au projet: '%s'" % projet.titre)
         envoi_emails_articleouprojet_modifie(projet, request.user.username + " a réagit au projet: " +  projet.titre)
         return redirect(request.path)
 
-    return render(request, 'blog/lireProjet.html', {'projet': projet, 'form': form, 'commentaires':commentaires},)
+    return render(request, 'blog/lireProjet.html', {'projet': projet, 'form': form, 'commentaires':commentaires, 'actions':actions},)
 
 def envoi_emails_articleouprojet_modifie(articleOuProjet, message):
     titre = "Permacat - Article actualisé"

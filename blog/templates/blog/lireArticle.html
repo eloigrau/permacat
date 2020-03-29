@@ -110,20 +110,20 @@
 
             {% endif %}
               </a>
-          </p>
         {% endif %}
 
         {%if dates or article.auteur == request.user or article.estPublic or request.user.is_permacat %}
-        <p>
             <button type="button" class="btn" data-toggle="modal" data-target="#dates">
-             Dates {%if article.start_time %}supplémentaires{%endif%}
+             </h5 class="textcenter">{% fontawesome_icon 'calendar' %} Dates {%if article.start_time %}supplémentaires{%endif%}</h5>
             </button>
             <!-- Modal -->
             <div class="modal fade" id="dates" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog textcenter" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                      Dates
+                      <div class="row justify-content-center">
+                       <h5 > Dates</h5>
+                      </div>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
@@ -142,8 +142,39 @@
               </div>
             </div>
 
-          </p>
         {% endif %}
+
+        <p>
+            <button type="button" class="btn" data-toggle="modal" data-target="#historique">
+              {% fontawesome_icon 'bell' %} Historique
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="historique" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog textcenter" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                      <div class="row justify-content-center">
+                          <div class="col col-sm-12">
+                      <h5 >Historique</h5>
+                          </div>
+                      </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+<div class="contenu commentaires" id="idHisorique">
+                      {%for action in actions %}
+
+                            {% include "notifications/notifications_template3.html" with action=action%}
+                      {%endfor%}
+</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        </p>
     </div>
 </div>
 <div class="row">
