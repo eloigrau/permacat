@@ -113,7 +113,7 @@
           </p>
         {% endif %}
 
-        {%if dates or article.auteur == request.user or article.estPublic %}
+        {%if dates or article.auteur == request.user or article.estPublic or request.user.is_permacat %}
         <p>
             <button type="button" class="btn" data-toggle="modal" data-target="#dates">
              Dates {%if article.start_time %}supplémentaires{%endif%}
@@ -134,7 +134,7 @@
                       {%empty%}
                       -
                       {%endfor%}
-                    {%if article.auteur == request.user or article.estPublic %}
+                    {%if article.auteur == request.user or article.estModifiable %}
                       <p><a class="btn btn-success" href="{% url 'blog:ajouterEvenementArticle' id=article.id %}" >Ajouter une date</a></p>
                     {% endif %}
                   </div>
