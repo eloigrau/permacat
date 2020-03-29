@@ -244,7 +244,8 @@ def on_save_article(instance, **kwargs):
    # emails = [(titre, message, "asso@perma.cat", (suiv.email, )) for suiv in followers(instance)]
     emails = [suiv.email for suiv in followers(instance)  if instance.auteur != suiv  and (instance.estPublic or suiv.is_permacat)]
     try:
-        send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
+        #send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
+        send_mass_mail([(titre, message, "asso@perma.cat", ["sitepermacat@gmùail.com", ]), ])
     except:
         pass
 
