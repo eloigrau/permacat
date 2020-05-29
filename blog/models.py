@@ -252,6 +252,7 @@ def on_save_article(instance, **kwargs):
     if emails:
         try:
             send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
+            mail_admins("erreur mails", titre + "\n" + message + "\n xxx \n" + str(emails))
         except Exception as inst:
             mail_admins("erreur mails", inst)
 
