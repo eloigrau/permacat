@@ -112,7 +112,8 @@
               </a>
         {% endif %}
 
-        {%if dates or article.auteur == request.user or article.estPublic or request.user.is_permacat %}
+        {%if article.auteur == request.user or article.estPublic or request.user.is_permacat %}
+        <p>
             <button type="button" class="btn" data-toggle="modal" data-target="#dates">
              </h5 class="textcenter">{% fontawesome_icon 'calendar' %} Dates {%if article.start_time %}supplémentaires{%endif%}</h5>
             </button>
