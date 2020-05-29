@@ -9,14 +9,14 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
 from actstream import actions, action
 from actstream.models import followers, following, action_object_stream, actor_stream
-from django.core.mail import send_mass_mail
-
+from django.core.mail import send_mass_mail, mail_admins
 from django.utils.timezone import now
 from bourseLibre.settings import SERVER_EMAIL
 
 #from django.contrib.contenttypes.models import ContentType
 from bourseLibre.models import Suivis
 from django.views.decorators.csrf import csrf_exempt
+import sys
 
 # @login_required
 # def forum(request):
@@ -269,7 +269,11 @@ def envoi_emails_articleouprojet_modifie(articleOuProjet, message):
    # emails = [(titre, message, SERVER_EMAIL, (suiv.email, )) for suiv in followers(instance)]
     emails = [suiv.email for suiv in followers(articleOuProjet)  if articleOuProjet.auteur != suiv  and (articleOuProjet.estPublic or suiv.is_permacat)]
 
-    send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
+    if emails:
+        try:
+            send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
+        except:
+            mail_admins("erreur", sys.exc_info()[0])
 
 
 class ListeProjets(ListView):

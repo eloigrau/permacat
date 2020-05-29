@@ -586,10 +586,11 @@ def on_save_produits(instance, created, **kwargs):
                   "\n------------------------------------------------------------------------------" \
                   "\n vous recevez cet email, car vous avez choisi de suivre le marché sur le site http://www.perma.cat"
         emails = [suiv.email for suiv in followers(suivi) if instance.user != suiv  and (instance.estPublique or suiv.is_permacat)]
-        try:
-            send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
-        except:
-            pass
+        if emails:
+            try:
+                send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
+            except:
+                pass
 
 class ProductFilter(django_filters.FilterSet):
     #nom_produit = django_filters.CharFilter(lookup_expr='iexact')
