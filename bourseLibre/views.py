@@ -51,6 +51,7 @@ from actstream.models import Action, any_stream, following,followers
 # import json
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.core.exceptions import ObjectDoesNotExist
+from bourseLibre.settings import SERVER_EMAIL
 
 from django.utils.timezone import now
 
@@ -777,7 +778,7 @@ def lireConversation(request, destinataire):
         if profil_destinataire in followers(conversation):
             sujet = "Permacat - quelqu'un vous a envoyé une message privé"
             message = request.user.username + " vous a envoyé un message privé. Vous pouvez y accéder en suivant ce lien : https://permacat.herokuapp.com" +  url
-            send_mail(sujet, message, "asso@perma.cat", [profil_destinataire.email, ], fail_silently=False,)
+            send_mail(sujet, message, SERVER_EMAIL, [profil_destinataire.email, ], fail_silently=False,)
         return redirect(request.path)
 
     return render(request, 'lireConversation.html', {'conversation': conversation, 'form': form, 'messages_echanges': messages, 'destinataire':destinataire})
@@ -1122,7 +1123,7 @@ def contacter_newsletter(request):
                                                                                                     InscriptionNewsletter.objects.all()]
 
             try:
-                send_mass_mail([(sujet, message, "asso@perma.cat", emails), ])
+                send_mass_mail([(sujet, message, SERVER_EMAIL, emails), ])
             except:
                 sujet = "[permacat admin] Erreur lors de l'envoi du mail"
                 message_txt = message + '\n'.join(emails)
@@ -1154,7 +1155,7 @@ def contacter_adherents(request):
             emails = [profil.email for profil in Profil.objects.filter(statut_adhesion=2)]
 
             try:
-                send_mass_mail([(sujet, message, "asso@perma.cat", emails), ])
+                send_mass_mail([(sujet, message, SERVER_EMAIL, emails), ])
             except:
                 sujet = "[permacat admin] Erreur lors de l'envoi du mail"
                 message_txt = message + '\n'.join(emails)
@@ -1184,7 +1185,7 @@ def contacter_adherents_rtg(request):
             emails = [profil.email for profil in Profil.objects.filter(statut_adhesion_rtg=2)]
 
             try:
-                send_mass_mail([(sujet, message, "asso@perma.cat", emails), ])
+                send_mass_mail([(sujet, message, SERVER_EMAIL, emails), ])
             except:
                 sujet = "[permacat admin] Erreur lors de l'envoi du mail"
                 message_txt = message + '\n'.join(emails)

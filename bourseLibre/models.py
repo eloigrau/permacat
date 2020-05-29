@@ -523,7 +523,7 @@ def on_save_produits(instance, created, **kwargs):
                   "\n vous recevez cet email, car vous avez choisi de suivre le marché sur le site http://www.perma.cat"
         emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv  and (instance.estPublique or suiv.is_permacat)]
         try:
-            send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
+            send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
         except:
             pass
 
@@ -539,7 +539,7 @@ def on_save_produits(instance, created, **kwargs):
                   "\n vous recevez cet email, car vous avez choisi de suivre le marché sur le site http://www.perma.cat"
         emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv and (instance.estPublique or suiv.is_permacat)]
         try:
-            send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
+            send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
         except:
             pass
 
@@ -555,7 +555,7 @@ def on_save_produits(instance, created, **kwargs):
                   "\n vous recevez cet email, car vous avez choisi de suivre le marché sur le site http://www.perma.cat"
         emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv  and (instance.estPublique or suiv.is_permacat)]
         try:
-            send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
+            send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
         except:
             pass
 
@@ -571,7 +571,7 @@ def on_save_produits(instance, created, **kwargs):
                   "\n vous recevez cet email, car vous avez choisi de suivre le marché sur le site http://www.perma.cat"
         emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv  and (instance.estPublique or suiv.is_permacat)]
         try:
-            send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
+            send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
         except:
             pass
 
@@ -586,7 +586,7 @@ def on_save_produits(instance, created, **kwargs):
                   "\n vous recevez cet email, car vous avez choisi de suivre le marché sur le site http://www.perma.cat"
         emails = [suiv.email for suiv in followers(suivi) if instance.user != suiv  and (instance.estPublique or suiv.is_permacat)]
         try:
-            send_mass_mail([(titre, message, "asso@perma.cat", emails), ])
+            send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
         except:
             pass
 
