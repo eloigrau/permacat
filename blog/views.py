@@ -12,6 +12,7 @@ from actstream.models import followers, following, action_object_stream, actor_s
 from django.core.mail import send_mass_mail
 
 from django.utils.timezone import now
+from bourseLibre.settings import SERVER_EMAIL
 
 #from django.contrib.contenttypes.models import ContentType
 from bourseLibre.models import Suivis
