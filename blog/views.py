@@ -260,17 +260,17 @@ def lireProjet(request, slug):
     return render(request, 'blog/lireProjet.html', {'projet': projet, 'form': form, 'commentaires':commentaires, 'actions':actions},)
 
 def envoi_emails_articleouprojet_modifie(articleOuProjet, message):
-    titre = "Permacat - Article actualisé"
+
+    titre = "Permacat - Article actualisé" if articleOuProjet else "Permacat - Projet actualisé"
     message =  message +\
               "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + articleOuProjet.get_absolute_url() + \
               "\n\n------------------------------------------------------------------------------" \
               "\n vous recevez cet email, car vous avez choisi de suivre ce projet sur le site http://www.Perma.Cat/forum/articles/"
    # emails = [(titre, message, SERVER_EMAIL, (suiv.email, )) for suiv in followers(instance)]
     emails = [suiv.email for suiv in followers(articleOuProjet)  if articleOuProjet.auteur != suiv  and (articleOuProjet.estPublic or suiv.is_permacat)]
-    try:
-        send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
-    except:
-        pass
+
+    send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
+
 
 class ListeProjets(ListView):
     model = Projet
