@@ -2,7 +2,7 @@ from django.db import models
 from bourseLibre.models import Profil, Suivis
 from django.urls import reverse
 from django.utils import timezone
-from django.core.mail import send_mass_mail
+from django.core.mail import send_mass_mail, mail_admins
 #from tinymce.models import HTMLField
 from django.dispatch import receiver
 from django.db.models.signals import post_save
@@ -213,10 +213,12 @@ def on_save_projet(instance, **kwargs):
               "\n\n------------------------------------------------------------------------------" \
               "\n vous recevez cet email, car vous avez choisi de suivre cet article sur le site http://www.Perma.Cat/forum/projets/"
     emails = [suiv.email for suiv in followers(instance)  if instance.auteur != suiv  and (instance.estPublic or suiv.is_permacat)]
-    try:
-        send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
-    except:
-        pass
+
+    if emails:
+        try:
+            send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
+        except Exception as inst:
+            mail_admins("erreur mails", inst)
 
 
 @receiver(post_save, sender=Projet)
@@ -229,10 +231,12 @@ def on_save_projets(instance, created, **kwargs):
                   "\n\n------------------------------------------------------------------------------" \
                   "\n vous recevez cet email, car vous avez choisi de suivre les projets (en cliquant sur la cloche)  sur le site http://www.Perma.Cat/forum/projets/"
         emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv and (instance.estPublic or suiv.is_permacat)]
-        try:
-            send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
-        except:
-            pass
+
+        if emails:
+            try:
+                send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
+            except Exception as inst:
+                mail_admins("erreur mails", inst)
 
 
 @receiver(post_save,  sender=Article)
@@ -244,12 +248,12 @@ def on_save_article(instance, **kwargs):
               "\n vous recevez cet email, car vous avez choisi de suivre ce projet sur le site http://www.Perma.Cat/forum/articles/"
    # emails = [(titre, message, SERVER_EMAIL, (suiv.email, )) for suiv in followers(instance)]
     emails = [suiv.email for suiv in followers(instance) if instance.auteur != suiv and (instance.estPublic or suiv.is_permacat)]
-    try:
-        #send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
-        send_mass_mail([(titre, message, SERVER_EMAIL, ["sitepermacat@gmail.com", ]), ])
-    except:
-        pass
 
+    if emails:
+        try:
+            send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
+        except Exception as inst:
+            mail_admins("erreur mails", inst)
 
 
 class CommentaireProjet(models.Model):
