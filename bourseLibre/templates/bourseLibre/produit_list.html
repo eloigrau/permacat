@@ -153,11 +153,11 @@
         &nbsp;
         <a href="{% url 'suivre_produits' %}">
         {% if request.user|is_following:suivi %}
-        <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour arreter de recevoir un mail à chaque nouvelle annonce">
+        <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné : Cliquez ici pour arrêter de recevoir un mail à chaque nouvelle annonce">
              {% fontawesome_icon 'bell' %}
         </button>
         {% else %}
-        <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour recevoir un mail à chaque nouvelle annonce">
+        <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné : Cliquez ici  pour recevoir un mail à chaque nouvelle annonce">
              {% fontawesome_icon 'bell-slash' %}
         </button>
         {% endif %}

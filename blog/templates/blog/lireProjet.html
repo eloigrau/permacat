@@ -18,22 +18,22 @@
 
         <a href="{% url 'blog:suivre_projet' projet.slug %}">
             {% if request.user|is_following:projet %}
-            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title=" Cliquez pour arreter de recevoir des notifications concernant ce projet par mail">
+            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné : Cliquez pour arreter de recevoir des notifications concernant ce projet par mail">
                  {% fontawesome_icon 'bell' %} Suivi
             </button>
             {% else %}
-            <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title=" Cliquez pour recevoir les notifications concernant ce projet par mail">
+            <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné : Cliquez pour recevoir les notifications concernant ce projet par mail">
                  {% fontawesome_icon 'bell-slash' %} Non suivi
             </button>
             {% endif %}
         </a>
-            {% comment %}
+            {% if request.user.is_superuser %}
         <a href="{% url 'blog:suiveursProjet' projet.slug %}">
-            <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title=" Cliquez pour recevoir les notifications concernant cet article par mail">
+            <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Voir qui est abonné tifications concernant cet article par mail">
                  {% fontawesome_icon 'eye' %}
             </button>
         </a>
-            {% endcomment %}
+            {% endif %}
         </p>
     </div>
     <div class="col-md-2">
