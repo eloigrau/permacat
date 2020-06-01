@@ -178,8 +178,8 @@ class ProducteurChangeForm(UserChangeForm):
     """
     email = forms.EmailField(label="Email")
     username = forms.CharField(label="Pseudonyme")
-    description = forms.CharField(label="Description", help_text="Une description de vous même",widget=SummernoteWidget)
-    competences = forms.CharField(label="Savoir-faire", help_text="Par exemple: electricien, bouturage, aromatherapie, etc...",widget=SummernoteWidget)
+    description = forms.CharField(label="Description", help_text="Une description de vous même",widget=SummernoteWidget , required=False)
+    competences = forms.CharField(label="Savoir-faire", help_text="Par exemple: electricien, bouturage, aromatherapie, etc...",widget=SummernoteWidget, required=False)
     inscrit_newsletter = forms.BooleanField(required=False)
     accepter_annuaire = forms.BooleanField(required=False, label="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous")
     password=None

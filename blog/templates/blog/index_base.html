@@ -1,4 +1,4 @@
-{% extends 'blog/index_base.html' %}
+{% extends 'base_forum.html' %}
 {% load static %}
 {% load blog_filters %}
 {% load fontawesome %}
@@ -8,33 +8,90 @@
 <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
 <script src="{% static 'js/infinite.min.js' %}"></script>
     {%endblock%}
-{%block subtitle_2%}
+{%block subtitle%}
 
-<p>
-  <a class="btn {% if request.GET.categorie  %}btn-warning{%else%}btn-primary{%endif%}" style="min-width:180px;" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-    {% if request.GET.categorie  %}
-      Articles de la catégorie: {{categorie_courante}}
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12 textcenter">
+            <h4>Au Forum : les Articles</h4>
+        </div>
+    </div>
+	<div class="row">
+		<div class="col-md-12">
+			<nav class="navbar navbar-expand-lg navbar-light bg-light">
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="navbar-nav">
+<li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCategorie" data-toggle="dropdown">
+                                 <button type="button" class="btn  btn-primary" >
+                                {% if request.GET.categorie  %}
+      catégorie : {{categorie_courante}}
       {%elif request.GET.permacat %}
       Articles Permacat
       {%elif request.GET.auteur %}
       Articles de {{request.GET.auteur}}
       {%elif typeFiltre == 'archives' %}
       Archives
-      {%else%}Catégorie... {%endif%}
+                            {%else%}
+                            Choisir une catégorie...
+      {%endif%}
+                                 </button>
+                                </a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class=" dropdown-item " style="background:white;" href="{%url 'blog:index' %}">Toutes les catégories</a>
+                                <div class="dropdown-divider"></div>
+            {% for categorie_id, cat_nom, cat_coul in categorie_list %}
+            <a class=" dropdown-item " style="background:{{cat_coul}};" href="?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+            {% endfor %}
+    <div class="dropdown-divider"></div>
+                                                                <a class=" dropdown-item " style="background:grey;" href="?archives=True"><span>Archives</span></a>
+
+							</div>
+						</li>
+					</ul>
+
+                        <ul class="navbar-nav ml-md-auto">
+
+
+                            <li class="nav-item">
+                            <a href="{% url 'blog:ajouterNouvelArticle' %}">
+        <button type="button" class="btn  btn-success" >
+                <i class="fa fa-plus"></i> Ajouter un article
+            </button>
+                            </a>&ensp;</li>
+                            <li class="nav-item">
+                                    <a href="{% url 'blog:suivre_articles' %}">
+
+        {% if request.user|is_following:suivis %}
+        <button type="button" class="btn btn-light" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour arreter de recevoir un mail à chaque nouvel article">
+             {% fontawesome_icon 'bell' %}
+        </button>
+        {% else %}
+        <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour recevoir un mail à chaque nouvel article">
+             {% fontawesome_icon 'bell-slash' %}
+        </button>
+        {% endif %}
+            </a>
+                            </li>
+                        </ul>
+				</div>
+			</nav>
+		</div>
+	</div>
+</div>
+
+
+{% comment %}
+<p>
+  <a class="btn btn-primary" style="min-width:180px;" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+Filtrer...
   </a>
 </p>
 
 <div class="collapse" id="collapseExample">
-<div class="row align-items-center">
-    <div class="col-sm-12 textcenter justify-content-center ">
-        <div class=" justify-content-between">
-            {% for categorie_id, cat_nom, cat_coul in categorie_list %}
-            <a class=" btn boutonArticleCategorie " style="background:{{cat_coul}};font-variant: small-caps;{% if request.GET.categorie and cat_nom == categorie_courante %} font-weight: bold;padding:20px 25px;{%endif%}" href="?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
-            {% endfor %}
-        </div>
-    </div>
-</div>
-    <hr>
     <div class="row align-items-center">
 <div class="col-sm-12 textcenter justify-content-center ">
     <nav class="navbar justify-content-center navbar-expand-md navbar-light bg-light">
@@ -123,9 +180,8 @@
             </a>
 </div>
 </div>
-    {%if not request.user.is_permacat %}
-<p><small>(vous n'avez pas encore accès aux articles "Permacat"... Rejoignez-nous !)</small></p>
-    {%endif%}
+
+{% endcomment %}
 {%endblock%}
 {% block content %}
 
@@ -140,4 +196,7 @@
 </div>
 {%include 'pagination.html' %}
 
+    {%if not request.user.is_permacat %}
+<p><small>(vous n'avez pas encore accès aux articles "Permacat"... Rejoignez-nous !)</small></p>
+    {%endif%}
 {% endblock %}
