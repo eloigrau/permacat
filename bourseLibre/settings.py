@@ -120,7 +120,7 @@ INSTALLED_APPS = (
     'mptt',
     'sekizai',
     'sorl.thumbnail',
-    'wiki.apps.WikiConfig',
+    #'wiki.apps.WikiConfig',
    # 'wiki.plugins.attachments.apps.AttachmentsConfig',
     #'wiki.plugins.notifications.apps.NotificationsConfig',
     #'wiki.plugins.images.apps.ImagesConfig',
@@ -128,11 +128,11 @@ INSTALLED_APPS = (
 
     #'wiki.plugins.attachments.apps.AttachmentsConfig',
     #'wiki.plugins.globalhistory.apps.GlobalHistoryConfig',
-    'wiki.plugins.help.apps.HelpConfig',
-    'wiki.plugins.images.apps.ImagesConfig',
-    'wiki.plugins.links.apps.LinksConfig',
-    'wiki.plugins.macros.apps.MacrosConfig',
-    'wiki.plugins.notifications.apps.NotificationsConfig',
+    #'wiki.plugins.help.apps.HelpConfig',
+    #'wiki.plugins.images.apps.ImagesConfig',
+    #'wiki.plugins.links.apps.LinksConfig',
+    #'wiki.plugins.macros.apps.MacrosConfig',
+    #'wiki.plugins.notifications.apps.NotificationsConfig',
 
 )
 
@@ -448,8 +448,8 @@ ACTSTREAM_SETTINGS = {
 }
 #FONTAWESOME_CSS_URL = STATIC_URL + 'css/fontawesome.min.css'
 
-WIKI_ACCOUNT_HANDLING = False
-WIKI_ACCOUNT_SIGNUP_ALLOWED = False
+#WIKI_ACCOUNT_HANDLING = False
+#WIKI_ACCOUNT_SIGNUP_ALLOWED = False
 
 
 TAGGIT_CASE_INSENSITIVE = True

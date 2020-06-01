@@ -147,8 +147,8 @@ urlpatterns = [
 
     url(r'^activity/', include('actstream.urls')),
 
-    path(r'wiki_ecovillage_notifications/', include('django_nyt.urls')),
-    path(r'wiki_ecovillage/', include('wiki.urls')),
+#    path(r'wiki_ecovillage_notifications/', include('django_nyt.urls')),
+#    path(r'wiki_ecovillage/', include('wiki.urls')),
 
 
     url(r'^inscription_newsletter/$', views.inscription_newsletter, name='inscription_newsletter', ),
