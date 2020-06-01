@@ -62,4 +62,3 @@ urllib3==1.24.2
 webencodings==0.5.1
 whitenoise==4.1.2
 Whoosh==2.7.4
-wiki==0.4.5

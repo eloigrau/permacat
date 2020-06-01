@@ -83,6 +83,12 @@ def handler400(request, *args, **kwargs):   #requete invalide
     response.status_code = 400
     return response
 
+
+def tropGros(request):   #fichier trop gros
+    response = render(request, "513.html")
+    response.status_code = 513
+    return response
+
 def bienvenue(request):
     nums = ['01', '02', '03', '04', '07', '10', '11', '13', '15', '17', '20', '21', '23', ]
     nomImage = 'img/flo/resized0' +  choice(nums)+'.png'

@@ -30,15 +30,18 @@ def accueil(request):
 
 @login_required
 def ajouterArticle(request):
-    form = ArticleForm(request.POST or None)
-    if form.is_valid():
-        article = form.save(request.user)
-        url = article.get_absolute_url()
-        suffix = "" if article.estPublic else "_permacat"
-        action.send(request.user, verb='article_nouveau'+suffix, action_object=article, url=url,
-                    description="a ajouté un article : '%s'" % article.titre)
-        return redirect(article.get_absolute_url())
-        #return render(request, 'blog/lireArticle.html', {'article': article})
+    try:
+        form = ArticleForm(request.POST or None)
+        if form.is_valid():
+            article = form.save(request.user)
+            url = article.get_absolute_url()
+            suffix = "" if article.estPublic else "_permacat"
+            action.send(request.user, verb='article_nouveau'+suffix, action_object=article, url=url,
+                        description="a ajouté un article : '%s'" % article.titre)
+            return redirect(article.get_absolute_url())
+            #return render(request, 'blog/lireArticle.html', {'article': article})
+    except Exception as inst:
+        print(inst)
     return render(request, 'blog/ajouterPost.html', { "form": form, })
 
 
@@ -198,6 +201,7 @@ def ajouterNouveauProjet(request):
             action.send(request.user, verb='projet_nouveau'+suffix, action_object=projet, url=url,
                     description="a ajouté un projet : '%s'" % projet.titre)
             return redirect(url)
+
     else:
         form = ProjetForm(request.POST or None, request.FILES or None)
     return render(request, 'blog/ajouterProjet.html', { "form": form, })
@@ -272,6 +276,7 @@ def envoi_emails_articleouprojet_modifie(articleOuProjet, message):
     if emails:
         try:
             send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
+            mail_admins("pas d'erreur mails", titre + "\n" + message + "\n xxx \n" + str(emails))
         except:
             mail_admins("erreur", sys.exc_info()[0])
 

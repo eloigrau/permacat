@@ -7,3 +7,18 @@
 #             # Update last visit time after request finished processing.
 #             Profil.objects.filter(pk=request.user.pk).update(last_visit=now())
 #         return response
+from django.shortcuts import render
+from django.core.exceptions import RequestDataTooBig
+
+class CheckRequest(object):
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        try:
+            body = request.body
+        except RequestDataTooBig:
+            return render(request, "513.html")
+
+        return self.get_response(request)
