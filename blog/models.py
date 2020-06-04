@@ -17,7 +17,7 @@ class Choix():
                    ('Documentation','Documentation'),('Ecovillage', 'Ecovillage'),  ('Entraide','Entraide'), \
                     ('Permaculture','Permaculture'),  ('Point', 'Point de vue'), \
                      ('KitPerma', 'Kit Perma Ecole'),   ('Recette', 'Recette'), \
-                    ('Serre','Serre collective'),('Autre','Autre'),
+                    ('Jardin','Jardin partagé'),('Autre','Autre'),
     couleurs_annonces = {
        # 'Annonce':"#e0f7de", 'Administratif':"#dcc0de", 'Agenda':"#d4d1de", 'Entraide':"#cebacf",
        # 'Chantier':"#d1ecdc",'Jardinage':"#fcf6bd", 'Recette':"#d0f4de", 'Bricolage':"#fff2a0",
@@ -36,7 +36,7 @@ class Choix():
         'Point':"#bccacf",
         'Autre':"#87bfae",
         'Ecovillage':"#cebacf",
-        'Serre':"#fffdcc",
+        'Jardin':"#fffdcc",
         'Altermarché':"#daffb3",
         'Documentation':'#ddd0a8',
 
