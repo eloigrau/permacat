@@ -25,10 +25,10 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="navbar-nav">
 <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCategorie" data-toggle="dropdown">
+                            <a class="nav-item dropdown-toggle" href="#" id="navbarDropdownCategorie" data-toggle="dropdown">
                                  <button type="button" class="btn  btn-primary" >
                                 {% if request.GET.categorie  %}
-      dans : {{categorie_courante}}
+      Catégorie : {{categorie_courante}}
       {%elif request.GET.permacat %}
       Articles Permacat
       {%elif request.GET.auteur %}
@@ -54,7 +54,7 @@
 
 
                 <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#" id="menuOrdreTri" data-toggle="dropdown">
+                      <a class="nav-item dropdown-toggle btn-block" href="#" id="menuOrdreTri" data-toggle="dropdown">
 
                 <button class="btn btn-light">
                    Trier par...

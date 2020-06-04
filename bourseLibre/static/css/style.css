@@ -57,6 +57,9 @@ h1, h2, h3, h4, h5, h6 {
 .textsmall{
     font-size:small;
 }
+.scaps {
+font-variant: small-caps;
+}
 .smallcaps_h {
 font-size:80%;
 font-variant: small-caps;
@@ -65,15 +68,6 @@ font-variant: small-caps;
 font-variant: small-caps;
 }
 
-.btn-cat {
-	border-radius:25px;
-	cursor:pointer;
-	padding:3px 80px;
-}
-.btn-cat:active {
-	position:relative;
-	top:1px;
-}
 
 
 .textitalique{
@@ -615,7 +609,7 @@ border-color: #333;
 box-shadow: 0 10px 10px 0px grey;
     border-radius: 0.3em;
     border:1.5px grey solid;
-
+padding: 5px 80px;
 }
 .article-card-header {
     padding: 0;
@@ -702,6 +696,9 @@ position:absolute;
   align-items: center;
 }
 
+.card-deck .card{
+  padding-bottom:80px;
+ }
 
 .offre_footer{
   height:75px;
@@ -797,7 +794,7 @@ ul.errorlist{
     /*margin-top: 2em;*/
     margin-bottom: 0.1em;
     border-radius: 0.02em;
-    padding: 0.2px;
+    padding: 0.2px 0.2px 0.2px 0.2px;
 }
 
 
