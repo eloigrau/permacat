@@ -3,7 +3,7 @@
 {% load fontawesome %}
 <div class="card article textcenter" style="background-color:{{article.get_couleur}}">
   <a href="{% url 'blog:lireArticle' slug=article.slug %}">
-    <div class="smallcaps">{{ article.get_categorie_display }} </div>
+    <div class="smallcaps_h">{{ article.get_categorie_display }} </div>
       <h4>{{ article.titre }}</h4>
     <span class="badge {% if article.estPublic%}badge-warning{%else%} badge-success {%endif%}" data-toggle="tooltip" data-placement="bottom" title="Article {%if article.estPublic%}visible par tous les inscrits{%else%}visible par les membres de Permacat seulement{%endif%}">
          {%if article.estPublic%} Public{%else%}  Permacat  {%endif%}
