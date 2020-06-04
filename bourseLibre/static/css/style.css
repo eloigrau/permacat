@@ -183,6 +183,7 @@ section.p3 {
 }
 .navbar-light .navbar-nav .nav-item {
 
+    font-variant: small-caps;
    }
 
 .bs-dark .nav1 > a:hover{

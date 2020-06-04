@@ -109,7 +109,7 @@ class ArticleForm(forms.ModelForm):
 
 
 class ArticleChangeForm(forms.ModelForm):
-    estPublic = forms.ChoiceField(choices=((1, "Article public"), (0, "Article réserve aux adhérents")), label='', required=True)
+    estPublic = forms.ChoiceField(choices=((1, "Article public"), (0, "Article réservé aux adhérents")), label='', required=True)
 
     class Meta:
         model = Article
@@ -214,7 +214,7 @@ class ProjetChangeForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProjetChangeForm, self).__init__(*args, **kwargs)
         self.fields['contenu'].strip = False
-        self.fields["estPublic"].choices = ((1, "Article public"), (0, "Article réserve aux adhérents")) if kwargs[
+        self.fields["estPublic"].choices = ((1, "Article public"), (0, "Article réservé aux adhérents")) if kwargs[
             'instance'].estPublic else ((0, "Projet réservé aux adhérents"), (1, "Projet public"),)
 
 
