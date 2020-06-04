@@ -5,8 +5,9 @@
 
 <p class = "textcenter ">
       <a href="{% url 'notifications'  %}" class="btn btn-success">
-         Toutes les notifications
+         Notifications par type
       </a>
+    <a href="{% url 'notificationsParDate'  %}" class="btn btn-success">Notifications par date </a>
 </p>
 <hr>
 {%if actions%}
@@ -21,6 +22,7 @@
       <a href="{% url 'notificationsLues'  %}" class="btn btn-primary">
          Marquer comme vu
       </a>
+
 </p>
 {% endif %}
 <div class="row justify-content-center">
@@ -35,9 +37,6 @@
 		{%else%}
             <li class="list-group-item textcenter"  >Pas de nouvelle activité depuis le {{request.user.date_notifications|date:"d/m/Y"}} à {{request.user.date_notifications|date:"G:i"}}</li>
 		{%endif%}
-            <li class="list-group-item textcenter"  >
-                <a href="{% url 'notificationsParDate'  %}" class="btn btn-success btn-sm">Voir toutes les notifications par date</a>
-                </li>
 
         </ul>
 
