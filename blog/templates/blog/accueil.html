@@ -13,18 +13,22 @@
 <div class="row">
     <div class="col-sm-12 textcenter">
         <div class="btn-group btn-group-justified">
-        <a href="{% url 'agora_general' %}">
-         <button type="button" class="btn btn-success">
-                 Salon
-            </button></a>
          <a href="{% url 'blog:index' %}">
         <button type="button" class="btn btn-success" >
                Articles
             </button>
             </a>
-         <a href="{% url 'blog:index_projets' %}">
+        <a href="{% url 'agora_general' %}">
+         <button type="button" class="btn btn-success">
+                 Salon Public
+            </button></a>
+        <a href="{% url 'agora_permacat' %}">
+         <button type="button" class="btn btn-success">
+                 Salon Permacat
+            </button></a>
+         <a href="{% url 'conversations' %}">
             <button type="button" class="btn btn-success" >
-               Projets
+               Conversations privées
             </button>
             </a>
     </div>

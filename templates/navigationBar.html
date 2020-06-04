@@ -13,7 +13,7 @@
 {% if user.is_authenticated %}
     <ul class="nav navbar-nav  d-flex justify-content-between  w-100">
       <li class="nav-item dropdown nav1">
-          <a href="dropdownAnnonces" data-toggle="dropdown" class="nav-link dropdown-toggle navbar-menu  " href="{% url 'marche' %}"  aria-haspopup="true" aria-expanded="false">
+          <a data-toggle="dropdown" class="nav-link dropdown-toggle navbar-menu  " href="{% url 'marche' %}"  aria-haspopup="true" aria-expanded="false">
               {% fontawesome_icon 'shopping-basket' %}
               Altermarché
         </a>
@@ -32,7 +32,7 @@
         </ul>
       </li>
       <li class="nav-item dropdown nav2">
-           <a data-toggle="dropdown" class="nav-link dropdown-toggle navbar-menu  " href="dropdownForum" aria-haspopup="true" aria-expanded="false" >
+           <a data-toggle="dropdown" class="nav-link dropdown-toggle navbar-menu  " href="{% url 'blog:forum' %}" aria-haspopup="true" aria-expanded="false" >
                {% fontawesome_icon 'comments' %} Forum </a>
 
             <ul class="dropdown-menu dropdown-menu1 nav2-dropdown" id="dropdownForum">

@@ -608,6 +608,7 @@ box-shadow: 0 10px 10px 0px grey;
     border-radius: 0.3em;
     border:1.5px grey solid;
     padding: 25px;
+
 }
 article-carte{
 border-color: #333;
@@ -701,9 +702,6 @@ position:absolute;
   align-items: center;
 }
 
-.card-deck .card{
-  padding-bottom:80px;
- }
 
 .offre_footer{
   height:75px;
