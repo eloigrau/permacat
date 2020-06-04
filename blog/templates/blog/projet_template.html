@@ -1,7 +1,7 @@
 
 {% load activity_tags %}
 {% load fontawesome %}
-<div class="card article textcenter" style="background-color:{{projet.get_couleur}}">
+<div class="card projet textcenter" style="background-color:{{projet.get_couleur}}">
   <a href="{% url 'blog:lireProjet' slug=projet.slug %}">
         <h4 >
             {{ projet.titre }}</h4>
