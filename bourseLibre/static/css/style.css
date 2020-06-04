@@ -59,11 +59,20 @@ h1, h2, h3, h4, h5, h6 {
 }
 .smallcaps_h {
 font-size:80%;
-text-transform:uppercase;
 font-variant: small-caps;
-margin-bottom:8px;
-
 }
+
+.btn-cat {
+	border-radius:25px;
+	cursor:pointer;
+	padding:3px 80px;
+}
+.btn-cat:active {
+	position:relative;
+	top:1px;
+}
+
+
 .textitalique{
 font-style: italic;
 }
@@ -593,10 +602,14 @@ section.p3 {
 /*background-color: grey;*/
 border-color: #333;
 box-shadow: 0 10px 10px 0px grey;
- padding:25px;
     border-radius: 0.3em;
     border:1.5px grey solid;
 }
+
+
+.article:hover {
+	box-shadow: 2px 3px 8px 0px;
+	}
 
 .article_recherche{
 /*background-color: grey;*/
