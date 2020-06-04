@@ -396,7 +396,7 @@ section.p3 {
     /*margin-top: 2em;*/
     margin-bottom: 1em;
     border-radius: 0.2em;
-    padding: 2px 2px 2px 2px;
+    padding: 5px;
 }
 .paddingbase{
     padding: 3px 3px 3px 3px;
@@ -604,9 +604,16 @@ border-color: #333;
 box-shadow: 0 10px 10px 0px grey;
     border-radius: 0.3em;
     border:1.5px grey solid;
+    padding: 25px;
 }
+article_carte{
+border-color: #333;
+box-shadow: 0 10px 10px 0px grey;
+    border-radius: 0.3em;
+    border:1.5px grey solid;
 
-.article:hover {
+}
+.article_carte:hover {
 	box-shadow: 2px 3px 8px 0px;
 	}
 .projet{
@@ -617,7 +624,14 @@ box-shadow: 0 10px 10px 0px grey;
     border-radius: 0.3em;
     border:1.5px grey solid;
 }
-
+.box_titre{
+  display:flex;
+  justify-content:center;
+}
+.boxitem_droite{
+  display:flex;
+  justify-content:right;
+}
 
 .projet:hover {
 	box-shadow: 2px 3px 8px 0px;
@@ -771,11 +785,12 @@ ul.errorlist{
         margin-left: 0px;
         padding: 0px;
     }
+
 .contenu{
     /*margin-top: 2em;*/
     margin-bottom: 0.1em;
     border-radius: 0.02em;
-    padding: 0.2px 0.2px 0.2px 0.2px;
+    padding: 0.2px;
 }
 
 

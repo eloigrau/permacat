@@ -65,19 +65,8 @@
 
 {% endblock %}
 {% block content %}
-<div class="contenu article ">
-
-<div class="row">
-<div class="col textcenter">
-      <h3 style="text-indent: 30px;"> {{ article.titre }}</h3>
-</div>
-</div>
-<div class="row"  id="sec03">
-
-    <div class="col textright" >
-
-
-            <span class="badge {% if article.estPublic%}badge-warning{%else%} badge-success {%endif%}">
+     <div class="boxitem_droite">
+                <span class="badge {% if article.estPublic%}badge-warning{%else%} badge-success {%endif%}">
                 Article {%if article.estPublic%} public {%else%}  permacat  {%endif%}
             </span>
             {% if article.estArchive%}
@@ -85,6 +74,22 @@
                 archivé
             </span>
             {%endif%}
+            {% if article.estModifiable%}
+            <span class="badge badge-info">
+                modifiable
+            </span>
+            {%endif%}
+     </div>
+<div class="contenu article ">
+<div class="row">
+<div class="col-sm-12 textcenter">
+      <h3> {{ article.titre }}</h3>
+ </div>
+</div>
+<div class="row"  id="sec03">
+
+    <div class="col textright" >
+
         {%if article.start_time%}
 
           <a href="{% url 'cal:agenda' %} ">
@@ -129,6 +134,7 @@
 
         {% endif %}
 
+        {% if actions %}
             <button type="button" class="btn" data-toggle="modal" data-target="#historique">
               {% fontawesome_icon 'bell' %} Historique
             </button>
@@ -157,17 +163,16 @@
               </div>
             </div>
 
+        {% endif %}
     </div>
 </div>
 <div class="row">
-<div class="col">
+<div class="col contenuarticle">
    {{ article.contenu |safe}}
 </div>
 </div>
 </div>
 
-
-<hr>
 
 {% include 'commentaires.html' %}
 
