@@ -61,6 +61,9 @@ h1, h2, h3, h4, h5, h6 {
 font-size:80%;
 font-variant: small-caps;
 }
+.smallcaps_h2 {
+font-variant: small-caps;
+}
 
 .btn-cat {
 	border-radius:25px;
@@ -606,12 +609,18 @@ box-shadow: 0 10px 10px 0px grey;
     border:1.5px grey solid;
     padding: 25px;
 }
-article_carte{
+article-carte{
 border-color: #333;
 box-shadow: 0 10px 10px 0px grey;
     border-radius: 0.3em;
     border:1.5px grey solid;
 
+}
+.article-card-header {
+    padding: 0;
+    margin-bottom: 0;
+    background-color: rgba(0,0,0,.03);
+    border-bottom: 1px solid rgba(0,0,0,.125);
 }
 .article_carte:hover {
 	box-shadow: 2px 3px 8px 0px;

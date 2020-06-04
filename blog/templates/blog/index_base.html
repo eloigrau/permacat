@@ -13,7 +13,7 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12 textcenter">
-            <h4>Les Articles du forum collaboratif</h4>
+            <h4>Les Articles</h4>
         </div>
     </div>
 	<div class="row">
@@ -36,7 +36,7 @@
       {%elif typeFiltre == 'archives' %}
       Archives
         {%else%}
-        Toutes les annonces...
+        Choisir une catégorie...
       {%endif%}
                                  </button>
                                 </a>
@@ -103,10 +103,12 @@
 {% block content %}
 
 <div class="infinite-container">
+    <div class="card-columns">
     {% for article in article_list %}
     <div class="infinite-item">
             {% include "blog/article_template.html" with article=article %}
     <hr>
+    </div>
     </div>
 
     {% endfor %}
