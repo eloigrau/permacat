@@ -17,7 +17,7 @@ class Choix():
                    ('Documentation','Documentation'),('Ecovillage', 'Ecovillage'),  ('Entraide','Entraide'), \
                     ('Permaculture','Permaculture'),  ('Point', 'Point de vue'), \
                      ('KitPerma', 'Kit Perma Ecole'),   ('Recette', 'Recette'), \
-                    ('Jardin','Jardin partagé'),('Autre','Autre'),
+                    ('Jardin','Jardin partagé de Palau'),('Autre','Autre'),
     couleurs_annonces = {
        # 'Annonce':"#e0f7de", 'Administratif':"#dcc0de", 'Agenda':"#d4d1de", 'Entraide':"#cebacf",
        # 'Chantier':"#d1ecdc",'Jardinage':"#fcf6bd", 'Recette':"#d0f4de", 'Bricolage':"#fff2a0",
