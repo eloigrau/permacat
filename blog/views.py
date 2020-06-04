@@ -159,7 +159,11 @@ class ListeArticles(ListView):
         context['typeFiltre'] = "aucun"
         context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="articles")
 
-        context['ordreTriPossibles'] = ['-date_creation', '-date_dernierMessage', 'categorie', 'auteur', 'titre' ]
+        context['ordreTriPossibles'] = {
+                                           "date de création":'-date_creation',
+                                           "date du dernier message":'-date_dernierMessage',
+                                           "date de la dernière modification":'-date_modification',
+                                            "titre": 'titre' }
 
         if 'auteur' in self.request.GET:
             context['typeFiltre'] = "auteur"

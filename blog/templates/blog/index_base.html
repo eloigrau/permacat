@@ -28,15 +28,15 @@
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCategorie" data-toggle="dropdown">
                                  <button type="button" class="btn  btn-primary" >
                                 {% if request.GET.categorie  %}
-      catégorie : {{categorie_courante}}
+      dans : {{categorie_courante}}
       {%elif request.GET.permacat %}
       Articles Permacat
       {%elif request.GET.auteur %}
       Articles de {{request.GET.auteur}}
       {%elif typeFiltre == 'archives' %}
       Archives
-                            {%else%}
-                            Choisir une catégorie...
+        {%else%}
+        Toutes les annonces...
       {%endif%}
                                  </button>
                                 </a>
@@ -51,6 +51,21 @@
 
 							</div>
 						</li>
+
+
+                <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="menuOrdreTri" data-toggle="dropdown">
+
+                <button class="btn btn-light">
+                   Trier par...
+           </button>
+                      </a>
+                <div class="dropdown-menu"  aria-labelledby="menuOrdreTri"  id="idOrdreTri">
+                    {% for titre, ordre in ordreTriPossibles.items %}
+                     <a class="dropdown-item"  href="?{{ request.GET.urlencode }}&ordreTri={{ordre}}">{{titre}}</a>
+                    {% endfor %}
+                </div>
+            </li>
 					</ul>
 
                         <ul class="navbar-nav ml-md-auto">
@@ -77,111 +92,13 @@
             </a>
                             </li>
                         </ul>
-				</div>
+</div>
 			</nav>
 		</div>
 	</div>
 </div>
 
 
-{% comment %}
-<p>
-  <a class="btn btn-primary" style="min-width:180px;" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-Filtrer...
-  </a>
-</p>
-
-<div class="collapse" id="collapseExample">
-    <div class="row align-items-center">
-<div class="col-sm-12 textcenter justify-content-center ">
-    <nav class="navbar justify-content-center navbar-expand-md navbar-light bg-light">
-        <div class="navbar-header">
-           <button class=" navbar-toggler btn btn-info btn-block" type="button" data-toggle="collapse" data-target="#navbarProduit" aria-controls="navbarProduitContent" aria-expanded="false" aria-label="Toggle navigation">
-               <span class="navbar-toggler-icon"></span>Filtrage...</button>
-        </div>
-        <div class="collapse navbar-collapse  justify-content-center " id="navbarProduit">
-            <ul class="nav navbar-nav justify-content-center ">
-
-                <li class="nav-item dropdown">
-        <a href="{% url 'blog:index' %}">
-            <button class="btn btn-block {% if typeFiltre == 'aucun' %}btn-primary {%endif%}">Tout </button>
-        </a>
-   </li>
-                <li class="nav-item dropdown">
-        <a href="?archives=True">
-            <button class="btn btn-block {% if typeFiltre == 'archives' %}btn-primary{%else%}btn-light {%endif%}">Archives </button>
-        </a>
-            </li>
-                <li class="nav-item dropdown">
-             <button type="button" class="btn btn-block {% if request.GET.auteur %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-               data-target = "#idAuteur">
-                {% if request.GET.auteur %} Auteur: {{request.GET.auteur}} {%else%}Auteur{%endif%}
-                </button>
-            <div class="dropdown-menu"  aria-labelledby="menuAuteur"  id=idAuteur">
-                {% for auteur in auteur_list %}
-                  <a class="dropdown-item" href="?auteur={{auteur}}">{{auteur}}</a>
-                {% endfor %}
-            </div>
-            </li>
-
-
-        {% if request.user.is_permacat %}
-
-                <li class="nav-item dropdown">
-             <button type="button" class="btn btn-block {% if request.GET.permacat %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-               data-target = "#idPermacat">
-                {% if request.GET.permacat %}{% if request.GET.permacat == "True" %}Permacat {%else%}Public{%endif%}{%else%}Type{%endif%}
-                </button>
-            <div class="dropdown-menu"  aria-labelledby="menuStatut"  id=idPermacat">
-                  <a class="dropdown-item" href="?permacat=True">Permacat</a>
-                  <a class="dropdown-item" href="?permacat=False">Public</a>
-            </div>
-            </li>
-        {%endif%}
-
-                <li class="nav-item dropdown">
-                <button class="btn btn-block dropdown-toggle btn-block btn-light" type="button" id="menuOrdreTri" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                   Trier par...
-           </button>
-                <div class="dropdown-menu"  aria-labelledby="menuOrdreTri"  id="idOrdreTri">
-                    {% for ordre in ordreTriPossibles %}
-                     <a class="dropdown-item"  href="?{{ request.GET.urlencode }}&ordreTri={{ordre}}">{{ordre|ordreTri}}</a>
-                    {% endfor %}
-                </div>
-            </li>
-            </ul>
-    </div>
-    </nav>
-</div>
-</div>
-</div>
-
-<hr>
-<div class="row align-items-center">
-<div class="col-sm-12 textcenter">
-
-        <a href="{% url 'blog:ajouterNouvelArticle' %}">
-        <button type="button" class="btn  btn-success" >
-                <i class="fa fa-plus"></i> Ajouter un article
-            </button>
-            </a>&ensp;
-    &nbsp;
-        <a href="{% url 'blog:suivre_articles' %}">
-
-        {% if request.user|is_following:suivis %}
-        <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour arreter de recevoir un mail à chaque nouvel article">
-             {% fontawesome_icon 'bell' %}
-        </button>
-        {% else %}
-        <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour recevoir un mail à chaque nouvel article">
-             {% fontawesome_icon 'bell-slash' %}
-        </button>
-        {% endif %}
-            </a>
-</div>
-</div>
-
-{% endcomment %}
 {%endblock%}
 {% block content %}
 

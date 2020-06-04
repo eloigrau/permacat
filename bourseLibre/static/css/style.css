@@ -57,7 +57,13 @@ h1, h2, h3, h4, h5, h6 {
 .textsmall{
     font-size:small;
 }
+.smallcaps {
+font-size:80%;
+text-transform:uppercase;
+font-variant: small-caps;
+margin-bot:5px;
 
+}
 .textitalique{
 font-style: italic;
 }

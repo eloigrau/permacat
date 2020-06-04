@@ -3,7 +3,8 @@
 {% load fontawesome %}
 <div class="card article textcenter" style="background-color:{{article.get_couleur}}">
   <a href="{% url 'blog:lireArticle' slug=article.slug %}">
-    <h4>{{ article.titre }}</h4>
+    <div class="smallcaps">{{ article.get_categorie_display }} </div>
+      <h4>{{ article.titre }}</h4>
     <span class="badge {% if article.estPublic%}badge-warning{%else%} badge-success {%endif%}" data-toggle="tooltip" data-placement="bottom" title="Article {%if article.estPublic%}visible par tous les inscrits{%else%}visible par les membres de Permacat seulement{%endif%}">
          {%if article.estPublic%} Public{%else%}  Permacat  {%endif%}
     </span>
@@ -19,7 +20,7 @@
       <p class="textsmall "> {% if article.start_time %} date prévue: le {{ article.start_time|date:"DATE_FORMAT" }}{% endif %} </p>
   </p>
         <p class="card-subtitle mb-2 ">
-               <p class="text-muted textsmall"> Catégorie: <em>{{ article.get_categorie_display }}</em>, rédigé par {{ article.auteur }}, le {{ article.date_creation|date:"DATE_FORMAT" }} {%ifnotequal  article.date_creation article.date_modification %}(dernière modification le {{ article.date_modification|date:"DATE_FORMAT" }}){%endifnotequal%}</p>
+      <p class="text-muted textsmall"> rédigé par {{ article.auteur }}, le {{ article.date_creation|date:"DATE_FORMAT" }} {%ifnotequal  article.date_creation article.date_modification %}(dernière modification le {{ article.date_modification|date:"DATE_FORMAT" }}){%endifnotequal%}</p>
 
 
   </a>
