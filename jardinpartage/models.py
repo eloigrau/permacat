@@ -13,7 +13,7 @@ from bourseLibre.settings import SERVER_EMAIL
 class Choix():
     type_annonce = ('Discu','Information'), ('Organisation', 'Organisation'), \
                   ('Potager','Au potager'), ('PPAM','PPAM'), ('Arbres','Les arbres au jardin'), \
-                  ('Agenda','Agenda'), \
+                  ('Agenda','Agenda'), ("todo", "A faire"), \
                    ('Documentation','Documentation'),  \
                  ('Autre','Autre'),
     couleurs_annonces = {
