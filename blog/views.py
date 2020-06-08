@@ -273,7 +273,7 @@ def envoi_emails_articleouprojet_modifie(articleOuProjet, message):
     message =  message +\
               "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + articleOuProjet.get_absolute_url() + \
               "\n\n------------------------------------------------------------------------------" \
-              "\n vous recevez cet email, car vous avez choisi de suivre ce projet sur le site http://www.Perma.Cat/forum/articles/"
+              "\n Pour vous désabonner cliquez sur la cloche sur http://www.Perma.Cat/forum/articles/" if articleOuProjet else "\n Pour vous désabonner cliquez sur la cloche sur http://www.Perma.Cat/forum/projets/"
    # emails = [(titre, message, SERVER_EMAIL, (suiv.email, )) for suiv in followers(instance)]
     emails = [suiv.email for suiv in followers(articleOuProjet)  if articleOuProjet.auteur != suiv  and (articleOuProjet.estPublic or suiv.is_permacat)]
 
@@ -530,7 +530,7 @@ def changerArticles_jardin(request):
     from jardinpartage.models import Article as Art_jardin, Commentaire as Comm_jardin
     articles = Article.objects.filter(categorie="Jardin")
     for article in articles:
-        new_art = Art_jardin.objects.create(categorie=article.categorie ,
+        new_art = Art_jardin.objects.create(categorie='Discu',
                                 titre = article.titre,
                                 auteur = article.auteur,
                                 slug = article.slug,

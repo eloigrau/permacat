@@ -102,8 +102,8 @@ def lireArticle(request, slug):
             url = article.get_absolute_url()+"#idConversation"
             suffix = "_permacat" if article.estPublic else ""
             action.send(request.user, verb='article_message'+suffix, action_object=article, url=url,
-                        description="a réagi à l'article: '%s'" % article.titre)
-            envoi_emails_articleouprojet_modifie(article, request.user.username + " a réagit au projet: " +  article.titre)
+                        description="a réagi à l'article (Jardins): '%s'" % article.titre)
+            envoi_emails_articleouprojet_modifie(article, request.user.username + " a réagit à l'article: " +  article.titre)
         return redirect(request.path)
 
     return render(request, 'jardinpartage/lireArticle.html', {'article': article, 'form': form, 'commentaires':commentaires, 'dates':dates, 'actions':actions},)
@@ -195,11 +195,11 @@ class ListeArticles(ListView):
 
 def envoi_emails_articleouprojet_modifie(articleOuProjet, message):
 
-    titre = "Permacat - Jardin Partagé - Article actualisé" if articleOuProjet else "Permacat - Projet actualisé"
+    titre = "Permacat - Jardin Partagé - Article actualisé" if articleOuProjet else "Permacat - Jardin Partagé - Article actualisé"
     message =  message +\
               "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + articleOuProjet.get_absolute_url() + \
               "\n\n------------------------------------------------------------------------------" \
-              "\n vous recevez cet email, car vous avez choisi de suivre ce projet sur le site http://www.Perma.Cat/forum/articles/"
+              "\n Pour vous désabonner http://www.Perma.Cat/jardins/articles/"
    # emails = [(titre, message, SERVER_EMAIL, (suiv.email, )) for suiv in followers(instance)]
     emails = [suiv.email for suiv in followers(articleOuProjet)  if articleOuProjet.auteur != suiv  and (articleOuProjet.estPublic or suiv.is_permacat)]
 

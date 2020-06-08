@@ -15,7 +15,7 @@
         </p>
     </div>
     <div class="col-md-8">
-        <p class="infos  textepetit">Dans: <a href="{% url 'jardinpartage:index'  %}?categorie={{article.categorie}}"  style="background-color:{{article.get_couleur}}" class="smallcaps_h2">{{ article.get_categorie_display }}</a>, rédigé par <a href="{% url 'profil' article.auteur.id %}"> {{ article.auteur.username }}</a>, le {{ article.date_creation|date:"DATE_FORMAT" }};
+        <p class="infos  textepetit">Dans: <a href="{% url 'jardinpartage:index'  %}?categorie={{article.categorie}}"  style="background-color:{{article.get_couleur}}" class="smallcaps_h2">Jardins partagés/{{ article.get_categorie_display }}</a>, rédigé par <a href="{% url 'profil' article.auteur.id %}"> {{ article.auteur.username }}</a>, le {{ article.date_creation|date:"DATE_FORMAT" }};
 
         <a href="{% url 'jardinpartage:suivre_article' article.slug %}">
             {% if request.user|is_following:article %}
@@ -86,6 +86,7 @@
       <h3> {{ article.titre }}</h3>
  </div>
 </div>
+    <hr>
 <div class="row"  id="sec03">
 
     <div class="col textright" >

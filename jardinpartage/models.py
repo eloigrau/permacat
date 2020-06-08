@@ -11,7 +11,7 @@ from actstream.models import followers
 from bourseLibre.settings import SERVER_EMAIL
 
 class Choix():
-    type_annonce = ('Discu','Discussion générale'), ('Organisation', 'Organisation'), \
+    type_annonce = ('Discu','Information'), ('Organisation', 'Organisation'), \
                   ('Potager','Au potager'), ('PPAM','PPAM'), ('Arbres','Les arbres au jardin'), \
                   ('Agenda','Agenda'), \
                    ('Documentation','Documentation'),  \
@@ -51,7 +51,7 @@ class Choix():
 class Article(models.Model):
     categorie = models.CharField(max_length=30,         
         choices=(Choix.type_annonce),
-        default='Annonce', verbose_name="categorie")
+        default='Discu', verbose_name="categorie")
     titre = models.CharField(max_length=100,)
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='auteur_article_jardin')
     slug = models.SlugField(max_length=100)
