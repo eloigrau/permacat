@@ -62,7 +62,7 @@ class ModifierArticle(UpdateView):
         url = self.object.get_absolute_url()
         suffix = "_permacat" if self.object.estPublic else ""
         action.send(self.request.user, verb='article_modifier'+suffix, action_object=self.object, url=url,
-                     description="a modifié l'article: '%s'" % self.object.titre)
+                     description="a modifié l'article : (Jardins Partagés)'%s'" % self.object.titre)
         envoi_emails_articleouprojet_modifie(self.object, "L'article " +  self.object.titre + "a été modifié")
         return HttpResponseRedirect(self.get_success_url())
 
@@ -102,7 +102,7 @@ def lireArticle(request, slug):
             url = article.get_absolute_url()+"#idConversation"
             suffix = "_permacat" if article.estPublic else ""
             action.send(request.user, verb='article_message'+suffix, action_object=article, url=url,
-                        description="a réagi à l'article (Jardins): '%s'" % article.titre)
+                        description="a réagi à l'article: (Jardins Partagés)'%s'" % article.titre)
             envoi_emails_articleouprojet_modifie(article, request.user.username + " a réagit à l'article: " +  article.titre)
         return redirect(request.path)
 
@@ -195,7 +195,7 @@ class ListeArticles(ListView):
 
 def envoi_emails_articleouprojet_modifie(articleOuProjet, message):
 
-    titre = "Permacat - Jardin Partagé - Article actualisé" if articleOuProjet else "Permacat - Jardin Partagé - Article actualisé"
+    titre = "Permacat - Jardin Partagé - Article actualisé"
     message =  message +\
               "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + articleOuProjet.get_absolute_url() + \
               "\n\n------------------------------------------------------------------------------" \
