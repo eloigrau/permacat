@@ -24,6 +24,7 @@ from django import forms
 from django.http import Http404
 
 from blog.models import Article, Projet
+from jardinpartage.models import Article as Article_jardin
 
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
@@ -291,6 +292,10 @@ def listeFollowers(request):
         return render(request, "notPermacat.html")
     listeArticles = []
     for art in Article.objects.all():
+        suiveurs = followers(art)
+        if suiveurs:
+            listeArticles.append({"titre": art.titre, "url": art.get_absolute_url(), "followers": suiveurs, })
+    for art in Article_jardin.objects.all():
         suiveurs = followers(art)
         if suiveurs:
             listeArticles.append({"titre": art.titre, "url": art.get_absolute_url(), "followers": suiveurs, })
