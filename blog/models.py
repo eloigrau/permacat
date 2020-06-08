@@ -65,7 +65,7 @@ class Article(models.Model):
     estPublic = models.BooleanField(default=False, verbose_name='Public ou réservé aux membres permacat')
     estModifiable = models.BooleanField(default=False, verbose_name="Modifiable par n'importe qui")
 
-    date_dernierMessage = models.DateTimeField(verbose_name="Date du dernier message", auto_now=True)
+    date_dernierMessage = models.DateTimeField(verbose_name="Date du dernier message", auto_now=False)
     dernierMessage = models.CharField(max_length=100, default=None, blank=True, null=True)
     estArchive = models.BooleanField(default=False, verbose_name="Archiver l'article")
 

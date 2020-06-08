@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from .models import  Adresse, Produit, MessageGeneralPermacat, Panier, Item, Adhesion_permacat, Message, MessageGeneral, Conversation, InscriptionNewsletter
 from blog.models import Article, Projet, Commentaire, CommentaireProjet, Evenement
-from jardinpartage.models import Article as art_jardin, Commentaire as comm_jardin
+from jardinpartage.models import Article as Art_jardin, Commentaire as Comm_jardin
 from fiches.models import Fiche, Atelier as atelier_fiche, CommentaireFiche
 from ateliers.models import Atelier, CommentaireAtelier, InscriptionAtelier
 
@@ -50,7 +50,7 @@ class Adhesion_permacatAdmin(admin.ModelAdmin):
     list_display = ('user', 'date_cotisation', 'montant')
 
 admin.site.register(Article, ArticleAdmin)
-admin.site.register(art_jardin, ArticleAdmin)
+admin.site.register(Art_jardin, ArticleAdmin)
 admin.site.register(Evenement)
 admin.site.register(Projet, ProjetAdmin)
 admin.site.register(Profil, CustomUserAdmin)
@@ -67,7 +67,7 @@ admin.site.register(Adhesion_permacat, Adhesion_permacatAdmin)
 
 admin.site.register(Conversation)
 admin.site.register(Commentaire)
-admin.site.register(comm_jardin)
+admin.site.register(Comm_jardin)
 admin.site.register(CommentaireProjet)
 
 admin.site.register(Fiche)
