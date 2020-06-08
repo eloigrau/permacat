@@ -14,10 +14,9 @@ class Choix():
     statut_projet = ('prop','Proposition de projet'), ("AGO","Fiche prpojet soumise à l'AGO"), ('vote','Soumis au vote'), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
     type_projet = ('Part','Participation à un évènement'), ('AGO',"Organisation d'une AGO"), ('Projlong','Projet a long terme'), ('Projcourt','Projet a court terme'), ('Projponct','Projet ponctuel'),
     type_annonce = ('Altermarché','Altermarché'), ('Annonce','Annonce'), ('Administratif','Administratif'), ('Agenda','Agenda'), ('Jardi','Jardi per tots'), ('Chantier','Chantier participatif'),\
-                   ('Documentation','Documentation'),('Ecovillage', 'Ecovillage'), \
-                    ('Permaculture','Permaculture'),  ('Point', 'Point de vue'), \
-                     ('KitPerma', 'Kit Perma Ecole'),   ('Recette', 'Recette'), \
-                    ('Jardin','Jardins partagés'),('Autre','Autre'),
+                   ('Documentation','Documentation'), ('Ecovillage', 'Ecovillage'), \
+                    ('Point', 'Point de vue'), ('KitPerma', 'Kit Perma Ecole'),   ('Recette', 'Recette'), \
+                    ('Jardin','Jardins partagés'), ('Autre','Autre'),
     couleurs_annonces = {
        # 'Annonce':"#e0f7de", 'Administratif':"#dcc0de", 'Agenda':"#d4d1de", 'Entraide':"#cebacf",
        # 'Chantier':"#d1ecdc",'Jardinage':"#fcf6bd", 'Recette':"#d0f4de", 'Bricolage':"#fff2a0",
@@ -150,7 +149,7 @@ class Commentaire(models.Model):
 
     @property
     def get_edit_url(self):
-        return reverse('blog:modifierCommentaireArticle',  kwargs={'id':self.id})
+        return reverse('jardinpartage:modifierCommentaireArticle',  kwargs={'id':self.id})
 
 
 class Projet(models.Model):
@@ -189,7 +188,7 @@ class Projet(models.Model):
         return self.titre
 
     def get_absolute_url(self):
-        return reverse('blog:lireProjet', kwargs={'slug':self.slug})
+        return reverse('jardinpartage:lireProjet', kwargs={'slug':self.slug})
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
@@ -212,12 +211,12 @@ def on_save_projet(instance, **kwargs):
               "\n Vous pouvez y accéder en suivant ce lien : https://permacat.herokuapp.com" + instance.get_absolute_url() + \
               "\n\n------------------------------------------------------------------------------" \
               "\n vous recevez cet email, car vous avez choisi de suivre cet article sur le site http://www.Perma.Cat/forum/projets/"
-    emails = [suiv.email for suiv in followers(instance)  if instance.auteur != suiv  and (instance.estPublic or suiv.is_permacat)]
+    emails = [suiv.email for suiv in followers(instance) if instance.auteur != suiv  and (instance.estPublic or suiv.is_permacat)]
 
     if emails:
         try:
             send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
-            mail_admins("pas d'erreur mails", titre + "\n" + message + "\n xxx \n" + str(emails))
+            #mail_admins("pas d'erreur mails", titre + "\n" + message + "\n xxx \n" + str(emails))
         except Exception as inst:
             mail_admins("erreur mails", inst)
 
@@ -236,7 +235,7 @@ def on_save_projets(instance, created, **kwargs):
         if emails:
             try:
                 send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
-                mail_admins("pas d'erreur mails", titre + "\n" + message + "\n xxx \n" + str(emails))
+                #mail_admins("pas d'erreur mails", titre + "\n" + message + "\n xxx \n" + str(emails))
             except Exception as inst:
                 mail_admins("erreur mails", inst)
 
@@ -254,7 +253,7 @@ def on_save_article(instance, **kwargs):
     if emails:
         try:
             send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
-            mail_admins("pas d'erreur mails", titre + "\n" + message + "\n xxx \n" + str(emails))
+            #mail_admins("pas d'erreur mails", titre + "\n" + message + "\n xxx \n" + str(emails))
         except Exception as inst:
             mail_admins("erreur mails", inst)
 

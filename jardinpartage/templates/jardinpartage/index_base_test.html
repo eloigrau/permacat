@@ -1,0 +1,126 @@
+{% extends 'base_forum.html' %}
+{% load static %}
+{% load blog_filters %}
+{% load fontawesome %}
+
+{% load activity_tags %}
+    {%block header %}
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/infinite.min.js' %}"></script>
+    {%endblock%}
+{%block subtitle%}
+<div class="row textcenter">
+    <div class="col-sm-12">
+        {% if request.GET.categorie  %}
+        <h3> Les articles de la catégorie :</h3>
+        {%else%}
+        <h3> Les articles du forum</h3>
+      {%endif%}
+    </div>
+</div>
+<div class="container-fluid">
+	<div class="row justify-content-center">
+			<nav class="navbar navbar-light bg-light">
+            <ul class="nav navbar-nav">
+                    <li class="nav-item dropdown">
+                <button class="btn btn-info dropdown-toggle btn-block" style="padding:25px 70px;" type="button" id="menuOffreOuDemande" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             {% if request.GET.categorie  %}
+
+                    <span class="scaps" >{{categorie_courante}}</span>
+      {%elif request.GET.permacat %}
+      Articles Permacat
+      {%elif request.GET.auteur %}
+      Articles de {{request.GET.auteur}}
+      {%elif typeFiltre == 'archives' %}
+      <span class="scaps" >Archives</span>
+        {%else%}
+        choisir une catégorie...
+      {%endif%}
+
+         </button>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        {% if categorie_courante %}
+        <a class=" dropdown-item " style="background:white;" href="{%url 'jardinpartage:index' %}">Tous les articles</a>
+
+        <div class="dropdown-divider"></div>
+         {% endif %}
+            {% for categorie_id, cat_nom, cat_coul in categorie_list %}
+            <a class=" dropdown-item " style="background:{{cat_coul}};" href="?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+            {% endfor %}
+    <div class="dropdown-divider"></div>
+                                                                <a class=" dropdown-item " style="background:grey;" href="?archives=True"><span>Archives</span></a>
+
+							</div>
+						</li>
+            </ul></nav></div>
+
+    </div>
+
+<hr>
+	<div class="row justify-content-center">
+			<nav class="navbar navbar-expand-md navbar-light bg-light">
+        <div class="navbar-header">
+             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarProduit" aria-controls="navbarProduitContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span></button>
+        </div>
+        <div class="collapse navbar-collapse " id="navbarProduit">
+            <ul class="nav navbar-nav mr-auto">
+                                <li class="nav-item dropdown active">
+                <button class="btn btn-light dropdown-toggle btn-block" type="button" id="menuOrdreTri" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     Trier par...
+                  </button>
+                <div class="dropdown-menu"  aria-labelledby="menuOrdreTri"  id="idOrdreTri">
+                    {% for titre, ordre in ordreTriPossibles.items %}
+                     <a class="dropdown-item"  href="?{{ request.GET.urlencode }}&ordreTri={{ordre}}">{{titre}}</a>
+                    {% endfor %}
+                </div>
+            </li>
+
+
+                <li class="nav-item dropdown active">
+                    <a  href="{% url 'jardinpartage:ajouterNouvelArticle'%}">
+                <button class="btn btn-success  " type="button" id="ajouterarticle" >
+                    <i class="fa fa-plus"></i> Ajouter un article
+                  </button>
+                </a>
+
+                            <li class="nav-item dropdown">
+                                    <a class="nav-item" href="{% url 'jardinpartage:suivre_articles' %}">
+
+        {% if request.user|is_following:suivis %}
+        <button type="button" class="btn btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné : Cliquez pour arreter de recevoir un mail à chaque nouvel article">
+             {% fontawesome_icon 'bell' %}
+        </button>
+        {% else %}
+        <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné : Cliquez pour recevoir un mail à chaque nouvel article">
+             {% fontawesome_icon 'bell-slash' %}
+        </button>
+        {% endif %}
+            </a>
+                            </li>
+                        </ul>
+	</div>
+            </nav>
+</div>
+</div>
+
+
+
+{%endblock%}
+{% block content %}
+
+<div class="infinite-container">
+    {% for article in article_list %}
+    <div class="infinite-item">
+            {% include "jardinpartage/article_template.html" with article=article %}
+    <hr>
+    </div>
+
+    {% endfor %}
+</div>
+{%include 'pagination.html' %}
+
+    {%if not request.user.is_permacat %}
+<p><small>(vous n'avez pas encore accès aux articles "Permacat"... Rejoignez-nous !)</small></p>
+    {%endif%}
+{% endblock %}

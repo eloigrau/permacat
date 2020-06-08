@@ -1,0 +1,18 @@
+
+{% load activity_tags %}
+{% load fontawesome %}
+<div class="card article_recherche " style="background-color:{{article.get_couleur}}">
+  <a href="{% url 'jardinpartage:lireArticle' slug=article.slug %}">
+    <div class="card-block textcenter" >
+        <div class="card-header">
+            <h4>{{ article.titre }}</h4>
+        <span class="badge {% if article.estPublic%}badge-warning{%else%} badge-success {%endif%}" data-toggle="tooltip" data-placement="bottom" title="Article {%if article.estPublic%}visible par tous les inscrits{%else%}visible par les membres de Permacat seulement{%endif%}">
+             {%if article.estPublic%} public{%else%}  Permacat  {%endif%}
+        </span>
+        </div>
+        <h6 class="card-subtitle mb-2 ">
+               <p class="text-muted"> Catégorie: <em>{{ article.get_categorie_display }}</em>, rédigé par {{ article.auteur }}, le {{ article.date_creation|date:"DATE_FORMAT" }} {%ifnotequal  article.date_creation article.date_modification %}(modifié le {{ article.date_modification|date:"DATE_FORMAT" }}){%endifnotequal%}</p>
+            </h6>
+    </div>
+  </a>
+</div>

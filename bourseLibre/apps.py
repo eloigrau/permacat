@@ -7,6 +7,7 @@ class BourseLibreConfig(AppConfig):
         from actstream import registry
         from django.contrib.auth.models import Group
         from blog.models import Article, Projet
+        from jardinpartage.models import Article as art_jardinpartage
         from ateliers.models import Atelier, InscriptionAtelier
         from fiches.models import Fiche, Atelier as fiche_at
         registry.register(self.get_model('Profil'))
@@ -27,5 +28,6 @@ class BourseLibreConfig(AppConfig):
         registry.register(Fiche)
         registry.register(fiche_at)
         registry.register(Article)
+        registry.register(art_jardinpartage)
         registry.register(Projet)
         registry.register(Group)
