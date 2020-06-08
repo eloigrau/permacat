@@ -63,7 +63,7 @@ class ModifierArticle(UpdateView):
         suffix = "_permacat" if self.object.estPublic else ""
         action.send(self.request.user, verb='article_modifier'+suffix, action_object=self.object, url=url,
                      description="a modifié l'article: '%s'" % self.object.titre)
-        envoi_emails_articleouprojet_modifie(self.object, "L'article " +  self.object.titre + "a été modifié")
+        envoi_emails_articleouprojet_modifie(self.object, "L'article " +  self.object.titre + "a été modifié", True)
         return HttpResponseRedirect(self.get_success_url())
 
 
@@ -103,7 +103,7 @@ def lireArticle(request, slug):
             suffix = "_permacat" if article.estPublic else ""
             action.send(request.user, verb='article_message'+suffix, action_object=article, url=url,
                         description="a réagi à l'article: '%s'" % article.titre)
-            envoi_emails_articleouprojet_modifie(article, request.user.username + " a réagit au projet: " +  article.titre)
+            envoi_emails_articleouprojet_modifie(article, request.user.username + " a réagit au projet: " +  article.titre, True)
         return redirect(request.path)
 
     return render(request, 'blog/lireArticle.html', {'article': article, 'form': form, 'commentaires':commentaires, 'dates':dates, 'actions':actions},)
@@ -227,7 +227,7 @@ class ModifierProjet(UpdateView):
         suffix = "_permacat" if self.object.estPublic else ""
         action.send(self.request.user, verb='projet_modifier'+suffix, action_object=self.object, url=url,
                      description="a modifié le projet: '%s'" % self.object.titre)
-        envoi_emails_articleouprojet_modifie(self.object, "Le projet " +  self.object.titre + "a été modifié")
+        envoi_emails_articleouprojet_modifie(self.object, "Le projet " +  self.object.titre + "a été modifié", False)
         return HttpResponseRedirect(self.get_success_url())
 
 class SupprimerProjet(DeleteView):
@@ -262,18 +262,18 @@ def lireProjet(request, slug):
         suffix = "_permacat" if projet.estPublic else ""
         action.send(request.user, verb='projet_message'+suffix, action_object=projet, url=url,
                     description="a réagit au projet: '%s'" % projet.titre)
-        envoi_emails_articleouprojet_modifie(projet, request.user.username + " a réagit au projet: " +  projet.titre)
+        envoi_emails_articleouprojet_modifie(projet, request.user.username + " a réagit au projet: " +  projet.titre, False)
         return redirect(request.path)
 
     return render(request, 'blog/lireProjet.html', {'projet': projet, 'form': form, 'commentaires':commentaires, 'actions':actions},)
 
-def envoi_emails_articleouprojet_modifie(articleOuProjet, message):
+def envoi_emails_articleouprojet_modifie(articleOuProjet, message, flag_article):
 
-    titre = "Permacat - Article actualisé" if articleOuProjet else "Permacat - Projet actualisé"
+    titre = "Permacat - Article actualisé" if flag_article else "Permacat - Projet actualisé"
     message =  message +\
               "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + articleOuProjet.get_absolute_url() + \
               "\n\n------------------------------------------------------------------------------" \
-              "\n Pour vous désabonner cliquez sur la cloche sur http://www.Perma.Cat/forum/articles/" if articleOuProjet else "\n Pour vous désabonner cliquez sur la cloche sur http://www.Perma.Cat/forum/projets/"
+              "\n Pour vous désabonner cliquez sur la cloche sur http://www.Perma.Cat/forum/articles/" if flag_article else "\n Pour vous désabonner cliquez sur la cloche sur http://www.Perma.Cat/forum/projets/"
    # emails = [(titre, message, SERVER_EMAIL, (suiv.email, )) for suiv in followers(instance)]
     emails = [suiv.email for suiv in followers(articleOuProjet)  if articleOuProjet.auteur != suiv  and (articleOuProjet.estPublic or suiv.is_permacat)]
 

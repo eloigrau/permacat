@@ -149,7 +149,7 @@ class Commentaire(models.Model):
 
     @property
     def get_edit_url(self):
-        return reverse('jardinpartage:modifierCommentaireArticle',  kwargs={'id':self.id})
+        return reverse('blog:modifierCommentaireArticle',  kwargs={'id':self.id})
 
 
 class Projet(models.Model):
@@ -188,7 +188,7 @@ class Projet(models.Model):
         return self.titre
 
     def get_absolute_url(self):
-        return reverse('jardinpartage:lireProjet', kwargs={'slug':self.slug})
+        return reverse('blog:lireProjet', kwargs={'slug':self.slug})
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
