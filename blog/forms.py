@@ -8,7 +8,7 @@ from django_summernote.widgets import SummernoteWidget, SummernoteWidgetBase, Su
 from django.urls import reverse
 from bourseLibre.settings import SUMMERNOTE_CONFIG as summernote_config
 from django.contrib.staticfiles.templatetags.staticfiles import static
-
+from django.utils.timezone import now
 
 
 class SummernoteWidgetWithCustomToolbar(SummernoteWidget):
