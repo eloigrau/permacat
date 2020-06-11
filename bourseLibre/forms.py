@@ -233,13 +233,12 @@ class ContactForm(forms.Form):
 
 
 class ContactMailForm(forms.Form):
+    email = forms.EmailField(label="Email")
     sujet = forms.CharField(max_length=100, label="Sujet",)
-
     msg = forms.CharField(label="Message", widget=SummernoteWidget)
     renvoi = forms.BooleanField(label="recevoir une copie",
                                      help_text="Cochez si vous souhaitez obtenir une copie du mail envoyé.", required=False
                                  )
-    email = forms.EmailField(label="Email")
 
 
 class MessageForm(forms.ModelForm):

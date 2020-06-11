@@ -10,7 +10,7 @@ from .forms import Produit_aliment_CreationForm, Produit_vegetal_CreationForm, P
     Produit_service_CreationForm, ContactForm, AdresseForm, ProfilCreationForm, MessageForm, MessageGeneralForm, \
     ProducteurChangeForm, MessageGeneralPermacatForm, MessageGeneralRTGForm, Produit_aliment_modifier_form, Produit_service_modifier_form, \
     Produit_objet_modifier_form, Produit_vegetal_modifier_form, ChercherConversationForm, InscriptionNewsletterForm, \
-    MessageChangeForm
+    MessageChangeForm, ContactMailForm
 from .models import Profil, Produit, Adresse, Choix, Panier, Item, get_categorie_from_subcat, Conversation, Message, \
     MessageGeneral, MessageGeneralPermacat, MessageGeneralRTG, getOrCreateConversation, Suivis, InscriptionNewsletter
 from django.contrib.auth.decorators import login_required
@@ -410,38 +410,36 @@ def profil_contact(request, user_id):
 
 
 def contact_admins(request):
-    if request.method == 'POST':
-        if request.user.is_anonymous:
-            form = ContactMailForm(request.POST or None, )
-        else:
-            form = ContactForm(request.POST or None, )
-
-        if form.is_valid():
-
-            if request.user.is_anonymous:
-                envoyeur = "Anonyme : " + form.cleaned_data['email']
-            else:
-                envoyeur = request.user.username + " (" + request.user.email + ") "
-            sujet = form.cleaned_data['sujet']
-            message_txt = envoyeur + " a envoyé le message suivant : "
-            message_html = form.cleaned_data['msg']
-            try:
-                mail_admins(sujet, message_txt, html_message=message_html)
-                if form.cleaned_data['renvoi']:
-                    if request.user.is_anonymous:
-                        send_mail(sujet, "Vous avez envoyé aux administrateurs du site www.perma.cat le message suivant : " + message_html, form.cleaned_data['email'], [form.cleaned_data['email'],], fail_silently=False, html_message=message_html)
-                    else:
-                        send_mail(sujet, "Vous avez envoyé aux administrateurs du site www.perma.cat le message suivant : " + message_html, request.user.email, [request.user.email,], fail_silently=False, html_message=message_html)
-
-                return render(request, 'contact/message_envoye.html', {'sujet': sujet, 'msg': message_html,
-                                                       'envoyeur': envoyeur ,
-                                                       "destinataire": "administrateurs "})
-            except BadHeaderError:
-                return render(request, 'erreur.html', {'msg':'Invalid header found.'})
-
-            return render(request, 'erreur.html', {'msg':"Désolé, une ereur s'est produite"})
+    if request.user.is_anonymous:
+        form = ContactMailForm(request.POST or None, )
     else:
-        form = ContactForm()
+        form = ContactForm(request.POST or None, )
+
+    if form.is_valid():
+
+        if request.user.is_anonymous:
+            envoyeur = "Anonyme : " + form.cleaned_data['email']
+        else:
+            envoyeur = request.user.username + " (" + request.user.email + ") "
+        sujet = form.cleaned_data['sujet']
+        message_txt = envoyeur + " a envoyé le message suivant : "
+        message_html = form.cleaned_data['msg']
+        try:
+            mail_admins(sujet, message_txt, html_message=message_html)
+            if form.cleaned_data['renvoi']:
+                if request.user.is_anonymous:
+                    send_mail(sujet, "Vous avez envoyé aux administrateurs du site www.perma.cat le message suivant : " + message_html, form.cleaned_data['email'], [form.cleaned_data['email'],], fail_silently=False, html_message=message_html)
+                else:
+                    send_mail(sujet, "Vous avez envoyé aux administrateurs du site www.perma.cat le message suivant : " + message_html, request.user.email, [request.user.email,], fail_silently=False, html_message=message_html)
+
+            return render(request, 'contact/message_envoye.html', {'sujet': sujet, 'msg': message_html,
+                                                   'envoyeur': envoyeur ,
+                                                   "destinataire": "administrateurs "})
+        except BadHeaderError:
+            return render(request, 'erreur.html', {'msg':'Invalid header found.'})
+
+        return render(request, 'erreur.html', {'msg':"Désolé, une ereur s'est produite"})
+
     return render(request, 'contact/contact.html', {'form': form, "isContactProducteur":False})
 
 
