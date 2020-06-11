@@ -411,20 +411,27 @@ def profil_contact(request, user_id):
 
 def contact_admins(request):
     if request.method == 'POST':
-        form = ContactForm(request.POST or None, )
+        if request.user.is_anonymous:
+            form = ContactMailForm(request.POST or None, )
+        else:
+            form = ContactForm(request.POST or None, )
+
         if form.is_valid():
 
             if request.user.is_anonymous:
-                envoyeur = "Anonyme"
+                envoyeur = "Anonyme : " + form.cleaned_data['email']
             else:
-                envoyeur = request.user.username + "(" + request.user.email + ") "
+                envoyeur = request.user.username + " (" + request.user.email + ") "
             sujet = form.cleaned_data['sujet']
             message_txt = envoyeur + " a envoyé le message suivant : "
             message_html = form.cleaned_data['msg']
             try:
                 mail_admins(sujet, message_txt, html_message=message_html)
                 if form.cleaned_data['renvoi']:
-                    send_mail(sujet, "Vous avez envoyé aux administrateurs du site www.perma.cat le message suivant : " + message_html, request.user.email, [request.user.email,], fail_silently=False, html_message=message_html)
+                    if request.user.is_anonymous:
+                        send_mail(sujet, "Vous avez envoyé aux administrateurs du site www.perma.cat le message suivant : " + message_html, form.cleaned_data['email'], [form.cleaned_data['email'],], fail_silently=False, html_message=message_html)
+                    else:
+                        send_mail(sujet, "Vous avez envoyé aux administrateurs du site www.perma.cat le message suivant : " + message_html, request.user.email, [request.user.email,], fail_silently=False, html_message=message_html)
 
                 return render(request, 'contact/message_envoye.html', {'sujet': sujet, 'msg': message_html,
                                                        'envoyeur': envoyeur ,

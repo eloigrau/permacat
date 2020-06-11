@@ -37,7 +37,7 @@ def ajouterArticle(request):
             url = article.get_absolute_url()
             suffix = "" if article.estPublic else "_permacat"
             action.send(request.user, verb='article_nouveau'+suffix, action_object=article, url=url,
-                        description="a ajouté un article : '%s'" % article.titre)
+                        description="a ajouté un article : (Jardins Partagés) '%s'" % article.titre)
             return redirect(article.get_absolute_url())
             #return render(request, 'jardinpartage/lireArticle.html', {'article': article})
     except Exception as inst:
@@ -62,7 +62,7 @@ class ModifierArticle(UpdateView):
         url = self.object.get_absolute_url()
         suffix = "_permacat" if self.object.estPublic else ""
         action.send(self.request.user, verb='article_modifier'+suffix, action_object=self.object, url=url,
-                     description="a modifié l'article : (Jardins Partagés)'%s'" % self.object.titre)
+                     description="a modifié l'article : (Jardins Partagés) '%s'" % self.object.titre)
         envoi_emails_articleouprojet_modifie(self.object, "L'article " +  self.object.titre + "a été modifié")
         return HttpResponseRedirect(self.get_success_url())
 
