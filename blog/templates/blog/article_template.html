@@ -18,7 +18,13 @@
          {% fontawesome_icon 'bell-slash' %}
     </span>
     {% endif %}
-      <p class="textsmall "> {% if article.start_time %} date prévue: le {{ article.start_time|date:"DATE_FORMAT" }}{% endif %} </p>
+      <p class="textsmall "> {% if article.start_time %}
+          {% if article.end_time %}
+          du {{ article.start_time|date:"DATE_FORMAT" }} au {{ article.end_time|date:"DATE_FORMAT" }}
+          {%else%}
+          le {{ article.start_time|date:"DATE_FORMAT" }}
+          {% endif %}
+          {% endif %} </p>
   </p>
         <p class="card-subtitle mb-2 ">
       <p class="text-muted textsmall"> rédigé par {{ article.auteur }}, le {{ article.date_creation|date:"DATE_FORMAT" }} {%ifnotequal  article.date_creation article.date_modification %}(dernière modification le {{ article.date_modification|date:"DATE_FORMAT" }}){%endifnotequal%}</p>

@@ -673,6 +673,8 @@ def cgu(request):
 def liens(request):
     liens = [
         'https://www.balotilo.org/',
+        'http://terre-avenirs-peyrestortes.org/',
+        'http://www.peyrestroc.org',
         'http://sel66.free.fr',
         'https://colibris-universite.org/mooc-permaculture/wakka.php?wiki=PagePrincipale',
         'https://ecocharte.herokuapp.com',
