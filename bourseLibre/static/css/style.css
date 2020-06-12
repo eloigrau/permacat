@@ -274,10 +274,10 @@ section.p3 {
 }
 
 .bs-dark .nav5 > a:hover {
-    background-color: #00FF55;
+    background-color: #4dffb8;
 }
 .bs-dark .nav5 > a:focus {
-    background-color: #00FF55;
+    background-color: #4dffb8;
 }
 .nav5-dropdown{
     background-color: #66ff99;
@@ -296,16 +296,13 @@ section.p3 {
     background-color: #00FFE9;
 }
 .nav6-dropdown{
-    background-color: #80fff4;
-}
-.nav5-dropdown{
-    background-color: #66ff99;
+    background-color: #b3fff9;
 }
 .cardH6{
-    background-color: #80fff4;
+    background-color: #00FFE9;
 }
 .card6 > li{
-    background-color: #66ff99;
+    background-color: #b3fff9;
 }
 
 .bs-dark .nav7 > a:hover {
