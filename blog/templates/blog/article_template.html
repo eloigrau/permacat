@@ -27,7 +27,7 @@
           {% endif %} </p>
   </p>
         <p class="card-subtitle mb-2 ">
-      <p class="text-muted textsmall"> le {{ article.date_creation|date:"DATE_FORMAT" }} {%ifnotequal  article.date_creation article.date_modification %}(dernière modification le {{ article.date_modification|date:"DATE_FORMAT" }}){%endifnotequal%}</p>
+      <p class="text-muted textsmall"> Posté le {{ article.date_creation|date:"DATE_FORMAT" }} {%ifnotequal  article.date_creation article.date_modification %}(dernière modification le {{ article.date_modification|date:"DATE_FORMAT" }}){%endifnotequal%}</p>
   </div>
   </a>
 </div>
