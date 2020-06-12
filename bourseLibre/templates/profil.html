@@ -7,11 +7,13 @@
 {% leaflet_js %}
 {% leaflet_css %}
 {%endblock%}
-{% block title %}Profil de {{ user.username }} {% endblock %}
+{% block title %}{% if request.user == user.username %} Mon Profil {% else %}{{request.user}},{{user.username}}Profil de {{ user.username }} {% endif %}
+{% endblock %}
 {% block subtitle %}
 <div class="row">
   <div class="col-md-12 textcenter">
-    <h4> Profil de {{ user.username }}    </h4>
+    <h3> {% if request.user.username == user.username %} Mon Profil {% else %}Profil de {{ user.username }} {% endif %}
+    </h3>
   </div>
   </div>
 
@@ -44,6 +46,7 @@
             </a>
     </div>
   </div>
+<hr>
 {% if  user.username == request.user.username %}
 {% if nbExpires %}
 <hr>
@@ -189,7 +192,7 @@
         {% endif %}
     </tbody>
     </table>
-      <small> {% if  request.user == user %}Les champs notés par un ^ ne sont visibles que par vous. {%endif%}Les champs notés par un * ne sont visibles que par les membres "permacat"</small>
+      <small> {% if  request.user == user %}Les champs notés par un ^ ne sont visibles que par vous et l'administrateur du site. {%endif%}Les champs notés par un * ne sont visibles que par les membres "permacat"</small>
   </div>
 
   <div class="col-md-6">

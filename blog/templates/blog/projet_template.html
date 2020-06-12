@@ -1,8 +1,10 @@
 
 {% load activity_tags %}
 {% load fontawesome %}
-<div class="card projet textcenter" style="background-color:{{projet.get_couleur}}">
+<div class="card article_carte textcenter" style="background-color:{{projet.get_couleur}}">
   <a href="{% url 'blog:lireProjet' slug=projet.slug %}">
+      <div class="article-card-header smallcaps_h ">{{ projet.get_statut_display }}</div>
+  <div class="card-body">
         <h4>
             {{ projet.titre }}</h4>
         <span class="badge {% if projet.estPublic%}badge-warning{%else%} badge-success {%endif%}" data-toggle="tooltip" data-placement="bottom" title="Projet {%if projet.estPublic%}visible par tous les inscrits{%else%}visible par les membres de Permacat seulement{%endif%}">
@@ -19,4 +21,5 @@
             {% endif %}
             <p class="text-muted textsmall">Catégorie: <em>{{ projet.get_categorie_display }}</em>, le {{ projet.date_creation|date:"DATE_FORMAT" }} {%ifnotequal  article.date_creation article.date_modification %} (modifié le  {{ projet.date_modification|date:"DATE_FORMAT" }} {%endifnotequal%}</p>
   </a>
+</div>
 </div>

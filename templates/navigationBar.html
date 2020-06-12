@@ -114,12 +114,6 @@
             <ul class="dropdown-menu dropdown-menu1 nav7-dropdown" aria-labelledby="navbarDropdownMenuLink">
                <li> <a class="dropdown-item" href="{% url 'profil_courant' %}">Mon profil</a></li>
                 <li class="divider" role="separator"></li>
-               <li> <a class="dropdown-item" href="{% url 'panier_afficher' %}">Mon panier</a></li>
-                <li> <a class=" dropdown-item" href="{% url 'marche' %}?producteur={{ user.username }}">Mes annonces</a></li>
-               <li> <a class="dropdown-item" href="{% url 'afficher_requetes' %}">Mes requêtes</a></li>
-                <li class="divider" role="separator"></li>
-                 <li><a class="dropdown-item" href="{% url 'conversations' %}">Mes conversations</a></li>
-                <li class="divider" role="separator"></li>
                <li> <a class="dropdown-item" href="{% url 'logout' %}">Se déconnecter</a></li>
             </ul>
         </li>
