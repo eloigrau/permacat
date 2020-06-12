@@ -12,7 +12,7 @@
             </span>
         </div>
         <h6 class="card-subtitle mb-2 text-muted">
-            <p class="text-muted">Catégorie: <em>{{ projet.get_categorie_display }}</em>, rédigé par {{ projet.auteur }}, le {{ projet.date_creation|date:"DATE_FORMAT" }} {%ifnotequal  article.date_creation article.date_modification %} (modifié le  {{ projet.date_modification|date:"DATE_FORMAT" }} {%endifnotequal%}</p>
+            <p class="text-muted">Catégorie: <em>{{ projet.get_categorie_display }}</em>, le {{ projet.date_creation|date:"DATE_FORMAT" }} {%ifnotequal  article.date_creation article.date_modification %} (modifié le  {{ projet.date_modification|date:"DATE_FORMAT" }} {%endifnotequal%}</p>
         </h6>
     </div>
   </a>

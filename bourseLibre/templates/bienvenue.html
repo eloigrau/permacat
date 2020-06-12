@@ -12,7 +12,7 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-6 col-sm-12">
+	<div class="col-md-6 col-sm-12 my-auto">
 		<div class="row textcenter">
 			<div class="col">
 				<a  href="{% url 'gallerie' %}" ><img class="imgbienvenue" src="{{STATIC_URL}}{{nomImage}}" alt="gallerie" ></a>
@@ -58,6 +58,18 @@
 					<div class="row" >
 					  <div class="col-sm-12 textcenter">
 						  <b><a href="{% url 'cal:agenda' %}">{% fontawesome_icon 'calendar' %} Agenda</a></b>
+					  </div>
+					</div>
+					<hr>
+					<div class="row" >
+					  <div class="col-sm-12 textcenter">
+						  <b><a href="{% url 'blog:index' %}">{% fontawesome_icon 'comments' %} Forum</a></b>
+					  </div>
+					</div>
+					<hr>
+					<div class="row" >
+					  <div class="col-sm-12 textcenter">
+						  <b><a href="{% url 'jardinpartage:index' %}">{% fontawesome_icon 'pagelines' %} Jardins Partagés</a></b>
 					  </div>
 					</div>
 
