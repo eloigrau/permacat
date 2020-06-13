@@ -4,12 +4,18 @@
 <div class="row justify-content-center">
 <div class="col-sm-12 col-md-10 col-lg-6 textcenter justify-content-center">
         <p>Les articles concernant le jardin partagé ne sont acccessibles qu'à ceux qui y participent. </p>
+    <hr>
     <p>Voulez-vous participer (de près ou de loin) aux jardins partagés ?</p>
 
 <form action="" method="post">{% csrf_token %}
     <input type="submit" value="Oui" />
         <input type="button"  onclick="window.history.back();"  value="Non" />
 </form>
+    <hr>
+    <p class="textpetit">Si vous acceptez, vous serez automatiquement "abonné" aux nouveaux articles concernant les jardins partagés. N'oubliez pas de vous désabonner si vous ne voulez pas recevoir ces emails en cliquant sur la "cloche"</p>
+        <p class="textpetit">Vous pourrez ultérieurement vous désinscrire des jardins partagés en modifiant votre profil, si vous ne souhaitez plus participer</p>
+
+
 </div>
 </div>
 
