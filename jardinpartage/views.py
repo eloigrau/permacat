@@ -322,6 +322,9 @@ def accepter_participation(request):
     if form.is_valid():
         request.user.is_jardinpartage = True
         request.user.save()
+        suivi, created = Suivis.objects.get_or_create(nom_suivi = 'articles_jardin')
+        actions.follow(request.user, suivi, actor_only=True)
+
         return redirect(reverse('jardinpartage:index'))
 
     return render(request, 'jardinpartage/accepterParticipation.html', {'form': form, })
