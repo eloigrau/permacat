@@ -8,6 +8,7 @@
 <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
 <script src="{% static 'js/infinite.min.js' %}"></script>
     {%endblock%}
+{% block title %} - Forum {% endblock  %}
 {%block subtitle%}
 
 <div class="container-fluid">
@@ -92,6 +93,15 @@
         {% endif %}
             </a>
                             </li>
+             {% if request.user.is_superuser %}
+                <li class="nav-item">
+                <a href="{% url 'blog:suiveursArticles' %}">
+                    <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom" title="Voir abonnés">
+                         {% fontawesome_icon 'eye' %}
+                    </button>
+                </a>
+                </li>
+            {% endif %}
                         </ul>
 </div>
 			</nav>

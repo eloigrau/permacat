@@ -439,6 +439,12 @@ def articles_suivis(request, slug):
     suiveurs = followers(article)
     return render(request, 'blog/articles_suivis.html', {'suiveurs': suiveurs, "article":article, })
 
+@login_required
+def articles_suiveurs(request):
+    suivi, created = Suivis.objects.get_or_create(nom_suivi = 'articles')
+    suiveurs = followers(suivi)
+    return render(request, 'blog/articles_suivis.html', {'suiveurs': suiveurs, })
+
 
 @login_required
 @csrf_exempt

@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from . import views
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 app_name = 'jardinpartage'
 
@@ -27,8 +27,10 @@ urlpatterns = [
     # url(r'^article/(?P<slug>.+)$', views.lire, name='lire'),
 
     url(r'^article/(?P<slug>[-\w]+)$', views.lireArticle, name='lireArticle'),
+    url(r'^accepter_participation$', views.accepter_participation, name='accepter_participation'),
     url(r'^modifierArticle/(?P<slug>[-\w]+)$', login_required(views.ModifierArticle.as_view(), login_url='/auth/login/'), name='modifierArticle'),
     url(r'^suiveursArticle/(?P<slug>[-\w]+)$', views.articles_suivis, name='suiveursArticle'),
+    url(r'^suiveursArticles/$', views.articles_suiveurs, name='suiveursArticles'),
     url(r'^supprimerArticle/(?P<slug>[-\w]+)$', login_required(views.SupprimerArticle.as_view(), login_url='/auth/login/'), name='supprimerArticle'),
     url(r'^ajouterArticle/$', login_required(views.ajouterArticle), name='ajouterNouvelArticle'),
 

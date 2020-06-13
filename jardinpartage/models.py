@@ -152,3 +152,5 @@ class Commentaire(models.Model):
     def get_edit_url(self):
         return reverse('jardinpartage:modifierCommentaireArticle',  kwargs={'id':self.id})
 
+class Participation(models.Model):
+    participe = models.BooleanField(verbose_name="Je suis intéressé.e par les jardins partagés", default=False)

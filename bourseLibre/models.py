@@ -160,6 +160,7 @@ class Profil(AbstractUser):
     cotisation_a_jour = models.BooleanField(verbose_name="Cotisation à jour", default=False)
     accepter_conditions = models.BooleanField(verbose_name="J'ai lu et j'accepte les conditions d'utilisation du site", default=False, null=False)
     accepter_annuaire = models.BooleanField(verbose_name="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous", default=True)
+    is_jardinpartage = models.BooleanField(verbose_name="Je suis intéressé.e par les jardins partagés", default=False)
 
     date_notifications = models.DateTimeField(verbose_name="Date de validation des notifications",default=now)
     #device_registration_id =  models.CharField(_('device reg id'), blank=True, default=None, null=True, max_length=100)

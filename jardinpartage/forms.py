@@ -1,5 +1,5 @@
 from django import forms
-from .models import Article, Commentaire, Evenement
+from .models import Article, Commentaire, Evenement, Participation
 from django.utils.text import slugify
 import itertools
 #from django.utils.formats import localize
@@ -187,3 +187,10 @@ class EvenementArticleForm(forms.ModelForm):
         if not Evenement.objects.filter(start_time=instance.start_time, article=article):
             instance.save()
         return instance
+
+
+
+class accepterParticipationForm(forms.ModelForm):
+    class Meta:
+        model = Participation
+        fields = ['participe']

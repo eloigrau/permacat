@@ -9,6 +9,7 @@
 <script src="{% static 'js/infinite.min.js' %}"></script>
     {%endblock%}
 {% comment %}
+{% block title %} - Forum {% endblock  %}
 {%block subtitle_2%}
 <p>
   <a class="btn {% if request.GET.categorie  %}btn-warning{%else%}btn-primary{%endif%}" style="min-width:180px;" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">

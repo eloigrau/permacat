@@ -46,3 +46,7 @@ def translate_month(yearname):
         return Constantes.dicoMois[yearname]
     except:
         return yearname
+
+@register.filter(name='translateOuiNon')
+def translateOuiNon(truefalse):
+    return "Oui" if truefalse else "Non"

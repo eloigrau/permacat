@@ -1,5 +1,5 @@
 {% extends 'base_ateliers.html' %}
-{% block title %}Supprimer la fiche{% endblock %}
+{% block title %} - Supprimer la fiche{% endblock %}
 {% block content %}
 <form action="" method="post">{% csrf_token %}
     <p>Etes vous sur.e de vouloir supprimer l'atelier "{{ fiche.titre }}"?</p>

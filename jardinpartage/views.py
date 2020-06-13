@@ -1,21 +1,23 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect, reverse
 from django.urls import reverse_lazy
 from django.utils.html import strip_tags
 from .models import Article, Commentaire, Choix, Evenement
 from .forms import ArticleForm, CommentaireArticleForm, CommentaireArticleChangeForm, ArticleChangeForm, \
-     EvenementForm, EvenementArticleForm
-from django.contrib.auth.decorators import login_required
+     EvenementForm, EvenementArticleForm,accepterParticipationForm
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.generic import ListView, UpdateView, DeleteView
 from actstream import actions, action
 from actstream.models import followers, following, action_object_stream
 from django.core.mail import send_mass_mail, mail_admins
 from django.utils.timezone import now
 from bourseLibre.settings import SERVER_EMAIL
+from bourseLibre.models import Profil
 
 #from django.contrib.contenttypes.models import ContentType
 from bourseLibre.models import Suivis
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.mixins import UserPassesTestMixin
 import sys
 
 # @login_required
@@ -24,11 +26,16 @@ import sys
 #     articles = Article.objects.all().order_by('-date_dernierMessage')  # Nous sélectionnons tous nos articles
 #     return render(request, 'jardinpartage/forum.html', {'derniers_articles': articles })
 
+def is_inscrit(user):
+    return user.is_jardinpartage
+
+@user_passes_test(is_inscrit, login_url='/jardins/accepter_participation')
 def accueil(request):
     return render(request, 'jardinpartage/accueil.html')
 
 
 @login_required
+@user_passes_test(is_inscrit, login_url='/jardins/accepter_participation')
 def ajouterArticle(request):
     try:
         form = ArticleForm(request.POST or None)
@@ -73,12 +80,14 @@ class SupprimerArticle(DeleteView):
     template_name_suffix = '_supprimer'
 #    fields = ['user','site_web','description', 'competences', 'adresse', 'avatar', 'inscrit_newsletter']
 
+    @user_passes_test(is_inscrit, login_url='/jardins/accepter_participation')
     def get_object(self):
         return Article.objects.get(slug=self.kwargs['slug'])
 
 
 
 @login_required
+@user_passes_test(is_inscrit, login_url='/jardins/accepter_participation')
 def lireArticle(request, slug):
     article = get_object_or_404(Article, slug=slug)
     if not article.estPublic and not request.user.is_permacat:
@@ -109,16 +118,22 @@ def lireArticle(request, slug):
     return render(request, 'jardinpartage/lireArticle.html', {'article': article, 'form': form, 'commentaires':commentaires, 'dates':dates, 'actions':actions},)
 
 @login_required
+@user_passes_test(is_inscrit, login_url='/jardins/accepter_participation')
 def lireArticle_id(request, id):
     article = get_object_or_404(Article, id=id)
     return lireArticle(request, slug=article.slug)
 
-
-class ListeArticles(ListView):
+class ListeArticles(UserPassesTestMixin, ListView):
     model = Article
     context_object_name = "article_list"
     template_name = "jardinpartage/index.html"
     paginate_by = 30
+
+    def test_func(self):
+        return is_inscrit(self.request.user)
+
+    def handle_no_permission(self):
+        return redirect('jardinpartage:accepter_participation')
 
     def get_queryset(self):
         params = dict(self.request.GET.items())
@@ -214,6 +229,7 @@ def envoi_emails_articleouprojet_modifie(articleOuProjet, message):
 
 @login_required
 @csrf_exempt
+@user_passes_test(is_inscrit, login_url='/jardins/accepter_participation')
 def suivre_article(request, slug, actor_only=True):
     """
     """
@@ -226,6 +242,7 @@ def suivre_article(request, slug, actor_only=True):
     return redirect(article)
 
 @login_required
+@user_passes_test(is_inscrit, login_url='/jardins/accepter_participation')
 def articles_suivis(request, slug):
     article = Article.objects.get(slug=slug)
     suiveurs = followers(article)
@@ -233,7 +250,16 @@ def articles_suivis(request, slug):
 
 
 @login_required
+def articles_suiveurs(request):
+    suivi, created = Suivis.objects.get_or_create(nom_suivi = 'articles_jardin')
+    inscrits = Profil.objects.filter(is_jardinpartage=True)
+    suiveurs = followers(suivi)
+    return render(request, 'jardinpartage/articles_suivis.html', {'suiveurs': suiveurs, 'inscrits':inscrits})
+
+
+@login_required
 @csrf_exempt
+@user_passes_test(is_inscrit, login_url='/jardins/accepter_participation')
 def suivre_articles(request, actor_only=True):
     suivi, created = Suivis.objects.get_or_create(nom_suivi = 'articles_jardin')
 
@@ -253,6 +279,7 @@ class ModifierCommentaireArticle(UpdateView):
     def get_object(self):
         return Commentaire.objects.get(id=self.kwargs['id'])
 
+    @user_passes_test(is_inscrit, login_url='/jardins/accepter_participation')
     def form_valid(self, form):
         self.object = form.save()
         if self.object.commentaire and self.object.commentaire !='<br>':
@@ -264,6 +291,7 @@ class ModifierCommentaireArticle(UpdateView):
 
 
 @login_required
+@user_passes_test(is_inscrit, login_url='/jardins/accepter_participation')
 def ajouterEvenement(request, date=None):
     if date:
         form = EvenementForm(request.POST or None, initial={'start_time': date})
@@ -279,6 +307,7 @@ def ajouterEvenement(request, date=None):
 
 
 @login_required
+@user_passes_test(is_inscrit, login_url='/jardins/accepter_participation')
 def ajouterEvenementArticle(request, id):
     form = EvenementArticleForm(request.POST or None)
 
@@ -287,3 +316,12 @@ def ajouterEvenementArticle(request, id):
         return lireArticle_id(request, id)
 
     return render(request, 'jardinpartage/ajouterEvenement.html', {'form': form, })
+
+def accepter_participation(request):
+    form = accepterParticipationForm(request.POST or None)
+    if form.is_valid():
+        request.user.is_jardinpartage = True
+        request.user.save()
+        return redirect(reverse('jardinpartage:index'))
+
+    return render(request, 'jardinpartage/accepterParticipation.html', {'form': form, })

@@ -1,7 +1,15 @@
 {% extends 'base.html' %}
 {% load activity_tags %}
 {% block subtitle %}
-<h4 class = "textcenter "> Article : <a href="{{article.get_absolute_url}}" >{{article.titre}}</a>
+
+<h4 class = "textcenter ">
+
+{% if article %}
+  Article : <a href="{{article.get_absolute_url}}" >{{article.titre}}</a>
+{% else %}
+  Abonnés du forum
+{% endif %}
+
 </h4>
 
 {% endblock %}

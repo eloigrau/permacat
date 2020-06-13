@@ -1,0 +1,17 @@
+{% extends 'jardinpartage/baseBlog.html' %}
+{% block content %}
+
+<div class="row justify-content-center">
+<div class="col-sm-12 col-md-10 col-lg-6 textcenter justify-content-center">
+        <p>Les articles concernant le jardin partagé ne sont acccessibles qu'à ceux qui y participent. </p>
+    <p>Voulez-vous participer (de près ou de loin) aux jardins partagés ?</p>
+
+<form action="" method="post">{% csrf_token %}
+    <input type="submit" value="Oui" />
+        <input type="button"  onclick="window.history.back();"  value="Non" />
+</form>
+</div>
+</div>
+
+{% endblock %}
+
