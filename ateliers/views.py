@@ -67,7 +67,7 @@ def inscriptionAtelier(request, slug):
     inscript = InscriptionAtelier(user=request.user, atelier=atelier)
     inscript.save()
     action.send(request.user, verb='atelier_inscription', action_object=atelier, url=atelier.get_absolute_url(),
-                 description="s'est inscrit à l'atelier: '%s'" % atelier.titre)
+                 description="s'est inscrit.e à l'atelier: '%s'" % atelier.titre)
     messages.info(request, 'Vous êtes bien inscrit à cet atelier !')
     return redirect(atelier.get_absolute_url())
 

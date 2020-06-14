@@ -325,7 +325,7 @@ def accepter_participation(request):
         suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_jardin')
         actions.follow(request.user, suivi, actor_only=True)
         action.send(request.user, verb='inscription', url=request.user.get_absolute_url(),
-                    description="s'est inscrit aux jardins partagés")
+                    description="s'est inscrit.e aux jardins partagés")
 
         return redirect(reverse('jardinpartage:index'))
 
