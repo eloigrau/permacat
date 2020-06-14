@@ -251,6 +251,8 @@ def create_user_profile(sender, instance, created, **kwargs):
         Panier.objects.create(user=instance)
     elif created:
         instance.is_active=False
+        action.send(instance, verb='inscription', url=instance.get_absolute_url(),
+                    description="s'est inscrit sur le site")
 
 
 class Adhesion_permacat(models.Model):
