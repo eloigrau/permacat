@@ -865,9 +865,9 @@ def getNotifications(request):
     projets = [art for i, art in enumerate(projets) if i == 0 or not (art.description == projets[i-1].description and art.actor == projets[i-1].actor ) ][:nbNotif]
     salons = [art for i, art in enumerate(salons) if i == 0 or not (art.description == salons[i-1].description and art.actor == salons[i-1].actor ) ][:nbNotif]
     offres = [art for i, art in enumerate(offres) if i == 0 or not (art.description == offres[i-1].description and art.actor == offres[i-1].actor ) ][:nbNotif]
+    inscription = Action.objects.filter(Q(verb='inscription') )
 
-
-    return salons, articles, projets, offres, conversations, fiches, ateliers
+    return salons, articles, projets, offres, conversations, fiches, ateliers, inscription
 
 @login_required
 def getNotificationsParDate(request):
@@ -878,7 +878,8 @@ def getNotificationsParDate(request):
             Q(verb='article_modifier')| Q(verb='article_modifier_permacat')|Q(verb='projet_nouveau_permacat') |
             Q(verb='projet_message_permacat')|Q(verb='projet_nouveau') | Q(verb='projet_message')| Q(verb='projet_modifier')|
             Q(verb='projet_modifier_permacat')|Q(verb__startswith='fiche')|Q(verb__startswith='atelier')|
-            Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)
+            Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)|
+            Q(verb='inscription') \
         ).order_by('-timestamp')
     else:
         actions      = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_permacat')|
@@ -886,7 +887,7 @@ def getNotificationsParDate(request):
                                              Q(verb='article_modifier')|Q(verb='projet_nouveau') |
                                              Q(verb='projet_message')| Q(verb='projet_modifier')|
                                              Q(verb='ajout_offre')|Q(verb__startswith='fiche')|
-                                             Q(verb__startswith='atelier')|
+                                             Q(verb__startswith='atelier')|Q(verb='inscription') |
                                                 Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)
         ).order_by('-timestamp')
 
@@ -911,8 +912,8 @@ def get_notifications_news(request):
 
 @login_required
 def notifications(request):
-    salons, articles, projets, offres, conversations, fiches, ateliers = getNotifications(request)
-    return render(request, 'notifications/notifications.html', {'salons': salons, 'articles': articles,'projets': projets, 'offres':offres, 'conversations':conversations, 'fiches':fiches, 'ateliers':ateliers})
+    salons, articles, projets, offres, conversations, fiches, ateliers, inscriptions = getNotifications(request)
+    return render(request, 'notifications/notifications.html', {'salons': salons, 'articles': articles,'projets': projets, 'offres':offres, 'conversations':conversations, 'fiches':fiches, 'ateliers':ateliers, 'inscriptions':inscriptions})
 
 @login_required
 def notifications_news(request):

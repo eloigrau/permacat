@@ -322,8 +322,10 @@ def accepter_participation(request):
     if form.is_valid():
         request.user.is_jardinpartage = True
         request.user.save()
-        suivi, created = Suivis.objects.get_or_create(nom_suivi = 'articles_jardin')
+        suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_jardin')
         actions.follow(request.user, suivi, actor_only=True)
+        action.send(request.user, verb='inscription', url=request.user.get_absolute_url(),
+                    description="s'est inscrit aux jardins partagés")
 
         return redirect(reverse('jardinpartage:index'))
 
