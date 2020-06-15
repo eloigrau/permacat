@@ -30,7 +30,7 @@ def ajouterVotation(request):
             url = votation.get_absolute_url()
             suffix = "" if votation.estPublic else "_permacat"
             action.send(request.user, verb='votation_nouveau'+suffix, action_object=votation, url=url,
-                        description="a ajouté une votation : (Jardins Partagés) '%s'" % votation.titre)
+                        description="a ajouté une votation : '%s'" % votation.titre)
             return redirect(votation.get_absolute_url())
 
     except Exception as inst:
@@ -108,6 +108,11 @@ def lireVotation(request, slug):
             votation.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(strip_tags(comment.commentaire).replace('&nspb',' ')))[:96] + "..."
             votation.save()
             comment.save()
+            url = votation.get_absolute_url() + "#idConversation"
+            suffix = "_permacat" if votation.estPublic else ""
+            action.send(request.user, verb='article_message' + suffix, action_object=votation, url=url,
+                        description="a réagi à la votation: '%s'" % votation.titre)
+
         return redirect(request.path)
 
     return render(request, 'vote/lireVotation.html', {'votation': votation, 'form': form, 'commentaires':commentaires, 'actions':actions, 'vote':vote},)

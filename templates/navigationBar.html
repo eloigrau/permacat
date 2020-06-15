@@ -54,8 +54,10 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu1 nav3-dropdown" aria-labelledby="navbarDropdownMenuLink">
                     <li><a class="dropdown-item" href="{% url 'blog:index_projets' %}"><i class='fa fa-paper-plane iconleft' ></i>  Projets </a></li>
-                    <li><a class="dropdown-item" href="{% url 'vote:index' %}"><i class="fas fa-vote-yea"></i>  Votes </a></li>
 
+{% if user.is_permacat %}
+                    <li><a class="dropdown-item" href="{% url 'vote:index' %}"><i class="fas fa-vote-yea"></i>  Votes </a></li>
+{% endif %}
                        <li class="divider" role="separator"></li>
                         {% comment %} <li><a class="dropdown-item" href="{% url 'wiki:root' %}"> Eco Village </a></li>{% endcomment %}
                          <li><a class="dropdown-item" href="{% url 'fiches:acceuil' %}"><i class='fa fa-image iconleft' ></i> Fiches de Permaculture </a></li>

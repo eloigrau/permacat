@@ -846,17 +846,18 @@ def getNotifications(request):
                                             Q(verb='projet_nouveau') | Q(verb='projet_message')| Q(verb='projet_modifier')|
                                             Q(verb='projet_modifier_permacat'))[:30]
         offres      = Action.objects.filter(Q(verb='ajout_offre') | Q(verb='ajout_offre_permacat'))[:30]
+        votations      = Action.objects.filter(Q(verb='ajout_votation') | Q(verb='ajout_votation_permacat'))[:30]
     else:
         salons      = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_permacat'))[:30]
         articles    = Action.objects.filter(Q(verb='article_nouveau') | Q(verb='article_message')| Q(verb='article_modifier'))[:30]
         projets     = Action.objects.filter(Q(verb='projet_nouveau') | Q(verb='projet_message')| Q(verb='projet_modifier'))[:30]
         offres      = Action.objects.filter(Q(verb='ajout_offre'))[:30]
-
+        votations = []
     #fiches = Action.objects.filter(Q(verb='fiche_nouveau')|Q(verb='fiche_ajouter_atelier')|Q(verb='fiche_modifier')|Q(verb='fiche_atelier_modifier')|Q(verb='fiche_message'))[:30]
     fiches = Action.objects.filter(verb__startswith='fiche')[:30]
     ateliers = Action.objects.filter(Q(verb__startswith='atelier')|Q(verb=''))[:30]
 
-    nbNotif = 6
+    nbNotif = 10
     fiches = [art for i, art in enumerate(fiches) if i == 0 or not (art.description == fiches[i-1].description and art.actor == fiches[i-1].actor ) ][:nbNotif]
     ateliers = [art for i, art in enumerate(ateliers) if i == 0 or not (art.description == ateliers[i-1].description and art.actor == ateliers[i-1].actor ) ][:nbNotif]
 
@@ -867,7 +868,7 @@ def getNotifications(request):
     offres = [art for i, art in enumerate(offres) if i == 0 or not (art.description == offres[i-1].description and art.actor == offres[i-1].actor ) ][:nbNotif]
     inscription = Action.objects.filter(Q(verb='inscription') )
 
-    return salons, articles, projets, offres, conversations, fiches, ateliers, inscription
+    return salons, articles, projets, offres, conversations, fiches, ateliers, inscription, votations
 
 @login_required
 def getNotificationsParDate(request):
@@ -879,7 +880,7 @@ def getNotificationsParDate(request):
             Q(verb='projet_message_permacat')|Q(verb='projet_nouveau') | Q(verb='projet_message')| Q(verb='projet_modifier')|
             Q(verb='projet_modifier_permacat')|Q(verb__startswith='fiche')|Q(verb__startswith='atelier')|
             Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)|
-            Q(verb='inscription') \
+            Q(verb='inscription') | Q(verb='votation_nouveau') \
         ).order_by('-timestamp')
     else:
         actions      = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_permacat')|
@@ -912,8 +913,8 @@ def get_notifications_news(request):
 
 @login_required
 def notifications(request):
-    salons, articles, projets, offres, conversations, fiches, ateliers, inscriptions = getNotifications(request)
-    return render(request, 'notifications/notifications.html', {'salons': salons, 'articles': articles,'projets': projets, 'offres':offres, 'conversations':conversations, 'fiches':fiches, 'ateliers':ateliers, 'inscriptions':inscriptions})
+    salons, articles, projets, offres, conversations, fiches, ateliers, inscriptions, votations = getNotifications(request)
+    return render(request, 'notifications/notifications.html', {'salons': salons, 'articles': articles,'projets': projets, 'offres':offres, 'conversations':conversations, 'fiches':fiches, 'ateliers':ateliers, 'inscriptions':inscriptions, 'votations':votations})
 
 @login_required
 def notifications_news(request):
