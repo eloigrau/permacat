@@ -80,7 +80,6 @@ class SupprimerArticle(DeleteView):
     template_name_suffix = '_supprimer'
 #    fields = ['user','site_web','description', 'competences', 'adresse', 'avatar', 'inscrit_newsletter']
 
-    @user_passes_test(is_inscrit, login_url='/jardins/accepter_participation')
     def get_object(self):
         return Article.objects.get(slug=self.kwargs['slug'])
 
@@ -279,7 +278,6 @@ class ModifierCommentaireArticle(UpdateView):
     def get_object(self):
         return Commentaire.objects.get(id=self.kwargs['id'])
 
-    @user_passes_test(is_inscrit, login_url='/jardins/accepter_participation')
     def form_valid(self, form):
         self.object = form.save()
         if self.object.commentaire and self.object.commentaire !='<br>':
