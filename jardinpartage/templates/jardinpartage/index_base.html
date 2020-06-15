@@ -93,7 +93,6 @@
             </a>
                             </li>
 
-             {% if request.user.is_superuser %}
                 <li class="nav-item">
                 <a href="{% url 'jardinpartage:suiveursArticles' %}">
                     <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom" title="Voir abonnés">
@@ -101,7 +100,6 @@
                     </button>
                 </a>
                 </li>
-            {% endif %}
                         </ul>
 </div>
 			</nav>
