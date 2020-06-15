@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block subtitle %}
+<div class="container-fluid">
+<div class="row">
+    <div class="col-md-2">
+        <a href="{{ votation.get_absolute_url }}" class="btn btn-primary" ><i class="fa fa-arrow-left"></i> retour</a>
+    </div>
+    <div class="col-md-8 textepetit">
+        {{votation.titre | safe}}
+    </div>
+    <div class="col-md-2 textepetit">
+        Du {{ votation.start_time|date:"d/m/Y"  }} au {{ votation.end_time|date:"d/m/Y"  }}
+    </div>
+</div>
+<h3>Résultats du vote</h3>
+{% endblock %}
+{% block content %}
+<div class="row">
+<div class="col-sm-12 textcenter">
+    <h5 class="textcenter">{{votation.question | safe}}</h5>
+    <p><button class="btn btn-static btn-success" ><emph>{{resultat}}</emph></button></p>
+
+</div></div>
+<hr>
+<div class="row justify-content-center">
+<div class="col-sm-12 textcenter ">
+        <div style="overflow-x:auto;">
+ <style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg .tg-baqh{text-align:center;vertical-align:center}
+.tg .tg-0lax{text-align:left;vertical-align:center}
+</style>
+<table class="tg tablevotes table-condensed table-striped" cellpadding="2">
+<thead>
+  <tr>
+    <th class="tg-0lax">Nombre de votants </th>
+    <th class="tg-baqh">{{nbTotal}}</th>
+    <th class="tg-baqh">{% if not votation.estAnonyme %}
+            <button type="button" class="btn" data-toggle="modal" data-target="#historique">
+              Votants
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="historique" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog textcenter" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                      <div class="row justify-content-center">
+                          <div class="col col-sm-12">
+                      <h5 >Votants</h5>
+                          </div>
+                      </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="contenu historique" id="idHistorique">
+                      {%for vote in votes %}
+    <li class="list-group-item"  >
+        <p>{{vote.auteur}} : {{vote.getVoteStr}}</p>
+    </li>                      {%endfor%}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        {% endif %}
+    </th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">Nombre de oui</td>
+    <td class="tg-baqh">{{nbOui.0}}</td>
+    <td class="tg-baqh">{{nbOui.1}}</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">Nombre de non</td>
+    <td class="tg-baqh">{{nbNon.0}}</td>
+    <td class="tg-baqh">{{nbNon.1}}</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">Nombre de ne se prononce pas</td>
+    <td class="tg-baqh">{{nbNSPP.0}}</td>
+    <td class="tg-baqh">{{nbNSPP.1}}</td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+<hr>
+        <p>
+    {% if vote %}
+       Vous avez voté: "{{vote.getVoteStr|safe}}"
+    {% endif %}
+    </p>
+</div>
+</div>
+{% endblock %}
+
+

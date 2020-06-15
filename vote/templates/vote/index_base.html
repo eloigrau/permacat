@@ -1,6 +1,8 @@
-{% extends 'base_forum.html' %}
+{% extends 'base_asso.html' %}
 {% load static %}
 {% load blog_filters %}
+{% load vote_filters %}
+{% load app_filters %}
 {% load fontawesome %}
 
 {% load activity_tags %}
@@ -8,16 +10,15 @@
 <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
 <script src="{% static 'js/infinite.min.js' %}"></script>
     {%endblock%}
-{% block title %} - Forum {% endblock  %}
 {%block subtitle%}
 
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12 textcenter">
-            <h3>Articles du Forum</h3>
-            <hr>
+            <h3>Votations</h3>
         </div>
     </div>
+            <hr>
 	<div class="row">
 		<div class="col-md-12">
 			<nav class="navbar navbar-expand-sm navbar-light bg-light">
@@ -26,15 +27,15 @@
 				</button>
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="navbar-nav">
-<li class="nav-item dropdown">
-                            <a class="nav-item dropdown-toggle" href="#" id="navbarDropdownCategorie" data-toggle="dropdown">
+<li class="nav-item dropdown dropdown-toggle">
+                            <a class="nav-item " href="#" id="navbarDropdownCategorie" data-toggle="dropdown">
                                  <button type="button" class="btn  btn-primary" >
-                                {% if request.GET.categorie  %}
-      Catégorie : {{categorie_courante}}
+                                {% if request.GET.type_vote  %}
+      Type de vote : {{type_vote_courant}}
       {%elif request.GET.permacat %}
-      Articles Permacat
+      Votations Permacat
       {%elif request.GET.auteur %}
-      Articles de {{request.GET.auteur}}
+      Votations de {{request.GET.auteur}}
       {%elif typeFiltre == 'archives' %}
       Archives
         {%else%}
@@ -43,10 +44,10 @@
                                  </button>
                                 </a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class=" dropdown-item " style="background:white;" href="{%url 'blog:index' %}">Toutes les catégories</a>
+                                <a class=" dropdown-item " style="background:white;" href="{%url 'vote:index' %}">Toutes les catégories</a>
                                 <div class="dropdown-divider"></div>
-            {% for categorie_id, cat_nom, cat_coul in categorie_list %}
-            <a class=" dropdown-item " style="background:{{cat_coul}};" href="?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+            {% for type_vote_id, cat_nom, cat_coul in type_vote_list %}
+            <a class=" dropdown-item " style="background:{{cat_coul}};" href="?type_vote={{type_vote_id}}"><span>{{cat_nom}}</span></a>
             {% endfor %}
     <div class="dropdown-divider"></div>
                                                                 <a class=" dropdown-item " style="background:grey;" href="?archives=True"><span>Archives</span></a>
@@ -59,12 +60,34 @@
                       <a class="nav-item dropdown-toggle btn-block" href="#" id="menuOrdreTri" data-toggle="dropdown">
 
                 <button class="btn btn-light">
+                    {% if request.GET.ordreTri  %}
+                        Trié par : {{ request.GET.ordreTri|ordreTriStr }}
+                    {%else%}
                    Trier par...
+                    {%endif%}
            </button>
                       </a>
                 <div class="dropdown-menu"  aria-labelledby="menuOrdreTri"  id="idOrdreTri">
                     {% for titre, ordre in ordreTriPossibles.items %}
                      <a class="dropdown-item"  href="?{{ request.GET.urlencode }}&ordreTri={{ordre}}">{{titre}}</a>
+                    {% endfor %}
+                </div>
+            </li>
+
+                <li class="nav-item dropdown">
+                      <a class="nav-item dropdown-toggle btn-block" href="#" id="menuFiltre" data-toggle="dropdown">
+
+                <button class="btn btn-light">
+                    {% if request.GET.statut  %}
+                        Statut : {{ request.GET.statut|vote_statut }}
+                    {%else%}
+                   Filtrer...
+                    {%endif%}
+           </button>
+                      </a>
+                <div class="dropdown-menu"  aria-labelledby="menuOrdreTri"  id="idFiltre">
+                    {% for titre, ordre in filtresPossibles.items %}
+                     <a class="dropdown-item"  href="?{{ request.GET.urlencode }}&statut={{ordre}}">{{titre}}</a>
                     {% endfor %}
                 </div>
             </li>
@@ -74,32 +97,11 @@
 
 
                             <li class="nav-item">
-                            <a href="{% url 'blog:ajouterNouvelArticle' %}">
+                            <a href="{% url 'vote:ajouterNouvelVotation' %}">
         <button type="button" class="btn  btn-success" >
-                <i class="fa fa-plus"></i> Ajouter un article
+                <i class="fa fa-plus"></i> Ajouter une votation
             </button>
-                            </a>&ensp;</li>
-                            <li class="nav-item">
-                                    <a href="{% url 'blog:suivre_articles' %}">
-
-        {% if request.user|is_following:suivis %}
-        <button type="button" class="btn btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné : Cliquez pour arreter de recevoir un mail à chaque nouvel article">
-             {% fontawesome_icon 'bell' %}
-        </button>
-        {% else %}
-        <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné : Cliquez pour recevoir un mail à chaque nouvel article">
-             {% fontawesome_icon 'bell-slash' %}
-        </button>
-        {% endif %}
-            </a>
-                            </li>
-                <li class="nav-item">
-                <a href="{% url 'blog:suiveursArticles' %}">
-                    <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom" title="Voir abonnés">
-                         {% fontawesome_icon 'eye' %}
-                    </button>
-                </a>
-                </li>
+                            </a></li>
                         </ul>
 </div>
 			</nav>
@@ -112,9 +114,9 @@
 {% block content %}
 
 <div class="infinite-container">
-    {% for article in article_list %}
+    {% for votation in votation_list %}
     <div class="infinite-item">
-            {% include "blog/article_template.html" with article=article %}
+            {% include "vote/votation_template.html" with votation=votation %}
     <hr>
     </div>
 
@@ -123,6 +125,6 @@
 {%include 'pagination.html' %}
 
     {%if not request.user.is_permacat %}
-<p><small>(vous n'avez pas encore accès aux articles "Permacat"... Rejoignez-nous !)</small></p>
+<p><small>(vous n'avez pas encore accès aux votations "Permacat"... Rejoignez-nous !)</small></p>
     {%endif%}
 {% endblock %}

@@ -93,6 +93,7 @@ INSTALLED_APPS = (
     'django_filters',
     'rest_framework',
     'cal',
+    'vote',
     #'schedule','djangobower',
     'widget_tweaks',
     'leaflet',

@@ -35,13 +35,11 @@
     <div class="card-header textcenter justify-content-center" style="background-color:#8eaf9d">
       Salon{% if request.user.is_permacat %}s{%endif %}
     </div>
-      <div class="card-block"  >
         <ul class="list-group list-group-flush">
           {% for action in salons%}
               {% include "notifications/notifications_template.html" with action=action %}
           {% endfor %}
         </ul>
-      </div>
   </div>
   <div class="card carte-notif notif2  d-md-flex textcenter ">
     <div class="card-header textcenter" style="background-color:#7b904b">

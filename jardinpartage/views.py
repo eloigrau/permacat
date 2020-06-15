@@ -251,8 +251,8 @@ def articles_suivis(request, slug):
 @login_required
 def articles_suiveurs(request):
     suivi, created = Suivis.objects.get_or_create(nom_suivi = 'articles_jardin')
-    inscrits = Profil.objects.filter(is_jardinpartage=True)
-    suiveurs = followers(suivi)
+    inscrits = Profil.objects.filter(is_jardinpartage=True).order_by('username')
+    suiveurs = followers(suivi).sort()
     return render(request, 'jardinpartage/articles_suivis.html', {'suiveurs': suiveurs, 'inscrits':inscrits})
 
 

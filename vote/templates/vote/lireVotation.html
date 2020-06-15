@@ -1,0 +1,144 @@
+{% extends 'vote/baseVote.html' %}
+{% load activity_tags %}
+{% load blog_filters %}
+{% load fontawesome %}
+
+{% block subtitle %}
+
+<div class="container-fluid">
+<div class="row">
+    <div class="col-md-2 " id="sec02">
+        <p>
+        <a  href="{% url 'vote:index'  %}">
+        <button class="btn btn-info btn-sm textright" ><i class="fa fa-arrow-left"></i> Sommaire</button>
+            </a>
+        </p>
+    </div>
+    <div class="col-md-8">
+        <p class="infos  textepetit">Dans: <a href="{% url 'vote:index'  %}?type_vote={{votation.type_vote}}"  style="background-color:{{votation.get_couleur}}" class="smallcaps_h2">Votations/{{ votation.get_type_vote_display }}</a>, rédigé par <a href="{% url 'profil' votation.auteur.id %}"> {{ votation.auteur.username }}</a>, le {{ votation.date_creation|date:"DATE_FORMAT" }};
+        </p>
+    </div>
+    <div class="col-md-2">
+        <p>
+        {%if votation.auteur == request.user and votation.get_statut.0 == 2%}
+		<div class="btn-group">
+            <a href="{% url 'vote:modifierVotation' slug=votation.slug %}">
+               <button type="button" class="btn btn-sm btn-warning">
+                <span class="glyphicon glyphicon-plus"></span>&nbsp;Modifier
+               </button></a>
+            <a href="{% url 'vote:supprimerVotation' slug=votation.slug %}">
+               <button type="button" class="btn btn-sm btn-danger">
+                <span class="glyphicon glyphicon-plus"></span>&nbsp;Supprimer
+               </button></a>
+        </div>
+        {%endif%}
+
+    </p>
+    </div>
+</div>
+
+</div>
+
+{% endblock %}
+{% block content %}
+     <div class="boxitem_droite">
+                <span class="badge {% if votation.estPublic%}badge-warning{%else%} badge-success {%endif%}">
+                Votation {%if votation.estPublic%} publique {%else%}  permacat  {%endif%}
+            </span>
+            {% if votation.estArchive%}
+            <span class="badge badge-secondary">
+                archivé
+            </span>
+            {%endif%}
+            {% if votation.estModifiable%}
+            <span class="badge badge-info">
+                modifiable
+            </span>
+            {%endif%}
+     </div>
+<div class="contenu votation article">
+<div class="row">
+<div class="col-sm-12 textcenter">
+      <h3> {{ votation.titre }}</h3>
+ </div>
+</div>
+    <hr>
+<div class="row"  id="sec03">
+    <div class="col textright" >
+        {%if votation.start_time%}
+
+          <a href="{% url 'cal:agenda' %} " class="textepetit">
+            {%if votation.end_time and votation.start_time != votation.end_time %}
+                Du {{ votation.start_time|date:"d/m/Y"  }} au {{ votation.end_time|date:"d/m/Y"  }}
+                {%else%}
+                le {{ votation.start_time|date:"d/m/Y"  }}
+
+            {% endif %}
+              </a>
+        {% endif %}
+
+        {% if actions %}
+            <button type="button" class="btn" data-toggle="modal" data-target="#historique">
+              {% fontawesome_icon 'bell' %} Historique
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="historique" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog textcenter" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                      <div class="row justify-content-center">
+                          <div class="col col-sm-12">
+                      <h5 >Historique</h5>
+                          </div>
+                      </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="contenu historique" id="idHistorique">
+                      {%for action in actions %}
+                            {% include "notifications/notifications_template3.html" with action=action%}
+                      {%endfor%}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        {% endif %}
+    </div>
+</div>
+<div class="row">
+<div class="col contenuvotation">
+   {{ votation.contenu |safe}}
+</div>
+</div>
+
+<hr>
+<div class="row">
+<div class="col-sm-12 textcenter">
+    <h4>Question : {{ votation.question |safe}}</h4>
+    <p>
+        {%if votation.get_statut.0 == 1%}<a href="{% url 'vote:resultatsVotation' slug=votation.slug %}">{% endif %}
+        <button {%if votation.get_statut.0 == 1%} {% else %} disabled{% endif %} class="btn btn-warning">
+            {{votation.get_statut.1}}
+    {% if votation.get_statut.0 == 1 %}: {{votation.getResultat}}{% endif %}
+    </button>
+    {%if votation.get_statut.0 == 1%}</a>{% endif %}
+    </p>
+    {% if votation.get_statut.0 == 0 %}
+        {%if not vote %}
+        <p><a href="{% url 'vote:voter' slug=votation.slug %}" class="btn btn-success">Voter</a></p>
+        {% else %}
+        <p><a href="{% url 'vote:modifierVote' slug=votation.slug %}" class="btn btn-success">A voté ("{{vote.getVoteStr}}"). Modifier mon vote</a></p>
+        {% endif %}
+        {% endif %}
+</div></div>
+</div>
+
+<hr>
+
+{% include 'commentaires.html' %}
+
+{% endblock %}

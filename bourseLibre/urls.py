@@ -62,6 +62,7 @@ urlpatterns = [
     url(r'^merci/$', views.merci, name='merci'),
     url(r'^forum/', include('blog.urls', namespace='bourseLibre.blog')),
     url(r'^jardins/', include('jardinpartage.urls', namespace='bourseLibre.jardinpartage')),
+    url(r'^vote/', include('vote.urls', namespace='bourseLibre.vote')),
     url(r'^kit/', include('fiches.urls', namespace='bourseLibre.fiches')),
     url(r'^ateliers/', include('ateliers.urls', namespace='bourseLibre.ateliers')),
     # url(r'^search/', include('haystack.urls'), name='chercher_site'),

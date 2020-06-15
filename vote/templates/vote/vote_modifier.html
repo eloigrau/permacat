@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %} - Modifier la votation{% endblock %}
+{% block subtitle %}
+<h3>Modifier mon vote</h3>
+<a href="{{ votation.get_absolute_url }}" class="btn btn-secondary" >retour à la votation</a>
+{% endblock %}
+{% block content %}
+<h5 class="textcenter">{{votation.question}}</h5>
+
+<div class="row-sm-12 row-lg-6 mx-auto">
+    {% include 'form_template.html'%}
+</div>
+
+
+{% endblock %}
+
+{% block comment %}{% endblock %}

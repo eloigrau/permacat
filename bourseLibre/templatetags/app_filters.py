@@ -50,3 +50,19 @@ def translate_month(yearname):
 @register.filter(name='translateOuiNon')
 def translateOuiNon(truefalse):
     return "Oui" if truefalse else "Non"
+
+
+@register.filter(is_safe=True)
+def ordreTriStr(value):
+    if value == '-date_creation':
+        return "Date de création"
+    elif value =='-date_dernierMessage':
+        return "Date du dernier message"
+    elif value =='-date_modification':
+        return "Date de modification"
+    elif value =='categorie':
+        return "Catégorie"
+    elif value =='titre':
+        return "Titre"
+    else:
+        return value

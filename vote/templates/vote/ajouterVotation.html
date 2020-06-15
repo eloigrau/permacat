@@ -1,0 +1,26 @@
+{% extends 'vote/baseVote.html' %} {% block content %}
+
+<div class="row">
+	<div class="col col-md-12 textcenter"><h3>Ajouter une votation</h3></div>
+	</div>
+	<hr>
+{% if error_message %}
+<p>
+	<strong>{{ error_message }}</strong>
+</p>
+{% endif %}
+<div class="row">
+	<div class="col-sm-12">
+<form class="form-horizontal" role="form" action="" method="post"
+	enctype="multipart/form-data">
+	{% csrf_token %} <input type="hidden" name="Votation"
+		value="{{ votation }}"> {% include 'form_template.html'%}
+</form>
+        <script type="text/javascript">
+        {% if not request.user.is_permacat %}
+               var isPublic = document.getElementById('id_estPublic').style.visibility = "hidden";
+        {%endif%}
+    </script>
+</div>
+    </div>
+{% endblock %}

@@ -133,7 +133,14 @@ section.p3 {
 .navbarMenu{
     text-align:center;
 }
-
+.btn-static {
+  cursor: default;
+}
+.btn-static:active {
+  -moz-box-shadow:    inset 0 0 0px white;
+  -webkit-box-shadow: inset 0 0 0px white;
+  box-shadow:         inset 0 0 0px white;
+}
 
 /***********/
 .dropdown-submenu {
@@ -522,6 +529,12 @@ section.p3 {
 .tableprofils{
     background-color: #ffffcc;
 }
+.tablevotes{
+    background-color: #ffffcc;
+    width: 50%;
+    margin-left:auto;
+    margin-right:auto;
+}
 
 .offre_entree{
     padding-bottom:4px;
@@ -694,7 +707,7 @@ position:absolute;
 }
 
 .card-deck .card{
-  padding-bottom:80px;
+  padding-bottom:10px;
  }
 
 .offre_footer{
@@ -831,6 +844,15 @@ ul.errorlist{
 }
 .carte-notif{
    width:20rem;
+   padding-bottom: 10px !important;
+}
+
+
+.tablevotes{
+    background-color: #ffffcc;
+    width: 100%;
+    margin-left:auto;
+    margin-right:auto;
 }
 
 }

@@ -1,0 +1,25 @@
+{% extends 'vote/baseVote.html' %}
+{% block subtitle %}
+
+<div class="row">
+    <div class="col textcenter">
+       <h3> Bienvenue sur l'espace de votation</h3>
+    </div>
+</div>
+
+{% endblock %}
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-12 textcenter">
+        <div class="btn-group btn-group-justified">
+         <a href="{% url 'vote:index' %}">
+        <button type="button" class="btn btn-success" >
+               Votations
+            </button>
+            </a>
+    </div>
+   </div>
+
+{% endblock %}
+
