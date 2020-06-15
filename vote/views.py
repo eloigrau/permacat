@@ -128,7 +128,7 @@ def resultatsVotation(request, slug):
 
     return render(request, 'vote/resultatsVotation.html', {
         'votation': votation,
-        'nbOui':resultats['nbOui'], 'nbNon':resultats['nbNon'], 'nbNSPP':resultats['nbNSPP'], 'nbTotal':resultats['nbTotal'], 'resultat':resultats['resultat'], 'vote':vote, 'votants':resultats['votants'] },)
+        'nbOui':resultats['nbOui'], 'nbNon':resultats['nbNon'], 'nbNSPP':resultats['nbNSPP'], 'nbTotal':resultats['nbTotal'], 'resultat':resultats['resultat'], 'vote':vote, 'votes':resultats['votes'] },)
 
 
 

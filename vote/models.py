@@ -76,9 +76,6 @@ class Votation(models.Model):
 
     def getResultats(self):
         votes = Vote.objects.filter(votation=self)
-        votants=[]
-        if not self.estAnonyme:
-            votants = list(votes.values_list('auteur', flat=True))
         votesOui = votes.filter(choix='0')
         votesNon = votes.filter(choix='1')
         votesNSPP = votes.filter(choix='2')
@@ -101,7 +98,7 @@ class Votation(models.Model):
             nbNon = (0, '0%')
             nbNSPP = (0, '0%')
             resultat = "pas de votants"
-        return {'nbOui':nbOui, 'nbNon':nbNon, 'nbNSPP':nbNSPP, 'nbTotal':nbTotal, 'resultat':resultat, 'votants':votants}
+        return {'nbOui':nbOui, 'nbNon':nbNon, 'nbNSPP':nbNSPP, 'nbTotal':nbTotal, 'resultat':resultat, 'votes':votes}
 
     @property
     def getResultat(self):
@@ -135,7 +132,7 @@ class Vote(models.Model):
     date_modification = models.DateTimeField(verbose_name="Date de modification", auto_now=True)
 
     def __str__(self):
-        return self.votation + " " + dict(Choix.vote_ouinon)[self.choix] + " " + self.date_creation
+        return str(self.votation) + " " + dict(Choix.vote_ouinon)[self.choix]
 
     def getVoteStr(self):
         return dict(Choix.vote_ouinon)[self.choix]
