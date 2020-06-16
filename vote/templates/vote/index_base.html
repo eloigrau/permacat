@@ -119,7 +119,10 @@
             {% include "vote/votation_template.html" with votation=votation %}
     <hr>
     </div>
-
+    {% empty %}
+    <div class="infinite-item">
+    <p>Il n'y a pas encore de votations</p>
+    </div>
     {% endfor %}
 </div>
 {%include 'pagination.html' %}

@@ -125,6 +125,8 @@
     <hr>
     </div>
 
+    {% empty %}
+    <p class="textcenter">Il n'y a pas encore de votations</p>
     {% endfor %}
 </div>
 {%include 'pagination.html' %}
