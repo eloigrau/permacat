@@ -111,24 +111,8 @@
 </div>
 </div>
     {%if not request.user.is_permacat %}
-<p><small>(vous n'avez pas encore accès aux votations "Permacat"... Rejoignez-nous !)</small></p>
+<p class="textcenter"><small>(vous n'avez pas encore accès aux votations "Permacat"... Rejoignez-nous !)</small></p>
     {%endif%}
 {%endblock%}
 
 {% endcomment %}
-{% block content %}
-
-<div class="infinite-container">
-    {% for votation in votation_list %}
-    <div class="infinite-item">
-            {% include "vote/votation_template.html" with votation=votation %}
-    <hr>
-    </div>
-
-    {% empty %}
-    <p class="textcenter">Il n'y a pas encore de votations</p>
-    {% endfor %}
-</div>
-{%include 'pagination.html' %}
-
-{% endblock %}

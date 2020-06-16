@@ -125,22 +125,9 @@
 </div>
 </div>
     {%if not request.user.is_permacat %}
-<p><small>(vous n'avez pas encore accès aux articles "Permacat"... Rejoignez-nous !)</small></p>
+<p class="textcenter><small>(vous n'avez pas encore accès aux articles "Permacat"... Rejoignez-nous !)</small></p>
     {%endif%}
 {%endblock%}
 
 {% endcomment %}
-{% block content %}
 
-<div class="infinite-container">
-    {% for article in article_list %}
-    <div class="infinite-item">
-            {% include "blog/article_template.html" with article=article %}
-    <hr>
-    </div>
-
-    {% endfor %}
-</div>
-{%include 'pagination.html' %}
-
-{% endblock %}
