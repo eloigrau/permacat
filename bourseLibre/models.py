@@ -520,7 +520,7 @@ class ItemDoesNotExist(Exception):
 def on_save_produits(instance, created, **kwargs):
     if created:
         suivi, created = Suivis.objects.get_or_create(nom_suivi='produits')
-        titre = "Permacat - nouveau produit"
+        titre = "[Permacat] nouveau produit"
         message = " Une nouvelle offre a été postée sur le marché " + \
                   "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + instance.get_absolute_url() + \
                   "\n------------------------------------------------------------------------------" \
@@ -536,7 +536,7 @@ def on_save_produits(instance, created, **kwargs):
 def on_save_produits(instance, created, **kwargs):
     if created:
         suivi, created = Suivis.objects.get_or_create(nom_suivi='produits')
-        titre = "Permacat - nouveau produit"
+        titre = "[Permacat] nouveau produit"
         message = " Une nouvelle offre a été postée sur le marché " + \
                   "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + instance.get_absolute_url() + \
                   "\n------------------------------------------------------------------------------" \
@@ -552,7 +552,7 @@ def on_save_produits(instance, created, **kwargs):
 def on_save_produits(instance, created, **kwargs):
     if created:
         suivi, created = Suivis.objects.get_or_create(nom_suivi='produits')
-        titre = "Permacat - nouveau produit"
+        titre = "[Permacat] nouveau produit"
         message = " Une nouvelle offre a été postée sur le marché " + \
                   "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + instance.get_absolute_url() + \
                   "\n------------------------------------------------------------------------------" \
@@ -568,7 +568,7 @@ def on_save_produits(instance, created, **kwargs):
 def on_save_produits(instance, created, **kwargs):
     if created:
         suivi, created = Suivis.objects.get_or_create(nom_suivi='produits')
-        titre = "Permacat - nouveau produit"
+        titre = "[Permacat] nouveau produit"
         message = " Une nouvelle offre a été postée sur le marché " + \
                   "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + instance.get_absolute_url() + \
                   "\n------------------------------------------------------------------------------" \
@@ -583,7 +583,7 @@ def on_save_produits(instance, created, **kwargs):
 def on_save_produits(instance, created, **kwargs):
     if created:
         suivi, created = Suivis.objects.get_or_create(nom_suivi='produits')
-        titre = "Permacat - nouveau produit"
+        titre = "[Permacat] nouveau produit"
         message = " Une nouvelle offre a été postée sur le marché " + \
                   "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + instance.get_absolute_url() + \
                   "\n------------------------------------------------------------------------------" \

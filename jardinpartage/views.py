@@ -9,9 +9,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.generic import ListView, UpdateView, DeleteView
 from actstream import actions, action
 from actstream.models import followers, following, action_object_stream
-from django.core.mail import send_mass_mail, mail_admins
 from django.utils.timezone import now
-from bourseLibre.settings import SERVER_EMAIL
 from bourseLibre.models import Profil
 
 #from django.contrib.contenttypes.models import ContentType
@@ -105,13 +103,13 @@ def lireArticle(request, slug):
             comment.auteur_comm = request.user
             article.date_dernierMessage = comment.date_creation
             article.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(strip_tags(comment.commentaire).replace('&nspb',' ')))[:96] + "..."
-            article.save()
+            article.save(sendMail=False)
             comment.save()
             url = article.get_absolute_url()+"#idConversation"
             suffix = "_permacat" if article.estPublic else ""
             action.send(request.user, verb='article_message'+suffix, action_object=article, url=url,
                         description="a réagi à l'article: (Jardins Partagés) '%s'" % article.titre)
-            envoi_emails_articleouprojet_modifie(article, request.user.username + " a réagit à l'article: " +  article.titre)
+            #envoi_emails_articleouprojet_modifie(article, request.user.username + " a réagit à l'article: " +  article.titre)
         return redirect(request.path)
 
     return render(request, 'jardinpartage/lireArticle.html', {'article': article, 'form': form, 'commentaires':commentaires, 'dates':dates, 'actions':actions},)
@@ -206,23 +204,6 @@ class ListeArticles(UserPassesTestMixin, ListView):
 #             return render(request, 'jardinpartage/lireProjet.html', {'projet': projet})
 #         return render(request, 'jardinpartage/ajouterProjet.html', { "form": form, })
 
-
-def envoi_emails_articleouprojet_modifie(articleOuProjet, message):
-
-    titre = "Permacat - Jardin Partagé - Article actualisé"
-    message =  message +\
-              "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + articleOuProjet.get_absolute_url() + \
-              "\n\n------------------------------------------------------------------------------" \
-              "\n Pour vous désabonner http://www.Perma.Cat/jardins/articles/"
-   # emails = [(titre, message, SERVER_EMAIL, (suiv.email, )) for suiv in followers(instance)]
-    emails = [suiv.email for suiv in followers(articleOuProjet)  if articleOuProjet.auteur != suiv  and (articleOuProjet.estPublic or suiv.is_permacat)]
-
-    if emails:
-        try:
-            send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
-            #mail_admins("pas d'erreur mails", titre + "\n" + message + "\n xxx \n" + str(emails))
-        except:
-            mail_admins("erreur", sys.exc_info()[0])
 
 
 

@@ -78,10 +78,42 @@ class Article(models.Model):
     def get_absolute_url(self):
         return reverse('jardinpartage:lireArticle', kwargs={'slug':self.slug})
 
-    def save(self, *args, **kwargs):
+
+    def save(self, sendMail=True, *args, **kwargs):
         ''' On save, update timestamps '''
         if not self.id:
             self.date_creation = timezone.now()
+            if sendMail:
+                suivi, created = Suivis.objects.get_or_create(nom_suivi='articles')
+                titre = "[Permacat-JardinPartagé] nouvel article"
+                message = " Un nouvel article a été créé " + \
+                          "\n Vous pouvez y accéder en suivant ce lien : https://permacat.herokuapp.com" + self.get_absolute_url() + \
+                          "\n\n------------------------------------------------------------------------------" \
+                          "\n vous recevez cet email, car vous avez choisi de suivre les articles (en cliquant sur la cloche) sur le site http://www.Perma.Cat/jardins/articles/"
+                emails = [suiv.email for suiv in followers(suivi) if
+                          self.auteur != suiv and (self.estPublic or suiv.is_permacat)]
+                if emails:
+                    try:
+                        send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
+                    except Exception as inst:
+                        mail_admins("erreur mails", titre + "\n" + message + "\n xxx \n" + str(emails) + "\n erreur : " + str(inst))
+        else:
+            if sendMail:
+                titre = "[Permacat-JardinPartagé] Article actualisé"
+                message = "L'article '" + self.titre + "' a été modifié" + \
+                          "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + self.get_absolute_url() + \
+                          "\n\n------------------------------------------------------------------------------" \
+                          "\n vous recevez cet email, car vous avez choisi de suivre cet article sur le site http://www.Perma.Cat/jardins/articles/"
+
+                emails = [suiv.email for suiv in followers(self) if
+                          self.auteur != suiv and (self.estPublic or suiv.is_permacat)]
+
+                if emails:
+                    try:
+                        send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
+                    except Exception as inst:
+                        mail_admins("erreur mails", titre + "\n" + message + "\n xxx \n" + str(emails) + "\n erreur : " + str(inst))
+
         return super(Article, self).save(*args, **kwargs)
 
     @property
@@ -90,23 +122,6 @@ class Article(models.Model):
             return Choix.couleurs_annonces[self.categorie]
         except:
             return Choix.couleurs_annonces["Autre"]
-
-
-@receiver(post_save, sender=Article)
-def on_save_articles(instance, created, **kwargs):
-    if created:
-        suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_jardin')
-        titre = "Permacat - nouvel article"
-        message = " Un nouvel article a été créé " + \
-                  "\n Vous pouvez y accéder en suivant ce lien : https://permacat.herokuapp.com" + instance.get_absolute_url() + \
-                  "\n\n------------------------------------------------------------------------------" \
-                  "\n vous recevez cet email, car vous avez choisi de suivre les articles (en cliquant sur la cloche) sur le site http://www.Perma.Cat/forum/articles/"
-        emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv and (instance.estPublic or suiv.is_permacat)]
-        try:
-            send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
-        except:
-            pass
-
 
 class Evenement(models.Model):
     titre = models.CharField(verbose_name="Titre de l'événement (si laissé vide, ce sera le titre de l'article)",
@@ -151,6 +166,24 @@ class Commentaire(models.Model):
     @property
     def get_edit_url(self):
         return reverse('jardinpartage:modifierCommentaireArticle',  kwargs={'id':self.id})
+
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.date_creation = timezone.now()
+            titre = "[Permacat-JardinPartagé] article commenté"
+            message = " Un article auquel vous êtes abonné a été commenté " + \
+                      "\n Vous pouvez y accéder en suivant ce lien : https://permacat.herokuapp.com" + self.article.get_absolute_url() + \
+                      "\n\n------------------------------------------------------------------------------" \
+                      "\n vous recevez cet email, car vous avez choisi de suivre l'article (en cliquant sur la cloche) sur le site http://www.Perma.Cat/forum/articles/" + self.article.get_absolute_url()
+            emails = [suiv.email for suiv in followers(self.article) if
+                      self.auteur_comm != suiv and (self.article.estPublic or suiv.is_permacat)]
+            try:
+                send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
+            except Exception as inst:
+                mail_admins("erreur mails",
+                            titre + "\n" + message + "\n xxx \n" + str(emails) + "\n erreur : " + str(inst))
 
 class Participation(models.Model):
     participe = models.BooleanField(verbose_name="Je suis intéressé.e par les jardins partagés", default=False)

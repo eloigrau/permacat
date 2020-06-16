@@ -794,7 +794,7 @@ def lireConversation(request, destinataire):
                     description="a envoyé un message privé à " + destinataire)
         profil_destinataire = Profil.objects.get(username=destinataire)
         if profil_destinataire in followers(conversation):
-            sujet = "Permacat - quelqu'un vous a envoyé une message privé"
+            sujet = "[Permacat] quelqu'un vous a envoyé une message privé"
             message = request.user.username + " vous a envoyé un message privé. Vous pouvez y accéder en suivant ce lien : https://permacat.herokuapp.com" +  url
             send_mail(sujet, message, SERVER_EMAIL, [profil_destinataire.email, ], fail_silently=False,)
         return redirect(request.path)

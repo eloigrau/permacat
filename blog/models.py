@@ -81,10 +81,40 @@ class Article(models.Model):
     def get_absolute_url(self):
         return reverse('blog:lireArticle', kwargs={'slug':self.slug})
 
-    def save(self, *args, **kwargs):
+    def save(self, sendMail=True, *args, **kwargs):
         ''' On save, update timestamps '''
         if not self.id:
             self.date_creation = timezone.now()
+            if sendMail:
+                suivi, created = Suivis.objects.get_or_create(nom_suivi='articles')
+                titre = "[Permacat] nouvel article"
+                message = " Un nouvel article a été créé " + \
+                          "\n Vous pouvez y accéder en suivant ce lien : https://permacat.herokuapp.com" + self.get_absolute_url() + \
+                          "\n\n------------------------------------------------------------------------------" \
+                          "\n vous recevez cet email, car vous avez choisi de suivre les articles (en cliquant sur la cloche) sur le site http://www.Perma.Cat/forum/articles/"
+                emails = [suiv.email for suiv in followers(suivi) if
+                          self.auteur != suiv and (self.estPublic or suiv.is_permacat)]
+                try:
+                    send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
+                except Exception as inst:
+                    mail_admins("erreur mails", titre + "\n" + message + "\n xxx \n" + str(emails) + "\n erreur : " + str(inst))
+        else:
+            if sendMail:
+                titre = "[Permacat] Article actualisé"
+                message = "L'article '" + self.titre + "' a été modifié" + \
+                          "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + self.get_absolute_url() + \
+                          "\n\n------------------------------------------------------------------------------" \
+                          "\n vous recevez cet email, car vous avez choisi de suivre cet article sur le site http://www.Perma.Cat/forum/articles/"
+
+                emails = [suiv.email for suiv in followers(self) if
+                          self.auteur != suiv and (self.estPublic or suiv.is_permacat)]
+
+                if emails:
+                    try:
+                        send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
+                    except Exception as inst:
+                        mail_admins("erreur mails", titre + "\n" + message + "\n xxx \n" + str(emails) + "\n erreur : " + str(inst))
+
         return super(Article, self).save(*args, **kwargs)
 
     @property
@@ -93,22 +123,6 @@ class Article(models.Model):
             return Choix.couleurs_annonces[self.categorie]
         except:
             return Choix.couleurs_annonces["Autre"]
-
-
-@receiver(post_save, sender=Article)
-def on_save_articles(instance, created, **kwargs):
-    if created:
-        suivi, created = Suivis.objects.get_or_create(nom_suivi='articles')
-        titre = "Permacat - nouvel article"
-        message = " Un nouvel article a été créé " + \
-                  "\n Vous pouvez y accéder en suivant ce lien : https://permacat.herokuapp.com" + instance.get_absolute_url() + \
-                  "\n\n------------------------------------------------------------------------------" \
-                  "\n vous recevez cet email, car vous avez choisi de suivre les articles (en cliquant sur la cloche) sur le site http://www.Perma.Cat/forum/articles/"
-        emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv and (instance.estPublic or suiv.is_permacat)]
-        try:
-            send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
-        except:
-            pass
 
 
 class Evenement(models.Model):
@@ -151,6 +165,24 @@ class Commentaire(models.Model):
     def get_edit_url(self):
         return reverse('blog:modifierCommentaireArticle',  kwargs={'id':self.id})
 
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.date_creation = timezone.now()
+            suivi, created = Suivis.objects.get_or_create(nom_suivi='articles')
+            titre = "[Permacat] Article commenté"
+            message = " Un article auquel vous êtes abonné a été commenté " + \
+                      "\n Vous pouvez y accéder en suivant ce lien : https://permacat.herokuapp.com" + self.article.get_absolute_url() + \
+                      "\n\n------------------------------------------------------------------------------" \
+                      "\n vous recevez cet email, car vous avez choisi de suivre l'article (en cliquant sur la cloche) sur le site http://www.Perma.Cat/forum/articles/" + self.article.get_absolute_url()
+            emails = [suiv.email for suiv in followers(self.article) if
+                      self.auteur_comm != suiv and (self.article.estPublic or suiv.is_permacat)]
+            try:
+                send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
+            except Exception as inst:
+                mail_admins("erreur mails",
+                            titre + "\n" + message + "\n xxx \n" + str(emails) + "\n erreur : " + str(inst))
+
 
 class Projet(models.Model):
     categorie = models.CharField(max_length=10,
@@ -175,7 +207,6 @@ class Projet(models.Model):
     date_dernierMessage = models.DateTimeField(verbose_name="Date de Modification", auto_now=True)
     dernierMessage = models.CharField(max_length=100, default="", blank=True, null=True)
 
-
     start_time = models.DateTimeField(verbose_name="Date de début (optionnel, pour affichage dans l'agenda)",  null=True,blank=True, help_text="jj/mm/année")
     end_time = models.DateTimeField(verbose_name="Date de fin (optionnel, pour affichage dans l'agenda)",  null=True,blank=True, help_text="jj/mm/année")
 
@@ -190,10 +221,39 @@ class Projet(models.Model):
     def get_absolute_url(self):
         return reverse('blog:lireProjet', kwargs={'slug':self.slug})
 
-    def save(self, *args, **kwargs):
+    def save(self, sendMail = True, *args, **kwargs):
         ''' On save, update timestamps '''
         if not self.id:
             self.date_creation = timezone.now()
+            titre = "[Permacat] Nouveau Projet !"
+            message = " Le projet '" +  self.titre + "' a été créé"+ \
+                      "\n Vous pouvez y accéder en suivant ce lien : https://permacat.herokuapp.com" + self.get_absolute_url() + \
+                      "\n\n------------------------------------------------------------------------------" \
+                      "\n vous recevez cet email, car vous avez choisi de suivre ce projet sur le site http://www.Perma.Cat/forum/projets/"
+            suivi, created = Suivis.objects.get_or_create(nom_suivi='projets')
+            emails = [suiv.email for suiv in followers(suivi) if self.auteur != suiv  and (self.estPublic or suiv.is_permacat)]
+
+            if emails:
+                try:
+                    send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
+                except Exception as inst:
+                    mail_admins("erreur mails",  titre + "\n" + message + "\n xxx \n" + str(emails) + "\n erreur : " + str(inst))
+        else:
+            if sendMail:
+                titre = "[Permacat] Projet actualisé"
+                message = "Le projet '" + self.titre + "' a été modifié" + \
+                          "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + self.get_absolute_url() + \
+                          "\n\n------------------------------------------------------------------------------" \
+                          "\n vous recevez cet email, car vous avez choisi de suivre ce projet sur le site http://www.Perma.Cat/forum/articles/"
+
+                emails = [suiv.email for suiv in followers(self) if
+                          self.auteur != suiv and (self.estPublic or suiv.is_permacat)]
+
+                if emails:
+                    try:
+                        send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
+                    except Exception as inst:
+                        mail_admins("erreur mails", titre + "\n" + message + "\n xxx \n" + str(emails) + "\n erreur : " + str(inst))
 
         return super(Projet, self).save(*args, **kwargs)
 
@@ -203,59 +263,6 @@ class Projet(models.Model):
             return Choix.couleurs_projets[self.categorie]
         except:
             return Choix.couleurs_annonces["Autre"]
-
-@receiver(post_save,  sender=Projet)
-def on_save_projet(instance, **kwargs):
-    titre = "Permacat - Projet  actualisé"
-    message = " Le projet '" +  instance.titre + "' a été modifié (ou quelqu'un l'a commenté)"+ \
-              "\n Vous pouvez y accéder en suivant ce lien : https://permacat.herokuapp.com" + instance.get_absolute_url() + \
-              "\n\n------------------------------------------------------------------------------" \
-              "\n vous recevez cet email, car vous avez choisi de suivre cet article sur le site http://www.Perma.Cat/forum/projets/"
-    emails = [suiv.email for suiv in followers(instance) if instance.auteur != suiv  and (instance.estPublic or suiv.is_permacat)]
-
-    if emails:
-        try:
-            send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
-            #mail_admins("pas d'erreur mails", titre + "\n" + message + "\n xxx \n" + str(emails))
-        except Exception as inst:
-            mail_admins("erreur mails", inst)
-
-
-@receiver(post_save, sender=Projet)
-def on_save_projets(instance, created, **kwargs):
-    if created:
-        suivi, created = Suivis.objects.get_or_create(nom_suivi='projets')
-        titre = "Permacat - nouveau Projet"
-        message = " Un nouveau projet a été créé !" + \
-                  "\n Vous pouvez y accéder en suivant ce lien : https://permacat.herokuapp.com" + instance.get_absolute_url() +\
-                  "\n\n------------------------------------------------------------------------------" \
-                  "\n vous recevez cet email, car vous avez choisi de suivre les projets (en cliquant sur la cloche)  sur le site http://www.Perma.Cat/forum/projets/"
-        emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv and (instance.estPublic or suiv.is_permacat)]
-
-        if emails:
-            try:
-                send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
-                #mail_admins("pas d'erreur mails", titre + "\n" + message + "\n xxx \n" + str(emails))
-            except Exception as inst:
-                mail_admins("erreur mails", inst)
-
-
-@receiver(post_save,  sender=Article)
-def on_save_article(instance, **kwargs):
-    titre = "Permacat - Article actualisé"
-    message = "L'article '" +  instance.titre + "' a été modifié (ou quelqu'un l'a commenté)" +\
-              "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + instance.get_absolute_url() + \
-              "\n\n------------------------------------------------------------------------------" \
-              "\n vous recevez cet email, car vous avez choisi de suivre ce projet sur le site http://www.Perma.Cat/forum/articles/"
-   # emails = [(titre, message, SERVER_EMAIL, (suiv.email, )) for suiv in followers(instance)]
-    emails = [suiv.email for suiv in followers(instance) if instance.auteur != suiv and (instance.estPublic or suiv.is_permacat)]
-
-    if emails:
-        try:
-            send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
-            #mail_admins("pas d'erreur mails", titre + "\n" + message + "\n xxx \n" + str(emails))
-        except Exception as inst:
-            mail_admins("erreur mails", inst)
 
 
 class CommentaireProjet(models.Model):
@@ -274,3 +281,20 @@ class CommentaireProjet(models.Model):
     @property
     def get_edit_url(self):
         return reverse('blog:modifierCommentaireProjet',  kwargs={'id':self.id})
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            titre = "[Permacat] Projet commenté"
+            message = "Le projet '"+ self.projet.titre + "' auquel vous êtes abonné a été commenté " + \
+                      "\n Vous pouvez y accéder en suivant ce lien : https://permacat.herokuapp.com" + self.projet.get_absolute_url() + \
+                      "\n\n------------------------------------------------------------------------------" \
+                      "\n vous recevez cet email, car vous avez choisi de suivre l'article (en cliquant sur la cloche) sur le site http://www.Perma.Cat/forum/articles/" + self.projet.get_absolute_url()
+
+            emails = [suiv.email for suiv in followers(self.projet) if
+                      self.auteur_comm != suiv and (self.projet.estPublic or suiv.is_permacat)]
+            try:
+                send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
+            except Exception as inst:
+                mail_admins("erreur mails",
+                            titre + "\n" + message + "\n xxx \n" + str(emails) + "\n erreur : " + str(inst))

@@ -58,12 +58,12 @@ class ModifierArticle(UpdateView):
     def form_valid(self, form):
         self.object = form.save()
         self.object.date_modification = now()
-        self.object.save()
+        self.object.save(sendMail=False)
         url = self.object.get_absolute_url()
         suffix = "_permacat" if self.object.estPublic else ""
         action.send(self.request.user, verb='article_modifier'+suffix, action_object=self.object, url=url,
                      description="a modifié l'article: '%s'" % self.object.titre)
-        envoi_emails_articleouprojet_modifie(self.object, "L'article " +  self.object.titre + "a été modifié", True)
+        #envoi_emails_articleouprojet_modifie(self.object, "L'article " +  self.object.titre + "a été modifié", True)
         return HttpResponseRedirect(self.get_success_url())
 
 
@@ -97,13 +97,13 @@ def lireArticle(request, slug):
             comment.auteur_comm = request.user
             article.date_dernierMessage = comment.date_creation if comment.date_creation else now()
             article.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(strip_tags(comment.commentaire).replace('&nspb',' ')))[:96] + "..."
-            article.save()
+            article.save(sendMail=False)
             comment.save()
             url = article.get_absolute_url()+"#idConversation"
             suffix = "_permacat" if article.estPublic else ""
             action.send(request.user, verb='article_message'+suffix, action_object=article, url=url,
                         description="a réagi à l'article: '%s'" % article.titre)
-            envoi_emails_articleouprojet_modifie(article, request.user.username + " a réagit au projet: " +  article.titre, True)
+            #envoi_emails_articleouprojet_modifie(article, request.user.username + " a réagit au projet: " +  article.titre, True)
         return redirect(request.path)
 
     return render(request, 'blog/lireArticle.html', {'article': article, 'form': form, 'commentaires':commentaires, 'dates':dates, 'actions':actions},)
@@ -227,7 +227,7 @@ class ModifierProjet(UpdateView):
         suffix = "_permacat" if self.object.estPublic else ""
         action.send(self.request.user, verb='projet_modifier'+suffix, action_object=self.object, url=url,
                      description="a modifié le projet: '%s'" % self.object.titre)
-        envoi_emails_articleouprojet_modifie(self.object, "Le projet " +  self.object.titre + "a été modifié", False)
+        #envoi_emails_articleouprojet_modifie(self.object, "Le projet " +  self.object.titre + "a été modifié", False)
         return HttpResponseRedirect(self.get_success_url())
 
 class SupprimerProjet(DeleteView):
@@ -256,20 +256,20 @@ def lireProjet(request, slug):
         comment.auteur_comm = request.user
         projet.date_dernierMessage = comment.date_creation
         projet.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(strip_tags(comment.commentaire).replace('&nspb',' ')))[:96] + "..."
-        projet.save()
+        projet.save(sendMail=False)
         comment.save()
         url = projet.get_absolute_url()+"#idConversation"
         suffix = "_permacat" if projet.estPublic else ""
         action.send(request.user, verb='projet_message'+suffix, action_object=projet, url=url,
                     description="a réagit au projet: '%s'" % projet.titre)
-        envoi_emails_articleouprojet_modifie(projet, request.user.username + " a réagit au projet: " +  projet.titre, False)
+        #envoi_emails_articleouprojet_modifie(projet, request.user.username + " a réagit au projet: " +  projet.titre, False)
         return redirect(request.path)
 
     return render(request, 'blog/lireProjet.html', {'projet': projet, 'form': form, 'commentaires':commentaires, 'actions':actions},)
 
 def envoi_emails_articleouprojet_modifie(articleOuProjet, message, flag_article):
 
-    titre = "Permacat - Article actualisé" if flag_article else "Permacat - Projet actualisé"
+    titre = "[Permacat] Article actualisé" if flag_article else "[Permacat] Projet actualisé"
     message =  message +\
               "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + articleOuProjet.get_absolute_url() + \
               "\n\n------------------------------------------------------------------------------" \

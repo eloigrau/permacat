@@ -81,7 +81,7 @@ class ArticleForm(forms.ModelForm):
            # 'bar': SummernoteInplaceWidget(),
         }
 
-    def save(self, userProfile):
+    def save(self, userProfile, sendMail=True):
         instance = super(ArticleForm, self).save(commit=False)
 
         max_length = Article._meta.get_field('slug').max_length
@@ -98,7 +98,7 @@ class ArticleForm(forms.ModelForm):
         if not userProfile.is_permacat:
             instance.estPublic = True
 
-        instance.save()
+        instance.save(sendMail)
 
         return instance
 
@@ -176,7 +176,7 @@ class ProjetForm(forms.ModelForm):
         super(ProjetForm, self).__init__(request, *args, **kwargs)
         self.fields['contenu'].strip = False
 
-    def save(self, userProfile):
+    def save(self, userProfile, sendMail=True):
         instance = super(ProjetForm, self).save(commit=False)
 
         max_length = Projet._meta.get_field('slug').max_length
@@ -194,7 +194,7 @@ class ProjetForm(forms.ModelForm):
         if not userProfile.is_permacat:
             instance.estPublic = True
 
-        instance.save()
+        instance.save(sendMail)
 
         return instance
 
