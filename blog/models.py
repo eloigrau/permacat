@@ -8,7 +8,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 
 from actstream.models import followers
-from bourseLibre.settings import SERVER_EMAIL
+from bourseLibre.settings import SERVER_EMAIL, DEBUG
 
 class Choix():
     statut_projet = ('prop','Proposition de projet'), ("AGO","Fiche projet soumise à l'AGO"), ('vote','Soumis au vote'), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
@@ -94,10 +94,11 @@ class Article(models.Model):
                           "\n vous recevez cet email, car vous avez choisi de suivre les articles (en cliquant sur la cloche) sur le site http://www.Perma.Cat/forum/articles/"
                 emails = [suiv.email for suiv in followers(suivi) if
                           self.auteur != suiv and (self.estPublic or suiv.is_permacat)]
-                try:
-                    send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
-                except Exception as inst:
-                    mail_admins("erreur mails", titre + "\n" + message + "\n xxx \n" + str(emails) + "\n erreur : " + str(inst))
+                if emails and not DEBUG:
+                    try:
+                        send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
+                    except Exception as inst:
+                        mail_admins("erreur mails", titre + "\n" + message + "\n xxx \n" + str(emails) + "\n erreur : " + str(inst))
         else:
             if sendMail:
                 titre = "[Permacat] Article actualisé"
@@ -109,7 +110,7 @@ class Article(models.Model):
                 emails = [suiv.email for suiv in followers(self) if
                           self.auteur != suiv and (self.estPublic or suiv.is_permacat)]
 
-                if emails:
+                if emails and not DEBUG:
                     try:
                         send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
                     except Exception as inst:
@@ -177,12 +178,14 @@ class Commentaire(models.Model):
                       "\n vous recevez cet email, car vous avez choisi de suivre l'article (en cliquant sur la cloche) sur le site http://www.Perma.Cat/forum/articles/" + self.article.get_absolute_url()
             emails = [suiv.email for suiv in followers(self.article) if
                       self.auteur_comm != suiv and (self.article.estPublic or suiv.is_permacat)]
-            try:
-                send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
-            except Exception as inst:
-                mail_admins("erreur mails",
+            if emails and not DEBUG:
+                try:
+                    send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
+                except Exception as inst:
+                    mail_admins("erreur mails",
                             titre + "\n" + message + "\n xxx \n" + str(emails) + "\n erreur : " + str(inst))
 
+        return super(Commentaire, self).save(*args, **kwargs)
 
 class Projet(models.Model):
     categorie = models.CharField(max_length=10,
@@ -233,7 +236,7 @@ class Projet(models.Model):
             suivi, created = Suivis.objects.get_or_create(nom_suivi='projets')
             emails = [suiv.email for suiv in followers(suivi) if self.auteur != suiv  and (self.estPublic or suiv.is_permacat)]
 
-            if emails:
+            if emails and not DEBUG:
                 try:
                     send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
                 except Exception as inst:
@@ -249,7 +252,7 @@ class Projet(models.Model):
                 emails = [suiv.email for suiv in followers(self) if
                           self.auteur != suiv and (self.estPublic or suiv.is_permacat)]
 
-                if emails:
+                if emails and not DEBUG:
                     try:
                         send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
                     except Exception as inst:
@@ -293,8 +296,11 @@ class CommentaireProjet(models.Model):
 
             emails = [suiv.email for suiv in followers(self.projet) if
                       self.auteur_comm != suiv and (self.projet.estPublic or suiv.is_permacat)]
-            try:
-                send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
-            except Exception as inst:
-                mail_admins("erreur mails",
-                            titre + "\n" + message + "\n xxx \n" + str(emails) + "\n erreur : " + str(inst))
+            if emails and not DEBUG:
+                try:
+                    send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
+                except Exception as inst:
+                    mail_admins("erreur mails",
+                                titre + "\n" + message + "\n xxx \n" + str(emails) + "\n erreur : " + str(inst))
+
+        return super(CommentaireProjet, self).save(*args, **kwargs)
