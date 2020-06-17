@@ -109,7 +109,7 @@ def lireVotation(request, slug):
             votation.save()
             comment.save()
             url = votation.get_absolute_url() + "#idConversation"
-            suffix = "_permacat" if votation.estPublic else ""
+            suffix = "_permacat" if not votation.estPublic else ""
             action.send(request.user, verb='article_message' + suffix, action_object=votation, url=url,
                         description="a réagi à la votation: '%s'" % votation.titre)
 
