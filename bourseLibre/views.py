@@ -797,7 +797,11 @@ def lireConversation(request, destinataire):
         if profil_destinataire in followers(suivi):
             sujet = "[Permacat] quelqu'un vous a envoyé une message privé"
             message = request.user.username + " vous a envoyé un message privé. Vous pouvez y accéder en suivant ce lien : https://permacat.herokuapp.com" +  url
-            send_mail(sujet, message, SERVER_EMAIL, [profil_destinataire.email, ], fail_silently=False,)
+            try:
+                send_mail(sujet, message, SERVER_EMAIL, [profil_destinataire.email, ], fail_silently=False,)
+            except Exception as inst:
+                mail_admins("erreur mails",
+                        sujet + "\n" + message + "\n xxx \n" + str(profil_destinataire.email) + "\n erreur : " + str(inst))
         return redirect(request.path)
 
     return render(request, 'lireConversation.html', {'conversation': conversation, 'form': form, 'messages_echanges': messages, 'destinataire':destinataire})
@@ -812,7 +816,6 @@ def lireConversation_2noms(request, destinataire1, destinataire2):
         return lireConversation(request, destinataire1)
     else:
         return render(request, 'erreur.html', {'msg':"Vous n'êtes pas autorisé à voir cette conversation"})
-
 
 class ListeConversations(ListView):
     model = Conversation

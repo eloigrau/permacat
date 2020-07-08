@@ -7,6 +7,7 @@ from model_utils.managers import InheritanceManager
 import django_filters
 from django.urls import reverse, reverse_lazy
 from django.core.validators import RegexValidator
+from django.contrib.auth.validators import ASCIIUsernameValidator
 from django.contrib.auth.models import AbstractUser
 from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
@@ -142,7 +143,7 @@ class Adresse(models.Model):
 
 
 class Profil(AbstractUser):
-
+    username_validator = ASCIIUsernameValidator()
     site_web = models.URLField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     competences = models.TextField(null=True, blank=True)
