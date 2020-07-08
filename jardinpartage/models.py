@@ -183,5 +183,7 @@ class Commentaire(models.Model):
                 mail_admins("erreur mails",
                             titre + "\n" + message + "\n xxx \n" + str(emails) + "\n erreur : " + str(inst))
 
+        return super(Commentaire, self).save(*args, **kwargs)
+    
 class Participation(models.Model):
     participe = models.BooleanField(verbose_name="Je suis intéressé.e par les jardins partagés", default=False)
