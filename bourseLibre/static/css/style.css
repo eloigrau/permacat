@@ -391,6 +391,10 @@ section.p3 {
         color: rgba(0,0,0,.95);
     padding: 2px 2px;
     }
+
+    .imgbienvenue {
+        width: 100%;
+    }
 }
 
 .contenu{
