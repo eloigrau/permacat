@@ -1099,12 +1099,12 @@ def agora_rtg(request, ):
 def suivre_conversations(request, actor_only=True):
     """
     """
-    conversations = Conversation.objects.filter(Q(profil2__id=request.user.id) | Q(profil1__id=request.user.id))
-    for conv in conversations:
-        if conv in following(request.user):
-            actions.unfollow(request.user, conv)
-        else:
-            actions.follow(request.user, conv, actor_only=actor_only)
+    suivi, created = Suivis.objects.get_or_create(nom_suivi = 'conversations')
+
+    if suivi in following(request.user):
+        actions.unfollow(request.user, suivi)
+    else:
+        actions.follow(request.user, suivi, actor_only=actor_only)
     return redirect('conversations')
 
 @login_required
