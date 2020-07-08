@@ -86,8 +86,7 @@ class Article(models.Model):
             if sendMail:
                 suivi, created = Suivis.objects.get_or_create(nom_suivi='articles')
                 titre = "[Permacat-JardinPartagé] nouvel article"
-                message = " Un nouvel article a été créé " + \
-                          "\n Vous pouvez y accéder en suivant ce lien : https://permacat.herokuapp.com" + self.get_absolute_url() + \
+                message = " Un nouvel article a été créé : https://permacat.herokuapp.com" + self.get_absolute_url() + \
                           "\n\n------------------------------------------------------------------------------" \
                           "\n vous recevez cet email, car vous avez choisi de suivre les articles (en cliquant sur la cloche) sur le site http://www.Perma.Cat/jardins/articles/"
                 emails = [suiv.email for suiv in followers(suivi) if
@@ -100,8 +99,7 @@ class Article(models.Model):
         else:
             if sendMail:
                 titre = "[Permacat-JardinPartagé] Article actualisé"
-                message = "L'article '" + self.titre + "' a été modifié" + \
-                          "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + self.get_absolute_url() + \
+                message = "L'article '" + self.titre + "' a été modifié : http://www.perma.cat" + self.get_absolute_url() + \
                           "\n\n------------------------------------------------------------------------------" \
                           "\n vous recevez cet email, car vous avez choisi de suivre cet article sur le site http://www.Perma.Cat/jardins/articles/"
 

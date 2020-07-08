@@ -88,8 +88,7 @@ class Article(models.Model):
             if sendMail:
                 suivi, created = Suivis.objects.get_or_create(nom_suivi='articles')
                 titre = "[Permacat] nouvel article"
-                message = " Un nouvel article a été créé " + \
-                          "\n Vous pouvez y accéder en suivant ce lien : https://permacat.herokuapp.com" + self.get_absolute_url() + \
+                message = " Un nouvel article a été créé : https://permacat.herokuapp.com" + self.get_absolute_url() + \
                           "\n\n------------------------------------------------------------------------------" \
                           "\n vous recevez cet email, car vous avez choisi de suivre les articles (en cliquant sur la cloche) sur le site http://www.Perma.Cat/forum/articles/"
                 emails = [suiv.email for suiv in followers(suivi) if
@@ -102,8 +101,7 @@ class Article(models.Model):
         else:
             if sendMail:
                 titre = "[Permacat] Article actualisé"
-                message = "L'article '" + self.titre + "' a été modifié" + \
-                          "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + self.get_absolute_url() + \
+                message = "L'article '" + self.titre + "' a été modifié : http://www.perma.cat" + self.get_absolute_url() + \
                           "\n\n------------------------------------------------------------------------------" \
                           "\n vous recevez cet email, car vous avez choisi de suivre cet article sur le site http://www.Perma.Cat/forum/articles/"
 
@@ -172,10 +170,9 @@ class Commentaire(models.Model):
             self.date_creation = timezone.now()
             suivi, created = Suivis.objects.get_or_create(nom_suivi='articles')
             titre = "[Permacat] Article commenté"
-            message = " Un article auquel vous êtes abonné a été commenté " + \
-                      "\n Vous pouvez y accéder en suivant ce lien : https://permacat.herokuapp.com" + self.article.get_absolute_url() + \
+            message = " Un article auquel vous êtes abonné a été commenté : https://permacat.herokuapp.com" + self.article.get_absolute_url() + \
                       "\n\n------------------------------------------------------------------------------" \
-                      "\n vous recevez cet email, car vous avez choisi de suivre l'article (en cliquant sur la cloche) sur le site http://www.Perma.Cat/forum/articles/" + self.article.get_absolute_url()
+                      "\n vous recevez cet email, car vous avez choisi de suivre l'article (en cliquant sur la cloche) sur le site http://www.Perma.Cat" + self.article.get_absolute_url()
             emails = [suiv.email for suiv in followers(self.article) if
                       self.auteur_comm != suiv and (self.article.estPublic or suiv.is_permacat)]
             if emails and not DEBUG:
@@ -289,10 +286,9 @@ class CommentaireProjet(models.Model):
         ''' On save, update timestamps '''
         if not self.id:
             titre = "[Permacat] Projet commenté"
-            message = "Le projet '"+ self.projet.titre + "' auquel vous êtes abonné a été commenté " + \
-                      "\n Vous pouvez y accéder en suivant ce lien : https://permacat.herokuapp.com" + self.projet.get_absolute_url() + \
+            message = "Le projet '"+ self.projet.titre + "' auquel vous êtes abonné a été commenté :"+ self.projet.get_absolute_url() + \
                       "\n\n------------------------------------------------------------------------------" \
-                      "\n vous recevez cet email, car vous avez choisi de suivre l'article (en cliquant sur la cloche) sur le site http://www.Perma.Cat/forum/articles/" + self.projet.get_absolute_url()
+                      "\n vous recevez cet email, car vous avez choisi de suivre l'article (en cliquant sur la cloche) sur le site http://www.Perma.Cat" + self.projet.get_absolute_url()
 
             emails = [suiv.email for suiv in followers(self.projet) if
                       self.auteur_comm != suiv and (self.projet.estPublic or suiv.is_permacat)]
