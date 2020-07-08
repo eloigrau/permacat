@@ -8,13 +8,13 @@
 <h4>Au forum : mes Conversations Privées
 
         <a href="{% url 'suivre_conversations' %}">
-            {% if request.user|is_following:conversations.0 %}
-            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné à l'altermarché :  Cliquez pour arreter de recevoir des notifications concernant cet article par mail">
-                 {% fontawesome_icon 'bell' %} Suivi
+            {% if request.user|is_following:suivis %}
+            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné :  Cliquez pour arreter de recevoir des notifications concernant vos conversations privées par mail">
+                 {% fontawesome_icon 'bell' %}
             </button>
             {% else %}
-            <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné à l'altermarché :  Cliquez pour recevoir les notifications concernant cet article par mail">
-                 {% fontawesome_icon 'bell-slash' %} Non suivi
+            <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné :  Cliquez pour recevoir les notifications concernant vos conversations privées par mail">
+                 {% fontawesome_icon 'bell-slash' %}
             </button>
             {% endif %}
         </a>

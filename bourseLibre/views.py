@@ -793,7 +793,8 @@ def lireConversation(request, destinataire):
         action.send(request.user, verb='envoi_salon_prive', action_object=conversation, url=url, group=destinataire,
                     description="a envoyé un message privé à " + destinataire)
         profil_destinataire = Profil.objects.get(username=destinataire)
-        if profil_destinataire in followers(conversation):
+        suivi, created = Suivis.objects.get_or_create(nom_suivi='conversations')
+        if profil_destinataire in followers(suivi):
             sujet = "[Permacat] quelqu'un vous a envoyé une message privé"
             message = request.user.username + " vous a envoyé un message privé. Vous pouvez y accéder en suivant ce lien : https://permacat.herokuapp.com" +  url
             send_mail(sujet, message, SERVER_EMAIL, [profil_destinataire.email, ], fail_silently=False,)
@@ -824,6 +825,7 @@ class ListeConversations(ListView):
         context = super().get_context_data(**kwargs)
 
         context['conversations'] = Conversation.objects.filter(Q(profil2__id=self.request.user.id) | Q(profil1__id=self.request.user.id)).order_by('-date_dernierMessage')
+        context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="conversations")
 
         return context
 
