@@ -8,6 +8,25 @@
 {% block content %}
 
 <div class="accordion" id="accordionFaq">
+
+
+  <div class="card">
+    <div class="card-header" >
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse1" aria-expanded="false" aria-controls="collapseThree">
+         Présentation générale...
+        </button>
+      </h5>
+    </div>
+    <div id="collapse1" class="collapse" aria-labelledby="headingThree" data-parent="#accordionFaq">
+      <div class="card-body">
+        <p align="left">Ce site est un un outil de Permacat qui nous permet de communiquer, nous organiser, partager des informations.  Le site est open source et évolutif. Il peut être dupliqué pour n'importe quel autre collectif.<br></p>
+
+      </div>
+    </div>
+  </div>
+
+
   <div class="card">
     <div class="card-header" id="headingOne">
       <h5 class="mb-0">
@@ -19,15 +38,45 @@
 
     <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionFaq">
       <div class="card-body">
-      <p>Il y a&nbsp; en haut à droite une barre de recherche à droite, et le menu "profil" et 4 menus en haut à gauche:</p>
-<ul><li><u>Le marché :</u> là où vous pouvez voir les offres et demandes en cours, avec la possibilité d'ajouter ou de modifier une offre qui vous appartient</li>
-	<li><u>Le forum </u>:ici, vous pouvez discuter, sur le salon de discussion général, ou bien en privé. Vous pouvez aussi lire et ajouter des "articles" (un article peut porter sur n'importe quel sujet et de toute nature: texte, liens, photos, information, question, propositions, annonce d'évènement, etc.</li>
-	<li><u>L'association </u>: cette section regroupe les informations relatives à l'association "Permacat" (statuts, charte, présentation, et projets).</li>
-	<li><u>Le site :</u> dans ce menu, vous trouverez les informations relatives au site, Condition Générales d'Utilisation, annuaires des inscrits, etc.</li>
-</ul></div>
+
+        <p align="left">Le menu en haut de la page permet de naviguer dans les différentes sections du site :<br></p><ul><li><u>L'altermarché :</u> c'est la section "leboncoin" du site </li></ul><p>là où vous pouvez voir les offres et demandes
+ en cours, avec la possibilité d'ajouter ou de modifier une offre qui
+vous appartient. Les échanges ne sont pas possibles en euros par contre, seulement en monnaies alternatives.<br></p><ul><li><u>Le forum </u>: c'est la section "facebook"/blog collaboratif :</li></ul><p> vous pouvez discuter dans le salon de discussion public ou celui réservé aux membres du collectif, ou bien en privé (entre 2 personnes). Vous pouvez aussi lire
+ et ajouter des "articles" (un article peut porter sur n'importe quel
+sujet et de toute nature: texte, liens, photos, information, question,
+propositions, annoncer&nbsp; un évènement, etc.). Les articles peuvent être commentés. Chaque article a donc son propre fil de discussion.<br></p><ul>
+        <li><u>Le Collectif</u> : </li></ul><p>cette section regroupe les informations relatives au collectif (statuts, charte, présentation, annuaire, adhésion, documents administratifs, etc). Plus particulièrement :<br></p><p>- Il y a une partie "Votes" pour pouvoir faire des votes ou des sondages simples sur le site (pour des votes plus complexes, voir le site balotilo.org). </p><p>- Une partie "Projets"&nbsp; pour pouvoir s'organiser autour de projets en particulier. </p><p>- Une partie "Fiches" pour créer des fiches techniques à plusieurs (fiches de permaculture, à la base). </p><p>- Et une partie "Ateliers" pour organiser des ateliers collectifs (avec possibilité d'inscription à l'avance)<br></p><ul><li><u>L'agenda :</u></li></ul><p>il s'agit d'un calendrier pour noter ou visualiser les différents événements : il est possible d'associer une ou plusieurs dates à un article du forum</p><ul><li><u>Les notifications :</u></li></ul><p>Cette partie permet de voir l'activité sur le site. Les différentes actions (ajout d'un article, nouveau commentaire, etc.) sont visibles chronologiquement, ou pour chaque partie séparément. Un système de "check" permet de n'afficher que les nouvelles notifications depuis votre dernière visite<br></p><ul><li><u>Le site :</u></li></ul><p> dans ce menu, vous trouverez les informations relatives au site,
+Condition Générales d'Utilisation, annuaires des inscrits, etc.</p><ul><li><u>Mon Profil :</u></li></ul><p>Ici vous pouvez modifier les informations relatives à votre compte (nom, description, adresse, etc.)<br></p><p><br></p>
+        </ol>
+      </div>
     </div>
   </div>
 
+
+  <div class="card">
+    <div class="card-header" id="heading8">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapsealerte" aria-expanded="false" aria-controls="collapseThree">
+         Comment fonctionnent les alertes mails?
+        </button>
+      </h5>
+    </div>
+    <div id="collapsealerte" class="collapse" aria-labelledby="headingThree" data-parent="#accordionFaq">
+      <div class="card-body">
+       <p>Un "système d'alertes" permet d'envoyer un mail pour certaines activités : les "cloches" sur les différentes pages permettent d'activer/de désactiver les alertes.&nbsp; On peut s'abonner&nbsp; :</p>
+        <ol>
+          <li>au forum : pour recevoir un mail à chaque nouvel article</li>
+          <li>à l'altermarché : pour recevoir&nbsp; un mail lorsque quelqu'un propose ou demande quelque chose sur le "marché"</li>
+        <li>aux "message privés" : pour recevoir un mail quand quelqu'un vous contacte à travers la messagerie du site</li>
+          <li>au projets : pour recevoir un mail à chaque nouveau projet</li>
+        <li>à un article en particulier : pour recevoir un mail à
+        chaque fois que quelqu'un commente ou modifie un article en particulier</li>
+        <li>à un projet en particulier : pour recevoir un mail à
+        chaque fois que quelqu'un commente ou modifie un projet en particulier</li></ol>
+
+      </div>
+    </div>
+  </div>
 
   <div class="card">
     <div class="card-header" id="heading4">
@@ -39,7 +88,7 @@
     </div>
     <div id="collapse4" class="collapse" aria-labelledby="headingThree" data-parent="#accordionFaq">
       <div class="card-body">
-       C'est un marché en monnaie alternatives (June, SEL, Soudaqui, troc, etc. - hors euro)
+       C'est un marché en monnaie alternatives (June, SEL, Soudaqui, troc, etc. - hors euro).
       </div>
     </div>
   </div>
@@ -55,7 +104,8 @@
     </div>
     <div id="collapse5" class="collapse" aria-labelledby="heading5" data-parent="#accordionFaq">
       <div class="card-body">
-       C'est une page web de ce site que vous pouvez créer, pour y mettre toute sorte d'information (annoncer une rencontre, discuter autour d'un thème, proposer une recette, etc.)
+       C'est une page web de ce site que vous pouvez créer, pour y mettre toute sorte d'information (annoncer une rencontre, discuter autour d'un thème, proposer une recette, etc.). Les articles peuvent etre publics (ie visibles par tous les inscrits au site) ou bien  réservés au collectif (visible uniquement par les membres du collectif inscrits au site).
+        <p>Les articles peuvent etre "modifiables par  n'importe qui" ce qui permet la possibilité de rédiger à plusieurs un article ou de le mettre à jour, etc. Mais attention, il n'y a pas de sauvegarde des anciennes versions des articles.</p>
       </div>
     </div>
   </div>
@@ -74,6 +124,23 @@
       </div>
     </div>
   </div>
+
+
+  <div class="card">
+    <div class="card-header" >
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse8" aria-expanded="false" aria-controls="collapseThree">
+         Comment devenir membre du collectif ?
+        </button>
+      </h5>
+    </div>
+    <div id="collapse8" class="collapse" aria-labelledby="heading5" data-parent="#accordionFaq">
+      <div class="card-body">
+       Il faut en faire la demande par mail aux administrateurs qui changeront votre statut sur le site si vous remplissez les critères (adhésion à l'asso ou autre, suivant le reglement du collectif)   </div>
+    </div>
+  </div>
+
+
   <div class="card">
     <div class="card-header" id="headingTwo">
       <h5 class="mb-0">

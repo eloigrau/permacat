@@ -685,6 +685,7 @@ def liens(request):
         'http://lejeu.org/',
         'http://soudaqui.cat/wordpress/',
         'https://www.colibris-lemouvement.org/',
+        'https://www.hameaux-legers.org/',
         'https://ponteillanature.wixsite.com/eco-nature',
         'https://cce-66.wixsite.com/mysite',
         'https://jardindenat.wixsite.com/website',
@@ -692,7 +693,7 @@ def liens(request):
         'https://permaculturelne.herokuapp.com',
         'https://framasoft.org',
         'https://alternatiba.eu/alternatiba66/',
-        'http://www.le-message.org/?lang=fr',
+        'http://www.le-message.org/',
         'https://reporterre.net/',
         'https://la-bas.org/',
     ]
