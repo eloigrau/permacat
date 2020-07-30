@@ -161,7 +161,6 @@ class ListeArticles(ListView):
 
         context['ordreTriPossibles'] = {
                                            "date de création":'-date_creation',
-                                           "date du dernier message":'-date_dernierMessage',
                                            "date de la dernière modification":'-date_modification',
                                             "titre": 'titre' }
 

@@ -26,3 +26,8 @@ def url(value):
 def ordreTri(value):
     newvalue = value.replace('_', ' ').replace('-', '')
     return newvalue
+
+@register.filter(is_safe=True)
+def sansOrdreTri(value):
+    newvalue = value.replace('ordreTri', 'prec')
+    return newvalue
