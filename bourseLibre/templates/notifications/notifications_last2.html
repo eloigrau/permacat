@@ -48,6 +48,9 @@
 {%if  dico.listautres %}
     <div class="card carte-notif-news d-md-flex textcenter">
         <ul class="list-group list-group-flush">
+{%if htmlProjets or htmlArticles %}
+            <li class="list-group-item"  style="background-color:#cce6ff">Autres</li>
+{%if endif %}
       {% for action in dico.listautres %}
                 {% include "notifications/notifications_template4.html" with action=action %}
       {% endfor %}
