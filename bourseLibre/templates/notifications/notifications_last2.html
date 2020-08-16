@@ -12,13 +12,13 @@
 {%if htmlArticles or htmlProjets or dico.listautres %}
 <p class = "textcenter "> depuis la dernière fois que vous avez "marqué comme vu" (le {{request.user.date_notifications|date:"d/m/Y"}} à {{request.user.date_notifications|date:"G:i"}})</p>
 <p class = "textcenter ">
-      <a href="{% url 'notificationsLues'  %}" class="btn btn-primary">
+      <a href="{% url 'notificationsLues'  %}" class="btn btn-outline-primary">
          Marquer comme vu
       </a>
 
 </p>
 {% else %}
-<p class = "textcenter ">Pas de nouvelle activité depuis votre dernière visite</p>
+<p class = "textcenter ">Pas de nouvelle activité depuis votre dernière visite (le {{request.user.date_notifications|date:"d/m/Y"}} à {{request.user.date_notifications|date:"G:i"}})</p>
 {% endif %}
 <div class="row justify-content-center">
 <div class="">
