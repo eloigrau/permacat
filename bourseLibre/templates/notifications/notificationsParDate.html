@@ -1,15 +1,11 @@
 {% extends 'base_notifications.html' %}
 {% load activity_tags %}
 {% block subtitle %}
-<h4 class = "textcenter "> Notifications par date
-
-</h4>
-
-<p class = "textcenter ">
-      <a href="{% url 'notifications'  %}" class="btn btn-success">
-         Notifications par type
-      </a>
-</p>
+<nav class="navbar navbar-light bg-light justify-content-center" style="display: inline-block;">
+      <button class="btn btn-outline-success" type="button"> Notifications par date</a></button>
+        <button class="btn btn-sm btn-outline-secondary" type="button"><a href="{% url 'notifications_news'  %}">Dernières Notifications</a></button>
+    <button class="btn btn-sm btn-outline-secondary" type="button"><a href="{% url 'notifications'  %}"> Notifications par type</a></button>
+</nav>
 {% endblock %}
 {% block content %}
 <div class="row justify-content-center"

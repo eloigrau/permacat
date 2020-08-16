@@ -1,29 +1,24 @@
 {% extends 'base_notifications.html' %}
 {% load activity_tags %}
 {% block subtitle %}
-<h4 class = "textcenter "> Dernières Notifications </h4>
-
-<p class = "textcenter ">
-      <a href="{% url 'notifications'  %}" class="btn btn-success">
-         Notifications par type
-      </a>
-    <a href="{% url 'notificationsParDate'  %}" class="btn btn-success">Notifications par date </a>
-</p>
-<hr>
-{%if actions%}
-<p class = "textcenter "> depuis la dernière fois que vous avez "marqué comme vu" (le {{request.user.date_notifications|date:"d/m/Y"}} à {{request.user.date_notifications|date:"G:i"}})</p>
-
-{% endif %}
+<nav class="navbar navbar-light bg-light justify-content-center" style="display: inline-block;">
+        <button class="btn btn-sm btn-outline-secondary" type="button"><a href="{% url 'notificationsParDate'  %}"> Notifications par date</a></button>
+    <button class="btn btn-outline-success" type="button"><a href="{% url 'notifications_news'  %}">Dernières Notifications</a></button>
+      <button class="btn btn-sm btn-outline-secondary" type="button"><a href="{% url 'notifications'  %}"> Notifications par type</a></button>
+</nav>
 {% endblock %}
 {% block content %}
 
 {%if htmlArticles or htmlProjets or dico.listautres %}
+<p class = "textcenter "> depuis la dernière fois que vous avez "marqué comme vu" (le {{request.user.date_notifications|date:"d/m/Y"}} à {{request.user.date_notifications|date:"G:i"}})</p>
 <p class = "textcenter ">
       <a href="{% url 'notificationsLues'  %}" class="btn btn-primary">
          Marquer comme vu
       </a>
 
 </p>
+{% else %}
+<p class = "textcenter ">Pas de nouvelle activité depuis votre dernière visite</p>
 {% endif %}
 <div class="row justify-content-center">
 <div class="">

@@ -37,7 +37,7 @@ def getNotifications(request, nbNotif=10, orderBy="-timestamp"):
     projets = [art for i, art in enumerate(projets) if i == 0 or not (art.description == projets[i-1].description and art.actor == projets[i-1].actor ) ][:nbNotif]
     salons = [art for i, art in enumerate(salons) if i == 0 or not (art.description == salons[i-1].description and art.actor == salons[i-1].actor ) ][:nbNotif]
     offres = [art for i, art in enumerate(offres) if i == 0 or not (art.description == offres[i-1].description and art.actor == offres[i-1].actor ) ][:nbNotif]
-    inscription = Action.objects.filter(Q(verb__startswith='inscription'))
+    inscription = Action.objects.filter(Q(verb__startswith='inscript'))
 
     return salons, articles, projets, offres, conversations, fiches, ateliers, inscription, votations
 
@@ -59,7 +59,7 @@ def getNotificationsParDate(request, limiter=True, orderBy="-timestamp"):
                                              Q(verb='ajout_offre')|Q(verb__startswith='fiche')|
                                              Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)|
 
-                                             Q(verb__startswith='atelier')|Q(verb__startswith='inscription') |
+                                             Q(verb__startswith='atelier')|Q(verb__startswith='inscript') |
                                                 Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)
         ).order_by(orderBy)
 
@@ -163,7 +163,7 @@ def notifications_news_regroup(request):
 
 
     dicoTexte['listautres'] = []
-    for action in list(chain(salons, offres, conversations, fiches, ateliers, inscriptions, votations)):
+    for action in list(chain(inscriptions, votations, conversations, salons, offres, ateliers, fiches,)):
         if request.user.date_notifications < action.timestamp:
             dicoTexte['listautres'].append(action)
 
