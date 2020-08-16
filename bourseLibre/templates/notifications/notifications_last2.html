@@ -50,7 +50,7 @@
         <ul class="list-group list-group-flush">
 {%if htmlProjets or htmlArticles %}
             <li class="list-group-item"  style="background-color:#cce6ff">Autres</li>
-{%if endif %}
+{% endif %}
       {% for action in dico.listautres %}
                 {% include "notifications/notifications_template4.html" with action=action %}
       {% endfor %}
