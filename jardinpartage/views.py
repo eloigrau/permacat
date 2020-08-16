@@ -42,7 +42,7 @@ def ajouterArticle(request):
             url = article.get_absolute_url()
             suffix = "" if article.estPublic else "_permacat"
             action.send(request.user, verb='article_nouveau'+suffix, action_object=article, url=url,
-                        description="a ajouté un article : (Jardins Partagés) '%s'" % article.titre)
+                        description="a ajouté un article : (Jardins Partagés) '%s'" % article.titre, type="article_jardin_partage")
             return redirect(article.get_absolute_url())
             #return render(request, 'jardinpartage/lireArticle.html', {'article': article})
     except Exception as inst:
@@ -108,7 +108,7 @@ def lireArticle(request, slug):
             url = article.get_absolute_url()+"#idConversation"
             suffix = "_permacat" if not article.estPublic else ""
             action.send(request.user, verb='article_message'+suffix, action_object=article, url=url,
-                        description="a réagi à l'article: (Jardins Partagés) '%s'" % article.titre)
+                        description="a réagi à l'article: (Jardins Partagés) '%s'" % article.titre, type="article_jardin_partage")
             #envoi_emails_articleouprojet_modifie(article, request.user.username + " a réagit à l'article: " +  article.titre)
         return redirect(request.path)
 
@@ -303,8 +303,8 @@ def accepter_participation(request):
         request.user.save()
         suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_jardin')
         actions.follow(request.user, suivi, actor_only=True)
-        action.send(request.user, verb='inscription', url=request.user.get_absolute_url(),
-                    description="s'est inscrit.e aux jardins partagés")
+        action.send(request.user, verb='inscription_jardins', url=request.user.get_absolute_url(),
+                    description="s'est inscrit.e aux jardins partagés", )
 
         return redirect(reverse('jardinpartage:index'))
 

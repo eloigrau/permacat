@@ -27,7 +27,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 
 from django.core.mail import send_mass_mail
-from bourseLibre.settings import SERVER_EMAIL
+from bourseLibre.settings import SERVER_EMAIL, LOCALL
 
 DEGTORAD=3.141592654/180
 
@@ -153,7 +153,7 @@ class Profil(AbstractUser):
         'thumbnail2': (100, 100, True)})
 
     date_registration = models.DateTimeField(verbose_name="Date de création", editable=False)
-    pseudo_june = models.CharField(_('(optionnel) pseudo Monnaie Libre'), blank=True, default=None, null=True, max_length=50)
+    pseudo_june = models.CharField(_('pseudo Monnaie Libre'), blank=True, default=None, null=True, max_length=50)
 
     inscrit_newsletter = models.BooleanField(verbose_name="J'accepte de recevoir des emails de Permacat", default=False)
     statut_adhesion = models.IntegerField(choices=Choix.statut_adhesion, default="0")
@@ -574,7 +574,7 @@ def on_save_produits(instance, created, **kwargs):
         titre = "[Permacat] nouveau produit"
         message = " Une nouvelle offre a été postée sur le marché : http://www.perma.cat" + instance.get_absolute_url()
         emails = [suiv.email for suiv in followers(suivi) if instance.user != suiv  and (instance.estPublique or suiv.is_permacat)]
-        if emails:
+        if emails and not LOCALL:
             try:
                 send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
             except:

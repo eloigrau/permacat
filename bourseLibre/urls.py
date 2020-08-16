@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.urls import path
-from . import views
+from . import views, views_notifications
 from django.views.generic import TemplateView
 from bourseLibre.views import handler400 as h400, handler403  as h403, handler404  as h404, handler500  as h500
 #from fcm_django.api.rest_framework import FCMDeviceAuthorizedViewSet
@@ -47,11 +47,11 @@ urlpatterns = [
     url(r'^RTG/admin/$', views.admin_asso_rtg, name='admin_asso_rtg'),
     url(r'^permacat/fichiers/$', views.telechargements_asso, name='telechargements_asso'),
     url(r'^permacat/adhesion_asso/$', views.adhesion_asso, name='adhesion_asso'),
-    url(r'^notifications/$', views.notifications, name='notifications'),
-    url(r'^notifications/news/$', views.notifications_news, name='notifications_news'),
-    url(r'^notificationsParDate/$', views.notificationsParDate, name='notificationsParDate'),
-    url(r'^notificationsLues/$', views.notificationsLues, name='notificationsLues'),
-    url(r'^dernieresInfos/$', views.dernieresInfos, name='dernieresInfos'),
+    url(r'^notifications/$', views_notifications.notifications, name='notifications'),
+    url(r'^notifications/news/$', views_notifications.notifications_news_regroup, name='notifications_news'),
+    url(r'^notificationsParDate/$', views_notifications.notificationsParDate, name='notificationsParDate'),
+    url(r'^notificationsLues/$', views_notifications.notificationsLues, name='notificationsLues'),
+    url(r'^dernieresInfos/$', views_notifications.dernieresInfos, name='dernieresInfos'),
     url(r'^prochaines_rencontres/$', views.prochaines_rencontres, name='prochaines_rencontres'),
     url(r'^permacat/presentation/$', views.presentation_asso, name='presentation_asso'),
     url(r'^site/presentation/$', views.presentation_site, name='presentation_site'),

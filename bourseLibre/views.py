@@ -52,11 +52,13 @@ from actstream.models import Action, any_stream, following,followers
 # import json
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.core.exceptions import ObjectDoesNotExist
-from bourseLibre.settings import SERVER_EMAIL
+from bourseLibre.settings import SERVER_EMAIL, LOCALL
 
 from django.utils.timezone import now
 
 CharField.register_lookup(Lower, "lower")
+
+from .views_notifications import getNbNewNotifications
 
 #import sys
 #from io import BytesIO
@@ -841,148 +843,6 @@ def chercherConversation(request):
     else:
         return render(request, 'chercher_conversation.html', {'form': form})
 
-@login_required
-def getNotifications(request):
-    if request.user.is_permacat:
-        salons      = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_permacat'))[:30]
-        articles    = Action.objects.filter(Q(verb='article_nouveau_permacat') | Q(verb='article_message_permacat')|
-                                            Q(verb='article_nouveau') | Q(verb='article_message')| Q(verb='article_modifier')|
-                                            Q(verb='article_modifier_permacat'))[:30]
-        projets     = Action.objects.filter(Q(verb='projet_nouveau_permacat') | Q(verb='projet_message_permacat')|
-                                            Q(verb='projet_nouveau') | Q(verb='projet_message')| Q(verb='projet_modifier')|
-                                            Q(verb='projet_modifier_permacat'))[:30]
-        offres      = Action.objects.filter(Q(verb='ajout_offre') | Q(verb='ajout_offre_permacat'))[:30]
-        votations      = Action.objects.filter(Q(verb='ajout_votation') | Q(verb='ajout_votation_permacat'))[:30]
-    else:
-        salons      = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_permacat'))[:30]
-        articles    = Action.objects.filter(Q(verb='article_nouveau') | Q(verb='article_message')| Q(verb='article_modifier'))[:30]
-        projets     = Action.objects.filter(Q(verb='projet_nouveau') | Q(verb='projet_message')| Q(verb='projet_modifier'))[:30]
-        offres      = Action.objects.filter(Q(verb='ajout_offre'))[:30]
-        votations = []
-    #fiches = Action.objects.filter(Q(verb='fiche_nouveau')|Q(verb='fiche_ajouter_atelier')|Q(verb='fiche_modifier')|Q(verb='fiche_atelier_modifier')|Q(verb='fiche_message'))[:30]
-    fiches = Action.objects.filter(verb__startswith='fiche')[:30]
-    ateliers = Action.objects.filter(Q(verb__startswith='atelier')|Q(verb=''))[:30]
-
-    nbNotif = 10
-    fiches = [art for i, art in enumerate(fiches) if i == 0 or not (art.description == fiches[i-1].description and art.actor == fiches[i-1].actor ) ][:nbNotif]
-    ateliers = [art for i, art in enumerate(ateliers) if i == 0 or not (art.description == ateliers[i-1].description and art.actor == ateliers[i-1].actor ) ][:nbNotif]
-
-    conversations = (any_stream(request.user).filter(Q(verb='envoi_salon_prive',)) | Action.objects.filter(Q(verb='envoi_salon_prive',  description="a envoyé un message privé à " + request.user.username) ))[:nbNotif]
-    articles = [art for i, art in enumerate(articles) if i == 0 or not (art.description == articles[i-1].description  and art.actor == articles[i-1].actor)][:nbNotif]
-    projets = [art for i, art in enumerate(projets) if i == 0 or not (art.description == projets[i-1].description and art.actor == projets[i-1].actor ) ][:nbNotif]
-    salons = [art for i, art in enumerate(salons) if i == 0 or not (art.description == salons[i-1].description and art.actor == salons[i-1].actor ) ][:nbNotif]
-    offres = [art for i, art in enumerate(offres) if i == 0 or not (art.description == offres[i-1].description and art.actor == offres[i-1].actor ) ][:nbNotif]
-    inscription = Action.objects.filter(Q(verb='inscription') )
-
-    return salons, articles, projets, offres, conversations, fiches, ateliers, inscription, votations
-
-@login_required
-def getNotificationsParDate(request):
-    if request.user.is_permacat:
-        actions      = Action.objects.filter( \
-            Q(verb='envoi_salon') | Q(verb='envoi_salon_permacat')|Q(verb='article_nouveau_permacat') |
-            Q(verb='article_message_permacat')|Q(verb='article_nouveau') | Q(verb='article_message')|
-            Q(verb='article_modifier')| Q(verb='article_modifier_permacat')|Q(verb='projet_nouveau_permacat') |
-            Q(verb='projet_message_permacat')|Q(verb='projet_nouveau') | Q(verb='projet_message')| Q(verb='projet_modifier')|
-            Q(verb='projet_modifier_permacat')|Q(verb__startswith='fiche')|Q(verb__startswith='atelier')|
-            Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)|
-            Q(verb='inscription') | Q(verb='votation_nouveau') \
-        ).order_by('-timestamp')
-    else:
-        actions      = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_permacat')|
-                                             Q(verb='article_nouveau') | Q(verb='article_message')|
-                                             Q(verb='article_modifier')|Q(verb='projet_nouveau') |
-                                             Q(verb='projet_message')| Q(verb='projet_modifier')|
-                                             Q(verb='ajout_offre')|Q(verb__startswith='fiche')|
-                                             Q(verb__startswith='atelier')|Q(verb='inscription') |
-                                                Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)
-        ).order_by('-timestamp')
-
-    actions = [art for i, art in enumerate(actions[:100]) if i == 0 or not (art.description == actions[i-1].description and art.actor == actions[i-1].actor ) ][:50]
-
-    return actions
-
-@login_required
-def getNbNewNotifications(request):
-    actions = getNotificationsParDate(request)
-    actions = [action for action in actions if  request.user.date_notifications < action.timestamp]
-
-    return len(actions)
-
-
-@login_required
-def get_notifications_news(request):
-    actions = getNotificationsParDate(request)
-    actions = [action for action in actions if  request.user.date_notifications < action.timestamp]
-    return actions
-
-
-@login_required
-def notifications(request):
-    salons, articles, projets, offres, conversations, fiches, ateliers, inscriptions, votations = getNotifications(request)
-    return render(request, 'notifications/notifications.html', {'salons': salons, 'articles': articles,'projets': projets, 'offres':offres, 'conversations':conversations, 'fiches':fiches, 'ateliers':ateliers, 'inscriptions':inscriptions, 'votations':votations})
-
-@login_required
-def notifications_news(request):
-    actions = get_notifications_news(request)
-    return render(request, 'notifications/notifications_last.html', {'actions':actions})
-
-
-@login_required
-def notificationsParDate(request):
-    actions = getNotificationsParDate(request)
-    return render(request, 'notifications/notificationsParDate.html', {'actions': actions, })
-
-@login_required
-def notificationsLues(request):
-    request.user.date_notifications = now()
-    request.user.save()
-    return redirect('notifications_news')
-
-def getInfosJourPrecedent(request, nombreDeJours):
-    from datetime import datetime, timedelta
-    timestamp_from = datetime.now().date() - timedelta(days=nombreDeJours)
-    timestamp_to = datetime.now().date() - timedelta(days=nombreDeJours - 1)
-
-    if request.user.is_permacat:
-        articles    = Action.objects.filter(Q(verb='article_nouveau_permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) | Q(verb='article_nouveau',timestamp__gte = timestamp_from, timestamp__lte = timestamp_to,))
-        projets     = Action.objects.filter(Q(verb='projet_nouveau_permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) |Q(verb='projet_nouveau', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,))
-        offres      = Action.objects.filter(Q(verb='ajout_offre', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) | Q(verb='ajout_offre_permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,))
-    else:
-        articles    = Action.objects.filter(Q(verb='article_nouveau', timestamp__gte = timestamp_from, timestamp__lte = timestamp_to,) | Q(verb='article_modifier', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,))
-        projets     = Action.objects.filter(Q(verb='projet_nouveau', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,))
-        offres      = Action.objects.filter(Q(verb='ajout_offre', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,))
-    fiches = Action.objects.filter(verb__startswith='fiche')
-    ateliers = Action.objects.filter(Q(verb__startswith='atelier')|Q(verb=''))
-    conversations = (any_stream(request.user).filter(Q(verb='envoi_salon_prive', )) | Action.objects.filter(
-        Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)))
-
-    articles = [art for i, art in enumerate(articles) if i == 0 or not (art.description == articles[i-1].description  and art.actor == articles[i-1].actor)]
-    projets = [art for i, art in enumerate(projets) if i == 0 or not (art.description == projets[i-1].description and art.actor == projets[i-1].actor) ]
-    offres = [art for i, art in enumerate(offres) if i == 0 or not (art.description == offres[i-1].description and art.actor == offres[i-1].actor) ]
-    fiches = [art for i, art in enumerate(fiches) if i == 0 or not (art.description == fiches[i-1].description and art.actor == fiches[i-1].actor ) ]
-    ateliers = [art for i, art in enumerate(ateliers) if i == 0 or not (art.description == ateliers[i-1].description and art.actor == ateliers[i-1].actor ) ]
-    conversations = [art for i, art in enumerate(conversations) if i == 0 or not (art.description == conversations[i-1].description and art.actor == conversations[i-1].actor ) ]
-
-    return articles, projets, offres, fiches, ateliers, conversations
-
-def getTexteJourPrecedent(nombreDeJour):
-    if nombreDeJour == 0:
-        return "Aujourd'hui"
-    elif nombreDeJour == 1:
-        return "Hier"
-    elif nombreDeJour == 2:
-        return "Avant-hier"
-    else:
-        return "Il y a " + str(nombreDeJour) + " jours"
-
-@login_required
-def dernieresInfos(request):
-    info_parjour = []
-    for i in range(15):
-        info_parjour.append({"jour":getTexteJourPrecedent(i), "infos":getInfosJourPrecedent(request, i)})
-    return render(request, 'notifications/notifications_news.html', {'info_parjour': info_parjour,})
-
 
 @login_required
 def getNbProduits_expires(request):
@@ -1147,18 +1007,18 @@ def contacter_newsletter(request):
             emails = [profil.email for profil in Profil.objects.filter(inscrit_newsletter=True)] + [profil.email for
                                                                                                     profil in
                                                                                                     InscriptionNewsletter.objects.all()]
-
-            try:
-                send_mass_mail([(sujet, message, SERVER_EMAIL, emails), ])
-            except:
-                sujet = "[permacat admin] Erreur lors de l'envoi du mail"
-                message_txt = message + '\n'.join(emails)
-
+            if emails and not LOCALL:
                 try:
-                    mail_admins(sujet, message_txt)
+                    send_mass_mail([(sujet, message, SERVER_EMAIL, emails), ])
                 except:
-                    print("erreur de la fonction contacterNewsletter (views.py)")
-                    pass
+                    sujet = "[permacat admin] Erreur lors de l'envoi du mail"
+                    message_txt = message + '\n'.join(emails)
+
+                    try:
+                        mail_admins(sujet, message_txt)
+                    except:
+                        print("erreur de la fonction contacterNewsletter (views.py)")
+                        pass
             return render(request, 'contact/message_envoye.html', {'sujet': form.cleaned_data['sujet'], 'msg': message,
                                                            'envoyeur': request.user.username + " (" + request.user.email + ")",
                                                            "destinataires": emails})
@@ -1180,17 +1040,18 @@ def contacter_adherents(request):
             message = form.cleaned_data['msg']
             emails = [profil.email for profil in Profil.objects.filter(statut_adhesion=2)]
 
-            try:
-                send_mass_mail([(sujet, message, SERVER_EMAIL, emails), ])
-            except:
-                sujet = "[permacat admin] Erreur lors de l'envoi du mail"
-                message_txt = message + '\n'.join(emails)
-
+            if emails and not LOCALL:
                 try:
-                    mail_admins(sujet, message_txt)
+                    send_mass_mail([(sujet, message, SERVER_EMAIL, emails), ])
                 except:
-                    print("erreur de la fonction contacterAdherents (views.py)")
-                    pass
+                    sujet = "[permacat admin] Erreur lors de l'envoi du mail"
+                    message_txt = message + '\n'.join(emails)
+
+                    try:
+                        mail_admins(sujet, message_txt)
+                    except:
+                        print("erreur de la fonction contacterAdherents (views.py)")
+                        pass
             return render(request, 'contact/message_envoye.html', {'sujet': form.cleaned_data['sujet'], 'msg': message,
                                                            'envoyeur': request.user.username + " (" + request.user.email + ")",
                                                            "destinataires": emails})
@@ -1210,17 +1071,18 @@ def contacter_adherents_rtg(request):
             message = form.cleaned_data['msg']
             emails = [profil.email for profil in Profil.objects.filter(statut_adhesion_rtg=2)]
 
-            try:
-                send_mass_mail([(sujet, message, SERVER_EMAIL, emails), ])
-            except:
-                sujet = "[permacat admin] Erreur lors de l'envoi du mail"
-                message_txt = message + '\n'.join(emails)
-
+            if emails and not LOCALL:
                 try:
-                    mail_admins(sujet, message_txt)
+                    send_mass_mail([(sujet, message, SERVER_EMAIL, emails), ])
                 except:
-                    print("erreur de la fonction contacterAdherents (views.py)")
-                    pass
+                    sujet = "[permacat admin] Erreur lors de l'envoi du mail"
+                    message_txt = message + '\n'.join(emails)
+
+                    try:
+                        mail_admins(sujet, message_txt)
+                    except:
+                        print("erreur de la fonction contacterAdherents (views.py)")
+                        pass
             return render(request, 'contact/message_envoye.html', {'sujet': form.cleaned_data['sujet'], 'msg': message,
                                                            'envoyeur': request.user.username + " (" + request.user.email + ")",
                                                            "destinataires": emails})

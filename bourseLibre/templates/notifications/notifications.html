@@ -41,6 +41,7 @@
           {% endfor %}
         </ul>
   </div>
+  {% if offres %}
   <div class="card carte-notif notif2  d-md-flex textcenter ">
     <div class="card-header textcenter" style="background-color:#7b904b">
       Marché
@@ -51,7 +52,8 @@
   {% endfor %}
     </ul>
   </div>
-
+  {% endif %}
+  {% if fiches %}
   <div class="card carte-notif notif2  d-md-flex textcenter ">
     <div class="card-header textcenter" style="background-color:#7b904b">
       Fiches de Permaculture
@@ -62,6 +64,9 @@
   {% endfor %}
     </ul>
   </div>
+
+  {% endif %}
+  {% if votations %}
   <div class="card carte-notif notif2  d-md-flex textcenter ">
     <div class="card-header textcenter" style="background-color:#7b904b">
       Votations
@@ -72,6 +77,9 @@
   {% endfor %}
     </ul>
   </div>
+
+  {% endif %}
+  {% if inscriptions %}
   <div class="card carte-notif notif2  d-md-flex textcenter ">
     <div class="card-header textcenter" style="background-color:#7b904b">
       Inscriptions
@@ -83,6 +91,8 @@
     </ul>
   </div>
 
+  {% endif %}
+  {% if ateliers %}
   <div class="card carte-notif notif2  d-md-flex textcenter ">
     <div class="card-header textcenter" style="background-color:#7b904b">
       Ateliers collectifs
@@ -93,6 +103,7 @@
   {% endfor %}
     </ul>
   </div>
+  {% endif %}
 
   <div class="card carte-notif notif2  d-md-flex textcenter">
     <div class="card-header textcenter" style="background-color:#cacaaa" >

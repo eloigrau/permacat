@@ -276,7 +276,7 @@ def envoi_emails_articleouprojet_modifie(articleOuProjet, message, flag_article)
    # emails = [(titre, message, SERVER_EMAIL, (suiv.email, )) for suiv in followers(instance)]
     emails = [suiv.email for suiv in followers(articleOuProjet)  if articleOuProjet.auteur != suiv  and (articleOuProjet.estPublic or suiv.is_permacat)]
 
-    if emails:
+    if emails and not LOCALL:
         try:
             send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
             #mail_admins("pas d'erreur mails", titre + "\n" + message + "\n xxx \n" + str(emails))

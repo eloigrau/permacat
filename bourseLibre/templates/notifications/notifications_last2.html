@@ -1,0 +1,65 @@
+{% extends 'base_notifications.html' %}
+{% load activity_tags %}
+{% block subtitle %}
+<h4 class = "textcenter "> Dernières Notifications </h4>
+
+<p class = "textcenter ">
+      <a href="{% url 'notifications'  %}" class="btn btn-success">
+         Notifications par type
+      </a>
+    <a href="{% url 'notificationsParDate'  %}" class="btn btn-success">Notifications par date </a>
+</p>
+<hr>
+{%if actions%}
+<p class = "textcenter "> depuis la dernière fois que vous avez "marqué comme vu" (le {{request.user.date_notifications|date:"d/m/Y"}} à {{request.user.date_notifications|date:"G:i"}})</p>
+
+{% endif %}
+{% endblock %}
+{% block content %}
+
+{%if htmlArticles or htmlProjets or dico.listautres %}
+<p class = "textcenter ">
+      <a href="{% url 'notificationsLues'  %}" class="btn btn-primary">
+         Marquer comme vu
+      </a>
+
+</p>
+{% endif %}
+<div class="row justify-content-center">
+<div class="">
+{%if htmlArticles  %}
+    <div class="card carte-notif-news  d-md-flex">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item textcenter"  style="background-color:#ffc34d">Articles</li>
+            {{htmlArticles|safe }}
+        </ul>
+    </div>
+{% endif %}
+
+{%if htmlProjets %}
+    <div class="card carte-notif-news  d-md-flex">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item textcenter"  style="background-color:#f7ff99">Projets</li>
+            {{htmlProjets|safe }}
+        </ul>
+    </div>
+{% endif %}
+
+{%if  dico.listautres %}
+    <div class="card carte-notif-news d-md-flex textcenter">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"  style="background-color:#cce6ff">Autres</li>
+      {% for action in dico.listautres %}
+                {% include "notifications/notifications_template4.html" with action=action %}
+      {% endfor %}
+{% endif %}
+
+
+        </ul>
+
+    </div>
+
+</div>
+</div>
+
+{% endblock %}

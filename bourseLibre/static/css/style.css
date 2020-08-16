@@ -880,11 +880,12 @@ ul.errorlist{
     background-color:#e6e6e6 ;
     }
 .carte-notif{
-   min-width:16rem;
+   min-width:34%;
     margin: 20px;
 }
 .carte-notif-news{
-   min-width:15rem;
+    box-shadow: 0 10px 10px 0px grey;
+   min-width: 60%;
     margin: 15px;
 }
 .badge_projet{

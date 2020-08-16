@@ -4,6 +4,6 @@
 {% if request.user.date_notifications > action.timestamp %}
 background-color:#ffffe6
 {%endif%}">
-    <a href="{%if action.data.url %}{{ action.data.url }} {%endif%}">({{action.timestamp|date:"G:i"}}) {{action.actor}}
+    <a href="{%if action.data.url %}{{ action.data.url }} {%endif%}"><small>({{action.timestamp|date:"G:i"}})</small> {{action.actor}}
         {%if action.description %}{{action.description}}{% endif %} {%ifequal action.verb 'started following' %} suit la {{action.target}}{% endifequal %}
         </a></li>

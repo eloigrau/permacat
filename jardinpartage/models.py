@@ -8,7 +8,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 
 from actstream.models import followers
-from bourseLibre.settings import SERVER_EMAIL
+from bourseLibre.settings import SERVER_EMAIL, LOCALL
 
 class Choix():
     type_annonce = ('Discu','Information'), ('Organisation', 'Organisation'), \
@@ -91,7 +91,7 @@ class Article(models.Model):
                           "\n vous recevez cet email, car vous avez choisi de suivre les articles (en cliquant sur la cloche) sur le site http://www.Perma.Cat/jardins/articles/"
                 emails = [suiv.email for suiv in followers(suivi) if
                           self.auteur != suiv and (self.estPublic or suiv.is_permacat)]
-                if emails:
+                if emails and not LOCALL:
                     try:
                         send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
                     except Exception as inst:
@@ -106,7 +106,7 @@ class Article(models.Model):
                 emails = [suiv.email for suiv in followers(self) if
                           self.auteur != suiv and (self.estPublic or suiv.is_permacat)]
 
-                if emails:
+                if emails and not LOCALL:
                     try:
                         send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
                     except Exception as inst:
@@ -177,11 +177,12 @@ class Commentaire(models.Model):
                       "\n vous recevez cet email, car vous avez choisi de suivre l'article (en cliquant sur la cloche) sur le site http://www.Perma.Cat/forum/articles/" + self.article.get_absolute_url()
             emails = [suiv.email for suiv in followers(self.article) if
                       self.auteur_comm != suiv and (self.article.estPublic or suiv.is_permacat)]
-            try:
-                send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
-            except Exception as inst:
-                mail_admins("erreur mails",
-                            titre + "\n" + message + "\n xxx \n" + str(emails) + "\n erreur : " + str(inst))
+            if emails and not LOCALL:
+                try:
+                    send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
+                except Exception as inst:
+                    mail_admins("erreur mails",
+                                titre + "\n" + message + "\n xxx \n" + str(emails) + "\n erreur : " + str(inst))
 
         return super(Commentaire, self).save(*args, **kwargs)
     
