@@ -4,7 +4,7 @@ from django.db.models import Q
 from actstream.models import Action, any_stream
 from django.utils.timezone import now
 from itertools import chain
-
+from .forms import nouvelleDateForm
 
 @login_required
 def getNotifications(request, nbNotif=10, orderBy="-timestamp"):
@@ -236,3 +236,13 @@ def dernieresInfos(request):
     for i in range(15):
         info_parjour.append({"jour":getTexteJourPrecedent(i), "infos":getInfosJourPrecedent(request, i)})
     return render(request, 'notifications/notifications_news.html', {'info_parjour': info_parjour,})
+
+
+def changerDateNotif(request):
+    form = nouvelleDateForm(request.POST or None, )
+    if form.is_valid():
+        request.user.date_notifications = form.cleaned_data['date']
+        request.user.save()
+        return redirect('notifications_news')
+    else:
+        return render(request, 'notifications/date_notifs.html', {'form': form})

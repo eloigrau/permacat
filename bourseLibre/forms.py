@@ -5,6 +5,7 @@ from bourseLibre.captcha_local.fields import CaptchaField
 #from tinymce.widgets import TinyMCE
 from django_summernote.widgets import SummernoteWidget
 from blog.forms import SummernoteWidgetWithCustomToolbar
+from django.utils import timezone
 
 fieldsCommunsProduits = ['souscategorie', 'nom_produit',  'description', 'estUneOffre', 'estPublique',
                 'unite_prix', 'prix',  'type_prix', 'date_debut', 'date_expiration', ]
@@ -314,3 +315,9 @@ class InscriptionNewsletterForm(forms.ModelForm):
     class Meta:
         model = InscriptionNewsletter
         fields = ['email']
+
+
+
+class nouvelleDateForm(forms.Form):
+    years = [x for x in range(timezone.now().year - 3, timezone.now().year + 1)]
+    date = forms.DateTimeField(initial=timezone.now(), widget=forms.SelectDateWidget(years=years))
