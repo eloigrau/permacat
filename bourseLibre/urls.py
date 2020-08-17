@@ -157,6 +157,7 @@ urlpatterns = [
 
     url(r'^modifierMessage/(?P<id>[0-9]+)(?P<type>[-\w.]+)$', views.modifier_message, name='modifierMessage'),
     url(r'^voirEmails/$', views_notifications.voirEmails,  name="voirEmails"),
+    url(r'^envoyerEmailsRequete/$', views_notifications.envoyerEmailsRequete,  name="envoyerEmailsRequete"),
 ]
 urlpatterns += [
     url(r'^robots\.txt$', TemplateView.as_view(template_name="bourseLibre/robots.txt", content_type='text/plain')),

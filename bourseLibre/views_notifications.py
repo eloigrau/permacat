@@ -289,6 +289,14 @@ def voirEmails(request):
     listeMails = getListeMailsAlerte()
     return render(request, 'notifications/voirEmails.html', {'listeMails': listeMails,})
 
+def envoyerEmailsRequete(request):
+    listeMails = getListeMailsAlerte()
+
+    if not LOCALL:
+        send_mass_mail(listeMails)
+    supprimerActionsEmails()
+    return redirect('voirEmails')
+
 def envoyerEmails():
     listeMails = getListeMailsAlerte()
 
