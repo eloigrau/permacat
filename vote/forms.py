@@ -12,7 +12,7 @@ class VotationForm(forms.ModelForm):
 
     class Meta:
         model = Votation
-        fields = ['type_vote', 'titre', 'contenu',  'question', 'estAnonyme', 'start_time', 'end_time', 'estPublic']
+        fields = ['type_vote', 'titre', 'question', 'contenu',  'estAnonyme', 'start_time', 'end_time', 'estPublic']
         widgets = {
             'contenu': SummernoteWidget(),
               'start_time': forms.DateInput(attrs={'type': 'date'}),
