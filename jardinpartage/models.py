@@ -171,12 +171,10 @@ class Commentaire(models.Model):
         if not self.id:
             self.date_creation = timezone.now()
             titre = "[Permacat-JardinPartagé] article commenté"
-            message = " Un article auquel vous êtes abonné a été commenté " + \
-                      "\n Vous pouvez y accéder en suivant ce lien : https://permacat.herokuapp.com" + self.article.get_absolute_url() + \
+            message = " L'article ' <a href='https://permacat.herokuapp.com'"+ self.article.get_absolute_url() + "'>"+ self.article + "'</a> a été commenté "  +\
                       "\n\n------------------------------------------------------------------------------" \
                       "\n vous recevez cet email, car vous avez choisi de suivre l'article (en cliquant sur la cloche) sur le site http://www.Perma.Cat/forum/articles/" + self.article.get_absolute_url()
-            emails = [suiv.email for suiv in followers(self.article) if
-                      self.auteur_comm != suiv and (self.article.estPublic or suiv.is_permacat)]
+            emails = [suiv.email for suiv in followers(self.article) if self.auteur_comm != suiv and (self.article.estPublic or suiv.is_permacat)]
             if emails and not LOCALL:
                 try:
                     send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])

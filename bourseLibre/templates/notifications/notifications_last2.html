@@ -15,7 +15,7 @@
         </a>
 </p>
 
-{%if htmlArticles or htmlProjets or dico.listautres %}
+{%if htmlArticles or dico.listautres %}
 <p class = "textcenter ">
     <a href="{% url 'notificationsLues'  %}" class="btn btn-outline-primary">
          Marquer comme vu
@@ -24,10 +24,11 @@
 {% else %}
 <p class = "textcenter ">Pas de nouvelle activité </p>
 {% endif %}
+
 <div class="row justify-content-center">
 <div class="">
 {%if htmlArticles  %}
-    <div class="card carte-notif-news  d-md-flex">
+    <div class="card carte-notif-news notif3 d-md-flex">
         <ul class="list-group list-group-flush">
             <li class="list-group-item textcenter"  style="background-color:#ffc34d">Articles</li>
             {{htmlArticles|safe }}
@@ -35,19 +36,10 @@
     </div>
 {% endif %}
 
-{%if htmlProjets %}
-    <div class="card carte-notif-news  d-md-flex">
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item textcenter"  style="background-color:#f7ff99">Projets</li>
-            {{htmlProjets|safe }}
-        </ul>
-    </div>
-{% endif %}
-
 {%if  dico.listautres %}
-    <div class="card carte-notif-news d-md-flex textcenter">
+    <div class="card carte-notif-news notif3 d-md-flex textcenter">
         <ul class="list-group list-group-flush">
-{%if htmlProjets or htmlArticles %}
+{%if htmlArticles %}
             <li class="list-group-item"  style="background-color:#cce6ff">Autres</li>
 {% endif %}
       {% for action in dico.listautres %}
