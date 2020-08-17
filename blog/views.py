@@ -11,7 +11,7 @@ from actstream import actions, action
 from actstream.models import followers, following, action_object_stream, actor_stream
 from django.core.mail import send_mass_mail, mail_admins
 from django.utils.timezone import now
-from bourseLibre.settings import SERVER_EMAIL
+from bourseLibre.settings import SERVER_EMAIL, LOCALL
 
 #from django.contrib.contenttypes.models import ContentType
 from bourseLibre.models import Suivis
@@ -265,24 +265,6 @@ def lireProjet(request, slug):
         return redirect(request.path)
 
     return render(request, 'blog/lireProjet.html', {'projet': projet, 'form': form, 'commentaires':commentaires, 'actions':actions},)
-
-def envoi_emails_articleouprojet_modifie(articleOuProjet, message, flag_article):
-
-    titre = "[Permacat] Article actualisé" if flag_article else "[Permacat] Projet actualisé"
-    message =  message +\
-              "\n Vous pouvez y accéder en suivant ce lien : http://www.perma.cat" + articleOuProjet.get_absolute_url() + \
-              "\n\n------------------------------------------------------------------------------" \
-              "\n Pour vous désabonner cliquez sur la cloche sur http://www.Perma.Cat/forum/articles/" if flag_article else "\n Pour vous désabonner cliquez sur la cloche sur http://www.Perma.Cat/forum/projets/"
-   # emails = [(titre, message, SERVER_EMAIL, (suiv.email, )) for suiv in followers(instance)]
-    emails = [suiv.email for suiv in followers(articleOuProjet)  if articleOuProjet.auteur != suiv  and (articleOuProjet.estPublic or suiv.is_permacat)]
-
-    if emails and not LOCALL:
-        try:
-            send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
-            #mail_admins("pas d'erreur mails", titre + "\n" + message + "\n xxx \n" + str(emails))
-        except:
-            mail_admins("erreur", sys.exc_info()[0])
-
 
 class ListeProjets(ListView):
     model = Projet

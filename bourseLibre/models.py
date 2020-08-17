@@ -309,11 +309,25 @@ class Produit(models.Model):  # , BaseProduct):
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
+        emails = []
         if not self.id:
             self.date_creation = now()
             self.stock_courant = self.stock_initial
+            suivi, cree = Suivis.objects.get_or_create(nom_suivi='produits')
+            titre = "[Permacat] nouveau produit"
+            emails = [suiv.email for suiv in followers(suivi) if
+                      self.user != suiv and (self.estPublique or suiv.is_permacat)]
 
-        return super(Produit, self).save(*args, **kwargs)
+        retour = super(Produit, self).save(*args, **kwargs)
+
+        if emails:
+            if self.estUneOffre:
+                message = "Nouvelle offre au marché : <a href='https://permacat.herokuapp.com" + self.get_absolute_url() +"'>" + self.nom_produit + "</a>"
+            else:
+                message = "Nouvelle demande au marché : <a href='https://permacat.herokuapp.com" + self.get_absolute_url() +"'>" + self.nom_produit + "</a>"
+            action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
+        return retour
+
 
     def get_absolute_url(self):
         return reverse('produit_detail', kwargs={'produit_id':self.id})
@@ -509,76 +523,6 @@ class ItemAlreadyExists(Exception):
 class ItemDoesNotExist(Exception):
     pass
 
-# from rest_framework import serializers
-# class ProduitSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Produit
-#         fields = ('categorie','nom_produit','description','prix')
-
-
-@receiver(post_save, sender=Produit)
-def on_save_produits(instance, created, **kwargs):
-    if created:
-        suivi, created = Suivis.objects.get_or_create(nom_suivi='produits')
-        titre = "[Permacat] nouveau produit"
-        message = " Une nouvelle offre a été postée sur le marché : http://www.perma.cat" + instance.get_absolute_url()
-        emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv  and (instance.estPublique or suiv.is_permacat)]
-        try:
-            send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
-        except:
-            pass
-
-
-@receiver(post_save, sender=Produit_aliment)
-def on_save_produits(instance, created, **kwargs):
-    if created:
-        suivi, created = Suivis.objects.get_or_create(nom_suivi='produits')
-        titre = "[Permacat] nouveau produit"
-        message = " Une nouvelle offre a été postée sur le marché : http://www.perma.cat" + instance.get_absolute_url()
-        emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv and (instance.estPublique or suiv.is_permacat)]
-        try:
-            send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
-        except:
-            pass
-
-
-@receiver(post_save, sender=Produit_objet)
-def on_save_produits(instance, created, **kwargs):
-    if created:
-        suivi, created = Suivis.objects.get_or_create(nom_suivi='produits')
-        titre = "[Permacat] nouveau produit"
-        message = " Une nouvelle offre a été postée sur le marché : http://www.perma.cat" + instance.get_absolute_url()
-        emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv  and (instance.estPublique or suiv.is_permacat)]
-        try:
-            send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
-        except:
-            pass
-
-
-@receiver(post_save, sender=Produit_service)
-def on_save_produits(instance, created, **kwargs):
-    if created:
-        suivi, created = Suivis.objects.get_or_create(nom_suivi='produits')
-        titre = "[Permacat] nouveau produit"
-        message = " Une nouvelle offre a été postée sur le marché : http://www.perma.cat" + instance.get_absolute_url()
-        emails = [suiv.email for suiv in followers(suivi) if instance.auteur != suiv  and (instance.estPublique or suiv.is_permacat)]
-        try:
-            send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
-        except:
-            pass
-
-@receiver(post_save, sender=Produit_vegetal)
-def on_save_produits(instance, created, **kwargs):
-    if created:
-        suivi, created = Suivis.objects.get_or_create(nom_suivi='produits')
-        titre = "[Permacat] nouveau produit"
-        message = " Une nouvelle offre a été postée sur le marché : http://www.perma.cat" + instance.get_absolute_url()
-        emails = [suiv.email for suiv in followers(suivi) if instance.user != suiv  and (instance.estPublique or suiv.is_permacat)]
-        if emails and not LOCALL:
-            try:
-                send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
-            except:
-                pass
 
 class ProductFilter(django_filters.FilterSet):
     #nom_produit = django_filters.CharFilter(lookup_expr='iexact')

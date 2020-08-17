@@ -3,9 +3,8 @@ from bourseLibre.models import Profil, Suivis
 from django.urls import reverse
 from django.utils import timezone
 from django.core.mail import send_mass_mail, mail_admins
-#from tinymce.models import HTMLField
-from django.dispatch import receiver
-from django.db.models.signals import post_save
+from actstream import action
+
 
 from actstream.models import followers
 from bourseLibre.settings import SERVER_EMAIL, LOCALL
@@ -81,38 +80,27 @@ class Article(models.Model):
 
     def save(self, sendMail=True, *args, **kwargs):
         ''' On save, update timestamps '''
+        emails = []
         if not self.id:
             self.date_creation = timezone.now()
             if sendMail:
                 suivi, created = Suivis.objects.get_or_create(nom_suivi='articles')
-                titre = "[Permacat-JardinPartagé] nouvel article"
-                message = " Un nouvel article a été créé : https://permacat.herokuapp.com" + self.get_absolute_url() + \
-                          "\n\n------------------------------------------------------------------------------" \
-                          "\n vous recevez cet email, car vous avez choisi de suivre les articles (en cliquant sur la cloche) sur le site http://www.Perma.Cat/jardins/articles/"
+                titre = "Nouvel article Jardins"
+                message = "Nouvel article aux Jardins Partagés: '<a href='https://permacat.herokuapp.com" + self.get_absolute_url() +"'>" + self.titre + "</a>'"
                 emails = [suiv.email for suiv in followers(suivi) if
                           self.auteur != suiv and (self.estPublic or suiv.is_permacat)]
-                if emails and not LOCALL:
-                    try:
-                        send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
-                    except Exception as inst:
-                        mail_admins("erreur mails", titre + "\n" + message + "\n xxx \n" + str(emails) + "\n erreur : " + str(inst))
         else:
             if sendMail:
-                titre = "[Permacat-JardinPartagé] Article actualisé"
-                message = "L'article '" + self.titre + "' a été modifié : http://www.perma.cat" + self.get_absolute_url() + \
-                          "\n\n------------------------------------------------------------------------------" \
-                          "\n vous recevez cet email, car vous avez choisi de suivre cet article sur le site http://www.Perma.Cat/jardins/articles/"
+                titre = "Article actualisé Jardins"
+                message = "L'article '<a href='https://permacat.herokuapp.com" + self.get_absolute_url() +"'>" + self.titre + "</a>' des Jardins Partagés a été modifié "
 
                 emails = [suiv.email for suiv in followers(self) if
                           self.auteur != suiv and (self.estPublic or suiv.is_permacat)]
 
-                if emails and not LOCALL:
-                    try:
-                        send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
-                    except Exception as inst:
-                        mail_admins("erreur mails", titre + "\n" + message + "\n xxx \n" + str(emails) + "\n erreur : " + str(inst))
-
-        return super(Article, self).save(*args, **kwargs)
+        retour =  super(Article, self).save(*args, **kwargs)
+        if emails:
+            action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
+        return retour
 
     @property
     def get_couleur(self):
@@ -168,21 +156,17 @@ class Commentaire(models.Model):
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
+        emails = []
         if not self.id:
             self.date_creation = timezone.now()
-            titre = "[Permacat-JardinPartagé] article commenté"
-            message = " L'article ' <a href='https://permacat.herokuapp.com"+ self.article.get_absolute_url() + "'>'"+ self.article.titre + "'</a> a été commenté "  +\
-                      "\n\n------------------------------------------------------------------------------" + \
-                      "\n vous recevez cet email, car vous avez choisi de suivre l'article (en cliquant sur la cloche) sur le site http://www.Perma.Cat/forum/articles/" + self.article.get_absolute_url()
+            titre = "article jardins commenté "
+            message = self.auteur_comm.username + " a commenté l'article (Jardins Partagés) '<a href='https://permacat.herokuapp.com"+ self.article.get_absolute_url() + "'>"+ self.article.titre + "</a>'"
             emails = [suiv.email for suiv in followers(self.article) if self.auteur_comm != suiv and (self.article.estPublic or suiv.is_permacat)]
-            if emails and not LOCALL:
-                try:
-                    send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
-                except Exception as inst:
-                    mail_admins("erreur mails",
-                                titre + "\n" + message + "\n xxx \n" + str(emails) + "\n erreur : " + str(inst))
 
-        return super(Commentaire, self).save(*args, **kwargs)
+        retour =  super(Commentaire, self).save(*args, **kwargs)
+        if emails:
+            action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
+        return retour
     
 class Participation(models.Model):
     participe = models.BooleanField(verbose_name="Je suis intéressé.e par les jardins partagés", default=False)

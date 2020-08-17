@@ -3,8 +3,12 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from actstream.models import Action, any_stream
 from django.utils.timezone import now
+from django.core.mail import send_mass_mail
 from itertools import chain
 from .forms import nouvelleDateForm
+from .models import Profil
+from .settings import SERVER_EMAIL, LOCALL
+from django_cron import CronJobBase, Schedule
 
 @login_required
 def getNotifications(request, nbNotif=10, orderBy="-timestamp"):
@@ -248,3 +252,56 @@ def changerDateNotif(request):
         return render(request, 'notifications/date_notifs.html', {'form': form})
 
 
+def getListeMailsAlerte():
+    actions = Action.objects.filter(verb='emails')
+    messagesParMails = {}
+    for action in actions:
+        for mail in action.data['emails']:
+            if not mail in messagesParMails:
+                messagesParMails[mail] = [{'titre': action.data['titre'], 'messages': [action.data['message'], ]}, ]
+            else:
+                for x in messagesParMails[mail]:
+                    if x['titre'] == action.data['titre'] and not action.data['message'] in x['messages']:
+                        messagesParMails[mail].append({'titre': action.data['titre'], 'messages': [action.data['message'], ]})
+
+    listeMails = []
+    for mail, messages in messagesParMails.items():
+        titre = "[Permacat] Du nouveau sur Perma.Cat"
+        pseudo = Profil.objects.get(email=mail)
+        message = "<p>Bon dia " + pseudo.username +",</p><p>Voici les dernières nouvelles des pages auxquelles vous êtes abonné.e :</p><ul>"
+        for mess in messages:
+            for m in mess['messages']:
+                message += "<li>" + m + "</li>"
+        message += "</ul><br>"
+        message += "<p>Fins Aviat !</p><hr>" + \
+                   "<p><small>Pour voir toute l'activité sur le site, consultez les <a href='https://permacat.herokuapp.com/notifications/news/'>Notifications </a> </small>. " + \
+                   "<small>Pour vous désinscrire des alertes mails, barrez les cloches sur le site (ou consultez la <a href='https://permacat.herokuapp.com/faq/'>FAQ</a>)</small></p>"
+
+        listeMails.append((titre, message, SERVER_EMAIL, mail))
+    return listeMails
+
+def supprimerActionsEmails():
+    actions = Action.objects.filter(verb='emails')
+    for action in actions:
+        action.delete()
+
+def voirEmails(request):
+    listeMails = getListeMailsAlerte()
+    return render(request, 'notifications/voirEmails.html', {'listeMails': listeMails,})
+
+def envoyerEmails():
+    listeMails = getListeMailsAlerte()
+
+    if not LOCALL:
+        send_mass_mail(listeMails)
+        supprimerActionsEmails()
+
+
+class EnvoiMailsCronJob(CronJobBase):
+    RUN_AT_TIMES = ['6:30']
+
+    schedule = Schedule(run_at_times=RUN_AT_TIMES)
+    code = 'bourseLibre.views_notifications.EnvoiMailsCronJob'    # a unique code
+
+    def do(self):
+        envoyerEmails()

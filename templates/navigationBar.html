@@ -100,6 +100,9 @@
                <li> <a class="dropdown-item" href="{% url 'contact_admins' %}"> Contacter admins </a></li>
                 <li class="divider" role="separator"></li>
                <li> <a class="dropdown-item" href="{% url 'fairedon' %}"> Faire un don</a></li>
+   {% if request.user.is_superuser %}
+               <li> <a class="dropdown-item" href="{% url 'voirEmails' %}"> voir Emails Alertes</a></li>
+                {%endif%}
          <li class="nav-item">
              <form class="form-inline my-2 my-lg-0 justify-content-center form-group navbar-form " action="{% url 'chercher' %}" method="get" role = "search">
         {% csrf_token %}

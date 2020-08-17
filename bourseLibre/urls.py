@@ -101,7 +101,6 @@ urlpatterns = [
 
     url(r'^cooperateurs/contacter_newsletter/$', login_required(views.contacter_newsletter), name='contacter_newsletter',),
     url(r'^cooperateurs/contacter_adherents/$', login_required(views.contacter_adherents), name='contacter_adherents',),
-    url(r'^cooperateurs/contacter_adherents_rtg/$', login_required(views.contacter_adherents_rtg), name='contacter_adherents_rtg',),
 
     url(r'^marche/proposer/(?P<type_produit>[-A-Za-z]+)/$', login_required(views.produit_proposer), name='produit_proposer', ),
     url(r'^marche/proposer/', login_required(views.proposerProduit_entree), name='produit_proposer_entree',),
@@ -157,6 +156,7 @@ urlpatterns = [
     url(r'^inscription_newsletter/$', views.inscription_newsletter, name='inscription_newsletter', ),
 
     url(r'^modifierMessage/(?P<id>[0-9]+)(?P<type>[-\w.]+)$', views.modifier_message, name='modifierMessage'),
+    url(r'^voirEmails/$', views_notifications.voirEmails,  name="voirEmails"),
 ]
 urlpatterns += [
     url(r'^robots\.txt$', TemplateView.as_view(template_name="bourseLibre/robots.txt", content_type='text/plain')),

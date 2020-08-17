@@ -424,8 +424,8 @@ def contact_admins(request):
         else:
             envoyeur = request.user.username + " (" + request.user.email + ") "
         sujet = form.cleaned_data['sujet']
-        message_txt = envoyeur + " a envoyé le message suivant : "
-        message_html = form.cleaned_data['msg']
+        message_txt = envoyeur + " a envoyé l'email suivant : "+ form.cleaned_data['msg']
+        message_html = envoyeur + " a envoyé l'email' suivant : " + form.cleaned_data['msg']
         try:
             mail_admins(sujet, message_txt, html_message=message_html)
             if form.cleaned_data['renvoi']:
@@ -798,13 +798,16 @@ def lireConversation(request, destinataire):
         profil_destinataire = Profil.objects.get(username=destinataire)
         suivi, created = Suivis.objects.get_or_create(nom_suivi='conversations')
         if profil_destinataire in followers(suivi):
-            sujet = "[Permacat] quelqu'un vous a envoyé une message privé"
-            message = request.user.username + " vous a envoyé un message privé. Vous pouvez y accéder en suivant ce lien : https://permacat.herokuapp.com" +  url
-            try:
-                send_mail(sujet, message, SERVER_EMAIL, [profil_destinataire.email, ], fail_silently=False,)
-            except Exception as inst:
-                mail_admins("erreur mails",
-                        sujet + "\n" + message + "\n xxx \n" + str(profil_destinataire.email) + "\n erreur : " + str(inst))
+            titre = "Message Privé"
+            message = request.user.username + " vous a envoyé un <a href='https://permacat.herokuapp.com"+  url+"'>" + "message privé</a>"
+            emails = [profil_destinataire.email, ]
+            action.send(request.user, verb='emails', url=url, titre=titre, message=message, emails=emails)
+
+            # try:
+            #     send_mail(sujet, message, SERVER_EMAIL, [profil_destinataire.email, ], fail_silently=False,)
+            # except Exception as inst:
+            #     mail_admins("erreur mails",
+            #             sujet + "\n" + message + "\n xxx \n" + str(profil_destinataire.email) + "\n erreur : " + str(inst))
         return redirect(request.path)
 
     return render(request, 'lireConversation.html', {'conversation': conversation, 'form': form, 'messages_echanges': messages, 'destinataire':destinataire})
@@ -1058,37 +1061,6 @@ def contacter_adherents(request):
     else:
         form = ContactForm()
     return render(request, 'contact/contact_adherents.html', {'form': form, })
-
-
-@login_required
-def contacter_adherents_rtg(request):
-    if not request.user.is_rtg:
-        return render(request, "notRTG.html")
-    if request.method == 'POST':
-        form = ContactForm(request.POST or None, )
-        if form.is_valid():
-            sujet = "[RTG] Newsletter - " +  form.cleaned_data['sujet']
-            message = form.cleaned_data['msg']
-            emails = [profil.email for profil in Profil.objects.filter(statut_adhesion_rtg=2)]
-
-            if emails and not LOCALL:
-                try:
-                    send_mass_mail([(sujet, message, SERVER_EMAIL, emails), ])
-                except:
-                    sujet = "[permacat admin] Erreur lors de l'envoi du mail"
-                    message_txt = message + '\n'.join(emails)
-
-                    try:
-                        mail_admins(sujet, message_txt)
-                    except:
-                        print("erreur de la fonction contacterAdherents (views.py)")
-                        pass
-            return render(request, 'contact/message_envoye.html', {'sujet': form.cleaned_data['sujet'], 'msg': message,
-                                                           'envoyeur': request.user.username + " (" + request.user.email + ")",
-                                                           "destinataires": emails})
-    else:
-        form = ContactForm()
-    return render(request, 'contact/contact_adherents_rtg.html', {'form': form, })
 
 
 

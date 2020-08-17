@@ -103,6 +103,7 @@ INSTALLED_APPS = (
     'django_summernote',
     'actstream',
     'taggit',
+    'django_cron',
     #"visits",
     #'notifications',
     #'webpush',
@@ -453,7 +454,6 @@ ACTSTREAM_SETTINGS = {
 #WIKI_ACCOUNT_HANDLING = False
 #WIKI_ACCOUNT_SIGNUP_ALLOWED = False
 
-
 TAGGIT_CASE_INSENSITIVE = True
 
 BOWER_COMPONENTS_ROOT = '/PROJECT_ROOT/components/'
@@ -463,3 +463,6 @@ BOWER_INSTALLED_APPS = (
     'bootstrap'
 )
 
+CRON_CLASSES = [
+    "bourseLibre.views_notifications.EnvoiMailsCronJob"
+]

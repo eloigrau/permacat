@@ -13,6 +13,7 @@ django-cookie-law==2.0.1
 django-cron==0.5.1
 django-debug-toolbar==1.10.1
 django-djconfig==0.8.0
+django-dynamic-form-fields==0.3.2
 django-extensions==2.1.4
 django-filter==2.0.0
 django-fontawesome==1.0
@@ -36,6 +37,7 @@ django-stdimage==4.0.0
 django-summernote==0.8.11.4
 django-tinymce==2.8.0
 django-taggit==1.1.0
+django-tinymce==2.8.0
 django-widget-tweaks==1.4.3
 djangorestframework==3.9.1
 gunicorn==19.9.0
@@ -64,3 +66,4 @@ urllib3==1.24.2
 webencodings==0.5.1
 whitenoise==4.1.2
 Whoosh==2.7.4
+wiki==0.4.5
