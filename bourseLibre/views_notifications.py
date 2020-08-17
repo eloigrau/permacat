@@ -115,16 +115,18 @@ def notifications_news_regroup(request):
         htmlArticles +=" <ul style='list-style-type:none'>"
 
         for action in actions :
-            htmlArticles += "<li>" + str(action.actor)
+            htmlArticles += "<li>"
             if action.description.startswith("a réagi"):
-                htmlArticles += " l'a commenté"
+                htmlArticles += "commenté par "
             elif action.description.startswith("a ajout"):
-                htmlArticles += " l'a créé"
+                htmlArticles += "créé par "
             elif action.description.startswith("a modif"):
-                htmlArticles += " l'a modifié"
+                htmlArticles += "modifié par "
             else:
-                htmlArticles +=  " " + action.description
-            htmlArticles += "&nbsp; &nbsp;<small> (il y a " + raccourcirTempsStr(action.timesince()) + ")</small></li>"
+                htmlArticles +=  str(action.actor) + " " + action.description
+            htmlArticles += str(action.actor) + "&nbsp;&nbsp;<small> (il y a " + raccourcirTempsStr(
+                action.timesince()) + ")</small></li>"
+
         htmlArticles += " </ul></a></li>"
 
 
@@ -148,16 +150,16 @@ def notifications_news_regroup(request):
         htmlProjets += " <ul style='list-style-type:none'>"
 
         for action in actions:
-            htmlProjets += "<li>" + str(action.actor)
+            htmlProjets += "<li>"
             if action.description.startswith("a réagi"):
-                htmlProjets += " l'a commenté"
+                htmlProjets += "commenté par "
             elif action.description.startswith("a ajout"):
-                htmlProjets += " l'a créé"
+                htmlProjets += "créé par "
             elif action.description.startswith("a modif"):
-                htmlProjets += " l'a modifié"
+                htmlProjets += "modifié par "
             else:
-                htmlProjets += " " + action.description
-            htmlProjets += "&nbsp;&nbsp;<small> (il y a " + raccourcirTempsStr(
+                htmlProjets +=  str(action.actor) + " " + action.description
+            htmlProjets += str(action.actor) + "&nbsp;&nbsp;<small> (il y a " + raccourcirTempsStr(
                 action.timesince()) + ")</small></li>"
         htmlProjets += " </ul></a></li>"
 
