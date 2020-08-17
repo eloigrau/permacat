@@ -1,5 +1,5 @@
 
 <li class="list-group-item"  style="{% if request.user.date_notifications > action.timestamp %}background-color:#ffffe6{%endif%}">
     <a href="{%if action.data.url %}{{ action.data.url }}{%endif%} ">{{action.actor}}
-        {%if action.description %}{{action.description}}{% endif %} {%ifequal action.verb 'started following' %} suit la {{action.target}} &nbsp; <small>(il y a {{action.timesince}})</small> {% endifequal %}
+        {%if action.description %}{{action.description}}{% endif %} {%ifequal action.verb 'started following' %} suit la {{action.target}}{% endifequal %} &nbsp; <small>(il y a {{action.timesince}})</small>
         </a></li>

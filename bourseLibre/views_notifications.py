@@ -246,3 +246,5 @@ def changerDateNotif(request):
         return redirect('notifications_news')
     else:
         return render(request, 'notifications/date_notifs.html', {'form': form})
+
+
