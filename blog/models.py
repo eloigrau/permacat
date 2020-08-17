@@ -171,7 +171,7 @@ class Commentaire(models.Model):
             suivi, created = Suivis.objects.get_or_create(nom_suivi='articles')
             titre = "[Permacat] Article commenté"
             message = " L'article ' <a href='https://permacat.herokuapp.com'" + self.article.get_absolute_url() + "'>" + self.article + "'</a> a été commenté " + \
-                        "\n\n------------------------------------------------------------------------------" \
+                        "\n\n------------------------------------------------------------------------------" +\
                         "\n vous recevez cet email, car vous avez choisi de suivre l'article (en cliquant sur la cloche) sur le site http://www.Perma.Cat/forum/articles/" + self.article.get_absolute_url()
             emails = [suiv.email for suiv in followers(self.article) if
                       self.auteur_comm != suiv and (self.article.estPublic or suiv.is_permacat)]
