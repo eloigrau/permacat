@@ -3,10 +3,7 @@ from bourseLibre.models import Profil, Suivis
 from django.urls import reverse
 from django.utils import timezone
 from django.core.mail import send_mass_mail, mail_admins
-#from tinymce.models import HTMLField
-from django.dispatch import receiver
-from django.db.models.signals import post_save
-
+from actstream import action
 from actstream.models import followers
 from bourseLibre.settings import SERVER_EMAIL, DEBUG
 
@@ -170,11 +167,14 @@ class Commentaire(models.Model):
             self.date_creation = timezone.now()
             suivi, created = Suivis.objects.get_or_create(nom_suivi='articles')
             titre = "[Permacat] Article commenté"
-            message = " L'article ' <a href='https://permacat.herokuapp.com'" + self.article.get_absolute_url() + "'>" + self.article + "'</a> a été commenté " + \
+            message = " L'article ' <a href='https://permacat.herokuapp.com" + self.article.get_absolute_url() + "'>'" + self.article.titre + "'</a> a été commenté " + \
                         "\n\n------------------------------------------------------------------------------" +\
                         "\n vous recevez cet email, car vous avez choisi de suivre l'article (en cliquant sur la cloche) sur le site http://www.Perma.Cat/forum/articles/" + self.article.get_absolute_url()
             emails = [suiv.email for suiv in followers(self.article) if
                       self.auteur_comm != suiv and (self.article.estPublic or suiv.is_permacat)]
+
+            #action.send(verb='emails', action_object=self, url=self.article.get_absolute_url(),
+             #           titre=titre, message=message, emails=emails)
             if emails and not DEBUG:
                 try:
                     send_mass_mail([(titre, message, SERVER_EMAIL, emails), ])
