@@ -22,17 +22,18 @@ app_name = 'vote'
 
 urlpatterns = [
     url(r'^accueil/$', views.accueil, name="accueil"),
-    url(r'^votations/$', login_required(views.ListeVotations.as_view(), login_url='/auth/login/'), name="index"),
-    url(r'^votation/(?P<slug>[-\w]+)$', views.lireVotation, name='lireVotation'),
-    url(r'^modifierVotation/(?P<slug>[-\w]+)$', login_required(views.ModifierVotation.as_view(), login_url='/auth/login/'), name='modifierVotation'),
-    url(r'^supprimerVotation/(?P<slug>[-\w]+)$',
-        login_required(views.SupprimerVotation.as_view(), login_url='/auth/login/'), name='supprimerVotation'),
+    url(r'^suffrages/$', login_required(views.ListeSuffrages.as_view(), login_url='/auth/login/'), name="index"),
+    url(r'^suffrage/(?P<slug>[-\w]+)$', views.lireSuffrage, name='lireSuffrage'),
+    url(r'^modifierSuffrage/(?P<slug>[-\w]+)$', login_required(views.ModifierSuffrage.as_view(), login_url='/auth/login/'), name='modifierSuffrage'),
+    url(r'^supprimerSuffrage/(?P<slug>[-\w]+)$',
+        login_required(views.SupprimerSuffrage.as_view(), login_url='/auth/login/'), name='supprimerSuffrage'),
 
-    url(r'^ajouterVotation/$', login_required(views.ajouterVotation), name='ajouterNouvelVotation'),
+    url(r'^ajouterSuffrage/$', login_required(views.ajouterSuffrage), name='ajouterNouvelSuffrage'),
     url(r'^voter/(?P<slug>[-\w]+)$', login_required(views.voter), name='voter'),
     url(r'^modifierVote/(?P<slug>[-\w]+)$', login_required(views.ModifierVote.as_view(), login_url='/auth/login/'), name='modifierVote'),
-    url(r'^votation/resultat/(?P<slug>[-\w]+)$', views.resultatsVotation, name='resultatsVotation'),
-    url(r'^modifierCommentaireVotation/(?P<id>[0-9]+)$',
-        login_required(views.ModifierCommentaireVotation.as_view(), login_url='/auth/login/'),
-        name='modifierCommentaireVotation'),
+    url(r'^suffrage/resultat/(?P<slug>[-\w]+)$', views.resultatsSuffrage, name='resultatsSuffrage'),
+    url(r'^modifierCommentaireSuffrage/(?P<id>[0-9]+)$',
+        login_required(views.ModifierCommentaireSuffrage.as_view(), login_url='/auth/login/'),
+        name='modifierCommentaireSuffrage'),
+    url(r'^suivre_suffrages/$', views.suivre_suffrages, name='suivre_suffrages'),
 ]

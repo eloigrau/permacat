@@ -64,5 +64,7 @@ def ordreTriStr(value):
         return "Catégorie"
     elif value =='titre':
         return "Titre"
+    elif value =='-type_vote':
+        return "Type de vote"
     else:
         return value

@@ -9,6 +9,7 @@ from .forms import nouvelleDateForm
 from .models import Profil
 from .settings import SERVER_EMAIL, LOCALL
 from django_cron import CronJobBase, Schedule
+from django.http import HttpResponseForbidden
 
 @login_required
 def getNotifications(request, nbNotif=10, orderBy="-timestamp"):
@@ -19,13 +20,13 @@ def getNotifications(request, nbNotif=10, orderBy="-timestamp"):
         articles    = Action.objects.filter(Q(verb__startswith='article')).order_by(orderBy)[:tampon]
         projets     = Action.objects.filter(Q(verb__startswith='projet')).order_by(orderBy)[:tampon]
         offres      = Action.objects.filter(Q(verb='ajout_offre') | Q(verb='ajout_offre_permacat')).order_by(orderBy)[:tampon]
-        votations      = Action.objects.filter(Q(verb='ajout_votation') | Q(verb='ajout_votation_permacat')).order_by(orderBy)[:tampon]
+        suffrages   = Action.objects.filter(Q(verb='suffrage_ajout') | Q(verb='suffrage_ajout_permacat')).order_by(orderBy)[:tampon]
     else:
         salons      = Action.objects.filter(Q(verb='envoi_salon')).order_by(orderBy)[:tampon]
         articles    = Action.objects.filter(Q(verb='article_nouveau') | Q(verb='article_message')| Q(verb='article_modifier')).order_by(orderBy)[:tampon]
         projets     = Action.objects.filter(Q(verb='projet_nouveau') | Q(verb='projet_message')| Q(verb='projet_modifier')).order_by(orderBy)[:tampon]
         offres      = Action.objects.filter(Q(verb='ajout_offre')).order_by(orderBy)[:tampon]
-        votations = []
+        suffrages   = Action.objects.filter(Q(verb='suffrage_ajout')).order_by(orderBy)[:tampon]
 
     #fiches = Action.objects.filter(Q(verb='fiche_nouveau')|Q(verb='fiche_ajouter_atelier')|Q(verb='fiche_modifier')|Q(verb='fiche_atelier_modifier')|Q(verb='fiche_message'))[:tampon]
     fiches = Action.objects.filter(verb__startswith='fiche').order_by(orderBy)[:tampon]
@@ -43,7 +44,7 @@ def getNotifications(request, nbNotif=10, orderBy="-timestamp"):
     offres = [art for i, art in enumerate(offres) if i == 0 or not (art.description == offres[i-1].description and art.actor == offres[i-1].actor ) ][:nbNotif]
     inscription = Action.objects.filter(Q(verb__startswith='inscript'))
 
-    return salons, articles, projets, offres, conversations, fiches, ateliers, inscription, votations
+    return salons, articles, projets, offres, conversations, fiches, ateliers, inscription, suffrages
 
 @login_required
 def getNotificationsParDate(request, limiter=True, orderBy="-timestamp"):
@@ -53,7 +54,7 @@ def getNotificationsParDate(request, limiter=True, orderBy="-timestamp"):
             Q(verb__startswith='article')|Q(verb__startswith='projet')|
             Q(verb__startswith='fiche')|Q(verb__startswith='atelier')|
             Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)|
-            Q(verb__startswith='inscription')|Q(verb='votation_nouveau') \
+            Q(verb__startswith='inscription')|Q(verb='suffrage_ajout') |Q(verb='suffrage_ajout_permacat') \
         ).order_by(orderBy)
     else:
         actions      = Action.objects.filter(Q(verb='envoi_salon')|
@@ -62,9 +63,9 @@ def getNotificationsParDate(request, limiter=True, orderBy="-timestamp"):
                                              Q(verb='projet_message')| Q(verb='projet_modifier')|
                                              Q(verb='ajout_offre')|Q(verb__startswith='fiche')|
                                              Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)|
-
+                                             Q(verb__startswith='inscription') | Q(verb='suffrage_ajout') |\
                                              Q(verb__startswith='atelier')|Q(verb__startswith='inscript') |
-                                                Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)
+                                             Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)
         ).order_by(orderBy)
 
     if limiter:
@@ -96,7 +97,7 @@ def raccourcirTempsStr(date):
 
 @login_required
 def notifications_news_regroup(request):
-    salons, articles, projets, offres, conversations, fiches, ateliers, inscriptions, votations = getNotifications(request, nbNotif=500)
+    salons, articles, projets, offres, conversations, fiches, ateliers, inscriptions, suffrages = getNotifications(request, nbNotif=500)
 
     dicoTexte = {}
     dicoTexte['dicoarticles'] = {}
@@ -109,14 +110,14 @@ def notifications_news_regroup(request):
                 dicoTexte['dicoarticles'][clef].append(action)
 
     htmlArticles = ""
-    for article, actions in dicoTexte['dicoarticles'].items():
+    for titre_article, actions in dicoTexte['dicoarticles'].items():
         htmlArticles += "<li class='list-group-item'><a href='" + actions[0].data['url'] + "'>"
-        htmlArticles += " <span style='font-variant: small-caps ;'>" + article
+        htmlArticles += " <div class='textcenter'><span  style='font-variant: small-caps ;'>" + titre_article
         if "(Jardins Partagés)" in actions[0].description:
             htmlArticles += "</span> <small> &nbsp;(Jardins Partagés)</small>"
         else:
             htmlArticles += "</span>"
-        htmlArticles +=" <ul style='list-style-type:none'>"
+        htmlArticles +=" </div><ul style='list-style-type:none'>"
 
         for action in actions :
             htmlArticles += "<li>"
@@ -144,14 +145,14 @@ def notifications_news_regroup(request):
                 dicoTexte['dicoprojets'][clef].append(action)
 
     htmlProjets = ""
-    for article, actions in dicoTexte['dicoprojets'].items():
+    for titre_projet, actions in dicoTexte['dicoprojets'].items():
         htmlProjets += "<li class='list-group-item'><a href='" + actions[0].data['url'] + "'>"
-        htmlProjets += " <span style='font-variant: small-caps ;'>" + article
+        htmlProjets += " <div  class='textcenter' ><spanstyle='font-variant: small-caps ;'>" + titre_projet
         if "(Jardins Partagés)" in actions[0].description:
             htmlProjets += "</span> (Jardins Partagés)"
         else:
             htmlProjets += "</span>"
-        htmlProjets += " <ul style='list-style-type:none'>"
+        htmlProjets += " </div><ul style='list-style-type:none'>"
 
         for action in actions:
             htmlProjets += "<li>"
@@ -169,7 +170,7 @@ def notifications_news_regroup(request):
 
 
     dicoTexte['listautres'] = []
-    for action in list(chain(inscriptions, votations, conversations, salons, offres, ateliers, fiches,)):
+    for action in list(chain(inscriptions, suffrages, conversations, salons, offres, ateliers, fiches,)):
         if request.user.date_notifications < action.timestamp:
             dicoTexte['listautres'].append(action)
 
@@ -177,8 +178,8 @@ def notifications_news_regroup(request):
 
 @login_required
 def notifications(request):
-    salons, articles, projets, offres, conversations, fiches, ateliers, inscriptions, votations = getNotifications(request)
-    return render(request, 'notifications/notifications.html', {'salons': salons, 'articles': articles,'projets': projets, 'offres':offres, 'conversations':conversations, 'fiches':fiches, 'ateliers':ateliers, 'inscriptions':inscriptions, 'votations':votations})
+    salons, articles, projets, offres, conversations, fiches, ateliers, inscriptions, suffrages = getNotifications(request)
+    return render(request, 'notifications/notifications.html', {'salons': salons, 'articles': articles,'projets': projets, 'offres':offres, 'conversations':conversations, 'fiches':fiches, 'ateliers':ateliers, 'inscriptions':inscriptions, 'suffrages':suffrages})
 
 @login_required
 def notifications_news(request):
@@ -286,6 +287,8 @@ def supprimerActionsEmails():
         action.delete()
 
 def voirEmails(request):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden()
     listeMails = getListeMailsAlerte()
     return render(request, 'notifications/voirEmails.html', {'listeMails': listeMails,})
 

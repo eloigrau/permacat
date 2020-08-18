@@ -13,11 +13,11 @@
 <p>
   <a class="btn {% if request.GET.type_vote  %}btn-warning{%else%}btn-primary{%endif%}" style="min-width:180px;" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
     {% if request.GET.type_vote  %}
-      Votations de la catégorie: {{type_vote_courante}}
+      Suffrages de la catégorie: {{type_vote_courante}}
       {%elif request.GET.permacat %}
-      Votations Permacat
+      Suffrages Permacat
       {%elif request.GET.auteur %}
-      Votations de {{request.GET.auteur}}
+      Suffrages de {{request.GET.auteur}}
       {%elif typeFiltre == 'archives' %}
       Archives
       {%else%}Catégorie... {%endif%}
@@ -29,7 +29,7 @@
     <div class="col-sm-12 textcenter justify-content-center ">
         <div class=" justify-content-between">
             {% for type_vote_id, cat_nom, cat_coul in type_vote_list %}
-            <a class=" btn boutonVotationCategorie " style="background:{{cat_coul}};font-variant: small-caps;{% if request.GET.type_vote and cat_nom == type_vote_courante %} font-weight: bold;padding:20px 25px;{%endif%}" href="?type_vote={{type_vote_id}}"><span>{{cat_nom}}</span></a>
+            <a class=" btn boutonSuffrageCategorie " style="background:{{cat_coul}};font-variant: small-caps;{% if request.GET.type_vote and cat_nom == type_vote_courante %} font-weight: bold;padding:20px 25px;{%endif%}" href="?type_vote={{type_vote_id}}"><span>{{cat_nom}}</span></a>
             {% endfor %}
         </div>
     </div>
@@ -103,15 +103,15 @@
 <div class="row align-items-center">
 <div class="col-sm-12 textcenter">
 
-        <a href="{% url 'vote:ajouterNouvelVotation' %}">
+        <a href="{% url 'vote:ajouterNouvelSuffrage' %}">
         <button type="button" class="btn  btn-success" >
-                <i class="fa fa-plus"></i> Ajouter une votation
+                <i class="fa fa-plus"></i> Ajouter un suffrage
             </button>
             </a>
 </div>
 </div>
     {%if not request.user.is_permacat %}
-<p class="textcenter"><small>(vous n'avez pas encore accès aux votations "Permacat"... Rejoignez-nous !)</small></p>
+<p class="textcenter"><small>(vous n'avez pas encore accès aux suffrages "Permacat"... Rejoignez-nous !)</small></p>
     {%endif%}
 {%endblock%}
 

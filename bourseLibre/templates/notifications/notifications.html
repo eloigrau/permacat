@@ -65,13 +65,13 @@
   </div>
 
   {% endif %}
-  {% if votations %}
+  {% if suffrages %}
   <div class="card carte-notif notif2  d-md-flex textcenter ">
     <div class="card-header textcenter" style="background-color:#7b904b">
-      Votations
+      Suffrages
     </div>
     <ul class="list-group list-group-flush">
-  {% for action in votations%}
+  {% for action in suffrages%}
       {% include "notifications/notifications_template.html" with action=action %}
   {% endfor %}
     </ul>

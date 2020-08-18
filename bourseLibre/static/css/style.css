@@ -175,14 +175,14 @@ section.p3 {
 .dropdown-menu {
     margin: 0rem 0 0;
 
-    text-align:center;
+    /*text-align:center;*/
 }
 .bs-dark .dropdown-menu1 {
     right: auto;
-    left: 50%;
+    /*left: 50%;
     -webkit-transform: translate(-50%, 0);
     -o-transform: translate(-50%, 0);
-    transform: translate(-50%, 0);
+    transform: translate(-50%, 0);*/
     padding-top: 0px;
     padding-bottom: 0px;
 }
@@ -762,7 +762,7 @@ c
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  /*transform: translate(-50%, -50%);*/
 }
 
 .topnav-right {

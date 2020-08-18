@@ -4,13 +4,13 @@
 <div class="container-fluid">
 <div class="row">
     <div class="col-md-2">
-        <a href="{{ votation.get_absolute_url }}" class="btn btn-primary" ><i class="fa fa-arrow-left"></i> retour</a>
+        <a href="{{ suffrage.get_absolute_url }}" class="btn btn-primary" ><i class="fa fa-arrow-left"></i> retour</a>
     </div>
     <div class="col-md-8 textepetit">
-        {{votation.titre | safe}}
+        {{suffrage.question | safe}}
     </div>
     <div class="col-md-2 textepetit">
-        Du {{ votation.start_time|date:"d/m/Y"  }} au {{ votation.end_time|date:"d/m/Y"  }}
+        Du {{ suffrage.start_time|date:"d/m/Y"  }} au {{ suffrage.end_time|date:"d/m/Y"  }}
     </div>
 </div>
 <h3>Résultats du vote</h3>
@@ -18,7 +18,7 @@
 {% block content %}
 <div class="row">
 <div class="col-sm-12 textcenter">
-    <h5 class="textcenter">{{votation.question | safe}}</h5>
+    <h5 class="textcenter">{{suffrage.question | safe}}</h5>
     <p><button class="btn btn-static btn-success" ><emph>{{resultat}}</emph></button></p>
 
 </div></div>
@@ -36,7 +36,7 @@
   <tr>
     <th class="tg-0lax">Nombre de votants </th>
     <th class="tg-baqh">{{nbTotal}}</th>
-    <th class="tg-baqh">{% if not votation.estAnonyme %}
+    <th class="tg-baqh">{% if not suffrage.estAnonyme %}
             <button type="button" class="btn" data-toggle="modal" data-target="#historique">
               Votants
             </button>

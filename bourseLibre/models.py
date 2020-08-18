@@ -246,7 +246,7 @@ class Profil(AbstractUser):
 @receiver(post_save, sender=Profil)
 def create_user_profile(sender, instance, created, **kwargs):
     if created :
-        for suiv in ['produits', 'articles', 'projets', 'conversations']:
+        for suiv in ['produits', 'articles', 'projets', 'conversations', 'suffrages']:
             suivi, created = Suivis.objects.get_or_create(nom_suivi=suiv)
             actions.follow(instance, suivi, actor_only=True)
         action.send(instance, verb='inscription', url=instance.get_absolute_url(),

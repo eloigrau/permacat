@@ -2,6 +2,9 @@ from django.db import models
 from bourseLibre.models import Profil
 from django.urls import reverse
 from django.utils import timezone
+from actstream.models import followers
+from bourseLibre.models import Suivis
+from actstream import action
 
 class Choix():
     vote_ouinon = (('', '-----------'),
@@ -40,12 +43,11 @@ class Choix():
         except:
             return Choix.couleurs_annonces["Autre"]
 
-class Votation(models.Model):
+class Suffrage(models.Model):
     type_vote = models.CharField(max_length=30,
         choices=(Choix.type_vote), default='', verbose_name="Type de vote")
-    titre = models.CharField(max_length=100,)
-    question = models.CharField(max_length=100, verbose_name="Question soumise au vote")
-    auteur = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='auteur_votation')
+    question = models.CharField(max_length=100, verbose_name="Question soumise au vote ?")
+    auteur = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='auteur_suffrage')
     slug = models.SlugField(max_length=100)
     contenu = models.TextField(null=True, verbose_name="Description")
     date_creation = models.DateTimeField(verbose_name="Date de parution", default=timezone.now)
@@ -60,22 +62,33 @@ class Votation(models.Model):
 
     class Meta:
         ordering = ('-date_creation', )
-        db_table = 'votation'
+        db_table = 'suffrage'
 
     def __str__(self):
-        return self.titre
+        return self.question
 
     def get_absolute_url(self):
-        return reverse('vote:lireVotation', kwargs={'slug':self.slug})
+        return reverse('vote:lireSuffrage', kwargs={'slug':self.slug})
 
-    def save(self, *args, **kwargs):
+    def save(self, userProfile, *args, **kwargs):
         ''' On save, update timestamps '''
+        emails = []
         if not self.id:
             self.date_creation = timezone.now()
-        return super(Votation, self).save(*args, **kwargs)
+            suivi, created = Suivis.objects.get_or_create(nom_suivi='suffrages')
+            titre = "Nouveau vote"
+            message = self.auteur.username + " a lancé un nouveau vote: '<a href='https://permacat.herokuapp.com"+ self.get_absolute_url() + "'>"+ self.question + "</a>'"
+            emails = [suiv.email for suiv in followers(suivi) if userProfile != suiv and (self.estPublic or userProfile.is_permacat)]
+
+        retour = super(Suffrage, self).save(*args, **kwargs)
+
+        if emails:
+            action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message,
+                        emails=emails)
+        return retour
 
     def getResultats(self):
-        votes = Vote.objects.filter(votation=self)
+        votes = Vote.objects.filter(suffrage=self)
         votesOui = votes.filter(choix='0')
         votesNon = votes.filter(choix='1')
         votesNSPP = votes.filter(choix='2')
@@ -127,12 +140,12 @@ class Vote(models.Model):
         choices=(Choix.vote_ouinon),
         default='', verbose_name="")
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='auteur_vote')
-    votation = models.ForeignKey(Votation, on_delete=models.CASCADE, related_name='auteur_vote')
+    suffrage = models.ForeignKey(Suffrage, on_delete=models.CASCADE, related_name='suffrage')
     date_creation = models.DateTimeField(verbose_name="Date de parution", auto_now_add=True)
     date_modification = models.DateTimeField(verbose_name="Date de modification", auto_now=True)
 
     def __str__(self):
-        return str(self.votation) + " " + dict(Choix.vote_ouinon)[self.choix]
+        return str(self.suffrage) + " " + dict(Choix.vote_ouinon)[self.choix]
 
     def getVoteStr(self):
         return dict(Choix.vote_ouinon)[self.choix]
@@ -140,15 +153,15 @@ class Vote(models.Model):
 class Commentaire(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='auteur_comm_vote')
     commentaire = models.TextField()
-    votation = models.ForeignKey(Votation, on_delete=models.CASCADE)
+    suffrage = models.ForeignKey(Suffrage, on_delete=models.CASCADE)
     date_creation = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return self.__str__()
 
     def __str__(self):
-        return "(" + str(self.id) + ") " + str(self.auteur_comm) + ": " + str(self.votation)
+        return "(" + str(self.id) + ") " + str(self.auteur_comm) + ": " + str(self.suffrage)
 
     @property
     def get_edit_url(self):
-        return reverse('vote:modifierCommentaireVotation', kwargs={'id': self.id})
+        return reverse('vote:modifierCommentaireSuffrage', kwargs={'id': self.id})

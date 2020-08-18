@@ -1,0 +1,20 @@
+
+{% load activity_tags %}
+{% load fontawesome %}
+<div class="card article_carte textcenter"  style="background-color:{{suffrage.get_couleur}}">
+  <a href="{% url 'vote:lireSuffrage' slug=suffrage.slug %}">
+      <div class="article-card-header smallcaps_h ">{{ suffrage.get_type_vote_display }}</div>
+  <div class="card-body">
+      <h4 class="btn-cat">{{ suffrage.question }}</h4>
+    <span class="badge {% if suffrage.estPublic%}badge-warning{%else%} badge-success {%endif%}" data-toggle="tooltip" data-placement="bottom" title="Suffrage {%if suffrage.estPublic%}visible par tous les inscrits{%else%}visible par les membres de Permacat seulement{%endif%}">
+         {%if suffrage.estPublic%} Public{%else%}  Permacat  {%endif%}
+    </span>
+          <span class="badge  {% if suffrage.get_statut.0 == 0%} badge-success  {% elif suffrage.get_statut.0 == 1 %}badge-primary {% else %} badge-secondary{% endif %}" data-toggle="tooltip" data-placement="bottom" title="{{suffrage.get_statut.1}}">
+    {{suffrage.get_statut.1}}
+          </span>
+
+        <p class="card-subtitle mb-2 ">
+      <p class="text-muted textsmall"> Créé le {{ suffrage.date_creation|date:"DATE_FORMAT" }} {%ifnotequal  suffrage.date_creation suffrage.date_modification %}(dernière modification le {{ suffrage.date_modification|date:"DATE_FORMAT" }}){%endifnotequal%}</p>
+  </div>
+  </a>
+</div>

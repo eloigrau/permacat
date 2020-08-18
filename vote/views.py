@@ -2,49 +2,44 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect, reverse
 from django.urls import reverse_lazy
 from django.utils.html import strip_tags
-from .models import Votation, Commentaire, Choix, Vote
-from .forms import VotationForm, CommentaireVotationForm, CommentaireVotationChangeForm, VotationChangeForm, \
+from .models import Suffrage, Commentaire, Choix, Vote
+from .forms import SuffrageForm, CommentaireSuffrageForm, CommentaireSuffrageChangeForm, SuffrageChangeForm, \
     VoteForm, VoteChangeForm
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
-from actstream import action
-from actstream.models import action_object_stream
 from django.utils.timezone import now
 from django.db.models import Q
-
-#from django.contrib.contenttypes.models import ContentType
+from actstream import actions, action
+from actstream.models import followers, following, action_object_stream
 from bourseLibre.models import Suivis
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.mixins import UserPassesTestMixin
 
 def accueil(request):
     return render(request, 'vote/accueil.html')
 
 
 @login_required
-def ajouterVotation(request):
-    try:
-        form = VotationForm(request.POST or None)
-        if form.is_valid():
-            votation = form.save(request.user)
-            url = votation.get_absolute_url()
-            suffix = "" if votation.estPublic else "_permacat"
-            action.send(request.user, verb='votation_nouveau'+suffix, action_object=votation, url=url,
-                        description="a ajouté une votation : '%s'" % votation.titre)
-            return redirect(votation.get_absolute_url())
+def ajouterSuffrage(request):
+    form = SuffrageForm(request.POST or None)
+    if form.is_valid():
+        suffrage = form.save(request.user)
+        url = suffrage.get_absolute_url()
+        suffix = "" if suffrage.estPublic else "_permacat"
+        action.send(request.user, verb='suffrage_ajout'+suffix, action_object=suffrage, url=url,
+                    description="a ajouté un suffrage : '%s'" % suffrage.question)
 
-    except Exception as inst:
-        print(inst)
-    return render(request, 'vote/ajouterVotation.html', { "form": form, })
+        return redirect(suffrage.get_absolute_url())
+
+    return render(request, 'vote/ajouterSuffrage.html', { "form": form, })
 
 
-class ModifierVotation(UpdateView):
-    model = Votation
-    form_class = VotationChangeForm
+class ModifierSuffrage(UpdateView):
+    model = Suffrage
+    form_class = SuffrageChangeForm
     template_name_suffix = '_modifier'
 
     def get_object(self):
-        return Votation.objects.get(slug=self.kwargs['slug'])
+        return Suffrage.objects.get(slug=self.kwargs['slug'])
 
     def form_valid(self, form):
         self.object = form.save()
@@ -59,88 +54,88 @@ class ModifierVote(UpdateView):
     template_name_suffix = '_modifier'
 
     def get_object(self):
-        return Vote.objects.get(votation__slug=self.kwargs['slug'], auteur=self.request.user)
+        return Vote.objects.get(suffrage__slug=self.kwargs['slug'], auteur=self.request.user)
 
     def form_valid(self, form):
         self.object = form.save()
         self.object.date_modification = now()
         self.object.save()
-        return HttpResponseRedirect(self.object.votation.get_absolute_url())
+        return HttpResponseRedirect(self.object.suffrage.get_absolute_url())
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        context['votation'] = Votation.objects.get(slug=self.kwargs['slug'])
+        context['suffrage'] = Suffrage.objects.get(slug=self.kwargs['slug'])
         return context
 
-class SupprimerVotation(DeleteView):
-    model = Votation
+class SupprimerSuffrage(DeleteView):
+    model = Suffrage
     success_url = reverse_lazy('vote:index')
     template_name_suffix = '_supprimer'
 #    fields = ['user','site_web','description', 'competences', 'adresse', 'avatar', 'inscrit_newsletter']
 
     def get_object(self):
-        return Votation.objects.get(slug=self.kwargs['slug'])
+        return Suffrage.objects.get(slug=self.kwargs['slug'])
 
 
 
 @login_required
-def lireVotation(request, slug):
-    votation = get_object_or_404(Votation, slug=slug)
+def lireSuffrage(request, slug):
+    suffrage = get_object_or_404(Suffrage, slug=slug)
     try:
-        vote = Vote.objects.get(auteur=request.user, votation=votation)
+        voteCourant = Vote.objects.get(auteur=request.user, suffrage=suffrage)
     except:
-        vote = None
-    if not votation.estPublic and not request.user.is_permacat:
+        voteCourant = None
+    if not suffrage.estPublic and not request.user.is_permacat:
         return render(request, 'notPermacat.html',)
 
-    commentaires = Commentaire.objects.filter(votation=votation).order_by("date_creation")
+    commentaires = Commentaire.objects.filter(suffrage=suffrage).order_by("date_creation")
 
-    actions = action_object_stream(votation)
+    actions = action_object_stream(suffrage)
 
-    form = CommentaireVotationForm(request.POST or None)
+    form = CommentaireSuffrageForm(request.POST or None)
     if form.is_valid():
         comment = form.save(commit=False)
         if comment:
-            comment.votation = votation
+            comment.suffrage = suffrage
             comment.auteur_comm = request.user
-            votation.date_dernierMessage = comment.date_creation
-            votation.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(strip_tags(comment.commentaire).replace('&nspb',' ')))[:96] + "..."
-            votation.save()
+            suffrage.date_dernierMessage = comment.date_creation
+            suffrage.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(strip_tags(comment.commentaire).replace('&nspb',' ')))[:96] + "..."
+            suffrage.save()
             comment.save()
-            url = votation.get_absolute_url() + "#idConversation"
-            suffix = "_permacat" if not votation.estPublic else ""
-            action.send(request.user, verb='article_message' + suffix, action_object=votation, url=url,
-                        description="a réagi à la votation: '%s'" % votation.titre)
+            url = suffrage.get_absolute_url() + "#idConversation"
+            suffix = "_permacat" if not suffrage.estPublic else ""
+            action.send(request.user, verb='suffrage_message' + suffix, action_object=suffrage, url=url,
+                        description="a réagi au suffrage: '%s'" % suffrage.question)
 
         return redirect(request.path)
 
-    return render(request, 'vote/lireVotation.html', {'votation': votation, 'form': form, 'commentaires':commentaires, 'actions':actions, 'vote':vote},)
+    return render(request, 'vote/lireSuffrage.html', {'suffrage': suffrage, 'form': form, 'commentaires':commentaires, 'actions':actions, 'vote':voteCourant},)
 
 @login_required
-def resultatsVotation(request, slug):
-    votation = get_object_or_404(Votation, slug=slug)
-    resultats = votation.getResultats()
+def resultatsSuffrage(request, slug):
+    suffrage = get_object_or_404(Suffrage, slug=slug)
+    resultats = suffrage.getResultats()
     try:
-        vote = Vote.objects.get(votation=votation, auteur=request.user)
+        vote = Vote.objects.get(suffrage=suffrage, auteur=request.user)
     except:
         vote = ""
 
-    return render(request, 'vote/resultatsVotation.html', {
-        'votation': votation,
+    return render(request, 'vote/resultatsSuffrage.html', {
+        'suffrage': suffrage,
         'nbOui':resultats['nbOui'], 'nbNon':resultats['nbNon'], 'nbNSPP':resultats['nbNSPP'], 'nbTotal':resultats['nbTotal'], 'resultat':resultats['resultat'], 'vote':vote, 'votes':resultats['votes'] },)
 
 
 
 @login_required
-def lireVotation_id(request, id):
-    votation = get_object_or_404(Votation, id=id)
-    return lireVotation(request, slug=votation.slug)
+def lireSuffrage_id(request, id):
+    suffrage = get_object_or_404(Suffrage, id=id)
+    return lireSuffrage(request, slug=suffrage.slug)
 
 
-class ModifierCommentaireVotation(UpdateView):
+class ModifierCommentaireSuffrage(UpdateView):
     model = Commentaire
-    form_class = CommentaireVotationChangeForm
+    form_class = CommentaireSuffrageChangeForm
     template_name = 'modifierCommentaire.html'
 
     def get_object(self):
@@ -153,35 +148,35 @@ class ModifierCommentaireVotation(UpdateView):
             self.object.save()
         else:
             self.object.delete()
-        return HttpResponseRedirect(self.object.votation.get_absolute_url())
+        return HttpResponseRedirect(self.object.suffrage.get_absolute_url())
 
 
 @login_required
 def voter(request, slug):
-    votation = get_object_or_404(Votation, slug=slug)
-    if not votation.estPublic and not request.user.is_permacat:
+    suffrage = get_object_or_404(Suffrage, slug=slug)
+    if not suffrage.estPublic and not request.user.is_permacat:
         return render(request, 'notPermacat.html',)
 
-    if votation.get_statut[0] != 0:
+    if suffrage.get_statut[0] != 0:
         return render(request, 'vote/voteTermine.html',)
 
-    vote = Vote.objects.filter(auteur=request.user, votation=votation)
+    vote = Vote.objects.filter(auteur=request.user, suffrage=suffrage)
     if vote:
         return render(request, 'vote/dejaVote.html',)
 
     form = VoteForm(request.POST or None)
 
     if form.is_valid():
-        form.save(votation, request.user)
-        return redirect(votation.get_absolute_url())
+        form.save(suffrage, request.user)
+        return redirect(suffrage.get_absolute_url())
 
-    return render(request, 'vote/voter.html', {'votation': votation, 'form': form},)
+    return render(request, 'vote/voter.html', {'suffrage': suffrage, 'form': form},)
 
 
 
-class ListeVotations(ListView):
-    model = Votation
-    context_object_name = "votation_list"
+class ListeSuffrages(ListView):
+    model = Suffrage
+    context_object_name = "suffrage_list"
     template_name = "vote/index.html"
     paginate_by = 30
 
@@ -189,9 +184,9 @@ class ListeVotations(ListView):
         params = dict(self.request.GET.items())
 
         if "archives" in params and params['archives']:
-            qs = Votation.objects.filter(estArchive=True)
+            qs = Suffrage.objects.filter(estArchive=True)
         else:
-            qs = Votation.objects.filter(estArchive=False)
+            qs = Suffrage.objects.filter(estArchive=False)
 
         if not self.request.user.is_authenticated or not self.request.user.is_permacat:
             qs = qs.filter(estPublic=True)
@@ -225,16 +220,17 @@ class ListeVotations(ListView):
         context = super().get_context_data(**kwargs)
 
         # context['producteur_list'] = Profil.objects.values_list('username', flat=True).distinct()
-        context['auteur_list'] = Votation.objects.order_by('auteur').values_list('auteur__username', flat=True).distinct()
-        cat= Votation.objects.order_by('type_vote').values_list('type_vote', flat=True).distinct()
+        context['auteur_list'] = Suffrage.objects.order_by('auteur').values_list('auteur__username', flat=True).distinct()
+        cat= Suffrage.objects.order_by('type_vote').values_list('type_vote', flat=True).distinct()
         context['type_vote_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_vote if x[0] in cat]
         context['typeFiltre'] = "aucun"
+        context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="suffrages")
 
         context['ordreTriPossibles'] = {
                                            "date de création":'-date_creation',
                                            "date du dernier message":'-date_dernierMessage',
                                            "date de la dernière modification":'-date_modification',
-                                            "titre": 'titre' }
+                                            "Type de vote":"-type_vote"}
 
         context['filtresPossibles'] = {
                                            "Vote en cours":'0',
@@ -256,3 +252,15 @@ class ListeVotations(ListView):
         if 'ordreTri' in self.request.GET:
             context['typeFiltre'] = "ordreTri"
         return context
+
+
+@login_required
+@csrf_exempt
+def suivre_suffrages(request, actor_only=True):
+    suivi, created = Suivis.objects.get_or_create(nom_suivi='suffrages')
+
+    if suivi in following(request.user):
+        actions.unfollow(request.user, suivi)
+    else:
+        actions.follow(request.user, suivi, actor_only=actor_only)
+    return redirect('vote:index')

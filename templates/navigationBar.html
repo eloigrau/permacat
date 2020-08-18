@@ -38,7 +38,7 @@
             <ul class="dropdown-menu dropdown-menu1 nav2-dropdown" id="dropdownForum">
                 <li> <a class="dropdown-item" href="{% url 'blog:index' %}?">Articles</a></li>
                 <li class="divider" role="separator"></li>
-                <li><a class="dropdown-item" href="{% url 'agora_general' %}">Salon</a></li>
+                <li><a class="dropdown-item" href="{% url 'agora_general' %}">Salon de discussion</a></li>
 
 {% if user.is_permacat %}
                 <li> <a class="dropdown-item" href="{% url 'agora_permacat' %}"> Salon PermaCat</a></li>
@@ -54,10 +54,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu1 nav3-dropdown" aria-labelledby="navbarDropdownMenuLink">
                     <li><a class="dropdown-item" href="{% url 'blog:index_projets' %}"><i class='fa fa-folder-open iconleft' ></i>  Projets </a></li>
-
-{% if user.is_permacat %}
-                    <li><a class="dropdown-item" href="{% url 'vote:index' %}"><i class="fas fa-paper-plane  iconleft"></i>  Votes </a></li>
-{% endif %}
+                    <li><a class="dropdown-item" href="{% url 'vote:index' %}"><i class="fa fa-bullhorn iconleft"></i>  Votes </a></li>
                        <li class="divider" role="separator"></li>
                         {% comment %} <li><a class="dropdown-item" href="{% url 'wiki:root' %}"> Eco Village </a></li>{% endcomment %}
                          <li><a class="dropdown-item" href="{% url 'fiches:acceuil' %}"><i class='fa fa-image iconleft' ></i> Fiches de Permaculture </a></li>
@@ -99,10 +96,12 @@
                <li> <a class="dropdown-item" href="{% url 'liens' %}"> Liens </a></li>
                <li> <a class="dropdown-item" href="{% url 'contact_admins' %}"> Contacter admins </a></li>
                 <li class="divider" role="separator"></li>
-               <li> <a class="dropdown-item" href="{% url 'fairedon' %}"> Faire un don</a></li>
-   {% if request.user.is_superuser %}
+                {% if request.user.is_superuser %}
                <li> <a class="dropdown-item" href="{% url 'voirEmails' %}"> voir Emails Alertes</a></li>
                 {%endif%}
+                <li class="divider" role="separator"></li>
+               <li> <a class="dropdown-item" href="{% url 'fairedon' %}"> Faire un don</a></li>
+
          <li class="nav-item">
              <form class="form-inline my-2 my-lg-0 justify-content-center form-group navbar-form " action="{% url 'chercher' %}" method="get" role = "search">
         {% csrf_token %}

@@ -1,32 +1,43 @@
 from django import forms
-from .models import Votation, Vote, Commentaire
+from .models import Suffrage, Vote, Commentaire
 from django.utils.text import slugify
 import itertools
 from django_summernote.widgets import SummernoteWidget
 from blog.forms import SummernoteWidgetWithCustomToolbar
+from django.utils.timezone import now
 
-
-
-class VotationForm(forms.ModelForm):
-    estPublic = forms.ChoiceField(choices=((1, "Votation publique"), (0, "Votation Permacat")), label='', required=True, )
+class SuffrageForm(forms.ModelForm):
+    estPublic = forms.ChoiceField(choices=((1, "Suffrage publique"), (0, "Suffrage Permacat")), label='', required=True, )
 
     class Meta:
-        model = Votation
-        fields = ['type_vote', 'titre', 'question', 'contenu',  'estAnonyme', 'start_time', 'end_time', 'estPublic']
+        model = Suffrage
+        fields = ['type_vote', 'question', 'contenu',  'estAnonyme', 'start_time', 'end_time', 'estPublic']
         widgets = {
             'contenu': SummernoteWidget(),
               'start_time': forms.DateInput(attrs={'type': 'date'}),
               'end_time': forms.DateInput(attrs={'type': 'date'}),
         }
 
-    def save(self, userProfile):
-        instance = super(VotationForm, self).save(commit=False)
+    def clean(self):
+        cleaned_data = super().clean()
+        date_debut = cleaned_data.get("start_time")
+        date_expiration = cleaned_data.get("end_time")
+        if date_debut < now():
+            raise forms.ValidationError('Le suffrage nepeut pas démarrer avant demain')
 
-        max_length = Votation._meta.get_field('slug').max_length
-        instance.slug = orig = slugify(instance.titre)[:max_length]
+        if date_expiration <= date_debut:
+            raise forms.ValidationError('La date de fin doit etre postérieure à la date de début')
+
+        return self.cleaned_data
+
+    def save(self, userProfile):
+        instance = super(SuffrageForm, self).save(commit=False)
+
+        max_length = Suffrage._meta.get_field('slug').max_length
+        instance.slug = orig = slugify(instance.question)[:max_length]
 
         for x in itertools.count(1):
-            if not Votation.objects.filter(slug=instance.slug).exists():
+            if not Suffrage.objects.filter(slug=instance.slug).exists():
                 break
 
             # Truncate the original slug dynamically. Minus 1 for the hyphen.
@@ -36,17 +47,17 @@ class VotationForm(forms.ModelForm):
         if not userProfile.is_permacat:
             instance.estPublic = True
 
-        instance.save()
+        instance.save(userProfile)
 
         return instance
 
 
-class VotationChangeForm(forms.ModelForm):
-    estPublic = forms.ChoiceField(choices=((1, "Votation publique"), (0, "Votation réservée aux adhérents")), label='', required=True)
+class SuffrageChangeForm(forms.ModelForm):
+    estPublic = forms.ChoiceField(choices=((1, "Suffrage publique"), (0, "Suffrage réservée aux adhérents")), label='', required=True)
 
     class Meta:
-        model = Votation
-        fields = ['type_vote', 'titre', 'contenu', 'start_time', 'end_time', 'estAnonyme', 'estPublic', 'estArchive']
+        model = Suffrage
+        fields = ['type_vote', 'contenu', 'start_time', 'end_time', 'estAnonyme', 'estPublic', 'estArchive']
         widgets = {
             'contenu': SummernoteWidget(),
               'start_time': forms.DateInput(attrs={'class':"date", }),
@@ -54,14 +65,14 @@ class VotationChangeForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        super(VotationChangeForm, self).__init__(*args, **kwargs)
-        self.fields["estPublic"].choices=((1, "Votation public"), (0, "Votation réservé aux adhérents")) if kwargs['instance'].estPublic else ((0, "Votation réservé aux adhérents"),(1, "Votation public"), )
+        super(SuffrageChangeForm, self).__init__(*args, **kwargs)
+        self.fields["estPublic"].choices=((1, "Suffrage public"), (0, "Suffrage réservé aux adhérents")) if kwargs['instance'].estPublic else ((0, "Suffrage réservé aux adhérents"),(1, "Suffrage public"), )
 
-class CommentaireVotationForm(forms.ModelForm):
+class CommentaireSuffrageForm(forms.ModelForm):
 
     class Meta:
         model = Commentaire
-        exclude = ['votation', 'auteur_comm']
+        exclude = ['suffrage', 'auteur_comm']
         #
         widgets = {
          'commentaire': SummernoteWidgetWithCustomToolbar(),
@@ -69,42 +80,42 @@ class CommentaireVotationForm(forms.ModelForm):
             }
 
     def __init__(self, request, *args, **kwargs):
-        super(CommentaireVotationForm, self).__init__(request, *args, **kwargs)
+        super(CommentaireSuffrageForm, self).__init__(request, *args, **kwargs)
         self.fields['commentaire'].strip = False
 
 
 
-class CommentaireVotationChangeForm(forms.ModelForm):
+class CommentaireSuffrageChangeForm(forms.ModelForm):
     commentaire = forms.CharField(required=False, widget=SummernoteWidget(attrs={}))
 
     class Meta:
      model = Commentaire
-     exclude = ['votation', 'auteur_comm']
+     exclude = ['suffrage', 'auteur_comm']
 
 
 class VoteForm(forms.ModelForm):
     class Meta:
         model = Vote
-        exclude = ['votation','auteur']
+        exclude = ['suffrage','auteur']
 
-    def save(self, votation, userProfile):
+    def save(self, suffrage, userProfile):
         instance = super(VoteForm, self).save(commit=False)
         instance.auteur = userProfile
-        instance.votation = votation
+        instance.suffrage = suffrage
         instance.save()
         return instance
 
 class VoteChangeForm(forms.ModelForm):
     class Meta:
         model = Vote
-        exclude = ['votation','auteur']
+        exclude = ['suffrage','auteur']
 
 
 
 
-class CommentaireVotationChangeForm(forms.ModelForm):
+class CommentaireSuffrageChangeForm(forms.ModelForm):
     commentaire = forms.CharField(required=False, widget=SummernoteWidget(attrs={}))
 
     class Meta:
      model = Commentaire
-     exclude = ['votation', 'auteur_comm']
+     exclude = ['suffrage', 'auteur_comm']

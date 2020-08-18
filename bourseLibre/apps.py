@@ -10,7 +10,7 @@ class BourseLibreConfig(AppConfig):
         from jardinpartage.models import Article as art_jardinpartage
         from ateliers.models import Atelier, InscriptionAtelier
         from fiches.models import Fiche, Atelier as fiche_at
-        from vote.models import Votation
+        from vote.models import Suffrage
         registry.register(self.get_model('Profil'))
         registry.register(self.get_model('MessageGeneral'))
         registry.register(self.get_model('MessageGeneralPermacat'))
@@ -32,4 +32,4 @@ class BourseLibreConfig(AppConfig):
         registry.register(art_jardinpartage)
         registry.register(Projet)
         registry.register(Group)
-        registry.register(Votation)
+        registry.register(Suffrage)

@@ -8,15 +8,10 @@ from .forms import ArticleForm, CommentaireArticleForm, CommentaireArticleChange
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
 from actstream import actions, action
-from actstream.models import followers, following, action_object_stream, actor_stream
-from django.core.mail import send_mass_mail, mail_admins
+from actstream.models import followers, following, action_object_stream
 from django.utils.timezone import now
-from bourseLibre.settings import SERVER_EMAIL, LOCALL
-
-#from django.contrib.contenttypes.models import ContentType
 from bourseLibre.models import Suivis
 from django.views.decorators.csrf import csrf_exempt
-import sys
 
 # @login_required
 # def forum(request):

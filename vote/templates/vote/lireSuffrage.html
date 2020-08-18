@@ -15,18 +15,18 @@
         </p>
     </div>
     <div class="col-md-8">
-        <p class="infos  textepetit">Dans: <a href="{% url 'vote:index'  %}?type_vote={{votation.type_vote}}"  style="background-color:{{votation.get_couleur}}" class="smallcaps_h2">Votations/{{ votation.get_type_vote_display }}</a>, rédigé par <a href="{% url 'profil' votation.auteur.id %}"> {{ votation.auteur.username }}</a>, le {{ votation.date_creation|date:"DATE_FORMAT" }};
+        <p class="infos  textepetit">Dans: <a href="{% url 'vote:index'  %}?type_vote={{suffrage.type_vote}}"  style="background-color:{{suffrage.get_couleur}}" class="smallcaps_h2">Suffrages/{{ suffrage.get_type_vote_display }}</a>, rédigé par <a href="{% url 'profil' suffrage.auteur.id %}"> {{ suffrage.auteur.username }}</a>, le {{ suffrage.date_creation|date:"DATE_FORMAT" }};
         </p>
     </div>
     <div class="col-md-2">
         <p>
-        {%if votation.auteur == request.user and votation.get_statut.0 == 2%}
+        {%if suffrage.auteur == request.user and suffrage.get_statut.0 == 2%}
 		<div class="btn-group">
-            <a href="{% url 'vote:modifierVotation' slug=votation.slug %}">
+            <a href="{% url 'vote:modifierSuffrage' slug=suffrage.slug %}">
                <button type="button" class="btn btn-sm btn-warning">
                 <span class="glyphicon glyphicon-plus"></span>&nbsp;Modifier
                </button></a>
-            <a href="{% url 'vote:supprimerVotation' slug=votation.slug %}">
+            <a href="{% url 'vote:supprimerSuffrage' slug=suffrage.slug %}">
                <button type="button" class="btn btn-sm btn-danger">
                 <span class="glyphicon glyphicon-plus"></span>&nbsp;Supprimer
                </button></a>
@@ -42,41 +42,49 @@
 {% endblock %}
 {% block content %}
      <div class="boxitem_droite">
-                <span class="badge {% if votation.estPublic%}badge-warning{%else%} badge-success {%endif%}">
-                Votation {%if votation.estPublic%} publique {%else%}  permacat  {%endif%}
+                <span class="badge {% if suffrage.estPublic%}badge-warning{%else%} badge-success {%endif%}">
+                Suffrage {%if suffrage.estPublic%} public {%else%}  Permacat  {%endif%}
             </span>
-            {% if votation.estArchive%}
+            {% if suffrage.estArchive%}
             <span class="badge badge-secondary">
                 archivé
             </span>
             {%endif%}
-            {% if votation.estModifiable%}
+            {% if suffrage.estModifiable%}
             <span class="badge badge-info">
                 modifiable
             </span>
             {%endif%}
      </div>
-<div class="contenu votation article">
+<div class="contenu suffrage article">
 <div class="row">
 <div class="col-sm-12 textcenter">
-      <h3> {{ votation.titre }}</h3>
+    <h3> <small>Question : </small>{{ suffrage.question }}</h3>
+    <p>
+                {%if suffrage.start_time%}
+          <a href="{% url 'cal:agenda' %} " class="textepetit">
+            {%if suffrage.end_time and suffrage.start_time != suffrage.end_time %}
+                Du {{ suffrage.start_time|date:"d/m/Y"  }} au {{ suffrage.end_time|date:"d/m/Y"  }}
+                {%else%}
+                le {{ suffrage.start_time|date:"d/m/Y"  }}
+
+            {% endif %}
+              </a>
+        {% endif %}
+    </p>
+       <p>
+        {%if suffrage.get_statut.0 == 1%}<a href="{% url 'vote:resultatsSuffrage' slug=suffrage.slug %}">{% endif %}
+        <button {%if suffrage.get_statut.0 == 1%} {% else %} disabled{% endif %} class="btn btn-warning">
+            {{suffrage.get_statut.1}}
+    {% if suffrage.get_statut.0 == 1 %}: {{suffrage.getResultat}}{% endif %}
+    </button>
+    {%if suffrage.get_statut.0 == 1%}</a>{% endif %}
+    </p>
  </div>
 </div>
     <hr>
 <div class="row"  id="sec03">
     <div class="col textright" >
-        {%if votation.start_time%}
-
-          <a href="{% url 'cal:agenda' %} " class="textepetit">
-            {%if votation.end_time and votation.start_time != votation.end_time %}
-                Du {{ votation.start_time|date:"d/m/Y"  }} au {{ votation.end_time|date:"d/m/Y"  }}
-                {%else%}
-                le {{ votation.start_time|date:"d/m/Y"  }}
-
-            {% endif %}
-              </a>
-        {% endif %}
-
         {% if actions %}
             <button type="button" class="btn" data-toggle="modal" data-target="#historique">
               {% fontawesome_icon 'bell' %} Historique
@@ -110,30 +118,22 @@
     </div>
 </div>
 <div class="row">
-<div class="col contenuvotation">
-   {{ votation.contenu |safe}}
+<div class="col contenusuffrage">
+   {{ suffrage.contenu |safe}}
 </div>
 </div>
 
 <hr>
 <div class="row">
 <div class="col-sm-12 textcenter">
-    <h4>Question : {{ votation.question |safe}}</h4>
-    <p>
-        {%if votation.get_statut.0 == 1%}<a href="{% url 'vote:resultatsVotation' slug=votation.slug %}">{% endif %}
-        <button {%if votation.get_statut.0 == 1%} {% else %} disabled{% endif %} class="btn btn-warning">
-            {{votation.get_statut.1}}
-    {% if votation.get_statut.0 == 1 %}: {{votation.getResultat}}{% endif %}
-    </button>
-    {%if votation.get_statut.0 == 1%}</a>{% endif %}
-    </p>
-    {% if votation.get_statut.0 == 0 %}
+
+    {% if suffrage.get_statut.0 == 0 %}
         {%if not vote %}
-        <p><a href="{% url 'vote:voter' slug=votation.slug %}" class="btn btn-success">Voter</a></p>
+        <p><a href="{% url 'vote:voter' slug=suffrage.slug %}" class="btn btn-success">Voter</a></p>
         {% else %}
-        <p><a href="{% url 'vote:modifierVote' slug=votation.slug %}" class="btn btn-success">A voté ("{{vote.getVoteStr}}"). Modifier mon vote</a></p>
+    <p><h5>Vous avez voté "{{vote.getVoteStr}}"</h5><a href="{% url 'vote:modifierVote' slug=suffrage.slug %}" class="btn btn-success"> Modifier</a></p>
         {% endif %}
-        {% endif %}
+    {% endif %}
 </div></div>
 </div>
 

@@ -1,7 +1,7 @@
 {% extends 'vote/baseVote.html' %} {% block content %}
 
 <div class="row">
-	<div class="col col-md-12 textcenter"><h3>Ajouter une votation</h3></div>
+	<div class="col col-md-12 textcenter"><h3>Ajouter un suffrage</h3></div>
 	</div>
 	<hr>
 {% if error_message %}
@@ -13,8 +13,8 @@
 	<div class="col-sm-12">
 <form class="form-horizontal" role="form" action="" method="post"
 	enctype="multipart/form-data">
-	{% csrf_token %} <input type="hidden" name="Votation"
-		value="{{ votation }}"> {% include 'form_template.html'%}
+	{% csrf_token %} <input type="hidden" name="Suffrage"
+		value="{{ suffrage }}"> {% include 'form_template.html'%}
 </form>
         <script type="text/javascript">
         {% if not request.user.is_permacat %}
