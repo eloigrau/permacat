@@ -49,7 +49,7 @@ class Suffrage(models.Model):
     question = models.CharField(max_length=100, verbose_name="Question soumise au vote ?")
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='auteur_suffrage')
     slug = models.SlugField(max_length=100)
-    contenu = models.TextField(null=True, verbose_name="Description")
+    contenu = models.TextField(null=True, verbose_name="Description du contexte")
     date_creation = models.DateTimeField(verbose_name="Date de parution", default=timezone.now)
     estPublic = models.BooleanField(default=False, verbose_name='Public ou réservé aux membres permacat')
     date_dernierMessage = models.DateTimeField(verbose_name="Date du dernier message", auto_now=True)
