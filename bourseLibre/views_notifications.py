@@ -259,12 +259,14 @@ def getListeMailsAlerte():
     for action in actions:
         for mail in action.data['emails']:
             if not mail in messagesParMails:
-                messagesParMails[mail] = [{'titre': action.data['titre'], 'messages': [action.data['message'], ]}, ]
+                messagesParMails[mail] = [{'messages': [action.data['message'], ]}, ]
             else:
                 for x in messagesParMails[mail]:
-                    if x['titre'] == action.data['titre'] and not action.data['message'] in x['messages']:
-                        messagesParMails[mail].append({'titre': action.data['titre'], 'messages': [action.data['message'], ]})
+                    listeMessages = [x['messages'] for x in messagesParMails[mail]]
+                    if not action.data['message'] in str(listeMessages):
+                        messagesParMails[mail].append({'messages': [action.data['message'], ]})
 
+                    print(str( messagesParMails[mail]))
     listeMails = []
     for mail, messages in messagesParMails.items():
         titre = "[Permacat] Du nouveau sur Perma.Cat"

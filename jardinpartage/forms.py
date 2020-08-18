@@ -127,12 +127,6 @@ class ArticleChangeForm(forms.ModelForm):
         self.fields["estPublic"].choices=((1, "Article public"), (0, "Article réservé aux adhérents")) if kwargs['instance'].estPublic else ((0, "Article réservé aux adhérents"),(1, "Article public"), )
 
 
-#     def save(self,):
-#         instance = super(ArticleChangeForm, self).save(commit=False)
-#         instance.date_modification = now
-# #        instance.save()
-#         return instance
-
 class CommentaireArticleForm(forms.ModelForm):
     #commentaire = TinyMCE(attrs={'cols': 1, 'rows': 1, 'height':10 })
 

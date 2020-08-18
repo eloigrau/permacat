@@ -70,14 +70,14 @@ class Suffrage(models.Model):
     def get_absolute_url(self):
         return reverse('vote:lireSuffrage', kwargs={'slug':self.slug})
 
-    def save(self, userProfile, *args, **kwargs):
+    def save(self, userProfile=None, *args, **kwargs):
         ''' On save, update timestamps '''
         emails = []
         if not self.id:
             self.date_creation = timezone.now()
             suivi, created = Suivis.objects.get_or_create(nom_suivi='suffrages')
             titre = "Nouveau vote"
-            message = self.auteur.username + " a lancé un nouveau vote: '<a href='https://permacat.herokuapp.com"+ self.get_absolute_url() + "'>"+ self.question + "</a>'"
+            message = userProfile.username + " a lancé un nouveau vote: '<a href='https://permacat.herokuapp.com"+ self.get_absolute_url() + "'>"+ self.question + "</a>'"
             emails = [suiv.email for suiv in followers(suivi) if userProfile != suiv and (self.estPublic or userProfile.is_permacat)]
 
         retour = super(Suffrage, self).save(*args, **kwargs)
@@ -137,11 +137,12 @@ class Suffrage(models.Model):
 class Vote(models.Model):
     choix = models.CharField(max_length=30,
         choices=(Choix.vote_ouinon),
-        default='', verbose_name="")
-    auteur = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='auteur_vote')
+        default='', verbose_name="Choix du vote :")
+    auteur = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='auteur_vote', null=True)
     suffrage = models.ForeignKey(Suffrage, on_delete=models.CASCADE, related_name='suffrage')
     date_creation = models.DateTimeField(verbose_name="Date de parution", auto_now_add=True)
     date_modification = models.DateTimeField(verbose_name="Date de modification", auto_now=True)
+    commentaire = models.TextField(verbose_name="Commentaire", null=True,)
 
     def __str__(self):
         return str(self.suffrage) + " " + dict(Choix.vote_ouinon)[self.choix]

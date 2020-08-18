@@ -4,7 +4,6 @@ from blog.models import Article, Projet, Commentaire, CommentaireProjet, Eveneme
 from jardinpartage.models import Article as Art_jardin, Commentaire as Comm_jardin
 from fiches.models import Fiche, Atelier as atelier_fiche, CommentaireFiche
 from ateliers.models import Atelier, CommentaireAtelier, InscriptionAtelier
-from vote.models import Vote, Suffrage
 
 
 from django.contrib import admin
@@ -79,5 +78,3 @@ admin.site.register(Atelier)
 admin.site.register(CommentaireAtelier)
 admin.site.register(InscriptionAtelier)
 
-admin.site.register(Vote)
-admin.site.register(Suffrage)

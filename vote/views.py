@@ -11,8 +11,9 @@ from django.utils.timezone import now
 from django.db.models import Q
 from actstream import actions, action
 from actstream.models import followers, following, action_object_stream
-from bourseLibre.models import Suivis
+from bourseLibre.models import Suivis, Profil
 from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponseNotAllowed
 
 def accueil(request):
     return render(request, 'vote/accueil.html')
@@ -42,9 +43,10 @@ class ModifierSuffrage(UpdateView):
         return Suffrage.objects.get(slug=self.kwargs['slug'])
 
     def form_valid(self, form):
-        self.object = form.save()
+        userProfil = Profil.objects.get(username=self.request.user)
+        self.object = form.save(userProfil)
         self.object.date_modification = now()
-        self.object.save()
+        self.object.save(self.request.user)
         return redirect(self.object.get_absolute_url())
 
 
@@ -57,6 +59,8 @@ class ModifierVote(UpdateView):
         return Vote.objects.get(suffrage__slug=self.kwargs['slug'], auteur=self.request.user)
 
     def form_valid(self, form):
+        if self.object.suffrage.get_statut[0] != 0:
+            return HttpResponseNotAllowed()
         self.object = form.save()
         self.object.date_modification = now()
         self.object.save()

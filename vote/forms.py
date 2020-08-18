@@ -5,9 +5,10 @@ import itertools
 from django_summernote.widgets import SummernoteWidget
 from blog.forms import SummernoteWidgetWithCustomToolbar
 from django.utils.timezone import now
+from bourseLibre.settings import LOCALL
 
 class SuffrageForm(forms.ModelForm):
-    estPublic = forms.ChoiceField(choices=((1, "Suffrage publique"), (0, "Suffrage Permacat")), label='', required=True, )
+    estPublic = forms.ChoiceField(choices=((1, "Suffrage public"), (0, "Suffrage Permacat")), label='', required=True, )
 
     class Meta:
         model = Suffrage
@@ -23,7 +24,7 @@ class SuffrageForm(forms.ModelForm):
         date_debut = cleaned_data.get("start_time")
         date_expiration = cleaned_data.get("end_time")
         if date_debut < now():
-            raise forms.ValidationError('Le suffrage nepeut pas démarrer avant demain')
+            raise forms.ValidationError('Le suffrage ne peut pas démarrer avant demain')
 
         if date_expiration <= date_debut:
             raise forms.ValidationError('La date de fin doit etre postérieure à la date de début')
@@ -53,7 +54,7 @@ class SuffrageForm(forms.ModelForm):
 
 
 class SuffrageChangeForm(forms.ModelForm):
-    estPublic = forms.ChoiceField(choices=((1, "Suffrage publique"), (0, "Suffrage réservée aux adhérents")), label='', required=True)
+    estPublic = forms.ChoiceField(choices=((1, "Suffrage public"), (0, "Suffrage réservée aux adhérents")), label='', required=True)
 
     class Meta:
         model = Suffrage
@@ -68,12 +69,30 @@ class SuffrageChangeForm(forms.ModelForm):
         super(SuffrageChangeForm, self).__init__(*args, **kwargs)
         self.fields["estPublic"].choices=((1, "Suffrage public"), (0, "Suffrage réservé aux adhérents")) if kwargs['instance'].estPublic else ((0, "Suffrage réservé aux adhérents"),(1, "Suffrage public"), )
 
+
+    def save(self, userProfile):
+        instance = super(SuffrageChangeForm, self).save(commit=False)
+        instance.save(userProfile)
+        return instance
+
+    def clean(self):
+        if not LOCALL:
+            cleaned_data = super().clean()
+            date_debut = cleaned_data.get("start_time")
+            date_expiration = cleaned_data.get("end_time")
+            if date_debut < now():
+                raise forms.ValidationError('Le suffrage ne peut pas démarrer avant demain')
+
+            if date_expiration <= date_debut:
+                raise forms.ValidationError('La date de fin doit etre postérieure à la date de début')
+
+        return self.cleaned_data
+
 class CommentaireSuffrageForm(forms.ModelForm):
 
     class Meta:
         model = Commentaire
         exclude = ['suffrage', 'auteur_comm']
-        #
         widgets = {
          'commentaire': SummernoteWidgetWithCustomToolbar(),
                # 'commentaire': forms.Textarea(attrs={'rows': 1}),
@@ -89,19 +108,26 @@ class CommentaireSuffrageChangeForm(forms.ModelForm):
     commentaire = forms.CharField(required=False, widget=SummernoteWidget(attrs={}))
 
     class Meta:
-     model = Commentaire
-     exclude = ['suffrage', 'auteur_comm']
+        model = Commentaire
+        exclude = ['suffrage', 'auteur_comm']
+        widgets = {
+            'commentaire': SummernoteWidget(),
+        }
 
 
 class VoteForm(forms.ModelForm):
     class Meta:
         model = Vote
         exclude = ['suffrage','auteur']
+        widgets = {
+            'commentaire': SummernoteWidget(),
+        }
 
     def save(self, suffrage, userProfile):
         instance = super(VoteForm, self).save(commit=False)
-        instance.auteur = userProfile
         instance.suffrage = suffrage
+        if not instance.suffrage.estAnonyme:
+            instance.auteur = userProfile
         instance.save()
         return instance
 
@@ -109,13 +135,17 @@ class VoteChangeForm(forms.ModelForm):
     class Meta:
         model = Vote
         exclude = ['suffrage','auteur']
-
-
+        widgets = {
+            'commentaire': SummernoteWidget(),
+        }
 
 
 class CommentaireSuffrageChangeForm(forms.ModelForm):
     commentaire = forms.CharField(required=False, widget=SummernoteWidget(attrs={}))
 
     class Meta:
-     model = Commentaire
-     exclude = ['suffrage', 'auteur_comm']
+        model = Commentaire
+        exclude = ['suffrage', 'auteur_comm']
+        widgets = {
+            'commentaire': SummernoteWidget(),
+            }
