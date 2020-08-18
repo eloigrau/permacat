@@ -103,7 +103,7 @@ INSTALLED_APPS = (
     'django_summernote',
     'actstream',
     'taggit',
-    'django_cron',
+    #'django_cron',
     #"visits",
     #'notifications',
     #'webpush',
@@ -463,6 +463,6 @@ BOWER_INSTALLED_APPS = (
     'bootstrap'
 )
 
-CRON_CLASSES = [
-    "bourseLibre.views_notifications.EnvoiMailsCronJob"
-]
+#CRON_CLASSES = [
+#    "bourseLibre.views_notifications.EnvoiMailsCronJob"
+#]

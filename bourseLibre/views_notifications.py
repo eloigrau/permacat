@@ -303,16 +303,19 @@ def envoyerEmailsRequete(request):
 def envoyerEmails():
     listeMails = getListeMailsAlerte()
 
+    print('Envoie des mails' + str(listeMails))
     if not LOCALL:
         send_mass_mail(listeMails)
-        supprimerActionsEmails()
+    print('Suppression des alertes')
+    supprimerActionsEmails()
+    print('Fait')
 
 
-class EnvoiMailsCronJob(CronJobBase):
-    RUN_AT_TIMES = ['6:30']
-
-    schedule = Schedule(run_at_times=RUN_AT_TIMES)
-    code = 'bourseLibre.views_notifications.EnvoiMailsCronJob'    # a unique code
-
-    def do(self):
-        envoyerEmails()
+# class EnvoiMailsCronJob(CronJobBase):
+#     RUN_AT_TIMES = ['6:30']
+#
+#     schedule = Schedule(run_at_times=RUN_AT_TIMES)
+#     code = 'bourseLibre.views_notifications.EnvoiMailsCronJob'    # a unique code
+#
+#     def do(self):
+#         envoyerEmails()
