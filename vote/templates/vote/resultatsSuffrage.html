@@ -36,7 +36,7 @@
   <tr>
     <th class="tg-0lax">Nombre de votants </th>
     <th class="tg-baqh">{{nbTotal}}</th>
-    <th class="tg-baqh">{% if not suffrage.estAnonyme %}
+    <th class="tg-baqh">
             <button type="button" class="btn" data-toggle="modal" data-target="#historique">
               Votants
             </button>
@@ -58,15 +58,23 @@
                     <div class="contenu historique" id="idHistorique">
                       {%for vote in votes %}
     <li class="list-group-item"  >
-        <p>{{vote.auteur}} : {{vote.getVoteStr}}</p>
+
+    <table class="table" style=" width: 100%;
+  text-align: left;
+  padding: 2px 8px;
+  border-radius: 5px;"><tbody>
+    <tr><td style="width: 30%;">{%if vote.estAnonyme%}anonyme{% else %}{{vote.auteur}} {%endif%}:</td><td>"{{vote.getVoteStr}}"</td></tr>
+    {% if vote.commentaire %}
+    <tr><td style="width: 30%;">Commentaire :</td><td ">{{vote.commentaire|safe}}</td></tr>
+    {% endif %}
+    </tbody>
+</table>
     </li>                      {%endfor%}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-
-        {% endif %}
     </th>
   </tr>
 </thead>
@@ -93,7 +101,19 @@
 <hr>
         <p>
     {% if vote %}
-       Vous avez voté: "{{vote.getVoteStr|safe}}"
+
+    <table class="table" style=" width: 80%;
+  text-align: left;
+  padding: 2px 8px;
+  border-radius: 5px;"><tbody>
+    <tr><td style="width: 30%;">Vous avez voté :</td><td style="width: 70%;">"{{vote.getVoteStr}}"</td></tr>
+    {% if vote.commentaire %}
+    <tr><td style="width: 30%;">Commentaire :</td><td style="width: 70%;">{{vote.commentaire|safe}}</td></tr>
+    {% endif %}
+    </tbody>
+</table>
+    {% else %}
+    <p> Vous n'avez pas participé à ce suffrage</p>
     {% endif %}
     </p>
 </div>

@@ -125,17 +125,20 @@
 
 <hr>
 <div class="row justify-content-center">
-<div class="col-sm-12 col-md-8 col-lg-6">
+<div class="col-sm-12">
 
     {% if suffrage.get_statut.0 < 2 %}
         {%if not vote %}
         <p><a href="{% url 'vote:voter' slug=suffrage.slug %}" class="btn btn-success">Voter</a></p>
         {% else %}
 
-    <table class="table table-bordered"><tbody>
-    <tr><td>Vous avez voté :</td><td>"{{vote.getVoteStr}}"</td></tr>
+    <table class="table" style=" width: 80%;
+  text-align: left;
+  padding: 2px 8px;
+  border-radius: 5px;"><tbody>
+    <tr><td style="width: 30%;">Vous avez voté :</td><td style="width: 70%;">"{{vote.getVoteStr}}"</td></tr>
     {% if vote.commentaire %}
-    <tr><td>Commentaire :</td><td>{{vote.commentaire|safe}}</td></tr>
+    <tr><td style="width: 30%;">Commentaire :</td><td style="width: 70%;">{{vote.commentaire|safe}}</td></tr>
     {% endif %}
     </tbody>
 </table>
