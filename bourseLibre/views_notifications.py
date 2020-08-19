@@ -274,14 +274,23 @@ def getListeMailsAlerte():
     listeMails = []
     for mail, messages in messagesParMails.items():
         titre = "[Permacat] Du nouveau sur Perma.Cat"
-        pseudo = Profil.objects.get(email=mail)
-        messagetxt = "Bon dia " + pseudo.username +", Voici les dernières nouvelles des pages auxquelles vous êtes abonné.e :\n"
-        message = "<p>Bon dia " + pseudo.username +",</p><p>Voici les dernières nouvelles des pages auxquelles vous êtes abonné.e :</p><ul>"
+        try:
+            pseudo = Profil.objects.get(email=mail).username
+        except:
+            pseudo = ""
+        messagetxt = "Bon dia " + pseudo +", Voici les dernières nouvelles des pages auxquelles vous êtes abonné.e :\n"
+        message = "<p>Bon dia " + pseudo +",</p><p>Voici les dernières nouvelles des pages auxquelles vous êtes abonné.e :</p><ul>"
         for mess in messages:
             for m in mess['messages']:
                 message += "<li>" + m + "</li>"
-                messagetxt += re.sub('<[^>]+>', '', m) + "\n"
-        messagetxt += "\nFins Aviat !\nPour voir toute l'activité sur le site, consultez les Notifications :https://permacat.herokuapp.com/notifications/news/ \n" + \
+                try:
+                    r = re.search("htt(.*?)>", m).group(1)[:-1]
+                    messagetxt += re.sub('<[^>]+>', '', m) + " : htt" + r+ "\n"
+                except:
+                    messagetxt += re.sub('<[^>]+>', '', m) + "\n"
+
+
+        messagetxt += "\nFins Aviat !\n---------------\nPour voir toute l'activité sur le site, consultez les Notifications : https://permacat.herokuapp.com/notifications/news/ \n" + \
                    "Pour vous désinscrire des alertes mails, barrez les cloches sur le site (ou consultez la FAQ : https://permacat.herokuapp.com/faq/) "
         message += "</ul><br>"
         message += "<p>Fins Aviat !</p><hr>" + \
@@ -330,8 +339,7 @@ def send_mass_html_mail(datatuple, fail_silently=False, auth_user=None,
 def envoyerEmailsRequete(request):
     listeMails = getListeMailsAlerte()
 
-    if not LOCALL:
-        send_mass_html_mail(listeMails)
+    send_mass_html_mail(listeMails, fail_silently=False)
     supprimerActionsEmails()
     return redirect('voirEmails')
 
@@ -339,8 +347,7 @@ def envoyerEmails():
     listeMails = getListeMailsAlerte()
 
     print('Envoie des mails' + str(listeMails))
-    if not LOCALL:
-        send_mass_html_mail(listeMails)
+    send_mass_html_mail(listeMails, fail_silently=False)
     print('Suppression des alertes')
     supprimerActionsEmails()
     print('Fait')
