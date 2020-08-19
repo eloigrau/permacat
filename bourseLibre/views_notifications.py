@@ -280,7 +280,7 @@ def getListeMailsAlerte():
                    "<p><small>Pour voir toute l'activité sur le site, consultez les <a href='https://permacat.herokuapp.com/notifications/news/'>Notifications </a> </small>. " + \
                    "<small>Pour vous désinscrire des alertes mails, barrez les cloches sur le site (ou consultez la <a href='https://permacat.herokuapp.com/faq/'>FAQ</a>)</small></p>"
 
-        listeMails.append((titre, message, SERVER_EMAIL, mail))
+        listeMails.append((titre, message, SERVER_EMAIL, [mail,]))
     return listeMails
 
 def supprimerActionsEmails():
