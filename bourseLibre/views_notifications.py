@@ -278,8 +278,8 @@ def getListeMailsAlerte():
             pseudo = Profil.objects.get(email=mail).username
         except:
             pseudo = ""
-        messagetxt = "Bon dia " + pseudo +", Voici les dernières nouvelles des pages auxquelles vous êtes abonné.e :\n"
-        message = "<p>Bon dia " + pseudo +",</p><p>Voici les dernières nouvelles des pages auxquelles vous êtes abonné.e :</p><ul>"
+        messagetxt = "Bonjour / Bon dia " + pseudo +", Voici les dernières nouvelles des pages auxquelles vous êtes abonné.e :\n"
+        message = "<p>Bonjour / Bon dia " + pseudo +",</p><p>Voici les dernières nouvelles des pages auxquelles vous êtes abonné.e :</p><ul>"
         for mess in messages:
             for m in mess['messages']:
                 message += "<li>" + m + "</li>"
@@ -346,7 +346,7 @@ def envoyerEmailsRequete(request):
 def envoyerEmails():
     listeMails = getListeMailsAlerte()
 
-    print('Envoie des mails' + str(listeMails))
+    print('Envoi des mails' + str(listeMails))
     send_mass_html_mail(listeMails, fail_silently=False)
     print('Suppression des alertes')
     supprimerActionsEmails()
