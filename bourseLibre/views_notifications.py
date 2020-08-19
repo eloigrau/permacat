@@ -266,7 +266,6 @@ def getListeMailsAlerte():
                     if not action.data['message'] in str(listeMessages):
                         messagesParMails[mail].append({'messages': [action.data['message'], ]})
 
-                    print(str( messagesParMails[mail]))
     listeMails = []
     for mail, messages in messagesParMails.items():
         titre = "[Permacat] Du nouveau sur Perma.Cat"
