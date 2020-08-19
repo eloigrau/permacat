@@ -7,9 +7,13 @@ from django.core.mail import send_mass_mail
 from itertools import chain
 from .forms import nouvelleDateForm
 from .models import Profil
-from .settings import SERVER_EMAIL, LOCALL
+from .settings import SERVER_EMAIL, LOCALL, EMAIL_HOST_PASSWORD
 from django_cron import CronJobBase, Schedule
 from django.http import HttpResponseForbidden
+from django.core.mail.message import EmailMultiAlternatives
+import re
+
+from django.core import mail
 
 @login_required
 def getNotifications(request, nbNotif=10, orderBy="-timestamp"):
@@ -271,16 +275,20 @@ def getListeMailsAlerte():
     for mail, messages in messagesParMails.items():
         titre = "[Permacat] Du nouveau sur Perma.Cat"
         pseudo = Profil.objects.get(email=mail)
+        messagetxt = "Bon dia " + pseudo.username +", Voici les dernières nouvelles des pages auxquelles vous êtes abonné.e :\n"
         message = "<p>Bon dia " + pseudo.username +",</p><p>Voici les dernières nouvelles des pages auxquelles vous êtes abonné.e :</p><ul>"
         for mess in messages:
             for m in mess['messages']:
                 message += "<li>" + m + "</li>"
+                messagetxt += re.sub('<[^>]+>', '', m) + "\n"
+        messagetxt += "\nFins Aviat !\nPour voir toute l'activité sur le site, consultez les Notifications :https://permacat.herokuapp.com/notifications/news/ \n" + \
+                   "Pour vous désinscrire des alertes mails, barrez les cloches sur le site (ou consultez la FAQ : https://permacat.herokuapp.com/faq/) "
         message += "</ul><br>"
         message += "<p>Fins Aviat !</p><hr>" + \
                    "<p><small>Pour voir toute l'activité sur le site, consultez les <a href='https://permacat.herokuapp.com/notifications/news/'>Notifications </a> </small>. " + \
                    "<small>Pour vous désinscrire des alertes mails, barrez les cloches sur le site (ou consultez la <a href='https://permacat.herokuapp.com/faq/'>FAQ</a>)</small></p>"
 
-        listeMails.append((titre, message, SERVER_EMAIL, [mail,]))
+        listeMails.append((titre, messagetxt, message, SERVER_EMAIL, [mail,]))
     return listeMails
 
 def supprimerActionsEmails():
@@ -294,43 +302,47 @@ def voirEmails(request):
     listeMails = getListeMailsAlerte()
     return render(request, 'notifications/voirEmails.html', {'listeMails': listeMails,})
 
+def send_mass_html_mail(datatuple, fail_silently=False, auth_user=None,
+                        auth_password=None, connection=None):
+    """
+    Given a datatuple of (subject, message, html_message, from_email,
+    recipient_list), send each message to each recipient list.
+    Return the number of emails sent.
+    If from_email is None, use the DEFAULT_FROM_EMAIL setting.
+    If auth_user and auth_password are set, use them to log in.
+    If auth_user is None, use the EMAIL_HOST_USER setting.
+    If auth_password is None, use the EMAIL_HOST_PASSWORD setting.
+    """
+    connection = mail.get_connection(
+        username=SERVER_EMAIL,
+        password=EMAIL_HOST_PASSWORD,
+        fail_silently=fail_silently,
+    )
+    messages = [
+        EmailMultiAlternatives(subject, message, sender, recipient,
+                               alternatives=[(html_message, 'text/html')],
+                               connection=connection)
+        for subject, message, html_message, sender, recipient in datatuple
+    ]
+    return connection.send_messages(messages)
+
+
 def envoyerEmailsRequete(request):
     listeMails = getListeMailsAlerte()
 
-    # from django.core import mail
-    # from django.core.mail.message import EmailMultiAlternatives
-    # from django.template import Context
-    #
-    # connection = mail.get_connection()
-    # connection.open()
-    # messages = list()
-    #
-    # for u in users:
-    #     c = Context({'first_name': u.first_name, 'reseller': self, })
-    #     subject, from_email, to = 'new reseller', SERVER_EMAIL, u.email
-    #     text_content = plaintext.render(c)
-    #     html_content = htmly.render(c)
-    #     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-    #     msg.attach_alternative(html_content, "text/html")
-    #     messages.append(msg)
-    #
-    # connection.send_messages(messages)
-    # connection.close()
-    #
     if not LOCALL:
-        pass
-        #send_mass_mail(listeMails)
-    #supprimerActionsEmails()
+        send_mass_html_mail(listeMails)
+    supprimerActionsEmails()
     return redirect('voirEmails')
 
 def envoyerEmails():
     listeMails = getListeMailsAlerte()
 
     print('Envoie des mails' + str(listeMails))
-    #if not LOCALL:
-        #send_mass_mail(listeMails)
+    if not LOCALL:
+        send_mass_html_mail(listeMails)
     print('Suppression des alertes')
-    #supprimerActionsEmails()
+    supprimerActionsEmails()
     print('Fait')
 
 
