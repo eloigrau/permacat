@@ -297,19 +297,40 @@ def voirEmails(request):
 def envoyerEmailsRequete(request):
     listeMails = getListeMailsAlerte()
 
+    # from django.core import mail
+    # from django.core.mail.message import EmailMultiAlternatives
+    # from django.template import Context
+    #
+    # connection = mail.get_connection()
+    # connection.open()
+    # messages = list()
+    #
+    # for u in users:
+    #     c = Context({'first_name': u.first_name, 'reseller': self, })
+    #     subject, from_email, to = 'new reseller', SERVER_EMAIL, u.email
+    #     text_content = plaintext.render(c)
+    #     html_content = htmly.render(c)
+    #     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    #     msg.attach_alternative(html_content, "text/html")
+    #     messages.append(msg)
+    #
+    # connection.send_messages(messages)
+    # connection.close()
+    #
     if not LOCALL:
-        send_mass_mail(listeMails)
-    supprimerActionsEmails()
+        pass
+        #send_mass_mail(listeMails)
+    #supprimerActionsEmails()
     return redirect('voirEmails')
 
 def envoyerEmails():
     listeMails = getListeMailsAlerte()
 
     print('Envoie des mails' + str(listeMails))
-    if not LOCALL:
-        send_mass_mail(listeMails)
+    #if not LOCALL:
+        #send_mass_mail(listeMails)
     print('Suppression des alertes')
-    supprimerActionsEmails()
+    #supprimerActionsEmails()
     print('Fait')
 
 
