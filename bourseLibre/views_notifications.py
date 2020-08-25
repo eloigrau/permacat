@@ -116,7 +116,7 @@ def notifications_news_regroup(request):
     htmlArticles = ""
     for titre_article, actions in dicoTexte['dicoarticles'].items():
         htmlArticles += "<li class='list-group-item'><a href='" + actions[0].data['url'] + "'>"
-        htmlArticles += " <div class='textcenter'><span  style='font-variant: small-caps ;'>" + titre_article
+        htmlArticles += " <div class=''><span  style='font-variant: small-caps ;'>" + titre_article
         if "(Jardins Partagés)" in actions[0].description:
             htmlArticles += "</span> <small> &nbsp;(Jardins Partagés)</small>"
         else:
@@ -151,7 +151,7 @@ def notifications_news_regroup(request):
     htmlProjets = ""
     for titre_projet, actions in dicoTexte['dicoprojets'].items():
         htmlProjets += "<li class='list-group-item'><a href='" + actions[0].data['url'] + "'>"
-        htmlProjets += " <div  class='textcenter' ><spanstyle='font-variant: small-caps ;'>" + titre_projet
+        htmlProjets += " <div  class='' ><spanstyle='font-variant: small-caps ;'>" + titre_projet
         if "(Jardins Partagés)" in actions[0].description:
             htmlProjets += "</span> (Jardins Partagés)"
         else:
