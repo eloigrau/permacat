@@ -153,6 +153,8 @@ class Commentaire(models.Model):
     def get_edit_url(self):
         return reverse('jardinpartage:modifierCommentaireArticle',  kwargs={'id':self.id})
 
+    def get_absolute_url(self):
+        return self.article.get_absolute_url()
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
@@ -165,7 +167,7 @@ class Commentaire(models.Model):
 
         retour =  super(Commentaire, self).save(*args, **kwargs)
         if emails:
-            action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
+            action.send(self, verb='emails', url=self.article.get_absolute_url(), titre=titre, message=message, emails=emails)
         return retour
     
 class Participation(models.Model):
