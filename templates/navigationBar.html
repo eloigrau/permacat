@@ -47,6 +47,64 @@
                  <li><a class="dropdown-item" href="{% url 'conversations' %}"> Conversations privées</a></li>
             </ul>
       </li>
+        {% comment %}
+            <li class="nav-item dropdown nav3">
+                <a class="nav-link dropdown-toggle navbar-menu "  href="{% url 'presentation_asso' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {% fontawesome_icon 'link' %} Associations
+                </a>
+                <ul class="dropdown-menu dropdown-menu1 textcenter nav3-dropdown" aria-labelledby="navbarDropdownMenuLink">
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" >PermaCat</a>
+                        <ul class="dropdown-menu textcenter nav3-dropdown-submenu">
+                    <li><a class="dropdown-item" href="{% url 'blog:index_projets' %}"><i class='fa fa-folder-open iconleft' ></i>  Projets </a></li>
+                    <li><a class="dropdown-item" href="{% url 'vote:index' %}"><i class="fa fa-bullhorn iconleft"></i>  Votes </a></li>
+                       <li class="divider" role="separator"></li>
+                         <li><a class="dropdown-item" href="{% url 'fiches:acceuil' %}"><i class='fa fa-image iconleft' ></i> Fiches de Permaculture </a></li>
+                         <li><a class="dropdown-item" href="{% url 'ateliers:acceuil' %}"><i class='fa fa-wrench iconleft' ></i>  Ateliers Collectifs</a></li>
+                         <li><a class="dropdown-item" href="{% url 'jardinpartage:index' %}"><i class='fa fa-pagelines' ></i> Jardins Partagés </a></li>
+
+                       <li class="divider" role="separator"/>
+                        <li> <a class="dropdown-item" href="{% url 'annuaire_permacat' %}"> Annuaire  </a></li>
+                         <li><a class="dropdown-item" href="{% url 'carte_permacat' %}"> Carte  </a></li>
+                         <li><a class="dropdown-item" href="{% url 'admin_asso' %}"> Administration  </a></li>
+                        <li class="divider" role="separator"/>
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' %}"> Qui sommes nous ?</a></li>
+                       <li> <a class="dropdown-item" href="{% url 'charte' %}"> Charte </a></li>
+                       <li> <a class="dropdown-item" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a></li>
+                        <li class="divider" role="separator"/>
+                       <li> <a class="dropdown-item" href="{% url 'adhesion_asso' %}"> Cotisation en ligne </a></li>
+                        </ul>
+                    </li>
+                    <li class="divider" role="separator"/>
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" >Ramene Ta Graine</a>
+                        <ul class="dropdown-menu nav3-dropdown-submenu">
+                        <li> <a class="dropdown-item" href="{% url 'agora_rtg' %}"> Salon RTG</a></li>
+                        <li> <a class="dropdown-item" href="https://permaculturelne.herokuapp.com"> Festival Permacultur'Elne  </a></li>
+                       <li class="divider" role="separator"/>
+                        <li> <a class="dropdown-item" href="{% url 'annuaire_rtg' %}"> Annuaire  </a></li>
+                         <li><a class="dropdown-item" href="{% url 'carte_rtg' %}"> Carte  </a></li>
+                         <li><a class="dropdown-item" href="{% url 'admin_asso_rtg' %}"> Administration  </a></li>
+                        <li class="divider" role="separator"/>
+
+                        </ul>
+                    </li>
+                    <li class="divider" role="separator"/>
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" >Animaux Mieux Etre</a>
+                        <ul class="dropdown-menu nav3-dropdown-submenu">
+                        <li> <a class="dropdown-item" href="{% url 'agora_ame' %}"> Salon </a></li>
+                       <li class="divider" role="separator"/>
+                        <li> <a class="dropdown-item" href="{% url 'annuaire_ame' %}"> Annuaire  </a></li>
+                         <li><a class="dropdown-item" href="{% url 'carte_ame' %}"> Carte  </a></li>
+                         <li><a class="dropdown-item" href="{% url 'admin_asso_ame' %}"> Administration  </a></li>
+                        <li class="divider" role="separator"/>
+
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        {% endcomment %}
 
             <li class="nav-item dropdown nav3">
                 <a class="nav-link dropdown-toggle navbar-menu "  href="{% url 'presentation_asso' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
