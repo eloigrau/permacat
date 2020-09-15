@@ -41,7 +41,7 @@ class MyModelAdmin(admin.ModelAdmin):
         return u", ".join(o.name for o in obj.tags.all())
 
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('titre', 'estPublic', 'estArchive')
+    list_display = ('titre', 'estPublic', 'estArchive', 'categorie')
 class ProjetAdmin(admin.ModelAdmin):
     list_display = ('titre', 'estPublic', 'estArchive')
 class ProduitAdmin(admin.ModelAdmin):
