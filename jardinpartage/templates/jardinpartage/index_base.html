@@ -78,6 +78,23 @@
 				</button>
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-item" href="#" id="navbarDropdownAsso" data-toggle="dropdown">
+                                 <button type="button" class="btn  btn-success dropdown-toggle" >
+                                {% if jardin_courant  %}
+      {{jardin_courant}}
+        {%else%}
+        Jardin...
+      {%endif%}
+                             </button>
+                                </a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            {% for jardin, nom in jardin_list %}
+                            <a class=" dropdown-item " style="background:{{cat_coul}};" href="{%url 'jardinpartage:index_jardin' jardin=jardin %}"><span>{{nom}}</span></a>
+                            {% endfor %}
+							</div>
+						</li>
+
 <li class="nav-item dropdown">
                             <a class="nav-item " href="#" id="navbarDropdownCategorie" data-toggle="dropdown">
                                  <button type="button" class="btn  btn-primary dropdown-toggle" >

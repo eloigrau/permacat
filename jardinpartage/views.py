@@ -36,7 +36,7 @@ def accueil(request):
 @user_passes_test(is_inscrit, login_url='/jardins/accepter_participation')
 def ajouterArticle(request):
     try:
-        form = ArticleForm(request, request.POST or None)
+        form = ArticleForm(request.POST or None)
         if form.is_valid():
             article = form.save(request.user)
             url = article.get_absolute_url()
@@ -162,6 +162,8 @@ class ListeArticles(UserPassesTestMixin, ListView):
         context['typeFiltre'] = "aucun"
         context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="articles_jardin")
 
+        context['jardin_list'] = [(x[0], x[1]) for x in Choix.jardins_ptg]
+
         context['ordreTriPossibles'] = {
                                            "date de création":'-date_creation',
                                            "date du dernier message":'-date_dernierMessage',
@@ -184,6 +186,74 @@ class ListeArticles(UserPassesTestMixin, ListView):
             context['typeFiltre'] = "ordreTri"
         return context
 
+
+
+class ListeArticles_jardin(ListView):
+    model = Article
+    context_object_name = "article_list"
+    template_name = "jardinpartage/index_base.html"
+    paginate_by = 30
+
+    def get_queryset(self):
+        params = dict(self.request.GET.items())
+
+        if "archives" in params and params['archives']:
+            qs = Article.objects.filter(estArchive=True)
+        else:
+            qs = Article.objects.filter(estArchive=False)
+
+        nom_jardin = [x[1] for x in Choix.jardins_ptg if x[0]==self.kwargs["jardin"]][0]
+        if self.kwargs["jardin"] != "0":
+            qs = qs.filter(jardin=nom_jardin)
+
+        if "auteur" in params:
+            qs = qs.filter(auteur__username=params['auteur'])
+        if "categorie" in params:
+            qs = qs.filter(categorie=params['categorie'])
+
+        if "ordreTri" in params:
+            qs = qs.order_by(params['ordreTri'])
+        else:
+            qs = qs.order_by('-date_dernierMessage', '-date_creation', 'categorie', 'auteur')
+
+        return qs
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+
+        # context['producteur_list'] = Profil.objects.values_list('username', flat=True).distinct()
+        context['auteur_list'] = Article.objects.order_by('auteur').values_list('auteur__username', flat=True).distinct()
+        cat= Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
+        context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
+        context['jardin_list'] = [(x[0], x[1]) for x in Choix.jardins_ptg]
+        nom_jardin = [x[1] for x in Choix.jardins_ptg if x[0]==self.kwargs["jardin"]]
+        context['jardin_courant'] = nom_jardin[0]
+        context['typeFiltre'] = "aucun"
+        context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="articles")
+
+        context['ordreTriPossibles'] = {
+                                           "date de création":'-date_creation',
+                                           "date de la dernière modification":'-date_modification',
+                                            "titre": 'titre' }
+
+        if 'auteur' in self.request.GET:
+            context['typeFiltre'] = "auteur"
+        if 'categorie' in self.request.GET:
+            context['typeFiltre'] = "categorie"
+            try:
+                context['categorie_courante'] = [x[1] for x in Choix.type_annonce if x[0] == self.request.GET['categorie']][0]
+            except:
+                context['categorie_courante'] = ""
+
+
+        if 'permacat' in self.request.GET:
+            context['typeFiltre'] = "permacat"
+        if 'archives' in self.request.GET:
+            context['typeFiltre'] = "archives"
+        if 'ordreTri' in self.request.GET:
+            context['typeFiltre'] = "ordreTri"
+        return context
 
 
 # @login_required

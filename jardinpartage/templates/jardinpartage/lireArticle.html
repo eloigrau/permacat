@@ -66,8 +66,8 @@
 {% endblock %}
 {% block content %}
      <div class="boxitem_droite">
-                <span class="badge {% if article.estPublic%}badge-success{%else%} badge-warning {%endif%}">
-                    {{article.get_jardin_display }}
+                <span class="badge badge-success">
+                 {{article.get_jardin_display }}
             </span>
             {% if article.estArchive%}
             <span class="badge badge-secondary">
