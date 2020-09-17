@@ -25,11 +25,11 @@ def getNotifications(request, nbNotif=10, orderBy="-timestamp"):
     suffrages = Action.objects.filter(Q(verb='suffrage_ajout_Public')).order_by(orderBy)
 
     if request.user.adherent_permacat:
-        salons     = salons | Action.objects.filter(Q(verb__startswith='envoi_salon') & Q(verb__icontains='Permacat') & Q(verb__icontains='permacat'))
-        articles   = articles | Action.objects.filter(Q(verb__startswith='article') & Q(verb__icontains='Permacat') & Q(verb__icontains='permacat'))
-        projets    = projets | Action.objects.filter(Q(verb__startswith='projet') & Q(verb__icontains='Permacat') & Q(verb__icontains='permacat'))
-        offres     = offres | Action.objects.filter(Q(verb__startswith='ajout_offre') & Q(verb__icontains='Permacat') & Q(verb__icontains='permacat'))
-        suffrages  = suffrages | Action.objects.filter(Q(verb__startswith='suffrage_ajout') & Q(verb__icontains='Permacat') & Q(verb__icontains='permacat'))
+        salons     = salons | Action.objects.filter(Q(verb__startswith='envoi_salon') & Q(verb__icontains='Permacat') | Q(verb__icontains='permacat'))
+        articles   = articles | Action.objects.filter(Q(verb__startswith='article') & Q(verb__icontains='Permacat') | Q(verb__icontains='permacat'))
+        projets    = projets | Action.objects.filter(Q(verb__startswith='projet') & Q(verb__icontains='Permacat') | Q(verb__icontains='permacat'))
+        offres     = offres | Action.objects.filter(Q(verb__startswith='ajout_offre') & Q(verb__icontains='Permacat') | Q(verb__icontains='permacat'))
+        suffrages  = suffrages | Action.objects.filter(Q(verb__startswith='suffrage_ajout') & Q(verb__icontains='Permacat') | Q(verb__icontains='permacat'))
 
     if request.user.adherent_rtg:
         salons     = salons | Action.objects.filter(Q(verb__startswith='envoi_salon') & Q(verb__icontains='Ramene ta graine'))
@@ -76,7 +76,7 @@ def getNotificationsParDate(request, limiter=True, orderBy="-timestamp"):
             Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)|
             Q(verb__startswith='inscription'))
     if request.user.adherent_permacat:
-        actions = actions | Action.objects.filter(Q(verb__icontains='Permacat'))
+        actions = actions | Action.objects.filter(Q(verb__icontains='Permacat') | Q(verb__icontains='permacat'))
     if request.user.adherent_rtg:
         actions = actions | Action.objects.filter(Q(verb__icontains='Ramene ta graine'))
     if request.user.adherent_ame:
@@ -220,9 +220,13 @@ def getInfosJourPrecedent(request, nombreDeJours):
     timestamp_to = datetime.now().date() - timedelta(days=nombreDeJours - 1)
 
     if request.user.adherent_permacat:
-        articles    = Action.objects.filter(Q(verb='article_nouveau_permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) | Q(verb='article_nouveau',timestamp__gte = timestamp_from, timestamp__lte = timestamp_to,))
-        projets     = Action.objects.filter(Q(verb='projet_nouveau_permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) |Q(verb='projet_nouveau', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,))
-        offres      = Action.objects.filter(Q(verb='ajout_offre', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) | Q(verb='ajout_offre_permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,))
+        articles    = Action.objects.filter(Q(verb='article_nouveau_permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) |
+                                            Q(verb='article_nouveau_Permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) |
+                                            Q(verb='article_nouveau',timestamp__gte = timestamp_from, timestamp__lte = timestamp_to,))
+        projets     = Action.objects.filter(Q(verb='projet_nouveau_permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) |
+                                            Q(verb='projet_nouveau_Permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) |
+                                            Q(verb='projet_nouveau', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,))
+        offres      = Action.objects.filter(Q(verb='ajout_offre', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) | Q(verb='ajout_offre_permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) | Q(verb='ajout_offre_Permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,))
     else:
         articles    = Action.objects.filter(Q(verb='article_nouveau', timestamp__gte = timestamp_from, timestamp__lte = timestamp_to,) | Q(verb='article_modifier', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,))
         projets     = Action.objects.filter(Q(verb='projet_nouveau', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,))
