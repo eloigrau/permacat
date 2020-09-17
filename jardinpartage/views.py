@@ -188,11 +188,7 @@ class ListeArticles(UserPassesTestMixin, ListView):
 
 
 
-class ListeArticles_jardin(ListView):
-    model = Article
-    context_object_name = "article_list"
-    template_name = "jardinpartage/index_base.html"
-    paginate_by = 30
+class ListeArticles_jardin(ListeArticles):
 
     def get_queryset(self):
         params = dict(self.request.GET.items())
@@ -204,7 +200,7 @@ class ListeArticles_jardin(ListView):
 
         nom_jardin = [x[1] for x in Choix.jardins_ptg if x[0]==self.kwargs["jardin"]][0]
         if self.kwargs["jardin"] != "0":
-            qs = qs.filter(jardin=nom_jardin)
+            qs = qs.filter(jardin=self.kwargs["jardin"])
 
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])
