@@ -73,6 +73,7 @@ def getNotificationsParDate(request, limiter=True, orderBy="-timestamp"):
 
     actions = Action.objects.filter( \
             Q(verb='envoi_salon')| Q(verb__icontains='public')|Q(verb__icontains='Public')|
+            Q(verb='article_message') |Q(verb='projet_message') |
             Q(verb__startswith='fiche')|Q(verb__startswith='atelier')|
             Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)|
             Q(verb__startswith='inscription'))
