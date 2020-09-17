@@ -70,6 +70,7 @@ def getNotifications(request, nbNotif=10, orderBy="-timestamp"):
 
 @login_required
 def getNotificationsParDate(request, limiter=True, orderBy="-timestamp"):
+
     actions = Action.objects.filter( \
             Q(verb='envoi_salon')| Q(verb__icontains='public')|Q(verb__icontains='Public')|
             Q(verb__startswith='fiche')|Q(verb__startswith='atelier')|
