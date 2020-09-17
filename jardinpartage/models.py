@@ -1,5 +1,5 @@
 from django.db import models
-from bourseLibre.models import Profil, Suivis, Asso
+from bourseLibre.models import Profil, Suivis
 from django.urls import reverse
 from django.utils import timezone
 from django.core.mail import send_mass_mail, mail_admins

@@ -10,7 +10,7 @@ from django.views.generic import ListView, UpdateView, DeleteView
 from actstream import actions, action
 from actstream.models import followers, following, action_object_stream
 from django.utils.timezone import now
-from bourseLibre.models import Profil, Asso
+from bourseLibre.models import Profil
 
 #from django.contrib.contenttypes.models import ContentType
 from bourseLibre.models import Suivis
@@ -40,8 +40,8 @@ def ajouterArticle(request):
         if form.is_valid():
             article = form.save(request.user)
             url = article.get_absolute_url()
-            suffix = "_" + article.asso.nom
-            action.send(request.user, verb='article_nouveau'+suffix, action_object=article, url=url,
+            #suffix = "_" + article.jardin.nom
+            action.send(request.user, verb='article_nouveau', action_object=article, url=url,
                         description="a ajouté un article : (Jardins Partagés) '%s'" % article.titre, type="article_jardin_partage")
             return redirect(article.get_absolute_url())
             #return render(request, 'jardinpartage/lireArticle.html', {'article': article})
@@ -105,8 +105,8 @@ def lireArticle(request, slug):
             article.save(sendMail=False)
             comment.save()
             url = article.get_absolute_url()+"#idConversation"
-            suffix = "_" + article.asso.nom
-            action.send(request.user, verb='article_message'+suffix, action_object=article, url=url,
+            #suffix = "_" + article.asso.nom
+            action.send(request.user, verb='article_message', action_object=article, url=url,
                         description="a réagi à l'article: (Jardins Partagés) '%s'" % article.titre, type="article_jardin_partage")
             #envoi_emails_articleouprojet_modifie(article, request.user.username + " a réagit à l'article: " +  article.titre)
         return redirect(request.path)
@@ -138,16 +138,6 @@ class ListeArticles(UserPassesTestMixin, ListView):
             qs = Article.objects.filter(estArchive=True)
         else:
             qs = Article.objects.filter(estArchive=False)
-
-        if not self.request.user.is_authenticated:
-            qs = qs.filter(asso__id=1)
-        else:
-            if not self.request.user.adherent_permacat:
-                qs = qs.exclude(asso__id=2)
-            if not self.request.user.adherent_rtg:
-                qs = qs.exclude(asso__id=3)
-            if not self.request.user.adherent_ame:
-                qs = qs.exclude(asso__id=4)
 
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])

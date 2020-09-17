@@ -2,19 +2,19 @@
 
 from django.db import migrations, models
 
-def combine_names(apps, schema_editor):
+#def combine_names(apps, schema_editor):
     # We can't import the Person model directly as it may be a newer
     # version than this migration expects. We use the historical version.
-    article = apps.get_model('jardinpartage', 'Article')
-    assos = apps.get_model('bourseLibre', 'Asso')
-    asso_public, created = assos.objects.get_or_create(nom='Public')
-    asso_permacat, created = assos.objects.get_or_create(nom='Permacat')
-    for prod in article.objects.all():
-        if prod.estPublic:
-            prod.asso = asso_public
-        else:
-            prod.asso = asso_permacat
-        prod.save()
+    # article = apps.get_model('jardinpartage', 'Article')
+    # assos = apps.get_model('bourseLibre', 'Asso')
+    # asso_public, created = assos.objects.get_or_create(nom='Public')
+    # asso_permacat, created = assos.objects.get_or_create(nom='Permacat')
+    # for prod in article.objects.all():
+    #     if prod.estPublic:
+     #        prod.asso = asso_public
+     #    else:
+     #        prod.asso = asso_permacat
+      #   prod.save()
 
 
 class Migration(migrations.Migration):
@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
                 ('participe', models.BooleanField(default=False, verbose_name='Je suis intéressé.e par les jardins partagés')),
             ],
         ),
-    migrations.RunPython(combine_names, ),
+    #migrations.RunPython(combine_names, ),
 
 
     ]

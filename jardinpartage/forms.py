@@ -1,6 +1,5 @@
 from django import forms
 from .models import Article, Commentaire, Evenement, Participation
-from bourseLibre.models import Asso
 from django.utils.text import slugify
 import itertools
 #from django.utils.formats import localize
