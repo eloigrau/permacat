@@ -69,10 +69,18 @@
     </div>
 {% endif %}
 
+{%if htmlProjets %}
+    <div class="card carte-notif-news  d-md-flex">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item textcenter"  style="background-color:#f7ff99">Projets</li>
+            {{htmlProjets|safe }}
+        </ul>
+    </div>
+{% endif %}
 {%if  dico.listautres %}
     <div class="card carte-notif-news notif3 d-md-flex textcenter">
         <ul class="list-group list-group-flush">
-{%if htmlArticles %}
+{%if htmlProjets or htmlArticles %}
             <li class="list-group-item"  style="background-color:#cce6ff">Autres</li>
 {% endif %}
       {% for action in dico.listautres %}
