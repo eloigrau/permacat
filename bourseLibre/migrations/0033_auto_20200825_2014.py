@@ -13,7 +13,7 @@ def combine_names(apps, schema_editor):
     asso_public, created = assos.objects.get_or_create(nom='Public')
     asso_permacat, created = assos.objects.get_or_create(nom='Permacat')
     for prod in produits.objects.all():
-        if prod.estPublic:
+        if prod.estPublique:
             prod.asso = asso_public
         else:
             prod.asso = asso_permacat
