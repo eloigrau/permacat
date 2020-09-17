@@ -22,7 +22,7 @@ def combine_names(apps, schema_editor):
     profils =  apps.get_model('bourseLibre', 'Profil')
 
     for prof in profils.objects.all():
-        if prof.is_permacat:
+        if prof.statut_adhesion == "2":
             prof.asso = asso_permacat
 
 class Migration(migrations.Migration):
