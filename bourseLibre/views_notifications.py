@@ -25,11 +25,11 @@ def getNotifications(request, nbNotif=10, orderBy="-timestamp"):
     suffrages = Action.objects.filter(Q(verb='suffrage_ajout_Public')).order_by(orderBy)
 
     if request.user.adherent_permacat:
-        salons     = salons | Action.objects.filter(Q(verb__startswith='envoi_salon') & Q(verb__icontains='Permacat') | Q(verb__icontains='permacat'))
-        articles   = articles | Action.objects.filter(Q(verb__startswith='article') & Q(verb__icontains='Permacat') | Q(verb__icontains='permacat'))
-        projets    = projets | Action.objects.filter(Q(verb__startswith='projet') & Q(verb__icontains='Permacat') | Q(verb__icontains='permacat'))
-        offres     = offres | Action.objects.filter(Q(verb__startswith='ajout_offre') & Q(verb__icontains='Permacat') | Q(verb__icontains='permacat'))
-        suffrages  = suffrages | Action.objects.filter(Q(verb__startswith='suffrage_ajout') & Q(verb__icontains='Permacat') | Q(verb__icontains='permacat'))
+        salons     = salons | Action.objects.filter((Q(verb__startswith='envoi_salon') & Q(verb__icontains='Permacat')) | (Q(verb__startswith='envoi_salon_permacat')))
+        articles   = articles | Action.objects.filter((Q(verb__startswith='article') & Q(verb__icontains='Permacat')) | (Q(verb__startswith='article_permacat')))
+        projets    = projets | Action.objects.filter((Q(verb__startswith='projet') & Q(verb__icontains='Permacat')) | Q(verb='projet_permacat'))
+        offres     = offres | Action.objects.filter((Q(verb__startswith='ajout_offre') & Q(verb__icontains='Permacat') )| Q(verb='ajout_offre_permacat'))
+        suffrages  = suffrages | Action.objects.filter((Q(verb__startswith='suffrage_ajout') & Q(verb__icontains='Permacat')) | Q(verb='suffrage_ajout_permacat'))
 
     if request.user.adherent_rtg:
         salons     = salons | Action.objects.filter(Q(verb__startswith='envoi_salon') & Q(verb__icontains='Ramene ta graine'))
