@@ -19,10 +19,10 @@ from django.core import mail
 def getNotifications(request, nbNotif=10, orderBy="-timestamp"):
     tampon = nbNotif * 5
     salons = Action.objects.filter(Q(verb='envoi_salon_Public'))
-    articles = Action.objects.filter(Q(verb='article_nouveau_Public') | Q(verb='article_message_Public') | Q(verb='article_modifier_Public')).order_by(orderBy)
-    projets = Action.objects.filter(Q(verb='projet_nouveau_Public') | Q(verb='projet_message_Public') | Q(verb='projet_modifier_Public')).order_by(orderBy)
-    offres = Action.objects.filter(Q(verb='ajout_offre_Public')).order_by(orderBy)
-    suffrages = Action.objects.filter(Q(verb='suffrage_ajout_Public')).order_by(orderBy)
+    articles = Action.objects.filter(Q(verb='article_nouveau') |Q(verb='article_nouveau_Public') | Q(verb='article_message_Public') | Q(verb='article_modifier_Public')).order_by(orderBy)
+    projets = Action.objects.filter(Q(verb='projet_nouveau') | Q(verb='projet_nouveau_Public') | Q(verb='projet_message_Public') | Q(verb='projet_modifier_Public')).order_by(orderBy)
+    offres = Action.objects.filter(Q(verb='ajout_offre')|  Q(verb='ajout_offre_Public')).order_by(orderBy)
+    suffrages = Action.objects.filter(Q(verb='suffrage_ajout_Public') | Q(verb='suffrage_ajout')).order_by(orderBy)
 
     if request.user.adherent_permacat:
         salons     = salons | Action.objects.filter((Q(verb__startswith='envoi_salon') & Q(verb__icontains='Permacat')) | (Q(verb__startswith='envoi_salon_permacat')))
@@ -71,7 +71,7 @@ def getNotifications(request, nbNotif=10, orderBy="-timestamp"):
 @login_required
 def getNotificationsParDate(request, limiter=True, orderBy="-timestamp"):
     actions = Action.objects.filter( \
-            Q(verb='envoi_salon')| Q(verb__icontains='public')|
+            Q(verb='envoi_salon')| Q(verb__icontains='public')|Q(verb__icontains='Public')|
             Q(verb__startswith='fiche')|Q(verb__startswith='atelier')|
             Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)|
             Q(verb__startswith='inscription'))
