@@ -19,12 +19,6 @@ def combine_names(apps, schema_editor):
             prod.asso = asso_permacat
         prod.save()
 
-    profils =  apps.get_model('bourseLibre', 'Profil')
-
-    for prof in profils.objects.all():
-        if prof.statut_adhesion == "2":
-            prof.asso = asso_permacat
-
 class Migration(migrations.Migration):
 
     dependencies = [
