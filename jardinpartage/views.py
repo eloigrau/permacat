@@ -65,8 +65,7 @@ class ModifierArticle(UpdateView):
         self.object.date_modification = now()
         self.object.save()
         url = self.object.get_absolute_url()
-        suffix = "_" + self.object.asso.nom
-        action.send(self.request.user, verb='article_modifier'+suffix, action_object=self.object, url=url,
+        action.send(self.request.user, verb='article_modifier', action_object=self.object, url=url,
                      description="a modifié l'article : (Jardins Partagés) '%s'" % self.object.titre)
 
         return HttpResponseRedirect(self.get_success_url())
