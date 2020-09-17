@@ -143,11 +143,6 @@ class ListeArticles(UserPassesTestMixin, ListView):
             qs = qs.filter(auteur__username=params['auteur'])
         if "categorie" in params:
             qs = qs.filter(categorie=params['categorie'])
-        if "permacat" in params  and self.request.user.adherent_permacat:
-            if params['permacat'] == "True":
-                qs = qs.filter(estPublic=False)
-            else:
-                qs = qs.filter(estPublic=True)
 
         if "ordreTri" in params:
             qs = qs.order_by(params['ordreTri'])
