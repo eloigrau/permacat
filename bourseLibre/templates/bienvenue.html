@@ -90,8 +90,8 @@
 				  </div>
 					<ul class="list-group list-group-flush textcenter">
 						<li class="list-group-item"><a href="{% url 'blog:lireArticle' 'visioconference' %}">Visioconférence : lundi prochain à partir de 20h30</a> </li>
-						<li class="list-group-item"><a href="{% url 'blog:lireArticle' 'rencontres-permacat' %}">Rencontre mensuelle : reportée</a></li>
-						<li class="list-group-item"><a href="https://permacat.herokuapp.com/forum/projets/lalter-marche-ou-marche-en-monnaies-alternatives"> Altermarché : reporté</a></li>
+						<li class="list-group-item"><a href="{% url 'blog:lireArticle' 'rencontres-permacat' %}">Rencontre mensuelle : à définir</a></li>
+						<li class="list-group-item"><a href="https://permacat.herokuapp.com/forum/projets/lalter-marche-ou-marche-en-monnaies-alternatives"> Altermarché : samedi 19 septembre à perpignan</a></li>
 					</ul>
 				</div>
 			</div>
@@ -129,8 +129,8 @@
   </div>
     <ul class="list-group list-group-flush textcenter card2">
         <li class="list-group-item"><a href="{% url 'blog:index' %}">Voir les articles</a> </li>
-		<li class="list-group-item"><a href="{% url 'agora_general' %}">Accéder au salon de discussion général</a></li>
-		<li class="list-group-item"><a href="{% url 'agora_general' %}">Accéder à vos conversations privées</a></li>
+		<li class="list-group-item"><a href="{% url 'agora' asso='public'%}">Accéder au salon de discussion général</a></li>
+		<li class="list-group-item"><a href="{% url 'conversations' %}">Accéder à vos conversations privées</a></li>
 	</ul>
 </div>
 
@@ -141,7 +141,7 @@
     <ul class="list-group list-group-flush textcenter card3">
         <li class="list-group-item"><a href="{% url 'blog:index_projets' %}">Les projets de l'association</a> </li>
 		<li class="list-group-item"><a href="{% url 'ateliers:acceuil' %}">Les ateliers collectifs</a></li>
-		<li class="list-group-item"><a href="{% url 'carte_permacat' %}">La carte des adhérents</a></li>
+		<li class="list-group-item"><a href="{% url 'carte' asso='permacat' %}">La carte des adhérents</a></li>
 	</ul>
 </div>
 

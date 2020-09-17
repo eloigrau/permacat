@@ -107,7 +107,7 @@
                         <td> {{ user.site_web }}</td>
                     </tr>
                   {% endif %}
-            {%if request.user.is_permacat or request.user == user %}
+            {%if request.user.adherent_permacat or request.user == user %}
                   {% if user.avatar %}
                     <tr>
                         <td style="width:250px">Avatar *: </td>
@@ -115,32 +115,37 @@
                     </tr>
                   {% endif %}
 
-
                     <tr>
                         <td style="width:250px">Savoir-faire *:</td>
                         <td>{{ user.competences|safe }}</td>
                     </tr>
                     <tr>
-                        <td style="width:250px">Statut Permacat *:</td>
-                        <td>{{user.statutMembre_str}}</td>
+                        <td style="width:250px">Adhérent Permacat *:</td>
+                        <td>{{user.adherent_permacat|translateOuiNon}}</td>
                     </tr>
-                  {% comment %}
                     <tr>
-                        <td style="width:250px">Statut RameneTaGraine *:</td>
-                        <td>{{user.statutMembre_rtg_str}}</td>
+                        <td style="width:250px">Adhérent RameneTaGraine *:</td>
+                        <td>{{user.adherent_rtg|translateOuiNon}}</td>
                     </tr>
-                  {% endcomment %}
+                    <tr>
+                        <td style="width:250px">Adhérent Animaux Mieux Etre *:</td>
+                        <td>{{user.adherent_ame|translateOuiNon}}</td>
+                    </tr>
             {% endif %}
         {% endif %}
       {% if request.user == user %}
-                <tr>
-                    <td style="width:200px">Inscrit à la newsletter : </td>
-                    <td>{{user.inscrit_newsletter|translateOuiNon }}
-                </tr>
-                <tr>
-                    <td style="width:200px">Inscrit aux jardins partagés : </td>
-                    <td>{{user.is_jardinpartage|translateOuiNon }}
-                </tr>
+        <tr>
+            <td style="width:200px">Inscrit à la newsletter : </td>
+            <td>{{user.inscrit_newsletter|translateOuiNon }}
+        </tr>
+        <tr>
+            <td style="width:200px">Inscrit aux jardins partagés : </td>
+            <td>{{user.is_jardinpartage|translateOuiNon }}
+        </tr>
+        <tr>
+            <td style="width:200px">J'apparais dans l'annuaire et mes coordonnées sont visibles : </td>
+            <td>{{user.accepter_annuaire|translateOuiNon }}
+        </tr>
         {% endif %}
       </tbody>
     </table>
@@ -204,12 +209,12 @@
 
     </tbody>
     </table>
-      <small> {% if  request.user == user %}Les champs notés par un ^ ne sont visibles que par vous et l'administrateur du site. {%endif%}Les champs notés par un * ne sont visibles que par les membres "permacat"</small>
+      <small> {% if  request.user == user %}Les champs notés par un ^ ne sont visibles que par vous et l'administrateur du site. {%endif%}Les champs notés par un * ne sont visibles que par les membres du collectif concerné</small>
   </div>
 
   <div class="col-md-6">
 
-  {% if request.user.is_permacat %}
+  {% if request.user.adherent_permacat %}
               <style>
 
             .leaflet-container {  /* all maps */

@@ -26,8 +26,8 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="navbar-nav">
 <li class="nav-item dropdown">
-                            <a class="nav-item dropdown-toggle" href="#" id="navbarDropdownCategorie" data-toggle="dropdown">
-                                 <button type="button" class="btn  btn-primary" >
+                            <a class="nav-item " href="#" id="navbarDropdownCategorie" data-toggle="dropdown">
+                                 <button type="button" class="btn  btn-primary dropdown-toggle" >
                                 {% if request.GET.categorie  %}
       Catégorie : {{categorie_courante}}
       {%elif request.GET.permacat %}
@@ -55,9 +55,9 @@
 
 
                 <li class="nav-item dropdown">
-                      <a class="nav-item dropdown-toggle btn-block" href="#" id="menuOrdreTri" data-toggle="dropdown">
+                      <a class="nav-item " href="#" id="menuOrdreTri" data-toggle="dropdown">
 
-                <button class="btn btn-light">
+                <button class="btn btn-light dropdown-toggle">
                    Trier par...
            </button>
                       </a>
@@ -122,7 +122,4 @@
 </div>
 {%include 'pagination.html' %}
 
-    {%if not request.user.is_permacat %}
-<p><small>(vous n'avez pas encore accès aux articles "Permacat"... Rejoignez-nous !)</small></p>
-    {%endif%}
 {% endblock %}

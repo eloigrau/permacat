@@ -60,8 +60,8 @@
 <div class="contenu article">
 <div class="row " >
 	<div class="col-sm-6">
-            <span class="badge {% if projet.estPublic%}badge-warning{%else%} badge-success {%endif%}">
-                Projet {%if projet.estPublic%}  public {%else%}  permacat  {%endif%}
+            <span class="badge {% if projet.estPublic%}badge-success{%else%}  badge-warning{%endif%}">
+                Projet {{projet.asso}}
             </span>
 
             {% if article.estArchive%}
@@ -178,7 +178,7 @@
 					</td>
 				</tr>
                     {% endif %}
-                    {%if request.user.is_permacat%}
+                    {%if request.user.adherent_permacat%}
                         {% if projet.lien_vote%}
                         <tr>
                             <td class="nomProprieteProduit">

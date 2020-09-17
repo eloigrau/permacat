@@ -47,29 +47,29 @@
             <ul class="nav navbar-nav justify-content-center ">
 
                 <li class="nav-item dropdown">
-        <a href="{% url 'blog:index' %}">
-            <button class="btn btn-block {% if typeFiltre == 'aucun' %}btn-primary {%endif%}">Tout </button>
-        </a>
-   </li>
+                    <a href="{% url 'blog:index' %}">
+                        <button class="btn btn-block {% if typeFiltre == 'aucun' %}btn-primary {%endif%}">Tout </button>
+                    </a>
+                </li>
                 <li class="nav-item dropdown">
-        <a href="?archives=True">
-            <button class="btn btn-block {% if typeFiltre == 'archives' %}btn-primary{%else%}btn-light {%endif%}">Archives </button>
-        </a>
-            </li>
+                <a href="?archives=True">
+                    <button class="btn btn-block {% if typeFiltre == 'archives' %}btn-primary{%else%}btn-light {%endif%}">Archives </button>
+                </a>
+                </li>
                 <li class="nav-item dropdown">
-             <button type="button" class="btn btn-block {% if request.GET.auteur %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-               data-target = "#idAuteur">
-                {% if request.GET.auteur %} Auteur: {{request.GET.auteur}} {%else%}Auteur{%endif%}
-                </button>
-            <div class="dropdown-menu"  aria-labelledby="menuAuteur"  id=idAuteur">
-                {% for auteur in auteur_list %}
-                  <a class="dropdown-item" href="?auteur={{auteur}}">{{auteur}}</a>
-                {% endfor %}
-            </div>
-            </li>
+                 <button type="button" class="btn btn-block {% if request.GET.auteur %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                   data-target = "#idAuteur">
+                    {% if request.GET.auteur %} Auteur: {{request.GET.auteur}} {%else%}Auteur{%endif%}
+                    </button>
+                <div class="dropdown-menu"  aria-labelledby="menuAuteur"  id=idAuteur">
+                    {% for auteur in auteur_list %}
+                      <a class="dropdown-item" href="?auteur={{auteur}}">{{auteur}}</a>
+                    {% endfor %}
+                </div>
+                </li>
 
 
-        {% if request.user.is_permacat %}
+        {% if request.user.adherent_permacat %}
 
                 <li class="nav-item dropdown">
              <button type="button" class="btn btn-block {% if request.GET.permacat %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -124,7 +124,7 @@
             </a>
 </div>
 </div>
-    {%if not request.user.is_permacat %}
+    {%if not request.user.adherent_permacat %}
 <p class='textcenter'><small>(vous n'avez pas encore accès aux articles 'Permacat'... Rejoignez-nous !)</small></p>
     {%endif%}
 {%endblock%}

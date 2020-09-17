@@ -1,5 +1,6 @@
 from django.db import models
-from bourseLibre.models import Profil, Suivis
+from bourseLibre.models import Profil, Suivis, Asso
+from bourseLibre.constantes import Choix as Constantes
 from django.urls import reverse
 from django.utils import timezone
 from django.core.mail import send_mass_mail, mail_admins
@@ -7,8 +8,10 @@ from actstream import action
 from actstream.models import followers
 from bourseLibre.settings import SERVER_EMAIL, LOCALL
 
+
 class Choix():
     statut_projet = ('prop','Proposition de projet'), ("AGO","Fiche projet soumise à l'AGO"), ('vote','Soumis au vote'), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
+
     type_projet = ('Part','Participation à un évènement'), ('AGO',"Organisation d'une AGO"), ('Projlong','Projet a long terme'), ('Projcourt','Projet a court terme'), ('Projponct','Projet ponctuel'),
     type_annonce = ('Altermarché','Altermarché'), ('Annonce','Annonce'), ('Administratif','Administratif'), ('Agenda','Agenda'),  ('Chantier','Chantier participatif'),\
                    ('Documentation','Documentation'), ('Ecovillage', 'Ecovillage'), \
@@ -62,6 +65,8 @@ class Article(models.Model):
     estPublic = models.BooleanField(default=False, verbose_name='Public ou réservé aux membres permacat')
     estModifiable = models.BooleanField(default=False, verbose_name="Modifiable par n'importe qui")
 
+    asso = models.ForeignKey(Asso, on_delete=models.SET_NULL, null=True)
+
     date_dernierMessage = models.DateTimeField(verbose_name="Date du dernier message", auto_now=False, default=timezone.now)
     dernierMessage = models.CharField(max_length=100, default=None, blank=True, null=True)
     estArchive = models.BooleanField(default=False, verbose_name="Archiver l'article")
@@ -87,14 +92,14 @@ class Article(models.Model):
                 suivi, created = Suivis.objects.get_or_create(nom_suivi='articles')
                 titre = "Nouvel article"
                 message = "Un article a été posté dans le forum : '<a href='https://permacat.herokuapp.com" + self.get_absolute_url() +"'>" + self.titre + "</a>'"
-                emails = [suiv.email for suiv in followers(suivi) if self.auteur != suiv and (self.estPublic or suiv.is_permacat)]
+                emails = [suiv.email for suiv in followers(suivi) if self.auteur != suiv and self.est_autorise(suiv)]
                 if emails and not LOCALL:
                     creation = True
         else:
             if sendMail:
                 titre = "Article actualisé"
                 message = "L'article '<a href='https://permacat.herokuapp.com" + self.get_absolute_url() +"'>" + self.titre + "</a>' a été modifié"
-                emails = [suiv.email for suiv in followers(self) if self.auteur != suiv and (self.estPublic or suiv.is_permacat)]
+                emails = [suiv.email for suiv in followers(self) if self.auteur != suiv and self.est_autorise(suiv)]
 
         retour =  super(Article, self).save(*args, **kwargs)
         if emails:
@@ -108,6 +113,17 @@ class Article(models.Model):
         except:
             return Choix.couleurs_annonces["Autre"]
 
+    def est_autorise(self, user):
+        if self.asso.id == 1:
+            return True
+        elif self.asso.id == 2:
+            return user.adherent_permacat
+        elif self.asso.id == 3:
+            return user.adherent_rtg
+        elif self.asso.id == 4:
+            return user.adherent_ame
+        else:
+            return False
 
 class Evenement(models.Model):
     titre = models.CharField(verbose_name="Titre de l'événement (si laissé vide, ce sera le titre de l'article)",
@@ -131,7 +147,7 @@ class Evenement(models.Model):
 
     @property
     def estPublic(self):
-        return self.article.estPublic
+        return self.article.asso.id == 1
 
 class Commentaire(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE)
@@ -158,7 +174,7 @@ class Commentaire(models.Model):
             titre = "Article commenté"
             message = self.auteur_comm.username + " a commenté l'article '<a href='https://permacat.herokuapp.com" + self.article.get_absolute_url() + "'>" + self.article.titre + "</a>'"
             emails = [suiv.email for suiv in followers(self.article) if
-                      self.auteur_comm != suiv and (self.article.estPublic or suiv.is_permacat)]
+                      self.auteur_comm != suiv and self.est_autorise(suiv)]
 
         retour =  super(Commentaire, self).save(*args, **kwargs)
         if emails:
@@ -192,6 +208,7 @@ class Projet(models.Model):
     end_time = models.DateTimeField(verbose_name="Date de fin (optionnel, pour affichage dans l'agenda)",  null=True,blank=True, help_text="jj/mm/année")
 
     estArchive = models.BooleanField(default=False, verbose_name="Archiver le projet")
+    asso = models.ForeignKey(Asso, on_delete=models.SET_NULL, null=True)
 
     class Meta:
         ordering = ('-date_creation', )
@@ -210,14 +227,14 @@ class Projet(models.Model):
             titre = "Nouveau Projet !"
             message = "Un nouveau projet a été proposé: '<a href='https://permacat.herokuapp.com" + self.get_absolute_url() + "'>" + self.titre + "</a>'"
             suivi, created = Suivis.objects.get_or_create(nom_suivi='projets')
-            emails = [suiv.email for suiv in followers(suivi) if self.auteur != suiv  and (self.estPublic or suiv.is_permacat)]
+            emails = [suiv.email for suiv in followers(suivi) if self.auteur != suiv  and self.est_autorise(suiv)]
 
         else:
             if sendMail:
                 titre = "Projet actualisé"
                 message = "Le projet '<a href='https://permacat.herokuapp.com" + self.get_absolute_url() + "'>" + self.titre + "</a>' a été modifié"
                 emails = [suiv.email for suiv in followers(self) if
-                          self.auteur != suiv and (self.estPublic or suiv.is_permacat)]
+                          self.auteur != suiv and self.est_autorise(suiv)]
 
         retour = super(Projet, self).save(*args, **kwargs)
         if emails:
@@ -231,6 +248,17 @@ class Projet(models.Model):
         except:
             return Choix.couleurs_annonces["Autre"]
 
+    def est_autorise(self, user):
+        if self.asso.id == 1:
+            return True
+        elif self.asso.id == 2:
+            return user.adherent_permacat
+        elif self.asso.id == 3:
+            return user.adherent_rtg
+        elif self.asso.id == 4:
+            return user.adherent_ame
+        else:
+            return False
 
 class CommentaireProjet(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE)
@@ -244,6 +272,8 @@ class CommentaireProjet(models.Model):
     def __str__(self):
         return "(" + str(self.id) + ") "+ str(self.auteur_comm) + ": " + str(self.projet)
 
+    def get_absolute_url(self):
+        return self.projet.get_absolute_url()
 
     @property
     def get_edit_url(self):
@@ -255,7 +285,7 @@ class CommentaireProjet(models.Model):
         if not self.id:
             titre = "[Permacat] Projet commenté"
             message = self.auteur_comm.username + " a commenté le projet '<a href='https://permacat.herokuapp.com" + self.projet.get_absolute_url() + "'>" + self.projet.titre + "</a>'"
-            emails = [suiv.email for suiv in followers(self.projet) if self.auteur_comm != suiv and (self.projet.estPublic or suiv.is_permacat)]
+            emails = [suiv.email for suiv in followers(self.projet) if self.auteur_comm != suiv and self.est_autorise(suiv)]
 
         retour =  super(CommentaireProjet, self).save(*args, **kwargs)
         if emails:

@@ -66,8 +66,8 @@
 {% endblock %}
 {% block content %}
      <div class="boxitem_droite">
-                <span class="badge {% if article.estPublic%}badge-warning{%else%} badge-success {%endif%}">
-                Article {%if article.estPublic%} public {%else%}  permacat  {%endif%}
+                <span class="badge {% if article.estPublic%}badge-success{%else%} badge-warning {%endif%}">
+                Article {{ article.asso }}
             </span>
             {% if article.estArchive%}
             <span class="badge badge-secondary">
@@ -103,7 +103,7 @@
               </a>
         {% endif %}
 
-        {%if article.auteur == request.user or article.estPublic or request.user.is_permacat %}
+        {%if article.auteur == request.user or article.estPublic or request.user.adherent_permacat %}
             <button type="button" class="btn" data-toggle="modal" data-target="#dates">
              </h5 class="textcenter">{% fontawesome_icon 'calendar' %} Dates {%if article.start_time %}supplémentaires{%endif%}</h5>
             </button>

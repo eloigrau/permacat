@@ -53,7 +53,7 @@
                 </div>
             </li>
 
-        {% if request.user.is_permacat %}
+        {% if request.user.adherent_permacat %}
                 <li class="nav-item dropdown">
              <button type="button" class="btn  btn-block {% if request.GET.permacat %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                data-target = "#idPermacat">
@@ -103,7 +103,7 @@
                 </a>
 </div>
 </div>
-    {%if not request.user.is_permacat %}
+    {%if not request.user.adherent_permacat %}
 <p><small>(vous n'avez pas encore accès aux projets "Permacat"... Rejoignez-nous !)</small></p>
     {%endif%}
 </div>

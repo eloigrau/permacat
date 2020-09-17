@@ -7,8 +7,8 @@
         <div class="card-header">
         <h4 >
             {{ projet.titre }}</h4>
-        <span class="badge {% if projet.estPublic%}badge-warning{%else%} badge-success {%endif%}" data-toggle="tooltip" data-placement="bottom" title="Projet {%if projet.estPublic%}visible par tous les inscrits{%else%}visible par les membres de Permacat seulement{%endif%}">
-                Projet {%if projet.estPublic%} public{%else%}  Permacat  {%endif%}
+        <span class="badge {% if projet.estPublic%}badge-success{%else%} badge-warning {%endif%}" data-toggle="tooltip" data-placement="bottom" title="Projet {%if projet.estPublic%}visible par tous les inscrits{%else%}visible par les membres de Permacat seulement{%endif%}">
+                Projet {{ projet.asso }}
             </span>
         </div>
         <h6 class="card-subtitle mb-2 text-muted">

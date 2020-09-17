@@ -162,3 +162,5 @@ class CommentaireFiche(models.Model):
     def __str__(self):
         return "(" + str(self.id) + ") "+ str(self.auteur_comm) + ": " + str(self.fiche)
 
+    def get_absolute_url(self):
+        return self.commentaire.get_absolute_url()

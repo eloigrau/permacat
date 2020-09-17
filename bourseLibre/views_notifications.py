@@ -18,21 +18,39 @@ from django.core import mail
 @login_required
 def getNotifications(request, nbNotif=10, orderBy="-timestamp"):
     tampon = nbNotif * 5
+    salons = Action.objects.filter(Q(verb='envoi_salon_Public'))
+    articles = Action.objects.filter(Q(verb='article_nouveau_Public') | Q(verb='article_message_Public') | Q(verb='article_modifier_Public')).order_by(orderBy)
+    projets = Action.objects.filter(Q(verb='projet_nouveau_Public') | Q(verb='projet_message_Public') | Q(verb='projet_modifier_Public')).order_by(orderBy)
+    offres = Action.objects.filter(Q(verb='ajout_offre_Public')).order_by(orderBy)
+    suffrages = Action.objects.filter(Q(verb='suffrage_ajout_Public')).order_by(orderBy)
 
-    if request.user.is_permacat:
-        salons      = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_permacat')).order_by(orderBy)[:tampon]
-        articles    = Action.objects.filter(Q(verb__startswith='article')).order_by(orderBy)[:tampon]
-        projets     = Action.objects.filter(Q(verb__startswith='projet')).order_by(orderBy)[:tampon]
-        offres      = Action.objects.filter(Q(verb='ajout_offre') | Q(verb='ajout_offre_permacat')).order_by(orderBy)[:tampon]
-        suffrages   = Action.objects.filter(Q(verb='suffrage_ajout') | Q(verb='suffrage_ajout_permacat')).order_by(orderBy)[:tampon]
-    else:
-        salons      = Action.objects.filter(Q(verb='envoi_salon')).order_by(orderBy)[:tampon]
-        articles    = Action.objects.filter(Q(verb='article_nouveau') | Q(verb='article_message')| Q(verb='article_modifier')).order_by(orderBy)[:tampon]
-        projets     = Action.objects.filter(Q(verb='projet_nouveau') | Q(verb='projet_message')| Q(verb='projet_modifier')).order_by(orderBy)[:tampon]
-        offres      = Action.objects.filter(Q(verb='ajout_offre')).order_by(orderBy)[:tampon]
-        suffrages   = Action.objects.filter(Q(verb='suffrage_ajout')).order_by(orderBy)[:tampon]
+    if request.user.adherent_permacat:
+        salons     = salons | Action.objects.filter(Q(verb__startswith='envoi_salon') & Q(verb__icontains='Permacat'))
+        articles   = articles | Action.objects.filter(Q(verb__startswith='article') & Q(verb__icontains='Permacat'))
+        projets    = projets | Action.objects.filter(Q(verb__startswith='projet') & Q(verb__icontains='Permacat'))
+        offres     = offres | Action.objects.filter(Q(verb__startswith='ajout_offre') & Q(verb__icontains='Permacat'))
+        suffrages  = suffrages | Action.objects.filter(Q(verb__startswith='suffrage_ajout') & Q(verb__icontains='Permacat'))
 
-    #fiches = Action.objects.filter(Q(verb='fiche_nouveau')|Q(verb='fiche_ajouter_atelier')|Q(verb='fiche_modifier')|Q(verb='fiche_atelier_modifier')|Q(verb='fiche_message'))[:tampon]
+    if request.user.adherent_rtg:
+        salons     = salons | Action.objects.filter(Q(verb__startswith='envoi_salon') & Q(verb__icontains='Ramene ta graine'))
+        articles   = articles | Action.objects.filter(Q(verb__startswith='article') & Q(verb__icontains='Ramene ta graine'))
+        projets    = projets | Action.objects.filter(Q(verb__startswith='projet') & Q(verb__icontains='Ramene ta graine'))
+        offres     = offres | Action.objects.filter(Q(verb__startswith='ajout_offre') & Q(verb__icontains='Ramene ta graine'))
+        suffrages  = suffrages | Action.objects.filter(Q(verb__startswith='suffrage_ajout') & Q(verb__icontains='Ramene ta graine'))
+
+    if request.user.adherent_ame:
+        salons     = salons | Action.objects.filter(Q(verb__startswith='envoi_salon') & Q(verb__icontains='Animal Mieux Etre'))
+        articles   = articles | Action.objects.filter(Q(verb__startswith='article') & Q(verb__icontains='Animal Mieux Etre'))
+        projets    = projets | Action.objects.filter(Q(verb__startswith='projet') & Q(verb__icontains='Animal Mieux Etre'))
+        offres     = offres | Action.objects.filter(Q(verb__startswith='ajout_offre') & Q(verb__icontains='Animal Mieux Etre'))
+        suffrages  = suffrages | Action.objects.filter(Q(verb__startswith='suffrage_ajout') & Q(verb__icontains='Animal Mieux Etre'))
+
+    salons = salons.distinct().order_by(orderBy)[:tampon]
+    articles = articles.distinct().order_by(orderBy)[:tampon]
+    projets = projets.distinct().order_by(orderBy)[:tampon]
+    offres = offres.distinct().order_by(orderBy)[:tampon]
+    suffrages = suffrages.distinct().order_by(orderBy)[:tampon]
+
     fiches = Action.objects.filter(verb__startswith='fiche').order_by(orderBy)[:tampon]
     ateliers = Action.objects.filter(Q(verb__startswith='atelier')|Q(verb='')).order_by(orderBy)[:tampon]
     conversations = (any_stream(request.user).filter(Q(verb='envoi_salon_prive', )) | Action.objects.filter(
@@ -52,25 +70,19 @@ def getNotifications(request, nbNotif=10, orderBy="-timestamp"):
 
 @login_required
 def getNotificationsParDate(request, limiter=True, orderBy="-timestamp"):
-    if request.user.is_permacat:
-        actions      = Action.objects.filter( \
-            Q(verb='envoi_salon')| Q(verb='envoi_salon_permacat')|
-            Q(verb__startswith='article')|Q(verb__startswith='projet')|
+    actions = Action.objects.filter( \
+            Q(verb='envoi_salon')| Q(verb__icontains='public')|
             Q(verb__startswith='fiche')|Q(verb__startswith='atelier')|
             Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)|
-            Q(verb__startswith='inscription')|Q(verb='suffrage_ajout') |Q(verb='suffrage_ajout_permacat') \
-        ).order_by(orderBy)
-    else:
-        actions      = Action.objects.filter(Q(verb='envoi_salon')|
-                                             Q(verb='article_nouveau') | Q(verb='article_message')|
-                                             Q(verb='article_modifier')|Q(verb='projet_nouveau') |
-                                             Q(verb='projet_message')| Q(verb='projet_modifier')|
-                                             Q(verb='ajout_offre')|Q(verb__startswith='fiche')|
-                                             Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)|
-                                             Q(verb__startswith='inscription') | Q(verb='suffrage_ajout') |\
-                                             Q(verb__startswith='atelier')|Q(verb__startswith='inscript') |
-                                             Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)
-        ).order_by(orderBy)
+            Q(verb__startswith='inscription'))
+    if request.user.adherent_permacat:
+        actions = actions | Action.objects.filter(Q(verb__icontains='Permacat'))
+    if request.user.adherent_rtg:
+        actions = actions | Action.objects.filter(Q(verb__icontains='Ramene ta graine'))
+    if request.user.adherent_ame:
+        actions = actions | Action.objects.filter(Q(verb__icontains='Animal Mieux Etre'))
+
+    actions = actions.distinct().order_by(orderBy)
 
     if limiter:
         actions=actions[:100]
@@ -207,7 +219,7 @@ def getInfosJourPrecedent(request, nombreDeJours):
     timestamp_from = datetime.now().date() - timedelta(days=nombreDeJours)
     timestamp_to = datetime.now().date() - timedelta(days=nombreDeJours - 1)
 
-    if request.user.is_permacat:
+    if request.user.adherent_permacat:
         articles    = Action.objects.filter(Q(verb='article_nouveau_permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) | Q(verb='article_nouveau',timestamp__gte = timestamp_from, timestamp__lte = timestamp_to,))
         projets     = Action.objects.filter(Q(verb='projet_nouveau_permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) |Q(verb='projet_nouveau', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,))
         offres      = Action.objects.filter(Q(verb='ajout_offre', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) | Q(verb='ajout_offre_permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,))

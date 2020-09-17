@@ -6,8 +6,8 @@
       <div class="article-card-header smallcaps_h ">{{ article.get_categorie_display }}</div>
   <div class="card-body">
       <h4 class="btn-cat">{{ article.titre }}</h4>
-    <span class="badge {% if article.estPublic%}badge-warning{%else%} badge-success {%endif%}" data-toggle="tooltip" data-placement="bottom" title="Article {%if article.estPublic%}visible par tous les inscrits{%else%}visible par les membres de Permacat seulement{%endif%}">
-         {%if article.estPublic%} Public{%else%}  Permacat  {%endif%}
+    <span class="badge {% if article.estPublic%}badge-success{%else%} badge-warning{%endif%}" data-toggle="tooltip" data-placement="bottom" title="Article {%if article.estPublic%}visible par tous les inscrits{%else%}visible par les membres de {{ article.asso }} seulement{%endif%}">
+         {{ article.asso }}
     </span>
     {% if request.user|is_following:article %}
     <span class="badge btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous recevez des notifications concernant cet article par mail">

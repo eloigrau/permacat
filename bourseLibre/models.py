@@ -25,55 +25,8 @@ from datetime import date
 
 from django.dispatch import receiver
 from django.db.models.signals import post_save
-
-from django.core.mail import send_mass_mail
-from bourseLibre.settings import SERVER_EMAIL, LOCALL
-
-DEGTORAD=3.141592654/180
-
-class Choix():
-    #couleurs = {'aliment':'#D8C457','vegetal':'#4CAF47','service':'#BE373A','objet':'#5B4694'}
-    #couleurs = {'aliment':'#80B2C0','vegetal':'#A9CB52','service':'#E66562','objet':'#D8AD57'}
-    couleurs = {'aliment':'#e6f2ff','vegetal':'#e6ffe6','service':'#ffe6e6','objet':'#ffffe6'}
-    typePrixUnite =  (('kg', 'kg'), ('100g', '100g'), ('10g', '10g'),('g', 'g'),  ('un', 'unité'), ('li', 'litre'))
-
-    choix = {
-    'aliment': {
-        'souscategorie': ('legumes', 'fruits', 'aromates', 'champignons', 'boisson', 'herbes', 'condiments', 'viande', 'poisson', 'boulangerie', 'patisserie', 'autre'),
-        #'etat': (('frais', 'frais'), ('sec', 'sec'), ('conserve', 'conserve')),
-        'type_prix': typePrixUnite,
-    },
-    'vegetal': {
-        'souscategorie': ('plantes', 'graines', 'fleurs', 'jeunes plants', 'purins', 'autre', ),
-        #'etat': (('frais', 'frais'), ('séché', 'séché')),
-        'type_prix': typePrixUnite,
-    },
-    'service': {
-        'souscategorie': ('jardinage',  'éducation', 'santé', 'bricolage', 'informatique', 'hebergement','cuisine','batiment', 'mécanique', 'autre'),
-        #'etat': (('excellent', 'excellent'), ('bon', 'bon'), ('moyen', 'moyen'), ('naze', 'naze')),
-        'type_prix': (('h', 'heure'), ('un', 'unité')),
-    },
-    'objet': {
-        'souscategorie': ('jardinage', 'outillage', 'vehicule', 'multimedia', 'mobilier','construction','instrument','autre'),
-        #'etat': (('excellent', 'excellent'), ('bon', 'bon'), ('moyen', 'moyen'), ('mauvais', 'mauvais')),
-        'type_prix': typePrixUnite,
-    },
-    }
-    monnaies = (('don', 'don'), ('troc', 'troc'), ('pret', 'prêt'), ('G1', 'G1'), ('Soudaqui', 'Soudaqui'), ('SEL', 'SEL'), ('JEU', 'JEU'),  ('HE', 'heureEntraide'),  ('Autre', 'A négocier'))
-    monnaies_nonquantifiables =['don', 'troc', 'pret', 'SEl', 'Autre']
-
-    ordreTri = ['date', 'categorie', 'producteur']
-    distances = ['5', '10', '20', '30', '50', '100']
-
-    statut_adhesion = (('', '-----------'),
-                     (0, _("Je souhaite devenir membre de l'association 'PermaCat' et utiliser le site")),
-                    (1, _("Je souhaite utiliser le site, mais ne pas devenir membre de l'association Permacat")),
-                    (2, _("Je suis déjà membre de l'association Permacat")))
-
-    statut_adhesion_rtg = (('', '-----------'),
-                     (0, _("Je souhaite devenir membre de l'association 'Ramene Ta Graine' et utiliser le site")),
-                    (1, _("Je souhaite utiliser le site, mais ne pas devenir membre de l'association RTG")),
-                    (2, _("Je suis déjà membre de l'association Ramene Ta Graine")))
+from .constantes import Choix, DEGTORAD
+#from blog.models import Article
 
 def get_categorie_from_subcat(subcat):
     for type_produit, dico in Choix.choix.items():
@@ -142,6 +95,41 @@ class Adresse(models.Model):
         return str(self.longitude).replace(",",".")
 
 
+class Asso(models.Model):
+    nom = models.CharField(max_length=100)
+    abreviation = models.CharField(max_length=10)
+    email = models.EmailField(null=True)
+    date_inscription = models.DateTimeField(verbose_name="Date d'inscription", editable=False, auto_now_add=True)
+
+    def __unicode__(self):
+        return self.__str()
+
+    def __str__(self):
+        return str(self.nom)
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.date_inscription = now()
+        return super(Asso, self).save(*args, **kwargs)
+
+    def is_membre(self, user):
+        if self.nom == "permacat" and not user.adherent_permacat:
+            return False
+        elif self.nom == "rtg" and not user.adherent_rtg:
+            return False
+        elif self.nom == "ame" and not user.adherent_ame:
+            return False
+        return True
+
+    def getProfils(self):
+        if self.nom == "permacat":
+            return Profil.objects.filter(adherent_permacat=True)
+        elif self.nom == "rtg":
+            return Profil.objects.filter(adherent_rtg=True)
+        elif self.nom == "ame":
+            return Profil.objects.filter(adherent_ame=True)
+
 class Profil(AbstractUser):
     username_validator = ASCIIUsernameValidator()
     site_web = models.URLField(null=True, blank=True)
@@ -159,6 +147,9 @@ class Profil(AbstractUser):
     statut_adhesion = models.IntegerField(choices=Choix.statut_adhesion, default="0")
     statut_adhesion_rtg = models.IntegerField(choices=Choix.statut_adhesion_rtg, default="0")
     cotisation_a_jour = models.BooleanField(verbose_name="Cotisation à jour", default=False)
+    adherent_permacat = models.BooleanField(verbose_name="Je suis adhérent de Permacat", default=False)
+    adherent_rtg = models.BooleanField(verbose_name="Je suis adhérent de Ramene Ta Graine", default=False)
+    adherent_ame = models.BooleanField(verbose_name="Je suis adhérent de Animaux Mieux Etre", default=False)
     accepter_conditions = models.BooleanField(verbose_name="J'ai lu et j'accepte les conditions d'utilisation du site", default=False, null=False)
     accepter_annuaire = models.BooleanField(verbose_name="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous", default=True)
     is_jardinpartage = models.BooleanField(verbose_name="Je suis intéressé.e par les jardins partagés", default=False)
@@ -201,6 +192,15 @@ class Profil(AbstractUser):
         return self.statut_adhesion
 
     @property
+    def statutMembre_asso(self, asso):
+        if asso == "permacat":
+            return self.adherent_permacat
+        elif asso == "rtg":
+            return self.adherent_rtg
+        elif asso == "ame":
+            return self.adherent_ame
+
+    @property
     def statutMembre_str(self):
         if self.statut_adhesion == 0:
             return "souhaite devenir membre de l'association"
@@ -210,8 +210,38 @@ class Profil(AbstractUser):
             return "membre actif"
 
     @property
+    def statutMembre_str_asso(self, asso):
+        if asso == "permacat":
+            if self.adherent_permacat:
+                return "membre actif de Permacat"
+            else:
+                return "Non membre de Permacat"
+        elif asso == "rtg":
+            if self.adherent_rtg:
+                return "membre actif de 'Ramene Ta Graine'"
+            else:
+                return "Non membre de 'Ramene Ta Graine'"
+        if asso == "ame":
+            if self.adherent_ame:
+                return "membre actif de 'Animaux Mieux Etre'"
+            else:
+                return "Non membre de 'Animaux Mieux Etre'"
+
+    def estMembre_str(self, nom_asso):
+        if nom_asso == "Public":
+            return True
+        elif nom_asso == "Permacat" and self.adherent_permacat:
+            return True
+        elif self.adherent_rtg and (nom_asso == "RTG" or nom_asso == "Ramene Ta Graine" ):
+            return True
+        elif self.adherent_ame and (nom_asso == "Animal Mieux Etre" or nom_asso == "AME" ):
+            return True
+        else:
+            return False
+
+    @property
     def statutMembre_rtg(self):
-        return self.statut_adhesion_rtg
+        return self.adherent_rtg
 
     @property
     def statutMembre_rtg_str(self):
@@ -221,17 +251,16 @@ class Profil(AbstractUser):
             return "ne souhaite pas devenir membre"
         elif self.statut_adhesion_rtg == 2:
             return "membre actif"
-    @property
-    def is_permacat(self):
-        if self.statut_adhesion == 2:
-            return True
-        else:
-            return False
 
-    @property
-    def is_rtg(self):
-        if self.statut_adhesion_rtg == 2:
+    def est_autorise(self, user):
+        if self.asso.id == 1:
             return True
+        elif self.asso.id == 2:
+            return user.adherent_permacat
+        elif self.asso.id == 3:
+            return user.adherent_rtg
+        elif self.asso.id == 4:
+            return user.adherent_ame
         else:
             return False
 
@@ -291,7 +320,7 @@ class Produit(models.Model):  # , BaseProduct):
 
     estUneOffre = models.BooleanField(default=True, verbose_name='Offre (cochez) ou Demande (décochez)')
     estPublique = models.BooleanField(default=False, verbose_name='Publique (cochez) ou Interne (décochez) [réservé aux membres permacat]')
-
+    asso = models.ForeignKey(Asso, on_delete=models.SET_NULL, null=True)
     objects = InheritanceManager()
 
     @property
@@ -316,7 +345,7 @@ class Produit(models.Model):  # , BaseProduct):
             suivi, cree = Suivis.objects.get_or_create(nom_suivi='produits')
             titre = "[Permacat] nouveau produit"
             emails = [suiv.email for suiv in followers(suivi) if
-                      self.user != suiv and (self.estPublique or suiv.is_permacat)]
+                      self.user != suiv and self.est_autorise(suiv)]
 
         retour = super(Produit, self).save(*args, **kwargs)
 
@@ -361,6 +390,23 @@ class Produit(models.Model):  # , BaseProduct):
 
     def get_message_demande(self):
         return "[A propos de l'annonce de '" + self.nom_produit + "']: "
+
+    def est_autorise(self, user):
+        if self.asso.id == 1:
+            return True
+        elif self.asso.id == 2:
+            return user.adherent_permacat
+        elif self.asso.id == 3:
+            return user.adherent_rtg
+        elif self.asso.id == 4:
+            return user.adherent_ame
+        else:
+            return False
+
+    @property
+    def est_public(self):
+        return self.asso.id == 1
+
 
 class Produit_aliment(Produit):  # , BaseProduct):
     type = 'aliment'
@@ -834,6 +880,7 @@ class MessageGeneral(models.Model):
     message = models.TextField(null=False, blank=False)
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
     date_creation = models.DateTimeField(auto_now_add=True)
+    asso = models.ForeignKey(Asso, on_delete=models.SET_NULL, null=True)
 
     def __unicode__(self):
         return self.__str__()
@@ -843,57 +890,12 @@ class MessageGeneral(models.Model):
 
     @property
     def get_edit_url(self):
-        return reverse('modifierMessage',  kwargs={'id':self.id, 'type':'general'})
+        return reverse('modifierMessage',  kwargs={'id':self.id, 'type':'agora', 'asso':self.asso.abreviation})
 
     @property
     def get_absolute_url(self):
-        return  reverse('agora_general')
+        return  reverse('agora', kwargs={'asso':self.asso.abreviation})
 
-#
-# def mg_handler(sender, instance, created, **kwargs):
-#     action.send(instance, verb='envoi')
-#
-# post_save.connect(mg_handler, sender=MessageGeneral)
-
-class MessageGeneralPermacat(models.Model):
-    message = models.TextField(null=False, blank=False)
-    auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
-    date_creation = models.DateTimeField(auto_now_add=True)
-
-    def __unicode__(self):
-        return self.__str__()
-
-    def __str__(self):
-        return "(" + str(self.id) + ") " + str(self.auteur) + " " + str(self.date_creation)
-
-
-    @property
-    def get_edit_url(self):
-        return reverse('modifierMessage',  kwargs={'id':self.id, 'type':'permacat'})
-
-    @property
-    def get_absolute_url(self):
-        return  reverse('agora_permacat')
-
-
-class MessageGeneralRTG(models.Model):
-    message = models.TextField(null=False, blank=False)
-    auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
-    date_creation = models.DateTimeField(auto_now_add=True)
-
-    def __unicode__(self):
-        return self.__str__()
-
-    def __str__(self):
-        return "(" + str(self.id) + ") " + str(self.auteur) + " " + str(self.date_creation)
-
-    @property
-    def get_edit_url(self):
-        return reverse('modifierMessage',  kwargs={'id':self.id, 'type':'rtg'})
-
-    @property
-    def get_absolute_url(self):
-        return  reverse('agora_rtg')
 
 class Suivis(models.Model):
     nom_suivi = models.TextField(null=False, blank=False)
@@ -920,3 +922,15 @@ class InscriptionNewsletter(models.Model):
         if not self.id:
             self.date_inscription = now()
         return super(InscriptionNewsletter, self).save(*args, **kwargs)
+
+
+
+    # def getArticles(self):
+    #     if self.nom == "public":
+    #         return Article.objects.filter(asso="0")
+    #     if self.nom == "permacat":
+    #         return Article.objects.filter(asso="1")
+    #     elif self.nom == "rtg":
+    #         return Article.objects.filter(asso="2")
+    #     elif self.nom == "ame":
+    #         return Article.objects.filter(asso="3")

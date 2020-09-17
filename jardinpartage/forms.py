@@ -1,5 +1,6 @@
 from django import forms
 from .models import Article, Commentaire, Evenement, Participation
+from bourseLibre.models import Asso
 from django.utils.text import slugify
 import itertools
 #from django.utils.formats import localize
@@ -67,18 +68,14 @@ class SummernoteWidgetWithCustomToolbar(SummernoteWidget):
         return summernote_settings
 
 class ArticleForm(forms.ModelForm):
-   # contenu = TinyMCE(attrs={'cols': 80, 'rows': 20})
-    estPublic = forms.ChoiceField(choices=((1, "Article public"), (0, "Article Permacat")), label='', required=True, )
 
     class Meta:
         model = Article
-        fields = ['categorie', 'titre', 'contenu', 'start_time', 'end_time', 'estPublic', 'estModifiable']
+        fields = ['jardin', 'categorie', 'titre', 'contenu', 'start_time', 'end_time', 'estModifiable']
         widgets = {
             'contenu': SummernoteWidget(),
               'start_time': forms.DateInput(attrs={'type': 'date'}),
               'end_time': forms.DateInput(attrs={'type': 'date'}),
-
-           # 'bar': SummernoteInplaceWidget(),
         }
 
     def save(self, userProfile, sendMail=True):
@@ -95,40 +92,24 @@ class ArticleForm(forms.ModelForm):
             instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
 
         instance.auteur = userProfile
-        if not userProfile.is_permacat:
-            instance.estPublic = True
 
         instance.save(sendMail)
 
         return instance
 
 
-    def __init__(self, request, *args, **kwargs):
-        super(ArticleForm, self).__init__(request, *args, **kwargs)
-        self.fields['contenu'].strip = False
-
-
 class ArticleChangeForm(forms.ModelForm):
-    estPublic = forms.ChoiceField(choices=((1, "Article public"), (0, "Article réservé aux adhérents")), label='', required=True)
 
     class Meta:
         model = Article
-        fields = ['categorie', 'titre', 'contenu', 'start_time', 'end_time', 'estPublic', 'estModifiable', 'estArchive']
+        fields = ['jardin', 'categorie', 'titre', 'contenu', 'start_time', 'end_time', 'estModifiable', 'estArchive']
         widgets = {
             'contenu': SummernoteWidget(),
               'start_time': forms.DateInput(attrs={'class':"date", }),
               'end_time': forms.DateInput(attrs={'class':'date', }),
         }
 
-
-    def __init__(self, *args, **kwargs):
-        super(ArticleChangeForm, self).__init__(*args, **kwargs)
-        self.fields['contenu'].strip = False
-        self.fields["estPublic"].choices=((1, "Article public"), (0, "Article réservé aux adhérents")) if kwargs['instance'].estPublic else ((0, "Article réservé aux adhérents"),(1, "Article public"), )
-
-
 class CommentaireArticleForm(forms.ModelForm):
-    #commentaire = TinyMCE(attrs={'cols': 1, 'rows': 1, 'height':10 })
 
     class Meta:
         model = Commentaire

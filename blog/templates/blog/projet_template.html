@@ -8,7 +8,7 @@
         <h4>
             {{ projet.titre }}</h4>
         <span class="badge {% if projet.estPublic%}badge-warning{%else%} badge-success {%endif%}" data-toggle="tooltip" data-placement="bottom" title="Projet {%if projet.estPublic%}visible par tous les inscrits{%else%}visible par les membres de Permacat seulement{%endif%}">
-                {%if projet.estPublic%} Public{%else%}  Permacat  {%endif%}
+                Projet {{projet.asso}}
             </span>
             {% if request.user|is_following:projet %}
             <span class="badge btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous recevez des notifications concernant ce projet par mail">

@@ -1,5 +1,5 @@
 from django.db import models
-from bourseLibre.models import Profil, Suivis
+from bourseLibre.models import Profil, Suivis, Asso
 from django.urls import reverse
 from django.utils import timezone
 from django.core.mail import send_mass_mail, mail_admins
@@ -15,6 +15,7 @@ class Choix():
                   ('Agenda','Agenda'), ("todo", "A faire"), \
                    ('Documentation','Documentation'),  \
                  ('Autre','Autre'),
+    jardins_ptg = ('0', 'Jardi Per Tots'), ('1', 'JardiPal')
     couleurs_annonces = {
        # 'Annonce':"#e0f7de", 'Administratif':"#dcc0de", 'Agenda':"#d4d1de", 'Entraide':"#cebacf",
        # 'Chantier':"#d1ecdc",'Jardinage':"#fcf6bd", 'Recette':"#d0f4de", 'Bricolage':"#fff2a0",
@@ -51,6 +52,9 @@ class Article(models.Model):
     categorie = models.CharField(max_length=30,         
         choices=(Choix.type_annonce),
         default='Discu', verbose_name="categorie")
+    jardin = models.CharField(max_length=30,
+        choices=(Choix.jardins_ptg),
+        default='0', verbose_name="Jardin")
     titre = models.CharField(max_length=100,)
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='auteur_article_jardin')
     slug = models.SlugField(max_length=100)
@@ -88,14 +92,14 @@ class Article(models.Model):
                 titre = "Nouvel article Jardins"
                 message = "Nouvel article aux Jardins Partagés: '<a href='https://permacat.herokuapp.com" + self.get_absolute_url() +"'>" + self.titre + "</a>'"
                 emails = [suiv.email for suiv in followers(suivi) if
-                          self.auteur != suiv and (self.estPublic or suiv.is_permacat)]
+                          self.auteur != suiv and self.est_autorise(suiv)]
         else:
             if sendMail:
                 titre = "Article actualisé Jardins"
                 message = "L'article '<a href='https://permacat.herokuapp.com" + self.get_absolute_url() +"'>" + self.titre + "</a>' des Jardins Partagés a été modifié "
 
                 emails = [suiv.email for suiv in followers(self) if
-                          self.auteur != suiv and (self.estPublic or suiv.is_permacat)]
+                          self.auteur != suiv and self.est_autorise(suiv)]
 
         retour =  super(Article, self).save(*args, **kwargs)
         if emails:
@@ -108,6 +112,18 @@ class Article(models.Model):
             return Choix.couleurs_annonces[self.categorie]
         except:
             return Choix.couleurs_annonces["Autre"]
+
+    def est_autorise(self, user):
+        if self.asso.id == 1:
+            return True
+        elif self.asso.id == 2:
+            return user.adherent_permacat
+        elif self.asso.id == 3:
+            return user.adherent_rtg
+        elif self.asso.id == 4:
+            return user.adherent_ame
+        else:
+            return False
 
 class Evenement(models.Model):
     titre = models.CharField(verbose_name="Titre de l'événement (si laissé vide, ce sera le titre de l'article)",
@@ -130,15 +146,18 @@ class Evenement(models.Model):
             return self.article.titre
         return self.titre
 
-    @property
-    def estPublic(self):
-        return self.article.estPublic
+    # @property
+    # def estPublic(self):
+    #     return self.article.asso.id == 1
 
 class Commentaire(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='auteur_comm_jardin')
     commentaire = models.TextField()
     article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='article_jardin')
     date_creation = models.DateTimeField(auto_now_add=True)
+
+    def get_absolute_url(self):
+        return self.article.get_absolute_url()
 
     class Meta:
         db_table = 'commentaire_jardin'
@@ -163,7 +182,7 @@ class Commentaire(models.Model):
             self.date_creation = timezone.now()
             titre = "article jardins commenté "
             message = self.auteur_comm.username + " a commenté l'article (Jardins Partagés) '<a href='https://permacat.herokuapp.com"+ self.article.get_absolute_url() + "'>"+ self.article.titre + "</a>'"
-            emails = [suiv.email for suiv in followers(self.article) if self.auteur_comm != suiv and (self.article.estPublic or suiv.is_permacat)]
+            emails = [suiv.email for suiv in followers(self.article) if self.auteur_comm != suiv and self.article.est_autorise(suiv)]
 
         retour =  super(Commentaire, self).save(*args, **kwargs)
         if emails:

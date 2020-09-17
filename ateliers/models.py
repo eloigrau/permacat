@@ -1,5 +1,5 @@
 from django.db import models
-from bourseLibre.models import Profil, Suivis
+from bourseLibre.models import Profil, Suivis, Asso
 from django.urls import reverse
 from django.utils import timezone
 from taggit.managers import TaggableManager
@@ -63,6 +63,7 @@ class Atelier(models.Model):
     dernierMessage = models.CharField(max_length=100, default=None, blank=True, null=True, help_text="Heure prévue (hh:mm)")
     duree_prevue = models.TimeField(verbose_name="Durée prévue", help_text="Durée de l'atelier estimée", default="02:00", blank=True, null=True)
     tarif_par_personne = models.CharField(max_length=30, default='gratuit', help_text="Tarif de l'atelier par personne", verbose_name="Tarif de l'atelier par personne", )
+    asso = models.ForeignKey(Asso, on_delete=models.SET_NULL, null=True)
 
     class Meta:
         ordering = ('-date_creation', )
@@ -112,6 +113,9 @@ class CommentaireAtelier(models.Model):
     def get_edit_url(self):
         return reverse('ateliers:modifierCommentaireAtelier',  kwargs={'id':self.id})
 
+
+    def get_absolute_url(self):
+        return self.atelier.get_absolute_url()
 
 class InscriptionAtelier(models.Model):
     user = models.ForeignKey(Profil, on_delete=models.CASCADE)

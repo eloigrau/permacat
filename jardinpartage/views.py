@@ -10,7 +10,7 @@ from django.views.generic import ListView, UpdateView, DeleteView
 from actstream import actions, action
 from actstream.models import followers, following, action_object_stream
 from django.utils.timezone import now
-from bourseLibre.models import Profil
+from bourseLibre.models import Profil, Asso
 
 #from django.contrib.contenttypes.models import ContentType
 from bourseLibre.models import Suivis
@@ -36,11 +36,11 @@ def accueil(request):
 @user_passes_test(is_inscrit, login_url='/jardins/accepter_participation')
 def ajouterArticle(request):
     try:
-        form = ArticleForm(request.POST or None)
+        form = ArticleForm(request, request.POST or None)
         if form.is_valid():
             article = form.save(request.user)
             url = article.get_absolute_url()
-            suffix = "" if article.estPublic else "_permacat"
+            suffix = "_" + article.asso.nom
             action.send(request.user, verb='article_nouveau'+suffix, action_object=article, url=url,
                         description="a ajouté un article : (Jardins Partagés) '%s'" % article.titre, type="article_jardin_partage")
             return redirect(article.get_absolute_url())
@@ -65,10 +65,10 @@ class ModifierArticle(UpdateView):
         self.object.date_modification = now()
         self.object.save()
         url = self.object.get_absolute_url()
-        suffix = "_permacat" if not self.object.estPublic else ""
+        suffix = "_" + self.object.asso.nom
         action.send(self.request.user, verb='article_modifier'+suffix, action_object=self.object, url=url,
                      description="a modifié l'article : (Jardins Partagés) '%s'" % self.object.titre)
-        #envoi_emails_articleouprojet_modifie(self.object, "L'article " +  self.object.titre + "a été modifié")
+
         return HttpResponseRedirect(self.get_success_url())
 
 
@@ -87,8 +87,8 @@ class SupprimerArticle(DeleteView):
 @user_passes_test(is_inscrit, login_url='/jardins/accepter_participation')
 def lireArticle(request, slug):
     article = get_object_or_404(Article, slug=slug)
-    if not article.estPublic and not request.user.is_permacat:
-        return render(request, 'notPermacat.html',)
+    if not article.est_autorise(request.user):
+        return render(request, 'notMembre.html', {'asso':article.asso})
 
     commentaires = Commentaire.objects.filter(article=article).order_by("date_creation")
     dates = Evenement.objects.filter(article=article).order_by("start_time")
@@ -106,7 +106,7 @@ def lireArticle(request, slug):
             article.save(sendMail=False)
             comment.save()
             url = article.get_absolute_url()+"#idConversation"
-            suffix = "_permacat" if not article.estPublic else ""
+            suffix = "_" + article.asso.nom
             action.send(request.user, verb='article_message'+suffix, action_object=article, url=url,
                         description="a réagi à l'article: (Jardins Partagés) '%s'" % article.titre, type="article_jardin_partage")
             #envoi_emails_articleouprojet_modifie(article, request.user.username + " a réagit à l'article: " +  article.titre)
@@ -140,14 +140,21 @@ class ListeArticles(UserPassesTestMixin, ListView):
         else:
             qs = Article.objects.filter(estArchive=False)
 
-        if not self.request.user.is_authenticated or not self.request.user.is_permacat:
-            qs = qs.filter(estPublic=True)
+        if not self.request.user.is_authenticated:
+            qs = qs.filter(asso__id=1)
+        else:
+            if not self.request.user.adherent_permacat:
+                qs = qs.exclude(asso__id=2)
+            if not self.request.user.adherent_rtg:
+                qs = qs.exclude(asso__id=3)
+            if not self.request.user.adherent_ame:
+                qs = qs.exclude(asso__id=4)
 
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])
         if "categorie" in params:
             qs = qs.filter(categorie=params['categorie'])
-        if "permacat" in params  and self.request.user.is_permacat:
+        if "permacat" in params  and self.request.user.adherent_permacat:
             if params['permacat'] == "True":
                 qs = qs.filter(estPublic=False)
             else:

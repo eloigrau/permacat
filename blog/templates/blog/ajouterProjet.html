@@ -22,7 +22,7 @@
 </form>
 
         <script type="text/javascript">
-        {% if not request.user.is_permacat %}
+        {% if not request.user.adherent_permacat %}
                var isPublic = document.getElementById('id_estPublic').style.visibility = "hidden";
         {%endif%}
     </script>

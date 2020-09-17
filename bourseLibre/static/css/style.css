@@ -22,6 +22,15 @@ h1, h2, h3, h4, h5, h6 {
  font-family: 'Playfair Display', serif;
  font-weight: 700;
 }
+.textaide{
+ font-family: 'Chivo', sans-serif;
+font : normal;
+    font-family : inherit;
+    font-size : medium;
+    font-style : normal;
+    font-variant : normal;
+    font-weight : normal;
+}
 .clearfix:after {
   clear: both;
   content: " ";

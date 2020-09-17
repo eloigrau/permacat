@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect, reverse
 from django.urls import reverse_lazy
 from django.utils.html import strip_tags
-from .models import Article, Commentaire, Projet, CommentaireProjet, Choix, Evenement
+from .models import Article, Commentaire, Projet, CommentaireProjet, Choix, Evenement,Asso
 from .forms import ArticleForm, CommentaireArticleForm, CommentaireArticleChangeForm, ArticleChangeForm, ProjetForm, \
     ProjetChangeForm, CommentProjetForm, CommentaireProjetChangeForm, EvenementForm, EvenementArticleForm
 from django.contrib.auth.decorators import login_required
@@ -11,7 +11,9 @@ from actstream import actions, action
 from actstream.models import followers, following, action_object_stream
 from django.utils.timezone import now
 from bourseLibre.models import Suivis
+from bourseLibre.views import testIsMembreAsso
 from django.views.decorators.csrf import csrf_exempt
+
 
 # @login_required
 # def forum(request):
@@ -25,18 +27,15 @@ def accueil(request):
 
 @login_required
 def ajouterArticle(request):
-    try:
-        form = ArticleForm(request.POST or None)
-        if form.is_valid():
-            article = form.save(request.user)
-            url = article.get_absolute_url()
-            suffix = "" if article.estPublic else "_permacat"
-            action.send(request.user, verb='article_nouveau'+suffix, action_object=article, url=url,
-                        description="a ajouté un article : '%s'" % article.titre)
-            return redirect(article.get_absolute_url())
-            #return render(request, 'blog/lireArticle.html', {'article': article})
-    except Exception as inst:
-        print(inst)
+    form = ArticleForm(request, request.POST or None)
+    if form.is_valid():
+        article = form.save(request.user)
+        url = article.get_absolute_url()
+        suffix = "_" + article.asso.nom
+        action.send(request.user, verb='article_nouveau'+suffix, action_object=article, url=url,
+                    description="a ajouté un article : '%s'" % article.titre)
+        return redirect(article.get_absolute_url())
+
     return render(request, 'blog/ajouterPost.html', { "form": form, })
 
 
@@ -55,12 +54,17 @@ class ModifierArticle(UpdateView):
         self.object.date_modification = now()
         self.object.save(sendMail=False)
         url = self.object.get_absolute_url()
-        suffix = "_permacat" if not self.object.estPublic else ""
+        suffix = "_" + self.object.asso.nom
         action.send(self.request.user, verb='article_modifier'+suffix, action_object=self.object, url=url,
                      description="a modifié l'article: '%s'" % self.object.titre)
         #envoi_emails_articleouprojet_modifie(self.object, "L'article " +  self.object.titre + "a été modifié", True)
         return HttpResponseRedirect(self.get_success_url())
 
+    def get_form(self,*args, **kwargs):
+        form = super(ModifierArticle, self).get_form(*args, **kwargs)
+        form.fields["asso"].choices = [(i+1, x.nom) for i, x in enumerate(Asso.objects.all()) if self.request.user.estMembre_str(x.nom)]
+
+        return form
 
 class SupprimerArticle(DeleteView):
     model = Article
@@ -76,8 +80,9 @@ class SupprimerArticle(DeleteView):
 @login_required
 def lireArticle(request, slug):
     article = get_object_or_404(Article, slug=slug)
-    if not article.estPublic and not request.user.is_permacat:
-        return render(request, 'notPermacat.html',)
+
+    if not article.est_autorise(request.user):
+        return render(request, 'notMembre.html', {"asso": str(article.asso)})
 
     commentaires = Commentaire.objects.filter(article=article).order_by("date_creation")
     dates = Evenement.objects.filter(article=article).order_by("start_time")
@@ -95,7 +100,7 @@ def lireArticle(request, slug):
             article.save(sendMail=False)
             comment.save()
             url = article.get_absolute_url()+"#idConversation"
-            suffix = "_permacat" if not article.estPublic else ""
+            suffix = "_" + article.asso.nom
             action.send(request.user, verb='article_message'+suffix, action_object=article, url=url,
                         description="a réagi à l'article: '%s'" % article.titre)
             #envoi_emails_articleouprojet_modifie(article, request.user.username + " a réagit au projet: " +  article.titre, True)
@@ -123,14 +128,21 @@ class ListeArticles(ListView):
         else:
             qs = Article.objects.filter(estArchive=False)
 
-        if not self.request.user.is_authenticated or not self.request.user.is_permacat:
-            qs = qs.filter(estPublic=True)
+        if not self.request.user.is_authenticated:
+            qs = qs.filter(asso__nom="public")
+        else:
+            if not self.request.user.adherent_permacat:
+                qs = qs.exclude(asso__abreviation="pc")
+            if not self.request.user.adherent_rtg:
+                qs = qs.exclude(asso__abreviation="rtg")
+            if not self.request.user.adherent_ame:
+                qs = qs.exclude(asso__abreviation="ame")
 
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])
         if "categorie" in params:
             qs = qs.filter(categorie=params['categorie'])
-        if "permacat" in params  and self.request.user.is_permacat:
+        if "permacat" in params  and self.request.user.adherent_permacat:
             if params['permacat'] == "True":
                 qs = qs.filter(estPublic=False)
             else:
@@ -167,6 +179,84 @@ class ListeArticles(ListView):
                 context['categorie_courante'] = [x[1] for x in Choix.type_annonce if x[0] == self.request.GET['categorie']][0]
             except:
                 context['categorie_courante'] = ""
+
+        assos= Asso.objects.all()
+        context['asso_list'] = [(x.nom, x.abreviation) for x in assos]
+        if 'permacat' in self.request.GET:
+            context['typeFiltre'] = "permacat"
+        if 'archives' in self.request.GET:
+            context['typeFiltre'] = "archives"
+        if 'ordreTri' in self.request.GET:
+            context['typeFiltre'] = "ordreTri"
+        return context
+
+
+class ListeArticles_asso(ListView):
+    model = Article
+    context_object_name = "article_list"
+    template_name = "blog/index.html"
+    paginate_by = 30
+
+    def get_queryset(self):
+        params = dict(self.request.GET.items())
+        nom_asso = self.kwargs['asso']
+        asso = testIsMembreAsso(self.request, nom_asso)
+
+        if "archives" in params and params['archives']:
+            qs = Article.objects.filter(estArchive=True)
+        else:
+            qs = Article.objects.filter(estArchive=False)
+
+        qs = qs.filter(asso__abreviation=asso.abreviation)
+
+        if "auteur" in params:
+            qs = qs.filter(auteur__username=params['auteur'])
+        if "categorie" in params:
+            qs = qs.filter(categorie=params['categorie'])
+        if "permacat" in params  and self.request.user.adherent_permacat:
+            if params['permacat'] == "True":
+                qs = qs.filter(estPublic=False)
+            else:
+                qs = qs.filter(estPublic=True)
+
+        if "ordreTri" in params:
+            qs = qs.order_by(params['ordreTri'])
+        else:
+            qs = qs.order_by('-date_dernierMessage', '-date_creation', 'categorie', 'auteur')
+
+        return qs
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+
+        # context['producteur_list'] = Profil.objects.values_list('username', flat=True).distinct()
+        context['auteur_list'] = Article.objects.order_by('auteur').values_list('auteur__username', flat=True).distinct()
+        cat= Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
+        context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
+        assos= Asso.objects.all()
+        nom_asso = self.kwargs['asso']
+        asso = testIsMembreAsso(self.request, nom_asso)
+        context['asso_list'] = [(x.nom, x.abreviation) for x in assos]
+        context['asso_courante'] = asso
+        context['typeFiltre'] = "aucun"
+        context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="articles")
+
+        context['ordreTriPossibles'] = {
+                                           "date de création":'-date_creation',
+                                           "date de la dernière modification":'-date_modification',
+                                            "titre": 'titre' }
+
+        if 'auteur' in self.request.GET:
+            context['typeFiltre'] = "auteur"
+        if 'categorie' in self.request.GET:
+            context['typeFiltre'] = "categorie"
+            try:
+                context['categorie_courante'] = [x[1] for x in Choix.type_annonce if x[0] == self.request.GET['categorie']][0]
+            except:
+                context['categorie_courante'] = ""
+
+
         if 'permacat' in self.request.GET:
             context['typeFiltre'] = "permacat"
         if 'archives' in self.request.GET:
@@ -195,7 +285,7 @@ def ajouterNouveauProjet(request):
             projet = form.save(request.user)
             url = projet.get_absolute_url()
 
-            suffix = "" if projet.estPublic else "_permacat"
+            suffix = "_" + projet.asso.nom
             action.send(request.user, verb='projet_nouveau'+suffix, action_object=projet, url=url,
                     description="a ajouté un projet : '%s'" % projet.titre)
             return redirect(url)
@@ -218,11 +308,16 @@ class ModifierProjet(UpdateView):
         self.object.date_modification = now()
         self.object.save()
         url = self.object.get_absolute_url()
-        suffix = "_permacat" if not self.object.estPublic else ""
+        suffix = "_" + self.object.asso.nom
         action.send(self.request.user, verb='projet_modifier'+suffix, action_object=self.object, url=url,
                      description="a modifié le projet: '%s'" % self.object.titre)
         #envoi_emails_articleouprojet_modifie(self.object, "Le projet " +  self.object.titre + "a été modifié", False)
         return HttpResponseRedirect(self.get_success_url())
+
+    def get_form(self,*args, **kwargs):
+        form = super(ModifierProjet, self).get_form(*args, **kwargs)
+        form.fields["asso"].choices = [(i+1, x.nom) for i, x in enumerate(Asso.objects.all()) if self.request.user.estMembre_str(x.nom)]
+        return form
 
 class SupprimerProjet(DeleteView):
     model = Projet
@@ -237,8 +332,8 @@ class SupprimerProjet(DeleteView):
 def lireProjet(request, slug):
     projet = get_object_or_404(Projet, slug=slug)
 
-    if not projet.estPublic and not request.user.is_permacat:
-        return render(request, 'notPermacat.html',)
+    if not projet.est_autorise(request.user):
+        return render(request, 'notMembre.html', {"asso":"Permacat"})
 
     commentaires = CommentaireProjet.objects.filter(projet=projet).order_by("date_creation")
     actions = action_object_stream(projet)
@@ -253,7 +348,7 @@ def lireProjet(request, slug):
         projet.save(sendMail=False)
         comment.save()
         url = projet.get_absolute_url()+"#idConversation"
-        suffix = "_permacat" if not projet.estPublic else ""
+        suffix = "_" + projet.asso.nom
         action.send(request.user, verb='projet_message'+suffix, action_object=projet, url=url,
                     description="a réagit au projet: '%s'" % projet.titre)
         #envoi_emails_articleouprojet_modifie(projet, request.user.username + " a réagit au projet: " +  projet.titre, False)
@@ -276,14 +371,21 @@ class ListeProjets(ListView):
         else:
             qs = Projet.objects.filter(estArchive=False)
 
-        if not self.request.user.is_authenticated or not self.request.user.is_permacat:
-            qs = qs.filter(estPublic=True)
+        if not self.request.user.is_authenticated:
+            qs = qs.filter(asso__id=1)
+        else:
+            if not self.request.user.adherent_permacat:
+                qs = qs.exclude(asso__id=2)
+            if not self.request.user.adherent_rtg:
+                qs = qs.exclude(asso__id=3)
+            if not self.request.user.adherent_ame:
+                qs = qs.exclude(asso__id=4)
 
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])
         if "categorie" in params:
             qs = qs.filter(categorie=params['categorie'])
-        if "permacat" in params and self.request.user.is_permacat:
+        if "permacat" in params and self.request.user.adherent_permacat:
             if params['permacat'] == "True":
                 qs = qs.filter(estPublic=False)
             else:

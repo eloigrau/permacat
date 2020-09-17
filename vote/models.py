@@ -1,5 +1,5 @@
 from django.db import models
-from bourseLibre.models import Profil
+from bourseLibre.models import Profil, Asso
 from django.urls import reverse
 from django.utils import timezone
 from actstream.models import followers
@@ -59,6 +59,7 @@ class Suffrage(models.Model):
 
     start_time = models.DateTimeField(verbose_name="Date de début", null=True,blank=False, help_text="jj/mm/année")
     end_time = models.DateTimeField(verbose_name="Date de fin",  null=True,blank=False, help_text="jj/mm/année")
+    asso = models.ForeignKey(Asso, on_delete=models.SET_NULL, null=True)
 
     class Meta:
         ordering = ('-date_creation', )
@@ -78,7 +79,7 @@ class Suffrage(models.Model):
             suivi, created = Suivis.objects.get_or_create(nom_suivi='suffrages')
             titre = "Nouveau vote"
             message = userProfile.username + " a lancé un nouveau vote: '<a href='https://permacat.herokuapp.com"+ self.get_absolute_url() + "'>"+ self.question + "</a>'"
-            emails = [suiv.email for suiv in followers(suivi) if userProfile != suiv and (self.estPublic or userProfile.is_permacat)]
+            emails = [suiv.email for suiv in followers(suivi) if userProfile != suiv and self.est_autorise(suiv)]
 
         retour = super(Suffrage, self).save(*args, **kwargs)
 
@@ -134,6 +135,18 @@ class Suffrage(models.Model):
     def get_couleur(self):
         return Choix.get_couleur(self.type_vote)
 
+    def est_autorise(self, user):
+        if self.asso.id == 1:
+            return True
+        elif self.asso.id == 2:
+            return user.adherent_permacat
+        elif self.asso.id == 3:
+            return user.adherent_rtg
+        elif self.asso.id == 4:
+            return user.adherent_ame
+        else:
+            return False
+
 class Vote(models.Model):
     choix = models.CharField(max_length=30,
         choices=(Choix.vote_ouinon),
@@ -165,3 +178,6 @@ class Commentaire(models.Model):
     @property
     def get_edit_url(self):
         return reverse('vote:modifierCommentaireSuffrage', kwargs={'id': self.id})
+
+    def get_absolute_url(self):
+        return self.suffrage.get_absolute_url()
