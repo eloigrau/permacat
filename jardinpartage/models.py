@@ -15,7 +15,7 @@ class Choix():
                   ('Agenda','Agenda'), ("todo", "A faire"), \
                    ('Documentation','Documentation'),  \
                  ('Autre','Autre'),
-    jardins_ptg = ('0', 'Jardi Per Tots'), ('1', 'JardiPal')
+    jardins_ptg = ('0', 'Tous les jardins'),('1', 'Jardi Per Tots'), ('1', 'JardiPal')
     couleurs_annonces = {
        # 'Annonce':"#e0f7de", 'Administratif':"#dcc0de", 'Agenda':"#d4d1de", 'Entraide':"#cebacf",
        # 'Chantier':"#d1ecdc",'Jardinage':"#fcf6bd", 'Recette':"#d0f4de", 'Bricolage':"#fff2a0",
@@ -114,16 +114,7 @@ class Article(models.Model):
             return Choix.couleurs_annonces["Autre"]
 
     def est_autorise(self, user):
-        if self.asso.id == 1:
-            return True
-        elif self.asso.id == 2:
-            return user.adherent_permacat
-        elif self.asso.id == 3:
-            return user.adherent_rtg
-        elif self.asso.id == 4:
-            return user.adherent_ame
-        else:
-            return False
+        return True
 
 class Evenement(models.Model):
     titre = models.CharField(verbose_name="Titre de l'événement (si laissé vide, ce sera le titre de l'article)",

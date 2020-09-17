@@ -7,7 +7,7 @@
   <div class="card-body">
       <h4 class="btn-cat">{{ article.titre }}</h4>
     <span class="badge {% if article.estPublic%}badge-success{%else%} badge-warning {%endif%}" data-toggle="tooltip" data-placement="bottom" title="Article {%if article.estPublic%}visible par tous les inscrits{%else%}visible par les membres de {{ article.asso }}  seulement{%endif%}">
-         {{ article.asso }}
+         {{article.get_jardin_display }}
     </span>
     {% if request.user|is_following:article %}
     <span class="badge btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous recevez des notifications concernant cet article par mail">
