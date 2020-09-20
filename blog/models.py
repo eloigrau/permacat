@@ -174,12 +174,16 @@ class Commentaire(models.Model):
             titre = "Article commenté"
             message = self.auteur_comm.username + " a commenté l'article '<a href='https://permacat.herokuapp.com" + self.article.get_absolute_url() + "'>" + self.article.titre + "</a>'"
             emails = [suiv.email for suiv in followers(self.article) if
-                      self.auteur_comm != suiv and self.est_autorise(suiv)]
+                      self.auteur_comm != suiv and self.article.est_autorise(suiv)]
 
         retour =  super(Commentaire, self).save(*args, **kwargs)
         if emails:
             action.send(self, verb='emails', url=self.article.get_absolute_url(), titre=titre, message=message, emails=emails)
         return retour
+
+
+    def est_autorise(self, user):
+        return self.projet.est_autorise(user)
 
 class Projet(models.Model):
     categorie = models.CharField(max_length=10,
@@ -291,3 +295,7 @@ class CommentaireProjet(models.Model):
         if emails:
             action.send(self, verb='emails', url=self.projet.get_absolute_url(), titre=titre, message=message, emails=emails)
         return retour
+
+
+    def est_autorise(self, user):
+        return self.projet.est_autorise(user)

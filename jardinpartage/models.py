@@ -179,6 +179,9 @@ class Commentaire(models.Model):
         if emails:
             action.send(self, verb='emails', url=self.article.get_absolute_url(), titre=titre, message=message, emails=emails)
         return retour
-    
+
+    def est_autorise(self, user):
+        return self.article.est_autorise(user)
+
 class Participation(models.Model):
     participe = models.BooleanField(verbose_name="Je suis intéressé.e par les jardins partagés", default=False)
