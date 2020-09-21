@@ -143,7 +143,7 @@ urlpatterns = [
 
 
     url(r'^inscription_newsletter/$', views.inscription_newsletter, name='inscription_newsletter', ),
-    path(r'annuaire/<int:id>-<str:type>-<str:asso>', views.modifier_message, name='modifierMessage'),
+    path(r'modifier_message/<int:id>-<str:type_msg>-<str:asso>', views.modifier_message, name='modifierMessage'),
     url(r'^voirEmails/$', views_notifications.voirEmails,  name="voirEmails"),
     url(r'^envoyerEmailsRequete/$', views_notifications.envoyerEmailsRequete,  name="envoyerEmailsRequete"),
 ]

@@ -868,7 +868,7 @@ class Message(models.Model):
 
     @property
     def get_edit_url(self):
-        return reverse('modifierMessage',  kwargs={'id':self.id, 'type':'conversation'})
+        return reverse('modifierMessage',  kwargs={'id':self.id, 'type_msg':'conversation', 'asso':'convers'})
 
     @property
     def get_absolute_url(self):
@@ -890,7 +890,7 @@ class MessageGeneral(models.Model):
 
     @property
     def get_edit_url(self):
-        return reverse('modifierMessage',  kwargs={'id':self.id, 'type':'agora', 'asso':self.asso.abreviation})
+        return reverse('modifierMessage',  kwargs={'id':self.id, 'type_msg':'agora', 'asso':self.asso.abreviation})
 
     @property
     def get_absolute_url(self):

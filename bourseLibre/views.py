@@ -113,9 +113,10 @@ def testIsMembreAsso(request, asso):
     if assos:
         assos = assos[0]
 
-    if not assos.is_membre(request.user):
-         return render(request, 'notMembre.html', {'asso':assos } )
-    return assos
+        if not assos.is_membre(request.user):
+             return render(request, 'notMembre.html', {'asso':assos } )
+        return assos
+    return
 
 
 def presentation_site(request):
@@ -348,11 +349,11 @@ def adhesion_asso(request):
 @login_required
 def carte(request, asso):
     asso=testIsMembreAsso(request, asso)
-    if asso == "permacat":
+    if asso.abreviation == "pc":
         profils = Profil.objects.filter(adherent_permacat=True, accepter_annuaire=1)
-    elif asso == "rtg":
+    elif asso.abreviation == "rtg":
         profils = Profil.objects.filter(adherent_rtg=True, accepter_annuaire=1)
-    if asso == "permacat":
+    if asso.abreviation == "permacat":
         profils = Profil.objects.filter(adherent_ame=True, accepter_annuaire=1)
     elif asso == "public":
         profils = Profil.objects.filter(accepter_annuaire=1)
