@@ -99,7 +99,7 @@ def bienvenue(request):
     nbNotif = 0
     nbExpires = 0
     yesterday = date.today() - timedelta(hours=12)
-    evenements = EvenementAcceuil.objects.filter(date__gt=yesterday)
+    evenements = EvenementAcceuil.objects.filter(date__gt=yesterday).order_by('date')
     if request.user.is_authenticated:
         nbNotif = getNbNewNotifications(request)
         nbExpires = getNbProduits_expires(request)
