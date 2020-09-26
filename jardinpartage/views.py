@@ -64,9 +64,10 @@ class ModifierArticle(UpdateView):
         self.object = form.save()
         self.object.date_modification = now()
         self.object.save()
-        url = self.object.get_absolute_url()
-        action.send(self.request.user, verb='article_modifier', action_object=self.object, url=url,
-                     description="a modifié l'article : (Jardins Partagés) '%s'" % self.object.titre)
+        if not self.object.estArchive:
+            url = self.object.get_absolute_url()
+            action.send(self.request.user, verb='article_modifier', action_object=self.object, url=url,
+                         description="a modifié l'article : (Jardins Partagés) '%s'" % self.object.titre)
 
         return HttpResponseRedirect(self.get_success_url())
 
@@ -108,7 +109,7 @@ def lireArticle(request, slug):
             #suffix = "_" + article.asso.nom
             action.send(request.user, verb='article_message', action_object=article, url=url,
                         description="a réagi à l'article: (Jardins Partagés) '%s'" % article.titre, type="article_jardin_partage")
-            #envoi_emails_articleouprojet_modifie(article, request.user.username + " a réagit à l'article: " +  article.titre)
+                #envoi_emails_articleouprojet_modifie(article, request.user.username + " a réagit à l'article: " +  article.titre)
         return redirect(request.path)
 
     return render(request, 'jardinpartage/lireArticle.html', {'article': article, 'form': form, 'commentaires':commentaires, 'dates':dates, 'actions':actions},)

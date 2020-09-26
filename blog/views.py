@@ -53,10 +53,11 @@ class ModifierArticle(UpdateView):
         self.object = form.save()
         self.object.date_modification = now()
         self.object.save(sendMail=False)
-        url = self.object.get_absolute_url()
-        suffix = "_" + self.object.asso.nom
-        action.send(self.request.user, verb='article_modifier'+suffix, action_object=self.object, url=url,
-                     description="a modifié l'article: '%s'" % self.object.titre)
+        if not self.object.estArchive:
+            url = self.object.get_absolute_url()
+            suffix = "_" + self.object.asso.nom
+            action.send(self.request.user, verb='article_modifier'+suffix, action_object=self.object, url=url,
+                         description="a modifié l'article: '%s'" % self.object.titre)
         #envoi_emails_articleouprojet_modifie(self.object, "L'article " +  self.object.titre + "a été modifié", True)
         return HttpResponseRedirect(self.get_success_url())
 
@@ -307,10 +308,11 @@ class ModifierProjet(UpdateView):
         self.object = form.save()
         self.object.date_modification = now()
         self.object.save()
-        url = self.object.get_absolute_url()
-        suffix = "_" + self.object.asso.nom
-        action.send(self.request.user, verb='projet_modifier'+suffix, action_object=self.object, url=url,
-                     description="a modifié le projet: '%s'" % self.object.titre)
+        if not self.object.estArchive:
+            url = self.object.get_absolute_url()
+            suffix = "_" + self.object.asso.nom
+            action.send(self.request.user, verb='projet_modifier'+suffix, action_object=self.object, url=url,
+                         description="a modifié le projet: '%s'" % self.object.titre)
         #envoi_emails_articleouprojet_modifie(self.object, "Le projet " +  self.object.titre + "a été modifié", False)
         return HttpResponseRedirect(self.get_success_url())
 
