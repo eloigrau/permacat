@@ -279,7 +279,7 @@ class ListeArticles_asso(ListView):
 @login_required
 def ajouterNouveauProjet(request):
     if request.method == 'POST':
-        form = ProjetForm(request.POST, request.FILES)
+        form = ProjetForm(request, request.POST, request.FILES)
         if form.is_valid():
             # file is saved
             projet = form.save(request.user)
@@ -291,7 +291,7 @@ def ajouterNouveauProjet(request):
             return redirect(url)
 
     else:
-        form = ProjetForm(request.POST or None, request.FILES or None)
+        form = ProjetForm(request, request.POST or None, request.FILES or None, )
     return render(request, 'blog/ajouterProjet.html', { "form": form, })
 
 class ModifierProjet(UpdateView):

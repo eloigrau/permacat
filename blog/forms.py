@@ -155,7 +155,7 @@ class ProjetForm(forms.ModelForm):
         }
 
     def __init__(self, request, *args, **kwargs):
-        super(ProjetForm, self).__init__(request, *args, **kwargs)
+        super(ProjetForm, self).__init__(*args, **kwargs)
         self.fields['contenu'].strip = False
         self.fields["asso"].choices = [(i+1, x.nom) for i, x in enumerate(Asso.objects.all()) if request.user.estMembre_str(x.nom)]
 
