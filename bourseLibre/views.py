@@ -19,12 +19,12 @@ from django.urls import reverse_lazy, reverse
 from django.core.mail import mail_admins, send_mail, BadHeaderError, send_mass_mail
 from django_summernote.widgets import SummernoteWidget
 from random import choice
-from datetime import date
+from datetime import date, timedelta
 
 from django import forms
 from django.http import Http404
 
-from blog.models import Article, Projet
+from blog.models import Article, Projet, EvenementAcceuil
 from jardinpartage.models import Article as Article_jardin
 
 from django.contrib import messages
@@ -98,11 +98,13 @@ def bienvenue(request):
     nomImage = 'img/flo/resized0' +  choice(nums)+'.png'
     nbNotif = 0
     nbExpires = 0
+    yesterday = date.today() - timedelta(hours=12)
+    evenements = EvenementAcceuil.objects.filter(date__gt=yesterday)
     if request.user.is_authenticated:
         nbNotif = getNbNewNotifications(request)
         nbExpires = getNbProduits_expires(request)
 
-    return render(request, 'bienvenue.html', {'nomImage':nomImage, "nbNotif": nbNotif , "nbExpires":nbExpires})
+    return render(request, 'bienvenue.html', {'nomImage':nomImage, "nbNotif": nbNotif , "nbExpires":nbExpires, "evenements":evenements})
 
 
 def testIsMembreAsso(request, asso):

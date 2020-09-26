@@ -923,8 +923,6 @@ class InscriptionNewsletter(models.Model):
             self.date_inscription = now()
         return super(InscriptionNewsletter, self).save(*args, **kwargs)
 
-
-
     # def getArticles(self):
     #     if self.nom == "public":
     #         return Article.objects.filter(asso="0")
