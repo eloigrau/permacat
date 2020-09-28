@@ -158,17 +158,37 @@
     </div>
     {% endfor %}
     {% if list_archive %}
-        <h5 class="textcenter"> Archives </h5>
-    <hr>
+
+        <div class="textcenter">
+        <button id="btn-archives"  type="button" class="btn btn-lg" onclick="toggle_visibility('archives');" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour afficher les archives">
+            Afficher les archives
+        </button>
+        </div>
+        <hr>
+      <div id="archives" style='display:none;'>
         {% for article in list_archive %}
         <div class="infinite-item">
             {% include "blog/article_template.html" with article=article %}
         <hr>
         </div>
         {% endfor %}
-
+      </div>
     {% endif %}
 </div>
 {%include 'pagination.html' %}
 
+<script>
+    function toggle_visibility(id) {
+       var e = document.getElementById(id);
+       var btn = document.getElementById("btn-archives");
+       if(e.style.display == 'block'){
+          e.style.display = 'none';
+          btn.textContent = "Afficher les archives";
+      }
+       else{
+          e.style.display = 'block';
+          btn.textContent = "Cacher les archives";
+      }
+   }
+</script>
 {% endblock %}
