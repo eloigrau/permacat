@@ -118,6 +118,8 @@
     <hr>
     </div>
     {% endfor %}
+</div>
+{%include 'pagination.html' %}
 
     {% if list_archive %}
     <div class="textcenter">
@@ -135,8 +137,6 @@
           </div>
         {% endfor %}
     {% endif %}
-</div>
-{%include 'pagination.html' %}
 
 <script>
     function toggle_visibility(id) {

@@ -158,6 +158,8 @@
     </div>
     {% endfor %}
     {% if list_archive %}
+</div>
+{%include 'pagination.html' %}
 
         <div class="textcenter">
         <button id="btn-archives"  type="button" class="btn btn-lg" onclick="toggle_visibility('archives');" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour afficher les archives">
@@ -174,8 +176,6 @@
         {% endfor %}
       </div>
     {% endif %}
-</div>
-{%include 'pagination.html' %}
 
 <script>
     function toggle_visibility(id) {
