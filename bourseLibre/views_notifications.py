@@ -358,10 +358,9 @@ def send_mass_html_mail(datatuple, fail_silently=False, auth_user=None,
 
 def envoyerEmailsRequete(request):
     listeMails = getListeMailsAlerte()
-    nbMails = len(listeMails)
     send_mass_html_mail(listeMails, fail_silently=False)
     supprimerActionsEmails()
-    return redirect('voirEmails', {"nbMails":nbMails})
+    return redirect('voirEmails', )
 
 def envoyerEmails():
     listeMails = getListeMailsAlerte()

@@ -4,11 +4,16 @@
 <div class="card article_carte textcenter"  style="background-color:{{article.get_couleur}}">
   <a href="{% url 'blog:lireArticle' slug=article.slug %}">
       <div class="article-card-header smallcaps_h ">{{ article.get_categorie_display }}</div>
-  <div class="card-body">
+  <div class="card-body" {%if article.estArchive %} style="background-color:#e0e0d1;" {% endif %}>
       <h4 class="btn-cat">{{ article.titre }}</h4>
     <span class="badge {% if article.estPublic%}badge-success{%else%} badge-warning{%endif%}" data-toggle="tooltip" data-placement="bottom" title="Article {%if article.estPublic%}visible par tous les inscrits{%else%}visible par les membres de {{ article.asso }} seulement{%endif%}">
          {{ article.asso }}
     </span>
+      {%if article.estArchive %}
+    <span class="badge badge-secondary" data-toggle="tooltip" data-placement="bottom" title="Article archivé">
+         archivé
+    </span>
+      {% endif %}
     {% if request.user|is_following:article %}
     <span class="badge btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous recevez des notifications concernant cet article par mail">
          {% fontawesome_icon 'bell' %}
@@ -18,7 +23,7 @@
          {% fontawesome_icon 'bell-slash' %}
     </span>
     {% endif %}
-      <p class="textsmall "> {% if article.start_time %}
+      <p class="textsmall " > {% if article.start_time %}
           {% if article.end_time %}
           du {{ article.start_time|date:"DATE_FORMAT" }} au {{ article.end_time|date:"DATE_FORMAT" }}
           {%else%}

@@ -30,11 +30,6 @@
             <button class="btn btn-block {% if typeFiltre == 'aucun' %}btn-primary {%endif%}">Tout </button>
         </a>
    </li>
-    <li class="nav-item dropdown">
-        <a href="?archives=True">
-            <button class="btn btn-block {% if typeFiltre == 'archives' %}btn-primary{%else%}btn-light {%endif%}">Archives </button>
-        </a>
-   </li>
             <li class="nav-item dropdown">
                  <button type="button" class="btn btn-block {% if request.GET.auteur %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                    data-target = "#idAuteur">
@@ -122,9 +117,18 @@
             {% include "blog/projet_template.html" with projet=projet %}
     <hr>
     </div>
-    {% empty %}
-    <p>Aucun projet pour l'instant.</p>
     {% endfor %}
+
+    {% if list_archive %}
+        <h5 class="textcenter"> Archives </h5>
+    <hr>
+        {% for projet in list_archive %}
+        <div class="infinite-item">
+            {% include "blog/projet_template.html" with projet=projet %}
+        <hr>
+        </div>
+        {% endfor %}
+    {% endif %}
 </div>
 {%include 'pagination.html' %}
 

@@ -3,12 +3,12 @@
 {% load fontawesome %}
 <div class="card article_carte textcenter" style="background-color:{{projet.get_couleur}}">
   <a href="{% url 'blog:lireProjet' slug=projet.slug %}">
-      <div class="article-card-header smallcaps_h ">{{ projet.get_statut_display }}</div>
-  <div class="card-body">
+      <div class="article-card-header smallcaps_h ">{{ projet.get_categorie_display }}</div>
+  <div class="card-body" {%if projet.estArchive %} style="background-color:#e0e0d1;" {% endif %}>
         <h4>
             {{ projet.titre }}</h4>
         <span class="badge {% if projet.estPublic%}badge-warning{%else%} badge-success {%endif%}" data-toggle="tooltip" data-placement="bottom" title="Projet {%if projet.estPublic%}visible par tous les inscrits{%else%}visible par les membres de Permacat seulement{%endif%}">
-                Projet {{projet.asso}}
+                {{projet.asso}}
             </span>
             {% if request.user|is_following:projet %}
             <span class="badge btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous recevez des notifications concernant ce projet par mail">
@@ -19,7 +19,7 @@
                  {% fontawesome_icon 'bell-slash' %}
             </span>
             {% endif %}
-            <p class="text-muted textsmall">Catégorie: <em>{{ projet.get_categorie_display }}</em>, le {{ projet.date_creation|date:"DATE_FORMAT" }} {%ifnotequal  article.date_creation article.date_modification %} (modifié le  {{ projet.date_modification|date:"DATE_FORMAT" }} {%endifnotequal%}</p>
+            <p class="text-muted textsmall">Statut : <em>{{ projet.get_statut_display }}</em>, le {{ projet.date_creation|date:"DATE_FORMAT" }} {%ifnotequal  article.date_creation article.date_modification %} (modifié le  {{ projet.date_modification|date:"DATE_FORMAT" }} {%endifnotequal%}</p>
   </a>
 </div>
 </div>

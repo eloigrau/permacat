@@ -124,10 +124,7 @@ class ListeArticles(ListView):
     def get_queryset(self):
         params = dict(self.request.GET.items())
 
-        if "archives" in params and params['archives']:
-            qs = Article.objects.filter(estArchive=True)
-        else:
-            qs = Article.objects.filter(estArchive=False)
+        qs = Article.objects.all()
 
         if not self.request.user.is_authenticated:
             qs = qs.filter(asso__nom="public")
@@ -154,12 +151,14 @@ class ListeArticles(ListView):
         else:
             qs = qs.order_by('-date_creation', '-date_dernierMessage', 'categorie', 'auteur')
 
-        return qs
+        self.qs = qs
+        return qs.filter(estArchive=False)
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
 
+        context['list_archive'] = self.qs.filter(estArchive=True)
         # context['producteur_list'] = Profil.objects.values_list('username', flat=True).distinct()
         context['auteur_list'] = Article.objects.order_by('auteur').values_list('auteur__username', flat=True).distinct()
         cat= Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
@@ -203,10 +202,7 @@ class ListeArticles_asso(ListView):
         nom_asso = self.kwargs['asso']
         asso = testIsMembreAsso(self.request, nom_asso)
 
-        if "archives" in params and params['archives']:
-            qs = Article.objects.filter(estArchive=True)
-        else:
-            qs = Article.objects.filter(estArchive=False)
+        qs = Article.objects.all()
 
         qs = qs.filter(asso__abreviation=asso.abreviation)
 
@@ -225,12 +221,14 @@ class ListeArticles_asso(ListView):
         else:
             qs = qs.order_by('-date_creation', '-date_dernierMessage', 'categorie', 'auteur')
 
-        return qs
+        self.qs = qs
+        return qs.filter(estArchive=False)
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
 
+        context['list_archive'] = self.qs.filter(estArchive=True)
         # context['producteur_list'] = Profil.objects.values_list('username', flat=True).distinct()
         context['auteur_list'] = Article.objects.order_by('auteur').values_list('auteur__username', flat=True).distinct()
         cat= Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
@@ -365,13 +363,9 @@ class ListeProjets(ListView):
     paginate_by = 30
 
     def get_queryset(self):
-
         params = dict(self.request.GET.items())
 
-        if "archives" in params and params['archives']:
-            qs = Projet.objects.filter(estArchive=True)
-        else:
-            qs = Projet.objects.filter(estArchive=False)
+        qs = Projet.objects.all()
 
         if not self.request.user.is_authenticated:
             qs = qs.filter(asso__id=1)
@@ -398,15 +392,17 @@ class ListeProjets(ListView):
         else:
             qs = qs.order_by('-date_dernierMessage', '-date_creation', 'categorie', 'auteur')
 
-        return qs
+        self.qs = qs
+        return qs.filter(estArchive=False)
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
 
+        context['list_archive'] = self.qs.filter(estArchive=True)
         # context['producteur_list'] = Profil.objects.values_list('username', flat=True).distinct()
         context['auteur_list'] = Projet.objects.order_by('auteur').values_list('auteur__username', flat=True).distinct()
-        cat = Projet.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
+        cat = Projet.objects.all().order_by('categorie').values_list('categorie', flat=True).distinct()
         context['categorie_list'] = [x for x in Choix.type_projet if x[0] in cat]
         context['typeFiltre'] = "aucun"
 

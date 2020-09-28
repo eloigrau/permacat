@@ -27,7 +27,7 @@
                     <div class="modal-content">
                       <div class="modal-header">
                           <div class="row justify-content-center">
-                           <h5 > Qu'est ce que le forum permacat ?</h5>
+                           <h5 > Qu'est-ce que le forum permacat ?</h5>
                           </div>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
@@ -63,7 +63,7 @@
     </div>
     <div class="row justify-content-center">
             <a href="{% url 'blog:ajouterNouvelArticle' %}">
-            <button type="button" class="btn  btn-success" >
+                <button type="button" class="btn  btn-success" >
                     <i class="fa fa-plus"></i>&nbsp; Ajouter un article
                 </button>
             </a>&ensp;
@@ -120,9 +120,6 @@
             {% for categorie_id, cat_nom, cat_coul in categorie_list %}
             <a class=" dropdown-item " style="background:{{cat_coul}};" href="?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
             {% endfor %}
-    <div class="dropdown-divider"></div>
-                                                                <a class=" dropdown-item " style="background:grey;" href="?archives=True"><span>Archives</span></a>
-
 							</div>
 						</li>
 
@@ -156,11 +153,21 @@
 <div class="infinite-container">
     {% for article in article_list %}
     <div class="infinite-item">
-            {% include "blog/article_template.html" with article=article %}
+        {% include "blog/article_template.html" with article=article %}
     <hr>
     </div>
-
     {% endfor %}
+    {% if list_archive %}
+        <h5 class="textcenter"> Archives </h5>
+    <hr>
+        {% for article in list_archive %}
+        <div class="infinite-item">
+            {% include "blog/article_template.html" with article=article %}
+        <hr>
+        </div>
+        {% endfor %}
+
+    {% endif %}
 </div>
 {%include 'pagination.html' %}
 
