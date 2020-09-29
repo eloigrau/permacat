@@ -161,7 +161,7 @@ class ListeArticles(ListView):
         context['list_archive'] = self.qs.filter(estArchive=True)
         # context['producteur_list'] = Profil.objects.values_list('username', flat=True).distinct()
         context['auteur_list'] = Article.objects.order_by('auteur').values_list('auteur__username', flat=True).distinct()
-        cat= Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
+        cat= self.qs.order_by('categorie').values_list('categorie', flat=True).distinct()
         context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
         context['typeFiltre'] = "aucun"
         context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="articles")
@@ -231,7 +231,7 @@ class ListeArticles_asso(ListView):
         context['list_archive'] = self.qs.filter(estArchive=True)
         # context['producteur_list'] = Profil.objects.values_list('username', flat=True).distinct()
         context['auteur_list'] = Article.objects.order_by('auteur').values_list('auteur__username', flat=True).distinct()
-        cat= Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
+        cat= self.qs.order_by('categorie').values_list('categorie', flat=True).distinct()
         context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
         assos= Asso.objects.all()
         nom_asso = self.kwargs['asso']
@@ -402,7 +402,7 @@ class ListeProjets(ListView):
         context['list_archive'] = self.qs.filter(estArchive=True)
         # context['producteur_list'] = Profil.objects.values_list('username', flat=True).distinct()
         context['auteur_list'] = Projet.objects.order_by('auteur').values_list('auteur__username', flat=True).distinct()
-        cat = Projet.objects.all().order_by('categorie').values_list('categorie', flat=True).distinct()
+        cat = self.qs.order_by('categorie').values_list('categorie', flat=True).distinct()
         context['categorie_list'] = [x for x in Choix.type_projet if x[0] in cat]
         context['typeFiltre'] = "aucun"
 

@@ -157,7 +157,7 @@ class ListeArticles(UserPassesTestMixin, ListView):
         context['list_archive'] = self.qs.filter(estArchive=True)
         # context['producteur_list'] = Profil.objects.values_list('username', flat=True).distinct()
         context['auteur_list'] = Article.objects.order_by('auteur').values_list('auteur__username', flat=True).distinct()
-        cat= Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
+        cat= self.qs.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
         context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
         context['typeFiltre'] = "aucun"
         context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="articles_jardin")
@@ -193,12 +193,9 @@ class ListeArticles_jardin(ListeArticles):
     def get_queryset(self):
         params = dict(self.request.GET.items())
 
-        if "archives" in params and params['archives']:
-            qs = Article.objects.filter(estArchive=True)
-        else:
-            qs = Article.objects.filter(estArchive=False)
+        qs = Article.objects.all()
 
-        nom_jardin = [x[1] for x in Choix.jardins_ptg if x[0]==self.kwargs["jardin"]][0]
+        #nom_jardin = [x[1] for x in Choix.jardins_ptg if x[0]==self.kwargs["jardin"]][0]
         if self.kwargs["jardin"] != "0":
             qs = qs.filter(jardin=self.kwargs["jardin"])
 
@@ -212,15 +209,17 @@ class ListeArticles_jardin(ListeArticles):
         else:
             qs = qs.order_by( '-date_creation', '-date_dernierMessage', 'categorie', 'auteur')
 
-        return qs
+        self.qs = qs
+        return qs.filter(estArchive=False)
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
 
+        context['list_archive'] = self.qs.filter(estArchive=True)
         # context['producteur_list'] = Profil.objects.values_list('username', flat=True).distinct()
         context['auteur_list'] = Article.objects.order_by('auteur').values_list('auteur__username', flat=True).distinct()
-        cat= Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
+        cat = self.qs.order_by('categorie').values_list('categorie', flat=True).distinct()
         context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
         context['jardin_list'] = [(x[0], x[1]) for x in Choix.jardins_ptg]
         nom_jardin = [x[1] for x in Choix.jardins_ptg if x[0]==self.kwargs["jardin"]]

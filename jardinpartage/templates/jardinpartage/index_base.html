@@ -35,7 +35,8 @@
                       <div class="modal-body textleft">
                           <p>Le forum est un blog collaboratif. C'est un lieu virtuel d'échange d'idées, d'annonce d'un evenement, de partage de connaissainces, d'expression personnelle et de discussion. </p>
                           <p>Chacun est libre d'ajouter un article au forum ou de réagir en commentaire d'un article posté. </p>
-                          <p>Vous pouvez choisir de voir la liste des articles de chaque catégorie (agenda, ecovillage, documentation, etc) en cliquant sur "choisir une catégorie"</p>
+                          <p>Vous pouvez choisir de voir la liste des articles d'un dossier en particulier (documentation, agenda, à faire, etc) en cliquant sur "tous les dossiers..."</p>
+                          <p>Vous pouvez choisir de voir la liste des articles d'un jardin en particulier (Jardi per Tots, ou Jardipal) en cliquant sur "tous les jardins..."</p>
                           <p>Pour vous tenir au courant des nouveaux articles postés dans le forum, vous pouvez vous "abonner" en ciquant sur la cloche. Vous recevrez alors des informations par mail sur les nuoveaux articles.</p>
                       </div>
                     </div>
@@ -84,7 +85,7 @@
                                 {% if jardin_courant  %}
       {{jardin_courant}}
         {%else%}
-        Jardin...
+        Tous les Jardin
       {%endif%}
                              </button>
                                 </a>
@@ -99,7 +100,7 @@
                             <a class="nav-item " href="#" id="navbarDropdownCategorie" data-toggle="dropdown">
                                  <button type="button" class="btn  btn-primary dropdown-toggle" >
                                 {% if request.GET.categorie  %}
-      Catégorie : {{categorie_courante}}
+      Dossier : {{categorie_courante}}
       {%elif request.GET.permacat %}
       Articles Permacat
       {%elif request.GET.auteur %}
@@ -107,12 +108,11 @@
       {%elif typeFiltre == 'archives' %}
       Archives
         {%else%}
-        Choisir une catégorie...
-      {%endif%}
+        Tous les dossiers     {%endif%}
                                  </button>
                                 </a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class=" dropdown-item " style="background:white;" href="{%url 'jardinpartage:index' %}">Toutes les catégories</a>
+                                <a class=" dropdown-item " style="background:white;" href="{%url 'jardinpartage:index' %}">Tous les dossiers</a>
                                 <div class="dropdown-divider"></div>
             {% for categorie_id, cat_nom, cat_coul in categorie_list %}
             <a class=" dropdown-item " style="background:{{cat_coul}};" href="?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
