@@ -121,27 +121,4 @@
 {%endblock%}
 
 {% endcomment %}
-{% block content %}
 
-<div class="infinite-container">
-    {% for article in article_list %}
-    <div class="infinite-item">
-            {% include "jardinpartage/article_template.html" with article=article %}
-    <hr>
-    </div>
-
-    {% endfor %}
-        {% if list_archive %}
-        <h5 class="textcenter"> Archives </h5>
-    <hr>
-        {% for article in list_archive %}
-        <div class="infinite-item">
-            {% include "jardinpartage/article_template.html" with article=article %}
-        <hr>
-        </div>
-        {% endfor %}
-    {% endif %}
-</div>
-{%include 'pagination.html' %}
-
-{% endblock %}
