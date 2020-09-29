@@ -10,6 +10,11 @@
         <span class="badge {% if projet.estPublic%}badge-warning{%else%} badge-success {%endif%}" data-toggle="tooltip" data-placement="bottom" title="Projet {%if projet.estPublic%}visible par tous les inscrits{%else%}visible par les membres de Permacat seulement{%endif%}">
                 {{projet.asso}}
             </span>
+      {%if article.estArchive %}
+    <span class="badge badge-secondary" data-toggle="tooltip" data-placement="bottom" title="Article archivé">
+         archivé
+    </span>
+      {% endif %}
             {% if request.user|is_following:projet %}
             <span class="badge btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous recevez des notifications concernant ce projet par mail">
                  {% fontawesome_icon 'bell' %}
