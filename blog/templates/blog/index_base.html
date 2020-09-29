@@ -104,7 +104,7 @@
                             <a class="nav-item " href="#" id="navbarDropdownCategorie" data-toggle="dropdown">
                                  <button type="button" class="btn  btn-primary dropdown-toggle" >
                                 {% if request.GET.categorie  %}
-      Catégorie : {{categorie_courante}}
+      {{categorie_courante}}
       {%elif request.GET.permacat %}
       Articles Permacat
       {%elif request.GET.auteur %}
@@ -117,7 +117,7 @@
                                  </button>
                                 </a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class=" dropdown-item " style="background:white;" href="{%url 'blog:index' %}">Tous les dossiers</a>
+                                <a class=" dropdown-item " style="background:white;" href="{% if asso_courante  %}{%url 'blog:index_asso' %}{% if else  %}{% endif  %}">Tous les dossiers</a>
                                 <div class="dropdown-divider"></div>
             {% for categorie_id, cat_nom, cat_coul in categorie_list %}
             <a class=" dropdown-item " style="background:{{cat_coul}};" href="?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
