@@ -63,7 +63,7 @@ class ModifierArticle(UpdateView):
 
     def get_form(self,*args, **kwargs):
         form = super(ModifierArticle, self).get_form(*args, **kwargs)
-        form.fields["asso"].choices = [(i+1, x.nom) for i, x in enumerate(Asso.objects.all()) if self.request.user.estMembre_str(x.nom)]
+        form.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if self.request.user.estMembre_str(x.nom)]
 
         return form
 
@@ -316,7 +316,7 @@ class ModifierProjet(UpdateView):
 
     def get_form(self,*args, **kwargs):
         form = super(ModifierProjet, self).get_form(*args, **kwargs)
-        form.fields["asso"].choices = [(i+1, x.nom) for i, x in enumerate(Asso.objects.all()) if self.request.user.estMembre_str(x.nom)]
+        form.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if self.request.user.estMembre_str(x.nom)]
         return form
 
 class SupprimerProjet(DeleteView):
