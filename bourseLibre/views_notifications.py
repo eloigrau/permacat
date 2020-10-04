@@ -283,12 +283,11 @@ def getListeMailsAlerte():
     for action in actions:
         for mail in action.data['emails']:
             if not mail in messagesParMails:
-                messagesParMails[mail] = [{'messages': [action.data['message'], ]}, ]
+                messagesParMails[mail] = [action.data['message'], ]
             else:
                 for x in messagesParMails[mail]:
-                    listeMessages = [x['messages'] for x in messagesParMails[mail]]
-                    if not action.data['message'] in str(listeMessages):
-                        messagesParMails[mail].append({'messages': [action.data['message'], ]})
+                    if not action.data['message'] in messagesParMails[mail]:
+                        messagesParMails[mail].append(action.data['message'])
 
 
     listeMails = []
@@ -300,20 +299,18 @@ def getListeMailsAlerte():
             pseudo = ""
         messagetxt = "Bonjour / Bon dia " + pseudo +", Voici les dernières nouvelles des pages auxquelles vous êtes abonné.e :\n"
         message = "<p>Bonjour / Bon dia " + pseudo +",</p><p>Voici les dernières nouvelles des pages auxquelles vous êtes abonné.e :</p><ul>"
-        for mess in messages:
-            for m in mess['messages']:
-                message += "<li>" + m + "</li>"
-                try:
-                    r = re.search("htt(.*?)>", m).group(1)[:-1]
-                    messagetxt += re.sub('<[^>]+>', '', m) + " : htt" + r+ "\n"
-                except:
-                    messagetxt += re.sub('<[^>]+>', '', m) + "\n"
+        for m in messages:
+            message += "<li>" + m + "</li>"
+            try:
+                r = re.search("htt(.*?)>", m).group(1)[:-1]
+                messagetxt += re.sub('<[^>]+>', '', m) + " : htt" + r+ "\n"
+            except:
+                messagetxt += re.sub('<[^>]+>', '', m) + "\n"
 
 
         messagetxt += "\nFins Aviat !\n---------------\nPour voir toute l'activité sur le site, consultez les Notifications : https://permacat.herokuapp.com/notifications/activite/ \n" + \
                    "Pour vous désinscrire des alertes mails, barrez les cloches sur le site (ou consultez la FAQ : https://permacat.herokuapp.com/faq/) "
-        message += "</ul><br>"
-        message += "<p>Fins Aviat !</p><hr>" + \
+        message += "</ul><br><p>Fins Aviat !</p><hr>" + \
                    "<p><small>Pour voir toute l'activité sur le site, consultez les <a href='https://permacat.herokuapp.com/notifications/activite/'>Notifications </a> </small>. " + \
                    "<small>Pour vous désinscrire des alertes mails, barrez les cloches sur le site (ou consultez la <a href='https://permacat.herokuapp.com/faq/'>FAQ</a>)</small></p>"
 
