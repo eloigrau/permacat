@@ -298,7 +298,7 @@ def getListeMailsAlerte():
         except:
             pseudo = ""
         messagetxt = "Bonjour / Bon dia " + pseudo +", Voici les dernières nouvelles des pages auxquelles vous êtes abonné.e :\n"
-        message = "<p>Bonjour / Bon dia " + pseudo +",</p><p>Voici les dernières nouvelles des pages auxquelles vous êtes abonné.e :</p><ul>"
+        message = "<p>Bonjour / Bon dia " + pseudeso +",</p><p>Voici les dernières nouvelles des pages auxquelles vous êtes abonné.e :</p><ul>"
         for m in messages:
             message += "<li>" + m + "</li>"
             try:

@@ -116,6 +116,11 @@ class Article(models.Model):
     def est_autorise(self, user):
         return True
 
+    @property
+    def estPublic(self):
+        return True
+
+
 class Evenement(models.Model):
     titre = models.CharField(verbose_name="Titre de l'événement (si laissé vide, ce sera le titre de l'article)",
                              max_length=100, null=True, blank=True, default="")
@@ -137,9 +142,9 @@ class Evenement(models.Model):
             return self.article.titre
         return self.titre
 
-    # @property
-    # def estPublic(self):
-    #     return self.article.asso.id == 1
+    @property
+    def estPublic(self):
+        return True
 
 class Commentaire(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='auteur_comm_jardin')
