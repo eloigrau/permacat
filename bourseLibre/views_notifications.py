@@ -297,8 +297,8 @@ def getListeMailsAlerte():
             pseudo = Profil.objects.get(email=mail).username
         except:
             pseudo = ""
-        messagetxt = "Bonjour / Bon dia " + pseudo +", Voici les dernières nouvelles des pages auxquelles vous êtes abonné.e :\n"
-        message = "<p>Bonjour / Bon dia " + pseudo +",</p><p>Voici les dernières nouvelles des pages auxquelles vous êtes abonné.e :</p><ul>"
+        messagetxt = "Bonjour / Bon dia, Voici les dernières nouvelles des pages auxquelles vous êtes abonné.e :\n"
+        message = "<p>Bonjour / Bon dia,</p><p>Voici les dernières nouvelles des pages auxquelles vous êtes abonné.e :</p><ul>"
         for m in messages:
             message += "<li>" + m + "</li>"
             try:
@@ -315,7 +315,19 @@ def getListeMailsAlerte():
                    "<small>Pour vous désinscrire des alertes mails, barrez les cloches sur le site (ou consultez la <a href='https://permacat.herokuapp.com/faq/'>FAQ</a>)</small></p>"
 
         listeMails.append((titre, messagetxt, message, SERVER_EMAIL, [mail,]))
-    return listeMails
+
+
+    seen = set()
+    listeMails_ok = []
+    for x in listeMails:
+        if x[1] not in seen:
+            seen.add(x[1])
+            listeMails_ok.append(x)
+        else:
+            i = next((i for i, colour in enumerate(listeMails_ok) if x[1] in colour), None)
+            listeMails_ok[i][4].append(x[4][0])
+
+    return listeMails_ok
 
 def supprimerActionsEmails():
     actions = Action.objects.filter(verb='emails')
