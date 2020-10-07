@@ -768,26 +768,14 @@ def chercher(request):
         produits_list = produits_list.exclude(asso__abreviation="pc")
         articles_list = articles_list.exclude(asso__abreviation="pc")
         projets_list = projets_list.exclude(asso__abreviation="pc")
-        profils_list = profils_list.exclude(asso__abreviation="pc")
-        commentaires_list = commentaires_list.exclude(asso__abreviation="pc")
-        commentairesProjet_list = commentairesProjet_list.exclude(asso__abreviation="pc")
-        salon_list = salon_list.exclude(asso__abreviation="pc")
     if not request.user.adherent_rtg:
         produits_list = produits_list.exclude(asso__abreviation="rtg")
         articles_list = articles_list.exclude(asso__abreviation="rtg")
         projets_list = projets_list.exclude(asso__abreviation="rtg")
-        profils_list = profils_list.exclude(asso__abreviation="rtg")
-        commentaires_list = commentaires_list.exclude(asso__abreviation="rtg")
-        commentairesProjet_list = commentairesProjet_list.exclude(asso__abreviation="rtg")
-        salon_list = salon_list.exclude(asso__abreviation="rtg")
     if not request.user.adherent_ame:
         produits_list = produits_list.exclude(asso__abreviation="ame")
         articles_list = articles_list.exclude(asso__abreviation="ame")
         projets_list = projets_list.exclude(asso__abreviation="ame")
-        profils_list = profils_list.exclude(asso__abreviation="ame")
-        commentaires_list = commentaires_list.exclude(asso__abreviation="ame")
-        commentairesProjet_list = commentairesProjet_list.exclude(asso__abreviation="ame")
-        salon_list = salon_list.exclude(asso__abreviation="ame")
 
     return render(request, 'chercher.html', {'recherche':recherche, 'articles_list':articles_list, 'produits_list':produits_list, "projets_list": projets_list, 'profils_list':profils_list,'commentaires_list': commentaires_list, 'commentairesProjet_list':commentairesProjet_list, 'salon_list':salon_list})
 
