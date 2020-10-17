@@ -7,7 +7,7 @@ from django.core.mail import send_mass_mail, mail_admins
 from actstream import action
 from actstream.models import followers
 from bourseLibre.settings import SERVER_EMAIL, LOCALL
-
+from hitcount.views import HitCountMixin
 
 class Choix():
     statut_projet = ('prop','Proposition de projet'), ("AGO","Fiche projet soumise à l'AGO"), ('vote','Soumis au vote'), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),

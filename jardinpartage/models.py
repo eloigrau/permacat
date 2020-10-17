@@ -88,7 +88,7 @@ class Article(models.Model):
         if not self.id:
             self.date_creation = timezone.now()
             if sendMail:
-                suivi, created = Suivis.objects.get_or_create(nom_suivi='articles')
+                suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_jardin')
                 titre = "Nouvel article Jardins"
                 message = "Nouvel article aux Jardins Partagés: '<a href='https://permacat.herokuapp.com" + self.get_absolute_url() +"'>" + self.titre + "</a>'"
                 emails = [suiv.email for suiv in followers(suivi) if
