@@ -25,25 +25,25 @@ def getNotifications(request, nbNotif=10, orderBy="-timestamp"):
     suffrages = Action.objects.filter(Q(verb='suffrage_ajout_Public') | Q(verb='suffrage_ajout')).order_by(orderBy)
 
     if request.user.adherent_permacat:
-        salons     = salons | Action.objects.filter((Q(verb__startswith='envoi_salon') & Q(verb__icontains='Permacat')) | (Q(verb__startswith='envoi_salon_permacat')))
-        articles   = articles | Action.objects.filter((Q(verb__startswith='article') & Q(verb__icontains='Permacat')) | (Q(verb__startswith='article_permacat')))
-        projets    = projets | Action.objects.filter((Q(verb__startswith='projet') & Q(verb__icontains='Permacat')) | Q(verb='projet_permacat'))
-        offres     = offres | Action.objects.filter((Q(verb__startswith='ajout_offre') & Q(verb__icontains='Permacat') )| Q(verb='ajout_offre_permacat'))
-        suffrages  = suffrages | Action.objects.filter((Q(verb__startswith='suffrage_ajout') & Q(verb__icontains='Permacat')) | Q(verb='suffrage_ajout_permacat'))
+        salons     = salons | Action.objects.filter((Q(verb__startswith='envoi_salon') & Q(verb__icontains='Permacat')) | (Q(verb__startswith='envoi_salon_permacat')| (Q(verb__startswith='envoi_salon_pc'))))
+        articles   = articles | Action.objects.filter((Q(verb__startswith='article') & Q(verb__icontains='Permacat')) | (Q(verb__startswith='article_permacat')| (Q(verb__startswith='article_pc'))))
+        projets    = projets | Action.objects.filter((Q(verb__startswith='projet') & Q(verb__icontains='Permacat')) | Q(verb='projet_permacat')| Q(verb='projet_pc'))
+        offres     = offres | Action.objects.filter((Q(verb__startswith='ajout_offre') & Q(verb__icontains='Permacat') )| Q(verb='ajout_offre_permacat')| Q(verb='ajout_offre_pc'))
+        suffrages  = suffrages | Action.objects.filter((Q(verb__startswith='suffrage_ajout') & Q(verb__icontains='Permacat')) | Q(verb='suffrage_ajout_permacat')| Q(verb='suffrage_ajout_pc'))
 
-    if request.user.adherent_rtg:
-        salons     = salons | Action.objects.filter(Q(verb__startswith='envoi_salon') & Q(verb__icontains='Ramene ta graine'))
-        articles   = articles | Action.objects.filter(Q(verb__startswith='article') & Q(verb__icontains='Ramene ta graine'))
-        projets    = projets | Action.objects.filter(Q(verb__startswith='projet') & Q(verb__icontains='Ramene ta graine'))
-        offres     = offres | Action.objects.filter(Q(verb__startswith='ajout_offre') & Q(verb__icontains='Ramene ta graine'))
-        suffrages  = suffrages | Action.objects.filter(Q(verb__startswith='suffrage_ajout') & Q(verb__icontains='Ramene ta graine'))
+   # if request.user.adherent_rtg:
+    ##    salons     = salons | Action.objects.filter(Q(verb__startswith='envoi_salon') & Q(verb__icontains='rtg'))
+    #    articles   = articles | Action.objects.filter(Q(verb__startswith='article') & Q(verb__icontains='rtg'))
+     #   projets    = projets | Action.objects.filter(Q(verb__startswith='projet') & Q(verb__icontains='rtg'))
+    #    offres     = offres | Action.objects.filter(Q(verb__startswith='ajout_offre') & Q(verb__icontains='rtg'))
+     #   suffrages  = suffrages | Action.objects.filter(Q(verb__startswith='suffrage_ajout') & Q(verb__icontains='rtg'))
 
-    if request.user.adherent_ame:
-        salons     = salons | Action.objects.filter(Q(verb__startswith='envoi_salon') & Q(verb__icontains='Animal Mieux Etre'))
-        articles   = articles | Action.objects.filter(Q(verb__startswith='article') & Q(verb__icontains='Animal Mieux Etre'))
-        projets    = projets | Action.objects.filter(Q(verb__startswith='projet') & Q(verb__icontains='Animal Mieux Etre'))
-        offres     = offres | Action.objects.filter(Q(verb__startswith='ajout_offre') & Q(verb__icontains='Animal Mieux Etre'))
-        suffrages  = suffrages | Action.objects.filter(Q(verb__startswith='suffrage_ajout') & Q(verb__icontains='Animal Mieux Etre'))
+    if request.user.adherent_ga:
+        salons     = salons | Action.objects.filter(Q(verb__startswith='envoi_salon') & Q(verb__icontains='ga'))
+        articles   = articles | Action.objects.filter(Q(verb__startswith='article') & Q(verb__icontains='ga'))
+        projets    = projets | Action.objects.filter(Q(verb__startswith='projet') & Q(verb__icontains='ga'))
+        offres     = offres | Action.objects.filter(Q(verb__startswith='ajout_offre') & Q(verb__icontains='ga'))
+        suffrages  = suffrages | Action.objects.filter(Q(verb__startswith='suffrage_ajout') & Q(verb__icontains='ga'))
 
     salons = salons.distinct().order_by(orderBy)[:tampon]
     articles = articles.distinct().order_by(orderBy)[:tampon]
@@ -80,11 +80,11 @@ def getNotificationsParDate(request, limiter=True, orderBy="-timestamp"):
             Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)|
             Q(verb__startswith='inscription'))
     if request.user.adherent_permacat:
-        actions = actions | Action.objects.filter(Q(verb__icontains='Permacat') | Q(verb__icontains='permacat'))
-    if request.user.adherent_rtg:
-        actions = actions | Action.objects.filter(Q(verb__icontains='Ramene ta graine'))
-    if request.user.adherent_ame:
-        actions = actions | Action.objects.filter(Q(verb__icontains='Animal Mieux Etre'))
+        actions = actions | Action.objects.filter(Q(verb__icontains='Permacat') | Q(verb__icontains='permacat')| Q(verb__icontains='pc'))
+    #if request.user.adherent_rtg:
+     #   actions = actions | Action.objects.filter(Q(verb__icontains='Ramene ta graine'))
+    if request.user.adherent_ga:
+        actions = actions | Action.objects.filter(Q(verb__icontains='ga'))
 
     actions = actions.distinct().order_by(orderBy)
 
@@ -123,7 +123,10 @@ def notifications_news_regroup(request):
     dicoTexte['dicoarticles'] = {}
     for action in articles:
         if request.user.date_notifications < action.timestamp:
-            clef = action.action_object.titre
+            try:
+                clef = "["+action.action_object.asso.nom+"] " + action.action_object.titre
+            except:
+                clef = action.action_object.titre
             if not clef in dicoTexte['dicoarticles']:
                 dicoTexte['dicoarticles'][clef] = [action, ]
             else:
@@ -132,11 +135,11 @@ def notifications_news_regroup(request):
     htmlArticles = ""
     for titre_article, actions in dicoTexte['dicoarticles'].items():
         htmlArticles += "<li class='list-group-item'><a href='" + actions[0].data['url'] + "'>"
-        htmlArticles += " <div class=''><span  style='font-variant: small-caps ;'>" + titre_article
+        htmlArticles += " <div class=''><span  style='font-variant: small-caps ;'>"
         if "(Jardins Partagés)" in actions[0].description:
-            htmlArticles += "</span> <small> &nbsp;(Jardins Partagés)</small>"
+            htmlArticles += "[Jardins Partagés] &nbsp;"+ titre_article +"</span>"
         else:
-            htmlArticles += "</span>"
+            htmlArticles += titre_article+"</span>"
         htmlArticles +=" </div><ul style='list-style-type:none'>"
 
         for action in actions :

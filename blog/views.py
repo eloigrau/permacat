@@ -32,7 +32,7 @@ def ajouterArticle(request):
     if form.is_valid():
         article = form.save(request.user)
         url = article.get_absolute_url()
-        suffix = "_" + article.asso.nom
+        suffix = "_" + article.asso.abreviation
         action.send(request.user, verb='article_nouveau'+suffix, action_object=article, url=url,
                     description="a ajouté un article : '%s'" % article.titre)
         return redirect(article.get_absolute_url())
@@ -56,7 +56,7 @@ class ModifierArticle(UpdateView):
         self.object.save(sendMail=False)
         if not self.object.estArchive:
             url = self.object.get_absolute_url()
-            suffix = "_" + self.object.asso.nom
+            suffix = "_" + self.object.asso.abreviation
             action.send(self.request.user, verb='article_modifier'+suffix, action_object=self.object, url=url,
                          description="a modifié l'article: '%s'" % self.object.titre)
         #envoi_emails_articleouprojet_modifie(self.object, "L'article " +  self.object.titre + "a été modifié", True)
@@ -103,7 +103,7 @@ def lireArticle(request, slug):
             article.save(sendMail=False)
             comment.save()
             url = article.get_absolute_url()+"#idConversation"
-            suffix = "_" + article.asso.nom
+            suffix = "_" + article.asso.abreviation
             action.send(request.user, verb='article_message'+suffix, action_object=article, url=url,
                         description="a réagi à l'article: '%s'" % article.titre)
             #envoi_emails_articleouprojet_modifie(article, request.user.username + " a réagit au projet: " +  article.titre, True)
@@ -133,9 +133,7 @@ class ListeArticles(ListView):
         else:
             if not self.request.user.adherent_permacat:
                 qs = qs.exclude(asso__abreviation="pc")
-            if not self.request.user.adherent_rtg:
-                qs = qs.exclude(asso__abreviation="rtg")
-            if not self.request.user.adherent_ame:
+            if not self.request.user.adherent_ga:
                 qs = qs.exclude(asso__abreviation="ame")
 
         if "auteur" in params:
@@ -286,7 +284,7 @@ def ajouterNouveauProjet(request):
             projet = form.save(request.user)
             url = projet.get_absolute_url()
 
-            suffix = "_" + projet.asso.nom
+            suffix = "_" + projet.asso.abreviation
             action.send(request.user, verb='projet_nouveau'+suffix, action_object=projet, url=url,
                     description="a ajouté un projet : '%s'" % projet.titre)
             return redirect(url)
@@ -310,7 +308,7 @@ class ModifierProjet(UpdateView):
         self.object.save()
         if not self.object.estArchive:
             url = self.object.get_absolute_url()
-            suffix = "_" + self.object.asso.nom
+            suffix = "_" + self.object.asso.abreviation
             action.send(self.request.user, verb='projet_modifier'+suffix, action_object=self.object, url=url,
                          description="a modifié le projet: '%s'" % self.object.titre)
         #envoi_emails_articleouprojet_modifie(self.object, "Le projet " +  self.object.titre + "a été modifié", False)
@@ -350,7 +348,7 @@ def lireProjet(request, slug):
         projet.save(sendMail=False)
         comment.save()
         url = projet.get_absolute_url()+"#idConversation"
-        suffix = "_" + projet.asso.nom
+        suffix = "_" + projet.asso.abreviation
         action.send(request.user, verb='projet_message'+suffix, action_object=projet, url=url,
                     description="a réagit au projet: '%s'" % projet.titre)
         #envoi_emails_articleouprojet_modifie(projet, request.user.username + " a réagit au projet: " +  projet.titre, False)
@@ -374,10 +372,8 @@ class ListeProjets(ListView):
         else:
             if not self.request.user.adherent_permacat:
                 qs = qs.exclude(asso__id=2)
-            if not self.request.user.adherent_rtg:
+            if not self.request.user.adherent_ga:
                 qs = qs.exclude(asso__id=3)
-            if not self.request.user.adherent_ame:
-                qs = qs.exclude(asso__id=4)
 
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])

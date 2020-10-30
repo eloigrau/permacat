@@ -136,14 +136,12 @@ class Suffrage(models.Model):
         return Choix.get_couleur(self.type_vote)
 
     def est_autorise(self, user):
-        if self.asso.id == 1:
+        if self.asso.abreviation == "public":
             return True
-        elif self.asso.id == 2:
+        elif self.asso.abreviation == "pc":
             return user.adherent_permacat
-        elif self.asso.id == 3:
-            return user.adherent_rtg
-        elif self.asso.id == 4:
-            return user.adherent_ame
+        elif self.asso.abreviation == "ga":
+            return user.adherent_ga
         else:
             return False
 

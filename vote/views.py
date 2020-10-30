@@ -25,7 +25,7 @@ def ajouterSuffrage(request):
     if form.is_valid():
         suffrage = form.save(request.user)
         url = suffrage.get_absolute_url()
-        suffix = "_" + suffrage.asso.nom
+        suffix = "_" + suffrage.asso.abreviation
         action.send(request.user, verb='suffrage_ajout'+suffix, action_object=suffrage, url=url,
                     description="a ajouté un suffrage : '%s'" % suffrage.question)
 
@@ -113,7 +113,7 @@ def lireSuffrage(request, slug):
             suffrage.save()
             comment.save()
             url = suffrage.get_absolute_url() + "#idConversation"
-            suffix = "_" + suffrage.asso.nom
+            suffix = "_" + suffrage.asso.abreviation
             action.send(request.user, verb='suffrage_message' + suffix, action_object=suffrage, url=url,
                         description="a réagi au suffrage: '%s'" % suffrage.question)
 
@@ -203,10 +203,8 @@ class ListeSuffrages(ListView):
         else:
             if not self.request.user.adherent_permacat:
                 qs = qs.exclude(asso__id=2)
-            if not self.request.user.adherent_rtg:
+            if not self.request.user.adherent_ga:
                 qs = qs.exclude(asso__id=3)
-            if not self.request.user.adherent_ame:
-                qs = qs.exclude(asso__id=4)
 
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])

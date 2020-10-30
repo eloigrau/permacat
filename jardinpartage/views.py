@@ -16,7 +16,9 @@ from bourseLibre.models import Profil
 from bourseLibre.models import Suivis
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.mixins import UserPassesTestMixin
-import sys
+from hitcount.models import HitCount
+from hitcount.views import HitCountMixin
+
 
 # @login_required
 # def forum(request):
@@ -95,6 +97,8 @@ def lireArticle(request, slug):
 
     actions = action_object_stream(article)
 
+    hit_count = HitCount.objects.get_for_object(article)
+    hit_count_response = HitCountMixin.hit_count(request, hit_count)
     form = CommentaireArticleForm(request.POST or None)
     if form.is_valid():
         comment = form.save(commit=False)

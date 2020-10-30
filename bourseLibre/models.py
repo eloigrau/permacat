@@ -116,19 +116,21 @@ class Asso(models.Model):
     def is_membre(self, user):
         if self.nom == "permacat" and not user.adherent_permacat:
             return False
-        elif self.nom == "rtg" and not user.adherent_rtg:
-            return False
-        elif self.nom == "ame" and not user.adherent_ame:
+        elif self.nom == "ga" and not user.adherent_ga:
             return False
         return True
 
     def getProfils(self):
-        if self.nom == "permacat":
+        if self.abreviation == "public":
+            return Profil.objects.filter()
+        elif self.abreviation == "pc":
             return Profil.objects.filter(adherent_permacat=True)
-        elif self.nom == "rtg":
+        elif self.abreviation == "rtg":
             return Profil.objects.filter(adherent_rtg=True)
-        elif self.nom == "ame":
+        elif self.abreviation == "ame":
             return Profil.objects.filter(adherent_ame=True)
+        elif self.abreviation == "ga":
+            return Profil.objects.filter(adherent_ga=True)
 
 class Profil(AbstractUser):
     username_validator = ASCIIUsernameValidator()
@@ -145,11 +147,12 @@ class Profil(AbstractUser):
 
     inscrit_newsletter = models.BooleanField(verbose_name="J'accepte de recevoir des emails de Permacat", default=False)
     statut_adhesion = models.IntegerField(choices=Choix.statut_adhesion, default="0")
-    statut_adhesion_rtg = models.IntegerField(choices=Choix.statut_adhesion_rtg, default="0")
+    #statut_adhesion_rtg = models.IntegerField(choices=Choix.statut_adhesion_rtg, default="0")
+    statut_adhesion_ga = models.IntegerField(choices=Choix.statut_adhesion_ga, default="0")
     cotisation_a_jour = models.BooleanField(verbose_name="Cotisation à jour", default=False)
     adherent_permacat = models.BooleanField(verbose_name="Je suis adhérent de Permacat", default=False)
-    adherent_rtg = models.BooleanField(verbose_name="Je suis adhérent de Ramene Ta Graine", default=False)
-    adherent_ame = models.BooleanField(verbose_name="Je suis adhérent de Animaux Mieux Etre", default=False)
+    #adherent_rtg = models.BooleanField(verbose_name="Je suis adhérent de Ramene Ta Graine", default=False)
+    adherent_ga = models.BooleanField(verbose_name="Je suis adhérent de Gaïarmonie", default=False)
     accepter_conditions = models.BooleanField(verbose_name="J'ai lu et j'accepte les conditions d'utilisation du site", default=False, null=False)
     accepter_annuaire = models.BooleanField(verbose_name="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous", default=True)
     is_jardinpartage = models.BooleanField(verbose_name="Je suis intéressé.e par les jardins partagés", default=False)
@@ -195,10 +198,8 @@ class Profil(AbstractUser):
     def statutMembre_asso(self, asso):
         if asso == "permacat":
             return self.adherent_permacat
-        elif asso == "rtg":
-            return self.adherent_rtg
-        elif asso == "ame":
-            return self.adherent_ame
+        elif asso == "ga":
+            return self.adherent_ga
 
     @property
     def statutMembre_str(self):
@@ -216,51 +217,29 @@ class Profil(AbstractUser):
                 return "membre actif de Permacat"
             else:
                 return "Non membre de Permacat"
-        elif asso == "rtg":
-            if self.adherent_rtg:
-                return "membre actif de 'Ramene Ta Graine'"
+        if asso == "ga":
+            if self.adherent_ga:
+                return "membre actif de 'Gaïarmonie'"
             else:
-                return "Non membre de 'Ramene Ta Graine'"
-        if asso == "ame":
-            if self.adherent_ame:
-                return "membre actif de 'Animaux Mieux Etre'"
-            else:
-                return "Non membre de 'Animaux Mieux Etre'"
+                return "Non membre de 'Gaïarmonie'"
 
     def estMembre_str(self, nom_asso):
         if nom_asso == "Public":
             return True
         elif nom_asso == "Permacat" and self.adherent_permacat:
             return True
-        elif self.adherent_rtg and (nom_asso == "RTG" or nom_asso == "Ramene Ta Graine" ):
-            return True
-        elif self.adherent_ame and (nom_asso == "Animal Mieux Etre" or nom_asso == "AME" ):
+        elif self.adherent_ga and (nom_asso == "ga" or nom_asso == "Gaïarmonie" ):
             return True
         else:
             return False
 
-    @property
-    def statutMembre_rtg(self):
-        return self.adherent_rtg
-
-    @property
-    def statutMembre_rtg_str(self):
-        if self.statut_adhesion_rtg == 0:
-            return "souhaite devenir membre de l'association"
-        elif self.statut_adhesion_rtg == 1:
-            return "ne souhaite pas devenir membre"
-        elif self.statut_adhesion_rtg == 2:
-            return "membre actif"
-
     def est_autorise(self, user):
-        if self.asso.id == 1:
+        if self.asso.abreviation == "public":
             return True
-        elif self.asso.id == 2:
+        elif self.asso.abreviation == "pc":
             return user.adherent_permacat
-        elif self.asso.id == 3:
-            return user.adherent_rtg
-        elif self.asso.id == 4:
-            return user.adherent_ame
+        elif self.asso.abreviation == "ga":
+            return user.adherent_ga
         else:
             return False
 
@@ -392,14 +371,12 @@ class Produit(models.Model):  # , BaseProduct):
         return "[A propos de l'annonce de '" + self.nom_produit + "']: "
 
     def est_autorise(self, user):
-        if self.asso.id == 1:
+        if self.asso.abreviation == "public":
             return True
-        elif self.asso.id == 2:
+        elif self.asso.abreviation == "pc":
             return user.adherent_permacat
-        elif self.asso.id == 3:
-            return user.adherent_rtg
-        elif self.asso.id == 4:
-            return user.adherent_ame
+        elif self.asso.abreviation == "ga":
+            return user.adherent_ga
         else:
             return False
 

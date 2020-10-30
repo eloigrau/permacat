@@ -25,7 +25,7 @@
     {% endif %}
         <li class="nav-item dropdown nav5 3to5">
                 <a class="nav-link dropdown-toggle navbar-menu "  href="{% url 'presentation_asso' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {% fontawesome_icon 'link' %} Collectifs
+                    {% fontawesome_icon 'link' %} Groupes
                 </a>
                 <ul class="dropdown-menu dropdown-menu1 textcenter nav5-dropdown" aria-labelledby="navbarDropdownMenuLink">
 
@@ -39,9 +39,9 @@
                     <li><a class="dropdown-item" href="{% url 'vote:index' %}"><i class="fa fa-bullhorn iconleft"></i>  Votes </a></li>
                        <li class="divider" role="separator"></li>
                         {% comment %} <li><a class="dropdown-item" href="{% url 'wiki:root' %}"> Eco Village </a></li>{% endcomment %}
+                        <li><a class="dropdown-item" href="{% url 'blog:index' %}?categorie=Ecovillage"><i class='fa fa-comments' ></i> Ecovillage </a></li>
                          <li><a class="dropdown-item" href="{% url 'fiches:acceuil' %}"><i class='fa fa-image iconleft' ></i> Fiches de Permaculture </a></li>
                          <li><a class="dropdown-item" href="{% url 'ateliers:acceuil' %}"><i class='fa fa-wrench iconleft' ></i>  Ateliers Collectifs</a></li>
-                         <li><a class="dropdown-item" href="{% url 'jardinpartage:index' %}"><i class='fa fa-pagelines' ></i> Jardins Partagés </a></li>
 
                        <li class="divider" role="separator"></li>
                         <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='pc' %}"> Annuaire  </a></li>
@@ -57,6 +57,23 @@
                         </ul>
                     </li>
 
+
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" >Jardins Partagés</a>
+                        <ul class="dropdown-menu textcenter nav5-dropdown-submenu">
+                            <li> <a class="dropdown-item" href="{% url 'agora' asso='jp'%}"> Salon de discussion</a></li>
+                            <li><a class="dropdown-item" href="{% url 'jardinpartage:index' %}"><i class='fa fa-pagelines' ></i> Articles </a></li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" >Gaïarmonie</a>
+                        <ul class="dropdown-menu textcenter nav5-dropdown-submenu">
+                            <li> <a class="dropdown-item" href="{% url 'agora' asso='ga'%}"> Salon de discussion</a></li>
+                            <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='ga'%}"><i class='fa fa-comments' ></i> Articles </a></li>
+                          <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='ga' %}"> Annuaire  </a></li>
+                      </ul>
+                    </li>
                 </ul>
         </li>
 

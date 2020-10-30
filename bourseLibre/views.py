@@ -163,7 +163,7 @@ def produit_proposer(request, type_produit):
 
         produit.save()
         url = produit.get_absolute_url()
-        suffix = "_" + produit.asso.nom
+        suffix = "_" + produit.asso.abreviation
         offreOuDemande = "offre" if produit.estUneOffre else "demande"
         action.send(request.user, verb='ajout_offre'+suffix, action_object=produit, url=url,
                     description="a ajouté une "+offreOuDemande+" au marché : '%s'" %(produit.nom_produit))
@@ -264,7 +264,7 @@ def profil_inconnu(request):
 @login_required
 def annuaire(request, asso):
     asso=testIsMembreAsso(request, asso)
-    profils = Profil.objects.filter(accepter_annuaire=True).order_by('username')
+    profils = asso.getProfils().filter(accepter_annuaire=True).order_by("username")
     nb_profils = len(Profil.objects.all())
     return render(request, 'annuaire.html', {'profils':profils, "nb_profils":nb_profils, "asso":asso} )
 
@@ -302,7 +302,7 @@ def listeFollowers(request, asso):
 @login_required
 def carte(request, asso):
     asso=testIsMembreAsso(request, asso)
-    profils = Profil.objects.filter(accepter_annuaire=1)
+    profils = asso.getProfils()
     return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': "La carte des coopérateurs*" } )
 
 
@@ -351,14 +351,7 @@ def adhesion_asso(request):
 @login_required
 def carte(request, asso):
     asso = testIsMembreAsso(request, asso)
-    if asso.abreviation == "pc":
-        profils = Profil.objects.filter(adherent_permacat=True, accepter_annuaire=1)
-    elif asso.abreviation == "rtg":
-        profils = Profil.objects.filter(adherent_rtg=True, accepter_annuaire=1)
-    if asso.abreviation == "permacat":
-        profils = Profil.objects.filter(adherent_ame=True, accepter_annuaire=1)
-    else:
-        profils = Profil.objects.filter(accepter_annuaire=1)
+    profils = asso.getProfils().filter(accepter_annuaire=True).order_by("username")
     return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': "Carte des adhérents "+str(asso) + "*" } )
 
 @login_required
@@ -560,10 +553,8 @@ class ListeProduit(ListView):
         else:
             if not self.request.user.adherent_permacat:
                 qs = qs.exclude(asso__id=2)
-            if not self.request.user.adherent_rtg:
+            if not self.request.user.adherent_ga:
                 qs = qs.exclude(asso__id=3)
-            if not self.request.user.adherent_ame:
-                qs = qs.exclude(asso__id=4)
 
         params = dict(self.request.GET.items())
 
@@ -768,14 +759,10 @@ def chercher(request):
         produits_list = produits_list.exclude(asso__abreviation="pc")
         articles_list = articles_list.exclude(asso__abreviation="pc")
         projets_list = projets_list.exclude(asso__abreviation="pc")
-    if not request.user.adherent_rtg:
-        produits_list = produits_list.exclude(asso__abreviation="rtg")
-        articles_list = articles_list.exclude(asso__abreviation="rtg")
-        projets_list = projets_list.exclude(asso__abreviation="rtg")
     if not request.user.adherent_ame:
-        produits_list = produits_list.exclude(asso__abreviation="ame")
-        articles_list = articles_list.exclude(asso__abreviation="ame")
-        projets_list = projets_list.exclude(asso__abreviation="ame")
+        produits_list = produits_list.exclude(asso__abreviation="ga")
+        articles_list = articles_list.exclude(asso__abreviation="ga")
+        projets_list = projets_list.exclude(asso__abreviation="ga")
 
     return render(request, 'chercher.html', {'recherche':recherche, 'articles_list':articles_list, 'produits_list':produits_list, "projets_list": projets_list, 'profils_list':profils_list,'commentaires_list': commentaires_list, 'commentairesProjet_list':commentairesProjet_list, 'salon_list':salon_list})
 
@@ -908,48 +895,6 @@ def agora(request, asso):
         action.send(request.user, verb='envoi_salon_public', action_object=message, target=group, url=url, description="a envoyé un message dans le salon public")
         return redirect(request.path) 
     return render(request, 'agora.html', {'form': form, 'messages_echanges': messages, 'asso':asso})
-
-@login_required
-def agora_permacat(request, ):
-    if not request.user.adherent_permacat:
-        return render(request, "notPermacat.html")
-    messages = MessageGeneralPermacat.objects.all().order_by("date_creation")
-    form = MessageGeneralPermacatForm(request.POST or None)
-    if form.is_valid():
-        message = form.save(commit=False)
-        message.auteur = request.user
-
-        message.save()
-        group, created = Group.objects.get_or_create(name='permacat')
-        url = reverse('agora_permacat')
-        action.send(request.user, verb='envoi_salon_permacat', action_object=message, target=group, url=url,
-                    description="a envoyé un message dans le salon Permacat")
-
-
-        return redirect(request.path)
-    return render(request, 'agora_permacat.html', {'form': form, 'messages_echanges': messages})
-
-
-@login_required
-def agora_rtg(request, ):
-    if not request.user.adherent_rtg:
-        return render(request, "notRTG.html")
-    messages = MessageGeneralRTG.objects.all().order_by("date_creation")
-    form = MessageGeneralRTGForm(request.POST or None)
-    if form.is_valid():
-        message = form.save(commit=False)
-        message.auteur = request.user
-
-        message.save()
-        group, created = Group.objects.get_or_create(name='rtg')
-        url = reverse('agora_rtg')
-        action.send(request.user, verb='envoi_salon_rtg', action_object=message, target=group, url=url,
-                    description="a envoyé un message dans le salon RameneTaGraine")
-
-
-        return redirect(request.path)
-    return render(request, 'agora_rtg.html', {'form': form, 'messages_echanges': messages})
-
 
 # class ServiceWorkerView(View):
 #     def get(self, request, *args, **kwargs):

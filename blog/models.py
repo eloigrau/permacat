@@ -7,7 +7,6 @@ from django.core.mail import send_mass_mail, mail_admins
 from actstream import action
 from actstream.models import followers
 from bourseLibre.settings import SERVER_EMAIL, LOCALL
-from hitcount.views import HitCountMixin
 
 class Choix():
     statut_projet = ('prop','Proposition de projet'), ("AGO","Fiche projet soumise à l'AGO"), ('vote','Soumis au vote'), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
@@ -114,14 +113,12 @@ class Article(models.Model):
             return Choix.couleurs_annonces["Autre"]
 
     def est_autorise(self, user):
-        if self.asso.id == 1:
+        if self.asso.abreviation == "public":
             return True
-        elif self.asso.id == 2:
+        elif self.asso.abreviation == "pc":
             return user.adherent_permacat
-        elif self.asso.id == 3:
-            return user.adherent_rtg
-        elif self.asso.id == 4:
-            return user.adherent_ame
+        elif self.asso.abreviation == "ga":
+            return user.adherent_ga
         else:
             return False
 
@@ -257,14 +254,12 @@ class Projet(models.Model):
             return Choix.couleurs_annonces["Autre"]
 
     def est_autorise(self, user):
-        if self.asso.id == 1:
+        if self.asso.abreviation == "public":
             return True
-        elif self.asso.id == 2:
+        elif self.asso.abreviation == "pc":
             return user.adherent_permacat
-        elif self.asso.id == 3:
-            return user.adherent_rtg
-        elif self.asso.id == 4:
-            return user.adherent_ame
+        elif self.asso.abreviation == "ga":
+            return user.adherent_ga
         else:
             return False
 
