@@ -123,6 +123,9 @@
                         <td style="width:250px">Adhérent Permacat *:</td>
                         <td>{{user.adherent_permacat|translateOuiNon}}</td>
                     </tr>
+
+            {% endif %}
+            {%if request.user.adherent_ga or request.user == user %}
                     <tr>
                         <td style="width:250px">Adhérent Gaïarmonie *:</td>
                         <td>{{user.adherent_ga|translateOuiNon}}</td>
@@ -131,15 +134,15 @@
         {% endif %}
       {% if request.user == user %}
         <tr>
-            <td style="width:200px">Inscrit à la newsletter : </td>
+            <td style="width:200px">Inscrit à la newsletter ^: </td>
             <td>{{user.inscrit_newsletter|translateOuiNon }}
         </tr>
         <tr>
-            <td style="width:200px">Inscrit aux jardins partagés : </td>
+            <td style="width:200px">Inscrit aux jardins partagés ^: </td>
             <td>{{user.is_jardinpartage|translateOuiNon }}
         </tr>
         <tr>
-            <td style="width:200px">J'apparais dans l'annuaire et mes coordonnées sont visibles : </td>
+            <td style="width:200px">J'apparais dans l'annuaire et mes coordonnées sont visibles ^: </td>
             <td>{{user.accepter_annuaire|translateOuiNon }}
         </tr>
         {% endif %}
@@ -209,8 +212,44 @@
   </div>
 
   <div class="col-md-6">
+  {% if request.user.adherent_ga and user.adherent_ga %}
+<style>
 
-  {% if request.user.adherent_permacat %}
+            .leaflet-container {  /* all maps */
+                width:  100%;
+                height: 100%;
+            }
+            </style>
+              <script type="text/javascript">
+                function map_init_basic (map, options) {
+
+          var greenIcon = L.icon({
+            iconUrl: '{% static 'img/leafgreen.png' %}',
+            shadowUrl: '{% static 'img/leafshadow.png' %}',
+
+            iconSize:     [38, 95], // size of the icon
+            shadowSize:   [50, 64], // size of the shadow
+            iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+            shadowAnchor: [4, 62],  // the same for the shadow
+            popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+        });
+
+                var lat = {{user.adresse.get_latitude}};
+                var lon = {{user.adresse.get_longitude}};
+                L.marker([lat, lon], {icon: greenIcon}).addTo(map);
+                map.panTo(new L.LatLng(lat, lon));
+            }
+        </script>
+        {% leaflet_map "yourmap" callback="window.map_init_basic" %}
+    {% else %}
+    <p>(affichage de la carte réservé aux adhérents du meme groupe)</p>
+    {% endif %}
+
+</div>
+</div>
+
+{% elif request.user.adherent_permacat and user.adherent_permacat %}
+
               <style>
 
             .leaflet-container {  /* all maps */
@@ -240,8 +279,9 @@
         </script>
         {% leaflet_map "yourmap" callback="window.map_init_basic" %}
     {% else %}
-    <p>(affichage de la carte réservé aux adhérents Permacat)</p>
+    <p>(affichage de la carte réservé aux adhérents du meme groupe)</p>
     {% endif %}
+
 </div>
 </div>
 
