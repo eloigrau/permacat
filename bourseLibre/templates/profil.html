@@ -241,14 +241,12 @@
             }
         </script>
         {% leaflet_map "yourmap" callback="window.map_init_basic" %}
-    {% else %}
-    <p>(affichage de la carte réservé aux adhérents du meme groupe)</p>
-    {% endif %}
 
 </div>
 </div>
 
-{% else%}{%if request.user.adherent_permacat and user.adherent_permacat %}
+{% else %}
+	{%if request.user.adherent_permacat and user.adherent_permacat %}
 
               <style>
 
@@ -278,8 +276,8 @@
             }
         </script>
         {% leaflet_map "yourmap" callback="window.map_init_basic" %}
-    {% else %}
-    <p>(affichage de la carte réservé aux adhérents du meme groupe)</p>
+    	{% else %}
+    	<p>(affichage de la carte réservé aux adhérents du meme groupe)</p>
     {% endif %}
     {% endif %}
 </div>
