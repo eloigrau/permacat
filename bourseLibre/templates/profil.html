@@ -107,31 +107,32 @@
                         <td> {{ user.site_web }}</td>
                     </tr>
                   {% endif %}
-            {%if request.user.adherent_permacat or request.user == user %}
-                  {% if user.avatar %}
-                    <tr>
-                        <td style="width:250px">Avatar *: </td>
-                        <td><img src="{{ produit.avatar.url }}" alt="pas d'image" style="width:128px;height:128px"></td>
-                    </tr>
-                  {% endif %}
-
-                    <tr>
-                        <td style="width:250px">Savoir-faire *:</td>
-                        <td>{{ user.competences|safe }}</td>
-                    </tr>
-                    <tr>
-                        <td style="width:250px">Adhérent Permacat *:</td>
-                        <td>{{user.adherent_permacat|translateOuiNon}}</td>
-                    </tr>
-
-            {% endif %}
-            {%if request.user.adherent_ga or request.user == user %}
-                    <tr>
-                        <td style="width:250px">Adhérent Gaïarmonie *:</td>
-                        <td>{{user.adherent_ga|translateOuiNon}}</td>
-                    </tr>
-            {% endif %}
+           
         {% endif %}
+       {%if request.user.adherent_permacat or request.user == user %}
+	  {% if user.avatar %}
+	    <tr>
+		<td style="width:250px">Avatar *: </td>
+		<td><img src="{{ produit.avatar.url }}" alt="pas d'image" style="width:128px;height:128px"></td>
+	    </tr>
+	  {% endif %}
+
+	    <tr>
+		<td style="width:250px">Savoir-faire *:</td>
+		<td>{{ user.competences|safe }}</td>
+	    </tr>
+	    <tr>
+		<td style="width:250px">Adhérent Permacat *:</td>
+		<td>{{user.adherent_permacat|translateOuiNon}}</td>
+	    </tr>
+
+    {% endif %}
+    {%if request.user.adherent_ga or request.user == user %}
+	    <tr>
+		<td style="width:250px">Adhérent Gaïarmonie *:</td>
+		<td>{{user.adherent_ga|translateOuiNon}}</td>
+	    </tr>
+    {% endif %}
       {% if request.user == user %}
         <tr>
             <td style="width:200px">Inscrit à la newsletter ^: </td>
