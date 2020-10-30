@@ -264,8 +264,9 @@ def profil_inconnu(request):
 @login_required
 def annuaire(request, asso):
     asso=testIsMembreAsso(request, asso)
-    profils = asso.getProfils().filter(accepter_annuaire=True).order_by("username")
-    nb_profils = len(Profil.objects.all())
+    prof = asso.getProfils()
+    profils = prof.filter(accepter_annuaire=True).order_by("username")
+    nb_profils = len(prof)
     return render(request, 'annuaire.html', {'profils':profils, "nb_profils":nb_profils, "asso":asso} )
 
 @login_required
