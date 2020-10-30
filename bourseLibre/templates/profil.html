@@ -248,7 +248,7 @@
 </div>
 </div>
 
-{% elif request.user.adherent_permacat and user.adherent_permacat %}
+{% else%}{%if request.user.adherent_permacat and user.adherent_permacat %}
 
               <style>
 
@@ -281,7 +281,7 @@
     {% else %}
     <p>(affichage de la carte réservé aux adhérents du meme groupe)</p>
     {% endif %}
-
+    {% endif %}
 </div>
 </div>
 
