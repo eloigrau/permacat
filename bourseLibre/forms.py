@@ -147,9 +147,10 @@ class ProfilCreationForm(UserCreationForm):
     email = forms.EmailField(label="Email*",)
 
     statut_adhesion = forms.ChoiceField(choices=Choix.statut_adhesion, label='', required=True)
-    adherent_permacat = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Permacat'")
+    statut_adhesion_ga = forms.ChoiceField(choices=Choix.statut_adhesion_ga, label='', required=True)
+    #adherent_permacat = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Permacat'")
     #adherent_rtg = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Ramène Ta Graine'")
-    adherent_ga = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Gaïarmonie'")
+    #adherent_ga = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Gaïarmonie'")
     #adherent_ame = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Animal Mieux Etre'")
     accepter_annuaire = forms.BooleanField(required=False, label="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous les inscrits")
     accepter_conditions = forms.BooleanField(required=True, label="J'ai lu et j'accepte les Conditions Générales d'Utilisation du site*",  )
@@ -163,7 +164,7 @@ class ProfilCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm):
         model = Profil
-        fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'statut_adhesion', 'inscrit_newsletter', 'accepter_annuaire',  'accepter_conditions']
+        fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'statut_adhesion', 'statut_adhesion_ga', 'inscrit_newsletter', 'accepter_annuaire',  'accepter_conditions']
         exclude = ['slug', ]
 
 
