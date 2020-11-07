@@ -147,7 +147,7 @@ class ProfilCreationForm(UserCreationForm):
     email = forms.EmailField(label="Email*",)
 
     statut_adhesion = forms.ChoiceField(choices=Choix.statut_adhesion, label='', required=True)
-    statut_adhesion_ga = forms.ChoiceField(choices=Choix.statut_adhesion_ga, label='', required=True)
+    #statut_adhesion_ga = forms.ChoiceField(choices=Choix.statut_adhesion_ga, label='', required=True)
     #adherent_permacat = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Permacat'")
     #adherent_rtg = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Ramène Ta Graine'")
     #adherent_ga = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Gaïarmonie'")
