@@ -7,6 +7,7 @@ import itertools
 from django_summernote.widgets import SummernoteWidget, SummernoteWidgetBase, SummernoteInplaceWidget
 from django.urls import reverse
 from bourseLibre.settings import SUMMERNOTE_CONFIG as summernote_config
+from bourseLibre.models import Asso
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.utils.timezone import now
 
@@ -67,12 +68,13 @@ class SummernoteWidgetWithCustomToolbar(SummernoteWidget):
         return summernote_settings
 
 class ArticleForm(forms.ModelForm):
-   # contenu = TinyMCE(attrs={'cols': 80, 'rows': 20})
-    estPublic = forms.ChoiceField(choices=((1, "Article public"), (0, "Article Permacat")), label='', required=True, )
+    asso = forms.ModelChoiceField(queryset=Asso.objects.all(), required=True,
+                              label="Article public ou réservé aux adhérents de l'asso :", )
+
 
     class Meta:
         model = Article
-        fields = ['categorie', 'titre', 'contenu', 'start_time', 'end_time', 'estPublic', 'estModifiable']
+        fields = ['categorie', 'titre', 'contenu', 'start_time', 'end_time', 'asso', 'estModifiable']
         widgets = {
             'contenu': SummernoteWidget(),
               'start_time': forms.DateInput(attrs={'type': 'date'}),
@@ -95,25 +97,20 @@ class ArticleForm(forms.ModelForm):
             instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
 
         instance.auteur = userProfile
-        if not userProfile.is_permacat:
-            instance.estPublic = True
 
         instance.save(sendMail)
 
         return instance
 
-
     def __init__(self, request, *args, **kwargs):
-        super(ArticleForm, self).__init__(request, *args, **kwargs)
-        self.fields['contenu'].strip = False
-
+        super(ArticleForm, self).__init__(*args, **kwargs)
+        self.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if request.user.estMembre_str(x.nom)]
 
 class ArticleChangeForm(forms.ModelForm):
-    estPublic = forms.ChoiceField(choices=((1, "Article public"), (0, "Article réservé aux adhérents")), label='', required=True)
 
     class Meta:
         model = Article
-        fields = ['categorie', 'titre', 'contenu', 'start_time', 'end_time', 'estPublic', 'estModifiable', 'estArchive']
+        fields = ['categorie', 'titre', 'contenu', 'start_time', 'end_time', 'asso', 'estModifiable', 'estArchive']
         widgets = {
             'contenu': SummernoteWidget(),
               'start_time': forms.DateInput(attrs={'class':"date", }),
@@ -121,20 +118,7 @@ class ArticleChangeForm(forms.ModelForm):
         }
 
 
-    def __init__(self, *args, **kwargs):
-        super(ArticleChangeForm, self).__init__(*args, **kwargs)
-        self.fields['contenu'].strip = False
-        self.fields["estPublic"].choices=((1, "Article public"), (0, "Article réservé aux adhérents")) if kwargs['instance'].estPublic else ((0, "Article réservé aux adhérents"),(1, "Article public"), )
-
-
-#     def save(self,):
-#         instance = super(ArticleChangeForm, self).save(commit=False)
-#         instance.date_modification = now
-# #        instance.save()
-#         return instance
-
 class CommentaireArticleForm(forms.ModelForm):
-    #commentaire = TinyMCE(attrs={'cols': 1, 'rows': 1, 'height':10 })
 
     class Meta:
         model = Commentaire
@@ -159,13 +143,11 @@ class CommentaireArticleChangeForm(forms.ModelForm):
      exclude = ['article', 'auteur_comm']
 
 class ProjetForm(forms.ModelForm):
-    #contenu = forms.CharField(widget=forms.Textarea(attrs={'cols': 80, 'rows': 10}))
-    #contenu = TinyMCE(attrs={'cols': 80, 'rows': 20})
-    estPublic = forms.ChoiceField(choices=((1, "Projet public"), (0, "Projet Permacat")), label='', required=True)
-
+    asso = forms.ModelChoiceField(queryset=Asso.objects.all(), required=True,
+                              label="Projet public ou réservé aux adhérents de l'asso :", )
     class Meta:
         model = Projet
-        fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'statut', 'estPublic', 'lien_document', 'fichier_projet', 'start_time', 'end_time',]
+        fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'statut',  'asso',  'start_time']
         widgets = {
         'contenu': SummernoteWidget(),
               'start_time': forms.DateInput(attrs={'type':'date'}),
@@ -173,8 +155,9 @@ class ProjetForm(forms.ModelForm):
         }
 
     def __init__(self, request, *args, **kwargs):
-        super(ProjetForm, self).__init__(request, *args, **kwargs)
+        super(ProjetForm, self).__init__(*args, **kwargs)
         self.fields['contenu'].strip = False
+        self.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if request.user.estMembre_str(x.nom)]
 
     def save(self, userProfile, sendMail=True):
         instance = super(ProjetForm, self).save(commit=False)
@@ -191,32 +174,21 @@ class ProjetForm(forms.ModelForm):
 
         instance.auteur = userProfile
 
-        if not userProfile.is_permacat:
-            instance.estPublic = True
-
         instance.save(sendMail)
 
         return instance
 
 
 class ProjetChangeForm(forms.ModelForm):
-    estPublic = forms.ChoiceField(choices=((1, "Projet public"), (0, "Projet réservé aux adhérents")), label='', required=True)
 
     class Meta:
         model = Projet
-        fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'estPublic', 'lien_document','fichier_projet', 'start_time', 'end_time', 'estArchive']
+        fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'asso', 'lien_document', 'start_time', 'end_time', 'estArchive']
         widgets = {
             'contenu': SummernoteWidget(),
               'start_time': forms.DateInput(attrs={'class':'date', }),
               'end_time': forms.DateInput(attrs={'class':'date', }),
         }
-
-    def __init__(self, *args, **kwargs):
-        super(ProjetChangeForm, self).__init__(*args, **kwargs)
-        self.fields['contenu'].strip = False
-        self.fields["estPublic"].choices = ((1, "Article public"), (0, "Article réservé aux adhérents")) if kwargs[
-            'instance'].estPublic else ((0, "Projet réservé aux adhérents"), (1, "Projet public"),)
-
 
 class CommentProjetForm(forms.ModelForm):
 

@@ -16,7 +16,9 @@ from bourseLibre.models import Profil
 from bourseLibre.models import Suivis
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.mixins import UserPassesTestMixin
-import sys
+from hitcount.models import HitCount
+from hitcount.views import HitCountMixin
+
 
 # @login_required
 # def forum(request):
@@ -40,8 +42,8 @@ def ajouterArticle(request):
         if form.is_valid():
             article = form.save(request.user)
             url = article.get_absolute_url()
-            suffix = "" if article.estPublic else "_permacat"
-            action.send(request.user, verb='article_nouveau'+suffix, action_object=article, url=url,
+            #suffix = "_" + article.jardin.nom
+            action.send(request.user, verb='article_nouveau', action_object=article, url=url,
                         description="a ajouté un article : (Jardins Partagés) '%s'" % article.titre, type="article_jardin_partage")
             return redirect(article.get_absolute_url())
             #return render(request, 'jardinpartage/lireArticle.html', {'article': article})
@@ -64,11 +66,11 @@ class ModifierArticle(UpdateView):
         self.object = form.save()
         self.object.date_modification = now()
         self.object.save()
-        url = self.object.get_absolute_url()
-        suffix = "_permacat" if not self.object.estPublic else ""
-        action.send(self.request.user, verb='article_modifier'+suffix, action_object=self.object, url=url,
-                     description="a modifié l'article : (Jardins Partagés) '%s'" % self.object.titre)
-        #envoi_emails_articleouprojet_modifie(self.object, "L'article " +  self.object.titre + "a été modifié")
+        if not self.object.estArchive:
+            url = self.object.get_absolute_url()
+            action.send(self.request.user, verb='article_modifier', action_object=self.object, url=url,
+                         description="a modifié l'article : (Jardins Partagés) '%s'" % self.object.titre)
+
         return HttpResponseRedirect(self.get_success_url())
 
 
@@ -87,14 +89,16 @@ class SupprimerArticle(DeleteView):
 @user_passes_test(is_inscrit, login_url='/jardins/accepter_participation')
 def lireArticle(request, slug):
     article = get_object_or_404(Article, slug=slug)
-    if not article.estPublic and not request.user.is_permacat:
-        return render(request, 'notPermacat.html',)
+    if not article.est_autorise(request.user):
+        return render(request, 'notMembre.html', {'asso':article.asso})
 
     commentaires = Commentaire.objects.filter(article=article).order_by("date_creation")
     dates = Evenement.objects.filter(article=article).order_by("start_time")
 
     actions = action_object_stream(article)
 
+    hit_count = HitCount.objects.get_for_object(article)
+    hit_count_response = HitCountMixin.hit_count(request, hit_count)
     form = CommentaireArticleForm(request.POST or None)
     if form.is_valid():
         comment = form.save(commit=False)
@@ -106,10 +110,10 @@ def lireArticle(request, slug):
             article.save(sendMail=False)
             comment.save()
             url = article.get_absolute_url()+"#idConversation"
-            suffix = "_permacat" if not article.estPublic else ""
-            action.send(request.user, verb='article_message'+suffix, action_object=article, url=url,
+            #suffix = "_" + article.asso.nom
+            action.send(request.user, verb='article_message', action_object=article, url=url,
                         description="a réagi à l'article: (Jardins Partagés) '%s'" % article.titre, type="article_jardin_partage")
-            #envoi_emails_articleouprojet_modifie(article, request.user.username + " a réagit à l'article: " +  article.titre)
+                #envoi_emails_articleouprojet_modifie(article, request.user.username + " a réagit à l'article: " +  article.titre)
         return redirect(request.path)
 
     return render(request, 'jardinpartage/lireArticle.html', {'article': article, 'form': form, 'commentaires':commentaires, 'dates':dates, 'actions':actions},)
@@ -135,41 +139,34 @@ class ListeArticles(UserPassesTestMixin, ListView):
     def get_queryset(self):
         params = dict(self.request.GET.items())
 
-        if "archives" in params and params['archives']:
-            qs = Article.objects.filter(estArchive=True)
-        else:
-            qs = Article.objects.filter(estArchive=False)
-
-        if not self.request.user.is_authenticated or not self.request.user.is_permacat:
-            qs = qs.filter(estPublic=True)
+        qs = Article.objects.all()
 
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])
         if "categorie" in params:
             qs = qs.filter(categorie=params['categorie'])
-        if "permacat" in params  and self.request.user.is_permacat:
-            if params['permacat'] == "True":
-                qs = qs.filter(estPublic=False)
-            else:
-                qs = qs.filter(estPublic=True)
 
         if "ordreTri" in params:
             qs = qs.order_by(params['ordreTri'])
         else:
-            qs = qs.order_by('-date_dernierMessage', '-date_creation', 'categorie', 'auteur')
+            qs = qs.order_by( '-date_creation', '-date_dernierMessage', 'categorie', 'auteur')
 
-        return qs
+        self.qs = qs
+        return qs.filter(estArchive=False)
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
 
+        context['list_archive'] = self.qs.filter(estArchive=True)
         # context['producteur_list'] = Profil.objects.values_list('username', flat=True).distinct()
         context['auteur_list'] = Article.objects.order_by('auteur').values_list('auteur__username', flat=True).distinct()
         cat= Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
         context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
         context['typeFiltre'] = "aucun"
         context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="articles_jardin")
+
+        context['jardin_list'] = [(x[0], x[1]) for x in Choix.jardins_ptg]
 
         context['ordreTriPossibles'] = {
                                            "date de création":'-date_creation',
@@ -193,6 +190,72 @@ class ListeArticles(UserPassesTestMixin, ListView):
             context['typeFiltre'] = "ordreTri"
         return context
 
+
+
+class ListeArticles_jardin(ListeArticles):
+
+    def get_queryset(self):
+        params = dict(self.request.GET.items())
+
+        qs = Article.objects.all()
+
+        #nom_jardin = [x[1] for x in Choix.jardins_ptg if x[0]==self.kwargs["jardin"]][0]
+        if self.kwargs["jardin"] != "0":
+            qs = qs.filter(jardin=self.kwargs["jardin"])
+
+        if "auteur" in params:
+            qs = qs.filter(auteur__username=params['auteur'])
+        if "categorie" in params:
+            qs = qs.filter(categorie=params['categorie'])
+
+        if "ordreTri" in params:
+            qs = qs.order_by(params['ordreTri'])
+        else:
+            qs = qs.order_by( '-date_creation', '-date_dernierMessage', 'categorie', 'auteur')
+
+        self.qs = qs
+        return qs.filter(estArchive=False)
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+
+        context['list_archive'] = self.qs.filter(estArchive=True)
+        # context['producteur_list'] = Profil.objects.values_list('username', flat=True).distinct()
+        qs =  Article.objects.all()
+        if self.kwargs["jardin"] != "0":
+            qs = qs.filter(jardin=self.kwargs["jardin"])
+        context['auteur_list'] = qs.order_by('auteur').values_list('auteur__username', flat=True).distinct()
+        cat = Article.objects.all().order_by('categorie').values_list('categorie', flat=True).distinct()
+        context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
+        context['jardin_list'] = [(x[0], x[1]) for x in Choix.jardins_ptg]
+        nom_jardin = [x[1] for x in Choix.jardins_ptg if x[0]==self.kwargs["jardin"]]
+        context['jardin_courant'] = nom_jardin[0]
+        context['typeFiltre'] = "aucun"
+        context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="articles")
+
+        context['ordreTriPossibles'] = {
+                                           "date de création":'-date_creation',
+                                           "date de la dernière modification":'-date_modification',
+                                            "titre": 'titre' }
+
+        if 'auteur' in self.request.GET:
+            context['typeFiltre'] = "auteur"
+        if 'categorie' in self.request.GET:
+            context['typeFiltre'] = "categorie"
+            try:
+                context['categorie_courante'] = [x[1] for x in Choix.type_annonce if x[0] == self.request.GET['categorie']][0]
+            except:
+                context['categorie_courante'] = ""
+
+
+        if 'permacat' in self.request.GET:
+            context['typeFiltre'] = "permacat"
+        if 'archives' in self.request.GET:
+            context['typeFiltre'] = "archives"
+        if 'ordreTri' in self.request.GET:
+            context['typeFiltre'] = "ordreTri"
+        return context
 
 
 # @login_required

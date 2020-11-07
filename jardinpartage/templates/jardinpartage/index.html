@@ -51,11 +51,6 @@
         </a>
    </li>
                 <li class="nav-item dropdown">
-        <a href="?archives=True">
-            <button class="btn btn-block {% if typeFiltre == 'archives' %}btn-primary{%else%}btn-light {%endif%}">Archives </button>
-        </a>
-            </li>
-                <li class="nav-item dropdown">
              <button type="button" class="btn btn-block {% if request.GET.auteur %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                data-target = "#idAuteur">
                 {% if request.GET.auteur %} Auteur: {{request.GET.auteur}} {%else%}Auteur{%endif%}
@@ -68,7 +63,7 @@
             </li>
 
 
-        {% if request.user.is_permacat %}
+        {% if request.user.adherent_permacat %}
 
                 <li class="nav-item dropdown">
              <button type="button" class="btn btn-block {% if request.GET.permacat %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -123,23 +118,7 @@
             </a>
 </div>
 </div>
-    {%if not request.user.is_permacat %}
-<p><small>(vous n'avez pas encore accès aux articles "Permacat"... Rejoignez-nous !)</small></p>
-    {%endif%}
 {%endblock%}
 
 {% endcomment %}
-{% block content %}
 
-<div class="infinite-container">
-    {% for article in article_list %}
-    <div class="infinite-item">
-            {% include "jardinpartage/article_template.html" with article=article %}
-    <hr>
-    </div>
-
-    {% endfor %}
-</div>
-{%include 'pagination.html' %}
-
-{% endblock %}

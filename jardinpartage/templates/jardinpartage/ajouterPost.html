@@ -16,11 +16,7 @@
 	{% csrf_token %} <input type="hidden" name="Article"
 		value="{{ article }}"> {% include 'form_template.html'%}
 </form>
-        <script type="text/javascript">
-        {% if not request.user.is_permacat %}
-               var isPublic = document.getElementById('id_estPublic').style.visibility = "hidden";
-        {%endif%}
-    </script>
+
 </div>
     </div>
 {% endblock %}

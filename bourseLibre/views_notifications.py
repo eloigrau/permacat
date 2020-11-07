@@ -18,21 +18,39 @@ from django.core import mail
 @login_required
 def getNotifications(request, nbNotif=10, orderBy="-timestamp"):
     tampon = nbNotif * 5
+    salons = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_Public')|Q(verb='envoi_salon_public'))
+    articles = Action.objects.filter(Q(verb='article_nouveau') | Q(verb='article_nouveau_Public') | Q(verb='article_message') | Q(verb='article_message_Public') |Q(verb='article_nouveau_public') | Q(verb='article_message_public') | Q(verb='article_modifier_Public')| Q(verb='article_modifier')).order_by(orderBy)
+    projets = Action.objects.filter(Q(verb='projet_nouveau') | Q(verb='projet_nouveau_Public') | Q(verb='projet_message')|Q(verb='projet_message_Public')| Q(verb='projet_nouveau_public') | Q(verb='projet_message_public') |Q(verb='projet_modifier') |  Q(verb='projet_modifier_Public')).order_by(orderBy)
+    offres = Action.objects.filter(Q(verb='ajout_offre')|  Q(verb='ajout_offre_Public')).order_by(orderBy)
+    suffrages = Action.objects.filter(Q(verb='suffrage_ajout_Public') | Q(verb='suffrage_ajout')).order_by(orderBy)
 
-    if request.user.is_permacat:
-        salons      = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_permacat')).order_by(orderBy)[:tampon]
-        articles    = Action.objects.filter(Q(verb__startswith='article')).order_by(orderBy)[:tampon]
-        projets     = Action.objects.filter(Q(verb__startswith='projet')).order_by(orderBy)[:tampon]
-        offres      = Action.objects.filter(Q(verb='ajout_offre') | Q(verb='ajout_offre_permacat')).order_by(orderBy)[:tampon]
-        suffrages   = Action.objects.filter(Q(verb='suffrage_ajout') | Q(verb='suffrage_ajout_permacat')).order_by(orderBy)[:tampon]
-    else:
-        salons      = Action.objects.filter(Q(verb='envoi_salon')).order_by(orderBy)[:tampon]
-        articles    = Action.objects.filter(Q(verb='article_nouveau') | Q(verb='article_message')| Q(verb='article_modifier')).order_by(orderBy)[:tampon]
-        projets     = Action.objects.filter(Q(verb='projet_nouveau') | Q(verb='projet_message')| Q(verb='projet_modifier')).order_by(orderBy)[:tampon]
-        offres      = Action.objects.filter(Q(verb='ajout_offre')).order_by(orderBy)[:tampon]
-        suffrages   = Action.objects.filter(Q(verb='suffrage_ajout')).order_by(orderBy)[:tampon]
+    if request.user.adherent_permacat:
+        salons     = salons | Action.objects.filter((Q(verb__startswith='envoi_salon') & Q(verb__icontains='Permacat')) | (Q(verb__startswith='envoi_salon_permacat')| (Q(verb__startswith='envoi_salon_pc'))))
+        articles   = articles | Action.objects.filter(Q(verb__startswith='article') & (Q(verb__icontains='Permacat') | Q(verb__icontains='permacat')| Q(verb__icontains='pc')))
+        projets    = projets | Action.objects.filter(Q(verb__startswith='projet') & (Q(verb__icontains='Permacat') | Q(verb__icontains='permacat')| Q(verb__icontains='pc')))
+        offres     = offres | Action.objects.filter((Q(verb__startswith='ajout_offre') & Q(verb__icontains='Permacat') )| Q(verb='ajout_offre_permacat')| Q(verb='ajout_offre_pc'))
+        suffrages  = suffrages | Action.objects.filter((Q(verb__startswith='suffrage_ajout') & Q(verb__icontains='Permacat')) | Q(verb='suffrage_ajout_permacat')| Q(verb='suffrage_ajout_pc'))
 
-    #fiches = Action.objects.filter(Q(verb='fiche_nouveau')|Q(verb='fiche_ajouter_atelier')|Q(verb='fiche_modifier')|Q(verb='fiche_atelier_modifier')|Q(verb='fiche_message'))[:tampon]
+   # if request.user.adherent_rtg:
+    ##    salons     = salons | Action.objects.filter(Q(verb__startswith='envoi_salon') & Q(verb__icontains='rtg'))
+    #    articles   = articles | Action.objects.filter(Q(verb__startswith='article') & Q(verb__icontains='rtg'))
+     #   projets    = projets | Action.objects.filter(Q(verb__startswith='projet') & Q(verb__icontains='rtg'))
+    #    offres     = offres | Action.objects.filter(Q(verb__startswith='ajout_offre') & Q(verb__icontains='rtg'))
+     #   suffrages  = suffrages | Action.objects.filter(Q(verb__startswith='suffrage_ajout') & Q(verb__icontains='rtg'))
+
+    if request.user.adherent_ga:
+        salons     = salons | Action.objects.filter(Q(verb__startswith='envoi_salon') & Q(verb__icontains='ga'))
+        articles   = articles | Action.objects.filter(Q(verb__startswith='article') & Q(verb__icontains='ga'))
+        projets    = projets | Action.objects.filter(Q(verb__startswith='projet') & Q(verb__icontains='ga'))
+        offres     = offres | Action.objects.filter(Q(verb__startswith='ajout_offre') & Q(verb__icontains='ga'))
+        suffrages  = suffrages | Action.objects.filter(Q(verb__startswith='suffrage_ajout') & Q(verb__icontains='ga'))
+
+    salons = salons.distinct().order_by(orderBy)[:tampon]
+    articles = articles.distinct().order_by(orderBy)[:tampon]
+    projets = projets.distinct().order_by(orderBy)[:tampon]
+    offres = offres.distinct().order_by(orderBy)[:tampon]
+    suffrages = suffrages.distinct().order_by(orderBy)[:tampon]
+
     fiches = Action.objects.filter(verb__startswith='fiche').order_by(orderBy)[:tampon]
     ateliers = Action.objects.filter(Q(verb__startswith='atelier')|Q(verb='')).order_by(orderBy)[:tampon]
     conversations = (any_stream(request.user).filter(Q(verb='envoi_salon_prive', )) | Action.objects.filter(
@@ -52,25 +70,23 @@ def getNotifications(request, nbNotif=10, orderBy="-timestamp"):
 
 @login_required
 def getNotificationsParDate(request, limiter=True, orderBy="-timestamp"):
-    if request.user.is_permacat:
-        actions      = Action.objects.filter( \
-            Q(verb='envoi_salon')| Q(verb='envoi_salon_permacat')|
-            Q(verb__startswith='article')|Q(verb__startswith='projet')|
+
+    actions = Action.objects.filter( \
+         Q(verb='article_nouveau') | Q(verb='article_message')|
+         Q(verb='article_modifier')|Q(verb='projet_nouveau') |
+         Q(verb='projet_message')| Q(verb='projet_modifier')|
+            Q(verb='envoi_salon')| Q(verb__icontains='public')|Q(verb__icontains='Public')|
             Q(verb__startswith='fiche')|Q(verb__startswith='atelier')|
             Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)|
-            Q(verb__startswith='inscription')|Q(verb='suffrage_ajout') |Q(verb='suffrage_ajout_permacat') \
-        ).order_by(orderBy)
-    else:
-        actions      = Action.objects.filter(Q(verb='envoi_salon')|
-                                             Q(verb='article_nouveau') | Q(verb='article_message')|
-                                             Q(verb='article_modifier')|Q(verb='projet_nouveau') |
-                                             Q(verb='projet_message')| Q(verb='projet_modifier')|
-                                             Q(verb='ajout_offre')|Q(verb__startswith='fiche')|
-                                             Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)|
-                                             Q(verb__startswith='inscription') | Q(verb='suffrage_ajout') |\
-                                             Q(verb__startswith='atelier')|Q(verb__startswith='inscript') |
-                                             Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)
-        ).order_by(orderBy)
+            Q(verb__startswith='inscription'))
+    if request.user.adherent_permacat:
+        actions = actions | Action.objects.filter(Q(verb__icontains='Permacat') | Q(verb__icontains='permacat')| Q(verb__icontains='pc'))
+    #if request.user.adherent_rtg:
+     #   actions = actions | Action.objects.filter(Q(verb__icontains='Ramene ta graine'))
+    if request.user.adherent_ga:
+        actions = actions | Action.objects.filter(Q(verb__icontains='ga'))
+
+    actions = actions.distinct().order_by(orderBy)
 
     if limiter:
         actions=actions[:100]
@@ -107,7 +123,10 @@ def notifications_news_regroup(request):
     dicoTexte['dicoarticles'] = {}
     for action in articles:
         if request.user.date_notifications < action.timestamp:
-            clef = action.action_object.titre
+            try:
+                clef = "["+action.action_object.asso.nom+"] " + action.action_object.titre
+            except:
+                clef = action.action_object.titre
             if not clef in dicoTexte['dicoarticles']:
                 dicoTexte['dicoarticles'][clef] = [action, ]
             else:
@@ -116,11 +135,11 @@ def notifications_news_regroup(request):
     htmlArticles = ""
     for titre_article, actions in dicoTexte['dicoarticles'].items():
         htmlArticles += "<li class='list-group-item'><a href='" + actions[0].data['url'] + "'>"
-        htmlArticles += " <div class='textcenter'><span  style='font-variant: small-caps ;'>" + titre_article
+        htmlArticles += " <div class=''><span  style='font-variant: small-caps ;'>"
         if "(Jardins Partagés)" in actions[0].description:
-            htmlArticles += "</span> <small> &nbsp;(Jardins Partagés)</small>"
+            htmlArticles += "[Jardins Partagés] &nbsp;"+ titre_article +"</span>"
         else:
-            htmlArticles += "</span>"
+            htmlArticles += titre_article+"</span>"
         htmlArticles +=" </div><ul style='list-style-type:none'>"
 
         for action in actions :
@@ -151,7 +170,7 @@ def notifications_news_regroup(request):
     htmlProjets = ""
     for titre_projet, actions in dicoTexte['dicoprojets'].items():
         htmlProjets += "<li class='list-group-item'><a href='" + actions[0].data['url'] + "'>"
-        htmlProjets += " <div  class='textcenter' ><spanstyle='font-variant: small-caps ;'>" + titre_projet
+        htmlProjets += " <div  class='' ><spanstyle='font-variant: small-caps ;'>" + titre_projet
         if "(Jardins Partagés)" in actions[0].description:
             htmlProjets += "</span> (Jardins Partagés)"
         else:
@@ -207,10 +226,14 @@ def getInfosJourPrecedent(request, nombreDeJours):
     timestamp_from = datetime.now().date() - timedelta(days=nombreDeJours)
     timestamp_to = datetime.now().date() - timedelta(days=nombreDeJours - 1)
 
-    if request.user.is_permacat:
-        articles    = Action.objects.filter(Q(verb='article_nouveau_permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) | Q(verb='article_nouveau',timestamp__gte = timestamp_from, timestamp__lte = timestamp_to,))
-        projets     = Action.objects.filter(Q(verb='projet_nouveau_permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) |Q(verb='projet_nouveau', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,))
-        offres      = Action.objects.filter(Q(verb='ajout_offre', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) | Q(verb='ajout_offre_permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,))
+    if request.user.adherent_permacat:
+        articles    = Action.objects.filter(Q(verb='article_nouveau_permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) |
+                                            Q(verb='article_nouveau_Permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) |
+                                            Q(verb='article_nouveau',timestamp__gte = timestamp_from, timestamp__lte = timestamp_to,))
+        projets     = Action.objects.filter(Q(verb='projet_nouveau_permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) |
+                                            Q(verb='projet_nouveau_Permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) |
+                                            Q(verb='projet_nouveau', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,))
+        offres      = Action.objects.filter(Q(verb='ajout_offre', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) | Q(verb='ajout_offre_permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) | Q(verb='ajout_offre_Permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,))
     else:
         articles    = Action.objects.filter(Q(verb='article_nouveau', timestamp__gte = timestamp_from, timestamp__lte = timestamp_to,) | Q(verb='article_modifier', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,))
         projets     = Action.objects.filter(Q(verb='projet_nouveau', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,))
@@ -263,12 +286,11 @@ def getListeMailsAlerte():
     for action in actions:
         for mail in action.data['emails']:
             if not mail in messagesParMails:
-                messagesParMails[mail] = [{'messages': [action.data['message'], ]}, ]
+                messagesParMails[mail] = [action.data['message'], ]
             else:
                 for x in messagesParMails[mail]:
-                    listeMessages = [x['messages'] for x in messagesParMails[mail]]
-                    if not action.data['message'] in str(listeMessages):
-                        messagesParMails[mail].append({'messages': [action.data['message'], ]})
+                    if not action.data['message'] in messagesParMails[mail]:
+                        messagesParMails[mail].append(action.data['message'])
 
 
     listeMails = []
@@ -278,27 +300,37 @@ def getListeMailsAlerte():
             pseudo = Profil.objects.get(email=mail).username
         except:
             pseudo = ""
-        messagetxt = "Bonjour / Bon dia " + pseudo +", Voici les dernières nouvelles des pages auxquelles vous êtes abonné.e :\n"
-        message = "<p>Bonjour / Bon dia " + pseudo +",</p><p>Voici les dernières nouvelles des pages auxquelles vous êtes abonné.e :</p><ul>"
-        for mess in messages:
-            for m in mess['messages']:
-                message += "<li>" + m + "</li>"
-                try:
-                    r = re.search("htt(.*?)>", m).group(1)[:-1]
-                    messagetxt += re.sub('<[^>]+>', '', m) + " : htt" + r+ "\n"
-                except:
-                    messagetxt += re.sub('<[^>]+>', '', m) + "\n"
+        messagetxt = "Bonjour / Bon dia, Voici les dernières nouvelles des pages auxquelles vous êtes abonné.e :\n"
+        message = "<p>Bonjour / Bon dia,</p><p>Voici les dernières nouvelles des pages auxquelles vous êtes abonné.e :</p><ul>"
+        for m in messages:
+            message += "<li>" + m + "</li>"
+            try:
+                r = re.search("htt(.*?)>", m).group(1)[:-1]
+                messagetxt += re.sub('<[^>]+>', '', m) + " : htt" + r+ "\n"
+            except:
+                messagetxt += re.sub('<[^>]+>', '', m) + "\n"
 
 
-        messagetxt += "\nFins Aviat !\n---------------\nPour voir toute l'activité sur le site, consultez les Notifications : https://permacat.herokuapp.com/notifications/news/ \n" + \
+        messagetxt += "\nFins Aviat !\n---------------\nPour voir toute l'activité sur le site, consultez les Notifications : https://permacat.herokuapp.com/notifications/activite/ \n" + \
                    "Pour vous désinscrire des alertes mails, barrez les cloches sur le site (ou consultez la FAQ : https://permacat.herokuapp.com/faq/) "
-        message += "</ul><br>"
-        message += "<p>Fins Aviat !</p><hr>" + \
-                   "<p><small>Pour voir toute l'activité sur le site, consultez les <a href='https://permacat.herokuapp.com/notifications/news/'>Notifications </a> </small>. " + \
+        message += "</ul><br><p>Fins Aviat !</p><hr>" + \
+                   "<p><small>Pour voir toute l'activité sur le site, consultez les <a href='https://permacat.herokuapp.com/notifications/activite/'>Notifications </a> </small>. " + \
                    "<small>Pour vous désinscrire des alertes mails, barrez les cloches sur le site (ou consultez la <a href='https://permacat.herokuapp.com/faq/'>FAQ</a>)</small></p>"
 
         listeMails.append((titre, messagetxt, message, SERVER_EMAIL, [mail,]))
-    return listeMails
+
+
+    seen = set()
+    listeMails_ok = []
+    for x in listeMails:
+        if x[1] not in seen:
+            seen.add(x[1])
+            listeMails_ok.append(x)
+        else:
+            i = next((i for i, colour in enumerate(listeMails_ok) if x[1] in colour), None)
+            listeMails_ok[i][4].append(x[4][0])
+
+    return listeMails_ok
 
 def supprimerActionsEmails():
     actions = Action.objects.filter(verb='emails')
@@ -328,7 +360,8 @@ def send_mass_html_mail(datatuple, fail_silently=False, auth_user=None,
         fail_silently=fail_silently,
     )
     messages = [
-        EmailMultiAlternatives(subject, message, sender, recipient,
+        EmailMultiAlternatives(subject, message, sender, to=[sender,],
+                               bcc=recipient,
                                alternatives=[(html_message, 'text/html')],
                                connection=connection)
         for subject, message, html_message, sender, recipient in datatuple
@@ -338,10 +371,9 @@ def send_mass_html_mail(datatuple, fail_silently=False, auth_user=None,
 
 def envoyerEmailsRequete(request):
     listeMails = getListeMailsAlerte()
-
     send_mass_html_mail(listeMails, fail_silently=False)
     supprimerActionsEmails()
-    return redirect('voirEmails')
+    return redirect('voirEmails', )
 
 def envoyerEmails():
     listeMails = getListeMailsAlerte()

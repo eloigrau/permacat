@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from .models import  Adresse, Produit, MessageGeneralPermacat, Panier, Item, Adhesion_permacat, Message, MessageGeneral, Conversation, InscriptionNewsletter
-from blog.models import Article, Projet, Commentaire, CommentaireProjet, Evenement
+from .models import  Adresse, Produit, Panier, Item, Adhesion_permacat, Asso, MessageGeneral, Conversation, InscriptionNewsletter
+from blog.models import Article, Projet, Commentaire, CommentaireProjet, Evenement, EvenementAcceuil
 from jardinpartage.models import Article as Art_jardin, Commentaire as Comm_jardin
 from fiches.models import Fiche, Atelier as atelier_fiche, CommentaireFiche
 from ateliers.models import Atelier, CommentaireAtelier, InscriptionAtelier
@@ -18,13 +18,13 @@ class CustomUserAdmin(UserAdmin):
     add_form = ProfilCreationForm
     form = ProducteurChangeForm_admin
     model = Profil
-    list_display = ['email', 'username',  'date_notifications', 'last_login','statut_adhesion', 'statut_adhesion_rtg',
-                    'inscrit_newsletter', 'date_registration']
+    list_display = ['email', 'username',  'last_login', 'date_notifications', 'adherent_permacat', 'adherent_ga',
+                    'inscrit_newsletter', ]
 
     readonly_fields = ('date_registration','last_login','adresse')
 
     fieldsets = (
-        (None, {'fields': ('username','description','competences','pseudo_june','statut_adhesion','statut_adhesion_rtg','adresse', 'inscrit_newsletter', 'cotisation_a_jour', 'is_jardinpartage', 'date_notifications')}),
+        (None, {'fields': ('username','description','competences','pseudo_june','statut_adhesion','statut_adhesion_ga', 'adherent_permacat', 'adherent_ga', 'adresse', 'inscrit_newsletter', 'cotisation_a_jour', 'is_jardinpartage', 'date_notifications')}),
         (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
                                        'groups', 'user_permissions')}),
@@ -41,26 +41,29 @@ class MyModelAdmin(admin.ModelAdmin):
         return u", ".join(o.name for o in obj.tags.all())
 
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('titre', 'estPublic', 'estArchive')
+        list_display = ('titre', 'asso', 'categorie', 'estArchive', )
+class Article_jardinAdmin(admin.ModelAdmin):
+        list_display = ('titre', 'jardin', 'categorie', 'estArchive', )
 class ProjetAdmin(admin.ModelAdmin):
     list_display = ('titre', 'estPublic', 'estArchive')
 class ProduitAdmin(admin.ModelAdmin):
-    list_display = ('nom_produit', 'categorie', 'estUneOffre', 'estPublique', 'unite_prix')
+    list_display = ('nom_produit', 'categorie', 'estUneOffre', 'asso', 'unite_prix')
 class Adhesion_permacatAdmin(admin.ModelAdmin):
     list_display = ('user', 'date_cotisation', 'montant')
 
 admin.site.register(Article, ArticleAdmin)
-admin.site.register(Art_jardin, ArticleAdmin)
+admin.site.register(Art_jardin, Article_jardinAdmin)
 admin.site.register(Evenement)
+admin.site.register(EvenementAcceuil)
 admin.site.register(Projet, ProjetAdmin)
 admin.site.register(Profil, CustomUserAdmin)
 
 admin.site.register(Adresse)
+admin.site.register(Asso)
 admin.site.register(Produit, ProduitAdmin)
 admin.site.register(Panier)
 admin.site.register(Item)
 admin.site.register(MessageGeneral)
-admin.site.register(MessageGeneralPermacat)
 admin.site.register(InscriptionNewsletter)
 admin.site.register(Adhesion_permacat, Adhesion_permacatAdmin)
 

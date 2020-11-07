@@ -6,13 +6,14 @@ from django_summernote.widgets import SummernoteWidget
 from blog.forms import SummernoteWidgetWithCustomToolbar
 from django.utils.timezone import now
 from bourseLibre.settings import LOCALL
+from bourseLibre.models import Asso
 
 class SuffrageForm(forms.ModelForm):
-    estPublic = forms.ChoiceField(choices=((1, "Suffrage public"), (0, "Suffrage Permacat")), label='', required=True, )
+    asso = forms.ModelChoiceField(queryset=Asso.objects.all(), required=True, label="Suffrage public ou réservé aux adhérents de l'asso :",)
 
     class Meta:
         model = Suffrage
-        fields = ['type_vote', 'question', 'contenu',  'estAnonyme', 'start_time', 'end_time', 'estPublic']
+        fields = ['type_vote', 'asso', 'question', 'contenu',  'estAnonyme', 'start_time', 'end_time']
         widgets = {
             'contenu': SummernoteWidget(),
               'start_time': forms.DateInput(attrs={'type': 'date'}),
@@ -45,8 +46,6 @@ class SuffrageForm(forms.ModelForm):
             instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
 
         instance.auteur = userProfile
-        if not userProfile.is_permacat:
-            instance.estPublic = True
 
         instance.save(userProfile)
 
@@ -54,21 +53,15 @@ class SuffrageForm(forms.ModelForm):
 
 
 class SuffrageChangeForm(forms.ModelForm):
-    estPublic = forms.ChoiceField(choices=((1, "Suffrage public"), (0, "Suffrage réservée aux adhérents")), label='', required=True)
 
     class Meta:
         model = Suffrage
-        fields = ['type_vote', 'contenu', 'start_time', 'end_time', 'estAnonyme', 'estPublic', 'estArchive']
+        fields = ['type_vote', 'asso', 'contenu', 'start_time', 'end_time', 'estAnonyme',  'estArchive']
         widgets = {
             'contenu': SummernoteWidget(),
               'start_time': forms.DateInput(attrs={'class':"date", }),
               'end_time': forms.DateInput(attrs={'class':'date', }),
         }
-
-    def __init__(self, *args, **kwargs):
-        super(SuffrageChangeForm, self).__init__(*args, **kwargs)
-        self.fields["estPublic"].choices=((1, "Suffrage public"), (0, "Suffrage réservé aux adhérents")) if kwargs['instance'].estPublic else ((0, "Suffrage réservé aux adhérents"),(1, "Suffrage public"), )
-
 
     def save(self, userProfile):
         instance = super(SuffrageChangeForm, self).save(commit=False)

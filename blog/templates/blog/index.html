@@ -47,29 +47,24 @@
             <ul class="nav navbar-nav justify-content-center ">
 
                 <li class="nav-item dropdown">
-        <a href="{% url 'blog:index' %}">
-            <button class="btn btn-block {% if typeFiltre == 'aucun' %}btn-primary {%endif%}">Tout </button>
-        </a>
-   </li>
+                    <a href="{% url 'blog:index' %}">
+                        <button class="btn btn-block {% if typeFiltre == 'aucun' %}btn-primary {%endif%}">Tout </button>
+                    </a>
+                </li>
                 <li class="nav-item dropdown">
-        <a href="?archives=True">
-            <button class="btn btn-block {% if typeFiltre == 'archives' %}btn-primary{%else%}btn-light {%endif%}">Archives </button>
-        </a>
-            </li>
-                <li class="nav-item dropdown">
-             <button type="button" class="btn btn-block {% if request.GET.auteur %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-               data-target = "#idAuteur">
-                {% if request.GET.auteur %} Auteur: {{request.GET.auteur}} {%else%}Auteur{%endif%}
-                </button>
-            <div class="dropdown-menu"  aria-labelledby="menuAuteur"  id=idAuteur">
-                {% for auteur in auteur_list %}
-                  <a class="dropdown-item" href="?auteur={{auteur}}">{{auteur}}</a>
-                {% endfor %}
-            </div>
-            </li>
+                 <button type="button" class="btn btn-block {% if request.GET.auteur %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                   data-target = "#idAuteur">
+                    {% if request.GET.auteur %} Auteur: {{request.GET.auteur}} {%else%}Auteur{%endif%}
+                    </button>
+                <div class="dropdown-menu"  aria-labelledby="menuAuteur"  id=idAuteur">
+                    {% for auteur in auteur_list %}
+                      <a class="dropdown-item" href="?auteur={{auteur}}">{{auteur}}</a>
+                    {% endfor %}
+                </div>
+                </li>
 
 
-        {% if request.user.is_permacat %}
+        {% if request.user.adherent_permacat %}
 
                 <li class="nav-item dropdown">
              <button type="button" class="btn btn-block {% if request.GET.permacat %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -105,28 +100,27 @@
 <div class="col-sm-12 textcenter">
 
         <a href="{% url 'blog:ajouterNouvelArticle' %}">
-        <button type="button" class="btn  btn-success" >
+        <button type="button" class="btn btn-success" >
                 <i class="fa fa-plus"></i> Ajouter un article
             </button>
             </a>&ensp;
     &nbsp;
         <a href="{% url 'blog:suivre_articles' %}">
-
-        {% if request.user|is_following:suivis %}
-        <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné : Cliquez pour arreter de recevoir un mail à chaque nouvel article">
-             {% fontawesome_icon 'bell' %}
-        </button>
-        {% else %}
-        <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné : Cliquez pour recevoir un mail à chaque nouvel article">
-             {% fontawesome_icon 'bell-slash' %}
-        </button>
-        {% endif %}
-            </a>
+            {% if request.user|is_following:suivis %}
+            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné : Cliquez pour arreter de recevoir un mail à chaque nouvel article">
+                 {% fontawesome_icon 'bell' %}
+            </button>
+            {% else %}
+            <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné : Cliquez pour recevoir un mail à chaque nouvel article">
+                 {% fontawesome_icon 'bell-slash' %}
+            </button>
+            {% endif %}
+        </a>
 </div>
 </div>
-    {%if not request.user.is_permacat %}
-<p class='textcenter'><small>(vous n'avez pas encore accès aux articles 'Permacat'... Rejoignez-nous !)</small></p>
-    {%endif%}
+{%if not request.user.adherent_permacat %}
+    <p class='textcenter'><small>(vous n'avez pas encore accès aux articles 'Permacat'... Rejoignez-nous !)</small></p>
+{%endif%}
 {%endblock%}
 
 {% endcomment %}

@@ -42,8 +42,8 @@
 {% endblock %}
 {% block content %}
      <div class="boxitem_droite">
-                <span class="badge {% if suffrage.estPublic%}badge-warning{%else%} badge-success {%endif%}">
-                Suffrage {%if suffrage.estPublic%} public {%else%}  Permacat  {%endif%}
+                <span class="badge {% if suffrage.estPublic%}badge-success{%else%} badge-warning {%endif%}">
+                Suffrage {{suffrage.asso}}
             </span>
             {% if suffrage.estArchive%}
             <span class="badge badge-secondary">

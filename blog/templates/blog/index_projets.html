@@ -30,11 +30,6 @@
             <button class="btn btn-block {% if typeFiltre == 'aucun' %}btn-primary {%endif%}">Tout </button>
         </a>
    </li>
-    <li class="nav-item dropdown">
-        <a href="?archives=True">
-            <button class="btn btn-block {% if typeFiltre == 'archives' %}btn-primary{%else%}btn-light {%endif%}">Archives </button>
-        </a>
-   </li>
             <li class="nav-item dropdown">
                  <button type="button" class="btn btn-block {% if request.GET.auteur %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                    data-target = "#idAuteur">
@@ -59,7 +54,7 @@
                 </div>
             </li>
 
-        {% if request.user.is_permacat %}
+        {% if request.user.adherent_permacat %}
                 <li class="nav-item dropdown">
              <button type="button" class="btn  btn-block {% if request.GET.permacat %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                data-target = "#idPermacat">
@@ -109,7 +104,7 @@
                 </a>
 </div>
 </div>
-    {%if not request.user.is_permacat %}
+    {%if not request.user.adherent_permacat %}
 <p><small>(vous n'avez pas encore accès aux projets "Permacat"... Rejoignez-nous !)</small></p>
     {%endif%}
 </div>
@@ -122,10 +117,39 @@
             {% include "blog/projet_template.html" with projet=projet %}
     <hr>
     </div>
-    {% empty %}
-    <p>Aucun projet pour l'instant.</p>
     {% endfor %}
 </div>
 {%include 'pagination.html' %}
 
+{% if list_archive %}
+    <div class="textcenter">
+        <button id="btn-archives"  type="button" class="btn btn-lg" onclick="toggle_visibility('archives');" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour afficher les archives">
+            Afficher les archives
+        </button>
+    </div>
+    <div id="archives" style='display:none;'>
+        <hr>
+            {% for projet in list_archive %}
+            <div class="infinite-item">
+                {% include "blog/projet_template.html" with projet=projet %}
+            <hr>
+            </div>
+    {% endfor %}
+    </div>
+{% endif %}
+
+<script>
+    function toggle_visibility(id) {
+       var e = document.getElementById(id);
+       var btn = document.getElementById("btn-archives");
+       if(e.style.display == 'block'){
+          e.style.display = 'none';
+          btn.textContent = "Afficher les archives";
+      }
+       else{
+          e.style.display = 'block';
+          btn.textContent = "Cacher les archives";
+      }
+   }
+</script>
 {% endblock %}

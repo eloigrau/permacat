@@ -1,22 +1,20 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, Profil, Message, MessageGeneral, Choix, MessageGeneralPermacat, MessageGeneralRTG, InscriptionNewsletter
+from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, Asso, Profil, Message, MessageGeneral, Choix, InscriptionNewsletter
 from bourseLibre.captcha_local.fields import CaptchaField
 #from tinymce.widgets import TinyMCE
 from django_summernote.widgets import SummernoteWidget
 from blog.forms import SummernoteWidgetWithCustomToolbar
 from django.utils import timezone
 
-fieldsCommunsProduits = ['souscategorie', 'nom_produit',  'description', 'estUneOffre', 'estPublique',
+fieldsCommunsProduits = ['souscategorie', 'nom_produit',  'description', 'estUneOffre', 'asso',
                 'unite_prix', 'prix',  'type_prix', 'date_debut', 'date_expiration', ]
-
-
 
 
 class ProduitCreationForm(forms.ModelForm):
     #description = TinyMCE(attrs={'cols': 80, 'rows': 20})
     estUneOffre = forms.ChoiceField(choices=((1, "Offre"), (0, "Demande")), label='', required=True)
-    estPublique = forms.ChoiceField(choices=((1, "Annonce publique"), (0, "Annonce réservée aux adhérents")), label='', required=True)
+    asso = forms.ModelChoiceField(queryset=Asso.objects.all(), required=True, label="Offre publique ou réservée aux adhérents de l'asso :",)
 
     class Meta:
         model = Produit
@@ -43,6 +41,14 @@ class ProduitCreationForm(forms.ModelForm):
                 )
         return self.cleaned_data
 
+class ProduitModifierForm(ProduitCreationForm):
+
+    def __init__(self, *args, **kwargs):
+        super(ProduitModifierForm, self).__init__(*args, **kwargs)
+        self.fields["estUneOffre"].choices = ((1, "Offre"), (0, "Demande")) if kwargs[
+            'instance'].estUneOffre else ((0, "Demande"), (1, "Offre"), )
+
+
 class Produit_aliment_CreationForm(ProduitCreationForm):
 
     class Meta:
@@ -54,14 +60,9 @@ class Produit_aliment_CreationForm(ProduitCreationForm):
             'description': SummernoteWidget(),
         }
 
-class Produit_aliment_modifier_form(Produit_aliment_CreationForm):
+class Produit_aliment_modifier_form(Produit_aliment_CreationForm, ProduitModifierForm):
+    pass
 
-    def __init__(self, *args, **kwargs):
-        super(Produit_aliment_modifier_form, self).__init__(*args, **kwargs)
-        self.fields["estPublique"].choices = ((1, "Annonce publique"), (0, "Annonce réservée aux adhérents")) if kwargs[
-            'instance'].estPublique else ((0, "Annonce réservée aux adhérents"),(1, "Annonce publique"),)
-        self.fields["estUneOffre"].choices = ((1, "Offre"), (0, "Demande")) if kwargs[
-            'instance'].estUneOffre else ((0, "Demande"), (1, "Offre"), )
 
 
 class Produit_vegetal_CreationForm(ProduitCreationForm):
@@ -75,14 +76,15 @@ class Produit_vegetal_CreationForm(ProduitCreationForm):
             'description': SummernoteWidget(),
         }
 
-class Produit_vegetal_modifier_form(Produit_vegetal_CreationForm):
-
-    def __init__(self, *args, **kwargs):
-        super(Produit_vegetal_modifier_form, self).__init__(*args, **kwargs)
-        self.fields["estPublique"].choices = ((1, "Annonce publique"), (0, "Annonce réservée aux adhérents")) if kwargs[
-            'instance'].estPublique else ((0, "Annonce réservée aux adhérents"),(1, "Annonce publique"),)
-        self.fields["estUneOffre"].choices = ((1, "Offre"), (0, "Demande")) if kwargs[
-            'instance'].estUneOffre else ((0, "Demande"), (1, "Offre"), )
+class Produit_vegetal_modifier_form(Produit_vegetal_CreationForm, ProduitModifierForm):
+    pass
+    #
+    # def __init__(self, *args, **kwargs):
+    #     super(Produit_vegetal_modifier_form, self).__init__(*args, **kwargs)
+    #     self.fields["estPublique"].choices = ((1, "Annonce publique"), (0, "Annonce réservée aux adhérents")) if kwargs[
+    #         'instance'].estPublique else ((0, "Annonce réservée aux adhérents"),(1, "Annonce publique"),)
+    #     self.fields["estUneOffre"].choices = ((1, "Offre"), (0, "Demande")) if kwargs[
+    #         'instance'].estUneOffre else ((0, "Demande"), (1, "Offre"), )
 
 class Produit_service_CreationForm(ProduitCreationForm):
     class Meta:
@@ -94,15 +96,15 @@ class Produit_service_CreationForm(ProduitCreationForm):
             'description': SummernoteWidget(),
         }
 
-class Produit_service_modifier_form(Produit_service_CreationForm):
-
-    def __init__(self, *args, **kwargs):
-        super(Produit_service_modifier_form, self).__init__(*args, **kwargs)
-        self.fields["estPublique"].choices = ((1, "Annonce publique"), (0, "Annonce réservée aux adhérents")) if \
-        kwargs[
-            'instance'].estPublique else ((0, "Annonce réservée aux adhérents"), (1, "Annonce publique"),)
-        self.fields["estUneOffre"].choices = ((1, "Offre"), (0, "Demande")) if kwargs[
-            'instance'].estUneOffre else ((0, "Demande"), (1, "Offre"),)
+class Produit_service_modifier_form(Produit_service_CreationForm, ProduitModifierForm):
+    pass
+    # def __init__(self, *args, **kwargs):
+    #     super(Produit_service_modifier_form, self).__init__(*args, **kwargs)
+    #     self.fields["estPublique"].choices = ((1, "Annonce publique"), (0, "Annonce réservée aux adhérents")) if \
+    #     kwargs[
+    #         'instance'].estPublique else ((0, "Annonce réservée aux adhérents"), (1, "Annonce publique"),)
+    #     self.fields["estUneOffre"].choices = ((1, "Offre"), (0, "Demande")) if kwargs[
+    #         'instance'].estUneOffre else ((0, "Demande"), (1, "Offre"),)
 
 class Produit_objet_CreationForm(ProduitCreationForm):
     class Meta:
@@ -114,14 +116,9 @@ class Produit_objet_CreationForm(ProduitCreationForm):
             'description': SummernoteWidget(),
         }
 
-class Produit_objet_modifier_form(Produit_objet_CreationForm):
+class Produit_objet_modifier_form(Produit_objet_CreationForm, ProduitModifierForm):
+    pass
 
-    def __init__(self, *args, **kwargs):
-        super(Produit_objet_modifier_form, self).__init__(*args, **kwargs)
-        self.fields["estPublique"].choices = ((1, "Annonce publique"), (0, "Annonce réservée aux adhérents")) if kwargs[
-            'instance'].estPublique else ((0, "Annonce réservée aux adhérents"),(1, "Annonce publique"),)
-        self.fields["estUneOffre"].choices = ((1, "Offre"), (0, "Demande")) if kwargs[
-            'instance'].estUneOffre else ((0, "Demande"), (1, "Offre"), )
 
 class AdresseForm(forms.ModelForm):
     rue = forms.CharField(label="Rue", required=False)
@@ -150,6 +147,11 @@ class ProfilCreationForm(UserCreationForm):
     email = forms.EmailField(label="Email*",)
 
     statut_adhesion = forms.ChoiceField(choices=Choix.statut_adhesion, label='', required=True)
+    statut_adhesion_ga = forms.ChoiceField(choices=Choix.statut_adhesion_ga, label='', required=True)
+    #adherent_permacat = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Permacat'")
+    #adherent_rtg = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Ramène Ta Graine'")
+    #adherent_ga = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Gaïarmonie'")
+    #adherent_ame = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Animal Mieux Etre'")
     accepter_annuaire = forms.BooleanField(required=False, label="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous les inscrits")
     accepter_conditions = forms.BooleanField(required=True, label="J'ai lu et j'accepte les Conditions Générales d'Utilisation du site*",  )
     pseudo_june = forms.CharField(label="Pseudonyme dans la monnaie libre",  help_text="Si vous avez un compte en June",required=False)
@@ -162,7 +164,7 @@ class ProfilCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm):
         model = Profil
-        fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'statut_adhesion', 'inscrit_newsletter', 'accepter_annuaire',  'accepter_conditions']
+        fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'statut_adhesion', 'statut_adhesion_ga', 'inscrit_newsletter', 'accepter_annuaire',  'accepter_conditions']
         exclude = ['slug', ]
 
 
@@ -213,12 +215,12 @@ class ProducteurChangeForm_admin(UserChangeForm):
     pseudo_june = forms.CharField(label="pseudo_june",required=False)
 
     statut_adhesion = forms.ChoiceField(choices=Choix.statut_adhesion)
-    statut_adhesion_rtg = forms.ChoiceField(choices=Choix.statut_adhesion_rtg)
+    statut_adhesion_ga = forms.ChoiceField(choices=Choix.statut_adhesion_ga)
     password = None
 
     class Meta:
         model = Profil
-        fields = ['username', 'email', 'description', 'competences', 'inscrit_newsletter', 'statut_adhesion', 'statut_adhesion_rtg', 'pseudo_june', 'accepter_annuaire', 'cotisation_a_jour', 'is_jardinpartage']
+        fields = ['username', 'email', 'description', 'competences', 'inscrit_newsletter', 'statut_adhesion', 'statut_adhesion_ga', 'adherent_permacat',  'adherent_ga', 'pseudo_june', 'accepter_annuaire', 'cotisation_a_jour', 'is_jardinpartage']
 
     def __init__(self, *args, **kwargs):
         super(ProducteurChangeForm_admin, self).__init__(*args, **kwargs)
@@ -270,41 +272,18 @@ class ChercherConversationForm(forms.Form):
 class MessageGeneralForm(forms.ModelForm):
     class Meta:
         model = MessageGeneral
-        exclude = ['auteur']
+        exclude = ['auteur', 'asso']
 
         widgets = {
             'message': SummernoteWidgetWithCustomToolbar(),
         }
 
-    #def __init__(self, request, message=None, *args, **kwargs):
-    #    super(MessageGeneralForm, self).__init__(request, *args, **kwargs)
-
-
-class MessageGeneralPermacatForm(forms.ModelForm):
-
-    class Meta:
-        model = MessageGeneralPermacat
-        exclude = ['auteur']
-
-        widgets = {
-            'message': SummernoteWidgetWithCustomToolbar(),
-            }
-
-class MessageGeneralRTGForm(forms.ModelForm):
-
-    class Meta:
-        model = MessageGeneralRTG
-        exclude = ['auteur']
-
-        widgets = {
-            'message': SummernoteWidgetWithCustomToolbar(),
-            }
 
 class MessageChangeForm(forms.ModelForm):
 
     class Meta:
         model = MessageGeneral
-        exclude = ['auteur']
+        exclude = ['auteur', 'asso']
         widgets = {
             'message': SummernoteWidget(),
         }

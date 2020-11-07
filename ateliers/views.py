@@ -50,6 +50,11 @@ class ModifierAtelier(UpdateView):
     def save(self):
         return super(ModifierAtelier, self).save()
 
+    def get_form(self,*args, **kwargs):
+        form = super(ModifierAtelier, self).get_form(*args, **kwargs)
+        form.fields["asso"].choices = [x for i, x in enumerate(form.fields["asso"].choices) if
+                                        self.request.user.estMembre_str(x[1])]
+        return form
 
 class SupprimerAtelier(DeleteView):
     model = Atelier

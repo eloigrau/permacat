@@ -5,13 +5,16 @@ import itertools
 from django_summernote.widgets import SummernoteWidget
 from bourseLibre.models import Profil
 from blog.forms import SummernoteWidgetWithCustomToolbar
+from bourseLibre.models import Asso
 
 class AtelierForm(forms.ModelForm):
     referent = forms.ChoiceField(label='Référent atelier')
+    asso = forms.ModelChoiceField(queryset=Asso.objects.all(), required=True,
+                                  label="Atelier public ou réservé aux adhérents de l'asso :", )
 
     class Meta:
         model = Atelier
-        fields = ['titre', 'statut', 'categorie', 'referent', 'description', 'materiel', 'outils', 'date_atelier','heure_atelier','duree_prevue', 'tarif_par_personne']
+        fields = ['titre', 'statut', 'categorie', 'asso', 'referent', 'description', 'materiel', 'outils', 'date_atelier','heure_atelier','duree_prevue', 'tarif_par_personne']
         widgets = {
             'description': SummernoteWidget(),
             'materiel': SummernoteWidget(),
@@ -61,7 +64,7 @@ class AtelierChangeForm(forms.ModelForm):
 
     class Meta:
         model = Atelier
-        fields = [ 'titre', 'statut', 'categorie','referent', 'description', 'materiel', 'outils','date_atelier',  'heure_atelier', 'duree_prevue', 'tarif_par_personne', ]
+        fields = [ 'titre', 'statut', 'asso', 'categorie','referent', 'description', 'materiel', 'outils','date_atelier',  'heure_atelier', 'duree_prevue', 'tarif_par_personne', ]
         widgets = {
             'description': SummernoteWidget(),
             'materiel': SummernoteWidget(),

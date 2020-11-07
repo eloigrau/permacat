@@ -43,8 +43,7 @@ urlpatterns = [
     url(r'^bienvenue/$', views.bienvenue, name='bienvenue'),
     url(r'^faq/$', views.faq, name='faq'),
     url(r'^gallerie/$', views.gallerie, name='gallerie'),
-    url(r'^permacat/admin/$', views.admin_asso, name='admin_asso'),
-    url(r'^RTG/admin/$', views.admin_asso_rtg, name='admin_asso_rtg'),
+    path(r'admin/<str:asso>', views.admin_asso, name='admin_asso'),
     url(r'^permacat/fichiers/$', views.telechargements_asso, name='telechargements_asso'),
     url(r'^permacat/adhesion_asso/$', views.adhesion_asso, name='adhesion_asso'),
     url(r'^notifications/$', views_notifications.notifications, name='notifications'),
@@ -90,15 +89,10 @@ urlpatterns = [
     url(r'^liens/$', views.liens, name='liens',),
     url(r'^fairedon/$', views.fairedon, name='fairedon',),
     #url(r'^agenda/$', views.agenda, name='agenda',),
-    url(r'^cooperateurs/annuaire/$', login_required(views.annuaire), name='annuaire',),
-    url(r'^cooperateurs/listeContacts/$', login_required(views.listeContacts), name='listeContacts',),
-    url(r'^cooperateurs/listeContacts_rtg/$', login_required(views.listeContacts_rtg), name='listeContacts_rtg',),
+    path(r'annuaire/<str:asso>', login_required(views.annuaire), name='annuaire',),
+    path(r'cooperateurs/listeContacts/<str:asso>', login_required(views.listeContacts), name='listeContacts',),
     url(r'^cooperateurs/listeFollowers/$', login_required(views.listeFollowers), name='listeFollowers',),
-    url(r'^cooperateurs/annuaire_permacat/$', login_required(views.annuaire_permacat), name='annuaire_permacat',),
-    url(r'^cooperateurs/annuaire_rtg/$', login_required(views.annuaire_rtg), name='annuaire_rtg',),
-    url(r'^cooperateurs/carte/$', login_required(views.carte), name='carte',),
-    url(r'^cooperateurs/carte_permacat/$', login_required(views.carte_permacat), name='carte_permacat',),
-    url(r'^cooperateurs/carte_rtg/$', login_required(views.carte_rtg), name='carte_rtg',),
+    path(r'cooperateurs/carte/<str:asso>', login_required(views.carte), name='carte',),
 
     url(r'^cooperateurs/contacter_newsletter/$', login_required(views.contacter_newsletter), name='contacter_newsletter',),
     url(r'^cooperateurs/contacter_adherents/$', login_required(views.contacter_adherents), name='contacter_adherents',),
@@ -127,10 +121,8 @@ urlpatterns = [
         login_required(views.ProduitSupprimer.as_view()), name='produit_supprimer', ),
 
     url(r'^panier/afficher/$', login_required(views.afficher_panier), name='panier_afficher', ),
-
     url(r'^panier/ajouter/(?P<produit_id>[0-9]+)/(?P<quantite>[0-9]{1,3}([.]{0,1}[0-9]{0,3}))/$',
         login_required(views.ajouterAuPanier), name='produit_ajouterAuPanier', ),
-
     url(r'^panier/supprimerItem/(?P<item_id>[0-9]+)',
         login_required(views.enlever_du_panier), name='supprimerDuPanier', ),
 
@@ -143,11 +135,7 @@ urlpatterns = [
     url(r'^conversations/chercher/$', login_required(views.chercherConversation), name='chercher_conversation'),
     url(r'^suivre_conversation/$', views.suivre_conversations, name='suivre_conversations'),
     url(r'^suivre_produits/$', views.suivre_produits, name='suivre_produits'),
-
-    url(r'^agora/$', login_required(views.agora), name='agora_general'),
-    url(r'^agora_permacat/$', login_required(views.agora_permacat), name='agora_permacat'),
-    url(r'^agora_rtg/$', login_required(views.agora_rtg), name='agora_rtg'),
-
+    path(r'agora/<str:asso>', login_required(views.agora), name='agora'),
     url(r'^activity/', include('actstream.urls')),
 
 #    path(r'wiki_ecovillage_notifications/', include('django_nyt.urls')),
@@ -155,8 +143,7 @@ urlpatterns = [
 
 
     url(r'^inscription_newsletter/$', views.inscription_newsletter, name='inscription_newsletter', ),
-
-    url(r'^modifierMessage/(?P<id>[0-9]+)(?P<type>[-\w.]+)$', views.modifier_message, name='modifierMessage'),
+    path(r'modifier_message/<int:id>-<str:type_msg>-<str:asso>', views.modifier_message, name='modifierMessage'),
     url(r'^voirEmails/$', views_notifications.voirEmails,  name="voirEmails"),
     url(r'^envoyerEmailsRequete/$', views_notifications.envoyerEmailsRequete,  name="envoyerEmailsRequete"),
 ]

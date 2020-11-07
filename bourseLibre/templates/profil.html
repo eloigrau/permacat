@@ -100,6 +100,11 @@
                         <td style="width:250px">Description :</td>
                         <td>{{ user.description|safe }}</td>
                     </tr>
+	      
+	    <tr>
+		<td style="width:250px">Savoir-faire :</td>
+		<td>{{ user.competences|safe }}</td>
+	    </tr>
 
                   {% if user.site_web %}
                     <tr>
@@ -107,40 +112,41 @@
                         <td> {{ user.site_web }}</td>
                     </tr>
                   {% endif %}
-            {%if request.user.is_permacat or request.user == user %}
-                  {% if user.avatar %}
-                    <tr>
-                        <td style="width:250px">Avatar *: </td>
-                        <td><img src="{{ produit.avatar.url }}" alt="pas d'image" style="width:128px;height:128px"></td>
-                    </tr>
-                  {% endif %}
-
-
-                    <tr>
-                        <td style="width:250px">Savoir-faire *:</td>
-                        <td>{{ user.competences|safe }}</td>
-                    </tr>
-                    <tr>
-                        <td style="width:250px">Statut Permacat *:</td>
-                        <td>{{user.statutMembre_str}}</td>
-                    </tr>
-                  {% comment %}
-                    <tr>
-                        <td style="width:250px">Statut RameneTaGraine *:</td>
-                        <td>{{user.statutMembre_rtg_str}}</td>
-                    </tr>
-                  {% endcomment %}
-            {% endif %}
+           
         {% endif %}
+       {%if request.user.adherent_permacat or request.user == user %}
+	  {% if user.avatar %}
+	    <tr>
+		<td style="width:250px">Avatar *: </td>
+		<td><img src="{{ produit.avatar.url }}" alt="pas d'image" style="width:128px;height:128px"></td>
+	    </tr>
+	  {% endif %}
+
+	    <tr>
+		<td style="width:250px">Adhérent Permacat *:</td>
+		<td>{{user.adherent_permacat|translateOuiNon}}</td>
+	    </tr>
+
+    {% endif %}
+    {%if request.user.adherent_ga or request.user == user %}
+	    <tr>
+		<td style="width:250px">Adhérent Gaïarmonie *:</td>
+		<td>{{user.adherent_ga|translateOuiNon}}</td>
+	    </tr>
+    {% endif %}
       {% if request.user == user %}
-                <tr>
-                    <td style="width:200px">Inscrit à la newsletter : </td>
-                    <td>{{user.inscrit_newsletter|translateOuiNon }}
-                </tr>
-                <tr>
-                    <td style="width:200px">Inscrit aux jardins partagés : </td>
-                    <td>{{user.is_jardinpartage|translateOuiNon }}
-                </tr>
+        <tr>
+            <td style="width:200px">Inscrit à la newsletter ^: </td>
+            <td>{{user.inscrit_newsletter|translateOuiNon }}
+        </tr>
+        <tr>
+            <td style="width:200px">Inscrit aux jardins partagés ^: </td>
+            <td>{{user.is_jardinpartage|translateOuiNon }}
+        </tr>
+        <tr>
+            <td style="width:200px">J'apparais dans l'annuaire et mes coordonnées sont visibles ^: </td>
+            <td>{{user.accepter_annuaire|translateOuiNon }}
+        </tr>
         {% endif %}
       </tbody>
     </table>
@@ -204,12 +210,46 @@
 
     </tbody>
     </table>
-      <small> {% if  request.user == user %}Les champs notés par un ^ ne sont visibles que par vous et l'administrateur du site. {%endif%}Les champs notés par un * ne sont visibles que par les membres "permacat"</small>
+      <small> {% if  request.user == user %}Les champs notés par un ^ ne sont visibles que par vous et l'administrateur du site. {%endif%}Les champs notés par un * ne sont visibles que par les membres du collectif concerné</small>
   </div>
 
   <div class="col-md-6">
+  {% if request.user.adherent_ga and user.adherent_ga %}
+<style>
 
-  {% if request.user.is_permacat %}
+            .leaflet-container {  /* all maps */
+                width:  100%;
+                height: 100%;
+            }
+            </style>
+              <script type="text/javascript">
+                function map_init_basic (map, options) {
+
+          var greenIcon = L.icon({
+            iconUrl: '{% static 'img/leafgreen.png' %}',
+            shadowUrl: '{% static 'img/leafshadow.png' %}',
+
+            iconSize:     [38, 95], // size of the icon
+            shadowSize:   [50, 64], // size of the shadow
+            iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+            shadowAnchor: [4, 62],  // the same for the shadow
+            popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+        });
+
+                var lat = {{user.adresse.get_latitude}};
+                var lon = {{user.adresse.get_longitude}};
+                L.marker([lat, lon], {icon: greenIcon}).addTo(map);
+                map.panTo(new L.LatLng(lat, lon));
+            }
+        </script>
+        {% leaflet_map "yourmap" callback="window.map_init_basic" %}
+
+</div>
+</div>
+
+{% else %}
+	{%if request.user.adherent_permacat and user.adherent_permacat %}
+
               <style>
 
             .leaflet-container {  /* all maps */
@@ -238,8 +278,9 @@
             }
         </script>
         {% leaflet_map "yourmap" callback="window.map_init_basic" %}
-    {% else %}
-    <p>(affichage de la carte réservé aux adhérents Permacat)</p>
+    	{% else %}
+    	<p>(affichage de la carte réservé aux adhérents du meme groupe)</p>
+    {% endif %}
     {% endif %}
 </div>
 </div>

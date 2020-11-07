@@ -11,7 +11,7 @@ from django.utils.timezone import now
 from django.db.models import Q
 from actstream import actions, action
 from actstream.models import followers, following, action_object_stream
-from bourseLibre.models import Suivis, Profil
+from bourseLibre.models import Suivis, Profil, Asso
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseNotAllowed
 
@@ -25,7 +25,7 @@ def ajouterSuffrage(request):
     if form.is_valid():
         suffrage = form.save(request.user)
         url = suffrage.get_absolute_url()
-        suffix = "" if suffrage.estPublic else "_permacat"
+        suffix = "_" + suffrage.asso.abreviation
         action.send(request.user, verb='suffrage_ajout'+suffix, action_object=suffrage, url=url,
                     description="a ajouté un suffrage : '%s'" % suffrage.question)
 
@@ -48,6 +48,11 @@ class ModifierSuffrage(UpdateView):
         self.object.date_modification = now()
         self.object.save(self.request.user)
         return redirect(self.object.get_absolute_url())
+
+    def get_form(self,*args, **kwargs):
+        form = super(ModifierSuffrage, self).get_form(*args, **kwargs)
+        form.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if self.request.user.estMembre_str(x.nom)]
+        return form
 
 
 class ModifierVote(UpdateView):
@@ -90,8 +95,8 @@ def lireSuffrage(request, slug):
         voteCourant = Vote.objects.get(auteur=request.user, suffrage=suffrage)
     except:
         voteCourant = None
-    if not suffrage.estPublic and not request.user.is_permacat:
-        return render(request, 'notPermacat.html',)
+    if not suffrage.est_autorise(request.user):
+        return render(request, 'notMembre.html', {'asso':asso})
 
     commentaires = Commentaire.objects.filter(suffrage=suffrage).order_by("date_creation")
 
@@ -108,7 +113,7 @@ def lireSuffrage(request, slug):
             suffrage.save()
             comment.save()
             url = suffrage.get_absolute_url() + "#idConversation"
-            suffix = "_permacat" if not suffrage.estPublic else ""
+            suffix = "_" + suffrage.asso.abreviation
             action.send(request.user, verb='suffrage_message' + suffix, action_object=suffrage, url=url,
                         description="a réagi au suffrage: '%s'" % suffrage.question)
 
@@ -158,7 +163,7 @@ class ModifierCommentaireSuffrage(UpdateView):
 @login_required
 def voter(request, slug):
     suffrage = get_object_or_404(Suffrage, slug=slug)
-    if not suffrage.estPublic and not request.user.is_permacat:
+    if not suffrage.est_autorise(request.user):
         return render(request, 'notPermacat.html',)
 
     if suffrage.get_statut[0] != 0:
@@ -192,8 +197,14 @@ class ListeSuffrages(ListView):
         else:
             qs = Suffrage.objects.filter(estArchive=False)
 
-        if not self.request.user.is_authenticated or not self.request.user.is_permacat:
-            qs = qs.filter(estPublic=True)
+
+        if not self.request.user.is_authenticated:
+            qs = qs.filter(asso__id=1)
+        else:
+            if not self.request.user.adherent_permacat:
+                qs = qs.exclude(asso__id=2)
+            if not self.request.user.adherent_ga:
+                qs = qs.exclude(asso__id=3)
 
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])
@@ -206,7 +217,7 @@ class ListeSuffrages(ListView):
                 qs = qs.filter(end_time__date__lte=now() )
             if params['statut'] == '2':
                 qs = qs.filter(Q(start_time__date__gte=now()))
-        if "permacat" in params  and self.request.user.is_permacat:
+        if "permacat" in params  and self.request.user.adherent_permacat:
             if params['permacat'] == "True":
                 qs = qs.filter(estPublic=False)
             else:

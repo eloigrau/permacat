@@ -57,9 +57,9 @@
 
 
                 <li class="nav-item dropdown">
-                      <a class="nav-item dropdown-toggle btn-block" href="#" id="menuOrdreTri" data-toggle="dropdown">
+                      <a class="nav-item" href="#" id="menuOrdreTri" data-toggle="dropdown">
 
-                <button class="btn btn-light">
+                <button class="btn btn-light dropdown-toggle">
                     {% if request.GET.ordreTri  %}
                         Trié par : {{ request.GET.ordreTri|ordreTriStr }}
                     {%else%}
@@ -75,9 +75,9 @@
             </li>
 
                 <li class="nav-item dropdown">
-                      <a class="nav-item dropdown-toggle btn-block" href="#" id="menuFiltre" data-toggle="dropdown">
+                      <a class="nav-item" href="#" id="menuFiltre" data-toggle="dropdown">
 
-                <button class="btn btn-light">
+                <button class="btn btn-light dropdown-toggle">
                     {% if request.GET.statut  %}
                         Statut : {{ request.GET.statut|vote_statut }}
                     {%else%}
@@ -140,7 +140,7 @@
 </div>
 {%include 'pagination.html' %}
 
-    {%if not request.user.is_permacat %}
+    {%if not request.user.adherent_permacat %}
 <p><small>(vous n'avez pas encore accès aux suffrages "Permacat"... Rejoignez-nous !)</small></p>
     {%endif%}
 {% endblock %}

@@ -3,31 +3,47 @@
 {% load fontawesome %}
 <div class="card article_carte textcenter"  style="background-color:{{article.get_couleur}}">
   <a href="{% url 'blog:lireArticle' slug=article.slug %}">
-      <div class="article-card-header smallcaps_h ">{{ article.get_categorie_display }}</div>
-  <div class="card-body">
+      <div class="article-card-header smallcaps_h ">
+          <div class="d-flex justify-content-around">
+        <div>
+            {{ article.get_categorie_display }}
+          </div>
+          <div>
+            <span class="badge badge-success" data-toggle="tooltip" data-placement="bottom" title="Article {%if article.estPublic%}visible par tous les inscrits{%else%}visible par les membres de {{ article.asso }} seulement{%endif%}">
+             {{ article.asso }} </span>
+
+              {%if article.estArchive %}
+            <span class="badge badge-secondary" data-toggle="tooltip" data-placement="bottom" title="Article archivé">
+                 archivé
+            </span>
+              {% endif %}
+
+            {% if request.user|is_following:article %}
+            <span class="badge btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous recevez des notifications concernant cet article par mail">
+                 {% fontawesome_icon 'bell' %}
+            </span>
+
+            {% else %}
+            <span class="badge btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous ne recevez pas de notifications concernant cet article par mail">
+                 {% fontawesome_icon 'bell-slash' %}
+            </span>
+            {% endif %}
+          </div>
+  </div></div>
+
+  <div class="card-body" {%if article.estArchive %} style="background-color:#e0e0d1;" {% endif %}>
       <h4 class="btn-cat">{{ article.titre }}</h4>
-    <span class="badge {% if article.estPublic%}badge-warning{%else%} badge-success {%endif%}" data-toggle="tooltip" data-placement="bottom" title="Article {%if article.estPublic%}visible par tous les inscrits{%else%}visible par les membres de Permacat seulement{%endif%}">
-         {%if article.estPublic%} Public{%else%}  Permacat  {%endif%}
-    </span>
-    {% if request.user|is_following:article %}
-    <span class="badge btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous recevez des notifications concernant cet article par mail">
-         {% fontawesome_icon 'bell' %}
-    </span>
-    {% else %}
-    <span class="badge btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous ne recevez pas de notifications concernant cet article par mail">
-         {% fontawesome_icon 'bell-slash' %}
-    </span>
-    {% endif %}
-      <p class="textsmall "> {% if article.start_time %}
+      <p class="textsmall " > {% if article.start_time %}
           {% if article.end_time %}
           du {{ article.start_time|date:"DATE_FORMAT" }} au {{ article.end_time|date:"DATE_FORMAT" }}
           {%else%}
           le {{ article.start_time|date:"DATE_FORMAT" }}
           {% endif %}
-          {% endif %} </p>
-  </p>
-        <p class="card-subtitle mb-2 ">
-      <p class="text-muted textsmall"> Posté le {{ article.date_creation|date:"DATE_FORMAT" }} {%ifnotequal  article.date_creation article.date_modification %}(dernière modification le {{ article.date_modification|date:"DATE_FORMAT" }}){%endifnotequal%}</p>
+          {% endif %}
+      </p>
   </div>
+    <div>
+        <p class="text-muted textsmall"> Posté le {{ article.date_creation|date:"DATE_FORMAT" }} {%ifnotequal  article.date_creation article.date_modification %}(dernière modification le {{ article.date_modification|date:"DATE_FORMAT" }}){%endifnotequal%}</p>
+    </div>
   </a>
 </div>

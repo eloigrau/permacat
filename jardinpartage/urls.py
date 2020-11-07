@@ -15,6 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^jardinpartage__/', include(jardinpartage_urls))
 """
 from django.conf.urls import url
+from django.urls import path
 from . import views
 from django.contrib.auth.decorators import login_required
 
@@ -23,6 +24,7 @@ app_name = 'jardinpartage'
 urlpatterns = [
     url(r'^accueil/$', views.accueil, name="forum"),
     url(r'^articles/$', login_required(views.ListeArticles.as_view(), login_url='/auth/login/'), name="index"),
+    path(r'articles/<str:jardin>', login_required(views.ListeArticles_jardin.as_view(), login_url='/auth/login/'), name="index_jardin"),
     # url(r'^newPost/', views.ajouterArticle, name='ajouterArticle'),
     # url(r'^article/(?P<slug>.+)$', views.lire, name='lire'),
 

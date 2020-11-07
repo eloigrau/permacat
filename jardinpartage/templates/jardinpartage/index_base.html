@@ -10,26 +10,97 @@
     {%endblock%}
 {%block subtitle%}
 
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-md-12 textcenter">
-            <h3>Blog des Jardins Partagés</h3>
+<div class="row">
+    <div class="col-md-12 textcenter">
+        <div class="row justify-content-center">
+            <div class="col-md-4 offset-md-4">
+                <h3>Blog des jardins partagés</h3>
+            </div>
+            <div class="col-md-4 ">
+                <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#help">
+                 {% fontawesome_icon 'question-circle' %}
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="help" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog textaide" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                          <div class="row justify-content-center">
+                           <h5 > Qu'est ce que le forum permacat ?</h5>
+                          </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body textleft">
+                          <p>Le forum est un blog collaboratif. C'est un lieu virtuel d'échange d'idées, d'annonce d'un evenement, de partage de connaissainces, d'expression personnelle et de discussion. </p>
+                          <p>Chacun est libre d'ajouter un article au forum ou de réagir en commentaire d'un article posté. </p>
+                          <p>Vous pouvez choisir de voir la liste des articles d'un dossier en particulier (documentation, agenda, à faire, etc) en cliquant sur "tous les dossiers..."</p>
+                          <p>Vous pouvez choisir de voir la liste des articles d'un jardin en particulier (Jardi per Tots, ou Jardipal) en cliquant sur "tous les jardins..."</p>
+                          <p>Pour vous tenir au courant des nouveaux articles postés dans le forum, vous pouvez vous "abonner" en ciquant sur la cloche. Vous recevrez alors des informations par mail sur les nouveaux articles.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <a href="{% url 'blog:suivre_articles' %}">
+                    {% if request.user|is_following:suivis %}
+                    <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné : Cliquez pour arreter de recevoir un mail à chaque nouvel article">
+                         {% fontawesome_icon 'bell' %}
+                    </button>
+                    {% else %}
+                    <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné : Cliquez pour recevoir un mail à chaque nouvel article">
+                         {% fontawesome_icon 'bell-slash' %}
+                    </button>
+                    {% endif %}
+                </a>
+
+                    <a href="{% url 'blog:suiveursArticles' %}">
+                        <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Voir abonnés">
+                             {% fontawesome_icon 'eye' %}
+                        </button>
+                    </a>
         </div>
     </div>
-            <hr>
+    <div class="row justify-content-center">
+            <a href="{% url 'jardinpartage:ajouterNouvelArticle' %}">
+            <button type="button" class="btn  btn-success" >
+                    <i class="fa fa-plus"></i>&nbsp; Ajouter un article
+                </button>
+            </a>&ensp;
+    </div>
+    <hr>
+</div>
+</div>
 	<div class="row">
 		<div class="col-md-12">
 			<nav class="navbar navbar-expand-sm navbar-light bg-light">
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
 					<span class="navbar-toggler-icon"></span>
 				</button>
-				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<div class="collapse navbar-collapse justify-content-center" id="bs-example-navbar-collapse-1">
 					<ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-item" href="#" id="navbarDropdownAsso" data-toggle="dropdown">
+                                 <button type="button" class="btn  btn-success dropdown-toggle" >
+                                {% if jardin_courant  %}
+      {{jardin_courant}}
+        {%else%}
+        Tous les Jardin
+      {%endif%}
+                             </button>
+                                </a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            {% for jardin, nom in jardin_list %}
+                            <a class=" dropdown-item " style="background:{{cat_coul}};" href="{%url 'jardinpartage:index_jardin' jardin=jardin %}"><span>{{nom}}</span></a>
+                            {% endfor %}
+							</div>
+						</li>
+
 <li class="nav-item dropdown">
-                            <a class="nav-item dropdown-toggle" href="#" id="navbarDropdownCategorie" data-toggle="dropdown">
-                                 <button type="button" class="btn  btn-primary" >
+                            <a class="nav-item " href="#" id="navbarDropdownCategorie" data-toggle="dropdown">
+                                 <button type="button" class="btn  btn-primary dropdown-toggle" >
                                 {% if request.GET.categorie  %}
-      Catégorie : {{categorie_courante}}
+      Dossier : {{categorie_courante}}
       {%elif request.GET.permacat %}
       Articles Permacat
       {%elif request.GET.auteur %}
@@ -37,27 +108,23 @@
       {%elif typeFiltre == 'archives' %}
       Archives
         {%else%}
-        Choisir une catégorie...
-      {%endif%}
+        Tous les dossiers     {%endif%}
                                  </button>
                                 </a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class=" dropdown-item " style="background:white;" href="{%url 'jardinpartage:index' %}">Toutes les catégories</a>
+                                <a class=" dropdown-item " style="background:white;" href="{%url 'jardinpartage:index' %}">Tous les dossiers</a>
                                 <div class="dropdown-divider"></div>
             {% for categorie_id, cat_nom, cat_coul in categorie_list %}
             <a class=" dropdown-item " style="background:{{cat_coul}};" href="?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
             {% endfor %}
-    <div class="dropdown-divider"></div>
-                                                                <a class=" dropdown-item " style="background:grey;" href="?archives=True"><span>Archives</span></a>
-
 							</div>
 						</li>
 
 
                 <li class="nav-item dropdown">
-                      <a class="nav-item dropdown-toggle btn-block" href="#" id="menuOrdreTri" data-toggle="dropdown">
+                      <a class="nav-item " href="#" id="menuOrdreTri" data-toggle="dropdown">
 
-                <button class="btn btn-light">
+                <button class="btn btn-light dropdown-toggle">
                    Trier par...
            </button>
                       </a>
@@ -68,39 +135,6 @@
                 </div>
             </li>
 					</ul>
-
-                        <ul class="navbar-nav ml-md-auto">
-
-
-                            <li class="nav-item">
-                            <a href="{% url 'jardinpartage:ajouterNouvelArticle' %}">
-        <button type="button" class="btn  btn-success" >
-                <i class="fa fa-plus"></i> Ajouter un article
-            </button>
-                            </a>&ensp;</li>
-                            <li class="nav-item">
-                                    <a href="{% url 'jardinpartage:suivre_articles' %}">
-
-        {% if request.user|is_following:suivis %}
-        <button type="button" class="btn btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné : Cliquez pour arreter de recevoir un mail à chaque nouvel article">
-             {% fontawesome_icon 'bell' %}
-        </button>
-        {% else %}
-        <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné : Cliquez pour recevoir un mail à chaque nouvel article">
-             {% fontawesome_icon 'bell-slash' %}
-        </button>
-        {% endif %}
-            </a>
-                            </li>
-
-                <li class="nav-item">
-                <a href="{% url 'jardinpartage:suiveursArticles' %}">
-                    <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom" title="Voir abonnés">
-                         {% fontawesome_icon 'eye' %}
-                    </button>
-                </a>
-                </li>
-                        </ul>
 </div>
 			</nav>
 		</div>
@@ -119,10 +153,38 @@
     </div>
 
     {% endfor %}
+
 </div>
 {%include 'pagination.html' %}
+{%if  list_archive %}
+<div class="textcenter">
+    <button id="btn-archives"  type="button" class="btn btn-lg" onclick="toggle_visibility('archives');" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour afficher les archives">
+        Afficher les archives
+    </button>
+</div>
+<hr>
+<div id="archives" style='display:none;'>
+    {% for article in list_archive %}
+    <div class="infinite-item">
+    {% include "jardinpartage/article_template.html" with article=article %}
+    <hr>
+    </div>
+    {% endfor %}
+</div>
+    {% endif %}
 
-    {%if not request.user.is_permacat %}
-<p><small>(vous n'avez pas encore accès aux articles "Permacat"... Rejoignez-nous !)</small></p>
-    {%endif%}
+<script>
+    function toggle_visibility(id) {
+       var e = document.getElementById(id);
+       var btn = document.getElementById("btn-archives");
+       if(e.style.display == 'block'){
+          e.style.display = 'none';
+          btn.textContent = "Afficher les archives";
+      }
+       else{
+          e.style.display = 'block';
+          btn.textContent = "Cacher les archives";
+      }
+   }
+</script>
 {% endblock %}

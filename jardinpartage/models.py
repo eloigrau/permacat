@@ -15,6 +15,7 @@ class Choix():
                   ('Agenda','Agenda'), ("todo", "A faire"), \
                    ('Documentation','Documentation'),  \
                  ('Autre','Autre'),
+    jardins_ptg = ('0', 'Tous les jardins'),('1', 'Jardi Per Tots'), ('2', 'JardiPal')
     couleurs_annonces = {
        # 'Annonce':"#e0f7de", 'Administratif':"#dcc0de", 'Agenda':"#d4d1de", 'Entraide':"#cebacf",
        # 'Chantier':"#d1ecdc",'Jardinage':"#fcf6bd", 'Recette':"#d0f4de", 'Bricolage':"#fff2a0",
@@ -51,6 +52,9 @@ class Article(models.Model):
     categorie = models.CharField(max_length=30,         
         choices=(Choix.type_annonce),
         default='Discu', verbose_name="categorie")
+    jardin = models.CharField(max_length=30,
+        choices=(Choix.jardins_ptg),
+        default='0', verbose_name="Jardin")
     titre = models.CharField(max_length=100,)
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='auteur_article_jardin')
     slug = models.SlugField(max_length=100)
@@ -84,18 +88,18 @@ class Article(models.Model):
         if not self.id:
             self.date_creation = timezone.now()
             if sendMail:
-                suivi, created = Suivis.objects.get_or_create(nom_suivi='articles')
+                suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_jardin')
                 titre = "Nouvel article Jardins"
                 message = "Nouvel article aux Jardins Partagés: '<a href='https://permacat.herokuapp.com" + self.get_absolute_url() +"'>" + self.titre + "</a>'"
                 emails = [suiv.email for suiv in followers(suivi) if
-                          self.auteur != suiv and (self.estPublic or suiv.is_permacat)]
+                          self.auteur != suiv and self.est_autorise(suiv)]
         else:
             if sendMail:
                 titre = "Article actualisé Jardins"
                 message = "L'article '<a href='https://permacat.herokuapp.com" + self.get_absolute_url() +"'>" + self.titre + "</a>' des Jardins Partagés a été modifié "
 
                 emails = [suiv.email for suiv in followers(self) if
-                          self.auteur != suiv and (self.estPublic or suiv.is_permacat)]
+                          self.auteur != suiv and self.est_autorise(suiv)]
 
         retour =  super(Article, self).save(*args, **kwargs)
         if emails:
@@ -108,6 +112,14 @@ class Article(models.Model):
             return Choix.couleurs_annonces[self.categorie]
         except:
             return Choix.couleurs_annonces["Autre"]
+
+    def est_autorise(self, user):
+        return True
+
+    @property
+    def estPublic(self):
+        return True
+
 
 class Evenement(models.Model):
     titre = models.CharField(verbose_name="Titre de l'événement (si laissé vide, ce sera le titre de l'article)",
@@ -132,13 +144,16 @@ class Evenement(models.Model):
 
     @property
     def estPublic(self):
-        return self.article.estPublic
+        return True
 
 class Commentaire(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='auteur_comm_jardin')
     commentaire = models.TextField()
     article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='article_jardin')
     date_creation = models.DateTimeField(auto_now_add=True)
+
+    def get_absolute_url(self):
+        return self.article.get_absolute_url()
 
     class Meta:
         db_table = 'commentaire_jardin'
@@ -153,6 +168,8 @@ class Commentaire(models.Model):
     def get_edit_url(self):
         return reverse('jardinpartage:modifierCommentaireArticle',  kwargs={'id':self.id})
 
+    def get_absolute_url(self):
+        return self.article.get_absolute_url()
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
@@ -161,12 +178,15 @@ class Commentaire(models.Model):
             self.date_creation = timezone.now()
             titre = "article jardins commenté "
             message = self.auteur_comm.username + " a commenté l'article (Jardins Partagés) '<a href='https://permacat.herokuapp.com"+ self.article.get_absolute_url() + "'>"+ self.article.titre + "</a>'"
-            emails = [suiv.email for suiv in followers(self.article) if self.auteur_comm != suiv and (self.article.estPublic or suiv.is_permacat)]
+            emails = [suiv.email for suiv in followers(self.article) if self.auteur_comm != suiv and self.article.est_autorise(suiv)]
 
         retour =  super(Commentaire, self).save(*args, **kwargs)
         if emails:
-            action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
+            action.send(self, verb='emails', url=self.article.get_absolute_url(), titre=titre, message=message, emails=emails)
         return retour
-    
+
+    def est_autorise(self, user):
+        return self.article.est_autorise(user)
+
 class Participation(models.Model):
     participe = models.BooleanField(verbose_name="Je suis intéressé.e par les jardins partagés", default=False)

@@ -8,22 +8,23 @@ from django.shortcuts import HttpResponseRedirect, render, redirect#, render, ge
 
 from .forms import Produit_aliment_CreationForm, Produit_vegetal_CreationForm, Produit_objet_CreationForm, \
     Produit_service_CreationForm, ContactForm, AdresseForm, ProfilCreationForm, MessageForm, MessageGeneralForm, \
-    ProducteurChangeForm, MessageGeneralPermacatForm, MessageGeneralRTGForm, Produit_aliment_modifier_form, Produit_service_modifier_form, \
+    ProducteurChangeForm, Produit_aliment_modifier_form, Produit_service_modifier_form, \
     Produit_objet_modifier_form, Produit_vegetal_modifier_form, ChercherConversationForm, InscriptionNewsletterForm, \
     MessageChangeForm, ContactMailForm
-from .models import Profil, Produit, Adresse, Choix, Panier, Item, get_categorie_from_subcat, Conversation, Message, \
-    MessageGeneral, MessageGeneralPermacat, MessageGeneralRTG, getOrCreateConversation, Suivis, InscriptionNewsletter
+from .models import Profil, Produit, Adresse, Choix, Panier, Item, Asso, get_categorie_from_subcat, Conversation, Message, \
+    MessageGeneral, getOrCreateConversation, Suivis, InscriptionNewsletter
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
 from django.core.mail import mail_admins, send_mail, BadHeaderError, send_mass_mail
 from django_summernote.widgets import SummernoteWidget
 from random import choice
+from datetime import date, timedelta
 
 from django import forms
 from django.http import Http404
 
-from blog.models import Article, Projet
+from blog.models import Article, Projet, EvenementAcceuil
 from jardinpartage.models import Article as Article_jardin
 
 from django.contrib import messages
@@ -97,11 +98,27 @@ def bienvenue(request):
     nomImage = 'img/flo/resized0' +  choice(nums)+'.png'
     nbNotif = 0
     nbExpires = 0
+    yesterday = date.today() - timedelta(hours=12)
+    evenements = EvenementAcceuil.objects.filter(date__gt=yesterday).order_by('date')
     if request.user.is_authenticated:
         nbNotif = getNbNewNotifications(request)
         nbExpires = getNbProduits_expires(request)
 
-    return render(request, 'bienvenue.html', {'nomImage':nomImage, "nbNotif": nbNotif , "nbExpires":nbExpires})
+    return render(request, 'bienvenue.html', {'nomImage':nomImage, "nbNotif": nbNotif , "nbExpires":nbExpires, "evenements":evenements})
+
+
+def testIsMembreAsso(request, asso):
+    if asso == "public":
+        return Asso.objects.get(nom="Public")
+
+    assos = Asso.objects.filter(Q(nom=asso) | Q(abreviation=asso))
+    if assos:
+        assos = assos[0]
+
+        if not assos.is_membre(request.user):
+             return render(request, 'notMembre.html', {'asso':assos } )
+        return assos
+    return Asso.objects.get(nom="Public")
 
 
 def presentation_site(request):
@@ -138,18 +155,15 @@ def produit_proposer(request, type_produit):
     else:
         raise Exception('Type de produit inconnu (aliment, vegetal, service ou  objet)')
 
-    if  type_form.is_valid():
+    if type_form.is_valid():
        # produit = produit_form.save(commit=False)
         produit = type_form.save(commit=False)
         produit.user = request.user
         produit.categorie = type_produit
 
-        if not request.user.is_permacat:
-            produit.estPublique = True
-
         produit.save()
         url = produit.get_absolute_url()
-        suffix = "" if produit.estPublique else "_permacat"
+        suffix = "_" + produit.asso.abreviation
         offreOuDemande = "offre" if produit.estUneOffre else "demande"
         action.send(request.user, verb='ajout_offre'+suffix, action_object=produit, url=url,
                     description="a ajouté une "+offreOuDemande+" au marché : '%s'" %(produit.nom_produit))
@@ -187,6 +201,12 @@ class ProduitModifier(UpdateView):
     def get_queryset(self):
         return self.model.objects.select_subclasses()
 
+    def get_form(self, *args, **kwargs):
+        form = super(ProduitModifier, self).get_form(*args, **kwargs)
+        form.fields["asso"].choices = [x for i, x in enumerate(form.fields["asso"].choices) if
+                                       self.request.user.estMembre_str(x[1])]
+        return form
+
             # @login_required
 class ProduitSupprimer(DeleteView):
     model = Produit
@@ -204,8 +224,8 @@ def detailProduit(request, produit_id):
     except ObjectDoesNotExist:
         raise Http404
 
-    if not prod.estPublique and not request.user.is_permacat:
-        return render(request, 'notPermacat.html',)
+    if not prod.est_autorise(request.user):
+        return render(request, 'notMembre.html',{"asso":prod.asso})
     return render(request, 'bourseLibre/produit_detail.html', {'produit': prod})
 
 
@@ -242,56 +262,27 @@ def profil_inconnu(request):
     return render(request, 'profil_inconnu.html')
 
 @login_required
-def annuaire(request):
-    profils = Profil.objects.filter(accepter_annuaire=True).order_by('username')
-    nb_profils = len(Profil.objects.all())
-    return render(request, 'annuaire.html', {'profils':profils, "nb_profils":nb_profils} )
+def annuaire(request, asso):
+    asso=testIsMembreAsso(request, asso)
+    prof = asso.getProfils()
+    profils = prof.filter(accepter_annuaire=True).order_by("username")
+    nb_profils = len(prof)
+    return render(request, 'annuaire.html', {'profils':profils, "nb_profils":nb_profils, "asso":asso} )
 
 @login_required
-def annuaire_permacat(request):
-    if not request.user.is_permacat:
-        return render(request, "notPermacat.html")
-
-    profils_permacat = Profil.objects.filter(accepter_annuaire=True, statut_adhesion=2).order_by('username')
-    nb_profils = len(Profil.objects.filter(statut_adhesion=2))
-    return render(request, 'annuaire_permacat.html', {'profils':profils_permacat,"nb_profils": nb_profils } )
-
-@login_required
-def annuaire_rtg(request):
-    if not request.user.is_rtg:
-        return render(request, "notRTG.html")
-
-    profils_permacat = Profil.objects.filter(accepter_annuaire=True, statut_adhesion_rtg=2).order_by('username')
-    nb_profils = len(Profil.objects.filter(statut_adhesion_rtg=2))
-    return render(request, 'annuaire_rtg.html', {'profils':profils_permacat,"nb_profils": nb_profils } )
-
-@login_required
-def listeContacts(request):
-    if not request.user.is_permacat:
-        return render(request, "notPermacat.html")
+def listeContacts(request, asso):
+    asso = testIsMembreAsso(request, asso)
     listeMails = [
         {"type":'user_newsletter' ,"profils":Profil.objects.filter(inscrit_newsletter=True), "titre":"Liste des inscrits à la newsletter : "},
          {"type":'anonym_newsletter' ,"profils":InscriptionNewsletter.objects.all(), "titre":"Liste des inscrits anonymes à la newsletter : "},
       {"type":'user_adherent' , "profils":Profil.objects.filter(statut_adhesion=2), "titre":"Liste des adhérents : "},
         {"type":'user_futur_adherent', "profils":Profil.objects.filter(statut_adhesion=0), "titre":"Liste des personnes qui veulent adhérer à Permacat :"}
     ]
-    return render(request, 'listeContacts.html', {"listeMails":listeMails})
+    return render(request, 'listeContacts.html', {"listeMails":listeMails, "asso":asso })
 
 @login_required
-def listeContacts_rtg(request):
-    if not request.user.is_rtg:
-        return render(request, "notRTG.html")
-    listeMails = [
-        {"type":'user_newsletter' ,"profils":Profil.objects.filter(inscrit_newsletter=True), "titre":"Liste des inscrits à la newsletter : "},
-        {"type":'anonym_newsletter' ,"profils":InscriptionNewsletter.objects.all(), "titre":"Liste des inscrits anonymes à la newsletter : "},
-        {"type":'user_adherent' , "profils":Profil.objects.filter(statut_adhesion_rtg=2), "titre":"Liste des adhérents : "},
-        {"type":'user_futur_adherent', "profils":Profil.objects.filter(statut_adhesion_rtg=0), "titre":"Liste des personnes qui veulent adhérer à Permacat :"}
-    ]
-    return render(request, 'listeContacts.html', {"listeMails":listeMails})
-@login_required
-def listeFollowers(request):
-    if not request.user.is_permacat:
-        return render(request, "notPermacat.html")
+def listeFollowers(request, asso):
+    asso=testIsMembreAsso(request, asso)
     listeArticles = []
     for art in Article.objects.all():
         suiveurs = followers(art)
@@ -308,27 +299,29 @@ def listeFollowers(request):
 
     return render(request, 'listeFollowers.html', {"listeArticles":listeArticles})
 
+
 @login_required
-def carte(request):
-    profils = Profil.objects.filter(accepter_annuaire=1)
+def carte(request, asso):
+    asso=testIsMembreAsso(request, asso)
+    profils = asso.getProfils()
     return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': "La carte des coopérateurs*" } )
 
 
 @login_required
-def admin_asso(request):
-    if not request.user.is_permacat:
-        return render(request, "notPermacat.html")
-
-    listeFichers = [
-        {"titre": "Télécharger le bilan comptable", "url": "{{STATIC_ROOT]]/admin/coucou.txt"},
-        {"titre":"Télécharger un RIB", "url":"{{STATIC_ROOT]]/admin/bilan.txt" },
-        {"titre":"Télécharger les statuts et règlement intérieur", "url":"{{STATIC_ROOT]]/admin/statuts.txt" },
-    ]
-    return render(request, 'asso/admin_asso.html', {"listeFichers":listeFichers} )
+def admin_asso(request, asso):
+    asso=testIsMembreAsso(request, asso)
+    listeFichers = []
+    if asso == 'permacat':
+        listeFichers = [
+            {"titre": "Télécharger le bilan comptable", "url": "{{STATIC_ROOT]]/admin/coucou.txt"},
+            {"titre":"Télécharger un RIB", "url":"{{STATIC_ROOT]]/admin/bilan.txt" },
+            {"titre":"Télécharger les statuts et règlement intérieur", "url":"{{STATIC_ROOT]]/admin/statuts.txt" },
+        ]
+    return render(request, 'asso/admin_asso.html', {"listeFichers":listeFichers, "asso":asso} )
 
 @login_required
 def admin_asso_rtg(request):
-    if not request.user.is_rtg:
+    if not request.user.adherent_rtg:
         return render(request, "notRTG.html")
 
     listeFichers = [
@@ -340,7 +333,7 @@ def presentation_asso(request):
 
 @login_required
 def telechargements_asso(request):
-    if not request.user.is_permacat:
+    if not request.user.adherent_permacat:
         return render(request, "notPermacat.html")
 
     fichiers = [{'titre' : 'Contrat credit mutuel', 'url': static('doc/contrat_credit_mutuel.pdf'),},
@@ -357,18 +350,10 @@ def adhesion_asso(request):
     return render(request, 'asso/adhesion.html', )
 
 @login_required
-def carte_permacat(request):
-    if not request.user.is_permacat:
-        return render(request, "notPermacat.html")
-    profils = Profil.objects.filter(statut_adhesion=2, accepter_annuaire=1)
-    return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': "Carte des adhérents Permacat*" } )
-
-@login_required
-def carte_rtg(request):
-    if not request.user.is_rtg:
-        return render(request, "notRTG.html")
-    profils = Profil.objects.filter(statut_adhesion_rtg=2, accepter_annuaire=1)
-    return render(request, 'carte_cooperateurs_rtg.html', {'profils':profils, 'titre': "Carte des adhérents Ramène Ta Graine*" } )
+def carte(request, asso):
+    asso = testIsMembreAsso(request, asso)
+    profils = asso.getProfils().filter(accepter_annuaire=True).order_by("username")
+    return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': "Carte des adhérents "+str(asso) + "*" } )
 
 @login_required
 def profil_contact(request, user_id):
@@ -556,7 +541,6 @@ def register(request):
     return render(request, 'register.html', {"form_adresse": form_adresse,"form_profil": form_profil,})
 
 
-from datetime import date
 class ListeProduit(ListView):
     model = Produit
     context_object_name = "produits_list"
@@ -565,8 +549,14 @@ class ListeProduit(ListView):
 
     def get_qs(self):
         qs = Produit.objects.select_subclasses()
-        if not self.request.user.is_authenticated or not self.request.user.is_permacat:
-            qs = qs.filter(estPublique=True)
+        if not self.request.user.is_authenticated:
+            qs = qs.filter(asso__id=1)
+        else:
+            if not self.request.user.adherent_permacat:
+                qs = qs.exclude(asso__id=2)
+            if not self.request.user.adherent_ga:
+                qs = qs.exclude(asso__id=3)
+
         params = dict(self.request.GET.items())
 
         if not "expire" in params:
@@ -597,7 +587,7 @@ class ListeProduit(ListView):
         if "offre" in params:
             qs = qs.filter(estUneOffre=params['offre'])
 
-        if "permacat" in params and self.request.user.is_permacat:
+        if "permacat" in params and self.request.user.adherent_permacat:
             if params['permacat'] == "True":
                 qs = qs.filter(estPublique=False)
             else:
@@ -765,6 +755,16 @@ def chercher(request):
         projets_list = []
         profils_list = []
         commentaires_list, commentairesProjet_list, salon_list = [],[],[]
+
+    if not request.user.adherent_permacat:
+        produits_list = produits_list.exclude(asso__abreviation="pc")
+        articles_list = articles_list.exclude(asso__abreviation="pc")
+        projets_list = projets_list.exclude(asso__abreviation="pc")
+    if not request.user.adherent_ame:
+        produits_list = produits_list.exclude(asso__abreviation="ga")
+        articles_list = articles_list.exclude(asso__abreviation="ga")
+        projets_list = projets_list.exclude(asso__abreviation="ga")
+
     return render(request, 'chercher.html', {'recherche':recherche, 'articles_list':articles_list, 'produits_list':produits_list, "projets_list": projets_list, 'profils_list':profils_list,'commentaires_list': commentaires_list, 'commentairesProjet_list':commentairesProjet_list, 'salon_list':salon_list})
 
 
@@ -882,60 +882,20 @@ def mesSuivis(request):
 
 
 @login_required
-def agora(request, ):
-    messages = MessageGeneral.objects.all().order_by("date_creation")
+def agora(request, asso):
+    asso = testIsMembreAsso(request, asso)
+    messages = MessageGeneral.objects.filter(asso=asso).order_by("date_creation")
     form = MessageGeneralForm(request.POST or None) 
     if form.is_valid(): 
         message = form.save(commit=False) 
         message.auteur = request.user 
+        message.asso = asso
         message.save()
         group, created = Group.objects.get_or_create(name='tous')
-        url = reverse('agora_general')
-        action.send(request.user, verb='envoi_salon', action_object=message, target=group, url=url, description="a envoyé un message dans le salon public")
+        url = reverse('agora', kwargs={'asso':asso.abreviation})
+        action.send(request.user, verb='envoi_salon_public', action_object=message, target=group, url=url, description="a envoyé un message dans le salon public")
         return redirect(request.path) 
-    return render(request, 'agora.html', {'form': form, 'messages_echanges': messages})
-
-@login_required
-def agora_permacat(request, ):
-    if not request.user.is_permacat:
-        return render(request, "notPermacat.html")
-    messages = MessageGeneralPermacat.objects.all().order_by("date_creation")
-    form = MessageGeneralPermacatForm(request.POST or None)
-    if form.is_valid():
-        message = form.save(commit=False)
-        message.auteur = request.user
-
-        message.save()
-        group, created = Group.objects.get_or_create(name='permacat')
-        url = reverse('agora_permacat')
-        action.send(request.user, verb='envoi_salon_permacat', action_object=message, target=group, url=url,
-                    description="a envoyé un message dans le salon Permacat")
-
-
-        return redirect(request.path)
-    return render(request, 'agora_permacat.html', {'form': form, 'messages_echanges': messages})
-
-
-@login_required
-def agora_rtg(request, ):
-    if not request.user.is_rtg:
-        return render(request, "notRTG.html")
-    messages = MessageGeneralRTG.objects.all().order_by("date_creation")
-    form = MessageGeneralRTGForm(request.POST or None)
-    if form.is_valid():
-        message = form.save(commit=False)
-        message.auteur = request.user
-
-        message.save()
-        group, created = Group.objects.get_or_create(name='rtg')
-        url = reverse('agora_rtg')
-        action.send(request.user, verb='envoi_salon_rtg', action_object=message, target=group, url=url,
-                    description="a envoyé un message dans le salon RameneTaGraine")
-
-
-        return redirect(request.path)
-    return render(request, 'agora_rtg.html', {'form': form, 'messages_echanges': messages})
-
+    return render(request, 'agora.html', {'form': form, 'messages_echanges': messages, 'asso':asso})
 
 # class ServiceWorkerView(View):
 #     def get(self, request, *args, **kwargs):
@@ -999,7 +959,7 @@ def inscription_newsletter(request):
 
 @login_required
 def contacter_newsletter(request):
-    if not request.user.is_permacat:
+    if not request.user.adherent_permacat:
         return render(request, "notPermacat.html")
 
     if request.method == 'POST':
@@ -1033,7 +993,7 @@ def contacter_newsletter(request):
 
 @login_required
 def contacter_adherents(request):
-    if not request.user.is_permacat:
+    if not request.user.adherent_permacat:
         return render(request, "notPermacat.html")
 
     if request.method == 'POST':
@@ -1065,24 +1025,12 @@ def contacter_adherents(request):
 
 
 @login_required
-def modifier_message(request, id, type):
-    if type == 'general':
-        obj = MessageGeneral.objects.get(id=id)
-    elif type == 'permacat':
-        if not request.user.is_permacat:
-            return render(request, "notPermacat")
-        obj = MessageGeneralPermacat.objects.get(id=id)
-    elif type == 'rtg':
-        if not request.user.is_rtg:
-            return render(request, "notRTG.html")
-        obj = MessageGeneralRTG.objects.get(id=id)
-
-
-    elif type == 'conversation':
+def modifier_message(request, id, type_msg, asso, ):
+    if type_msg == 'conversation':
         obj = Message.objects.get(id=id)
     else:
-        return render(request, 'erreur.html', {'msg':"Le salon que vous cherchez n'existe pas, désolé."})
-
+        asso = testIsMembreAsso(request, asso)
+        obj = MessageGeneral.objects.get(id=id, asso=asso)
 
     form = MessageChangeForm(request.POST or None, instance=obj)
 
@@ -1094,7 +1042,7 @@ def modifier_message(request, id, type):
             return redirect (object.get_absolute_url)
         else:
             object.delete()
-            return reverse('agora_general')
+            return reverse('agora', kwargs={asso:asso.abreviation})
 
 
     return render(request, 'modifierCommentaire.html', {'form': form, })

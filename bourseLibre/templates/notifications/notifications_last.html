@@ -1,6 +1,8 @@
 {% extends 'base_notifications.html' %}
 {% load activity_tags %}
 {% block subtitle %}
+
+{% include 'notifications/entete.html' %}
 <nav class="navbar navbar-light bg-light sticky-top justify-content-center">
   <form class="form-inline">
     <button class="btn btn-outline-success " type="button">Dernières Notifications</button>
@@ -17,7 +19,7 @@
 {%if actions%}
 <p class = "textcenter ">
       <a href="{% url 'notificationsLues'  %}" class="btn btn-primary">
-         Marquer comme vu
+         Marquer comme lu
       </a>
 
 </p>

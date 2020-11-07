@@ -13,41 +13,38 @@
 
 
 <div class="row align-items-center atelier_titre_page_index">
-<div class="col-sm-12 textcenter">
-    <h3>Les ateliers Permacat</h3>
-</div>
+    <div class="col-md-4 offset-md-4 textcenter justify-content-center">
+        <h3>Les ateliers Permacat</h3>
+    </div>
+    <div class="col-md-4 textcenter">
+        <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#help">
+         {% fontawesome_icon 'question-circle' %}
+        </button>
+        <!-- Modal -->
+        <div class="modal fade" id="help" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog textaide" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                  <div class="row justify-content-center">
+                   <h5 > Que sont les ateliers Permacat ?</h5>
+                  </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body textleft">
+                  <p>
+                      Les ateliers Permacat sont des événements (chantiers participatifs, conférences, etc.) organisés par les adhérents et qui ont lieu en général durant les altermarchés orgnisés par Permacat. Ils peuvent aussi être organisés à tout moment.</p>
+                  <p>
+                      Ici vous pouvez proposer un atelier collectif, ou bien vous inscrire à un atelier déjà proposé
+                  </p>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
 </div>
 
-{% comment %}
-<div class="row">
-<div class="col-sm-12 textcenter">
-    <nav class="navbar navbar-expand-sm navbar-light justify-content-center">
-        <div class="navbar-header">
-             <button class="navbar-toggler btn btn-block" type="button" data-toggle="collapse" data-target="#navbarProduit" aria-controls="navbarProduitContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span></button>
-        </div>
-        <div class="collapse navbar-collapse  justify-content-center " id="navbarProduit">
-            <ul class="nav navbar-nav justify-content-center">
-                <li class="nav-item dropdown">
-                 <button type="button" class="btn btn-block btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                   data-target = "#idCategorie">
-                    {% if request.GET.categorie %} {{categorie_courante}} {%else%}{% if request.GET.mc %} {{request.GET.mc}} {%else%}Sommaire{%endif%}{%endif%}
-                    </button>
-                <div class="dropdown-menu"  aria-labelledby="menuCategorie"  id=idCategorie">
-                      <a class="dropdown-item" href="{% url 'ateliers:index_ateliers' %}" style="background-color:#c0ccd6;">Sommaire</a>
-                      <span class="nav-link divider" role="separator"></span>
-                    {% for categorie_id, cat_nom in categorie_list %}
-                      <a class="dropdown-item" href="?categorie={{categorie_id}}" style="background-color:{{categorie_id|couleur_cat}};">{{cat_nom}}</a>
-                    {% endfor %}
-                </div>
-                </li>
-            </ul>
-        </div>
-    </nav>
-</div>
-</div>
-
-{% endcomment %}
 
 
 <div class="row align-items-center">
@@ -61,7 +58,7 @@
 </div>
 </div>
 </div>
-
+<hr>
 {%endblock%}
 {% block content %}
 
