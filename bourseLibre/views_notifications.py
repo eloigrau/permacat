@@ -11,8 +11,9 @@ from .settings import SERVER_EMAIL, LOCALL, EMAIL_HOST_PASSWORD
 from django_cron import CronJobBase, Schedule
 from django.http import HttpResponseForbidden
 from django.core.mail.message import EmailMultiAlternatives
+from datetime import datetime, timedelta
 import re
-
+import pytz
 from django.core import mail
 
 @login_required
@@ -38,12 +39,12 @@ def getNotifications(request, nbNotif=10, orderBy="-timestamp"):
     #    offres     = offres | Action.objects.filter(Q(verb__startswith='ajout_offre') & Q(verb__icontains='rtg'))
      #   suffrages  = suffrages | Action.objects.filter(Q(verb__startswith='suffrage_ajout') & Q(verb__icontains='rtg'))
 
-    if request.user.adherent_ga:
-        salons     = salons | Action.objects.filter(Q(verb__startswith='envoi_salon') & Q(verb__icontains='ga'))
-        articles   = articles | Action.objects.filter(Q(verb__startswith='article') & Q(verb__icontains='ga'))
-        projets    = projets | Action.objects.filter(Q(verb__startswith='projet') & Q(verb__icontains='ga'))
-        offres     = offres | Action.objects.filter(Q(verb__startswith='ajout_offre') & Q(verb__icontains='ga'))
-        suffrages  = suffrages | Action.objects.filter(Q(verb__startswith='suffrage_ajout') & Q(verb__icontains='ga'))
+    # if request.user.adherent_ga:
+    #     salons     = salons | Action.objects.filter(Q(verb__startswith='envoi_salon') & Q(verb__icontains='ga'))
+    #     articles   = articles | Action.objects.filter(Q(verb__startswith='article') & Q(verb__icontains='ga'))
+    #     projets    = projets | Action.objects.filter(Q(verb__startswith='projet') & Q(verb__icontains='ga'))
+    #     offres     = offres | Action.objects.filter(Q(verb__startswith='ajout_offre') & Q(verb__icontains='ga'))
+    #     suffrages  = suffrages | Action.objects.filter(Q(verb__startswith='suffrage_ajout') & Q(verb__icontains='ga'))
 
     salons = salons.distinct().order_by(orderBy)[:tampon]
     articles = articles.distinct().order_by(orderBy)[:tampon]
@@ -105,7 +106,9 @@ def getNbNewNotifications(request):
 @login_required
 def get_notifications_news(request):
     actions = getNotificationsParDate(request)
-    actions = [action for action in actions if request.user.date_notifications < action.timestamp]
+    dateMin = request.user.date_notifications if request.user.date_notifications > datetime.now().date() - timedelta(days=7) else datetime.now().date() - timedelta(days=7)
+
+    actions = [action for action in actions if dateMin < action.timestamp]
     return actions
 
 def raccourcirTempsStr(date):
@@ -121,8 +124,16 @@ def notifications_news_regroup(request):
 
     dicoTexte = {}
     dicoTexte['dicoarticles'] = {}
+
+    utc = pytz.UTC
+    if "fromdate" in request.GET:
+        dateMin = datetime.strptime(request.GET["fromdate"], '%d-%m-%Y').replace(tzinfo=utc)
+    else:
+        date7jours = (datetime.now() - timedelta(days=7)).replace(tzinfo=utc)
+        dateMin = request.user.date_notifications if request.user.date_notifications > date7jours else date7jours
+
     for action in articles:
-        if request.user.date_notifications < action.timestamp:
+        if dateMin < action.timestamp:
             try:
                 clef = "["+action.action_object.asso.nom+"] " + action.action_object.titre
             except:
@@ -160,7 +171,7 @@ def notifications_news_regroup(request):
 
     dicoTexte['dicoprojets'] = {}
     for action in projets:
-        if request.user.date_notifications < action.timestamp:
+        if dateMin < action.timestamp:
             clef = action.action_object.titre
             if not clef in dicoTexte['dicoprojets']:
                 dicoTexte['dicoprojets'][clef] = [action, ]
@@ -194,10 +205,10 @@ def notifications_news_regroup(request):
 
     dicoTexte['listautres'] = []
     for action in list(chain(inscriptions, suffrages, conversations, salons, offres, ateliers, fiches,)):
-        if request.user.date_notifications < action.timestamp:
+        if dateMin < action.timestamp:
             dicoTexte['listautres'].append(action)
 
-    return render(request, 'notifications/notifications_last2.html', {'dico':dicoTexte, "htmlArticles":htmlArticles, "htmlProjets":htmlProjets})
+    return render(request, 'notifications/notifications_last2.html', {'dico':dicoTexte, "htmlArticles":htmlArticles, "htmlProjets":htmlProjets, "dateMin":dateMin})
 
 @login_required
 def notifications(request):
@@ -222,7 +233,6 @@ def notificationsLues(request):
     return redirect('notifications_news')
 
 def getInfosJourPrecedent(request, nombreDeJours):
-    from datetime import datetime, timedelta
     timestamp_from = datetime.now().date() - timedelta(days=nombreDeJours)
     timestamp_to = datetime.now().date() - timedelta(days=nombreDeJours - 1)
 
@@ -273,9 +283,12 @@ def dernieresInfos(request):
 def changerDateNotif(request):
     form = nouvelleDateForm(request.POST or None, )
     if form.is_valid():
-        request.user.date_notifications = form.cleaned_data['date']
-        request.user.save()
-        return redirect('notifications_news')
+        date = form.cleaned_data['date']
+        return redirect('/notifications/activite'+ "?fromdate=" + str(date.day) +"-" + str(date.month) + "-" + str(date.year))
+        #return HttpResponseRedirect('notifications_news' + "?fromdate=" + date.day +"-" + date.month + "-" + date.year)
+        #request.user.date_notifications = form.cleaned_data['date']
+        #request.user.save()
+        #return redirect('notifications_news')
     else:
         return render(request, 'notifications/date_notifs.html', {'form': form})
 

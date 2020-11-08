@@ -73,6 +73,10 @@ font-variant: small-caps;
 font-size:80%;
 font-variant: small-caps;
 }
+.nocaps {
+font-variant: none;
+}
+
 .smallcaps_h2 {
 font-variant: small-caps;
 }
