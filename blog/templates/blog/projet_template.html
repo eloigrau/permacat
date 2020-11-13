@@ -5,7 +5,7 @@
   <a href="{% url 'blog:lireProjet' slug=projet.slug %}">
       <div class="article-card-header smallcaps_h ">{{ projet.get_categorie_display }}</div>
   <div class="card-body" {%if projet.estArchive %} style="background-color:#e0e0d1;" {% endif %}>
-        <h4>
+        <h4 class="titreArticle">
             {{ projet.titre }}</h4>
         <span class="badge {% if projet.estPublic%}badge-warning{%else%} badge-success {%endif%}" data-toggle="tooltip" data-placement="bottom" title="Projet {%if projet.estPublic%}visible par tous les inscrits{%else%}visible par les membres de Permacat seulement{%endif%}">
                 {{projet.asso}}
