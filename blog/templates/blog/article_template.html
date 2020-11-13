@@ -1,8 +1,9 @@
 
 {% load activity_tags %}
 {% load fontawesome %}
-<div class="card article_carte textcenter"  style="background-color:{{article.get_couleur}}">
+
   <a href="{% url 'blog:lireArticle' slug=article.slug %}">
+<div class="card article_carte textcenter"  style="background-color:{{article.get_couleur}}">
     <div class="article-card-header">
           <div class="d-flex justify-content-center smallcaps_h ">
              <div>
@@ -45,5 +46,5 @@
           {% endif %}
       </p>
     </div>
-  </a>
 </div>
+  </a>

@@ -153,12 +153,13 @@
 {% block content %}
 
 <div class="infinite-container">
-    {% for article in article_list %}
-    <div class="infinite-item">
+    <div class="card-columns">
+        {% for article in article_list %}
+        <div class="infinite-item">
         {% include "blog/article_template.html" with article=article %}
-    <hr>
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
 {%include 'pagination.html' %}
 
