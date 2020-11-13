@@ -9,7 +9,7 @@ body {
     /*font-family: cursive;*/
     /*font-family: serif;*/
     /*font-family: system-ui;*/
-    /*background-image: url("../img/fleur3.jpg");
+    /*background-image: url("../img/fleur3.54d93452a745.jpg");
     background-repeat: repeat;*/
 }
 
@@ -655,33 +655,38 @@ padding: 5px 80px;
 	}
 .article_carte {
 	min-height: 140px;
-	margin:9px;
 	}
 
-.grid-container {
-  display: grid;
-   grid-template-columns: 100% ;
+.list-group-item {
+    width: 95%;
+    margin: 1% !important;
 }
 
 @media (min-width: 576px) {
-    .grid-container {
-        grid-template-columns: 100% ;
+    .list-group-item {
+        width: 47%;
+        margin: 5px 1.5% !important;
     }
 }
 
 @media (min-width: 768px) {
-    .grid-container {
-        grid-template-columns: 100% ;
+    .list-group-item {
+        width: 31.333%;
+        margin: 5px 1% !important;
     }
 }
 
-    .grid-container {
-        grid-template-columns: 50% 50%;
+@media (min-width: 992px) {
+    .list-group-item {
+        width: 23%;
+        margin: 5px 1% !important;
     }
+}
 
 @media (min-width: 1200px) {
-    .grid-container {
-        grid-template-columns: 33% 33% 33%;
+    .list-group-item {
+        width: 19%;
+        margin: 5px .5% !important;
     }
 }
 
