@@ -1,0 +1,45 @@
+{% extends 'base_site.html' %}
+{% block title %} - rechercher dns le forum{% endblock %}
+
+{% block subtitle %}<h5>Résultats de la recherche dans le forum : "{{recherche}}"</h5>
+{% endblock %}
+{% block content %}
+
+
+<p>Articles trouvés dans le forum ({{articles_list|length}})</p>
+<div class="row ">
+    {% for article in articles_list %}
+        <div class="col ">
+            {% include "blog/article_template_recherche.html" with article=article %}
+        </div>
+    {% endfor %}
+</div>
+
+
+<p>Dans les commentaires des articles du forum ({{articles_list|length}})</p>
+<div class="row ">
+    {% for comm in commentaires_list %}
+        <div class="col ">
+        {% include "blog/article_template_recherche.html" with article=comm.article %}
+        </div>
+    {% endfor %}
+</div>
+
+<p>Articles trouvés dans le forum des jardins partagés ({{articles_jardin_list|length}})</p>
+<div class="row ">
+    {% for article in articles_jardin_list %}
+        <div class="col ">
+            {% include "blog/article_template_recherche.html" with article=article %}
+        </div>
+    {% endfor %}
+</div>
+
+<p>Dans les commentaires des articles du forum des jrdins partagés ({{commentaires_jardin_list|length}})</p>
+<div class="row ">
+    {% for article in commentaires_jardin_list %}
+        <div class="col ">
+            {% include "blog/article_template_recherche.html" with article=article %}
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

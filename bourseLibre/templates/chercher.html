@@ -1,7 +1,7 @@
 {% extends 'base_site.html' %}
-{% block title %} - Accueil{% endblock %}
+{% block title %} - Rechercher{% endblock %}
 
-{% block subtitle %}Résultats de la recherche "{{recherche}}"
+{% block subtitle %}<h5>Résultats de la recherche : "{{recherche}}"</h5>
 {% endblock %}
 {% block content %}
 
@@ -22,7 +22,7 @@
     {% endfor %}
 </div>
 
-<p>Dans les commentires des articles du forum ({{articles_list|length}})</p>
+<p>Dans les commentaires des articles du forum ({{articles_list|length}})</p>
 <div class="row ">
     {% for comm in commentaires_list %}
 <div class="col ">

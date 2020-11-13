@@ -139,8 +139,16 @@
                     {% endfor %}
                 </div>
             </li>
+         <li class="nav-item">
+             <form class="form-inline my-2 my-lg-0 justify-content-center form-group navbar-form " action="{% url 'chercher_articles' %}" method="get" role = "search">
+        {% csrf_token %}
+            <input class="form-control fmr-sm-2" name="id_recherche" placeholder="" type="text">
+            <span class="input-group-append">
+                <button class="btn navbar-btn btn-light my-2 my-sm-0" type="submit" data-toggle="tooltip" data-placement="bottom" title="Rechercher sur le site...">{% fontawesome_icon 'search' %}</button>
+            </span>
+        </form>
+         </li>
 					</ul>
-
 
 </div>
 			</nav>

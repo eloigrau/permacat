@@ -134,7 +134,7 @@ class ListeArticles(ListView):
             if not self.request.user.adherent_permacat:
                 qs = qs.exclude(asso__abreviation="pc")
             if not self.request.user.adherent_ga:
-                qs = qs.exclude(asso__abreviation="ame")
+                qs = qs.exclude(asso__abreviation="ga")
 
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])
@@ -169,6 +169,7 @@ class ListeArticles(ListView):
         context['ordreTriPossibles'] = {
                                            "date de création":'-date_creation',
                                            "date de la dernière modification":'-date_modification',
+                                           "date du dernier commentaire":'-date_dernierMessage',
                                             "titre": 'titre' }
 
         if 'auteur' in self.request.GET:

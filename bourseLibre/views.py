@@ -769,6 +769,32 @@ def chercher(request):
 
 
 @login_required
+def chercher_articles(request):
+    recherche = str(request.GET.get('id_recherche')).lower()
+    if recherche:
+        from blog.models import Commentaire
+        from jardinpartage.models import Article as ArticleJardin, Commentaire as CommJardin
+        articles_list = Article.objects.filter(Q(titre__lower__contains=recherche) | Q(contenu__icontains=recherche), ).distinct()
+        articles_jardin_list = ArticleJardin.objects.filter(Q(titre__lower__contains=recherche) | Q(contenu__icontains=recherche), ).distinct()
+        commentaires_list = Commentaire.objects.filter(Q(commentaire__icontains=recherche) ).distinct()
+        commentaires_jardin_list = CommJardin.objects.filter(Q(commentaire__icontains=recherche) ).distinct()
+    else:
+        articles_list = []
+        commentaires_list = []
+        articles_jardin_list = []
+        commentaires_jardin_list = []
+
+    if not request.user.adherent_permacat:
+        articles_list = articles_list.exclude(asso__abreviation="pc")
+        commentaires_list = commentaires_list.exclude(article__asso__abreviation="pc")
+    if not request.user.adherent_ga:
+        articles_list = articles_list.exclude(asso__abreviation="ga")
+        commentaires_list = commentaires_list.exclude(article__asso__abreviation="ga")
+
+    return render(request, 'chercherForum.html', {'recherche':recherche, 'articles_list':articles_list, 'articles_jardin_list':articles_jardin_list, 'commentaires_jardin_list':commentaires_jardin_list,'commentaires_list': commentaires_list})
+
+
+@login_required
 def lireConversation(request, destinataire):
     conversation = getOrCreateConversation(request.user.username, destinataire)
     messages = Message.objects.filter(conversation=conversation).order_by("date_creation")
