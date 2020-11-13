@@ -1,5 +1,6 @@
 {% extends 'base_site.html' %}
 {% block subtitle %}
+{% load fontawesome %}
 <h4><b>Bienvenue dans la FAQ !</b></h4>
 <h5>(Foire aux questions, ou Frequently Asked Questions)</h5>
 	<p class="'textcenter">N'hésitez pas à poser vos questions dans <a href="../forum/article/faq-du-site">l'article consacré</a></p>
@@ -79,8 +80,8 @@ Condition Générales d'Utilisation, annuaires des inscrits, etc.</p><ul><li><u>
         </p>
         <ul>
         <li> {% fontawesome_icon 'question-circle' %} : cliquer dessus pour avoir une explication </li>
-        <li> <span class="navbar-toggler-icon"></span> : cliquer dessus pour oiuvrir le menu</li>
-        <li> {% fontawesome_icon '' %} : </li>
+        <li>
+    <i class="fa fa-bars"></i> : cliquer dessus pour ouvrir le menu</li>
         <li> {% fontawesome_icon 'bell' %} : vous êtes abonné.e à cette page </li>
         <li> {% fontawesome_icon 'bell-slash' %} : vous n'êtes pas abonné.e à cette page </li>
         <li> {% fontawesome_icon 'eye' %} : voir les personnes qui sont abonnées à cette page</li>
