@@ -34,7 +34,7 @@
       </div>
       </div>
   <div class="card-body" {%if article.estArchive %} style="background-color:#e0e0d1;" {% endif %}>
-      <h4 class="btn-cat">{{ article.titre }}</h4>
+      <h4 class="btn-cat titreArticle">{{ article.titre }}</h4>
       <p class="textsmall " > {% if article.start_time %}
           {% if article.end_time %}
           du {{ article.start_time|date:"DATE_FORMAT" }} au {{ article.end_time|date:"DATE_FORMAT" }}

@@ -9,7 +9,7 @@ body {
     /*font-family: cursive;*/
     /*font-family: serif;*/
     /*font-family: system-ui;*/
-    /*background-image: url("../img/fleur3.jpg");
+    /*background-image: url("../img/fleur3.54d93452a745.jpg");
     background-repeat: repeat;*/
 }
 
@@ -21,10 +21,6 @@ body {
 h1, h2, h3, h4, h5, h6 {
  font-family: 'Playfair Display', serif;
  font-weight: 700;
-}
-
-.titreArticle{
-color:black;
 }
 .textaide{
  font-family: 'Chivo', sans-serif;
