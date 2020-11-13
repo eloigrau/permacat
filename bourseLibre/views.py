@@ -742,13 +742,13 @@ def chercher(request):
     recherche = str(request.GET.get('id_recherche')).lower()
     if recherche:
         from blog.models import Commentaire, CommentaireProjet
-        produits_list = Produit.objects.filter(Q(description__icontains=recherche) | Q(nom_produit__lower__contains=recherche), ).select_subclasses()
-        articles_list = Article.objects.filter(Q(titre__lower__contains=recherche) | Q(contenu__icontains=recherche), )
-        projets_list = Projet.objects.filter(Q(titre__lower__contains=recherche) | Q(contenu__icontains=recherche), )
-        profils_list = Profil.objects.filter(Q(username__lower__contains=recherche)  | Q(description__icontains=recherche)| Q(competences__icontains=recherche), )
-        commentaires_list = Commentaire.objects.filter(Q(commentaire__icontains=recherche) )
-        commentairesProjet_list = CommentaireProjet.objects.filter(Q(commentaire__icontains=recherche))
-        salon_list = MessageGeneral.objects.filter(Q(message__icontains=recherche) )
+        produits_list = Produit.objects.filter(Q(description__icontains=recherche) | Q(nom_produit__lower__contains=recherche), ).select_subclasses().distinct()
+        articles_list = Article.objects.filter(Q(titre__lower__contains=recherche) | Q(contenu__icontains=recherche), ).distinct()
+        projets_list = Projet.objects.filter(Q(titre__lower__contains=recherche) | Q(contenu__icontains=recherche), ).distinct()
+        profils_list = Profil.objects.filter(Q(username__lower__contains=recherche)  | Q(description__icontains=recherche)| Q(competences__icontains=recherche), ).distinct()
+        commentaires_list = Commentaire.objects.filter(Q(commentaire__icontains=recherche) ).distinct()
+        commentairesProjet_list = CommentaireProjet.objects.filter(Q(commentaire__icontains=recherche)).distinct()
+        salon_list = MessageGeneral.objects.filter(Q(message__icontains=recherche) ).distinct()
     else:
         produits_list = []
         articles_list = []
