@@ -760,7 +760,7 @@ def chercher(request):
         produits_list = produits_list.exclude(asso__abreviation="pc")
         articles_list = articles_list.exclude(asso__abreviation="pc")
         projets_list = projets_list.exclude(asso__abreviation="pc")
-    if not request.user.adherent_ame:
+    if not request.user.adherent_ga:
         produits_list = produits_list.exclude(asso__abreviation="ga")
         articles_list = articles_list.exclude(asso__abreviation="ga")
         projets_list = projets_list.exclude(asso__abreviation="ga")
