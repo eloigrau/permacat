@@ -713,14 +713,13 @@ box-shadow: 0 10px 10px 0px grey;
 /*background-color: grey;*/
 border-color: #333;
 box-shadow: 0 10px 10px 0px grey;
- padding:10px;
-    min-height: 200px;
+ padding:3px;
+    min-height: 150px;
+    max-height: 450px;
     border-radius: 0.3em;
     border:1.5px grey solid;
-    max-height: 200px;
-    min-width: 250px;
-    max-width: 250px;
-    margin-bottom: 20px;
+    min-width: 300px;
+    margin-bottom: 9px;
 }
 
 a:link           { color: #004d80 }  /* unvisited links       */
