@@ -82,16 +82,16 @@ class Calendar(LocaleTextCalendar):
         now = datetime.now()
         aujourdhui=0
         if now.year > self.year or (now.year == self.year and now.month > self.month) :
-            style = "style='background-color:#d9d9d9'"
+            style = "style='background-color:#d9d9d9' class='day'"
         elif now.year == self.year and now.month == self.month and now.day > day:
-            style = "style='background-color:#e6e6e6'"
+            style = "style='background-color:#e6e6e6' class='daybefore'"
         elif now.year == self.year and now.month == self.month and now.day == day:
-            style = "style='background-color:#aeeaae; '"
+            style = "style='background-color:#aeeaae; ' class='daytoday'"
             aujourdhui=1
         else:
-            style = "style='background-color:#e6ffe6;'"
+            style = "style='background-color:#e6ffe6;' class='day'"
 
-        ajoutPlus = "<a href='ajouterEvenement/?date="+ str(day) + "/" +str(self.month) +"/"+str(self.year) +"'><i class='fa fa-plus'></i></a>"
+        #ajoutPlus = "<a href='ajouterEvenement/?date="+ str(day) + "/" +str(self.month) +"/"+str(self.year) +"'><i class='fa fa-plus'></i></a>"
         #d += ajoutPlus
         if day != 0:
             ajout=""
@@ -99,9 +99,9 @@ class Calendar(LocaleTextCalendar):
                 ajout= "<div class='event'>  <a href='/forum/article/visioconference'> <i class='fa fa-comments' ></i> Visioconférence</a> </div>"
 
             if aujourdhui == 1:
-                return "<td "+style+" class='day'><span class=' badge badge-success joursemaine'>"+self.getJourFrançais(weekday) + " " + str(day)+ "</span><span class='datecourante'>"+str(day)+'</span>'+ajout + str(d)+'</td>'
+                return "<td "+style+"><span class=' badge badge-success joursemaine'>"+self.getJourFrançais(weekday) + " " + str(day)+ "</span><span class='datecourante'>"+str(day)+'</span>'+ajout + str(d)+'</td>'
             else:
-                return "<td "+style+" class='day'><span class=' badge badge-dark joursemaine'>"+self.getJourFrançais(weekday)  + " " + str(day)+ "</span><span class='date'>"+str(day)+'</span>'+ajout +str(d)+ '</td>'
+                return "<td "+style+"><span class=' badge badge-dark joursemaine'>"+self.getJourFrançais(weekday)  + " " + str(day)+ "</span><span class='date'>"+str(day)+'</span>'+ajout +str(d)+ '</td>'
 
 
         return "<td class='other-month' style='background-color:white'></td>"
