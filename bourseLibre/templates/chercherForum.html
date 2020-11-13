@@ -5,7 +5,6 @@
 {% endblock %}
 {% block content %}
 
-
 <p>Articles trouvés dans le forum ({{articles_list|length}})</p>
 <div class="row ">
     {% for article in articles_list %}
@@ -14,32 +13,39 @@
         </div>
     {% endfor %}
 </div>
+<hr>
+    {%if commentaires_list %}
+    <p>Dans les commentaires des articles du forum ({{articles_list|length}})</p>
+    <div class="row ">
+        {% for comm in commentaires_list %}
+            <div class="col ">
+            {% include "blog/article_template_recherche.html" with article=comm.article %}
+            </div>
+        {% endfor %}
+    </div>
 
+    <hr>
+    {% endif%}
+    {%if articles_jardin_list %}
+    <p>Articles trouvés dans le forum des jardins partagés ({{articles_jardin_list|length}})</p>
+    <div class="row ">
+        {% for article in articles_jardin_list %}
+            <div class="col ">
+                {% include "blog/article_template_recherche.html" with article=article %}
+            </div>
+        {% endfor %}
+    </div>
 
-<p>Dans les commentaires des articles du forum ({{articles_list|length}})</p>
-<div class="row ">
-    {% for comm in commentaires_list %}
-        <div class="col ">
-        {% include "blog/article_template_recherche.html" with article=comm.article %}
-        </div>
-    {% endfor %}
-</div>
-
-<p>Articles trouvés dans le forum des jardins partagés ({{articles_jardin_list|length}})</p>
-<div class="row ">
-    {% for article in articles_jardin_list %}
-        <div class="col ">
-            {% include "blog/article_template_recherche.html" with article=article %}
-        </div>
-    {% endfor %}
-</div>
-
-<p>Dans les commentaires des articles du forum des jrdins partagés ({{commentaires_jardin_list|length}})</p>
-<div class="row ">
-    {% for article in commentaires_jardin_list %}
-        <div class="col ">
-            {% include "blog/article_template_recherche.html" with article=article %}
-        </div>
-    {% endfor %}
-</div>
+    <hr>
+    {% endif%}
+{%if commentaires_jardin_list %}
+    <p>Dans les commentaires des articles du forum des jrdins partagés ({{commentaires_jardin_list|length}})</p>
+    <div class="row ">
+        {% for article in commentaires_jardin_list %}
+            <div class="col ">
+                {% include "blog/article_template_recherche.html" with article=article %}
+            </div>
+        {% endfor %}
+    </div>
+{% endif%}
 {% endblock %}
