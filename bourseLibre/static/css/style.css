@@ -47,6 +47,10 @@ font : normal;
 * html .clearfix { height: 1%; }
 .clearfix { display: block; }
 
+
+ .btn-faq{
+ white-space: normal !important;
+ }
 .btn-group{
     white-space: normal;
 }
@@ -853,9 +857,11 @@ ul.errorlist{
     color:red;
 }
 
+
 .btn-group{
     white-space: normal;
 }
+
 /* Responsive navigation menu (for mobile devices) */
 
 @media screen and (max-width: 800px) {

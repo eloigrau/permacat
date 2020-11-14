@@ -19,7 +19,7 @@
                  archivé
                 </span>&nbsp;
                 {% endif %}
-                <span class="badge badge-light"> {%ifnotequal  article.date_creation|date:"DATE_FORMAT" article.date_modification|date:"DATE_FORMAT" %}dernière modif le {{ article.date_modification|date:"DATE_FORMAT" }}{%else%}Posté le {{ article.date_creation|date:"DATE_FORMAT" }} {%endifnotequal%}
+                <span class="badge badge-light"> {%ifnotequal  article.date_creation|date:"DATE_FORMAT" article.date_modification|date:"DATE_FORMAT" %}Dernière modif le {{ article.date_modification|date:"DATE_FORMAT" }}{%else%}Posté le {{ article.date_creation|date:"DATE_FORMAT" }} {%endifnotequal%}
                 </span>&nbsp;
                 {% if request.user|is_following:article %}
                 <span class="badge btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous recevez des notifications concernant cet article par mail">
