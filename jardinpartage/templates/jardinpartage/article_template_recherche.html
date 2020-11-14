@@ -8,9 +8,10 @@
         <div class="card-header">
             <h4>{{ article.titre|truncatechars:50  }}</h4>
         </div>
+
         <h6 class="card-subtitle mb-2 ">
                <p class="text-muted"> Catégorie: <em>{{ article.get_categorie_display }}</em>, rédigé par {{ article.auteur }}</p>
-            </h6>
+        </h6>
     </div>
   </a>
 </div>
