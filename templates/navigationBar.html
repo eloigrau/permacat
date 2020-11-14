@@ -33,7 +33,7 @@
                  <li class="divider" role="separator"></li>
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" >PermaCat</a>
-                        <ul class="dropdown-menu textcenter nav5-dropdown-submenu">
+                        <ul class="dropdown-menu nav5-dropdown-submenu">
                         <li> <a class="dropdown-item" href="{% url 'agora' asso='pc'%}"> Salon de discussion</a></li>
                     <li><a class="dropdown-item" href="{% url 'blog:index_projets' %}"><i class='fa fa-folder-open iconleft' ></i>  Projets </a></li>
                     <li><a class="dropdown-item" href="{% url 'vote:index' %}"><i class="fa fa-bullhorn iconleft"></i>  Votes </a></li>
@@ -60,7 +60,7 @@
 
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" >Jardins Partagés</a>
-                        <ul class="dropdown-menu textcenter nav5-dropdown-submenu">
+                        <ul class="dropdown-menu  nav5-dropdown-submenu">
                             <li> <a class="dropdown-item" href="{% url 'agora' asso='jp'%}"> Salon de discussion</a></li>
                             <li><a class="dropdown-item" href="{% url 'jardinpartage:index' %}"><i class='fa fa-pagelines' ></i> Articles </a></li>
                         </ul>
@@ -68,7 +68,7 @@
 {%comment%}
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" >Gaïarmonie</a>
-                        <ul class="dropdown-menu textcenter nav5-dropdown-submenu">
+                        <ul class="dropdown-menu  nav5-dropdown-submenu">
                             <li> <a class="dropdown-item" href="{% url 'agora' asso='ga'%}"> Salon de discussion</a></li>
                             <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='ga'%}"><i class='fa fa-comments' ></i> Articles </a></li>
                           <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='ga' %}"> Annuaire  </a></li>
@@ -107,6 +107,7 @@
              </input>
         </form>
          </li>
+
             </ul>
         </li>
         <li class="nav-item dropdown nav7">
