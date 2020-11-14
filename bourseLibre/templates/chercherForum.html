@@ -31,7 +31,7 @@
     <div class="row ">
         {% for article in articles_jardin_list %}
             <div class="col ">
-                {% include "blog/article_template_recherche.html" with article=article %}
+                {% include "jardinpartage/article_template_recherche.html" with article=article %}
             </div>
         {% endfor %}
     </div>
@@ -39,11 +39,11 @@
     <hr>
     {% endif%}
 {%if commentaires_jardin_list %}
-    <p>Dans les commentaires des articles du forum des jrdins partagés ({{commentaires_jardin_list|length}})</p>
+    <p>Dans les commentaires des articles du forum des jardins partagés ({{commentaires_jardin_list|length}})</p>
     <div class="row ">
-        {% for article in commentaires_jardin_list %}
+        {% for comm in commentaires_jardin_list %}
             <div class="col ">
-                {% include "blog/article_template_recherche.html" with article=article %}
+                {% include "jardinpartage/article_template_recherche.html" with article=comm.article %}
             </div>
         {% endfor %}
     </div>

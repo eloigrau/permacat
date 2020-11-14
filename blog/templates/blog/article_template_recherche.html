@@ -7,9 +7,11 @@
     <div class="card-block textcenter" >
         <div class="card-header">
             <h4>{{ article.titre|truncatechars:50  }}</h4>
+            {% if article.asso %}
         <span class="badge {% if article.estPublic%}badge-warning{%else%} badge-success {%endif%}" data-toggle="tooltip" data-placement="bottom" title="Article {%if article.estPublic%}visible par tous les inscrits{%else%}visible par les membres de Permacat seulement{%endif%}">
              {{ article.asso }}
         </span>
+            {% endif %}
         </div>
         <h6 class="card-subtitle mb-2 ">
                <p class="text-muted"> Catégorie: <em>{{ article.get_categorie_display }}</em>, rédigé par {{ article.auteur }}</p>
