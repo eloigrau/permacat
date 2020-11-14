@@ -5,6 +5,7 @@
 {% endblock %}
 {% block content %}
 
+    {%if produits_list %}
 <p>Produits trouvés au marché ({{produits_list|length}})</p>
 <div class="row listOffres">
     {% for produit in produits_list %}
@@ -12,7 +13,9 @@
     {% endfor %}
 </div>
 <hr>
+    {% endif %}
 
+    {%if articles_list %}
 <p>Articles trouvés dans le forum ({{articles_list|length}})</p>
 <div class="row ">
     {% for article in articles_list %}
@@ -21,8 +24,10 @@
 </div>
     {% endfor %}
 </div>
+    {% endif %}
 
-<p>Dans les commentaires des articles du forum ({{articles_list|length}})</p>
+    {%if commentaires_list %}
+<p>Dans les commentaires des articles du forum ({{commentaires_list|length}})</p>
 <div class="row ">
     {% for comm in commentaires_list %}
 <div class="col ">
@@ -31,7 +36,9 @@
     {% endfor %}
 </div>
 <hr>
+    {% endif %}
 
+    {%if projets_list %}
 <p>Projets Permacat trouvés  ({{projets_list|length}})</p>
 <div class="row ">
     {% for projet in projets_list %}
@@ -40,7 +47,9 @@
 </div>
     {% endfor %}
 </div>
-<p>Dans les commentaires des projets Permacat ({{articles_list|length}})</p>
+    {% endif %}
+    {%if commentairesProjet_list %}
+<p>Dans les commentaires des projets Permacat ({{commentairesProjet_list|length}})</p>
 <div class="row ">
     {% for comm in commentairesProjet_list %}
 <div class="col ">
@@ -48,6 +57,8 @@
 </div>
     {% endfor %}
 </div>
+    {% endif %}
+    {%if profils_list %}
 <hr>
 <p>Producteurs trouvés  (description ou competence) ({{profils_list|length}})</p>
 <div class="row listOffres">
@@ -72,4 +83,5 @@
     </table>
     </div>
 </div>
+    {% endif %}
 {% endblock %}
