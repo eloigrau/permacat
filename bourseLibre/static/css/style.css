@@ -697,6 +697,7 @@ padding: 5px 80px;
     padding-right: 0px;
     padding-left: 0px;
 }
+}
 
 @media (min-width: 768px) {
     .grid-container {
@@ -711,7 +712,7 @@ padding: 5px 80px;
 
 @media (min-width: 1200px) {
     .grid-container {
-        grid-template-columns: 50% 50%;
+        grid-template-columns: 32% 32% 32%;
     }
 }
 
