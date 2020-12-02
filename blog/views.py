@@ -482,9 +482,9 @@ def suivre_projet(request, slug, actor_only=True):
     projet = get_object_or_404(Projet, slug=slug)
 
     if projet in following(request.user):
-        actions.unfollow(request.user, projet)
+        actions.unfollow(request.user, projet, send_action=False)
     else:
-        actions.follow(request.user, projet, actor_only=actor_only)
+        actions.follow(request.user, projet, actor_only=actor_only, send_action=False)
     return redirect(projet)
 
 
@@ -496,9 +496,9 @@ def suivre_article(request, slug, actor_only=True):
     article = get_object_or_404(Article, slug=slug)
 
     if article in following(request.user):
-        actions.unfollow(request.user, article)
+        actions.unfollow(request.user, article, send_action=False)
     else:
-        actions.follow(request.user, article, actor_only=actor_only)
+        actions.follow(request.user, article, actor_only=actor_only, send_action=False)
     return redirect(article)
 
 
@@ -516,7 +516,7 @@ def articles_suivis(request, slug):
 
 @login_required
 def articles_suiveurs(request):
-    suivi, created = Suivis.objects.get_or_create(nom_suivi = 'articles')
+    suivi, created = Suivis.objects.get_or_create(nom_suivi='articles')
     suiveurs = followers(suivi)
     return render(request, 'blog/articles_suivis.html', {'suiveurs': suiveurs, })
 
@@ -524,23 +524,23 @@ def articles_suiveurs(request):
 @login_required
 @csrf_exempt
 def suivre_articles(request, actor_only=True):
-    suivi, created = Suivis.objects.get_or_create(nom_suivi = 'articles')
+    suivi, created = Suivis.objects.get_or_create(nom_suivi='articles')
 
     if suivi in following(request.user):
-        actions.unfollow(request.user, suivi)
+        actions.unfollow(request.user, suivi, send_action=False)
     else:
-        actions.follow(request.user, suivi, actor_only=actor_only)
+        actions.follow(request.user, suivi, actor_only=actor_only, send_action=False)
     return redirect('blog:index')
 
 @login_required
 @csrf_exempt
 def suivre_projets(request, actor_only=True):
-    suivi, created = Suivis.objects.get_or_create(nom_suivi = 'projets')
+    suivi, created = Suivis.objects.get_or_create(nom_suivi='projets')
 
     if suivi in following(request.user):
-        actions.unfollow(request.user, suivi)
+        actions.unfollow(request.user, suivi, send_action=False)
     else:
-        actions.follow(request.user, suivi, actor_only=actor_only)
+        actions.follow(request.user, suivi, actor_only=actor_only, send_action=False)
     return redirect('blog:index_projets')
 
 

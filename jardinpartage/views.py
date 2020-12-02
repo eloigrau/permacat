@@ -279,9 +279,9 @@ def suivre_article(request, slug, actor_only=True):
     article = get_object_or_404(Article, slug=slug)
 
     if article in following(request.user):
-        actions.unfollow(request.user, article)
+        actions.unfollow(request.user, article, send_action=False)
     else:
-        actions.follow(request.user, article, actor_only=actor_only)
+        actions.follow(request.user, article, actor_only=actor_only, send_action=False)
     return redirect(article)
 
 @login_required
@@ -307,9 +307,9 @@ def suivre_articles(request, actor_only=True):
     suivi, created = Suivis.objects.get_or_create(nom_suivi = 'articles_jardin')
 
     if suivi in following(request.user):
-        actions.unfollow(request.user, suivi)
+        actions.unfollow(request.user, suivi, send_action=False)
     else:
-        actions.follow(request.user, suivi, actor_only=actor_only)
+        actions.follow(request.user, suivi, actor_only=actor_only, send_action=False)
     return redirect('jardinpartage:index')
 
 
@@ -365,7 +365,7 @@ def accepter_participation(request):
         request.user.is_jardinpartage = True
         request.user.save()
         suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_jardin')
-        actions.follow(request.user, suivi, actor_only=True)
+        actions.follow(request.user, suivi, actor_only=True, send_action=False)
         action.send(request.user, verb='inscription_jardins', url=request.user.get_absolute_url(),
                     description="s'est inscrit.e aux jardins partagés", )
 

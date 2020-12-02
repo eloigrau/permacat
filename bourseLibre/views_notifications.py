@@ -350,6 +350,11 @@ def supprimerActionsEmails():
     for action in actions:
         action.delete()
 
+def supprimerActionsStartedFollowing():
+    actions = Action.objects.filter(verb='started following')
+    for action in actions:
+        action.delete()
+
 def voirEmails(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden()
@@ -386,6 +391,7 @@ def envoyerEmailsRequete(request):
     listeMails = getListeMailsAlerte()
     send_mass_html_mail(listeMails, fail_silently=False)
     supprimerActionsEmails()
+    supprimerActionsStartedFollowing()
     return redirect('voirEmails', )
 
 def envoyerEmails():
@@ -395,6 +401,7 @@ def envoyerEmails():
     send_mass_html_mail(listeMails, fail_silently=False)
     print('Suppression des alertes')
     supprimerActionsEmails()
+    supprimerActionsStartedFollowing()
     print('Fait')
 
 
