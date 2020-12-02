@@ -153,7 +153,7 @@ class Vote(models.Model):
     suffrage = models.ForeignKey(Suffrage, on_delete=models.CASCADE, related_name='suffrage')
     date_creation = models.DateTimeField(verbose_name="Date de parution", auto_now_add=True)
     date_modification = models.DateTimeField(verbose_name="Date de modification", auto_now=True)
-    commentaire = models.TextField(verbose_name="Commentaire", null=True,)
+    commentaire = models.TextField(verbose_name="Commentaire", null=True, blank=True)
 
     def __str__(self):
         return str(self.suffrage) + " " + dict(Choix.vote_ouinon)[self.choix]
