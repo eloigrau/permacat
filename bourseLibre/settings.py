@@ -103,7 +103,7 @@ INSTALLED_APPS = (
     'django_summernote',
     'actstream',
     'taggit',
-    #'hitcount',
+    'hitcount',
     #'django_cron',
     #"visits",
     #'notifications',
