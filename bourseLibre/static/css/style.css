@@ -141,6 +141,11 @@ section.p3 {
     margin-top: 4em;
 }
 
+.colprincipal{
+    padding-left:2%;
+    padding-right:2%;
+}
+
 .navbarProduits {
     display: inline-block;
    }
@@ -405,6 +410,7 @@ section.p3 {
         transform: translate(0, 0);
     padding: 2px 2px;
 
+    text-align:center;
     }
 
 
@@ -857,11 +863,9 @@ ul.errorlist{
     color:red;
 }
 
-
 .btn-group{
     white-space: normal;
 }
-
 /* Responsive navigation menu (for mobile devices) */
 
 @media screen and (max-width: 800px) {

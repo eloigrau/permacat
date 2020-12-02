@@ -2,7 +2,6 @@
 {% load activity_tags %}
 {% load blog_filters %}
 {% load fontawesome %}
-{% load hitcount_tags %}
 
 {% block subtitle %}
 
@@ -17,8 +16,7 @@
     </div>
     <div class="col-md-8">
         <p class="infos  textepetit">Dans: <a href="{% url 'jardinpartage:index'  %}?categorie={{article.categorie}}"  style="background-color:{{article.get_couleur}}" class="smallcaps_h2">Jardins partagés/{{ article.get_categorie_display }}</a>, rédigé par <a href="{% url 'profil' article.auteur.id %}"> {{ article.auteur.username }}</a>, le {{ article.date_creation|date:"DATE_FORMAT" }};
-            {% get_hit_count for article as nbvues %}
-            {{ nbvues }} vue{{nbvues|pluralize:"s"}}
+
         <a href="{% url 'jardinpartage:suivre_article' article.slug %}">
             {% if request.user|is_following:article %}
             <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné :  Cliquez pour arreter de recevoir des notifications concernant cet article par mail">
