@@ -43,6 +43,7 @@
                 <th>Email</th>
                 <th>Code postal</th>
                 <th>Commune</th>
+                <th>Dernière connexion</th>
             </tr>
         </thead>
         <tbody>
@@ -56,6 +57,7 @@
             <td><a href="{% url 'profil' profil.id %}">{{ profil.email }}</a></td>
             <td><a href="{% url 'profil' profil.id %}">{{ profil.adresse.code_postal }}</a></td>
             <td><a href="{% url 'profil' profil.id %}">{{ profil.adresse.commune }}</a></td>
+            <td><a href="{% url 'profil' profil.id %}">{{ profil.adresse.last_login }}</a></td>
         </tr>
         {% endfor %}
         </tbody>
