@@ -164,6 +164,49 @@
 {%endblock%}
 {% block content %}
 
+{% if request.GET.categorie %}
+<div class="row justify-content-center">
+    <div class="col textcenter">
+{%if request.GET.categorie == "Ecovillage" %}
+        <div>
+ <a href="http://www.perma.cat/forum/projets/projet-eco-lieu">
+     <button type="button" class="btn  btn-warning" >
+            <i class="fa fa-arrow-right"></i>&nbsp;Voir le projet Permacat
+    </button>
+ </a></div>
+{%elif request.GET.categorie == "Jardin" %}
+ <a href="http://www.perma.cat/jardins/articles/">
+     <button type="button" class="btn  btn-warning" >
+            <i class="fa fa-arrow-right"></i>&nbsp;Blog des jardins partagés
+    </button>
+ </a>&nbsp;
+ <a href="http://www.perma.cat/forum/projets/un-jardin-partage-en-permaculture-accessible-a-tous">
+     <button type="button" class="btn  btn-warning" >
+            <i class="fa fa-arrow-right"></i>&nbsp;projet JardiPerTots
+    </button>
+ </a>&nbsp;
+ <a href="http://www.perma.cat/forum/projets/jardin-partage-de-palau">
+     <button type="button" class="btn  btn-warning" >
+            <i class="fa fa-arrow-right"></i>&nbsp;projet Jardin de Palau
+    </button>
+ </a>
+{%elif request.GET.categorie == "Altermarché" %}
+ <a href="http://www.perma.cat/forum/projets/lalter-marche-ou-marche-en-monnaies-alternatives">
+     <button type="button" class="btn  btn-warning" >
+            <i class="fa fa-arrow-right"></i>&nbsp;Voir le projet Permacat
+    </button>
+ </a> &nbsp;
+ <a href="http://www.perma.cat/marche/lister/">
+     <button type="button" class="btn  btn-warning" >
+            <i class="fa fa-arrow-right"></i>&nbsp;Altermarché sur le site
+    </button>
+ </a>
+{%endif%}
+</div>
+</div>
+{%endif%}
+
+
 <div class="infinite-container">
     <div class="grid-container justify-content-center">
         {% for article in article_list %}
