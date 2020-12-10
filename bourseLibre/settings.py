@@ -95,7 +95,7 @@ INSTALLED_APPS = (
     'cal',
     #'vote',
     #'schedule','djangobower',
-    #'widget_tweaks',
+    'widget_tweaks',
     'leaflet',
     #'tinymce',
     'captcha',
