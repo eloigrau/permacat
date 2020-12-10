@@ -491,14 +491,12 @@ section.p3 {
 .infos{
     font-size:small;
 }
-.debutArticle{
-}
-.debutArticle a:link, a:visited {
+
+#debutArticle a:link, a:visited {
     color: black;
 }
-.titreBlog{
-}
-.titreBlog a:link, a:visited {
+
+#titreBlog a:link, a:visited {
     color: black;
 }
 

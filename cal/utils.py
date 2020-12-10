@@ -4,8 +4,8 @@ from datetime import datetime
 from calendar import LocaleHTMLCalendar, LocaleTextCalendar, month_name
 from blog.models import Article, Projet, Evenement
 from jardinpartage.models import Article as Article_jardin, Evenement as Evenement_jardin
-from vote.models import Suffrage
-from ateliers.models import Atelier
+#from vote.models import Suffrage
+#from ateliers.models import Atelier
 from django.db.models import Q
 
 class Constantes:
@@ -123,10 +123,10 @@ class Calendar(LocaleTextCalendar):
         events_arti = Article.objects.filter(start_time__year=self.year, start_time__month=self.month)
         events_arti_jardin = Article_jardin.objects.filter(start_time__year=self.year, start_time__month=self.month)
         events_proj = Projet.objects.filter(start_time__year=self.year, start_time__month=self.month)
-        events_atel = Atelier.objects.filter(date_atelier__year=self.year, date_atelier__month=self.month)
+        events_atel = None#Atelier.objects.filter(date_atelier__year=self.year, date_atelier__month=self.month)
         events_autre = Evenement.objects.filter(start_time__year=self.year, start_time__month=self.month)
         events_autre_jardin = Evenement_jardin.objects.filter(start_time__year=self.year, start_time__month=self.month)
-        events_vote = Suffrage.objects.filter(start_time__year=self.year, start_time__month=self.month)
+        events_vote = None#Suffrage.objects.filter(start_time__year=self.year, start_time__month=self.month)
 
         cal = '<table  class=" table-condensed" id="calendar">\n'
         #cal += self.formatmonthname(self.year, self.month, withyear=withyear)+'\n'

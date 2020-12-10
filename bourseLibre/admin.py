@@ -3,7 +3,7 @@ from .models import  Adresse, Produit, Panier, Item, Adhesion_permacat, Asso, Me
 from blog.models import Article, Projet, Commentaire, CommentaireProjet, Evenement, EvenementAcceuil
 from jardinpartage.models import Article as Art_jardin, Commentaire as Comm_jardin
 from fiches.models import Fiche, Atelier as atelier_fiche, CommentaireFiche
-from ateliers.models import Atelier, CommentaireAtelier, InscriptionAtelier
+#from ateliers.models import Atelier, CommentaireAtelier, InscriptionAtelier
 
 
 from django.contrib import admin
@@ -76,8 +76,8 @@ admin.site.register(Fiche)
 admin.site.register(CommentaireFiche)
 admin.site.register(atelier_fiche)
 
-
-admin.site.register(Atelier)
-admin.site.register(CommentaireAtelier)
-admin.site.register(InscriptionAtelier)
+#
+# admin.site.register(Atelier)
+# admin.site.register(CommentaireAtelier)
+# admin.site.register(InscriptionAtelier)
 
