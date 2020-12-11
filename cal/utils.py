@@ -60,9 +60,9 @@ class Calendar(LocaleTextCalendar):
             if event.estPublic or (not request.user.is_anonymous and request.user.adherent_permacat):
                 titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
                 d += "<div class='event'>  <a href='"+event.get_absolute_url() +"'><i class='fa fa-folder-open iconleft' ></i> "+titre+'</a> </div>'
-        for event in events_per_day_atel:
-            titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
-            d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-wrench iconleft' ></i> "+titre+'</a> </div>'
+        #for event in events_per_day_atel:
+         #   titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
+          #  d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-wrench iconleft' ></i> "+titre+'</a> </div>'
 
         for event in events_per_day_autre:
             if event.estPublic or (not request.user.is_anonymous and request.user.adherent_permacat):
@@ -74,10 +74,10 @@ class Calendar(LocaleTextCalendar):
                 titre = event.gettitre if len(event.gettitre)<40 else event.gettitre[:37] + "..."
                 d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-pagelines' ></i> "+titre+'</a> </div>'
 
-        for event in events_per_day_votes:
-            if event.estPublic or (not request.user.is_anonymous and request.user.adherent_permacat):
-                titre = event.question if len(event.question)<40 else event.question[:37] + "..."
-                d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-bullhorn' ></i> "+titre+'</a> </div>'
+        #for event in events_per_day_votes:
+         #   if event.estPublic or (not request.user.is_anonymous and request.user.adherent_permacat):
+           #     titre = event.question if len(event.question)<40 else event.question[:37] + "..."
+            #    d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-bullhorn' ></i> "+titre+'</a> </div>'
 
         now = datetime.now()
         aujourdhui=0
