@@ -44,8 +44,8 @@ class Calendar(LocaleTextCalendar):
         events_per_day_proj = events_proj.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
         events_per_day_autre = events_autre.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
         events_per_day_autre_jardin = events_autre_jardin.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
-        events_per_day_votes = events_vote.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
-        events_per_day_atel = events_atel.filter(Q(date_atelier__day=day))
+        #events_per_day_votes = events_vote.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
+        #events_per_day_atel = events_atel.filter(Q(date_atelier__day=day))
 
         d = ''
         for event in events_per_day_arti:
