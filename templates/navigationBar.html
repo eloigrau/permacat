@@ -40,8 +40,10 @@
                      {% comment %} <li><a class="dropdown-item" href="{% url 'vote:index' %}"><i class="fa fa-bullhorn iconleft"></i>  Votes </a></li>{% endcomment %}
                        <li class="divider" role="separator"></li>
                         {% comment %} <li><a class="dropdown-item" href="{% url 'wiki:root' %}"> Eco Village </a></li>{% endcomment %}
+                        <li><a class="dropdown-item" href="{% url 'blog:index' %}?categorie=Altermarché"><i class='fa fa-comments' ></i> Altermarché </a></li>
                         <li><a class="dropdown-item" href="{% url 'blog:index' %}?categorie=Ecovillage"><i class='fa fa-comments' ></i> Ecovillage </a></li>
-                         <li><a class="dropdown-item" href="{% url 'fiches:acceuil' %}"><i class='fa fa-image iconleft' ></i> Fiches de Permaculture </a></li>
+                        <li><a class="dropdown-item" href="{% url 'blog:index' %}?categorie=Jardin"><i class='fa fa-comments' ></i> Jardins partagés</a></li>
+                         {% comment %}<li><a class="dropdown-item" href="{% url 'fiches:acceuil' %}"><i class='fa fa-image iconleft' ></i> Fiches de Permaculture </a></li>{% endcomment %}
                          {% comment %} <li><a class="dropdown-item" href="{% url 'ateliers:acceuil' %}"><i class='fa fa-wrench iconleft' ></i>  Ateliers Collectifs</a></li>{% endcomment %}
 
                        <li class="divider" role="separator"></li>
