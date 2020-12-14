@@ -44,8 +44,8 @@ class Calendar(LocaleTextCalendar):
         events_per_day_proj = events_proj.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
         events_per_day_autre = events_autre.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
         events_per_day_autre_jardin = events_autre_jardin.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
-        events_per_day_votes = events_vote.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
-        events_per_day_atel = events_atel.filter(Q(date_atelier__day=day))
+        events_per_day_votes = None#events_vote.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
+        events_per_day_atel = None#events_atel.filter(Q(date_atelier__day=day))
 
         d = ''
         for event in events_per_day_arti:
@@ -60,9 +60,9 @@ class Calendar(LocaleTextCalendar):
             if event.estPublic or (not request.user.is_anonymous and request.user.adherent_permacat):
                 titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
                 d += "<div class='event'>  <a href='"+event.get_absolute_url() +"'><i class='fa fa-folder-open iconleft' ></i> "+titre+'</a> </div>'
-        for event in events_per_day_atel:
-            titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
-            d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-wrench iconleft' ></i> "+titre+'</a> </div>'
+        #for event in events_per_day_atel:
+         #   titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
+          #  d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-wrench iconleft' ></i> "+titre+'</a> </div>'
 
         for event in events_per_day_autre:
             if event.estPublic or (not request.user.is_anonymous and request.user.adherent_permacat):
@@ -74,10 +74,10 @@ class Calendar(LocaleTextCalendar):
                 titre = event.gettitre if len(event.gettitre)<40 else event.gettitre[:37] + "..."
                 d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-pagelines' ></i> "+titre+'</a> </div>'
 
-        for event in events_per_day_votes:
-            if event.estPublic or (not request.user.is_anonymous and request.user.adherent_permacat):
-                titre = event.question if len(event.question)<40 else event.question[:37] + "..."
-                d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-bullhorn' ></i> "+titre+'</a> </div>'
+        #for event in events_per_day_votes:
+         #   if event.estPublic or (not request.user.is_anonymous and request.user.adherent_permacat):
+           #     titre = event.question if len(event.question)<40 else event.question[:37] + "..."
+            #    d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-bullhorn' ></i> "+titre+'</a> </div>'
 
         now = datetime.now()
         aujourdhui=0
