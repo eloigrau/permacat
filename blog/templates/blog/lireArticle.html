@@ -16,6 +16,8 @@
     </div>
     <div class="col-md-8">
         <p class="infos  textepetit">
+            <span class="badge badge-success" style="background-color:{{article.get_couleur}}" ><a href="{% url 'blog:index'  %}?categorie={{article.categorie}}" >{{ article.get_categorie_display }}</a></span>
+
             <span class="badge badge-success">
                 {{ article.asso }}
             </span>
@@ -29,7 +31,7 @@
                 modifiable
             </span>
             {%endif%}
-            Dans: <a href="{% url 'blog:index'  %}?categorie={{article.categorie}}"  style="background-color:{{article.get_couleur}}" class="smallcaps_h2">{{ article.get_categorie_display }}</a>, rédigé par <a href="{% url 'profil' article.auteur.id %}"> {{ article.auteur.username }}</a>, le {{ article.date_creation|date:"DATE_FORMAT" }};
+            , rédigé par <a href="{% url 'profil' article.auteur.id %}"> {{ article.auteur.username }}</a>, le {{ article.date_creation|date:"DATE_FORMAT" }};
 
 
         <a href="{% url 'blog:suivre_article' article.slug %}">

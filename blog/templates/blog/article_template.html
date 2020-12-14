@@ -44,8 +44,8 @@
           {% endif %}
           {% endif %}
       </p>
-          {% if article.dernierMessage %}
-        <p class="textsmall " >Dernier message : {{ article.dernierMessage }}</p>
+          {% if article.dernierMessage  %}
+        <p class="textsmall " >Dernier message : {{ article.dernierMessage|slice:":30"}}...</p>
           {% endif %}
     </div>
 
