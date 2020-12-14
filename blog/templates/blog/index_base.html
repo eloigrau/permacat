@@ -122,6 +122,12 @@
             {% for categorie_id, cat_nom, cat_coul in categorie_list %}
             <a class=" dropdown-item " style="background:{{cat_coul}};" href="?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
             {% endfor %}
+                                <div class="dropdown-divider"></div>
+                         <a class=" dropdown-item " style="background:dark;" ><span><i class='fa fa-folder-open iconleft' ></i> Projets PCat :</span></a>
+
+                                            {% for categorie_id, cat_nom, cat_coul in categorie_list_projets %}
+            <a class=" dropdown-item " style="background:{{cat_coul}};" href="?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+            {% endfor %}
 							</div>
 						</li>
 

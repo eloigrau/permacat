@@ -12,10 +12,13 @@ class Choix():
     statut_projet = ('prop','Proposition de projet'), ("AGO","Fiche projet soumise à l'AGO"), ('vote','Soumis au vote'), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
 
     type_projet = ('Part','Participation à un évènement'), ('AGO',"Organisation d'une AGO"), ('Projlong','Projet a long terme'), ('Projcourt','Projet a court terme'), ('Projponct','Projet ponctuel'),
-    type_annonce = ('Altermarché','Altermarché'), ('Annonce','Annonce'), ('Administratif','Administratif'), ('Agenda','Agenda'),  ('Chantier','Chantier participatif'),\
-                   ('Documentation','Documentation'), ('Ecovillage', 'Ecovillage'), \
+    type_annonce = ('Annonce','Annonce'), ('Administratif','Administratif'), ('Agenda','Agenda'),  ('Chantier','Chantier participatif'),\
+                   ('Documentation','Documentation'), \
                     ('Point', 'Point de vue'),  ('Recette', 'Recette'), \
-                    ('Jardin','Jardins partagés'), ('Autre','Autre'), #('Jardi','Jardi per tots'),('KitPerma', 'Kit Perma Ecole'),  
+                     ('Divers','Divers'), #('Jardi','Jardi per tots'),
+    type_annonce_projets = ('Altermarché', 'Altermarché'),  ('Ecovillage', 'Ecovillage'), \
+                   ('Jardin', 'Jardins partagés'), #('KitPerma', 'Kit Perma Ecole'),
+
     couleurs_annonces = {
        # 'Annonce':"#e0f7de", 'Administratif':"#dcc0de", 'Agenda':"#d4d1de", 'Entraide':"#cebacf",
        # 'Chantier':"#d1ecdc",'Jardinage':"#fcf6bd", 'Recette':"#d0f4de", 'Bricolage':"#fff2a0",
@@ -53,7 +56,7 @@ class Choix():
 
 class Article(models.Model):
     categorie = models.CharField(max_length=30,         
-        choices=(Choix.type_annonce),
+        choices=(Choix.type_annonce + Choix.type_annonce_projets),
         default='Annonce', verbose_name="categorie")
     titre = models.CharField(max_length=100,)
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
