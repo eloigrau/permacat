@@ -68,3 +68,10 @@ def ordreTriStr(value):
         return "Type de vote"
     else:
         return value
+
+
+@register.filter(is_safe=True)
+def couperTexte(value, nb):
+    if len(value) > nb:
+        return value[:nb-3] + "..."
+    return value

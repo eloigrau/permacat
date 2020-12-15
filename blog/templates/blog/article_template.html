@@ -1,5 +1,6 @@
 
 {% load activity_tags %}
+{% load app_filters %}
 {% load fontawesome %}
 
 <div class="card article_carte textcenter"  style="background-color:{{article.get_couleur}}">
@@ -45,7 +46,7 @@
           {% endif %}
       </p>
           {% if article.dernierMessage  %}
-        <p class="textsmall " >Dernier message : {{ article.dernierMessage|slice:":30"}}...</p>
+        <p class="textsmall " >Dernier message : {{ article.dernierMessage|couperTexte:30}}</p>
           {% endif %}
     </div>
 
