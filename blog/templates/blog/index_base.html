@@ -65,9 +65,9 @@
 
 			<nav class="navbar navbar-expand-md navbar-light bg-light">
     <a class="nav-item " href="#" id="oo" data-toggle="dropdown">
-         <button type="button" class="btn  btn-primary dropdown-toggle" >
+         <button type="button" class="btn dropdown-toggle bouton_dossiers_forum" >
         {% if request.GET.categorie  %}
-      {{categorie_courante}}
+      Dossier : {{categorie_courante}}
       {%elif request.GET.permacat %}
       Articles Permacat
       {%elif request.GET.auteur %}
@@ -79,7 +79,7 @@
       {%endif%}
      </button>
     </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        <div class="dropdown-menu " style="width:100%;"  aria-labelledby="navbarDropdownMenuLink">
             <a class=" dropdown-item " style="background:white;" href="{% if asso_courante  %}{%url 'blog:index_asso' asso=asso_courante%}{% else  %}{%url 'blog:index' %}{% endif  %}">Tous les dossiers</a>
             <div class="dropdown-divider"></div>
             {% for categorie_id, cat_nom, cat_coul in categorie_list %}

@@ -666,6 +666,33 @@ article-carte{
 	overflow: hidden;
 }
 
+.bouton_dossiers_forum {
+	box-shadow: 0px 10px 14px -7px #276873;
+	background:linear-gradient(to bottom, #599bb3 5%, #408c99 100%);
+	background-color:#599bb3;
+	border-radius:8px;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-size:18px;
+	font-weight:bold;
+	padding:14px 45px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #3d768a;
+    float: right;
+    position: relative;
+}
+.bouton_dossiers_forum:hover {
+	background:linear-gradient(to bottom, #408c99 5%, #599bb3 100%);
+	background-color:#408c99;
+}
+.bouton_dossiers_forum:active {
+	position:relative;
+	top:1px;
+	}
+
+
+
 .centered{
 }
 
