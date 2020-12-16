@@ -3,7 +3,7 @@
 {% load app_filters %}
 {% load fontawesome %}
 
-<div class="card article_carte textcenter d-flex"  style="background-color:{{article.get_couleur}}">
+<div class="card article_carte textcenter d-flex  align-items-center"  style="background-color:{{article.get_couleur}}">
   <a href="{% url 'blog:lireArticle' slug=article.slug %}">
     <div class="article-card-header">
           <div class="d-flex justify-content-center smallcaps_h ">
@@ -35,8 +35,8 @@
               </div>
       </div>
     </div>
-    <div class="card-body align-items-center" {%if article.estArchive %} style="background-color:#e0e0d1;" {% endif %}>
-      <div>
+    <div class="card-body" {%if article.estArchive %} style="background-color:#e0e0d1;" {% endif %}>
+      <div class="centered" >
         <h5 class="btn-cat titreArticle">{{ article.titre }}</h5>
 
       <p class="textsmall " > {% if article.start_time %}
@@ -46,10 +46,14 @@
           le {{ article.start_time|date:"DATE_FORMAT" }}
           {% endif %}
           {% endif %}
-      </p> </div> <div>
-          {% if article.dernierMessage  %}
+      </p>
+        {% if article.dernierMessage  %}
+        <div>
         <p class="textsmall " >Dernier message : {{ article.dernierMessage|couperTexte:30}}</p>
-          {% endif %} </div>
+        </div>
+        {% endif %}
+
+    </div>
     </div>
 
   </a>

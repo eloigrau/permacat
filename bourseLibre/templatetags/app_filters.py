@@ -75,3 +75,4 @@ def couperTexte(value, nb):
     if len(value) > nb:
         return value[:nb-3] + "..."
     return value
+

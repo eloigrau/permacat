@@ -171,16 +171,20 @@
 {% block content %}
 
 {% if request.GET.categorie %}
+
 <div class="row justify-content-center">
     <div class="col textcenter">
 {%if request.GET.categorie == "Ecovillage" %}
+        <hr>
         <div>
  <a href="http://www.perma.cat/forum/projets/projet-eco-lieu">
      <button type="button" class="btn  btn-warning" >
             <i class="fa fa-arrow-right"></i>&nbsp;Voir le projet Permacat
     </button>
  </a></div>
+        <hr>
 {%elif request.GET.categorie == "Jardin" %}
+        <hr>
  <a href="http://www.perma.cat/jardins/articles/">
      <button type="button" class="btn  btn-warning" >
             <i class="fa fa-arrow-right"></i>&nbsp;Blog des jardins partagés
@@ -201,7 +205,9 @@
             <i class="fa fa-arrow-right"></i>&nbsp;projet jardins partagés à Perpignan
     </button>
  </a>
+        <hr>
 {%elif request.GET.categorie == "Altermarché" %}
+        <hr>
  <a href="http://www.perma.cat/forum/projets/lalter-marche-ou-marche-en-monnaies-alternatives">
      <button type="button" class="btn  btn-warning" >
             <i class="fa fa-arrow-right"></i>&nbsp;Voir le projet Permacat
@@ -212,6 +218,7 @@
             <i class="fa fa-arrow-right"></i>&nbsp;Altermarché sur le site
     </button>
  </a>
+        <hr>
 {%endif%}
 </div>
 </div>
