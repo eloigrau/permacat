@@ -2,7 +2,6 @@
 {% load static %}
 {% load blog_filters %}
 {% load fontawesome %}
-
 {% load activity_tags %}
 {%block header %}
 <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
@@ -61,6 +60,36 @@
                     </a>
         </div>
     </div>
+        <div class="row justify-content-center">
+    <a class="nav-item " href="#" id="oo" data-toggle="dropdown">
+         <button type="button" class="btn  btn-primary dropdown-toggle" >
+        {% if request.GET.categorie  %}
+      {{categorie_courante}}
+      {%elif request.GET.permacat %}
+      Articles Permacat
+      {%elif request.GET.auteur %}
+      Articles de {{request.GET.auteur}}
+      {%elif typeFiltre == 'archives' %}
+      Archives
+        {%else%}
+        Choisir un dossier...
+      {%endif%}
+     </button>
+    </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class=" dropdown-item " style="background:white;" href="{% if asso_courante  %}{%url 'blog:index_asso' asso=asso_courante%}{% else  %}{%url 'blog:index' %}{% endif  %}">Tous les dossiers</a>
+            <div class="dropdown-divider"></div>
+            {% for categorie_id, cat_nom, cat_coul in categorie_list %}
+            <a class=" dropdown-item " style="background:{{cat_coul}};" href="?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+            {% endfor %}
+            <div class="dropdown-divider"></div>
+            <a class=" dropdown-item " style="background:dark;" ><span><i class='fa fa-folder-open iconleft' ></i> Projets PCat :</span></a>
+
+            {% for categorie_id, cat_nom, cat_coul in categorie_list_projets %}
+            <a class=" dropdown-item " style="background:{{cat_coul}};" href="?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+            {% endfor %}
+        </div>
+    </div>
     <div class="row justify-content-center">
             <a href="{% url 'blog:ajouterNouvelArticle' %}">
                 <button type="button" class="btn  btn-success" >
@@ -68,6 +97,9 @@
                 </button>
             </a>&ensp;
     </div>
+
+
+
     <hr>
 </div>
 </div>
@@ -82,55 +114,23 @@
                         <li class="nav-item dropdown">
                             <a class="nav-item" href="#" id="navbarDropdownAsso" data-toggle="dropdown">
                                  <button type="button" class="btn  btn-success dropdown-toggle" >
-                                {% if asso_courante  %}
+    {% if asso_courante  %}
       {{asso_courante}}
         {%else%}
         Tous les articles
       {%endif%}
-                             </button>
-                                </a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                {% if not asso_courante  %}
-                                    <a class=" dropdown-item " style="background:white;" href="{%url 'blog:index' %}">Tous les articles</a>
-                                {% endif  %}
-                                <div class="dropdown-divider"></div>
+     </button>
+        </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            {% if not asso_courante  %}
+                <a class=" dropdown-item " style="background:white;" href="{%url 'blog:index' %}">Tous les articles</a>
+            {% endif  %}
+            <div class="dropdown-divider"></div>
             {% for asso_nom, asso_abreviation in asso_list %}
             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{%url 'blog:index_asso' asso=asso_abreviation %}"><span>{{asso_nom}}</span></a>
             {% endfor %}
-							</div>
-						</li>
-
-<li class="nav-item dropdown">
-                            <a class="nav-item " href="#" id="navbarDropdownCategorie" data-toggle="dropdown">
-                                 <button type="button" class="btn  btn-primary dropdown-toggle" >
-                                {% if request.GET.categorie  %}
-      {{categorie_courante}}
-      {%elif request.GET.permacat %}
-      Articles Permacat
-      {%elif request.GET.auteur %}
-      Articles de {{request.GET.auteur}}
-      {%elif typeFiltre == 'archives' %}
-      Archives
-        {%else%}
-        Tous les dossiers...
-      {%endif%}
-                                 </button>
-                                </a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class=" dropdown-item " style="background:white;" href="{% if asso_courante  %}{%url 'blog:index_asso' asso=asso_courante%}{% else  %}{%url 'blog:index' %}{% endif  %}">Tous les dossiers</a>
-                                <div class="dropdown-divider"></div>
-            {% for categorie_id, cat_nom, cat_coul in categorie_list %}
-            <a class=" dropdown-item " style="background:{{cat_coul}};" href="?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
-            {% endfor %}
-                                <div class="dropdown-divider"></div>
-                         <a class=" dropdown-item " style="background:dark;" ><span><i class='fa fa-folder-open iconleft' ></i> Projets PCat :</span></a>
-
-                                            {% for categorie_id, cat_nom, cat_coul in categorie_list_projets %}
-            <a class=" dropdown-item " style="background:{{cat_coul}};" href="?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
-            {% endfor %}
-							</div>
-						</li>
-
+            </div>
+        </li>
 
                 <li class="nav-item dropdown">
                       <a class="nav-item btn-block" href="#" id="menuOrdreTri" data-toggle="dropdown">
