@@ -656,10 +656,10 @@ padding: 5px 80px;
 }
 .article_carte:hover {
 	box-shadow: 2px 3px 8px 0px;
-	min-height: 190px;
+	min-height: 150px;
 	}
 .article_carte {
-	min-height: 190px;
+	min-height: 150px;
 	margin:9px;
 	overflow: hidden;
 	}
