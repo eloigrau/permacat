@@ -2,9 +2,9 @@
 {% load activity_tags %}
 {% load app_filters %}
 {% load fontawesome %}
-
-<div class="card article_carte textcenter d-flex  align-items-center"  style="background-color:{{article.get_couleur}}">
   <a href="{% url 'blog:lireArticle' slug=article.slug %}">
+<div class="card card-block article_carte textcenter d-flex "  style="background-color:{{article.get_couleur}}">
+
     <div class="article-card-header">
           <div class="d-flex justify-content-center smallcaps_h ">
              <div>
@@ -35,26 +35,30 @@
               </div>
       </div>
     </div>
-    <div class="card-body" {%if article.estArchive %} style="background-color:#e0e0d1;" {% endif %}>
-      <div class="centered" >
+    <div class="card-body align-items-center  {% if not article.dernierMessage  %}d-flex  {% endif %}justify-content-center textcenter" {%if article.estArchive %} style="background-color:#e0e0d1;" {% endif %}>
+      <div class="row-sm-12">
+          <div class="col">
         <h5 class="btn-cat titreArticle">{{ article.titre }}</h5>
-
-      <p class="textsmall " > {% if article.start_time %}
+    {% if article.start_time %}
+      <p class="textsmall " >
           {% if article.end_time %}
           du {{ article.start_time|date:"DATE_FORMAT" }} au {{ article.end_time|date:"DATE_FORMAT" }}
           {%else%}
           le {{ article.start_time|date:"DATE_FORMAT" }}
           {% endif %}
-          {% endif %}
       </p>
+      {% endif %}
+    </div>
+          </div>
         {% if article.dernierMessage  %}
-        <div>
-        <p class="textsmall " >Dernier message : {{ article.dernierMessage|couperTexte:30}}</p>
+        <div class="row-sm-12">
+          <div class="col">
+            <p class="textsmall " >Dernier message : {{ article.dernierMessage|couperTexte:30}}</p>
+        </div>
         </div>
         {% endif %}
 
     </div>
-    </div>
 
-  </a>
 </div>
+  </a>
