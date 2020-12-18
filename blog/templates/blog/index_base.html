@@ -113,10 +113,11 @@
 				</button>
 				<div class="collapse navbar-collapse justify-content-center" id="bs-example-navbar-collapse-1">
 					<ul class="navbar-nav ">
-                        <li class="nav-item dropdown">
+                      {% comment%}   <li class="nav-item dropdown">
                             <a class="nav-item" href="#" id="navbarDropdownAsso" data-toggle="dropdown">
                                  <button type="button" class="btn  btn-success dropdown-toggle" >
-    {% if asso_courante  %}
+    
+	 {% if asso_courante  %}
       {{asso_courante}}
         {%else%}
         Tous les articles
@@ -132,7 +133,7 @@
             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{%url 'blog:index_asso' asso=asso_abreviation %}"><span>{{asso_nom}}</span></a>
             {% endfor %}
             </div>
-        </li>
+        </li>{% endcomment %}
         <li class="nav-item dropdown">
             <a class="nav-item btn-block" href="#" id="menuOrdreTri" data-toggle="dropdown">
 
