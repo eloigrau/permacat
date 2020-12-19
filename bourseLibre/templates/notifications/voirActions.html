@@ -1,0 +1,22 @@
+{% extends 'base_notifications.html' %}
+{% load activity_tags %}
+{% block subtitle %}
+<h4>Liste des emails a envoyer ({{listeMails|length}})</h4>
+{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+<div class="card-deck notif ">
+<div class="card notif3 d-md-flex">
+  <ul class="list-group list-group-flush " >
+
+{% for action in actions %}
+      <li class="list-group-item "  style=""  >
+          {{action}}
+      </li>
+{%endfor%}
+  </ul>
+</div>
+</div>
+</div>
+
+{% endblock %}

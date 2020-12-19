@@ -911,8 +911,7 @@ def mesSuivis(request):
 
 @login_required
 def mesActions(request):
-    actions = following(request.user)
-    return render(request, 'notifications/mesSuivis.html', {'actions': actions, })
+    return render(request, 'notifications/mesActions.html', {})
 
 @login_required
 def agora(request, asso):

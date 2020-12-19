@@ -355,6 +355,16 @@ def supprimerActionsStartedFollowing():
     for action in actions:
         action.delete()
 
+def nettoyerActions(request):
+    actions = Action.objects.all()
+    for action in actions:
+        try:
+            print(action)
+        except:
+            action.delete()
+
+    return render(request, 'notifications/voirActions.html', {'actions': actions,})
+
 def voirEmails(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden()

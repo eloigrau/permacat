@@ -96,6 +96,7 @@
                 <li class="divider" role="separator"></li>
                 {% if request.user.is_superuser %}
                <li> <a class="dropdown-item" href="{% url 'voirEmails' %}"> voir Emails Alertes</a></li>
+               <li> <a class="dropdown-item" href="{% url 'nettoyerActions' %}"> nettoyerActions</a></li>
                 {%endif%}
                 <li class="divider" role="separator"></li>
                <li> <a class="dropdown-item" href="{% url 'fairedon' %}"> Faire un don</a></li>
