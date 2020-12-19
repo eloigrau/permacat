@@ -50,9 +50,9 @@
 
    {% if request.user.adherent_permacat %}
                        <li class="divider" role="separator"></li>
-                        <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='pc' %}"> Annuaire  </a></li>
-                         <li><a class="dropdown-item" href="{% url 'carte'  asso='pc' %}"> Carte  </a></li>
-                         <li><a class="dropdown-item" href="{% url 'admin_asso' asso='pc' %}"> Administration  </a></li>
+                        <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='pc' %}"><i class='fa fa-address-book' ></i>  Annuaire  </a></li>
+                         <li><a class="dropdown-item" href="{% url 'carte'  asso='pc' %}"><i class='fa fa-compass' ></i>  Carte  </a></li>
+                         <li><a class="dropdown-item" href="{% url 'admin_asso' asso='pc' %}"><i class='fa fa-database' ></i> Administration  </a></li>
 
    {% endif %}
                             <li class="divider" role="separator"></li>
@@ -72,7 +72,9 @@
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
                             <li> <a class="dropdown-item" href="{% url 'agora' asso='rtg'%}"><i class='fa fa-asterisk' ></i> Salon de discussion</a></li>
                             <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='rtg'%}"><i class='fa fa-comments' ></i> Articles </a></li>
-                          <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='rtg' %}"> Annuaire  </a></li>
+                          <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='rtg' %}"><i class='fa fa-address-book' ></i> Annuaire  </a></li>
+                          <li> <a class="dropdown-item" href="{% url 'carte'  asso='rtg' %}"><i class='fa fa-compass' ></i>  Carte  </a></li>
+                          <li> <a class="dropdown-item" href="https://onedrive.live.com/?id=root&cid=E8701A9206E3BC03"><i class='fa fa-database' ></i> OneDrive  </a></li>
                       </ul>
                     </li>
    {% endif %}
@@ -90,7 +92,7 @@
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
                             <li> <a class="dropdown-item" href="{% url 'agora' asso='ga'%}"><i class='fa fa-asterisk' ></i> Salon de discussion</a></li>
                             <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='ga'%}"><i class='fa fa-comments' ></i> Articles </a></li>
-                          <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='ga' %}"> Annuaire  </a></li>
+                          <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='ga' %}"><i class='fa fa-address-book' ></i> Annuaire  </a></li>
                       </ul>
                     </li>
                     {% endcomment %}
@@ -102,8 +104,8 @@
              {% fontawesome_icon 'globe' %} Site
             </a>
             <ul class="dropdown-menu dropdown-menu1 nav6-dropdown" aria-labelledby="navbarAbout2" id="dropdoownSite">
-               <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='public' %}"> Annuaire </a></li>
-                <li> <a class="dropdown-item" href="{% url 'carte'  asso='public' %}"> Carte </a></li>
+               <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='public' %}"><i class='fa fa-address-book' ></i> Annuaire </a></li>
+                <li> <a class="dropdown-item" href="{% url 'carte'  asso='public' %}"><i class='fa fa-compass' ></i>  Carte </a></li>
                 <li class="divider" role="separator"></li>
                <li> <a class="dropdown-item" href="{% url 'faq' %}"> FAQ </a></li>
                <li> <a class="dropdown-item" href="{% url 'cgu' %}"> CGU </a></li>
