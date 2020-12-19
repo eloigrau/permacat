@@ -365,6 +365,14 @@ def nettoyerActions(request):
 
     return render(request, 'notifications/voirActions.html', {'actions': actions,})
 
+def nettoyerHistoriqueAdmin(request):
+    from django.contrib.admin.models import LogEntry
+    actions = LogEntry.objects.all()
+    for action in actions:
+        action.delete()
+
+    return render(request, 'notifications/voirActions.html', {'actions': actions,})
+
 def voirEmails(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden()
