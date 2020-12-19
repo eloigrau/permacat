@@ -152,7 +152,7 @@ class ListeArticles(ListView):
         if "ordreTri" in params:
             qs = qs.order_by(params['ordreTri'])
         else:
-            qs = qs.order_by('-date_creation', '-date_dernierMessage', 'categorie', 'auteur')
+            qs = qs.order_by('-date_dernierMessage', '-date_creation', 'categorie', 'auteur')
 
         self.qs = qs
         return qs.filter(estArchive=False)
@@ -262,10 +262,12 @@ class ListeArticles_asso(ListView):
         if 'categorie' in self.request.GET:
             context['typeFiltre'] = "categorie"
             try:
-                context['categorie_courante'] = \
-                [x[1] for x in Choix.type_annonce_projets if x[0] == self.request.GET['categorie']][0]
+                context['categorie_courante'] = [x[1] for x in Choix.type_annonce if x[0] == self.request.GET['categorie']][0]
             except:
-                context['categorie_courante'] = ""
+                try:
+                    context['categorie_courante'] = [x[1] for x in Choix.type_annonce_projets if x[0] == self.request.GET['categorie']][0]
+                except:
+                    context['categorie_courante'] = ""
 
 
         if 'permacat' in self.request.GET:

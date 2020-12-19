@@ -12,17 +12,6 @@
 
 {% if user.is_authenticated %}
     <ul class="nav navbar-nav  d-flex justify-content-between  w-100">
-        <li class="nav-item nav1"><a class="nav-link" href="{% url 'marche' %}"> {% fontawesome_icon 'shopping-basket' %} Altermarché</a></li>
-
-        <li class="nav-item nav2"><a class="nav-link" href="{% url 'blog:index' %}">{% fontawesome_icon 'comments' %} Forum</a></li>
-        <li class="nav-item nav3 4to3"><a class="nav-link" href="{% url 'cal:agenda' %}">{% fontawesome_icon 'calendar' %}  Agenda</a></li>
-
-        <li class="nav-item nav4 5to4"><a class="nav-link" href="{% url 'notifications_news' %}">{% fontawesome_icon 'bell' %}  Notifications</a></li>
-
-   {% if request.user.is_superuser %}
-        {% load admin_urls %}
-        <li class="nav-item nav4"><a class="nav-link" href="{% url 'admin:index' %}">admin</a></li>
-    {% endif %}
         <li class="nav-item dropdown nav5 3to5">
                 <a class="nav-link dropdown-toggle navbar-menu "  href="{% url 'presentation_asso' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {% fontawesome_icon 'link' %} Groupes
@@ -37,17 +26,22 @@
    {% if request.user.adherent_permacat %}
                         <li> <a class="dropdown-item" href="{% url 'agora' asso='pc'%}"><i class='fa fa-asterisk' ></i>  Salon de discussion</a></li>
     {% endif %}
-                    <li><a class="dropdown-item" href="{% url 'blog:index_projets' %}"><i class='fa fa-folder-open iconleft' ></i>  Projets </a></li>
+                         <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='pc'%}"><i class='fa fa-comments' ></i> Articles </a></li>
+                         <li class="divider" role="separator"></li>
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" >Projets</a>
+                        <ul class="dropdown-menu nav5-dropdown-subsubmenu">
+                            <li><a class="dropdown-item" href="{% url 'blog:index_projets' %}"><i class='fa fa-folder-open iconleft' ></i>  Tous les projets </a></li>
 
                      {% comment %} <li><a class="dropdown-item" href="{% url 'vote:index' %}"><i class="fa fa-bullhorn iconleft"></i>  Votes </a></li>{% endcomment %}
-                       <li class="divider" role="separator"></li>
                         {% comment %} <li><a class="dropdown-item" href="{% url 'wiki:root' %}"> Eco Village </a></li>{% endcomment %}
                         <li><a class="dropdown-item" href="{% url 'blog:index' %}?categorie=Altermarché"><i class='fa fa-comments' ></i> Altermarché </a></li>
                         <li><a class="dropdown-item" href="{% url 'blog:index' %}?categorie=Ecovillage"><i class='fa fa-comments' ></i> Ecovillage </a></li>
                         <li><a class="dropdown-item" href="{% url 'blog:index' %}?categorie=Jardin"><i class='fa fa-comments' ></i> Jardins partagés</a></li>
                          {% comment %}<li><a class="dropdown-item" href="{% url 'fiches:acceuil' %}"><i class='fa fa-image iconleft' ></i> Fiches de Permaculture </a></li>{% endcomment %}
                          {% comment %} <li><a class="dropdown-item" href="{% url 'ateliers:acceuil' %}"><i class='fa fa-wrench iconleft' ></i>  Ateliers Collectifs</a></li>{% endcomment %}
-
+                        </ul>
+                    </li>
    {% if request.user.adherent_permacat %}
                        <li class="divider" role="separator"></li>
                         <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='pc' %}"><i class='fa fa-address-book' ></i>  Annuaire  </a></li>
@@ -98,6 +92,18 @@
                     {% endcomment %}
                 </ul>
         </li>
+        <li class="nav-item nav2"><a class="nav-link" href="{% url 'blog:index' %}">{% fontawesome_icon 'comments' %} Forum</a></li>
+        <li class="nav-item nav3 4to3"><a class="nav-link" href="{% url 'cal:agenda' %}">{% fontawesome_icon 'calendar' %}  Agenda</a></li>
+
+        <li class="nav-item nav4 5to4"><a class="nav-link" href="{% url 'notifications_news' %}">{% fontawesome_icon 'bell' %}  Notifications</a></li>
+
+   {% if request.user.is_superuser %}
+        {% load admin_urls %}
+        <li class="nav-item nav4"><a class="nav-link" href="{% url 'admin:index' %}">admin</a></li>
+    {% endif %}
+
+
+        <li class="nav-item nav1"><a class="nav-link" href="{% url 'marche' %}"> {% fontawesome_icon 'shopping-basket' %} Altermarché</a></li>
 
         <li class="nav-item dropdown nav6">
             <a class="nav-link dropdown-toggle navbar-menu " href="#dropdoownSite" id="navbarAbout2" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" >

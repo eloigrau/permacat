@@ -308,12 +308,23 @@ section.p3 {
 .bs-dark .nav5 > a:hover {
     background-color: #4dffb8;
 }
+.nav5-dropdown-submenu {
+    background-color: #99ffbb;
+    text-align: left;
+    padding-top: 0px;
+    padding-bottom: 0px;
+ }
+.nav5-dropdown-subsubmenu {
+    background-color: #ccffdd;
+    text-align: left;
+ }
 .bs-dark .nav5 > a:focus {
     background-color: #4dffb8;
 }
 .nav5-dropdown{
     background-color: #66ff99;
 }
+
 .cardH5{
     background-color: #00FF55;
 }
@@ -390,11 +401,16 @@ section.p3 {
   background-color: blue;
 }
 
-@media screen and (max-width: 1300px) {
+@media screen and (max-width: 1200px) {
 
-.nav3-dropdown-submenu{
+
+.nav5-dropdown-submenu {
     text-align: center;
-    }
+ }
+.nav5-dropdown-subsubmenu {
+    text-align: center;
+ }
+
 .bs-dark {
 
   background-image:linear-gradient(90deg, #ffd0cc, #ffe6b3, #fcffcc, #ccffdd, #ccdbff);
