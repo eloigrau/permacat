@@ -46,11 +46,14 @@
                          {% comment %}<li><a class="dropdown-item" href="{% url 'fiches:acceuil' %}"><i class='fa fa-image iconleft' ></i> Fiches de Permaculture </a></li>{% endcomment %}
                          {% comment %} <li><a class="dropdown-item" href="{% url 'ateliers:acceuil' %}"><i class='fa fa-wrench iconleft' ></i>  Ateliers Collectifs</a></li>{% endcomment %}
 
+   {% if request.user.adherent_permacat %}
                        <li class="divider" role="separator"></li>
                         <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='pc' %}"> Annuaire  </a></li>
                          <li><a class="dropdown-item" href="{% url 'carte'  asso='pc' %}"> Carte  </a></li>
                          <li><a class="dropdown-item" href="{% url 'admin_asso' asso='pc' %}"> Administration  </a></li>
-                        <li class="divider" role="separator"></li>
+
+   {% endif %}
+                            <li class="divider" role="separator"></li>
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso' %}"> Qui sommes nous ?</a></li>
                        <li> <a class="dropdown-item" href="{% url 'charte' %}"> Charte </a></li>
                        <li> <a class="dropdown-item" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a></li>
@@ -61,6 +64,7 @@
                     </li>
 
 
+   {% if request.user.adherent_rtg %}
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" >Ramène Ta Graine</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
@@ -69,6 +73,7 @@
                           <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='rtg' %}"> Annuaire  </a></li>
                       </ul>
                     </li>
+   {% endif %}
 
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" >Jardins Partagés</a>
