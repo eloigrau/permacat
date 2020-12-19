@@ -550,12 +550,12 @@ class ListeProduit(ListView):
     def get_qs(self):
         qs = Produit.objects.select_subclasses()
         if not self.request.user.is_authenticated:
-            qs = qs.filter(asso__id=1)
+            qs = qs.filter(asso__abreviation="public")
         else:
             if not self.request.user.adherent_permacat:
-                qs = qs.exclude(asso__id=2)
-            if not self.request.user.adherent_ga:
-                qs = qs.exclude(asso__id=3)
+                qs = qs.exclude(asso__abreviation="pc")
+            if not self.request.user.adherent_rtg:
+                qs = qs.exclude(asso__abreviation="rtg")
 
         params = dict(self.request.GET.items())
 
@@ -760,10 +760,10 @@ def chercher(request):
         produits_list = produits_list.exclude(asso__abreviation="pc")
         articles_list = articles_list.exclude(asso__abreviation="pc")
         projets_list = projets_list.exclude(asso__abreviation="pc")
-    if not request.user.adherent_ga:
-        produits_list = produits_list.exclude(asso__abreviation="ga")
-        articles_list = articles_list.exclude(asso__abreviation="ga")
-        projets_list = projets_list.exclude(asso__abreviation="ga")
+    if not request.user.adherent_rtg:
+        produits_list = produits_list.exclude(asso__abreviation="rtg")
+        articles_list = articles_list.exclude(asso__abreviation="rtg")
+        projets_list = projets_list.exclude(asso__abreviation="rtg")
 
     return render(request, 'chercher.html', {'recherche':recherche, 'articles_list':articles_list, 'produits_list':produits_list, "projets_list": projets_list, 'profils_list':profils_list,'commentaires_list': commentaires_list, 'commentairesProjet_list':commentairesProjet_list, 'salon_list':salon_list})
 
@@ -787,9 +787,9 @@ def chercher_articles(request):
     if not request.user.adherent_permacat:
         articles_list = articles_list.exclude(asso__abreviation="pc")
         commentaires_list = commentaires_list.exclude(article__asso__abreviation="pc")
-    if not request.user.adherent_ga:
-        articles_list = articles_list.exclude(asso__abreviation="ga")
-        commentaires_list = commentaires_list.exclude(article__asso__abreviation="ga")
+    if not request.user.adherent_rtg:
+        articles_list = articles_list.exclude(asso__abreviation="rtg")
+        commentaires_list = commentaires_list.exclude(article__asso__abreviation="rtg")
 
     return render(request, 'chercherForum.html', {'recherche':recherche, 'articles_list':articles_list, 'articles_jardin_list':articles_jardin_list, 'commentaires_jardin_list':commentaires_jardin_list,'commentaires_list': commentaires_list})
 
@@ -908,6 +908,11 @@ def mesSuivis(request):
     actions = following(request.user)
     return render(request, 'notifications/mesSuivis.html', {'actions': actions, })
 
+
+@login_required
+def mesActions(request):
+    actions = following(request.user)
+    return render(request, 'notifications/mesSuivis.html', {'actions': actions, })
 
 @login_required
 def agora(request, asso):

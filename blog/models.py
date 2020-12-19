@@ -122,6 +122,8 @@ class Article(models.Model):
             return user.adherent_permacat
         elif self.asso.abreviation == "ga":
             return user.adherent_ga
+        elif self.asso.abreviation == "rtg":
+            return user.adherent_rtg
         else:
             return False
 
@@ -261,8 +263,8 @@ class Projet(models.Model):
             return True
         elif self.asso.abreviation == "pc":
             return user.adherent_permacat
-        elif self.asso.abreviation == "ga":
-            return user.adherent_ga
+        elif self.asso.abreviation == "rtg":
+            return user.adherent_rtg
         else:
             return False
 

@@ -51,7 +51,7 @@ class ModifierSuffrage(UpdateView):
 
     def get_form(self,*args, **kwargs):
         form = super(ModifierSuffrage, self).get_form(*args, **kwargs)
-        form.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if self.request.user.estMembre_str(x.nom)]
+        form.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if self.request.user.estMembre_str(x.abreviation)]
         return form
 
 
@@ -199,12 +199,12 @@ class ListeSuffrages(ListView):
 
 
         if not self.request.user.is_authenticated:
-            qs = qs.filter(asso__id=1)
+            qs = qs.filter(asso__abreviation="public")
         else:
             if not self.request.user.adherent_permacat:
-                qs = qs.exclude(asso__id=2)
-            if not self.request.user.adherent_ga:
-                qs = qs.exclude(asso__id=3)
+                qs = qs.exclude(asso__abreviation="pc")
+            if not self.request.user.adherent_rtg:
+                qs = qs.exclude(asso__abreviation="rtg")
 
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])

@@ -4,6 +4,7 @@ from blog.models import Article, Projet, Commentaire, CommentaireProjet, Eveneme
 from jardinpartage.models import Article as Art_jardin, Commentaire as Comm_jardin
 from fiches.models import Fiche, Atelier as atelier_fiche, CommentaireFiche
 #from ateliers.models import Atelier, CommentaireAtelier, InscriptionAtelier
+from django.contrib.admin.models import LogEntry
 
 
 from django.contrib import admin
@@ -18,27 +19,18 @@ class CustomUserAdmin(UserAdmin):
     add_form = ProfilCreationForm
     form = ProducteurChangeForm_admin
     model = Profil
-    list_display = ['email', 'username',  'last_login', 'date_notifications', 'adherent_permacat', 'adherent_ga',
+    list_display = ['email', 'username',  'last_login', 'date_notifications', 'adherent_permacat', 'adherent_rtg',
                     'inscrit_newsletter', ]
 
     readonly_fields = ('date_registration','last_login','adresse')
 
     fieldsets = (
-        (None, {'fields': ('username','description','competences','pseudo_june','statut_adhesion','statut_adhesion_ga', 'adherent_permacat', 'adherent_ga', 'adresse', 'inscrit_newsletter', 'cotisation_a_jour', 'is_jardinpartage', 'date_notifications')}),
+        (None, {'fields': ('username','description','competences','pseudo_june','statut_adhesion', 'adherent_permacat', 'adherent_rtg', 'adresse', 'inscrit_newsletter', 'cotisation_a_jour', 'is_jardinpartage', 'date_notifications')}),
         (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
                                        'groups', 'user_permissions')}),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
         )
-
-class MyModelAdmin(admin.ModelAdmin):
-    list_display = ['tag_list']
-
-    def get_queryset(self, request):
-        return super().get_queryset(request).prefetch_related('tags')
-
-    def tag_list(self, obj):
-        return u", ".join(o.name for o in obj.tags.all())
 
 class ArticleAdmin(admin.ModelAdmin):
         list_display = ('titre', 'asso', 'categorie', 'estArchive', )
@@ -76,7 +68,8 @@ admin.site.register(Fiche)
 admin.site.register(CommentaireFiche)
 admin.site.register(atelier_fiche)
 
-#
+admin.site.register(LogEntry)
+
 # admin.site.register(Atelier)
 # admin.site.register(CommentaireAtelier)
 # admin.site.register(InscriptionAtelier)

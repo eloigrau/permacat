@@ -1,31 +1,33 @@
 # -*- coding: utf-8 -*-
-from django.db import models
-#from django.utils import timezone
-from django.core.validators import MinValueValidator
-from django.utils.timezone import now
-from model_utils.managers import InheritanceManager
-import django_filters
-from django.urls import reverse, reverse_lazy
-from django.core.validators import RegexValidator
-from django.contrib.auth.validators import ASCIIUsernameValidator
-from django.contrib.auth.models import AbstractUser
-from django.template.defaultfilters import slugify
-from django.utils.translation import ugettext_lazy as _
-import decimal, math
-from django.db.models import Q
-#from tinymce.models import HTMLField
-
-from actstream import actions, action
-from actstream.models import following, followers
-
+import decimal
+import math
 import os
-import requests
-from stdimage import StdImageField
 from datetime import date
 
-from django.dispatch import receiver
+import django_filters
+import requests
+from actstream import actions, action
+from actstream.models import following, followers
+from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.validators import ASCIIUsernameValidator
+# from django.utils import timezone
+from django.core.validators import MinValueValidator
+from django.core.validators import RegexValidator
+from django.db import models
+from django.db.models import Q
 from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.template.defaultfilters import slugify
+from django.urls import reverse, reverse_lazy
+from django.utils.timezone import now
+from django.utils.translation import ugettext_lazy as _
+from model_utils.managers import InheritanceManager
+from stdimage import StdImageField
+
 from .constantes import Choix, DEGTORAD
+
+
+# from tinymce.models import HTMLField
 #from blog.models import Article
 
 def get_categorie_from_subcat(subcat):
@@ -116,7 +118,7 @@ class Asso(models.Model):
     def is_membre(self, user):
         if self.nom == "permacat" and not user.adherent_permacat:
             return False
-        elif self.nom == "ga" and not user.adherent_ga:
+        elif self.nom == "rtg" and not user.adherent_rtg:
             return False
         return True
 
@@ -148,17 +150,16 @@ class Profil(AbstractUser):
     inscrit_newsletter = models.BooleanField(verbose_name="J'accepte de recevoir des emails de Permacat", default=False)
     statut_adhesion = models.IntegerField(choices=Choix.statut_adhesion, default="0")
     #statut_adhesion_rtg = models.IntegerField(choices=Choix.statut_adhesion_rtg, default="0")
-    statut_adhesion_ga = models.IntegerField(choices=Choix.statut_adhesion_ga, default="0")
+    #statut_adhesion_ga = models.IntegerField(choices=Choix.statut_adhesion_ga, default="0")
     cotisation_a_jour = models.BooleanField(verbose_name="Cotisation à jour", default=False)
     adherent_permacat = models.BooleanField(verbose_name="Je suis adhérent de Permacat", default=False)
-    #adherent_rtg = models.BooleanField(verbose_name="Je suis adhérent de Ramene Ta Graine", default=False)
+    adherent_rtg = models.BooleanField(verbose_name="Je suis adhérent de Ramene Ta Graine", default=False)
     adherent_ga = models.BooleanField(verbose_name="Je suis adhérent de Gaïarmonie", default=False)
     accepter_conditions = models.BooleanField(verbose_name="J'ai lu et j'accepte les conditions d'utilisation du site", default=False, null=False)
     accepter_annuaire = models.BooleanField(verbose_name="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous", default=True)
     is_jardinpartage = models.BooleanField(verbose_name="Je suis intéressé.e par les jardins partagés", default=False)
 
     date_notifications = models.DateTimeField(verbose_name="Date de validation des notifications",default=now)
-    #device_registration_id =  models.CharField(_('device reg id'), blank=True, default=None, null=True, max_length=100)
 
     def __str__(self):
         return self.username
@@ -198,8 +199,8 @@ class Profil(AbstractUser):
     def statutMembre_asso(self, asso):
         if asso == "permacat":
             return self.adherent_permacat
-        elif asso == "ga":
-            return self.adherent_ga
+        elif asso == "rtg":
+            return self.adherent_rtg
 
     @property
     def statutMembre_str(self):
@@ -217,18 +218,18 @@ class Profil(AbstractUser):
                 return "membre actif de Permacat"
             else:
                 return "Non membre de Permacat"
-        if asso == "ga":
-            if self.adherent_ga:
-                return "membre actif de 'Gaïarmonie'"
+        if asso == "rtg":
+            if self.adherent_rtg:
+                return "membre actif de 'Ramene Ta Graine'"
             else:
-                return "Non membre de 'Gaïarmonie'"
+                return "Non membre de 'Ramene Ta Graine'"
 
     def estMembre_str(self, nom_asso):
-        if nom_asso == "Public":
+        if nom_asso == "Public" or nom_asso == "public":
             return True
-        elif nom_asso == "Permacat" and self.adherent_permacat:
+        elif (nom_asso == "Permacat" or nom_asso == "pc") and self.adherent_permacat:
             return True
-        elif self.adherent_ga and (nom_asso == "ga" or nom_asso == "Gaïarmonie" ):
+        elif self.adherent_rtg and (nom_asso == "Ramène Ta Graine" or nom_asso == "rtg") :
             return True
         else:
             return False
@@ -238,8 +239,8 @@ class Profil(AbstractUser):
             return True
         elif self.asso.abreviation == "pc":
             return user.adherent_permacat
-        elif self.asso.abreviation == "ga":
-            return user.adherent_ga
+        elif self.asso.abreviation == "rtg":
+            return user.adherent_rtg
         else:
             return False
 
@@ -375,8 +376,8 @@ class Produit(models.Model):  # , BaseProduct):
             return True
         elif self.asso.abreviation == "pc":
             return user.adherent_permacat
-        elif self.asso.abreviation == "ga":
-            return user.adherent_ga
+        elif self.asso.abreviation == "rtg":
+            return user.adherent_rtg
         else:
             return False
 

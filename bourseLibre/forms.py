@@ -146,10 +146,10 @@ class ProfilCreationForm(UserCreationForm):
     captcha = CaptchaField()
     email = forms.EmailField(label="Email*",)
 
-    statut_adhesion = forms.ChoiceField(choices=Choix.statut_adhesion, label='', required=True)
+    #statut_adhesion = forms.ChoiceField(choices=Choix.statut_adhesion, label='', required=True)
     #statut_adhesion_ga = forms.ChoiceField(choices=Choix.statut_adhesion_ga, label='', required=True)
-    #adherent_permacat = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Permacat'")
-    #adherent_rtg = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Ramène Ta Graine'")
+    adherent_permacat = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Permacat'")
+    adherent_rtg = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Ramène Ta Graine'")
     #adherent_ga = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Gaïarmonie'")
     #adherent_ame = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Animal Mieux Etre'")
     accepter_annuaire = forms.BooleanField(required=False, label="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous les inscrits")
@@ -164,7 +164,7 @@ class ProfilCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm):
         model = Profil
-        fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'statut_adhesion', 'statut_adhesion_ga', 'inscrit_newsletter', 'accepter_annuaire',  'accepter_conditions']
+        fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'adherent_rtg', 'inscrit_newsletter', 'accepter_annuaire',  'accepter_conditions']
         exclude = ['slug', ]
 
 
@@ -208,19 +208,18 @@ class ProducteurChangeForm_admin(UserChangeForm):
     competences = forms.CharField(label="Savoir-faire",
                                   initial="Par exemple: electricien, bouturage, aromatherapie, etc...", required=False,
                                   widget=forms.Textarea)
-    avatar = forms.ImageField(required=False)
+    #avatar = forms.ImageField(required=False)
     inscrit_newsletter = forms.BooleanField(required=False)
     accepter_annuaire = forms.BooleanField(required=False)
     cotisation_a_jour = forms.BooleanField(required=False)
     pseudo_june = forms.CharField(label="pseudo_june",required=False)
 
     statut_adhesion = forms.ChoiceField(choices=Choix.statut_adhesion)
-    statut_adhesion_ga = forms.ChoiceField(choices=Choix.statut_adhesion_ga)
     password = None
 
     class Meta:
         model = Profil
-        fields = ['username', 'email', 'description', 'competences', 'inscrit_newsletter', 'statut_adhesion', 'statut_adhesion_ga', 'adherent_permacat',  'adherent_ga', 'pseudo_june', 'accepter_annuaire', 'cotisation_a_jour', 'is_jardinpartage']
+        fields = ['username', 'email', 'description', 'competences', 'inscrit_newsletter', 'statut_adhesion', 'adherent_permacat',  'adherent_rtg', 'pseudo_june', 'accepter_annuaire', 'cotisation_a_jour', 'is_jardinpartage']
 
     def __init__(self, *args, **kwargs):
         super(ProducteurChangeForm_admin, self).__init__(*args, **kwargs)

@@ -104,7 +104,7 @@ class ArticleForm(forms.ModelForm):
 
     def __init__(self, request, *args, **kwargs):
         super(ArticleForm, self).__init__(*args, **kwargs)
-        self.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if request.user.estMembre_str(x.nom)]
+        self.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if request.user.estMembre_str(x.abreviation)]
 
 class ArticleChangeForm(forms.ModelForm):
 
@@ -157,7 +157,7 @@ class ProjetForm(forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
         super(ProjetForm, self).__init__(*args, **kwargs)
         self.fields['contenu'].strip = False
-        self.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if request.user.estMembre_str(x.nom)]
+        self.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if request.user.estMembre_str(x.abreviation)]
 
     def save(self, userProfile, sendMail=True):
         instance = super(ProjetForm, self).save(commit=False)

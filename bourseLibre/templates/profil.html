@@ -39,7 +39,10 @@
               <span class="glyphicon glyphicon-shopping-cart"></span> Mes requêtes
             </a>
             <a href="{% url 'mesSuivis' %}" class="btn btn-success">
-              <span class="glyphicon glyphicon-shopping-cart"></span> Mes suivis
+              <span class="glyphicon glyphicon-shopping-cart"></span> Mes abonnements
+            </a>
+            <a href="{% url 'mesActions' %}" class="btn btn-success">
+              <span class="glyphicon glyphicon-shopping-cart"></span> Mes ations
             </a>
         {%endif%}
         <a href="{% url 'marche' %}?producteur={{ user.username }}" class="btn btn-success">
@@ -128,10 +131,10 @@
 	    </tr>
 
     {% endif %}
-    {%if request.user.adherent_ga or request.user == user %}
+    {%if request.user.adherent_rtg or request.user == user %}
 	    <tr>
-		<td style="width:250px">Adhérent Gaïarmonie *:</td>
-		<td>{{user.adherent_ga|translateOuiNon}}</td>
+		<td style="width:250px">Adhérent Ramene Ta Graine *:</td>
+		<td>{{user.adherent_rtg|translateOuiNon}}</td>
 	    </tr>
     {% endif %}
       {% if request.user == user %}
@@ -214,7 +217,7 @@
   </div>
 
   <div class="col-md-6">
-  {% if request.user.adherent_ga and user.adherent_ga %}
+  {% if request.user.adherent_rtg and user.adherent_rtg %}
 <style>
 
             .leaflet-container {  /* all maps */

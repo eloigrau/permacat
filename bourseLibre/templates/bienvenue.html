@@ -80,10 +80,11 @@
 						  <b><a href="{% url 'jardinpartage:index' %}">{% fontawesome_icon 'pagelines' %} Jardins Partagés</a></b>
 					  </div>
 					</div>
+				<hr>
 
 				{% endif %}
 
-				<hr>
+				 {% if evenements %}
 				<div class="card" >
 				  <div class="card-header  textcenter">
 						<b>Prochains rendez-vous (réguliers) :</b>
@@ -94,6 +95,8 @@
 						{% endfor %}
 					</ul>
 				</div>
+				<hr>
+				{% endif %}
 			</div>
 		</div>
 	</div>

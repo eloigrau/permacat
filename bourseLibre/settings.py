@@ -313,7 +313,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # LOCATION_FIELD = {
 #     'map.provider': 'openstreetmap',
 # }
-
+DJANGO_ADMIN_LOGS_ENABLED = False
 
 LEAFLET_CONFIG = {
 'DEFAULT_CENTER': (42.7201813, 2.8876436),

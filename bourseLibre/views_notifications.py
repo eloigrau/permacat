@@ -32,11 +32,11 @@ def getNotifications(request, nbNotif=10, orderBy="-timestamp"):
         offres     = offres | Action.objects.filter((Q(verb__startswith='ajout_offre') & Q(verb__icontains='Permacat') )| Q(verb='ajout_offre_permacat')| Q(verb='ajout_offre_pc'))
         suffrages  = suffrages | Action.objects.filter((Q(verb__startswith='suffrage_ajout') & Q(verb__icontains='Permacat')) | Q(verb='suffrage_ajout_permacat')| Q(verb='suffrage_ajout_pc'))
 
-   # if request.user.adherent_rtg:
-    ##    salons     = salons | Action.objects.filter(Q(verb__startswith='envoi_salon') & Q(verb__icontains='rtg'))
-    #    articles   = articles | Action.objects.filter(Q(verb__startswith='article') & Q(verb__icontains='rtg'))
-     #   projets    = projets | Action.objects.filter(Q(verb__startswith='projet') & Q(verb__icontains='rtg'))
-    #    offres     = offres | Action.objects.filter(Q(verb__startswith='ajout_offre') & Q(verb__icontains='rtg'))
+    if request.user.adherent_rtg:
+        salons     = salons | Action.objects.filter(Q(verb__startswith='envoi_salon') & Q(verb__icontains='rtg'))
+        articles   = articles | Action.objects.filter(Q(verb__startswith='article') & Q(verb__icontains='rtg'))
+        projets    = projets | Action.objects.filter(Q(verb__startswith='projet') & Q(verb__icontains='rtg'))
+        offres     = offres | Action.objects.filter(Q(verb__startswith='ajout_offre') & Q(verb__icontains='rtg'))
      #   suffrages  = suffrages | Action.objects.filter(Q(verb__startswith='suffrage_ajout') & Q(verb__icontains='rtg'))
 
     # if request.user.adherent_ga:
@@ -82,8 +82,8 @@ def getNotificationsParDate(request, limiter=True, orderBy="-timestamp"):
             Q(verb__startswith='inscription'))
     if request.user.adherent_permacat:
         actions = actions | Action.objects.filter(Q(verb__icontains='Permacat') | Q(verb__icontains='permacat')| Q(verb__icontains='pc'))
-    #if request.user.adherent_rtg:
-     #   actions = actions | Action.objects.filter(Q(verb__icontains='Ramene ta graine'))
+    if request.user.adherent_rtg:
+        actions = actions | Action.objects.filter(Q(verb__icontains='rtg'))
     if request.user.adherent_ga:
         actions = actions | Action.objects.filter(Q(verb__icontains='ga'))
 
