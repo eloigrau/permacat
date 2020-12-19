@@ -15,11 +15,13 @@
     <div class="col-sm-12 textcenter">
         <div class="btn-group btn-group-justified">
             {% if request.user.adherent_permacat %}
-            <a href="{% url 'annuaire' asso='pc' %}" >
-                <button type="button" class="btn btn-primary" >Liste des adhérents Permacat</button>
-                </a>
             <a href="{% url 'carte' asso='pc' %}" >
                 <button type="button" class="btn btn-primary" >Carte des inscrits Permacat</button>
+            </a>
+            {% endif %}
+            {% if request.user.adherent_rtg %}
+            <a href="{% url 'carte' asso='rtg' %}" >
+                <button type="button" class="btn btn-primary" >Carte des inscrits RTG</button>
             </a>
             {% endif %}
             <a href="{% url 'carte' asso='public' %}" >

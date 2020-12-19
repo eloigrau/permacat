@@ -916,7 +916,7 @@ def mesActions(request):
 @login_required
 def agora(request, asso):
     asso = testIsMembreAsso(request, asso)
-    messages = MessageGeneral.objects.filter(asso=asso).order_by("date_creation")
+    messages = MessageGeneral.objects.filter(asso__abreviation=asso.abreviation).order_by("date_creation")
     form = MessageGeneralForm(request.POST or None) 
     if form.is_valid(): 
         message = form.save(commit=False) 

@@ -78,6 +78,14 @@
                       </ul>
                     </li>
                     {% endcomment %}
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" >Ramène Ta Graine</a>
+                        <ul class="dropdown-menu  nav5-dropdown-submenu">
+                            <li> <a class="dropdown-item" href="{% url 'agora' asso='rtg'%}"><i class='fa fa-asterisk' ></i> Salon de discussion</a></li>
+                            <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='rtg'%}"><i class='fa fa-comments' ></i> Articles </a></li>
+                          <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='rtg' %}"> Annuaire  </a></li>
+                      </ul>
+                    </li>
                 </ul>
         </li>
 
