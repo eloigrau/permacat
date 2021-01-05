@@ -35,12 +35,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOCALL = False
 try:
     SECRET_KEY = os.environ['SECRET_KEY']
+    DB_PWD = os.environ['SECRET_KEY_DB']
     DEBUG = False
 except:
     LOCALL  = True
+    DB_PWD = ""
     SECRET_KEY = 'aersd68fgsfdgsdvcbvcb563873gbgfthhfhdjd'
     DEBUG = True
 
+print('LOCALL : ' + str(LOCALL))
 #DEBUG_PROPAGATE_EXCEPTIONS = True
 
 #SECURE_SSL_REDIRECT = False
@@ -61,10 +64,10 @@ if not LOCALL:
     #SESSION_COOKIE_SECURE  = True
     #CSRF_COOKIE_SECURE = True
     #X_FRAME_OPTIONS = 'DENY'
-    SESSION_EXPIRE_AT_BROWSER_CLOSE=False
+    SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 ALLOWED_HOSTS = ['permacat.herokuapp.com', 'www.perma.cat']
-
+print("local" + str(LOCALL))
 # Application definition
 
 # pip install django-fontawesome django-model_utils django-debug_toolbar django-haystack django-bootstrap django-extensions django-leaflet django-filter django-rest-framework django-scheduler django-widget-tweaks
@@ -208,8 +211,18 @@ if LOCALL:
     }
     ALLOWED_HOSTS = ['127.0.0.1']
 else:
-    DATABASES = dict()
-    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+    #DATABASES = dict()
+    #DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'site',
+            'USER': 'postgres',
+            'PASSWORD': DB_PWD,
+            'HOST': '91.160.143.22',
+            'PORT': '32770',
+        }
+    }
 
 
 # except:
