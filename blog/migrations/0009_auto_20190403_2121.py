@@ -53,7 +53,7 @@ class Migration(migrations.Migration):
             name='statut',
             field=models.CharField(choices=[('prop', 'Proposition'), ('AGO', "Soumis à l'AGO"), ('vote', 'Soumis au vote'), ('accep', 'Accepté'), ('refus', 'Refusé')], default='prop', max_length=5, verbose_name='statut'),
         ),
-        migrations.AddField(
+        migrations.AlterField(
             model_name='projet',
             name='categorie',
             field=models.CharField(choices=[('Part', 'Participation à un évènement'), ('AGO', "Organisation d'une AGO"), ('Projlong', 'Projet a long terme'), ('Projcourt', 'Projet a court terme')], default='Part', max_length=10, verbose_name='categorie'),
