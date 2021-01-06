@@ -6,7 +6,7 @@ SECRET_KEY_DB = '-~aO;| F;rE[??/w^zcumh(9'
 
 DEBUG = False
 
-ALLOWED_HOSTS = [']
+ALLOWED_HOSTS = ['']
 
 
 DATABASES = {

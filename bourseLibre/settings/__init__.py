@@ -212,18 +212,9 @@ if LOCALL:
     }
     ALLOWED_HOSTS = ['127.0.0.1']
 else:
-    #DATABASES = dict()
-    #DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'site',
-            'USER': 'postgres',
-            'PASSWORD': DB_PWD,
-            'HOST': '91.160.143.22',
-            'PORT': '32770',
-        }
-    }
+    DATABASES = dict()
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+
 
 
 # except:
