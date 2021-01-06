@@ -6,7 +6,7 @@ SECRET_KEY_DB = '-~aO;| F;rE[??/w^zcumh(9'
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['178.62.117.192']
+ALLOWED_HOSTS = [']
 
 
 DATABASES = {
@@ -14,9 +14,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'site',
-        'USER': 'postgres',
+        'USER': '',
         'PASSWORD': '',
-        'HOST': '91.160.143.22',
-        'PORT': '32770',
+        'HOST': '',
+        'PORT': '',
     }
 }
