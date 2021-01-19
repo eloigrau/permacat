@@ -2,6 +2,6 @@ db.sqlite3
 *.sqlite3
 db_old.db
 venv/
-/save-pc-db-10122020
 db.db
 bourseLibre/settings/production.py
+static/

@@ -182,8 +182,8 @@
     </ul>
 
     <ul class="nav navbar-nav ">
-        <li class="nav-item nav4 "><a class="nav-link" href="https://permacat.herokuapp.com/auth/login/"> {% fontawesome_icon 'user' %} Se connecter</a></li>
-        <li class="nav-item nav5 "><a class="nav-link" href="https://permacat.herokuapp.com/register/"> {% fontawesome_icon 'address-card' %} S'inscrire</a></li>
+        <li class="nav-item nav4 "><a class="nav-link" href="{% url 'login' %}"> {% fontawesome_icon 'user' %} Se connecter</a></li>
+        <li class="nav-item nav5 "><a class="nav-link" href="{% url 'senregistrer' %}"> {% fontawesome_icon 'address-card' %} S'inscrire</a></li>
 
     </ul>
 {% endif %}
