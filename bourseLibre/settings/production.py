@@ -4,7 +4,7 @@ from . import *
 SECRET_KEY = '-~aO;| F;rE[??/w^zcumh(9'
 SECRET_KEY_DB = '-~aO;| F;rE[??/w^zcumh(9'
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['']
 
