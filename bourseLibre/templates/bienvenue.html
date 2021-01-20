@@ -118,6 +118,7 @@
 
 
 
+{% comment %}
  {% if  request.user.is_authenticated %}
 
 <hr>
@@ -180,6 +181,7 @@
 </div>
 
  {% endif %}
+{% endcomment %}
 
 {% load cookielaw_tags %}
 {% cookielaw_banner %}
