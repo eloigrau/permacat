@@ -179,7 +179,7 @@
 {%if request.GET.categorie == "Ecovillage" %}
         <hr>
         <div>
- <a href="http://www.perma.cat/forum/projets/projet-eco-lieu">
+ <a href="{% url 'blog:lireProjet' slug='projet-eco-lieu' %}">
      <button type="button" class="btn  btn-warning" >
             <i class="fa fa-arrow-right"></i>&nbsp;Voir le projet Permacat
     </button>
@@ -187,27 +187,27 @@
         <hr>
 {%elif request.GET.categorie == "Jardin" %}
         <hr>
- <a href="http://www.perma.cat/jardins/articles/">
+ <a href="{% url 'jardinpartage:forum' %}">
      <button type="button" class="btn  btn-warning" >
             <i class="fa fa-arrow-right"></i>&nbsp;Blog des jardins partagés
     </button>
  </a>&nbsp;
- <a href="http://www.perma.cat/forum/projets/un-jardin-partage-en-permaculture-accessible-a-tous">
+ <a href="{% url 'blog:lireProjet' slug='un-jardin-partage-en-permaculture-accessible-a-tous' %}">
      <button type="button" class="btn  btn-warning" >
             <i class="fa fa-arrow-right"></i>&nbsp;projet Jardi Per Tots
     </button>
  </a>&nbsp;
- <a href="http://www.perma.cat/forum/projets/jardins-du-lycee-jean-lurcat">
+ <a href="{% url 'blog:lireProjet' slug='jardins-du-lycee-jean-lurcat' %}">
      <button type="button" class="btn  btn-warning" >
             <i class="fa fa-arrow-right"></i>&nbsp;projet Jardin de Lurçat 
     </button>
  </a>&nbsp;
- <a href="http://www.perma.cat/forum/projets/jardin-partage-de-palau">
+ <a href="{% url 'blog:lireProjet' slug='jardin-partage-de-palau' %}">
      <button type="button" class="btn  btn-warning" >
             <i class="fa fa-arrow-right"></i>&nbsp;projet Jardin de Palau
     </button>
  </a>&nbsp;
- <a href="http://www.perma.cat/forum/projets/jardins-partages-a-perpignan-au-champ-de-mars">
+ <a href="{% url 'blog:lireProjet' slug='jardins-partages-a-perpignan-au-champ-de-mars' %}">
     <button type="button" class="btn  btn-warning" >
             <i class="fa fa-arrow-right"></i>&nbsp;projet jardins partagés à Perpignan
     </button>
@@ -215,12 +215,12 @@
         <hr>
 {%elif request.GET.categorie == "Altermarché" %}
         <hr>
- <a href="http://www.perma.cat/forum/projets/lalter-marche-ou-marche-en-monnaies-alternatives">
+ <a href="{% url 'blog:lireProjet' slug='lalter-marche-ou-marche-en-monnaies-alternatives' %}">
      <button type="button" class="btn  btn-warning" >
             <i class="fa fa-arrow-right"></i>&nbsp;Voir le projet Permacat
     </button>
  </a> &nbsp;
- <a href="http://www.perma.cat/marche/lister/">
+ <a href="{% url 'marche' %}">
      <button type="button" class="btn  btn-warning" >
             <i class="fa fa-arrow-right"></i>&nbsp;Altermarché sur le site
     </button>
@@ -252,7 +252,7 @@
 <hr>
 <div id="archives" style='display:none;'>
     {% for article in list_archive %}
-    <div class="infinite-item">
+    <div class="infinite-item my-auto">
         {% include "blog/article_template.html" with article=article %}
     <hr>
     </div>
