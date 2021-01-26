@@ -66,7 +66,7 @@ if not LOCALL:
     #X_FRAME_OPTIONS = 'DENY'
     SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
-ALLOWED_HOSTS = ['permacat.herokuapp.com', 'www.perma.cat']
+ALLOWED_HOSTS = ['www.perma.cat']
 print("local" + str(LOCALL))
 # Application definition
 
