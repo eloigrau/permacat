@@ -146,8 +146,9 @@
 {% block content %}
 
 <div class="infinite-container">
+    <div class="grid-container justify-content-center">
     {% for article in article_list %}
-    <div class="infinite-item">
+    <div class="infinite-item my-auto">
             {% include "jardinpartage/article_template.html" with article=article %}
     <hr>
     </div>
@@ -164,12 +165,14 @@
 </div>
 <hr>
 <div id="archives" style='display:none;'>
+    <div class="grid-container justify-content-center">
     {% for article in list_archive %}
-    <div class="infinite-item">
+    <div class="infinite-item my-auto">
     {% include "jardinpartage/article_template.html" with article=article %}
     <hr>
     </div>
     {% endfor %}
+    </div>
 </div>
     {% endif %}
 
