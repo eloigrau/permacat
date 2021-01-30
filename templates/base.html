@@ -53,6 +53,8 @@
     {%block bodyEntete%}
 <body>
     {%endblock%}
+
+{%comment%}
     <a name="top"></a>
 <div class="container-fluid">
 	<div class="row rowprincipal">
@@ -91,6 +93,17 @@
 </div>
 
 </div>
+    {%endcomment%}
+
+    <div class="container-fluid">
+	<div class="row rowprincipal">
+		<div class="colprincipal col-xs-12 col-sm-12 col-lg-12 ">
+        <div class="panel bodycontenucomplet">
+            <div class="panel-heading">
+                <div class="panel-title soustitre textcenter">
+                <h6>Ce site a été déplacé... Rendez-vous sur <a href="https://www.perma.cat">www.perma.cat</a>!</h6>
+                </div></div></div></div></div>
+    </div>
 
 
 {%comment%}
@@ -107,7 +120,7 @@
 <footer>
     <p class="textcenter">
     <a href="#top" id="scroll-to-top" class="btn"><i class="fa fa-angle-up"></i></a></p>
-    <p class="textcenter textepetit">&copy; PermaCat; {% now 'd/m/Y' %}</p>
+    <p class="textcenter textepetit">&copy; PermaCat; 30/01/2020</p>
 </footer>
 
 </body>
