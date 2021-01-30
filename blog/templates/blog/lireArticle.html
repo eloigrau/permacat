@@ -31,7 +31,15 @@
                 modifiable
             </span>
             {%endif%}
-           rédigé par <a href="{% url 'profil' article.auteur.id %}"> {{ article.auteur.username }}</a>, le {{ article.date_creation|date:"DATE_FORMAT" }} 
+            <a href="{% url 'profil' article.auteur.id %}">
+                <span class="badge badge-secondary">
+               rédigé par  {{ article.auteur.username }}
+                </span>
+            </a>
+
+            <span class="badge badge-Light">
+                le {{ article.date_creation|date:"DATE_FORMAT" }}
+            </span>
 
 
         <a href="{% url 'blog:suivre_article' article.slug %}">
