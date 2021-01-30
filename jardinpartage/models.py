@@ -90,13 +90,13 @@ class Article(models.Model):
             if sendMail:
                 suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_jardin')
                 titre = "Nouvel article Jardins"
-                message = "Nouvel article aux Jardins Partagés: '<a href='https://permacat.herokuapp.com" + self.get_absolute_url() +"'>" + self.titre + "</a>'"
+                message = "Nouvel article aux Jardins Partagés: '<a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.titre + "</a>'"
                 emails = [suiv.email for suiv in followers(suivi) if
                           self.auteur != suiv and self.est_autorise(suiv)]
         else:
             if sendMail:
                 titre = "Article actualisé Jardins"
-                message = "L'article '<a href='https://permacat.herokuapp.com" + self.get_absolute_url() +"'>" + self.titre + "</a>' des Jardins Partagés a été modifié "
+                message = "L'article '<a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.titre + "</a>' des Jardins Partagés a été modifié "
 
                 emails = [suiv.email for suiv in followers(self) if
                           self.auteur != suiv and self.est_autorise(suiv)]
@@ -177,7 +177,7 @@ class Commentaire(models.Model):
         if not self.id:
             self.date_creation = timezone.now()
             titre = "article jardins commenté "
-            message = self.auteur_comm.username + " a commenté l'article (Jardins Partagés) '<a href='https://permacat.herokuapp.com"+ self.article.get_absolute_url() + "'>"+ self.article.titre + "</a>'"
+            message = self.auteur_comm.username + " a commenté l'article (Jardins Partagés) '<a href='https://www.perma.cat"+ self.article.get_absolute_url() + "'>"+ self.article.titre + "</a>'"
             emails = [suiv.email for suiv in followers(self.article) if self.auteur_comm != suiv and self.article.est_autorise(suiv)]
 
         retour =  super(Commentaire, self).save(*args, **kwargs)
