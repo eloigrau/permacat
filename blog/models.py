@@ -93,14 +93,14 @@ class Article(models.Model):
             if sendMail:
                 suivi, created = Suivis.objects.get_or_create(nom_suivi='articles')
                 titre = "Nouvel article"
-                message = "Un article a été posté dans le forum : '<a href='https://permacat.herokuapp.com" + self.get_absolute_url() +"'>" + self.titre + "</a>'"
+                message = "Un article a été posté dans le forum : '<a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.titre + "</a>'"
                 emails = [suiv.email for suiv in followers(suivi) if self.auteur != suiv and self.est_autorise(suiv)]
                 if emails and not LOCALL:
                     creation = True
         else:
             if sendMail:
                 titre = "Article actualisé"
-                message = "L'article '<a href='https://permacat.herokuapp.com" + self.get_absolute_url() +"'>" + self.titre + "</a>' a été modifié"
+                message = "L'article '<a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.titre + "</a>' a été modifié"
                 emails = [suiv.email for suiv in followers(self) if self.auteur != suiv and self.est_autorise(suiv)]
 
         retour =  super(Article, self).save(*args, **kwargs)
@@ -178,7 +178,7 @@ class Commentaire(models.Model):
             self.date_creation = timezone.now()
             suivi, created = Suivis.objects.get_or_create(nom_suivi='articles')
             titre = "Article commenté"
-            message = self.auteur_comm.username + " a commenté l'article '<a href='https://permacat.herokuapp.com" + self.article.get_absolute_url() + "'>" + self.article.titre + "</a>'"
+            message = self.auteur_comm.username + " a commenté l'article '<a href='https://www.perma.cat" + self.article.get_absolute_url() + "'>" + self.article.titre + "</a>'"
             emails = [suiv.email for suiv in followers(self.article) if
                       self.auteur_comm != suiv and self.article.est_autorise(suiv)]
 
@@ -235,14 +235,14 @@ class Projet(models.Model):
         if not self.id:
             self.date_creation = timezone.now()
             titre = "Nouveau Projet !"
-            message = "Un nouveau projet a été proposé: '<a href='https://permacat.herokuapp.com" + self.get_absolute_url() + "'>" + self.titre + "</a>'"
+            message = "Un nouveau projet a été proposé: '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.titre + "</a>'"
             suivi, created = Suivis.objects.get_or_create(nom_suivi='projets')
             emails = [suiv.email for suiv in followers(suivi) if self.auteur != suiv  and self.est_autorise(suiv)]
 
         else:
             if sendMail:
                 titre = "Projet actualisé"
-                message = "Le projet '<a href='https://permacat.herokuapp.com" + self.get_absolute_url() + "'>" + self.titre + "</a>' a été modifié"
+                message = "Le projet '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.titre + "</a>' a été modifié"
                 emails = [suiv.email for suiv in followers(self) if
                           self.auteur != suiv and self.est_autorise(suiv)]
 
@@ -292,7 +292,7 @@ class CommentaireProjet(models.Model):
         emails = []
         if not self.id:
             titre = "[Permacat] Projet commenté"
-            message = self.auteur_comm.username + " a commenté le projet '<a href='https://permacat.herokuapp.com" + self.projet.get_absolute_url() + "'>" + self.projet.titre + "</a>'"
+            message = self.auteur_comm.username + " a commenté le projet '<a href='https://www.perma.cat" + self.projet.get_absolute_url() + "'>" + self.projet.titre + "</a>'"
             emails = [suiv.email for suiv in followers(self.projet) if self.auteur_comm != suiv and self.est_autorise(suiv)]
 
         retour =  super(CommentaireProjet, self).save(*args, **kwargs)

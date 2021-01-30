@@ -324,11 +324,11 @@ def getListeMailsAlerte():
                 messagetxt += re.sub('<[^>]+>', '', m) + "\n"
 
 
-        messagetxt += "\nFins Aviat !\n---------------\nPour voir toute l'activité sur le site, consultez les Notifications : https://permacat.herokuapp.com/notifications/activite/ \n" + \
-                   "Pour vous désinscrire des alertes mails, barrez les cloches sur le site (ou consultez la FAQ : https://permacat.herokuapp.com/faq/) "
+        messagetxt += "\nFins Aviat !\n---------------\nPour voir toute l'activité sur le site, consultez les Notifications : https://www.perma.cat/notifications/activite/ \n" + \
+                   "Pour vous désinscrire des alertes mails, barrez les cloches sur le site (ou consultez la FAQ : https://www.perma.cat/faq/) "
         message += "</ul><br><p>Fins Aviat !</p><hr>" + \
-                   "<p><small>Pour voir toute l'activité sur le site, consultez les <a href='https://permacat.herokuapp.com/notifications/activite/'>Notifications </a> </small>. " + \
-                   "<small>Pour vous désinscrire des alertes mails, barrez les cloches sur le site (ou consultez la <a href='https://permacat.herokuapp.com/faq/'>FAQ</a>)</small></p>"
+                   "<p><small>Pour voir toute l'activité sur le site, consultez les <a href='https://www.perma.cat/notifications/activite/'>Notifications </a> </small>. " + \
+                   "<small>Pour vous désinscrire des alertes mails, barrez les cloches sur le site (ou consultez la <a href='https://www.perma.cat/faq/'>FAQ</a>)</small></p>"
 
         listeMails.append((titre, messagetxt, message, SERVER_EMAIL, [mail,]))
 

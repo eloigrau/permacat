@@ -827,7 +827,7 @@ def lireConversation(request, destinataire):
         suivi, created = Suivis.objects.get_or_create(nom_suivi='conversations')
         if profil_destinataire in followers(suivi):
             titre = "Message Privé"
-            message = request.user.username + " vous a envoyé un <a href='https://permacat.herokuapp.com"+  url+"'>" + "message</a>"
+            message = request.user.username + " vous a envoyé un <a href='https://www.perma.cat"+  url+"'>" + "message</a>"
             emails = [profil_destinataire.email, ]
             action.send(request.user, verb='emails', url=url, titre=titre, message=message, emails=emails)
 

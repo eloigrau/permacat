@@ -298,7 +298,7 @@ ADMINS = (
     ('Asso_admin', 'sitepermacat@gmail.com'),
 )
 MANAGERS = ADMINS
-BASE_URL = "https://permacat.herokuapp.com"
+BASE_URL = "https://www.perma.cat"
 ########################
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
