@@ -919,6 +919,10 @@ def mesActions(request):
     return render(request, 'notifications/mesActions.html', {})
 
 @login_required
+def activite(request):
+    return render(request, 'notifications/activite.html', {})
+
+@login_required
 def agora(request, asso):
     asso = testIsMembreAsso(request, asso)
     messages = MessageGeneral.objects.filter(asso__abreviation=asso.abreviation).order_by("date_creation")
