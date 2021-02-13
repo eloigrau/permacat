@@ -147,7 +147,7 @@ class Profil(AbstractUser):
     date_registration = models.DateTimeField(verbose_name="Date de création", editable=False)
     pseudo_june = models.CharField(_('pseudo Monnaie Libre'), blank=True, default=None, null=True, max_length=50)
 
-    inscrit_newsletter = models.BooleanField(verbose_name="J'accepte de recevoir des emails de Permacat", default=False)
+    inscrit_newsletter = models.BooleanField(verbose_name="J'accepte de recevoir des emails de Perma.cat", default=False)
     statut_adhesion = models.IntegerField(choices=Choix.statut_adhesion, default="0")
     cotisation_a_jour = models.BooleanField(verbose_name="Cotisation à jour", default=False)
     adherent_permacat = models.BooleanField(verbose_name="Je suis adhérent de Permacat", default=False)

@@ -11,9 +11,6 @@
         <h4>Renseignez les informations suivantes pour vous inscrire (les champs avec (*) sont obligatoires)</h4>
     </div>
     <div class="row justify-content-sm-center">
-        <h6><a href="{% url 'senregistrer' %}">Lien vers l'inscription sécurisée</a></h6>
-    </div>
-    <div class="row justify-content-sm-center">
         <div class="col-sm-12 col-md-10 col-lg-8 ">
             <form role="form" action="" method="post" enctype="multipart/form-data">
           {% csrf_token %}
