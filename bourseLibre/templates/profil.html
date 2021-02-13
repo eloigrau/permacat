@@ -137,6 +137,12 @@
 		<td>{{user.adherent_rtg|translateOuiNon}}</td>
 	    </tr>
     {% endif %}
+    {%if request.user.adherent_fer or request.user == user %}
+	    <tr>
+		<td style="width:250px">Adhérent Ramene Ta Graine *:</td>
+		<td>{{user.adherent_fer|translateOuiNon}}</td>
+	    </tr>
+    {% endif %}
       {% if request.user == user %}
         <tr>
             <td style="width:200px">Inscrit à la newsletter ^: </td>

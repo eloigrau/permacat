@@ -1,0 +1,45 @@
+{% extends 'base_asso.html' %}
+{% block title %} - Accueil RTG{% endblock %}
+
+			<div class="jumbotron well">
+{% block subtitle %}
+
+<h2 class = "textcenter rowbienvenue">Ramène Ta Graine</h2>
+
+{%if request.user.adherent_rtg %}
+<div class="row">
+	<div class="col-sm-12">
+		<div class="btn-group">
+			 <a class="btn btn-success" href="{% url 'annuaire'  asso='rtg' %}"> Carte des inscrits </a>
+			 <a class="btn btn-success" href="{% url 'carte' asso='rtg' %}"> Carte des adhérents </a>
+			 <a class="btn btn-success" href="{% url 'agora' asso='rtg' %}"> Salon permacat </a>
+			<a class="btn btn-success" href="{% url 'statuts_rtg' %}"> Statuts et règlement intérieur </a>
+		</div>
+	</div>
+</div>
+				{% endif%}
+<h4 class = "textcenter rowbienvenue">Présentation de l'association </h4>
+{% endblock %}
+{% block content %}
+<div class="row">
+	<div class="col">
+		<p>
+		L’association a pour objet de "Développer un réseau solidaire à travers la mise en place d’actions
+		favorisant les échanges, le lien social et le développement durable". Ses missions visent à promouvoir les échanges de
+		semences à l’échelle locale et régionale, proposer et animer des temps forts à destination du grand public autour des sujets
+		associés à la préservation des variétés végétales, participer à la tenue d’ateliers pédagogiques, produire et distribuer des plantes et
+		semences dans un cadre pédagogique.
+		</p>
+
+</div>
+</div>
+<h6 class = "textcenter rowbienvenue">Pour accéder au contenu RTG sur le site :  </h6>
+				<div class="row">
+	<div class="col">
+		<p>
+		Il faut etre membre de l'association, et en faire la demande auprès de ramenetagraine@live.fr
+		</p>
+
+</div>
+</div>
+{% endblock %}

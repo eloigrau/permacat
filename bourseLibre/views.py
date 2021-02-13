@@ -136,6 +136,9 @@ def statuts(request):
 def statuts_rtg(request):
     return render(request, 'statuts_rtg.html')
 
+def statuts_fer(request):
+    return render(request, 'statuts_fer.html')
+
 
 @login_required
 def produit_proposer(request, type_produit):
@@ -331,6 +334,8 @@ def admin_asso_rtg(request):
 def presentation_asso(request):
     return render(request, 'asso/presentation_asso.html')
 
+def presentation_asso_rtg(request):
+    return render(request, 'asso/rtg/presentation_asso.html')
 @login_required
 def telechargements_asso(request):
     if not request.user.adherent_permacat:

@@ -54,6 +54,7 @@ urlpatterns = [
     url(r'^dernieresInfos/$', views_notifications.dernieresInfos, name='dernieresInfos'),
     url(r'^prochaines_rencontres/$', views.prochaines_rencontres, name='prochaines_rencontres'),
     url(r'^permacat/presentation/$', views.presentation_asso, name='presentation_asso'),
+    url(r'^rtg/presentation/$', views.presentation_asso_rtg, name='presentation_asso_rtg'),
     url(r'^site/presentation/$', views.presentation_site, name='presentation_site'),
     url(r'^permacat/statuts/$', views.statuts, name='statuts'),
     #url(r'^ramenetagraine/statuts/$', views.statuts_rtg, name='statuts_rtg'),

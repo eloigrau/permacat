@@ -46,9 +46,4 @@ class Choix():
                     (1, _("Je souhaite utiliser le site, mais ne pas devenir membre de l'association RTG")),
                     (2, _("Je suis déjà membre de l'association Ramene Ta Graine")))
 
-    statut_adhesion_ga = (('', '-----------'),
-                     (0, _("Je souhaite devenir membre de l'association 'Gaïarmonie'")),
-                    (1, _("Je souhaite utiliser le site, mais ne pas devenir membre de l'association Gaïarmonie")),
-                    (2, _("Je suis déjà membre de l'association Gaïarmonie")))
-
     type_asso = ('0', 'public'), ('1', "Permacat"), ('2', "Ramene Ta Graine") , ('3', "Animaux Mieux Etre") #+ ((str(1+i), x.nom) for i, x in enumerate(asso))

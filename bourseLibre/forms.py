@@ -147,10 +147,9 @@ class ProfilCreationForm(UserCreationForm):
     email = forms.EmailField(label="Email*",)
 
     #statut_adhesion = forms.ChoiceField(choices=Choix.statut_adhesion, label='', required=True)
-    #statut_adhesion_ga = forms.ChoiceField(choices=Choix.statut_adhesion_ga, label='', required=True)
     adherent_permacat = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Permacat'")
     adherent_rtg = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Ramène Ta Graine'")
-    #adherent_ga = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Gaïarmonie'")
+    adherent_fer = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Fermille'")
     #adherent_ame = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Animal Mieux Etre'")
     accepter_annuaire = forms.BooleanField(required=False, label="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous les inscrits")
     accepter_conditions = forms.BooleanField(required=True, label="J'ai lu et j'accepte les Conditions Générales d'Utilisation du site*",  )
@@ -164,7 +163,7 @@ class ProfilCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm):
         model = Profil
-        fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'adherent_permacat', 'adherent_rtg', 'inscrit_newsletter', 'accepter_annuaire',  'accepter_conditions']
+        fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'adherent_permacat', 'adherent_rtg','adherent_fer', 'inscrit_newsletter', 'accepter_annuaire',  'accepter_conditions']
         exclude = ['slug', ]
 
 
@@ -219,7 +218,7 @@ class ProducteurChangeForm_admin(UserChangeForm):
 
     class Meta:
         model = Profil
-        fields = ['username', 'email', 'description', 'competences', 'inscrit_newsletter', 'statut_adhesion', 'adherent_permacat',  'adherent_rtg', 'pseudo_june', 'accepter_annuaire', 'cotisation_a_jour', 'is_jardinpartage']
+        fields = ['username', 'email', 'description', 'competences', 'inscrit_newsletter', 'statut_adhesion', 'adherent_permacat',  'adherent_rtg', 'adherent_fer', 'pseudo_june', 'accepter_annuaire', 'cotisation_a_jour', 'is_jardinpartage']
 
     def __init__(self, *args, **kwargs):
         super(ProducteurChangeForm_admin, self).__init__(*args, **kwargs)

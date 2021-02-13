@@ -138,6 +138,8 @@ class ListeArticles(ListView):
                 qs = qs.exclude(asso__abreviation="pc")
             if not self.request.user.adherent_rtg:
                 qs = qs.exclude(asso__abreviation="rtg")
+            if not self.request.user.adherent_fer:
+                qs = qs.exclude(asso__abreviation="fer")
 
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])
@@ -388,6 +390,8 @@ class ListeProjets(ListView):
                 qs = qs.exclude(asso__abreviation="pc")
             if not self.request.user.adherent_rtg:
                 qs = qs.exclude(asso__abreviation="rtg")
+            if not self.request.user.adherent_fer:
+                qs = qs.exclude(asso__abreviation="fer")
 
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])

@@ -1,0 +1,25 @@
+{% extends 'base_asso.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block subtitle %}
+<h4 class = "textcenter rowbienvenue">{% trans "Administration et fichiers de l'association Fermille" %}</h4>
+
+{% endblock %}
+{% block content %}
+
+<div class="row textcenter">
+	<div class="col-sm-12">
+        <a href="{% url 'listeContacts_fer' %}">
+         <button type="button" class="btn btn-primary">
+                 Liste des emails
+            </button>
+		</a>
+	</div>
+</div>
+<hr>
+
+<hr>
+{% endblock %}
+
+

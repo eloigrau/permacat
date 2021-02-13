@@ -1,0 +1,28 @@
+sudo nano /etc/systemd/system/gunicorn.service
+sudo systemctl status gunicorn
+sudo nano permacat/gunicorn_cfg.py 
+sudo nano /etc/supervisor/conf.d/permacat-gunicorn.conf
+sudo nano /etc/systemd/system/gunicorn.service
+sudo nano /etc/systemd/system/gunicorn.socket
+
+sudo supervisorctl reread
+sudo supervisorctl update
+sudo supervisorctl start permacat_supervisor
+sudo supervisorctl stop permacat_supervisor
+sudo supervisorctl restart permacat_supervisor
+sudo supervisorctl status
+
+
+sudo systemctl daemon-reload
+sudo systemctl restart nginx 
+sudo service nginx restart
+sudo service nginx status
+sudo service nginx configtest
+sudo nano /etc/nginx/sites-enabled/permacat
+
+pg_restore -U postgres -h 82.64.236.35 -p 32770 -c -d site data.dump
+psql -U postgres -h 82.64.236.35 -p 32770
+
+
+
+
