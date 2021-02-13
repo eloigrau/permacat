@@ -23,6 +23,9 @@ sudo nano /etc/nginx/sites-enabled/permacat
 pg_restore -U postgres -h 82.64.236.35 -p 32770 -c -d site data.dump
 psql -U postgres -h 82.64.236.35 -p 32770
 
-
+git pull
+export DJANGO_SETTINGS_MODULE=bourseLibre.settings.production
+python manage.py migrate
+sudo supervisorctl restart permacat_supervisor
 
 
