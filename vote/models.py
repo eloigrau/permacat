@@ -78,7 +78,7 @@ class Suffrage(models.Model):
             self.date_creation = timezone.now()
             suivi, created = Suivis.objects.get_or_create(nom_suivi='suffrages')
             titre = "Nouveau vote"
-            message = userProfile.username + " a lancé un nouveau vote: '<a href='https://permacat.herokuapp.com"+ self.get_absolute_url() + "'>"+ self.question + "</a>'"
+            message = userProfile.username + " a lancé un nouveau vote: '<a href='https://www.perma.cat"+ self.get_absolute_url() + "'>"+ self.question + "</a>'"
             emails = [suiv.email for suiv in followers(suivi) if userProfile != suiv and self.est_autorise(suiv)]
 
         retour = super(Suffrage, self).save(*args, **kwargs)

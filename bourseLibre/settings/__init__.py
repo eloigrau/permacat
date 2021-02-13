@@ -279,26 +279,20 @@ IGNORABLE_404_URLS = (
 SERVER_EMAIL = 'sitepermacat@gmail.com'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-try:
-    EMAIL_HOST_PASSWORD = os.environ['EMAIL_ADMIN_PWD']
-except:
-    EMAIL_HOST_PASSWORD = 'gg'
+EMAIL_HOST_PASSWORD = 'gg'
 EMAIL_HOST_USER = SERVER_EMAIL
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 GMAIL_SMTP_USER = 'sitepermacat@gmail.com'
 EMAIL_SUBJECT_PREFIX = "[PermaCat]"
-try:
-    GMAIL_SMTP_PASSWORD = os.environ['EMAIL_ADMIN_PWD']
-except:
-    GMAIL_SMTP_PASSWORD = 'test'
+GMAIL_SMTP_PASSWORD = 'test'
 
 ADMINS = (
     ('Asso_admin', 'sitepermacat@gmail.com'),
 )
 MANAGERS = ADMINS
-BASE_URL = "https://permacat.herokuapp.com"
+BASE_URL = "https://permacat.majopi.fr"
 ########################
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
