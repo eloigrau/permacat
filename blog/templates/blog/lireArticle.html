@@ -2,6 +2,7 @@
 {% load activity_tags %}
 {% load blog_filters %}
 {% load fontawesome %}
+{% load hitcount_tags %}
 
 {% block subtitle %}
 
@@ -9,9 +10,7 @@
 <div class="row">
     <div class="col-md-2 " id="sec02">
         <p>
-        <a  href="{% url 'blog:index'  %}">
-        <button class="btn btn-info btn-sm textright" ><i class="fa fa-arrow-left"></i> Sommaire</button>
-            </a>
+        <button class="btn btn-info btn-sm textright"  onclick="window.history.back();"><i class="fa fa-arrow-left"></i> Retour </button>
         </p>
     </div>
     <div class="col-md-8">
@@ -39,6 +38,10 @@
 
             <span class="badge badge-Light">
                 le {{ article.date_creation|date:"DATE_FORMAT" }}
+            </span>
+            <span class="badge badge-Light">
+            {% get_hit_count for article as nbvues %}
+            {{ nbvues }} vue{{nbvues|pluralize:"s"}}
             </span>
 
 

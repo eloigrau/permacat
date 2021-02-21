@@ -13,8 +13,8 @@ from django.utils.timezone import now
 from bourseLibre.models import Suivis
 from bourseLibre.views import testIsMembreAsso
 from django.views.decorators.csrf import csrf_exempt
- #from hitcount.models import HitCount
-#from hitcount.views import HitCountMixin
+from hitcount.models import HitCount
+from hitcount.views import HitCountMixin
 
 # @login_required
 # def forum(request):
@@ -90,8 +90,8 @@ def lireArticle(request, slug):
     dates = Evenement.objects.filter(article=article).order_by("start_time")
 
     actions = action_object_stream(article)
-    #hit_count = HitCount.objects.get_for_object(article)
-    #hit_count_response = HitCountMixin.hit_count(request, hit_count)
+    hit_count = HitCount.objects.get_for_object(article)
+    hit_count_response = HitCountMixin.hit_count(request, hit_count)
     form = CommentaireArticleForm(request.POST or None)
     if form.is_valid():
         comment = form.save(commit=False)
