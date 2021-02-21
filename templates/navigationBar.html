@@ -62,7 +62,7 @@
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" >Ramène Ta Graine</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
-                       <li> <a class="dropdown-item" href="{% url 'presentation_asso_rtg' %}"> Qui sommes nous ?</a></li>
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso_rtg' %}"> Présentation </a></li>
    {% if request.user.adherent_rtg %}
                             <li> <a class="dropdown-item" href="{% url 'agora' asso='rtg'%}"><i class='fa fa-asterisk' ></i> Salon de discussion</a></li>
                             <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='rtg'%}"><i class='fa fa-comments' ></i> Articles </a></li>
@@ -81,7 +81,7 @@
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" >Fermille</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
-                       <li> <a class="dropdown-item" href="{% url 'presentation_asso_fer' %}"> Qui sommes nous ?</a></li>
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso_fer' %}"> Présentation</a></li>
                               <li class="divider" role="separator"></li>
                             <li> <a class="dropdown-item" href="{% url 'agora' asso='fer'%}"><i class='fa fa-asterisk' ></i> Salon de discussion</a></li>
                             <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='fer'%}"><i class='fa fa-comments' ></i> Articles </a></li>
