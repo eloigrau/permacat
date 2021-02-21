@@ -42,7 +42,7 @@
               <span class="glyphicon glyphicon-shopping-cart"></span> Mes abonnements
             </a>
             <a href="{% url 'mesActions' %}" class="btn btn-success">
-              <span class="glyphicon glyphicon-shopping-cart"></span> Mes ations
+              <span class="glyphicon glyphicon-shopping-cart"></span> Mes actions
             </a>
         {%endif%}
         <a href="{% url 'marche' %}?producteur={{ user.username }}" class="btn btn-success">
@@ -137,6 +137,12 @@
 		<td>{{user.adherent_rtg|translateOuiNon}}</td>
 	    </tr>
     {% endif %}
+    {%if request.user.adherent_fer or request.user == user %}
+	    <tr>
+		<td style="width:250px">Adhérent Fermille *:</td>
+		<td>{{user.adherent_fer|translateOuiNon}}</td>
+	    </tr>
+    {% endif %}
       {% if request.user == user %}
         <tr>
             <td style="width:200px">Inscrit à la newsletter ^: </td>
@@ -146,11 +152,12 @@
             <td style="width:200px">Inscrit aux jardins partagés ^: </td>
             <td>{{user.is_jardinpartage|translateOuiNon }}
         </tr>
+        {% endif %}
+
         <tr>
-            <td style="width:200px">J'apparais dans l'annuaire et mes coordonnées sont visibles ^: </td>
+            <td style="width:200px">Apparait dans l'annuaire et coordonnées sont visibles: </td>
             <td>{{user.accepter_annuaire|translateOuiNon }}
         </tr>
-        {% endif %}
       </tbody>
     </table>
       </div>

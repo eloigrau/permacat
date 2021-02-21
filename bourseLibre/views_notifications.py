@@ -37,14 +37,12 @@ def getNotifications(request, nbNotif=10, orderBy="-timestamp"):
         articles   = articles | Action.objects.filter(Q(verb__startswith='article') & Q(verb__icontains='rtg'))
         projets    = projets | Action.objects.filter(Q(verb__startswith='projet') & Q(verb__icontains='rtg'))
         offres     = offres | Action.objects.filter(Q(verb__startswith='ajout_offre') & Q(verb__icontains='rtg'))
-     #   suffrages  = suffrages | Action.objects.filter(Q(verb__startswith='suffrage_ajout') & Q(verb__icontains='rtg'))
 
-    # if request.user.adherent_ga:
-    #     salons     = salons | Action.objects.filter(Q(verb__startswith='envoi_salon') & Q(verb__icontains='ga'))
-    #     articles   = articles | Action.objects.filter(Q(verb__startswith='article') & Q(verb__icontains='ga'))
-    #     projets    = projets | Action.objects.filter(Q(verb__startswith='projet') & Q(verb__icontains='ga'))
-    #     offres     = offres | Action.objects.filter(Q(verb__startswith='ajout_offre') & Q(verb__icontains='ga'))
-    #     suffrages  = suffrages | Action.objects.filter(Q(verb__startswith='suffrage_ajout') & Q(verb__icontains='ga'))
+    if request.user.adherent_fer:
+        salons     = salons | Action.objects.filter(Q(verb__startswith='envoi_salon') & Q(verb__icontains='fer'))
+        articles   = articles | Action.objects.filter(Q(verb__startswith='article') & Q(verb__icontains='fer'))
+        projets    = projets | Action.objects.filter(Q(verb__startswith='projet') & Q(verb__icontains='fer'))
+        offres     = offres | Action.objects.filter(Q(verb__startswith='ajout_offre') & Q(verb__icontains='fer'))
 
     salons = salons.distinct().order_by(orderBy)[:tampon]
     articles = articles.distinct().order_by(orderBy)[:tampon]
@@ -84,8 +82,8 @@ def getNotificationsParDate(request, limiter=True, orderBy="-timestamp"):
         actions = actions | Action.objects.filter(Q(verb__icontains='Permacat') | Q(verb__icontains='permacat')| Q(verb__icontains='pc'))
     if request.user.adherent_rtg:
         actions = actions | Action.objects.filter(Q(verb__icontains='rtg'))
-    if request.user.adherent_ga:
-        actions = actions | Action.objects.filter(Q(verb__icontains='ga'))
+    if request.user.adherent_fer:
+        actions = actions | Action.objects.filter(Q(verb__icontains='fer'))
 
     actions = actions.distinct().order_by(orderBy)
 

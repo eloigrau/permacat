@@ -120,6 +120,8 @@ class Asso(models.Model):
             return False
         elif self.nom == "rtg" and not user.adherent_rtg:
             return False
+        elif self.nom == "fer" and not user.adherent_fer:
+            return False
         return True
 
     def getProfils(self):
@@ -129,10 +131,8 @@ class Asso(models.Model):
             return Profil.objects.filter(adherent_permacat=True)
         elif self.abreviation == "rtg":
             return Profil.objects.filter(adherent_rtg=True)
-        elif self.abreviation == "ame":
-            return Profil.objects.filter(adherent_ame=True)
-        elif self.abreviation == "ga":
-            return Profil.objects.filter(adherent_ga=True)
+        elif self.abreviation == "fer":
+            return Profil.objects.filter(adherent_fer=True)
 
 class Profil(AbstractUser):
     username_validator = ASCIIUsernameValidator()
@@ -147,14 +147,12 @@ class Profil(AbstractUser):
     date_registration = models.DateTimeField(verbose_name="Date de création", editable=False)
     pseudo_june = models.CharField(_('pseudo Monnaie Libre'), blank=True, default=None, null=True, max_length=50)
 
-    inscrit_newsletter = models.BooleanField(verbose_name="J'accepte de recevoir des emails de Permacat", default=False)
+    inscrit_newsletter = models.BooleanField(verbose_name="J'accepte de recevoir des emails de Perma.cat", default=False)
     statut_adhesion = models.IntegerField(choices=Choix.statut_adhesion, default="0")
-    #statut_adhesion_rtg = models.IntegerField(choices=Choix.statut_adhesion_rtg, default="0")
-    #statut_adhesion_ga = models.IntegerField(choices=Choix.statut_adhesion_ga, default="0")
     cotisation_a_jour = models.BooleanField(verbose_name="Cotisation à jour", default=False)
     adherent_permacat = models.BooleanField(verbose_name="Je suis adhérent de Permacat", default=False)
     adherent_rtg = models.BooleanField(verbose_name="Je suis adhérent de Ramene Ta Graine", default=False)
-    adherent_ga = models.BooleanField(verbose_name="Je suis adhérent de Gaïarmonie", default=False)
+    adherent_fer = models.BooleanField(verbose_name="Je suis adhérent de Fermille", default=False)
     accepter_conditions = models.BooleanField(verbose_name="J'ai lu et j'accepte les conditions d'utilisation du site", default=False, null=False)
     accepter_annuaire = models.BooleanField(verbose_name="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous", default=True)
     is_jardinpartage = models.BooleanField(verbose_name="Je suis intéressé.e par les jardins partagés", default=False)
@@ -201,6 +199,8 @@ class Profil(AbstractUser):
             return self.adherent_permacat
         elif asso == "rtg":
             return self.adherent_rtg
+        elif asso == "fer":
+            return self.adherent_fer
 
     @property
     def statutMembre_str(self):
@@ -223,6 +223,11 @@ class Profil(AbstractUser):
                 return "membre actif de 'Ramene Ta Graine'"
             else:
                 return "Non membre de 'Ramene Ta Graine'"
+        if asso == "fer":
+            if self.adherent_fer:
+                return "membre actif de 'Fermille'"
+            else:
+                return "Non membre de 'Fermille'"
 
     def estMembre_str(self, nom_asso):
         if nom_asso == "Public" or nom_asso == "public":
@@ -230,6 +235,8 @@ class Profil(AbstractUser):
         elif (nom_asso == "Permacat" or nom_asso == "pc") and self.adherent_permacat:
             return True
         elif self.adherent_rtg and (nom_asso == "Ramène Ta Graine" or nom_asso == "rtg") :
+            return True
+        elif self.adherent_fer and (nom_asso == "Fermille" or nom_asso == "fer") :
             return True
         else:
             return False
@@ -241,6 +248,8 @@ class Profil(AbstractUser):
             return user.adherent_permacat
         elif self.asso.abreviation == "rtg":
             return user.adherent_rtg
+        elif self.asso.abreviation == "fer":
+            return user.adherent_fer
         else:
             return False
 
@@ -378,6 +387,8 @@ class Produit(models.Model):  # , BaseProduct):
             return user.adherent_permacat
         elif self.asso.abreviation == "rtg":
             return user.adherent_rtg
+        elif self.asso.abreviation == "fer":
+            return user.adherent_fer
         else:
             return False
 

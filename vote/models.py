@@ -142,6 +142,8 @@ class Suffrage(models.Model):
             return user.adherent_permacat
         elif self.asso.abreviation == "rtg":
             return user.adherent_rtg
+        elif self.asso.abreviation == "fer":
+            return user.adherent_fer
         else:
             return False
 
