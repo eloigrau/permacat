@@ -427,11 +427,12 @@ def envoyerEmailstest():
 
 
 class EnvoiMailsCronJob(CronJobBase):
-    #RUN_AT_TIMES = ['6:30']
-    RUN_EVERY_MINS = 3  # every 2 hours
-    schedule = Schedule(run_at_times=RUN_EVERY_MINS)
+    RUN_AT_TIMES = ['6:30']
+    schedule = Schedule(run_every_mins=RUN_AT_TIMES)
+    #RUN_EVERY_MINS = 3  # every 2 hours
+    #schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
     code = 'bourseLibre.views_notifications.EnvoiMailsCronJob'    # a unique code
 
     def do(self):
-        #envoyerEmails()
-        envoyerEmailstest()
+        envoyerEmails()
+        #envoyerEmailstest()
