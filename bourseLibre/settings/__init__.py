@@ -36,11 +36,13 @@ LOCALL = False
 try:
     SECRET_KEY = os.environ['SECRET_KEY']
     DB_PWD = os.environ['SECRET_KEY_DB']
+    EMAIL_PWD = os.environ['EMAIL_DB']
     DEBUG = False
 except:
     LOCALL  = True
     DB_PWD = ""
     SECRET_KEY = 'aersd68fgsfdgsdvcbvcb563873gbgfthhfhdjd'
+    EMAIL_PWD = "test"
     DEBUG = True
 
 print('LOCALL : ' + str(LOCALL))
@@ -106,9 +108,8 @@ INSTALLED_APPS = (
     'django_summernote',
     'actstream',
     'taggit',
-    #'hitcount',
-    #'django_cron',
-    #"visits",
+    'hitcount',
+    'django_cron',
     #'notifications',
     #'webpush',
     #"geoposition",
@@ -463,6 +464,6 @@ BOWER_INSTALLED_APPS = (
     'bootstrap'
 )
 
-#CRON_CLASSES = [
-#    "bourseLibre.views_notifications.EnvoiMailsCronJob"
-#]
+CRON_CLASSES = [
+    "bourseLibre.views_notifications.EnvoiMailsCronJob"
+]

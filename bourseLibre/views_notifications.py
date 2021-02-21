@@ -340,7 +340,7 @@ def getListeMailsAlerte():
             seen.add(x[1])
             listeMails_ok.append(x)
         else:
-            i = next((i for i, colour in enumerate(listeMails_ok) if x[1] in colour), None)
+            i = next((i for i, mail in enumerate(listeMails_ok) if x[1] in mail), None)
             listeMails_ok[i][4].append(x[4][0])
 
     return listeMails_ok
@@ -422,12 +422,18 @@ def envoyerEmails():
     supprimerActionsStartedFollowing()
     print('Fait')
 
+def envoyerEmailstest():
+    listeMails = []
+    listeMails.append(('testCron', "message en txt", "<b>le message html</b>", SERVER_EMAIL, ["eloi.grau@gmail.com", ]))
+    send_mass_html_mail(listeMails, fail_silently=False)
 
-# class EnvoiMailsCronJob(CronJobBase):
-#     RUN_AT_TIMES = ['6:30']
-#
-#     schedule = Schedule(run_at_times=RUN_AT_TIMES)
-#     code = 'bourseLibre.views_notifications.EnvoiMailsCronJob'    # a unique code
-#
-#     def do(self):
-#         envoyerEmails()
+
+class EnvoiMailsCronJob(CronJobBase):
+    #RUN_AT_TIMES = ['6:30']
+    RUN_EVERY_MINS = 3  # every 2 hours
+    schedule = Schedule(run_at_times=RUN_AT_TIMES)
+    code = 'bourseLibre.views_notifications.EnvoiMailsCronJob'    # a unique code
+
+    def do(self):
+        #envoyerEmails()
+        envoyerEmailstest()
