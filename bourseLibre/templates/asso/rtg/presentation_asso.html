@@ -10,8 +10,8 @@
 <div class="row">
 	<div class="col-sm-12">
 		<div class="btn-group">
-			 <a class="btn btn-success" href="{% url 'annuaire'  asso='rtg' %}"> Carte des inscrits </a>
-			 <a class="btn btn-success" href="{% url 'carte' asso='rtg' %}"> Carte des adhérents </a>
+			 <a class="btn btn-success" href="{% url 'annuaire'  asso='rtg' %}"> Annuaire des inscrits </a>
+			 <a class="btn btn-success" href="{% url 'carte' asso='rtg' %}"> Carte des inscrits </a>
 			 <a class="btn btn-success" href="{% url 'agora' asso='rtg' %}"> Salon RTG </a>
 			 <a class="btn btn-success" href="{% url 'blog:index_asso' asso='rtg'%}"> Forum RTG </a>
 		</div>
@@ -33,13 +33,20 @@
 
 </div>
 </div>
-<h6 class = "textcenter rowbienvenue">Pour accéder au contenu RTG sur le site :  </h6>
-				<div class="row">
+
+<div class="row">
 	<div class="col">
-		<p>
-		Il faut etre membre de l'association, et en faire la demande auprès de ramenetagraine@live.fr
-		</p>
+
+	<div>Facebook : <a href="https://www.facebook.com/ramenetagraine/" target="_blank">https://www.facebook.com/ramenetagraine/</a></div>
+		<div>Mail : ramenetagraine@live.fr</div>
+
 
 </div>
 </div>
+<p><b>Pour accéder au contenu RTG sur le site :  </b>
+		Il faut en faire la demande auprès de ramenetagraine@live.fr
+		</p>
+
+</div>
+
 {% endblock %}

@@ -336,6 +336,10 @@ def presentation_asso(request):
 
 def presentation_asso_rtg(request):
     return render(request, 'asso/rtg/presentation_asso.html')
+
+def presentation_asso_fer(request):
+    return render(request, 'asso/fermille/presentation_asso.html')
+
 @login_required
 def telechargements_asso(request):
     if not request.user.adherent_permacat:
