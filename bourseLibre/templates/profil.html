@@ -28,6 +28,9 @@
             <a href="{% url 'profil_contact' user.id %}" class="btn btn-success">
               <span class="glyphicon glyphicon-envelope"></span> Email
             </a>
+            <a href="{% url 'activite' pseudo=user.username %}" class="btn btn-success">
+              <span class="glyphicon glyphicon-shopping-cart"></span> Son activité
+            </a>
         {%else%}
             <a href="{% url 'panier_afficher'  %}" class="btn btn-success">
               <span class="glyphicon glyphicon-shopping-bag"></span> Mon panier

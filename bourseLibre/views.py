@@ -4,7 +4,7 @@ Created on 25 mai 2017
 
 @author: tchenrezi
 '''
-from django.shortcuts import HttpResponseRedirect, render, redirect#, render, get_object_or_404, redirect, render_to_response,
+from django.shortcuts import HttpResponseRedirect, render, redirect, get_object_or_404#, render, redirect, render_to_response,
 
 from .forms import Produit_aliment_CreationForm, Produit_vegetal_CreationForm, Produit_objet_CreationForm, \
     Produit_service_CreationForm, ContactForm, AdresseForm, ProfilCreationForm, MessageForm, MessageGeneralForm, \
@@ -42,7 +42,7 @@ from django.db.models.functions import Lower
 from django.utils.html import strip_tags
 
 from actstream import actions, action
-from actstream.models import Action, any_stream, following,followers
+from actstream.models import Action, following, followers, actor_stream,  any_stream, user_stream, action_object_stream, model_stream, target_stream
 #from fcm_django.models import FCMDevice
 # from django.http.response import JsonResponse, HttpResponse
 # from django.views.decorators.http import require_GET, require_POST
@@ -970,9 +970,15 @@ def mesSuivis(request):
 def mesActions(request):
     return render(request, 'notifications/mesActions.html', {})
 
+
+
 @login_required
-def activite(request):
-    return render(request, 'notifications/activite.html', {})
+def activite(request, pseudo):
+    profil = get_object_or_404(Profil, username=pseudo)
+    stream = user_stream(profil, with_user_activity=True)
+    stream = actor_stream(profil)
+
+    return render(request, 'notifications/sesActions.html', {"pseudo":pseudo, "stream":stream})
 
 @login_required
 def agora(request, asso):

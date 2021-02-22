@@ -1,0 +1,18 @@
+{% extends 'base_notifications.html' %}
+{% load activity_tags %}
+
+{% block subtitle %}
+<h4>Activité de <a href="{% url 'profil_nom' pseudo %}">  {{pseudo}} </a> sur le site</h4>
+
+{% endblock %}
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-sm-12 textcenter">
+{% for action in stream %}
+    {% include "notifications/notifications_template.html" with action=action %}
+{% endfor %}
+    </div>
+</div>
+
+{% endblock %}
