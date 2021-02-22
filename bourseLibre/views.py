@@ -93,6 +93,53 @@ def tropGros(request):   #fichier trop gros
     response.status_code = 513
     return response
 
+def getEvenementsSemaine(request):
+    current_week = date.today().isocalendar()[1]
+    evenements = []
+
+    if request.user.is_anonymous:
+        ev = Evenement.objects.filter(start_time__week=current_week)
+        ev = ev.exclude(article__asso__abreviation="pc")
+        ev = ev.exclude(article__asso__abreviation="rtg")
+        ev = ev.exclude(article__asso__abreviation="fer")
+        evenements = [ev, [], [], []]
+    else:
+
+        ev_art = Evenement.objects.filter(start_time__week=current_week)
+        if not request.user.adherent_permacat:
+            ev_art = ev_art.exclude(article__asso__abreviation="pc")
+        if not request.user.adherent_rtg:
+            ev_art = ev_art.exclude(article__asso__abreviation="rtg")
+        if not request.user.adherent_fer:
+            ev_art = ev_art.exclude(article__asso__abreviation="fer")
+        evenements.append(ev_art)
+
+        ev_2 = Article.objects.filter(start_time__week=current_week )
+        if not request.user.adherent_permacat:
+            ev_2 = ev_2.exclude(asso__abreviation="pc")
+        if not request.user.adherent_rtg:
+            ev_2 = ev_2.exclude(asso__abreviation="rtg")
+        if not request.user.adherent_fer:
+            ev_2 = ev_2.exclude(asso__abreviation="fer")
+        evenements.append(ev_2)
+
+        if request.user.is_jardinpartage:
+            ev_3 = Article_jardin.objects.filter(start_time__week=current_week )
+        else:
+            ev_3 = Article_jardin.objects.filter(titre="fkjbgsklfgdbklfjdskfl")
+        evenements.append(ev_3)
+
+        ev_4 = Projet.objects.filter(start_time__week=current_week )
+        if not request.user.adherent_permacat:
+            ev_4 = ev_4.exclude(asso__abreviation="pc")
+        if not request.user.adherent_rtg:
+            ev_4 = ev_4.exclude(asso__abreviation="rtg")
+        if not request.user.adherent_fer:
+            ev_4 = ev_4.exclude(asso__abreviation="fer")
+        evenements.append(ev_4)
+
+    return evenements
+
 def bienvenue(request):
     nums = ['01', '02', '03', '04', '07', '10', '11', '13', '15', '17', '20', '21', '23', ]
     nomImage = 'img/flo/resized0' +  choice(nums)+'.png'
@@ -100,13 +147,7 @@ def bienvenue(request):
     nbExpires = 0
     yesterday = date.today() - timedelta(hours=12)
     evenements = EvenementAcceuil.objects.filter(date__gt=yesterday).order_by('date')
-    current_week = date.today().isocalendar()[1]
-    evenements_semaine = [Evenement.objects.filter(start_time__week=current_week),
-                         Article.objects.filter(start_time__week=current_week),
-                         Article_jardin.objects.filter(start_time__week=current_week),
-                         Projet.objects.filter(start_time__week=current_week)
-                        ]
-    #evenements_semaine = Evenement.objects.filter(start_time__week=current_week).order_by('start_time')
+    evenements_semaine = getEvenementsSemaine(request)
     if request.user.is_authenticated:
         nbNotif = getNbNewNotifications(request)
         nbExpires = getNbProduits_expires(request)
