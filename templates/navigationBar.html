@@ -77,21 +77,21 @@
                         </ul>
                     </li>
 
-   {% if request.user.adherent_fer %}
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" >Fermille</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso_fer' %}"> Présentation</a></li>
-                              <li class="divider" role="separator"></li>
+   {% if request.user.adherent_fer %}
+                            <li class="divider" role="separator"></li>
                             <li> <a class="dropdown-item" href="{% url 'agora' asso='fer'%}"><i class='fa fa-asterisk' ></i> Salon de discussion</a></li>
                             <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='fer'%}"><i class='fa fa-comments' ></i> Articles </a></li>
                         <li class="divider" role="separator"></li>
                           <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='fer' %}"><i class='fa fa-address-book' ></i> Annuaire  </a></li>
                           <li> <a class="dropdown-item" href="{% url 'carte'  asso='fer' %}"><i class='fa fa-compass' ></i>  Carte  </a></li>
 
+   {% endif %}
                       </ul>
                     </li>
-   {% endif %}
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" >Jardins Partagés</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
