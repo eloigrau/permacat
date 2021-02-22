@@ -14,7 +14,7 @@ class Choix():
     type_projet = ('Part','Participation à un évènement'), ('AGO',"Organisation d'une AGO"), ('Projlong','Projet a long terme'), ('Projcourt','Projet a court terme'), ('Projponct','Projet ponctuel'),
     type_annonce = ('Annonce','Annonce'), ('Administratif','Administratif'), ('Agenda','Agenda'),  ('Chantier','Chantier participatif'),\
                    ('Documentation','Documentation'), \
-                    ('Point', 'Point de vue'),  ('Recette', 'Recette'), \
+                    ('Point', 'Point de vue'),  ('Recette', 'Recette'), ('BonPlan','Bon Plan / achat groupé'), \
                      ('Divers','Divers'), #('Jardi','Jardi per tots'),
     type_annonce_projets = ('Altermarché', 'Altermarché'),  ('Ecovillage', 'Ecovillage'), \
                    ('Jardin', 'Jardins partagés'), #('KitPerma', 'Kit Perma Ecole'),
