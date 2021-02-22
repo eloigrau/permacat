@@ -16,7 +16,7 @@
         </p>
     </div>
     <div class="col-md-8">
-            <span class="badge badge-success" style="background-color:{{article.get_couleur}}" ><a href="{% url 'jardinpartage:index'  %}?categorie={{article.categorie}}"  style="background-color:{{article.get_couleur}}" class="smallcaps_h2">Jardins partagés/{{ article.get_categorie_display }}</span>
+            <span class="badge badge-success" style="background-color:{{article.get_couleur}}" ><a href="{% url 'jardinpartage:index'  %}?categorie={{article.categorie}}"  style="background-color:{{article.get_couleur}}" class="smallcaps_h2">Jardins partagés/{{ article.get_categorie_display }}</a></span>
 
             {% if article.estArchive%}
             <span class="badge badge-secondary">
