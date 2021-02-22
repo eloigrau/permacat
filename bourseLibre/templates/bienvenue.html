@@ -13,11 +13,43 @@
 </div>
 <div class="row">
 	<div class="col-md-6 col-sm-12 my-auto">
+		 {% if not request.user.is_authenticated %}
 		<div class="row textcenter">
 			<div class="col">
 				<a  href="{% url 'gallerie' %}" ><img class="imgbienvenue" src="{{STATIC_URL}}{{nomImage}}" alt="gallerie" ></a>
 			</div>
 		</div>
+		{% else %}
+		<div class="row" >
+					  <div class="col-sm-12 textcenter">
+
+				<div class="card" >
+				  <div class="card-header  textcenter">
+					  <b><a href="{% url 'cal:agenda' %}">{% fontawesome_icon 'calendar' %} Agenda:</a></b>
+				  </div>
+				  <div class="card-header  textcenter">
+						<b>	Cette semaine :</b>
+				  </div>
+					<ul class="list-group list-group-flush textcenter">
+						{% for ev in evenements_semaine %}
+						<li class="list-group-item"><a href="{% url 'blog:lireArticle' ev.article.slug %}">({{ev.start_time|date:"l d F"}}) {{ev.gettitre}}</a> </li>
+						{% endfor %}
+					</ul>
+
+				  <div class="card-header  textcenter">
+						<b>Rendez-vous réguliers :</b>
+				  </div>
+					<ul class="list-group list-group-flush textcenter">
+						<li class="list-group-item"><a href="{% url 'blog:lireArticle' 'visioconference' %}">Lundi 20h : Visioconférence Permacat</a> </li>
+						<li class="list-group-item"><a href="{% url 'blog:lireArticle' 'visioconference' %}">Vendredi 20h : Visioconférence Ecovillage / Jardin de Palau</a> </li>
+						<li class="list-group-item"><a href=" {% url 'jardinpartage:index_jardin' jardin=2 %} ">Vendredi 15h : Jardin de Palau </a> </li>
+					</ul>
+				</div>
+					  </div>
+					</div>
+
+		{% endif %}
+
 	</div>
 	<div class="col-md-6 col-sm-12">
 		<div class="row">
@@ -71,12 +103,7 @@
 					</div>
 
 					<hr>
-					<div class="row" >
-					  <div class="col-sm-12 textcenter">
-						  <b><a href="{% url 'cal:agenda' %}">{% fontawesome_icon 'calendar' %} Agenda</a></b>
-					  </div>
-					</div>
-					<hr>
+
 					<div class="row" >
 					  <div class="col-sm-12 textcenter">
 						  <b><a href="{% url 'blog:index' %}">{% fontawesome_icon 'comments' %} Forum</a></b>
@@ -92,6 +119,7 @@
 
 				{% endif %}
 
+{% comment %}
 				 {% if evenements %}
 				<div class="card" >
 				  <div class="card-header  textcenter">
@@ -105,6 +133,9 @@
 				</div>
 				<hr>
 				{% endif %}
+{% endcomment %}
+
+				<hr>
 			</div>
 		</div>
 	</div>

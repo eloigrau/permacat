@@ -24,7 +24,7 @@ from datetime import date, timedelta
 from django import forms
 from django.http import Http404
 
-from blog.models import Article, Projet, EvenementAcceuil
+from blog.models import Article, Projet, EvenementAcceuil, Evenement
 from jardinpartage.models import Article as Article_jardin
 
 from django.contrib import messages
@@ -100,11 +100,13 @@ def bienvenue(request):
     nbExpires = 0
     yesterday = date.today() - timedelta(hours=12)
     evenements = EvenementAcceuil.objects.filter(date__gt=yesterday).order_by('date')
+    current_week = date.today().isocalendar()[1]
+    evenements_semaine = Evenement.objects.filter(start_time__week=current_week).order_by('start_time')
     if request.user.is_authenticated:
         nbNotif = getNbNewNotifications(request)
         nbExpires = getNbProduits_expires(request)
 
-    return render(request, 'bienvenue.html', {'nomImage':nomImage, "nbNotif": nbNotif , "nbExpires":nbExpires, "evenements":evenements})
+    return render(request, 'bienvenue.html', {'nomImage':nomImage, "nbNotif": nbNotif , "nbExpires":nbExpires, "evenements":evenements, "evenements_semaine":evenements_semaine})
 
 
 def testIsMembreAsso(request, asso):

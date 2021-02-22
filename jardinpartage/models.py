@@ -2,12 +2,12 @@ from django.db import models
 from bourseLibre.models import Profil, Suivis
 from django.urls import reverse
 from django.utils import timezone
-from django.core.mail import send_mass_mail, mail_admins
+#from django.core.mail import send_mass_mail, mail_admins
 from actstream import action
 
 
 from actstream.models import followers
-from bourseLibre.settings import SERVER_EMAIL, LOCALL
+#from bourseLibre.settings import SERVER_EMAIL, LOCALL
 
 class Choix():
     type_annonce = ('Discu','Information'), ('Organisation', 'Organisation'), \
@@ -15,7 +15,7 @@ class Choix():
                   ('Agenda','Agenda'), ("todo", "A faire"), \
                    ('Documentation','Documentation'),  \
                  ('Autre','Autre'),
-    jardins_ptg = ('0', 'Tous les jardins'),('1', 'Jardi Per Tots'), ('2', 'JardiPal'), ('3', 'Jardins de Lurçat')
+    jardins_ptg = ('0', 'Tous les jardins'),('1', 'Jardi Per Tots'), ('2', 'Jardin de Palau'), ('3', 'Jardins de Lurçat')
     couleurs_annonces = {
        # 'Annonce':"#e0f7de", 'Administratif':"#dcc0de", 'Agenda':"#d4d1de", 'Entraide':"#cebacf",
        # 'Chantier':"#d1ecdc",'Jardinage':"#fcf6bd", 'Recette':"#d0f4de", 'Bricolage':"#fff2a0",
