@@ -101,7 +101,12 @@ def bienvenue(request):
     yesterday = date.today() - timedelta(hours=12)
     evenements = EvenementAcceuil.objects.filter(date__gt=yesterday).order_by('date')
     current_week = date.today().isocalendar()[1]
-    evenements_semaine = Evenement.objects.filter(start_time__week=current_week).order_by('start_time')
+    evenements_semaine = [Evenement.objects.filter(start_time__week=current_week),
+                         Article.objects.filter(start_time__week=current_week),
+                         Article_jardin.objects.filter(start_time__week=current_week),
+                         Projet.objects.filter(start_time__week=current_week)
+                        ]
+    #evenements_semaine = Evenement.objects.filter(start_time__week=current_week).order_by('start_time')
     if request.user.is_authenticated:
         nbNotif = getNbNewNotifications(request)
         nbExpires = getNbProduits_expires(request)

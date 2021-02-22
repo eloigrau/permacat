@@ -31,8 +31,18 @@
 						<b>	Cette semaine :</b>
 				  </div>
 					<ul class="list-group list-group-flush textcenter">
-						{% for ev in evenements_semaine %}
-						<li class="list-group-item"><a href="{% url 'blog:lireArticle' ev.article.slug %}">({{ev.start_time|date:"l d F"}}) {{ev.gettitre}}</a> </li>
+
+						{% for ev in evenements_semaine.3 %}
+						<li class="list-group-item"><a href="{% url 'blog:lireProjet' ev.slug %}">{{ev.start_time|date:"l d F"}}: {{ev.titre}}</a> </li>
+						{% endfor %}
+						{% for ev in evenements_semaine.0 %}
+						<li class="list-group-item"><a href="{% url 'blog:lireArticle' ev.article.slug %}">{{ev.start_time|date:"l d F"}}: {{ev.gettitre}}</a> </li>
+						{% endfor %}
+						{% for ev in evenements_semaine.1 %}
+						<li class="list-group-item"><a href="{% url 'blog:lireArticle' ev.slug %}">{{ev.start_time|date:"l d F"}}: {{ev.titre}}</a> </li>
+						{% endfor %}
+						{% for ev in evenements_semaine.2 %}
+						<li class="list-group-item"><a href="{% url 'jardinpartage:lireArticle' ev.slug %}">{{ev.start_time|date:"l d F"}}: (Jardin Partagé) {{ev.titre}}</a> </li>
 						{% endfor %}
 					</ul>
 
