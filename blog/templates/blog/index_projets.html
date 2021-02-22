@@ -54,6 +54,17 @@
                 </div>
             </li>
 
+            <li class="nav-item dropdown">
+             <button type="button" class="btn  btn-block {% if request.GET.statut %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+               data-target = "#idStatut">
+                {% if request.GET.statut %} {{statut_courant}} {%else%}Statut{%endif%}
+                 </button>
+                <div class="dropdown-menu"  aria-labelledby="menuAuteur"  id=idStatut">
+                {% for statut_id, cat_nom in statut_list %}
+                  <a class="dropdown-item" href="?statut={{statut_id}}">{{cat_nom}}</a>
+                    {% endfor %}
+                </div>
+            </li>
         {% if request.user.adherent_permacat %}
                 <li class="nav-item dropdown">
              <button type="button" class="btn  btn-block {% if request.GET.permacat %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"

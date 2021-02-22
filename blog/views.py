@@ -397,6 +397,9 @@ class ListeProjets(ListView):
             qs = qs.filter(auteur__username=params['auteur'])
         if "categorie" in params:
             qs = qs.filter(categorie=params['categorie'])
+        if "statut" in params:
+            qs = qs.filter(statut=params['statut'])
+
         if "permacat" in params and self.request.user.adherent_permacat:
             if params['permacat'] == "True":
                 qs = qs.filter(estPublic=False)
@@ -420,6 +423,8 @@ class ListeProjets(ListView):
         context['auteur_list'] = Projet.objects.order_by('auteur').values_list('auteur__username', flat=True).distinct()
         cat = Projet.objects.all().order_by('categorie').values_list('categorie', flat=True).distinct()
         context['categorie_list'] = [x for x in Choix.type_projet if x[0] in cat]
+        cat = Projet.objects.all().order_by('statut').values_list('statut', flat=True).distinct()
+        context['statut_list'] = [x for x in Choix.statut_projet if x[0] in cat]
         context['typeFiltre'] = "aucun"
 
         context['ordreTriPossibles'] = ['-date_creation', '-date_dernierMessage', 'categorie', 'auteur', 'titre']
@@ -431,6 +436,12 @@ class ListeProjets(ListView):
                 context['categorie_courante'] = [x[1] for x in Choix.type_projet if x[0] == self.request.GET['categorie']][0]
             except:
                 context['categorie_courante'] = ""
+        if 'statut' in self.request.GET:
+            context['typeFiltre'] = "statut"
+            try:
+                context['statut_courant'] = [x[1] for x in Choix.statut_projet if x[0] == self.request.GET['statut']][0]
+            except:
+                context['statut_courant'] = ""
         if 'permacat' in self.request.GET:
             context['typeFiltre'] = "permacat"
         if 'archives' in self.request.GET:
