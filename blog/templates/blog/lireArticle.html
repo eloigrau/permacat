@@ -52,14 +52,14 @@
                  {% fontawesome_icon 'bell' %} 
             </button>
             {% else %}
-            <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné :  Cliquez pour recevoir les notifications concernant cet article par mail">
+            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné :  Cliquez pour recevoir les notifications concernant cet article par mail">
                  {% fontawesome_icon 'bell-slash' %} 
             </button>
             {% endif %}
         </a>
              {% if request.user.is_superuser %}
         <a href="{% url 'blog:suiveursArticle' article.slug %}">
-            <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Voir abonnés">
+            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Voir abonnés">
                  {% fontawesome_icon 'eye' %}
             </button>
         </a>

@@ -975,7 +975,7 @@ def mesActions(request):
 @login_required
 def activite(request, pseudo):
     profil = get_object_or_404(Profil, username=pseudo)
-    stream = user_stream(profil, with_user_activity=True)
+    #stream = user_stream(profil, with_user_activity=True)
     stream = actor_stream(profil)
 
     return render(request, 'notifications/sesActions.html', {"pseudo":pseudo, "stream":stream})
