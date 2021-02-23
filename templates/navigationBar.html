@@ -28,21 +28,27 @@
     {% endif %}
                          <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='pc'%}"><i class='fa fa-comments' ></i> Articles </a></li>
                          <li class="divider" role="separator"></li>
+
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" >Projets</a>
                         <ul class="dropdown-menu nav5-dropdown-subsubmenu">
                             <li><a class="dropdown-item" href="{% url 'blog:index_projets' %}"><i class='fa fa-folder-open iconleft' ></i>  Tous les projets </a></li>
 
-                     {% comment %} <li><a class="dropdown-item" href="{% url 'vote:index' %}"><i class="fa fa-bullhorn iconleft"></i>  Votes </a></li>{% endcomment %}
+
                         {% comment %} <li><a class="dropdown-item" href="{% url 'wiki:root' %}"> Eco Village </a></li>{% endcomment %}
                         <li><a class="dropdown-item" href="{% url 'blog:index' %}?categorie=Altermarché"><i class='fa fa-comments' ></i> Altermarché </a></li>
                         <li><a class="dropdown-item" href="{% url 'blog:index' %}?categorie=Ecovillage"><i class='fa fa-comments' ></i> Ecovillage </a></li>
                         <li><a class="dropdown-item" href="{% url 'blog:index' %}?categorie=Jardin"><i class='fa fa-comments' ></i> Jardins partagés</a></li>
                          {% comment %}<li><a class="dropdown-item" href="{% url 'fiches:acceuil' %}"><i class='fa fa-image iconleft' ></i> Fiches de Permaculture </a></li>{% endcomment %}
-                         {% comment %} <li><a class="dropdown-item" href="{% url 'ateliers:acceuil' %}"><i class='fa fa-wrench iconleft' ></i>  Ateliers Collectifs</a></li>{% endcomment %}
+
                         </ul>
                     </li>
-   {% if request.user.adherent_permacat %}
+                            {% comment %}
+                            <li><a class="dropdown-item" href="{% url 'vote:index' %}"><i class="fa fa-bullhorn iconleft"></i>  Votes </a></li>
+                            <li><a class="dropdown-item" href="{% url 'ateliers:acceuil' %}"><i class='fa fa-wrench iconleft' ></i>  Ateliers Collectifs</a></li>
+                            {% endcomment %}
+
+                            {% if request.user.adherent_permacat %}
                        <li class="divider" role="separator"></li>
                         <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='pc' %}"><i class='fa fa-address-book' ></i>  Annuaire  </a></li>
                          <li><a class="dropdown-item" href="{% url 'carte'  asso='pc' %}"><i class='fa fa-compass' ></i>  Carte  </a></li>

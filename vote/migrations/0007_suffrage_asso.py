@@ -10,12 +10,7 @@ def combine_names(apps, schema_editor):
     assos = apps.get_model('bourseLibre', 'Asso')
     asso_public, created = assos.objects.get_or_create(nom='Public')
     asso_permacat, created = assos.objects.get_or_create(nom='Permacat')
-    for prod in article.objects.all():
-        if prod.estPublic:
-            prod.asso = asso_public
-        else:
-            prod.asso = asso_permacat
-        prod.save()
+
 
 class Migration(migrations.Migration):
 

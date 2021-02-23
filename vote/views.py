@@ -96,7 +96,7 @@ def lireSuffrage(request, slug):
     except:
         voteCourant = None
     if not suffrage.est_autorise(request.user):
-        return render(request, 'notMembre.html', {'asso':asso})
+        return render(request, 'notMembre.html',)
 
     commentaires = Commentaire.objects.filter(suffrage=suffrage).order_by("date_creation")
 

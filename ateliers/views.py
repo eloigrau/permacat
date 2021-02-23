@@ -21,7 +21,7 @@ def accueil(request):
 
 @login_required
 def ajouterAtelier(request):
-    form = AtelierForm(request.POST or None)
+    form = AtelierForm(request, request.POST or None)
     if form.is_valid():
         atelier = form.save(request)
         action.send(request.user, verb='atelier_nouveau', action_object=atelier, url=atelier.get_absolute_url(),
@@ -50,7 +50,7 @@ class ModifierAtelier(UpdateView):
     def save(self):
         return super(ModifierAtelier, self).save()
 
-    def get_form(self,*args, **kwargs):
+    def get_form(self, *args, **kwargs):
         form = super(ModifierAtelier, self).get_form(*args, **kwargs)
         form.fields["asso"].choices = [x for i, x in enumerate(form.fields["asso"].choices) if
                                         self.request.user.estMembre_str(x[1])]

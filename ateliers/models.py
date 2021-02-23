@@ -48,11 +48,10 @@ class Atelier(models.Model):
     titre = models.CharField(verbose_name="Titre de l'atelier",max_length=120)
     slug = models.SlugField(max_length=100, default=uuid.uuid4)
     description = models.TextField(null=True, blank=True)
-    materiel = models.TextField(null=True, blank=True, verbose_name="Matériel nécessaire")
-    outils = models.TextField(null=True, blank=True, verbose_name="Outils nécessaire")
+    materiel = models.TextField(null=True, blank=True, verbose_name="Matériel/outils nécessaires")
     referent = models.CharField(max_length=120, null=True, blank=True,  verbose_name="Référent(e.s)")
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE, null=True)
-
+#    projet = models.OneToOneField(Projet)
     date_atelier = models.DateField(verbose_name="Date prévue (affichage dans l'agenda)", help_text="(jj/mm/an)", default=timezone.now, blank=True, null=True)
     heure_atelier = models.TimeField(verbose_name="Heure prévue", help_text="(hh:mm)", default="17:00", blank=True, null=True)
 

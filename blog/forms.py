@@ -117,7 +117,6 @@ class ArticleChangeForm(forms.ModelForm):
               'end_time': forms.DateInput(attrs={'class':'date', }),
         }
 
-
 class CommentaireArticleForm(forms.ModelForm):
 
     class Meta:

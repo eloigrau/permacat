@@ -21,7 +21,7 @@ from django.contrib.auth.decorators import login_required
 app_name = 'vote'
 
 urlpatterns = [
-    url(r'^accueil/$', views.accueil, name="accueil"),
+    url(r'^$', views.accueil, name="accueil"),
     url(r'^suffrages/$', login_required(views.ListeSuffrages.as_view(), login_url='/auth/login/'), name="index"),
     url(r'^suffrage/(?P<slug>[-\w]+)$', views.lireSuffrage, name='lireSuffrage'),
     url(r'^modifierSuffrage/(?P<slug>[-\w]+)$', login_required(views.ModifierSuffrage.as_view(), login_url='/auth/login/'), name='modifierSuffrage'),

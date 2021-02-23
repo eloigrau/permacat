@@ -14,11 +14,10 @@ class AtelierForm(forms.ModelForm):
 
     class Meta:
         model = Atelier
-        fields = ['titre', 'statut', 'categorie', 'asso', 'referent', 'description', 'materiel', 'outils', 'date_atelier','heure_atelier','duree_prevue', 'tarif_par_personne']
+        fields = ['titre', 'statut', 'categorie', 'asso', 'referent', 'description', 'materiel', 'date_atelier','heure_atelier','duree_prevue', 'tarif_par_personne']
         widgets = {
             'description': SummernoteWidget(),
             'materiel': SummernoteWidget(),
-            'outils': SummernoteWidget(),
             'date_atelier': forms.DateInput(attrs={'type':"date"}),
             'heure_atelier': forms.TimeInput(attrs={'type':"time", },format='%H:%M'),
             'duree_prevue': forms.TimeInput(attrs={'type':"time", },format='%H:%M'),
@@ -53,18 +52,19 @@ class AtelierForm(forms.ModelForm):
 
 
     def __init__(self, request, *args, **kwargs):
-        super(AtelierForm, self).__init__(request, *args, **kwargs)
+        super(AtelierForm, self).__init__(*args, **kwargs)
         self.fields['description'].strip = False
         listeChoix = [(i+1,u) for i, u in enumerate(Profil.objects.all().order_by('username'))]
         listeChoix.insert(0, (0, "----------------"))
         self.fields['referent'].choices = listeChoix
+        self.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if request.user.estMembre_str(x.abreviation)]
 
 class AtelierChangeForm(forms.ModelForm):
     referent = forms.ChoiceField(label='Référent(.e) atelier')
 
     class Meta:
         model = Atelier
-        fields = [ 'titre', 'statut', 'asso', 'categorie','referent', 'description', 'materiel', 'outils','date_atelier',  'heure_atelier', 'duree_prevue', 'tarif_par_personne', ]
+        fields = [ 'titre', 'statut', 'asso', 'categorie','referent', 'description', 'materiel','date_atelier',  'heure_atelier', 'duree_prevue', 'tarif_par_personne', ]
         widgets = {
             'description': SummernoteWidget(),
             'materiel': SummernoteWidget(),
@@ -81,8 +81,6 @@ class AtelierChangeForm(forms.ModelForm):
         listeChoix = [(i+1,u) for i, u in enumerate(Profil.objects.all().order_by('username'))]
         listeChoix.insert(0, (0, kwargs["instance"].referent))
         self.fields['referent'].choices = listeChoix
-
-
 
     def save(self):
         instance = super(AtelierChangeForm, self).save(commit=False)

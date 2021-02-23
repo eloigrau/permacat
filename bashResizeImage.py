@@ -1,6 +1,5 @@
 import os
 
-dossier = "/home/tchenrezi/Téléchargements/img2/"
 
 def resizeImgesDossier(dossier):
     print(os.listdir(dossier))
@@ -9,5 +8,7 @@ def resizeImgesDossier(dossier):
         cmd = "convert " + dossier+f +" -resize 600 " + dossier+os.path.splitext(f)[0] + "_resized"+os.path.splitext(f)[1]
         print(cmd)
         os.system(cmd)
+
+dossier = "/home/tchenrezi/Téléchargements/img2/"
 
 resizeImgesDossier(dossier)
