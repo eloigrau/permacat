@@ -93,12 +93,12 @@ INSTALLED_APPS = (
     'blog',
     'jardinpartage',
     'fiches',
-    'ateliers',
+    #'ateliers',
     'django_extensions',
     'django_filters',
     #'rest_framework',
     'cal',
-    'vote',
+    #'vote',
     #'schedule','djangobower',
     'widget_tweaks',
     'leaflet',
@@ -464,6 +464,6 @@ BOWER_INSTALLED_APPS = (
     'bootstrap'
 )
 
-CRON_CLASSES = [
-    "bourseLibre.views_notifications.EnvoiMailsCronJob"
-]
+#CRON_CLASSES = [
+#    "bourseLibre.views_notifications.EnvoiMailsCronJob"
+#]
