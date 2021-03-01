@@ -95,17 +95,18 @@ def tropGros(request):   #fichier trop gros
 
 def getEvenementsSemaine(request):
     current_week = date.today().isocalendar()[1]
+    current_year = date.today().isocalendar()[0]
     evenements = []
 
     if request.user.is_anonymous:
-        ev = Evenement.objects.filter(start_time__week=current_week)
+        ev = Evenement.objects.filter(Q(start_time__week=current_week) & Q(start_time__year=current_year))
         ev = ev.exclude(article__asso__abreviation="pc")
         ev = ev.exclude(article__asso__abreviation="rtg")
         ev = ev.exclude(article__asso__abreviation="fer")
         evenements = [ev, [], [], []]
     else:
 
-        ev_art = Evenement.objects.filter(start_time__week=current_week)
+        ev_art = Evenement.objects.filter(Q(start_time__week=current_week) & Q(start_time__year=current_year))
         if not request.user.adherent_permacat:
             ev_art = ev_art.exclude(article__asso__abreviation="pc")
         if not request.user.adherent_rtg:
@@ -114,7 +115,7 @@ def getEvenementsSemaine(request):
             ev_art = ev_art.exclude(article__asso__abreviation="fer")
         evenements.append(ev_art)
 
-        ev_2 = Article.objects.filter(start_time__week=current_week )
+        ev_2 = Article.objects.filter(Q(start_time__week=current_week) & Q(start_time__year=current_year))
         if not request.user.adherent_permacat:
             ev_2 = ev_2.exclude(asso__abreviation="pc")
         if not request.user.adherent_rtg:
@@ -129,7 +130,7 @@ def getEvenementsSemaine(request):
             ev_3 = Article_jardin.objects.filter(titre="fkjbgsklfgdbklfjdskfl")
         evenements.append(ev_3)
 
-        ev_4 = Projet.objects.filter(start_time__week=current_week )
+        ev_4 = Projet.objects.filter(Q(start_time__week=current_week) & Q(start_time__year=current_year))
         if not request.user.adherent_permacat:
             ev_4 = ev_4.exclude(asso__abreviation="pc")
         if not request.user.adherent_rtg:
