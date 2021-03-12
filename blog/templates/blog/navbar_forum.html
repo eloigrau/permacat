@@ -44,10 +44,10 @@ dropdown-menu-forum a:hover:not(.active) {
            data-target = "#idDossiers"> Dossiers publics </button>
         <div class="textcenter dropdown-menu dropdown-menu-forum btn-menu-forum" aria-labelledby="menuAuteur"  id="idDossiers">
 
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='public'%}#btnForum"><span>Tous les articles publics</span></a>
+             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='public'%}"><span>Tous les articles publics</span></a>
              <div class="dropdown-divider"></div>
             {% for categorie_id, cat_nom, cat_coul in categorie_list %}
-            <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='public'%}?categorie={{categorie_id}}#btnForum"><span>{{cat_nom}}</span></a>
+            <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='public'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
             {% endfor %}
         </div>
     </li>
@@ -57,10 +57,10 @@ dropdown-menu-forum a:hover:not(.active) {
         <button type="button" class="btn dropdown-toggle btn-primary  btn-block btn-menu-forum" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
         data-target = "#idDossiers_pc"> Dossiers Permacat</button>
         <div class="dropdown-menu textcenter dropdown-menu-forum btn-menu-forum" aria-labelledby="menuAuteur"  id="idDossiers_pc">
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='pc'%}#btnForum"><span>Tous les articles</span></a>
+             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='pc'%}"><span>Tous les articles</span></a>
             <div class="dropdown-divider"></div>
             {% for categorie_id, cat_nom, cat_coul in categorie_list_pc %}
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='pc'%}?categorie={{categorie_id}}#btnForum"><span>{{cat_nom}}</span></a>
+             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='pc'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
             {% endfor %}
             <div class="dropdown-divider"></div>
             {% for categorie_id, cat_nom, cat_coul in categorie_list_projets %}
@@ -75,10 +75,10 @@ dropdown-menu-forum a:hover:not(.active) {
         <button type="button" class="btn dropdown-toggle btn-primary btn-block btn-menu-forum" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
         data-target = "#idDossiers_rtg"> Dossiers RTG</button>
         <div class="dropdown-menu textcenter dropdown-menu-forum btn-menu-forum" aria-labelledby="menuAuteur"  id="idDossiers_rtg">
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='rtg'%}#btnForum"><span>Tous les articles</span></a>
+             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='rtg'%}"><span>Tous les articles</span></a>
             <div class="dropdown-divider"></div>
             {% for categorie_id, cat_nom, cat_coul in categorie_list_rtg %}
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='rtg'%}?categorie={{categorie_id}}#btnForum"><span>{{cat_nom}}</span></a>
+             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='rtg'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
             {% endfor %}
         </div>
     </li>
@@ -90,10 +90,10 @@ dropdown-menu-forum a:hover:not(.active) {
         <button type="button" class="btn dropdown-toggle btn-primary  btn-block btn-menu-forum" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
         data-target = "#idDossiers_fer"> Dossiers Fermille</button>
         <div class="dropdown-menu textcenter dropdown-menu-forum btn-menu-forum" aria-labelledby="menuAuteur"  id="idDossiers_fer">
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='fer'%}#btnForum"><span>Tous les articles</span></a>
+             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='fer'%}"><span>Tous les articles</span></a>
                  <div class="dropdown-divider"></div>
             {% for categorie_id, cat_nom, cat_coul in categorie_list_fer %}
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='fer'%}?categorie={{categorie_id}}#btnForum"><span>{{cat_nom}}</span></a>
+             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='fer'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
             {% endfor %}
         </div>
     </li>
