@@ -1545,3 +1545,16 @@ caption {
 {
     padding-right: 5px;  /* width of the image plus a little extra padding */
 }
+.dropdown-menu-forum{
+    background-color:#e6fbc0;
+    padding:0px;
+    margin-bottom: 20px;
+}
+.btn-menu-forum{
+    min-width: 350px;
+}
+@media(max-width: 400px) {
+.btn-menu-forum{
+    min-width: 10px;
+}
+}

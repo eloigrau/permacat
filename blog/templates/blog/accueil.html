@@ -11,7 +11,6 @@
 
 {% endblock %}
 {% block content %}
- <div class="row"><div class="col-sm-12">
 
 <div class="row justify-content-center">
 <h5>Articles du forum : </h5>
@@ -40,16 +39,17 @@
 <div class="row justify-content-center">
 <h5>Ailleurs sur le site : </h5>
 </div>
-<nav class="navbar justify-content-center  navbar-light bg-light">
+<nav class="navbar justify-content-center  navbar-light bg-light textcenter">
     <div class="justify-content-center " id="navbarSalons">
         <ul class="nav navbar-nav justify-content-center">
         <li class="nav-item dropdown">
             <button type="button" class="btn dropdown-toggle btn-primary btn-block" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
                data-target = "#idSalons"> Salons de discussion</button>
-            <div class="dropdown-menu-forum dropdown-menu " style="padding:0;" aria-labelledby="menuAuteur"  id="idSalons">
-                 <a class=" dropdown-item " href="{% url 'agora' asso='public' %}">
+            <div class="dropdown-menu-forum dropdown-menu textcenter"  aria-labelledby="menuAuteur"  id="idSalons">
+                 <a class=" dropdown-item " style="background-color:#cbdff0;"  href="{% url 'agora' asso='public' %}">
                      Salon Public
                     </a>
+                <div class="dropdown-divider"></div>
             {% if request.user.adherent_permacat %}
             <a class=" dropdown-item " href="{% url 'agora' asso='pc' %}">
                      Salon Permacat
@@ -65,43 +65,51 @@
                      Salon Fermille
             </a>
                 {% endif %}
-
+           <div class="dropdown-divider"></div>
              <a class=" dropdown-item "href="{% url 'conversations' %}">
                    Conversations privées
                 </a>
+                <div class="dropdown-divider"></div>
             </div>
         </li>
 
         <li class="nav-item dropdown">
             <button type="button" class="btn dropdown-toggle btn-primary btn-block" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
             data-target = "#idProjets"> Projets (acceptés) </button>
-            <div class="dropdown-menu dropdown-menu-forum" style="padding:0;" aria-labelledby="menuAuteur"  id="idProjets">
-                <a class="dropdown-item" href="{% url 'blog:index_projets' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les projets </a>
+            <div class="dropdown-menu dropdown-menu-forum textcenter"  aria-labelledby="menuAuteur"  id="idProjets">
+                <a class="dropdown-item" style="background-color:#cbdff0;" href="{% url 'blog:index_projets' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les projets </a>
+
+                 <div class="dropdown-divider"></div>
                 {% for projet_slug, cat_nom, cat_coul in projets_list %}
-                 <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:lireProjet' slug=projet_slug %}"><span>{{cat_nom|truncatechars:50}}</span></a>
+                 <a class=" dropdown-item "  href="{% url 'blog:lireProjet' slug=projet_slug %}"><span>{{cat_nom|truncatechars:50}}</span></a>
                 {% endfor %}
+                <div class="dropdown-divider"></div>
             </div>
         </li>
 
         <li class="nav-item dropdown">
             <button type="button" class="btn dropdown-toggle btn-primary btn-block" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
             data-target = "#idJardins"> Jardins Partagés </button>
-            <div class="dropdown-menu dropdown-menu-forum" style="padding:0;" aria-labelledby="menuAuteur"  id="idJardins">
-               <a class="dropdown-item" href="{% url 'jardinpartage:index' %}"><i class='fa fa-pagelines' ></i> Blog des jardins</a>
-               <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=1 %}"><i class='fa fa-pagelines' ></i> Jardi Per tots</a>
+            <div class="dropdown-menu dropdown-menu-forum textcenter" aria-labelledby="menuAuteur"  id="idJardins">
+               <a class="dropdown-item"  style="background-color:#cbdff0;" href="{% url 'jardinpartage:index' %}"><i class='fa fa-pagelines' ></i> Blog des jardins</a>
+               <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=1 %}"><i class='fa fa-pagelines' ></i> Jardi Per tots</a>
                 <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=2 %}"><i class='fa fa-pagelines' ></i> Jardin de Palau </a>
                 <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=3 %}"><i class='fa fa-pagelines' ></i> Jardin de Lurçat </a>
+                <div class="dropdown-divider"></div>
             </div>
         </li>
 
-        <li class="nav-item dropdown">
+        <a class="nav-item dropdown">
             <button type="button" class="btn dropdown-toggle btn-primary btn-block" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
             data-target = "#idAteliers"> Ateliers Collectifs (prochainement)</button>
-            <div class="dropdown-menu dropdown-menu-forum" style="padding:0;" aria-labelledby="menuAuteur"  id="idAteliers">
-                <a class="dropdown-item" href="{% url 'ateliers:index_ateliers' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les ateliers </a>
+            <div class="dropdown-menu dropdown-menu-forum textcenter" style="padding:0; background=#e6fbc0;" aria-labelledby="menuAuteur"  id="idAteliers">
+                <a class="dropdown-item" style="background-color:#cbdff0;" href="{% url 'ateliers:index_ateliers' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les ateliers </a>
+                 <div class="dropdown-divider"></div>
                 {% for categorie_id, cat_nom, cat_coul in ateliers_list %}
-                 <a class=" dropdown-item " style="background:{{cat_coul}};" href="?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+                 <a class=" dropdown-item "  href="?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
                 {% endfor %}
+                <div class="dropdown-divider"></div>
             </div>
         </li>
 
