@@ -149,7 +149,6 @@ class Profil(AbstractUser):
 
     inscrit_newsletter = models.BooleanField(verbose_name="J'accepte de recevoir des emails de Perma.cat", default=False)
     statut_adhesion = models.IntegerField(choices=Choix.statut_adhesion, default="0")
-    cotisation_a_jour = models.BooleanField(verbose_name="Cotisation à jour", default=False)
     adherent_permacat = models.BooleanField(verbose_name="Je suis adhérent de Permacat", default=False)
     adherent_rtg = models.BooleanField(verbose_name="Je suis adhérent de Ramene Ta Graine", default=False)
     adherent_fer = models.BooleanField(verbose_name="Je suis adhérent de Fermille", default=False)
@@ -232,7 +231,7 @@ class Profil(AbstractUser):
     def estMembre_str(self, nom_asso):
         if nom_asso == "Public" or nom_asso == "public":
             return True
-        elif (nom_asso == "Permacat" or nom_asso == "pc") and self.adherent_permacat:
+        elif self.adherent_permacat and(nom_asso == "Permacat" or nom_asso == "pc") :
             return True
         elif self.adherent_rtg and (nom_asso == "Ramène Ta Graine" or nom_asso == "rtg") :
             return True
@@ -252,10 +251,6 @@ class Profil(AbstractUser):
             return user.adherent_fer
         else:
             return False
-
-    @property
-    def cotisation_a_jour_str(self):
-       return "oui" if self.cotisation_a_jour else "non"
 
     @property
     def inscrit_newsletter_str(self):

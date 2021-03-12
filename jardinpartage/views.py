@@ -11,6 +11,7 @@ from actstream import actions, action
 from actstream.models import followers, following, action_object_stream
 from django.utils.timezone import now
 from bourseLibre.models import Profil
+from django.db.models import Q
 
 #from django.contrib.contenttypes.models import ContentType
 from bourseLibre.models import Suivis
@@ -201,7 +202,7 @@ class ListeArticles_jardin(ListeArticles):
 
         #nom_jardin = [x[1] for x in Choix.jardins_ptg if x[0]==self.kwargs["jardin"]][0]
         if self.kwargs["jardin"] != "0":
-            qs = qs.filter(jardin=self.kwargs["jardin"])
+            qs = qs.filter(Q(jardin=self.kwargs["jardin"])|Q(jardin=0))
 
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])

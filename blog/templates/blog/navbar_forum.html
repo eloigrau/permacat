@@ -1,0 +1,69 @@
+{% load static %}
+{% load blog_filters %}
+{% load fontawesome %}
+{% load activity_tags %}
+<nav class="navbar navbar-expand-lg justify-content-center  navbar-light bg-light">
+        <div class="navbar-header">
+             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarProduit" aria-controls="navbarProduit" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span></button>
+        </div>
+        <div class="collapse navbar-collapse  justify-content-center " id="navbarProduit">
+            <ul class="nav navbar-nav justify-content-center">
+
+
+    <li class="nav-item dropdown">
+        <button type="button" class="btn dropdown-toggle btn-primary " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+           data-target = "#idDossiers"> Dossiers publics </button>
+        <div class="dropdown-menu-forum dropdown-menu " style="padding:0;" aria-labelledby="menuAuteur"  id="idDossiers">
+            {% for categorie_id, cat_nom, cat_coul in categorie_list %}
+            <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='public'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+            {% endfor %}
+        </div>
+    </li>
+
+     {% if request.user.adherent_permacat %}
+    <li class="nav-item dropdown">
+        <button type="button" class="btn dropdown-toggle btn-primary " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+        data-target = "#idDossiers_pc"> Dossiers Permacat</button>
+        <div class="dropdown-menu dropdown-menu-forum" style="padding:0;" aria-labelledby="menuAuteur"  id="idDossiers_pc">
+            {% for categorie_id, cat_nom, cat_coul in categorie_list %}
+             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='pc'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+            {% endfor %}
+
+            {% for categorie_id, cat_nom, cat_coul in categorie_list_projets %}
+             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='pc'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+            {% endfor %}
+        </div>
+    </li>
+    {% endif %}
+
+     {% if request.user.adherent_rtg %}
+    <li class="nav-item dropdown">
+        <button type="button" class="btn dropdown-toggle btn-primary " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+        data-target = "#idDossiers_rtg"> Dossiers RTG</button>
+        <div class="dropdown-menu dropdown-menu-forum" style="padding:0;" aria-labelledby="menuAuteur"  id="idDossiers_rtg">
+            {% for categorie_id, cat_nom, cat_coul in categorie_list %}
+             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='rtg'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+            {% endfor %}
+        </div>
+    </li>
+    {% endif %}
+
+
+     {% if request.user.adherent_fer %}
+    <li class="nav-item dropdown">
+        <button type="button" class="btn dropdown-toggle btn-primary " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+        data-target = "#idDossiers_fer"> Dossiers Fermille</button>
+        <div class="dropdown-menu dropdown-menu-forum" style="padding:0;" aria-labelledby="menuAuteur"  id="idDossiers_fer">
+            {% for categorie_id, cat_nom, cat_coul in categorie_list %}
+             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='fer'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+            {% endfor %}
+        </div>
+    </li>
+    {% endif %}
+
+    </ul>
+
+</div>
+</nav>
+

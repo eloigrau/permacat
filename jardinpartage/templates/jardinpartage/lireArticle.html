@@ -9,11 +9,7 @@
 <div class="container-fluid">
 <div class="row">
     <div class="col-md-2 " id="sec02">
-        <p>
-        <a  href="{% url 'jardinpartage:index'  %}">
-        <button class="btn btn-info btn-sm textright"  onclick="window.history.back();"><i class="fa fa-arrow-left"></i> Retour </button>
-           </a>
-        </p>
+
     </div>
     <div class="col-md-8">
             <span class="badge badge-success" style="background-color:{{article.get_couleur}}" ><a href="{% url 'jardinpartage:index'  %}?categorie={{article.categorie}}"  style="background-color:{{article.get_couleur}}" class="smallcaps_h2">Jardins partagés/{{ article.get_categorie_display }}</a></span>

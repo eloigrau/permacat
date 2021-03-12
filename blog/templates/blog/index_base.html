@@ -13,9 +13,28 @@
 <div class="row">
     <div class="col-md-12 textcenter">
         <div class="row justify-content-center">
-            <div class="col-md-4 offset-md-4">
-                <h3>Forum {% if asso_courante %} - {{asso_courante}} {% endif %}</h3>
+            <div class="col-md-4 ">
+             <div class="row no-gutters justify-content-center">
+             <form class="form-inline justify-content-center  navbar-form " action="{% url 'chercher_articles' %}" method="get" role = "search">
+            {% csrf_token %}
+     <div class="col" style="padding-right:0;">
+                <input class="form-control border-secondary border-right-0 rounded-0" name="id_recherche" placeholder="rechercher sur le forum..." type="text">
+                    </div>
+     <div class="col-auto" style="padding-left:0;">
+                    <button class="btn btn-outline-secondary border-left-0 rounded-0 rounded-right" type="submit" >{% fontawesome_icon 'search' %}</button>
+    </div>
+                 </form>
+             </div>
+            <a href="{% url 'blog:ajouterNouvelArticle' %}">
+                <button type="button" class="btn  btn-success" >
+                    <i class="fa fa-plus"></i>&nbsp; Ajouter un article
+                </button>
+            </a>&ensp;
             </div>
+            <div class="col-md-4 ">
+
+                <h3>Forum </h3>
+                 </div>
             <div class="col-md-4 ">
                 <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#help">
                  {% fontawesome_icon 'question-circle' %}
@@ -61,111 +80,17 @@
         </div>
     </div>
         <hr>
-        <div class="row justify-content-center">
+{% include 'blog/navbar_forum.html' %}
 
-			<nav class="navbar navbar-expand-md navbar-light bg-light">
-    <a class="nav-item " href="#" id="oo" data-toggle="dropdown">
-         <button type="button" class="btn dropdown-toggle bouton_dossiers_forum" >
-        {% if request.GET.categorie  %}
-      Dossier : {{categorie_courante}}
-      {%elif request.GET.permacat %}
-      Articles Permacat
-      {%elif request.GET.auteur %}
-      Articles de {{request.GET.auteur}}
-      {%elif typeFiltre == 'archives' %}
-      Archives
-        {%else%}
-        Choisir un dossier...
-      {%endif%}
-     </button>
-    </a>
-        <div class="dropdown-menu " style="width:100%;"  aria-labelledby="navbarDropdownMenuLink">
-            <a class=" dropdown-item " style="background:white;" href="{% if asso_courante  %}{%url 'blog:index_asso' asso=asso_courante%}{% else  %}{%url 'blog:index' %}{% endif  %}">Tous les dossiers</a>
-            <div class="dropdown-divider"></div>
-            {% for categorie_id, cat_nom, cat_coul in categorie_list %}
-            <a class=" dropdown-item " style="background:{{cat_coul}};" href="?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
-            {% endfor %}
-            <div class="dropdown-divider"></div>
-            <a class=" dropdown-item " style="background:dark;" ><span><i class='fa fa-folder-open iconleft' ></i> Projets PCat :</span></a>
 
-            {% for categorie_id, cat_nom, cat_coul in categorie_list_projets %}
-            <a class=" dropdown-item " style="background:{{cat_coul}};" href="?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
-            {% endfor %}
-        </div>
-    </nav>
-    </div>
-        <hr>
-    <div class="row justify-content-center">
-            <a href="{% url 'blog:ajouterNouvelArticle' %}">
-                <button type="button" class="btn  btn-success" >
-                    <i class="fa fa-plus"></i>&nbsp; Ajouter un article
-                </button>
-            </a>&ensp;
-    </div>
     <hr>
 </div>
 </div>
-	<div class="row">
-		<div class="col-md-12">
-			<nav class="navbar navbar-expand-md navbar-light bg-light">
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<div class="collapse navbar-collapse justify-content-center" id="bs-example-navbar-collapse-1">
-					<ul class="navbar-nav ">
-                      {% comment%}   <li class="nav-item dropdown">
-                            <a class="nav-item" href="#" id="navbarDropdownAsso" data-toggle="dropdown">
-                                 <button type="button" class="btn  btn-success dropdown-toggle" >
-    
-	 {% if asso_courante  %}
-      {{asso_courante}}
-        {%else%}
-        Tous les articles
-      {%endif%}
-     </button>
-        </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            {% if not asso_courante  %}
-                <a class=" dropdown-item " style="background:white;" href="{%url 'blog:index' %}">Tous les articles</a>
-            {% endif  %}
-            <div class="dropdown-divider"></div>
-            {% for asso_nom, asso_abreviation in asso_list %}
-            <a class=" dropdown-item " style="background:{{cat_coul}};" href="{%url 'blog:index_asso' asso=asso_abreviation %}"><span>{{asso_nom}}</span></a>
-            {% endfor %}
-            </div>
-        </li>{% endcomment %}
-        <li class="nav-item dropdown">
-            <a class="nav-item btn-block" href="#" id="menuOrdreTri" data-toggle="dropdown">
 
-                <button class="btn btn-light dropdown-toggle">
-                   Trier par...
-           </button>
-                      </a>
-                <div class="dropdown-menu"  aria-labelledby="menuOrdreTri"  id="idOrdreTri">
-                    {% for titre, ordre in ordreTriPossibles.items %}
-                     <a class="dropdown-item"  href="?{{ request.GET.urlencode|sansOrdreTri}}&ordreTri={{ordre}}">{{titre}}</a>
-                    {% endfor %}
-                </div>
-            </li>
-         <li class="nav-item">
-             <div class="row no-gutters justify-content-center">
-             <form class="form-inline justify-content-center  navbar-form " action="{% url 'chercher_articles' %}" method="get" role = "search">
-            {% csrf_token %}
-     <div class="col" style="padding-right:0;">
-                <input class="form-control border-secondary border-right-0 rounded-0" name="id_recherche" placeholder="rechercher..." type="text">
-                    </div>
-     <div class="col-auto" style="padding-left:0;">
-                    <button class="btn btn-outline-secondary border-left-0 rounded-0 rounded-right" type="submit" >{% fontawesome_icon 'search' %}</button>
-    </div>
-                 </form>
-             </div>
-         </li>
-        </ul>
-
+<div class="row justify-content-center">
+<div class="bouton_dossiers_forum">{% if asso_courante %} {{asso_courante}} {% endif %} {% if categorie_courante %} {% if asso_courante %} >{% endif %} {{categorie_courante}} {% endif %}</div>
 </div>
-			</nav>
-		</div>
-	</div>
+{% include 'blog/navbar_forum_tri.html' %}
 </div>
 
 

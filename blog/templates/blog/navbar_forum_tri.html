@@ -1,0 +1,60 @@
+{% load static %}
+{% load blog_filters %}
+{% load fontawesome %}
+{% load activity_tags %}
+{% if article_list %}
+<div class="row">
+		<div class="col-md-12">
+			<nav class="navbar navbar-expand-md navbar-light bg-light">
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse justify-content-center" id="bs-example-navbar-collapse-1">
+					<ul class="navbar-nav ">
+                      {% comment%}   <li class="nav-item dropdown">
+                            <a class="nav-item" href="#" id="navbarDropdownAsso" data-toggle="dropdown">
+                                 <button type="button" class="btn  btn-success dropdown-toggle" >
+
+	 {% if asso_courante  %}
+      {{asso_courante}}
+        {%else%}
+        Tous les articles
+      {%endif%}
+     </button>
+        </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            {% if not asso_courante  %}
+                <a class=" dropdown-item " style="background:white;" href="{%url 'blog:index' %}">Tous les articles</a>
+            {% endif  %}
+            <div class="dropdown-divider"></div>
+            {% for asso_nom, asso_abreviation in asso_list %}
+            <a class=" dropdown-item " style="background:{{cat_coul}};" href="{%url 'blog:index_asso' asso=asso_abreviation %}"><span>{{asso_nom}}</span></a>
+            {% endfor %}
+            </div>
+        </li>{% endcomment %}
+        <li class="nav-item dropdown">
+            <a class="nav-item btn-block" href="#" id="menuOrdreTri" data-toggle="dropdown">
+
+                <button class="btn btn-light dropdown-toggle">
+                   Trier par...
+           </button>
+                      </a>
+                <div class="dropdown-menu"  aria-labelledby="menuOrdreTri"  id="idOrdreTri">
+                    {% for titre, ordre in ordreTriPossibles.items %}
+                     <a class="dropdown-item"  href="?{{ request.GET.urlencode|sansOrdreTri}}&ordreTri={{ordre}}">{{titre}}</a>
+                    {% endfor %}
+                </div>
+            </li>
+
+        </ul>
+
+</div>
+			</nav>
+		</div>
+	</div>
+{% else %}
+<div class="row">
+		<div class="col-md-12">
+            <p>Désolé, pas d'articles avec les critères que vous avez choisis</p>
+        </div></div>
+{% endif %}

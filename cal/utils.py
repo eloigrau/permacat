@@ -5,7 +5,7 @@ from calendar import LocaleHTMLCalendar, LocaleTextCalendar, month_name
 from blog.models import Article, Projet, Evenement
 from jardinpartage.models import Article as Article_jardin, Evenement as Evenement_jardin
 #from vote.models import Suffrage
-#from ateliers.models import Atelier
+from ateliers.models import Atelier
 from django.db.models import Q
 
 class Constantes:
@@ -45,7 +45,7 @@ class Calendar(LocaleTextCalendar):
         events_per_day_autre = events_autre.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
         events_per_day_autre_jardin = events_autre_jardin.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
         events_per_day_votes = None#events_vote.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
-        events_per_day_atel = None#events_atel.filter(Q(date_atelier__day=day))
+        events_per_day_atel = events_atel.filter(Q(date_atelier__day=day))
 
         d = ''
         for event in events_per_day_arti:
@@ -123,7 +123,7 @@ class Calendar(LocaleTextCalendar):
         events_arti = Article.objects.filter(start_time__year=self.year, start_time__month=self.month)
         events_arti_jardin = Article_jardin.objects.filter(start_time__year=self.year, start_time__month=self.month)
         events_proj = Projet.objects.filter(start_time__year=self.year, start_time__month=self.month)
-        events_atel = None#Atelier.objects.filter(date_atelier__year=self.year, date_atelier__month=self.month)
+        events_atel = Atelier.objects.filter(date_atelier__year=self.year, date_atelier__month=self.month)
         events_autre = Evenement.objects.filter(start_time__year=self.year, start_time__month=self.month)
         events_autre_jardin = Evenement_jardin.objects.filter(start_time__year=self.year, start_time__month=self.month)
         events_vote = None#Suffrage.objects.filter(start_time__year=self.year, start_time__month=self.month)

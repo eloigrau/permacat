@@ -194,6 +194,7 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
                 "sekizai.context_processors.sekizai",
+                "bourseLibre.processors.navbar",
             ],
             'string_if_invalid': 'Invalid: "%s"',
             'libraries': {'is_numeric': 'bourseLibre.templatetags.app_filters', }

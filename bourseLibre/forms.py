@@ -210,7 +210,6 @@ class ProducteurChangeForm_admin(UserChangeForm):
     #avatar = forms.ImageField(required=False)
     inscrit_newsletter = forms.BooleanField(required=False)
     accepter_annuaire = forms.BooleanField(required=False)
-    cotisation_a_jour = forms.BooleanField(required=False)
     pseudo_june = forms.CharField(label="pseudo_june",required=False)
 
     statut_adhesion = forms.ChoiceField(choices=Choix.statut_adhesion)
@@ -218,7 +217,7 @@ class ProducteurChangeForm_admin(UserChangeForm):
 
     class Meta:
         model = Profil
-        fields = ['username', 'email', 'description', 'competences', 'inscrit_newsletter', 'statut_adhesion', 'adherent_permacat',  'adherent_rtg', 'adherent_fer', 'pseudo_june', 'accepter_annuaire', 'cotisation_a_jour', 'is_jardinpartage']
+        fields = ['username', 'email', 'description', 'competences', 'inscrit_newsletter', 'statut_adhesion', 'adherent_permacat',  'adherent_rtg', 'adherent_fer', 'pseudo_june', 'accepter_annuaire', 'is_jardinpartage']
 
     def __init__(self, *args, **kwargs):
         super(ProducteurChangeForm_admin, self).__init__(*args, **kwargs)

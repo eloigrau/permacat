@@ -53,7 +53,7 @@ class Atelier(models.Model):
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE, null=True)
 #    projet = models.OneToOneField(Projet)
     date_atelier = models.DateField(verbose_name="Date prévue (affichage dans l'agenda)", help_text="(jj/mm/an)", default=timezone.now, blank=True, null=True)
-    heure_atelier = models.TimeField(verbose_name="Heure prévue", help_text="(hh:mm)", default="17:00", blank=True, null=True)
+    heure_atelier = models.TimeField(verbose_name="Heure prévue", help_text="Horaire de départ (hh:mm)", default="17:00", blank=True, null=True)
 
     date_creation = models.DateTimeField(verbose_name="Date de parution", default=timezone.now)
     date_modification = models.DateTimeField(verbose_name="Date de modification", default=timezone.now)

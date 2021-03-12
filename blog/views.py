@@ -12,6 +12,7 @@ from actstream.models import followers, following, action_object_stream
 from django.utils.timezone import now
 from bourseLibre.models import Suivis
 from bourseLibre.views import testIsMembreAsso
+from ateliers.models import Atelier
 from django.views.decorators.csrf import csrf_exempt
 from hitcount.models import HitCount
 from hitcount.views import HitCountMixin
@@ -23,7 +24,28 @@ from hitcount.views import HitCountMixin
 #     return render(request, 'blog/forum.html', {'derniers_articles': articles })
 
 def accueil(request):
-    return render(request, 'blog/accueil.html')
+    cat = Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
+    categorie_list = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
+    proj = Projet.objects.filter(estArchive=False)
+    if not request.user.adherent_permacat:
+        proj = proj.exclude(asso__abreviation="pc")
+    if not request.user.adherent_fer:
+        proj = proj.exclude(asso__abreviation="fer")
+    if not request.user.adherent_rtg:
+        proj = proj.exclude(asso__abreviation="rtg")
+    projets_list = [(x.slug, x.titre, x.get_couleur) for x in proj]
+
+    ateliers = Atelier.objects.filter(date_atelier__gte=now())
+    if not request.user.adherent_permacat:
+        ateliers = ateliers.exclude(asso__abreviation="pc")
+    if not request.user.adherent_fer:
+        ateliers = ateliers.exclude(asso__abreviation="fer")
+    if not request.user.adherent_rtg:
+        ateliers = ateliers.exclude(asso__abreviation="rtg")
+    ateliers_list = [(x.slug, x.titre, x.get_couleur) for x in ateliers]
+    categorie_list_projets = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets
+                                         if x[0] in cat]
+    return render(request, 'blog/accueil.html', {'categorie_list':categorie_list,'projets_list':projets_list,'ateliers_list':ateliers_list, 'categorie_list_projets':categorie_list_projets})
 
 
 @login_required
@@ -165,9 +187,26 @@ class ListeArticles(ListView):
 
         context['list_archive'] = self.qs.filter(estArchive=True)
         # context['producteur_list'] = Profil.objects.values_list('username', flat=True).distinct()
-        context['auteur_list'] = Article.objects.order_by('auteur').values_list('auteur__username', flat=True).distinct()
-        cat= Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
+        #context['auteur_list'] = Article.objects.order_by('auteur').values_list('auteur__username', flat=True).distinct()
+        cat = Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
         context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
+        proj = Projet.objects.filter(estArchive=False)
+        if not self.request.user.adherent_permacat:
+            proj = proj.exclude(asso__abreviation="pc")
+        if not self.request.user.adherent_fer:
+            proj = proj.exclude(asso__abreviation="fer")
+        if not self.request.user.adherent_rtg:
+            proj = proj.exclude(asso__abreviation="rtg")
+        context['projets_list'] = [(x.slug, x.titre, x.get_couleur) for x in proj]
+
+        ateliers = Atelier.objects.filter(date_atelier__gte=now())
+        if not self.request.user.adherent_permacat:
+            ateliers = ateliers.exclude(asso__abreviation="pc")
+        if not self.request.user.adherent_fer:
+            ateliers = ateliers.exclude(asso__abreviation="fer")
+        if not self.request.user.adherent_rtg:
+            ateliers = ateliers.exclude(asso__abreviation="rtg")
+        context['ateliers_list'] = [(x.slug, x.titre, x.get_couleur) for x in ateliers]
         context['categorie_list_projets'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets if x[0] in cat]
         context['typeFiltre'] = "aucun"
         context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="articles")
@@ -188,7 +227,7 @@ class ListeArticles(ListView):
                 try:
                     context['categorie_courante'] = [x[1] for x in Choix.type_annonce_projets if x[0] == self.request.GET['categorie']][0]
                 except:
-                    context['categorie_courante'] = ""
+                    context['categorie_courante'] = "Projet : " + self.request.GET['categorie']
 
         assos= Asso.objects.all()
         context['asso_list'] = [(x.nom, x.abreviation) for x in assos]
@@ -245,6 +284,24 @@ class ListeArticles_asso(ListView):
         context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
         context['categorie_list_projets'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets
                                              if x[0] in cat]
+
+        proj = Projet.objects.filter(estArchive=False)
+        if not self.request.user.adherent_permacat:
+            proj = proj.exclude(asso__abreviation="pc")
+        if not self.request.user.adherent_fer:
+            proj = proj.exclude(asso__abreviation="fer")
+        if not self.request.user.adherent_rtg:
+            proj = proj.exclude(asso__abreviation="rtg")
+        context['projets_list'] = [(x.slug, x.titre, x.get_couleur) for x in proj]
+
+        ateliers = Atelier.objects.filter(date_atelier__gte=now())
+        if not self.request.user.adherent_permacat:
+            ateliers = ateliers.exclude(asso__abreviation="pc")
+        if not self.request.user.adherent_fer:
+            ateliers = ateliers.exclude(asso__abreviation="fer")
+        if not self.request.user.adherent_rtg:
+            ateliers = ateliers.exclude(asso__abreviation="rtg")
+        context['ateliers_list'] = [(x.slug, x.titre, x.get_couleur) for x in ateliers]
 
         assos= Asso.objects.all()
         nom_asso = self.kwargs['asso']

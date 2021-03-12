@@ -73,7 +73,7 @@ def inscriptionAtelier(request, slug):
     inscript.save()
     action.send(request.user, verb='atelier_inscription', action_object=atelier, url=atelier.get_absolute_url(),
                  description="s'est inscrit.e à l'atelier: '%s'" % atelier.titre)
-    messages.info(request, 'Vous êtes bien inscrit à cet atelier !')
+    #messages.info(request, 'Vous êtes bien inscrit à cet atelier !')
     return redirect(atelier.get_absolute_url())
 
 @login_required
@@ -163,6 +163,16 @@ class ListeAteliers(ListView):
 
         if "categorie" in params:
             qs = qs.filter(categorie=params['categorie'])
+
+        if not self.request.user.is_authenticated:
+            qs = qs.filter(asso__nom="public")
+        else:
+            if not self.request.user.adherent_permacat:
+                qs = qs.exclude(asso__abreviation="pc")
+            if not self.request.user.adherent_rtg:
+                qs = qs.exclude(asso__abreviation="rtg")
+            if not self.request.user.adherent_fer:
+                qs = qs.exclude(asso__abreviation="fer")
 
 
         if "ordreTri" in params:
