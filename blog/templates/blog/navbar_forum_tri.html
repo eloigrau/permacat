@@ -4,8 +4,8 @@
 {% load activity_tags %}
 {% if asso_courante or categorie_courante %}
 <div class="row justify-content-center" >
-<div class="btn bouton_dossiers_forum">{% if asso_courante %} {{asso_courante}} {% endif %} {% if categorie_courante %} {% if asso_courante %} -{% endif %} {{categorie_courante}} {% endif %}</div>
-    </div>
+<div class="btn bouton_dossiers_forum">{% if asso_courante %} {{asso_courante}} - {% endif %} {% if categorie_courante %}{{categorie_courante}} {% else %} tous les articles {% endif %}</div>
+</div>
 {% endif %}
 <div class="row justify-content-center">
 
