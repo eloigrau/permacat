@@ -1,5 +1,6 @@
 sudo nano /etc/systemd/system/gunicorn.service
 sudo systemctl status gunicorn
+sudo systemctl restart gunicorn
 sudo nano permacat/gunicorn_cfg.py 
 sudo nano /etc/supervisor/conf.d/permacat-gunicorn.conf
 sudo nano /etc/systemd/system/gunicorn.service

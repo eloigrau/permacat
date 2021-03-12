@@ -1545,7 +1545,3 @@ caption {
 {
     padding-right: 5px;  /* width of the image plus a little extra padding */
 }
-
-.dropdown-menu-forum > li{
-    padding:0px;
-}

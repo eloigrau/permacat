@@ -4,4 +4,3 @@ db_old.db
 venv/
 db.db
 bourseLibre/settings/production.py
-static/
