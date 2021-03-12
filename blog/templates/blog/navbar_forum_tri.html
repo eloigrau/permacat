@@ -2,11 +2,9 @@
 {% load blog_filters %}
 {% load fontawesome %}
 {% load activity_tags %}
-{% if asso_courante or categorie_courante %}
 <div class="row justify-content-center" >
-<div class="btn bouton_dossiers_forum">{% if asso_courante %} {{asso_courante}} - {% endif %} {% if categorie_courante %}{{categorie_courante}} {% else %} tous les articles {% endif %}</div>
+<div class="btn bouton_dossiers_forum">{% if asso_courante %} {{asso_courante}} {% else %} Tous les groupes {% endif %} - {% if categorie_courante %}{{categorie_courante}} {% else %} tous les articles {% endif %}</div>
 </div>
-{% endif %}
 <div class="row justify-content-center">
 
 
@@ -20,11 +18,10 @@
     {% if article_list or article_list_archives%}
         <li class="nav-item dropdown">
             <a class="nav-item btn-block" href="#" id="menuOrdreTri" data-toggle="dropdown">
-
                 <button class="btn btn-light dropdown-toggle">
-                   Trier par...
-           </button>
-                      </a>
+                   Triés par : {{ordre_triage}}
+                </button>
+            </a>
                 <div class="dropdown-menu"  aria-labelledby="menuOrdreTri"  id="idOrdreTri">
                     {% for titre, ordre in ordreTriPossibles.items %}
                      <a class="dropdown-item"  href="?{{ request.GET.urlencode|sansOrdreTri}}&ordreTri={{ordre}}">{{titre}}</a>

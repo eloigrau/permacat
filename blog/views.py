@@ -228,11 +228,7 @@ class ListeArticles(ListView):
         context['typeFiltre'] = "aucun"
         context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="articles")
 
-        context['ordreTriPossibles'] = {
-                                           "date de création":'-date_creation',
-                                           "date de la dernière modification":'-date_modification',
-                                           "date du dernier commentaire":'-date_dernierMessage',
-                                            "titre": 'titre' }
+        context['ordreTriPossibles'] = Choix.ordre_tri_articles
 
         if 'auteur' in self.request.GET:
             context['typeFiltre'] = "auteur"
@@ -257,7 +253,9 @@ class ListeArticles(ListView):
         if 'archives' in self.request.GET:
             context['typeFiltre'] = "archives"
         if 'ordreTri' in self.request.GET:
-            context['typeFiltre'] = "ordreTri"
+            context['ordre_triage'] = list(Choix.ordre_tri_articles.keys())[list(Choix.ordre_tri_articles.values()).index(self.request.GET['ordreTri'])]
+        else:
+            context['ordre_triage'] = "date du dernier message"
         return context
 
 
@@ -344,10 +342,7 @@ class ListeArticles_asso(ListView):
         context['typeFiltre'] = "aucun"
         context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="articles")
 
-        context['ordreTriPossibles'] = {
-                                           "Date de création":'-date_creation',
-                                           "Date de la dernière modification":'-date_modification',
-                                            "Titre": 'titre' }
+        context['ordreTriPossibles'] = Choix.ordre_tri_articles
 
         if 'auteur' in self.request.GET:
             context['typeFiltre'] = "auteur"
@@ -361,13 +356,13 @@ class ListeArticles_asso(ListView):
                 except:
                     context['categorie_courante'] = ""
 
-
-        if 'permacat' in self.request.GET:
-            context['typeFiltre'] = "permacat"
         if 'archives' in self.request.GET:
             context['typeFiltre'] = "archives"
         if 'ordreTri' in self.request.GET:
-            context['typeFiltre'] = "ordreTri"
+            context['ordre_triage'] = list(Choix.ordre_tri_articles.keys())[list(Choix.ordre_tri_articles.values()).index(self.request.GET['ordreTri'])]
+        else:
+            context['ordre_triage'] = "date du dernier message"
+
         return context
 
 
@@ -517,7 +512,8 @@ class ListeProjets(ListView):
         context['statut_list'] = [x for x in Choix.statut_projet if x[0] in cat]
         context['typeFiltre'] = "aucun"
 
-        context['ordreTriPossibles'] = ['-date_creation', '-date_dernierMessage', 'categorie', "statut", 'auteur', 'titre']
+        context['ordreTriPossibles'] = Choix.ordre_tri_projets
+
         if 'auteur_id' in self.request.GET:
             context['typeFiltre'] = "auteur"
         if 'categorie' in self.request.GET:
@@ -536,8 +532,12 @@ class ListeProjets(ListView):
             context['typeFiltre'] = "permacat"
         if 'archives' in self.request.GET:
             context['typeFiltre'] = "archives"
-        if 'ordreTri' in self.request.GET:
-            context['typeFiltre'] = "ordreTri"
+        # if 'ordreTri' in self.request.GET:
+        #     context['typeFiltre'] = "ordreTri"
+        #     context['ordre_triage'] = list(Choix.ordre_tri_projets.keys())[list(Choix.ordre_tri_projets.values()).index(self.request.GET['ordreTri'])]
+        # else:
+        #     context['ordre_tries'] = False
+        #     context['ordre_triage'] = "date du dernier message"
         context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="projets")
         return context
 

@@ -48,6 +48,12 @@ class Choix():
         'Part':"#d0e8da", 'AGO':"#dcc0de", 'Projlong':"#d1d0dc", 'Projcourt':"#ffc09f", 'Projponct':"#e4f9d4",
     }
 
+    ordre_tri_articles = {"date de création":'-date_creation',
+                             "date de la dernière modification":'-date_modification',
+                             "date du dernier commentaire":'-date_dernierMessage',
+                             "titre": 'titre' }
+    ordre_tri_projets = {"date de création":'-date_creation', "date du dernier commentaire":'-date_dernierMessage', "Type de projet":'categorie', "statut du projet":"statut", 'auteur':'auteur', 'titre':'titre'}
+
     def get_couleur(categorie):
         try:
             return Choix.couleurs_annonces[categorie]
