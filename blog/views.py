@@ -33,7 +33,7 @@ def accueil(request):
     categorie_list_rtg = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_rtg]
     cat_fer = Article.objects.filter(asso__abreviation="fer").order_by('categorie').values_list('categorie', flat=True).distinct()
     categorie_list_fer = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_fer]
-    proj = Projet.objects.filter(estArchive=False, statut='accep')
+    proj = Projet.objects.filter(estArchive=False, statut='accep').order_by('titre')
     if not request.user.adherent_permacat:
         proj = proj.exclude(asso__abreviation="pc")
     if not request.user.adherent_fer:
