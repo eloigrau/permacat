@@ -26,6 +26,12 @@ from hitcount.views import HitCountMixin
 def accueil(request):
     cat = Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
     categorie_list = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
+    cat_pc = Article.objects.filter(asso__abreviation="pc").order_by('categorie').values_list('categorie', flat=True).distinct()
+    categorie_list_pc = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_pc]
+    cat_rtg = Article.objects.filter(asso__abreviation="rtg").order_by('categorie').values_list('categorie', flat=True).distinct()
+    categorie_list_rtg = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_rtg]
+    cat_fer = Article.objects.filter(asso__abreviation="fer").order_by('categorie').values_list('categorie', flat=True).distinct()
+    categorie_list_fer = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_fer]
     proj = Projet.objects.filter(estArchive=False)
     if not request.user.adherent_permacat:
         proj = proj.exclude(asso__abreviation="pc")
@@ -45,7 +51,7 @@ def accueil(request):
     ateliers_list = [(x.slug, x.titre, x.get_couleur) for x in ateliers]
     categorie_list_projets = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets
                                          if x[0] in cat]
-    return render(request, 'blog/accueil.html', {'categorie_list':categorie_list,'projets_list':projets_list,'ateliers_list':ateliers_list, 'categorie_list_projets':categorie_list_projets})
+    return render(request, 'blog/accueil.html', {'categorie_list':categorie_list,'categorie_list_pc':categorie_list_pc,'categorie_list_rtg':categorie_list_rtg,'categorie_list_fer':categorie_list_fer,'projets_list':projets_list,'ateliers_list':ateliers_list, 'categorie_list_projets':categorie_list_projets})
 
 
 @login_required
