@@ -1,4 +1,6 @@
 {% extends 'blog/baseBlog.html' %}
+{% load fontawesome %}
+
 {% block subtitle %}
 
 <div class="row">
@@ -9,155 +11,106 @@
 
 {% endblock %}
 {% block content %}
-
-
-    <div class="row"><div class="col-sm-12">
+ <div class="row"><div class="col-sm-12">
 
 <div class="row justify-content-center">
 <h5>Articles du forum : </h5>
     </div>
 {% include 'blog/navbar_forum.html' %}
-         {% comment %}
-        <nav class="navbar justify-content-center  navbar-light bg-light">
-        <div class="navbar-header">
-             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarProduit" aria-controls="navbarProduit" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span></button>
+<hr>
+<div class="row justify-content-center">
+<div class="col-sm-12">
+ <div class="row no-gutters justify-content-center">
+     <form class="form-inline justify-content-center  navbar-form " action="{% url 'chercher_articles' %}" method="get" role = "search">
+        {% csrf_token %}
+        <div class="col" style="padding-right:0;">
+        <input class="form-control border-secondary border-right-0 rounded-0" name="id_recherche" placeholder="rechercher sur le forum..." type="text">
         </div>
-        <div class="justify-content-center " id="navbarProduit">
-            <ul class="nav navbar-nav justify-content-center">
-
-
-    <li class="nav-item dropdown">
-        <button type="button" class="btn dropdown-toggle btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-           data-target = "#idDossiers"> Dossiers publics </button>
-        <div class="dropdown-menu-forum dropdown-menu " style="padding:0;" aria-labelledby="menuAuteur"  id="idDossiers">
-            {% for categorie_id, cat_nom, cat_coul in categorie_list %}
-            <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='public'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
-            {% endfor %}
+        <div class="col-auto" style="padding-left:0;">
+            <button class="btn btn-outline-secondary border-left-0 rounded-0 rounded-right" type="submit" >{% fontawesome_icon 'search' %}</button>
         </div>
-    </li>
-
-     {% if request.user.adherent_permacat %}
-    <li class="nav-item dropdown">
-        <button type="button" class="btn dropdown-toggle btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-        data-target = "#idDossiers_pc"> Dossiers Permacat</button>
-        <div class="dropdown-menu dropdown-menu-forum" style="padding:0;" aria-labelledby="menuAuteur"  id="idDossiers_pc">
-            {% for categorie_id, cat_nom, cat_coul in categorie_list_pc %}
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='pc'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
-            {% endfor %}
-
-            {% for categorie_id, cat_nom, cat_coul in categorie_list_projets %}
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='pc'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
-            {% endfor %}
-        </div>
-    </li>
-    {% endif %}
-
-     {% if request.user.adherent_rtg %}
-    <li class="nav-item dropdown">
-        <button type="button" class="btn dropdown-toggle btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-        data-target = "#idDossiers_rtg"> Dossiers RTG aaa{{categorie_list_rtg}}</button>
-        <div class="dropdown-menu dropdown-menu-forum" style="padding:0;" aria-labelledby="menuAuteur"  id="idDossiers_rtg">
-            {% for categorie_id, cat_nom, cat_coul in categorie_list_rtg %}
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='rtg'%}?categorie={{categorie_id}}"><span>aa{{categorie_list_rtg}}{{cat_nom}}</span></a>
-            {% endfor %}
-        </div>
-    </li>
-    {% endif %}
+     </form>
+ </div>
+</div>
+</div>
 
 
-     {% if request.user.adherent_fer %}
-    <li class="nav-item dropdown">
-        <button type="button" class="btn dropdown-toggle btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-        data-target = "#idDossiers_fer"> Dossiers Fermille</button>
-        <div class="dropdown-menu dropdown-menu-forum" style="padding:0;" aria-labelledby="menuAuteur"  id="idDossiers_fer">
-            {% for categorie_id1, cat_nom1, cat_coul1 in categorie_list_fer %}
-             <a class=" dropdown-item " style="background:{{cat_coul1}};" href="{% url 'blog:index_asso' asso='fer'%}?categorie={{categorie_id1}}"><span>{{cat_nom1}}</span></a>
-            {% endfor %}
-        </div>
-    </li>
-    {% endif %}
+<hr>
 
-    <li class="nav-item dropdown">
-        <button type="button" class="btn dropdown-toggle btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-        data-target = "#idProjets"> Projets Permacat</button>
-        <div class="dropdown-menu dropdown-menu-forum" style="padding:0;" aria-labelledby="menuAuteur"  id="idProjets">
-            <a class="dropdown-item" href="{% url 'blog:index_projets' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les projets </a>
-            {% for projet_slug, cat_nom, cat_coul in projets_list %}
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:lireProjet' slug=projet_slug %}"><span>{{cat_nom}}</span></a>
-            {% endfor %}
-        </div>
-    </li>
+<h5>Ailleurs sur le site : </h5>
+<nav class="navbar justify-content-center  navbar-light bg-light">
+    <div class="justify-content-center " id="navbarSalons">
+        <ul class="nav navbar-nav justify-content-center">
+        <li class="nav-item dropdown">
+            <button type="button" class="btn dropdown-toggle btn-primary btn-block" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
+               data-target = "#idSalons"> Salons de discussion</button>
+            <div class="dropdown-menu-forum dropdown-menu " style="padding:0;" aria-labelledby="menuAuteur"  id="idSalons">
+                 <a class=" dropdown-item " href="{% url 'agora' asso='public' %}">
+                     Salon Public
+                    </a>
+            {% if request.user.adherent_permacat %}
+            <a class=" dropdown-item " href="{% url 'agora' asso='pc' %}">
+                     Salon Permacat
+            </a>
+                {% endif %}
+            {% if request.user.adherent_rtg %}
+            <a class=" dropdown-item " href="{% url 'agora' asso='rtg' %}">
+                     Salon Ramène Ta Graine
+            </a>
+                {% endif %}
+            {% if request.user.adherent_fer %}
+            <a class=" dropdown-item " href="{% url 'agora' asso='fer' %}">
+                     Salon Fermille
+            </a>
+                {% endif %}
 
-    <li class="nav-item dropdown">
-        <button type="button" class="btn dropdown-toggle btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-        data-target = "#idAteliers"> Ateliers</button>
-        <div class="dropdown-menu dropdown-menu-forum" style="padding:0;" aria-labelledby="menuAuteur"  id="idAteliers">
-            <a class="dropdown-item" href="{% url 'ateliers:index_ateliers' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les ateliers </a>
-            {% for categorie_id, cat_nom, cat_coul in ateliers_list %}
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
-            {% endfor %}
-        </div>
-    </li>
+             <a class=" dropdown-item "href="{% url 'conversations' %}">
+                   Conversations privées
+                </a>
+                {% for categorie_id, cat_nom, cat_coul in categorie_list %}
+                <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='public'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+                {% endfor %}
+            </div>
+        </li>
 
-    <li class="nav-item dropdown">
-        <button type="button" class="btn dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-        data-target = "#idJardins"> Jardins </button>
-        <div class="dropdown-menu dropdown-menu-forum" style="padding:0;" aria-labelledby="menuAuteur"  id="idJardins">
-           <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=1 %}"><i class='fa fa-pagelines' ></i> Jardi Per tots</a>
-            <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=2 %}"><i class='fa fa-pagelines' ></i> Jardin de Palau </a>
-            <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=3 %}"><i class='fa fa-pagelines' ></i> Jardin de Lurçat </a>
+        <li class="nav-item dropdown">
+            <button type="button" class="btn dropdown-toggle btn-primary btn-block" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
+            data-target = "#idProjets"> Projets</button>
+            <div class="dropdown-menu dropdown-menu-forum" style="padding:0;" aria-labelledby="menuAuteur"  id="idProjets">
+                <a class="dropdown-item" href="{% url 'blog:index_projets' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les projets </a>
+                {% for projet_slug, cat_nom, cat_coul in projets_list %}
+                 <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:lireProjet' slug=projet_slug %}"><span>{{cat_nom|truncatechars:50}}</span></a>
+                {% endfor %}
+            </div>
+        </li>
 
-        </div>
-    </li>
+        <li class="nav-item dropdown">
+            <button type="button" class="btn dropdown-toggle btn-primary btn-block" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
+            data-target = "#idJardins"> Jardins Partagés </button>
+            <div class="dropdown-menu dropdown-menu-forum" style="padding:0;" aria-labelledby="menuAuteur"  id="idJardins">
+               <a class="dropdown-item" href="{% url 'jardinpartage:index' %}"><i class='fa fa-pagelines' ></i> Blog des jardins</a>
+               <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=1 %}"><i class='fa fa-pagelines' ></i> Jardi Per tots</a>
+                <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=2 %}"><i class='fa fa-pagelines' ></i> Jardin de Palau </a>
+                <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=3 %}"><i class='fa fa-pagelines' ></i> Jardin de Lurçat </a>
+
+            </div>
+        </li>
+
+        <li class="nav-item dropdown">
+            <button type="button" class="btn dropdown-toggle btn-primary btn-block" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
+            data-target = "#idAteliers"> Ateliers</button>
+            <div class="dropdown-menu dropdown-menu-forum" style="padding:0;" aria-labelledby="menuAuteur"  id="idAteliers">
+                <a class="dropdown-item" href="{% url 'ateliers:index_ateliers' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les ateliers </a>
+                {% for categorie_id, cat_nom, cat_coul in ateliers_list %}
+                 <a class=" dropdown-item " style="background:{{cat_coul}};" href="?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+                {% endfor %}
+            </div>
+        </li>
 
     </ul>
 
 </div>
 </nav>
-        {% endcomment %}
-
 <hr>
-
-<div class="row">
-    <div class="col-sm-12 textcenter">
-        <h5>Salons de discussion</h5>
-        <div class="btn-group btn-group-justified">
-        <a href="{% url 'agora' asso='public' %}">
-         <button type="button" class="btn btn-success">
-                 Salon Public
-            </button>
-        </a>
-        {% if request.user.adherent_permacat %}
-        <a href="{% url 'agora' asso='pc' %}">
-         <button type="button" class="btn btn-success">
-                 Salon Permacat
-            </button>
-        </a>
-            {% endif %}
-        {% if request.user.adherent_rtg %}
-        <a href="{% url 'agora' asso='rtg' %}">
-         <button type="button" class="btn btn-success">
-                 Salon Ramène Ta Graine
-            </button>
-        </a>
-            {% endif %}
-        {% if request.user.adherent_fer %}
-        <a href="{% url 'agora' asso='fer' %}">
-         <button type="button" class="btn btn-success">
-                 Salon Fermille
-            </button>
-        </a>
-            {% endif %}
-
-         <a href="{% url 'conversations' %}">
-            <button type="button" class="btn btn-success" >
-               Conversations privées
-            </button>
-            </a>
-    </div>
-   </div>
-</div>
-        </div> </div>
 {% endblock %}
 

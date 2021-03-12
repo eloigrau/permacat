@@ -13,7 +13,7 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12 textcenter">
-            <h4>Les projets de l'association</h4>
+            <h4>Les projets </h4>
         </div>
     </div>
 <div class="row align-items-center">
@@ -127,7 +127,6 @@
     {% for projet in projet_list %}
     <div class="infinite-item my-auto">
             {% include "blog/projet_template.html" with projet=projet %}
-    <hr>
     </div>
     {% endfor %}
 </div>
