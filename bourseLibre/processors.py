@@ -10,15 +10,15 @@ def navbar(request):
 
     if request.user.is_authenticated:
 
-        qs_projets = Projet.objects.filter(estArchive=False)
-        qs_ateliers = Atelier.objects.filter(date_atelier__gte=now())
-        if request.user.adherent_permacat:
+        qs_projets = Projet.objects.filter(estArchive=False).order_by('categorie')
+        qs_ateliers = Atelier.objects.filter(date_atelier__gte=now()).order_by('categorie')
+        if not request.user.adherent_permacat:
             qs_ateliers = qs_ateliers.exclude(asso__abreviation="pc")
             qs_projets = qs_projets.exclude(asso__abreviation="pc")
-        if request.user.adherent_rtg:
+        if not request.user.adherent_rtg:
             qs_ateliers = qs_ateliers.exclude(asso__abreviation="rtg")
             qs_projets = qs_projets.exclude(asso__abreviation="rtg")
-        if request.user.adherent_fer:
+        if not request.user.adherent_fer:
             qs_ateliers = qs_ateliers.exclude(asso__abreviation="fer")
             qs_projets = qs_projets.exclude(asso__abreviation="fer")
         context_data['liste_projets'] = qs_projets

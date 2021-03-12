@@ -196,6 +196,16 @@ class ListeArticles(ListView):
         #context['auteur_list'] = Article.objects.order_by('auteur').values_list('auteur__username', flat=True).distinct()
         cat = Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
         context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
+        cat_pc = Article.objects.filter(asso__abreviation="pc").order_by('categorie').values_list('categorie',
+                                                                                                        flat=True).distinct()
+        context['categorie_list_pc'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_pc]
+        cat_rtg = Article.objects.filter(asso__abreviation="rtg").order_by('categorie').values_list('categorie',
+                                                                                                          flat=True).distinct()
+        context['categorie_list_rtg'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_rtg]
+        cat_fer = Article.objects.filter(asso__abreviation="fer").order_by('categorie').values_list('categorie',
+                                                                                                      flat=True).distinct()
+        context['categorie_list_fer'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_fer]
+
         proj = Projet.objects.filter(estArchive=False)
         if not self.request.user.adherent_permacat:
             proj = proj.exclude(asso__abreviation="pc")
@@ -233,7 +243,11 @@ class ListeArticles(ListView):
                 try:
                     context['categorie_courante'] = [x[1] for x in Choix.type_annonce_projets if x[0] == self.request.GET['categorie']][0]
                 except:
-                    context['categorie_courante'] = "Projet : " + self.request.GET['categorie']
+                    try:
+                        projet = Projet.objects.get(slug=self.request.GET['categorie'])
+                        context['categorie_courante'] = "Projet : " + projet.titre
+                    except:
+                        context['categorie_courante'] = "Catégorie inconnue : " + self.request.GET['categorie']
 
         assos= Asso.objects.all()
         context['asso_list'] = [(x.nom, x.abreviation) for x in assos]
@@ -290,6 +304,15 @@ class ListeArticles_asso(ListView):
         context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
         context['categorie_list_projets'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets
                                              if x[0] in cat]
+        cat_pc = Article.objects.filter(asso__abreviation="pc").order_by('categorie').values_list('categorie',
+                                                                                                        flat=True).distinct()
+        context['categorie_list_pc'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_pc]
+        cat_rtg = Article.objects.filter(asso__abreviation="rtg").order_by('categorie').values_list('categorie',
+                                                                                                          flat=True).distinct()
+        context['categorie_list_rtg'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_rtg]
+        cat_fer = Article.objects.filter(asso__abreviation="fer").order_by('categorie').values_list('categorie',
+                                                                                                      flat=True).distinct()
+        context['categorie_list_fer'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_fer]
 
         proj = Projet.objects.filter(estArchive=False)
         if not self.request.user.adherent_permacat:

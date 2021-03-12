@@ -18,17 +18,17 @@
     </div>
 {% include 'blog/navbar_forum.html' %}
          {% comment %}
-        <nav class="navbar navbar-expand-lg justify-content-center  navbar-light bg-light">
+        <nav class="navbar justify-content-center  navbar-light bg-light">
         <div class="navbar-header">
              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarProduit" aria-controls="navbarProduit" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span></button>
         </div>
-        <div class="collapse navbar-collapse  justify-content-center " id="navbarProduit">
+        <div class="justify-content-center " id="navbarProduit">
             <ul class="nav navbar-nav justify-content-center">
 
 
     <li class="nav-item dropdown">
-        <button type="button" class="btn dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+        <button type="button" class="btn dropdown-toggle btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
            data-target = "#idDossiers"> Dossiers publics </button>
         <div class="dropdown-menu-forum dropdown-menu " style="padding:0;" aria-labelledby="menuAuteur"  id="idDossiers">
             {% for categorie_id, cat_nom, cat_coul in categorie_list %}
@@ -39,7 +39,7 @@
 
      {% if request.user.adherent_permacat %}
     <li class="nav-item dropdown">
-        <button type="button" class="btn dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+        <button type="button" class="btn dropdown-toggle btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
         data-target = "#idDossiers_pc"> Dossiers Permacat</button>
         <div class="dropdown-menu dropdown-menu-forum" style="padding:0;" aria-labelledby="menuAuteur"  id="idDossiers_pc">
             {% for categorie_id, cat_nom, cat_coul in categorie_list_pc %}
@@ -55,7 +55,7 @@
 
      {% if request.user.adherent_rtg %}
     <li class="nav-item dropdown">
-        <button type="button" class="btn dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+        <button type="button" class="btn dropdown-toggle btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
         data-target = "#idDossiers_rtg"> Dossiers RTG aaa{{categorie_list_rtg}}</button>
         <div class="dropdown-menu dropdown-menu-forum" style="padding:0;" aria-labelledby="menuAuteur"  id="idDossiers_rtg">
             {% for categorie_id, cat_nom, cat_coul in categorie_list_rtg %}
@@ -68,7 +68,7 @@
 
      {% if request.user.adherent_fer %}
     <li class="nav-item dropdown">
-        <button type="button" class="btn dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+        <button type="button" class="btn dropdown-toggle btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
         data-target = "#idDossiers_fer"> Dossiers Fermille</button>
         <div class="dropdown-menu dropdown-menu-forum" style="padding:0;" aria-labelledby="menuAuteur"  id="idDossiers_fer">
             {% for categorie_id1, cat_nom1, cat_coul1 in categorie_list_fer %}
@@ -79,7 +79,7 @@
     {% endif %}
 
     <li class="nav-item dropdown">
-        <button type="button" class="btn dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+        <button type="button" class="btn dropdown-toggle btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
         data-target = "#idProjets"> Projets Permacat</button>
         <div class="dropdown-menu dropdown-menu-forum" style="padding:0;" aria-labelledby="menuAuteur"  id="idProjets">
             <a class="dropdown-item" href="{% url 'blog:index_projets' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les projets </a>
@@ -90,7 +90,7 @@
     </li>
 
     <li class="nav-item dropdown">
-        <button type="button" class="btn dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+        <button type="button" class="btn dropdown-toggle btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
         data-target = "#idAteliers"> Ateliers</button>
         <div class="dropdown-menu dropdown-menu-forum" style="padding:0;" aria-labelledby="menuAuteur"  id="idAteliers">
             <a class="dropdown-item" href="{% url 'ateliers:index_ateliers' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les ateliers </a>
