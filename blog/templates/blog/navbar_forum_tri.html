@@ -2,33 +2,22 @@
 {% load blog_filters %}
 {% load fontawesome %}
 {% load activity_tags %}
-{% if article_list %}
-<div class="row">
-		<div class="col-md-12 justify-content-center">
-			<nav class="navbar navbar-light bg-light" style="text-align:center;display: inline-block;margin-top:28px;">
-				<div class="justify-content-center" id="bs-example-navbar-collapse-1">
-					<ul class="navbar-nav ">
-                      {% comment%}   <li class="nav-item dropdown">
-                            <a class="nav-item" href="#" id="navbarDropdownAsso" data-toggle="dropdown">
-                                 <button type="button" class="btn  btn-success dropdown-toggle" >
+{% if asso_courante or categorie_courante %}
+<div class="row justify-content-center" >
+<div class="btn bouton_dossiers_forum">{% if asso_courante %} {{asso_courante}} {% endif %} {% if categorie_courante %} {% if asso_courante %} -{% endif %} {{categorie_courante}} {% endif %}</div>
+    </div>
+{% endif %}
+<div class="row justify-content-center">
 
-	 {% if asso_courante  %}
-      {{asso_courante}}
-        {%else%}
-        Tous les articles
-      {%endif%}
-     </button>
-        </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            {% if not asso_courante  %}
-                <a class=" dropdown-item " style="background:white;" href="{%url 'blog:index' %}">Tous les articles</a>
-            {% endif  %}
-            <div class="dropdown-divider"></div>
-            {% for asso_nom, asso_abreviation in asso_list %}
-            <a class=" dropdown-item " style="background:{{cat_coul}};" href="{%url 'blog:index_asso' asso=asso_abreviation %}"><span>{{asso_nom}}</span></a>
-            {% endfor %}
-            </div>
-        </li>{% endcomment %}
+
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse justify-content-center" id="bs-example-navbar-collapse-1">
+					<ul class="navbar-nav ">
+
+    {% if article_list or article_list_archives%}
         <li class="nav-item dropdown">
             <a class="nav-item btn-block" href="#" id="menuOrdreTri" data-toggle="dropdown">
 
@@ -43,15 +32,10 @@
                 </div>
             </li>
 
-        </ul>
+    {% else %}
+        <p>Il n'y a pas d'articles dans ce dossier</p>
+    {% endif %}
+</ul></div></nav>
+
 
 </div>
-			</nav>
-		</div>
-	</div>
-{% else %}
-<div class="row">
-		<div class="col-md-12">
-            <p>Désolé, pas d'articles avec les critères que vous avez choisis</p>
-        </div></div>
-{% endif %}

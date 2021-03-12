@@ -207,24 +207,24 @@ class ListeArticles(ListView):
                                                                                                       flat=True).distinct()
         context['categorie_list_fer'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_fer]
 
-        proj = Projet.objects.filter(estArchive=False)
-        if not self.request.user.adherent_permacat:
-            proj = proj.exclude(asso__abreviation="pc")
-        if not self.request.user.adherent_fer:
-            proj = proj.exclude(asso__abreviation="fer")
-        if not self.request.user.adherent_rtg:
-            proj = proj.exclude(asso__abreviation="rtg")
-        context['projets_list'] = [(x.slug, x.titre, x.get_couleur) for x in proj]
-
-        ateliers = Atelier.objects.filter(date_atelier__gte=now())
-        if not self.request.user.adherent_permacat:
-            ateliers = ateliers.exclude(asso__abreviation="pc")
-        if not self.request.user.adherent_fer:
-            ateliers = ateliers.exclude(asso__abreviation="fer")
-        if not self.request.user.adherent_rtg:
-            ateliers = ateliers.exclude(asso__abreviation="rtg")
-        context['ateliers_list'] = [(x.slug, x.titre, x.get_couleur) for x in ateliers]
-        context['categorie_list_projets'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets if x[0] in cat]
+        # proj = Projet.objects.filter(estArchive=False)
+        # if not self.request.user.adherent_permacat:
+        #     proj = proj.exclude(asso__abreviation="pc")
+        # if not self.request.user.adherent_fer:
+        #     proj = proj.exclude(asso__abreviation="fer")
+        # if not self.request.user.adherent_rtg:
+        #     proj = proj.exclude(asso__abreviation="rtg")
+        # context['projets_list'] = [(x.slug, x.titre, x.get_couleur) for x in proj]
+        #
+        # ateliers = Atelier.objects.filter(date_atelier__gte=now())
+        # if not self.request.user.adherent_permacat:
+        #     ateliers = ateliers.exclude(asso__abreviation="pc")
+        # if not self.request.user.adherent_fer:
+        #     ateliers = ateliers.exclude(asso__abreviation="fer")
+        # if not self.request.user.adherent_rtg:
+        #     ateliers = ateliers.exclude(asso__abreviation="rtg")
+        # context['ateliers_list'] = [(x.slug, x.titre, x.get_couleur) for x in ateliers]
+        #context['categorie_list_projets'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets if x[0] in cat]
         context['typeFiltre'] = "aucun"
         context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="articles")
 
@@ -318,23 +318,23 @@ class ListeArticles_asso(ListView):
                                                                                                       flat=True).distinct()
         context['categorie_list_fer'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_fer]
 
-        proj = Projet.objects.filter(estArchive=False)
-        if not self.request.user.adherent_permacat:
-            proj = proj.exclude(asso__abreviation="pc")
-        if not self.request.user.adherent_fer:
-            proj = proj.exclude(asso__abreviation="fer")
-        if not self.request.user.adherent_rtg:
-            proj = proj.exclude(asso__abreviation="rtg")
-        context['projets_list'] = [(x.slug, x.titre, x.get_couleur) for x in proj]
-
-        ateliers = Atelier.objects.filter(date_atelier__gte=now())
-        if not self.request.user.adherent_permacat:
-            ateliers = ateliers.exclude(asso__abreviation="pc")
-        if not self.request.user.adherent_fer:
-            ateliers = ateliers.exclude(asso__abreviation="fer")
-        if not self.request.user.adherent_rtg:
-            ateliers = ateliers.exclude(asso__abreviation="rtg")
-        context['ateliers_list'] = [(x.slug, x.titre, x.get_couleur) for x in ateliers]
+        # proj = Projet.objects.filter(estArchive=False)
+        # if not self.request.user.adherent_permacat:
+        #     proj = proj.exclude(asso__abreviation="pc")
+        # if not self.request.user.adherent_fer:
+        #     proj = proj.exclude(asso__abreviation="fer")
+        # if not self.request.user.adherent_rtg:
+        #     proj = proj.exclude(asso__abreviation="rtg")
+        # context['projets_list'] = [(x.slug, x.titre, x.get_couleur) for x in proj]
+        #
+        # ateliers = Atelier.objects.filter(date_atelier__gte=now())
+        # if not self.request.user.adherent_permacat:
+        #     ateliers = ateliers.exclude(asso__abreviation="pc")
+        # if not self.request.user.adherent_fer:
+        #     ateliers = ateliers.exclude(asso__abreviation="fer")
+        # if not self.request.user.adherent_rtg:
+        #     ateliers = ateliers.exclude(asso__abreviation="rtg")
+        # context['ateliers_list'] = [(x.slug, x.titre, x.get_couleur) for x in ateliers]
 
         assos= Asso.objects.all()
         nom_asso = self.kwargs['asso']
@@ -345,9 +345,9 @@ class ListeArticles_asso(ListView):
         context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="articles")
 
         context['ordreTriPossibles'] = {
-                                           "date de création":'-date_creation',
-                                           "date de la dernière modification":'-date_modification',
-                                            "titre": 'titre' }
+                                           "Date de création":'-date_creation',
+                                           "Date de la dernière modification":'-date_modification',
+                                            "Titre": 'titre' }
 
         if 'auteur' in self.request.GET:
             context['typeFiltre'] = "auteur"
@@ -517,7 +517,7 @@ class ListeProjets(ListView):
         context['statut_list'] = [x for x in Choix.statut_projet if x[0] in cat]
         context['typeFiltre'] = "aucun"
 
-        context['ordreTriPossibles'] = ['-date_creation', '-date_dernierMessage', 'categorie', 'auteur', 'titre']
+        context['ordreTriPossibles'] = ['-date_creation', '-date_dernierMessage', 'categorie', "statut", 'auteur', 'titre']
         if 'auteur_id' in self.request.GET:
             context['typeFiltre'] = "auteur"
         if 'categorie' in self.request.GET:

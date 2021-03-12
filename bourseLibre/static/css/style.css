@@ -403,6 +403,9 @@ section.p3 {
 
 @media screen and (max-width: 1200px) {
 
+.panel-forum{
+    padding-top:10px;
+}
 
 .nav5-dropdown-submenu {
     text-align: center;
@@ -697,6 +700,8 @@ article-carte{
 	text-shadow:0px 1px 0px #3d768a;
     float: right;
     position: relative;
+    line-height:40px;
+    margin-bottom:10px;
 }
 /*
 .bouton_dossiers_forum:hover {
@@ -1551,7 +1556,11 @@ caption {
     margin-bottom: 20px;
 }
 .btn-menu-forum{
-    min-width: 350px;
+    min-width: 250px;
+}
+
+.panel-forum{
+    padding-top:5px;
 }
 @media(max-width: 400px) {
 .btn-menu-forum{

@@ -86,112 +86,114 @@
         </div>
     </div>
         <hr>
-{% include 'blog/navbar_forum.html' %}
 
-
-    <hr>
 </div>
 </div>
 
-{% if asso_courante or categorie_courante%}
-<div class="row justify-content-center">
-<div class="bouton_dossiers_forum">{% if asso_courante %} {{asso_courante}} {% endif %} {% if categorie_courante %} {% if asso_courante %} -{% endif %} {{categorie_courante}} {% endif %}</div>
-</div>
-{% endif %}
-
-{% include 'blog/navbar_forum_tri.html' %}
 </div>
 
 
 {%endblock%}
 {% block content %}
 
-{% if request.GET.categorie %}
-
-<div class="row justify-content-center">
-    <div class="col textcenter">
-{%if request.GET.categorie == "Ecovillage" %}
-        <hr>
-        <div>
- <a href="{% url 'blog:lireProjet' slug='projet-eco-lieu' %}">
-     <button type="button" class="btn  btn-warning" >
-            <i class="fa fa-arrow-right"></i>&nbsp;Voir le projet Permacat
-    </button>
- </a></div>
-        <hr>
-{%elif request.GET.categorie == "Jardin" %}
-        <hr>
- <a href="{% url 'jardinpartage:index' %}">
-     <button type="button" class="btn  btn-warning" >
-            <i class="fa fa-arrow-right"></i>&nbsp;Blog des jardins partagés
-    </button>
- </a>&nbsp;
- <a href="{% url 'blog:lireProjet' slug='un-jardin-partage-en-permaculture-accessible-a-tous' %}">
-     <button type="button" class="btn  btn-warning" >
-            <i class="fa fa-arrow-right"></i>&nbsp;projet Jardi Per Tots
-    </button>
- </a>&nbsp;
- <a href="{% url 'blog:lireProjet' slug='jardins-du-lycee-jean-lurcat' %}">
-     <button type="button" class="btn  btn-warning" >
-            <i class="fa fa-arrow-right"></i>&nbsp;projet Jardin de Lurçat 
-    </button>
- </a>&nbsp;
- <a href="{% url 'blog:lireProjet' slug='jardin-partage-de-palau' %}">
-     <button type="button" class="btn  btn-warning" >
-            <i class="fa fa-arrow-right"></i>&nbsp;projet Jardin de Palau
-    </button>
- </a>&nbsp;
- <a href="{% url 'blog:lireProjet' slug='jardins-partages-a-perpignan-au-champ-de-mars' %}">
-    <button type="button" class="btn  btn-warning" >
-            <i class="fa fa-arrow-right"></i>&nbsp;projet jardins partagés à Perpignan
-    </button>
- </a>
-        <hr>
-{%elif request.GET.categorie == "Altermarché" %}
-        <hr>
- <a href="{% url 'blog:lireProjet' slug='lalter-marche-ou-marche-en-monnaies-alternatives' %}">
-     <button type="button" class="btn  btn-warning" >
-            <i class="fa fa-arrow-right"></i>&nbsp;Voir le projet Permacat
-    </button>
- </a> &nbsp;
- <a href="{% url 'marche' %}">
-     <button type="button" class="btn  btn-warning" >
-            <i class="fa fa-arrow-right"></i>&nbsp;Altermarché sur le site
-    </button>
- </a>
-        <hr>
-{%endif%}
+<div id="btnForum"></div>
+<div class="row ">
+    <div class="col-sm-12 col-lg-4 panel-forum " style="margin-bottom:20px;">
+{% include 'blog/navbar_forum.html' %}
+    </div>
+    <div class="col-sm-12 col-lg-8 my-auto">
+        {% include 'blog/navbar_forum_tri.html' %}
+    </div>
 </div>
-</div>
-{%endif%}
+        <hr>
 
+        {% if request.GET.categorie %}
 
-<div class="infinite-container">
-    <div class="grid-container justify-content-center">
-        {% for article in article_list %}
-        <div class="infinite-item my-auto">
-        {% include "blog/article_template.html" with article=article %}
+        <div class="row justify-content-center">
+            <div class="col textcenter">
+        {%if request.GET.categorie == "Ecovillage" %}
+                <hr>
+                <div>
+         <a href="{% url 'blog:lireProjet' slug='projet-eco-lieu' %}">
+             <button type="button" class="btn  btn-warning" >
+                    <i class="fa fa-arrow-right"></i>&nbsp;Voir le projet Permacat
+            </button>
+         </a></div>
+                <hr>
+        {%elif request.GET.categorie == "Jardin" %}
+                <hr>
+         <a href="{% url 'jardinpartage:index' %}">
+             <button type="button" class="btn  btn-warning" >
+                    <i class="fa fa-arrow-right"></i>&nbsp;Blog des jardins partagés
+            </button>
+         </a>&nbsp;
+         <a href="{% url 'blog:lireProjet' slug='un-jardin-partage-en-permaculture-accessible-a-tous' %}">
+             <button type="button" class="btn  btn-warning" >
+                    <i class="fa fa-arrow-right"></i>&nbsp;projet Jardi Per Tots
+            </button>
+         </a>&nbsp;
+         <a href="{% url 'blog:lireProjet' slug='jardins-du-lycee-jean-lurcat' %}">
+             <button type="button" class="btn  btn-warning" >
+                    <i class="fa fa-arrow-right"></i>&nbsp;projet Jardin de Lurçat
+            </button>
+         </a>&nbsp;
+         <a href="{% url 'blog:lireProjet' slug='jardin-partage-de-palau' %}">
+             <button type="button" class="btn  btn-warning" >
+                    <i class="fa fa-arrow-right"></i>&nbsp;projet Jardin de Palau
+            </button>
+         </a>&nbsp;
+         <a href="{% url 'blog:lireProjet' slug='jardins-partages-a-perpignan-au-champ-de-mars' %}">
+            <button type="button" class="btn  btn-warning" >
+                    <i class="fa fa-arrow-right"></i>&nbsp;projet jardins partagés à Perpignan
+            </button>
+         </a>
+                <hr>
+        {%elif request.GET.categorie == "Altermarché" %}
+                <hr>
+         <a href="{% url 'blog:lireProjet' slug='lalter-marche-ou-marche-en-monnaies-alternatives' %}">
+             <button type="button" class="btn  btn-warning" >
+                    <i class="fa fa-arrow-right"></i>&nbsp;Voir le projet Permacat
+            </button>
+         </a> &nbsp;
+         <a href="{% url 'marche' %}">
+             <button type="button" class="btn  btn-warning" >
+                    <i class="fa fa-arrow-right"></i>&nbsp;Altermarché sur le site
+            </button>
+         </a>
+                <hr>
+        {%endif%}
         </div>
-        {% endfor %}
-    </div>
-</div>
-{%include 'pagination.html' %}
+        </div>
+        {%endif%}
 
-{% if list_archive %}
-<div class="textcenter">
-    <button id="btn-archives"  type="button" class="btn btn-lg" onclick="toggle_visibility('archives');" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour afficher les archives">
-        Afficher les archives
-    </button>
-</div>
-<hr>
-<div id="archives" style='display:none;'>
-    {% for article in list_archive %}
-    <div class="infinite-item my-auto">
-        {% include "blog/article_template.html" with article=article %}
-    <hr>
-    </div>
-    {% endfor %}
-</div>
+
+        <div class="infinite-container">
+            <div class="grid-container justify-content-center">
+                {% for article in article_list %}
+                <div class="infinite-item my-auto">
+                {% include "blog/article_template.html" with article=article %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {%include 'pagination.html' %}
+
+        {% if list_archive %}
+        <div class="textcenter">
+            <button id="btn-archives"  type="button" class="btn btn-lg" onclick="toggle_visibility('archives');" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour afficher les archives">
+                Afficher les archives
+            </button>
+        </div>
+        <hr>
+        <div id="archives" style='display:none;'>
+            {% for article in list_archive %}
+            <div class="infinite-item my-auto">
+                {% include "blog/article_template.html" with article=article %}
+            <hr>
+            </div>
+            {% endfor %}
+        </div>
+
 {% endif %}
 
 <script>

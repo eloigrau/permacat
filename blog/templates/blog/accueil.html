@@ -43,9 +43,9 @@
     <div class="justify-content-center " id="navbarSalons">
         <ul class="nav navbar-nav justify-content-center">
         <li class="nav-item dropdown">
-            <button type="button" class="btn dropdown-toggle btn-primary btn-block" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
+            <button type="button" class="btn dropdown-toggle btn-primary btn-block btn-menu-forum" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
                data-target = "#idSalons"> Salons de discussion</button>
-            <div class="dropdown-menu-forum dropdown-menu textcenter"  aria-labelledby="menuAuteur"  id="idSalons">
+            <div class="dropdown-menu-forum dropdown-menu textcenter btn-menu-forum"  aria-labelledby="menuAuteur"  id="idSalons">
                  <a class=" dropdown-item " style="background-color:#cbdff0;"  href="{% url 'agora' asso='public' %}">
                      Salon Public
                     </a>
@@ -74,9 +74,9 @@
         </li>
 
         <li class="nav-item dropdown">
-            <button type="button" class="btn dropdown-toggle btn-primary btn-block" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
+            <button type="button" class="btn dropdown-toggle btn-primary btn-block btn-menu-forum" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
             data-target = "#idProjets"> Projets (acceptés) </button>
-            <div class="dropdown-menu dropdown-menu-forum textcenter"  aria-labelledby="menuAuteur"  id="idProjets">
+            <div class="dropdown-menu dropdown-menu-forum textcenter btn-menu-forum"  aria-labelledby="menuAuteur"  id="idProjets">
                 <a class="dropdown-item" style="background-color:#cbdff0;" href="{% url 'blog:index_projets' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les projets </a>
 
                  <div class="dropdown-divider"></div>
@@ -88,9 +88,9 @@
         </li>
 
         <li class="nav-item dropdown">
-            <button type="button" class="btn dropdown-toggle btn-primary btn-block" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
+            <button type="button" class="btn dropdown-toggle btn-primary btn-block btn-menu-forum" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
             data-target = "#idJardins"> Jardins Partagés </button>
-            <div class="dropdown-menu dropdown-menu-forum textcenter" aria-labelledby="menuAuteur"  id="idJardins">
+            <div class="dropdown-menu dropdown-menu-forum textcenter btn-menu-forum" aria-labelledby="menuAuteur"  id="idJardins">
                <a class="dropdown-item"  style="background-color:#cbdff0;" href="{% url 'jardinpartage:index' %}"><i class='fa fa-pagelines' ></i> Blog des jardins</a>
                <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=1 %}"><i class='fa fa-pagelines' ></i> Jardi Per tots</a>
@@ -101,9 +101,9 @@
         </li>
 
         <a class="nav-item dropdown">
-            <button type="button" class="btn dropdown-toggle btn-primary btn-block" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
+            <button type="button" class="btn dropdown-toggle btn-primary btn-block btn-menu-forum" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
             data-target = "#idAteliers"> Ateliers Collectifs (prochainement)</button>
-            <div class="dropdown-menu dropdown-menu-forum textcenter" style="padding:0; background=#e6fbc0;" aria-labelledby="menuAuteur"  id="idAteliers">
+            <div class="dropdown-menu dropdown-menu-forum textcenter btn-menu-forum" style="padding:0; background=#e6fbc0;" aria-labelledby="menuAuteur"  id="idAteliers">
                 <a class="dropdown-item" style="background-color:#cbdff0;" href="{% url 'ateliers:index_ateliers' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les ateliers </a>
                  <div class="dropdown-divider"></div>
                 {% for categorie_id, cat_nom, cat_coul in ateliers_list %}
