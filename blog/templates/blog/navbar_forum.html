@@ -58,7 +58,7 @@
 
      {% if request.user.adherent_fer %}
     <li class="nav-item dropdown">
-        <button type="button" class="btn dropdown-toggle btn-primary  btn-block btn-menu-forum" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+        <button type="button" class="btn dropdown-toggle btn-primary  btn-block btn-menu-forum" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
         data-target = "#idDossiers_fer"> Dossiers Fermille</button>
         <div class="dropdown-menu textcenter dropdown-menu-forum btn-menu-forum" aria-labelledby="menuAuteur"  id="idDossiers_fer">
              <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='fer'%}"><span>Tous les articles</span></a>

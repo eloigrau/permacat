@@ -1554,9 +1554,13 @@ caption {
     background-color:#e6fbc0;
     padding:0px;
     margin-bottom: 20px;
+  position: absolute;
+}
+.dropdown-menu-forum.open:hover{
+position: absolute;
 }
 .btn-menu-forum{
-    min-width: 250px;
+    min-width: 300px;
 }
 
 .panel-forum{
