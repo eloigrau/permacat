@@ -16,6 +16,7 @@ from ateliers.models import Atelier
 from django.views.decorators.csrf import csrf_exempt
 from hitcount.models import HitCount
 from hitcount.views import HitCountMixin
+from django.db.models import Q
 
 # @login_required
 # def forum(request):
@@ -273,7 +274,10 @@ class ListeArticles_asso(ListView):
 
         qs = Article.objects.all()
 
-        qs = qs.filter(asso__abreviation=asso.abreviation)
+        if asso.abreviation == "public":
+            qs = qs.exclude(Q(asso__abreviation="pc")|Q(asso__abreviation="rtg")|Q(asso__abreviation="fer"))
+        else:
+            qs = qs.filter(asso__abreviation=asso.abreviation)
 
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])

@@ -109,7 +109,8 @@ INSTALLED_APPS = (
     'actstream',
     'taggit',
     'hitcount',
-    'django_cron',
+    #'django_cron',
+    'django_crontab',
     #'notifications',
     #'webpush',
     #"geoposition",
@@ -468,3 +469,7 @@ BOWER_INSTALLED_APPS = (
 #CRON_CLASSES = [
 #    "bourseLibre.views_notifications.EnvoiMailsCronJob"
 #]
+
+CRONJOBS = [
+    ('0 6 * * *', 'bourseLibre.views_notifications.envoyerEmails')
+]
