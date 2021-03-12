@@ -220,7 +220,7 @@ def produit_proposer(request, type_produit):
         action.send(request.user, verb='ajout_offre'+suffix, action_object=produit, url=url,
                     description="a ajouté une "+offreOuDemande+" au marché : '%s'" %(produit.nom_produit))
 
-        messages.info(request, 'Votre offre a été ajoutée !')
+        messages.info(request, 'Votre offre a été ajoutée au marché, merci !')
         return HttpResponseRedirect('/marche/detail/' + str(produit.id))
     return render(request, 'bourseLibre/produit_proposer.html', {"form": type_form, "bgcolor": bgcolor, "type_produit":type_produit})
 
