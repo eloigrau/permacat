@@ -56,10 +56,10 @@
      {% if request.user.adherent_rtg %}
     <li class="nav-item dropdown">
         <button type="button" class="btn dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-        data-target = "#idDossiers_rtg"> Dossiers RTG</button>
+        data-target = "#idDossiers_rtg"> Dossiers RTG aaa{{categorie_list_rtg}}</button>
         <div class="dropdown-menu dropdown-menu-forum" style="padding:0;" aria-labelledby="menuAuteur"  id="idDossiers_rtg">
             {% for categorie_id, cat_nom, cat_coul in categorie_list_rtg %}
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='rtg'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='rtg'%}?categorie={{categorie_id}}"><span>aa{{categorie_list_rtg}}{{cat_nom}}</span></a>
             {% endfor %}
         </div>
     </li>
@@ -71,8 +71,8 @@
         <button type="button" class="btn dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
         data-target = "#idDossiers_fer"> Dossiers Fermille</button>
         <div class="dropdown-menu dropdown-menu-forum" style="padding:0;" aria-labelledby="menuAuteur"  id="idDossiers_fer">
-            {% for categorie_id, cat_nom, cat_coul in categorie_list_fer %}
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='fer'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+            {% for categorie_id1, cat_nom1, cat_coul1 in categorie_list_fer %}
+             <a class=" dropdown-item " style="background:{{cat_coul1}};" href="{% url 'blog:index_asso' asso='fer'%}?categorie={{categorie_id1}}"><span>{{cat_nom1}}</span></a>
             {% endfor %}
         </div>
     </li>
