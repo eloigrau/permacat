@@ -10,7 +10,7 @@ def navbar(request):
         context_data['notification_count'] = getNbNewNotifications(request)
 
         if request.user.is_authenticated:
-            qs_projets = Projet.objects.filter(estArchive=False).order_by('categorie')
+            qs_projets = Projet.objects.filter(estArchive=False, statut='accep').order_by('categorie')
             qs_ateliers = Atelier.objects.filter(date_atelier__gte=now()).order_by('categorie')
             if not request.user.adherent_permacat:
                 qs_ateliers = qs_ateliers.exclude(asso__abreviation="pc")

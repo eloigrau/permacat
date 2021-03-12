@@ -9,7 +9,7 @@ from actstream.models import followers
 from bourseLibre.settings import SERVER_EMAIL, LOCALL
 
 class Choix():
-    statut_projet = ('prop','Proposition de projet'), ("AGO","Fiche projet soumise à l'AGO"), ('vote','Soumis au vote'), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
+    statut_projet = ('prop','Proposition de projet'), ("AGO","Fiche projet soumise à l'AGO"), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
 
     type_projet = ('Part','Participation à un évènement'), ('AGO',"Organisation d'une AGO"), ('Projlong','Projet a long terme'), ('Projcourt','Projet a court terme'), ('Projponct','Projet ponctuel'),
     type_annonce = ('Annonce','Annonces'), ('Administratif','Administratif'), ('Agenda','Agenda'),  ('Chantier','Chantiers participatifs/Ateliers collectifs'),\

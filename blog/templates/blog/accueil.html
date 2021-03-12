@@ -37,7 +37,9 @@
 
 <hr>
 
+<div class="row justify-content-center">
 <h5>Ailleurs sur le site : </h5>
+</div>
 <nav class="navbar justify-content-center  navbar-light bg-light">
     <div class="justify-content-center " id="navbarSalons">
         <ul class="nav navbar-nav justify-content-center">
@@ -67,15 +69,12 @@
              <a class=" dropdown-item "href="{% url 'conversations' %}">
                    Conversations privées
                 </a>
-                {% for categorie_id, cat_nom, cat_coul in categorie_list %}
-                <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='public'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
-                {% endfor %}
             </div>
         </li>
 
         <li class="nav-item dropdown">
             <button type="button" class="btn dropdown-toggle btn-primary btn-block" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
-            data-target = "#idProjets"> Projets</button>
+            data-target = "#idProjets"> Projets (acceptés) </button>
             <div class="dropdown-menu dropdown-menu-forum" style="padding:0;" aria-labelledby="menuAuteur"  id="idProjets">
                 <a class="dropdown-item" href="{% url 'blog:index_projets' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les projets </a>
                 {% for projet_slug, cat_nom, cat_coul in projets_list %}
@@ -97,7 +96,7 @@
 
         <li class="nav-item dropdown">
             <button type="button" class="btn dropdown-toggle btn-primary btn-block" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
-            data-target = "#idAteliers"> Ateliers</button>
+            data-target = "#idAteliers"> Ateliers Collectifs (à venir)</button>
             <div class="dropdown-menu dropdown-menu-forum" style="padding:0;" aria-labelledby="menuAuteur"  id="idAteliers">
                 <a class="dropdown-item" href="{% url 'ateliers:index_ateliers' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les ateliers </a>
                 {% for categorie_id, cat_nom, cat_coul in ateliers_list %}
