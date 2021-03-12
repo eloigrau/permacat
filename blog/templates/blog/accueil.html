@@ -18,28 +18,13 @@
 {% endblock %}
 {% block content %}
 <div class="row">
-<div class="col-sm-12 ">
+<div class="col-sm-12 col-lg-3">
 
     <div class="row justify-content-center">
     <h5>Articles du forum : </h5>
         </div>
     {% include 'blog/navbar_forum.html' %}
-    <hr>
-    <div class="row justify-content-center">
-    <div class="col-sm-12">
-     <div class="row no-gutters justify-content-center">
-         <form class="form-inline justify-content-center  navbar-form " action="{% url 'chercher_articles' %}" method="get" role = "search">
-            {% csrf_token %}
-            <div class="col" style="padding-right:0;">
-            <input class="form-control border-secondary border-right-0 rounded-0" name="id_recherche" placeholder="rechercher sur le forum..." type="text">
-            </div>
-            <div class="col-auto" style="padding-left:0;">
-                <button class="btn btn-outline-secondary border-left-0 rounded-0 rounded-right" type="submit" >{% fontawesome_icon 'search' %}</button>
-            </div>
-         </form>
-     </div>
-    </div>
-    </div>
+
 
 
     <hr>
@@ -110,7 +95,7 @@
 
             <a class="nav-item dropdown">
                 <button type="button" class="btn dropdown-toggle btn-primary btn-block btn-menu-forum" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
-                data-target = "#idAteliers"> Ateliers Collectifs (prochainement)</button>
+                data-target = "#idAteliers"> Prochains Ateliers Collectifs</button>
                 <div class="dropdown-menu dropdown-menu-forum textcenter btn-menu-forum" style="padding:0; background=#e6fbc0;" aria-labelledby="menuAuteur"  id="idAteliers">
                     <a class="dropdown-item" style="background-color:#cbdff0;" href="{% url 'ateliers:index_ateliers' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les ateliers </a>
                      <div class="dropdown-divider"></div>
@@ -128,25 +113,24 @@
     <hr>
 
 </div>
-<div class="col-sm-12">
+<div class="col-sm-12 col-lg-9">
 
     <div class="row justify-content-center">
         <h5>Derniers articles créés : </h5>
     </div>
-<div class="grid-container justify-content-center">
+<div class="grid-container2 justify-content-center">
     {% for article in derniers_articles %}
         <div class="infinite-item my-auto">
         {% include "blog/article_template.html" with article=article %}
         </div>
     {% endfor %}
 </div>
-
-
+    <hr>
 
     <div class="row justify-content-center">
         <h5>Derniers articles commentés: </h5>
     </div>
-<div class="grid-container justify-content-center">
+<div class="grid-container2 justify-content-center">
     {% for article in derniers_articles_comm %}
         <div class="infinite-item my-auto">
         {% include "blog/article_template.html" with article=article %}
@@ -155,5 +139,21 @@
 </div>
 </div>
 </div>
+    <hr>
+    <div class="row justify-content-center">
+    <div class="col-sm-12">
+     <div class="row no-gutters justify-content-center">
+         <form class="form-inline justify-content-center  navbar-form " action="{% url 'chercher_articles' %}" method="get" role = "search">
+            {% csrf_token %}
+            <div class="col" style="padding-right:0;">
+            <input class="form-control border-secondary border-right-0 rounded-0" name="id_recherche" placeholder="rechercher sur le forum..." type="text">
+            </div>
+            <div class="col-auto" style="padding-left:0;">
+                <button class="btn btn-outline-secondary border-left-0 rounded-0 rounded-right" type="submit" >{% fontawesome_icon 'search' %}</button>
+            </div>
+         </form>
+     </div>
+    </div>
+    </div>
 {% endblock %}
 

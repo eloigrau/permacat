@@ -722,6 +722,10 @@ article-carte{
   display: grid;
    grid-template-columns: auto ;
 }
+.grid-container2 {
+  display: grid;
+   grid-template-columns: auto ;
+}
 
 @media (min-width: 576px) {
     .grid-container {
