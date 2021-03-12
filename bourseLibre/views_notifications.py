@@ -371,6 +371,52 @@ def nettoyerHistoriqueAdmin(request):
 
     return render(request, 'notifications/voirActions.html', {'actions': actions,})
 
+
+def get_articles_a_archiver():
+    from blog.models import Article, Evenement
+    from datetime import datetime, timedelta
+    import pytz
+    utc = pytz.UTC
+    date_limite = utc.localize(datetime.today() - timedelta(days=90))
+    articles = Article.objects.filter(estArchive=False)
+
+    liste = []
+    for article in articles:
+        test = False
+        if article.start_time:
+            if article.start_time < date_limite:
+                if article.end_time:
+                    if article.end_time < date_limite:
+                        test = True
+                else:
+                    test = True
+
+        if test:
+            liste.append(article)
+    newList = []
+    for art in liste:
+        eve = Evenement.objects.filter(start_time__lt=date_limite, article=art)
+        for ev in eve:
+            test = False
+            if ev.end_time:
+                if ev.end_time < date_limite:
+                    test = True
+            else:
+                test = True
+        if test:
+            newList.append(article)
+    return liste
+
+def voir_articles_a_archiver(request):
+    liste = get_articles_a_archiver()
+    return render(request, 'notifications/voirArchivage.html',{'liste': liste})
+
+def archiverArticles(request):
+    for art in get_articles_a_archiver():
+        art.estArchive = True
+        art.save()
+    return redirect('voir_articles_a_archiver', )
+
 def voirEmails(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden()

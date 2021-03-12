@@ -52,7 +52,10 @@ def accueil(request):
     ateliers_list = [(x.slug, x.titre, x.get_couleur) for x in ateliers]
     categorie_list_projets = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets
                                          if x[0] in cat]
-    return render(request, 'blog/accueil.html', {'categorie_list':categorie_list,'categorie_list_pc':categorie_list_pc,'categorie_list_rtg':categorie_list_rtg,'categorie_list_fer':categorie_list_fer,'projets_list':projets_list,'ateliers_list':ateliers_list, 'categorie_list_projets':categorie_list_projets})
+
+    derniers_articles = Article.objects.filter(estArchive=False).order_by('-id')[:3][::-1]
+    derniers_articles_comm = Article.objects.filter(estArchive=False).order_by('-date_dernierMessage')[:3][::-1]
+    return render(request, 'blog/accueil.html', {'categorie_list':categorie_list,'categorie_list_pc':categorie_list_pc,'categorie_list_rtg':categorie_list_rtg,'categorie_list_fer':categorie_list_fer,'projets_list':projets_list,'ateliers_list':ateliers_list, 'categorie_list_projets':categorie_list_projets,'derniers_articles':derniers_articles,'derniers_articles_comm':derniers_articles_comm})
 
 
 @login_required
@@ -124,7 +127,11 @@ def lireArticle(request, slug):
     form = CommentaireArticleForm(request.POST or None)
     if form.is_valid():
         comment = form.save(commit=False)
-        if comment:
+        from datetime import datetime, timedelta
+        import pytz
+        utc = pytz.UTC
+        date_limite = utc.localize(datetime.today() - timedelta(days=1))
+        if comment and not Commentaire.objects.filter(commentaire=comment.commentaire, article=article, date_creation__gt=date_limite):
             comment.article = article
             comment.auteur_comm = request.user
             article.date_dernierMessage = comment.date_creation if comment.date_creation else now()

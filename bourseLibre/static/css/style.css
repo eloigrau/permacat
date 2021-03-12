@@ -727,9 +727,15 @@ article-carte{
     .grid-container {
         grid-template-columns: 100% ;
     }
+    .grid-container2 {
+        grid-template-columns: 100% ;
+    }
 }
 @media (max-width: 400px) {
     .grid-container {
+        grid-template-columns: 100% ;
+    }
+    .grid-container2 {
         grid-template-columns: 100% ;
     }
     .article_carte {
@@ -760,16 +766,25 @@ article-carte{
     .grid-container {
         grid-template-columns: 100% ;
     }
+    .grid-container2 {
+        grid-template-columns: 100% ;
+    }
 }
 
 @media (min-width: 900px) {
     .grid-container {
         grid-template-columns: 50% 50%;
     }
+    .grid-container2 {
+        grid-template-columns: 50% 50%;
+    }
 }
 @media (min-width: 1200px) {
     .grid-container {
         grid-template-columns: 32% 32% 32%;
+    }
+    .grid-container2 {
+        grid-template-columns: 50% 50% ;
     }
 }
 

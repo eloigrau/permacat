@@ -152,6 +152,8 @@ urlpatterns = [
     url(r'^nettoyerActions/$', views_notifications.nettoyerActions,  name="nettoyerActions"),
     url(r'^nettoyerHistoriqueAdmin/$', views_notifications.nettoyerHistoriqueAdmin,  name="nettoyerHistoriqueAdmin"),
     url(r'^envoyerEmailsRequete/$', views_notifications.envoyerEmailsRequete,  name="envoyerEmailsRequete"),
+    url(r'^voir_articles_a_archiver/$', views_notifications.voir_articles_a_archiver,  name="voir_articles_a_archiver"),
+    url(r'^archiverArticles/$', views_notifications.archiverArticles,  name="archiverArticles"),
 ]
 urlpatterns += [
     url(r'^robots\.txt$', TemplateView.as_view(template_name="bourseLibre/robots.txt", content_type='text/plain')),
