@@ -74,7 +74,7 @@ print("local" + str(LOCALL))
 
 # pip install django-fontawesome django-model_utils django-debug_toolbar django-haystack django-bootstrap django-extensions django-leaflet django-filter django-rest-framework django-scheduler django-widget-tweaks
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -86,9 +86,7 @@ INSTALLED_APPS = (
     #'django.contrib.gis',
     'bootstrap','fontawesome','cookielaw',
     #'haystack',
-    #'debug_toolbar',
     'model_utils',
-    #'address',
     'bourseLibre',
     'blog',
     'jardinpartage',
@@ -96,20 +94,16 @@ INSTALLED_APPS = (
     'ateliers',
     'django_extensions',
     'django_filters',
-    #'rest_framework',
     'cal',
     'vote',
-    #'schedule','djangobower',
     'widget_tweaks',
     'leaflet',
-    #'tinymce',
     'captcha',
     'bourseLibre.captcha_local',
     'django_summernote',
     'actstream',
     'taggit',
     'hitcount',
-    #'django_cron',
     'django_crontab',
     #'notifications',
     #'webpush',
@@ -121,11 +115,8 @@ INSTALLED_APPS = (
     #'panier',
     #'location-field',
     #'polymorphic',  # We need polymorphic installed for the shop
-    #'shop',  # The django SHOP application
-    #'shop.addressmodel',  # The default Address and country models
-    # 'regist#ration'
     'django.contrib.humanize.apps.HumanizeConfig',
-    'django_nyt.apps.DjangoNytConfig',
+    #'django_nyt.apps.DjangoNytConfig',
     'mptt',
     'sekizai',
     'sorl.thumbnail',
@@ -144,7 +135,10 @@ INSTALLED_APPS = (
     #'wiki.plugins.macros.apps.MacrosConfig',
     #'wiki.plugins.notifications.apps.NotificationsConfig',
 
-)
+]
+if LOCALL:
+    INSTALLED_APPS.append('debug_toolbar',)
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 
 # MIDDLEWARE_CLASSES = (
 #     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -172,10 +166,11 @@ MIDDLEWARE = [
      'bourseLibre.middleware.CheckRequest',
     #"visits.middleware.BotVisitorMiddleware",
      #"visits.middleware.CounterMiddleware",
-   # 'bourseLibre.middleware.SetLastVisitMiddleware'
     #'django.core.context_processors.request',
-    #'debug_toolbar.middleware.DebugToolbarMiddleware',
+
 ]
+if LOCALL:
+    MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware',)
 
 
 ROOT_URLCONF = 'bourseLibre.urls'
@@ -278,24 +273,12 @@ IGNORABLE_404_URLS = (
     re.compile('^/robots\.txt$'),
 )
 
-# Email settings
-SERVER_EMAIL = 'sitepermacat@gmail.com'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_PASSWORD = 'gg'
-EMAIL_HOST_USER = SERVER_EMAIL
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-GMAIL_SMTP_USER = 'sitepermacat@gmail.com'
-EMAIL_SUBJECT_PREFIX = "[PermaCat]"
-GMAIL_SMTP_PASSWORD = 'test'
 
 ADMINS = (
     ('Asso_admin', 'sitepermacat@gmail.com'),
 )
 MANAGERS = ADMINS
-BASE_URL = "https://permacat.majopi.fr"
+BASE_URL = "https://www.perma.cat"
 ########################
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
@@ -473,3 +456,11 @@ BOWER_INSTALLED_APPS = (
 CRONJOBS = [
     ('0 6 * * *', 'bourseLibre.views_notifications.envoyerEmails')
 ]
+
+
+#on met ça a la fin pour importer les settings de production sur le sever
+try:
+    from production import *
+except ImportError:
+    pass
+

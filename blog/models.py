@@ -1,12 +1,10 @@
 from django.db import models
 from bourseLibre.models import Profil, Suivis, Asso
-from bourseLibre.constantes import Choix as Constantes
 from django.urls import reverse
 from django.utils import timezone
-from django.core.mail import send_mass_mail, mail_admins
 from actstream import action
 from actstream.models import followers
-from bourseLibre.settings import SERVER_EMAIL, LOCALL
+from bourseLibre.settings import  LOCALL
 
 class Choix():
     statut_projet = ('prop','Proposition de projet'), ("AGO","Fiche projet soumise à l'AGO"), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),

@@ -3,12 +3,10 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from actstream.models import Action, any_stream
 from django.utils.timezone import now
-from django.core.mail import send_mass_mail
 from itertools import chain
 from .forms import nouvelleDateForm
 from .models import Profil
-from .settings import SERVER_EMAIL, LOCALL, EMAIL_HOST_PASSWORD
-from django_cron import CronJobBase, Schedule
+from .settings.production import SERVER_EMAIL, EMAIL_HOST_PASSWORD
 from django.http import HttpResponseForbidden
 from django.core.mail.message import EmailMultiAlternatives
 from datetime import datetime, timedelta
