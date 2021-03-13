@@ -143,12 +143,11 @@ def getEvenementsSemaine(request):
     return evenements
 
 def bienvenue(request):
-    import pytz.UTC as utc
     nums = ['01', '02', '03', '04', '07', '10', '11', '13', '15', '17', '20', '21', '23', ]
     nomImage = 'img/flo/resized0' + choice(nums)+'.png'
     nbNotif = 0
     nbExpires = 0
-    yesterday = utc.localize(date.today() - timedelta(hours=12))
+    yesterday = date.today() - timedelta(hours=12)
     evenements = EvenementAcceuil.objects.filter(date__gt=yesterday).order_by('date')
     evenements_semaine = getEvenementsSemaine(request)
     if request.user.is_authenticated:
