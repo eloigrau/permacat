@@ -1,5 +1,8 @@
 {% extends 'blog/baseBlog.html' %}
 {% load fontawesome %}
+{% load blog_filters %}
+{% load fontawesome %}
+{% load activity_tags %}
 
 {% block subtitle %}
 
@@ -8,13 +11,59 @@
        <h3> Bienvenue sur le forum</h3>
     </div>
 </div>
-<div class="col-md-12 justify-content-center">
+<div class="row justify-content-center">
+<div class="col-md-4 offset-md-4 ">
 <a href="{% url 'blog:ajouterNouvelArticle' %}">
     <button type="button" class="btn  btn-success" >
         <i class="fa fa-plus"></i>&nbsp; Ajouter un article
     </button>
 </a>&ensp;
 </div>
+<div class="col-md-4 ">
+    <a href="{% url 'blog:suivre_articles' %}">
+        {% if request.user|is_following:suivis %}
+        <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné : Cliquez pour arreter de recevoir un mail à chaque nouvel article">
+             {% fontawesome_icon 'bell' %}
+        </button>
+        {% else %}
+        <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné : Cliquez pour recevoir un mail à chaque nouvel article">
+             {% fontawesome_icon 'bell-slash' %}
+        </button>
+        {% endif %}
+    </a>
+    <a href="{% url 'blog:suiveursArticles' %}">
+        <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Voir abonnés">
+             {% fontawesome_icon 'list' %}
+        </button>
+    </a>
+   <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#help" title="En savoir plus...">
+     {% fontawesome_icon 'question-circle' %}
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="help" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog textaide" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+              <div class="row justify-content-center">
+               <h5 > Qu'est-ce que le forum permacat ?</h5>
+              </div>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body textleft">
+              <p>Le forum est un blog collaboratif. C'est un lieu virtuel d'échange d'idées, d'annonce d'un evenement, de partage de connaissainces, d'expression personnelle et de discussion. </p>
+              <p>Chacun est libre d'ajouter un article au forum ou de réagir en commentaire d'un article posté. </p>
+              <p>Vous pouvez choisir de voir la liste des articles d'un "dossier" en particuler (agenda, ecovillage, documentation, etc) en cliquant sur "Tous les dossiers..."</p>
+              <p>Pour vous tenir au courant des nouveaux articles postés dans le forum, vous pouvez vous "abonner" en ciquant sur la cloche. Vous recevrez alors des informations par mail sur les nouveaux articles.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+
+        <hr>
 {% endblock %}
 {% block content %}
 <div class="row">

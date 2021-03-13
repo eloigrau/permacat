@@ -11,7 +11,7 @@
 
 {% for article in liste %}
       <li class="list-group-item "  style=""  >
-          {{article}}, {{article.start_time}}, {{article.end_time}}
+         <a href="{{article.get_absolute_url}}"> {{article}}, {{article.start_time}}, {{article.end_time}}</a>
       </li>
 {%endfor%}
   </ul>

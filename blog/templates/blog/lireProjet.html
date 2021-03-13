@@ -26,7 +26,7 @@
             {% if request.user.is_superuser %}
         <a href="{% url 'blog:suiveursProjet' projet.slug %}">
             <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Voir qui est abonné tifications concernant cet article par mail">
-                 {% fontawesome_icon 'eye' %}
+                 {% fontawesome_icon 'list' %}
             </button>
         </a>
             {% endif %}

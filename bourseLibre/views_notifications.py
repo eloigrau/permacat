@@ -391,6 +391,20 @@ def get_articles_a_archiver():
 
         if test:
             liste.append(article)
+    from jardinpartage.models import Article as Article_jardin
+    articles = Article_jardin.objects.filter(estArchive=False)
+    for article in articles:
+        test = False
+        if article.start_time:
+            if article.start_time < date_limite:
+                if article.end_time:
+                    if article.end_time < date_limite:
+                        test = True
+                else:
+                    test = True
+
+        if test:
+            liste.append(article)
     newList = []
     for art in liste:
         eve = Evenement.objects.filter(start_time__lt=date_limite, article=art)
