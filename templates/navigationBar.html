@@ -37,7 +37,7 @@
                         <ul class="dropdown-menu nav5-dropdown-subsubmenu">
                             <li><a class="dropdown-item" href="{% url 'blog:index_projets' %}"><i class='fa fa-folder-open iconleft' ></i>  Tous les projets </a></li>
 {% for projet in liste_projets %}
-   <li><a class="dropdown-item" href="{{ projet.get_absolute_url }}"><i class='fa fa-comments' ></i> {{projet.titre|couperTexte:30}} </a></li>
+   <li><a class="dropdown-item" href="{{ projet.get_absolute_url }}"><i class='fa fa-comments' ></i> {{projet.titre|couperTexte:40}} </a></li>
 {% endfor %}
                         </ul>
                     </li>
