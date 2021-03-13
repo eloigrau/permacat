@@ -113,22 +113,25 @@
 
 </div>
 </div>
+
 <div class="row">
 <div class="col-sm-12 col-lg-12">
     <div class="row justify-content-center">
         <h5>Derniers articles commentés : </h5>
     </div>
-<div class="grid-container2 justify-content-center">
-    {% for article in derniers_articles_comm %}
-        <div class="infinite-item my-auto">
-        {% include "blog/article_template.html" with article=article %}
-        </div>
-    {% endfor %}
-</div>
-</div>
-    <div class="row justify-content-center">
-        <h5>Derniers articles créés : </h5>
+    <div class="grid-container2 justify-content-center">
+        {% for article in derniers_articles_comm %}
+            <div class="infinite-item my-auto">
+            {% include "blog/article_template.html" with article=article %}
+            </div>
+        {% endfor %}
     </div>
+</div>
+</div>
+<hr>
+<div class="row justify-content-center">
+    <h5>Derniers articles créés : </h5>
+</div>
 <div class="grid-container2 justify-content-center">
     {% for article in derniers_articles %}
         <div class="infinite-item my-auto">
@@ -138,9 +141,10 @@
 </div>
 
 </div>
-    <hr>
+<hr>
+
     <div class="row justify-content-center">
-    <div class="col-sm-12">
+    <div class="col-sm-6">
      <div class="row no-gutters justify-content-center">
          <form class="form-inline justify-content-center  navbar-form " action="{% url 'chercher_articles' %}" method="get" role = "search">
             {% csrf_token %}
@@ -152,7 +156,13 @@
             </div>
          </form>
      </div>
+</div>
+    <div class="col-sm-6">
+<a href="{% url 'blog:index' %}">
+    <button type="button" class="btn  btn-primary" >Voir tous les articles<i class="fa fa-arrow-right"></i>
+    </button>
+</a>
     </div>
-    </div>
+</div>
 {% endblock %}
 
