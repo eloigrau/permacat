@@ -53,14 +53,14 @@ def accueil(request):
     categorie_list_projets = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets
                                          if x[0] in cat]
 
-    derniers_articles = Article.objects.filter(estArchive=False).order_by('-id')[:4][::-1]
+    derniers_articles = Article.objects.filter(estArchive=False).order_by('-id')[:3][::-1]
     if not request.user.adherent_permacat:
         derniers_articles = derniers_articles.exclude(asso__abreviation="pc")
     if not request.user.adherent_fer:
         derniers_articles = derniers_articles.exclude(asso__abreviation="fer")
     if not request.user.adherent_rtg:
         derniers_articles = derniers_articles.exclude(asso__abreviation="rtg")
-    derniers_articles_comm = Article.objects.filter(estArchive=False).order_by('-date_dernierMessage')[:4][::-1]
+    derniers_articles_comm = Article.objects.filter(estArchive=False).order_by('-date_dernierMessage')[:3][::-1]
 
     if not request.user.adherent_permacat:
         derniers_articles_comm = derniers_articles_comm.exclude(asso__abreviation="pc")
@@ -656,7 +656,7 @@ def articles_suivis(request, slug):
 @login_required
 def articles_suiveurs(request):
     suivi, created = Suivis.objects.get_or_create(nom_suivi='articles')
-    suiveurs = sorted(followers(suivi), key= lambda x: x.username)
+    suiveurs = sorted(followers(suivi), key= lambda x: str.lower(x.username))
     return render(request, 'blog/articles_suivis.html', {'suiveurs': suiveurs, })
 
 

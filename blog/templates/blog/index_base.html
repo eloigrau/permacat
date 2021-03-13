@@ -42,8 +42,6 @@
             </div>
 
             <div class="col-md-4 justify-content-center">
-                <div class="row">
-                <div class="col-sm-4">
                     <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#help">
                  {% fontawesome_icon 'question-circle' %}
                 </button>
@@ -68,8 +66,6 @@
                     </div>
                   </div>
                 </div>
-                </div>
-                <div class="col-sm-4">
                 <a href="{% url 'blog:suivre_articles' %}">
                     {% if request.user|is_following:suivis %}
                     <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné : Cliquez pour arreter de recevoir un mail à chaque nouvel article">
@@ -81,15 +77,11 @@
                     </button>
                     {% endif %}
                 </a>
-                </div>
-                <div class="col-sm-4">
                     <a href="{% url 'blog:suiveursArticles' %}">
                         <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Voir abonnés">
                              {% fontawesome_icon 'eye' %}
                         </button>
                     </a>
-                </div>
-                </div>
         </div>
     </div>
         <hr>
