@@ -217,7 +217,7 @@ section.p3 {
 }
 
 .navbar-menu {
-	
+
 }
 .bs-dark .dropdown-menu .divider {
     height: 0;
@@ -676,7 +676,7 @@ article-carte{
 
 .article_carte:hover {
 	box-shadow: 2px 3px 8px 0px;
-	min-height: 130px;
+	min-height: 140px;
 }
 
 .article_carte {

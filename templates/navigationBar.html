@@ -173,12 +173,10 @@
 
         <li class="nav-item nav4 5to4"><a class="nav-link" href="{% url 'notifications_news' %}">{% fontawesome_icon 'bell' %} ({{ notification_count }})  Notifications</a></li>
 
-
-
         <li class="nav-item nav1"><a class="nav-link" href="{% url 'marche' %}"> {% fontawesome_icon 'shopping-basket' %} Altermarché</a></li>
 
         <li class="nav-item dropdown nav6">
-            <a class="nav-link dropdown-toggle navbar-menu " href="#dropdoownSite" id="navbarAbout2" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" >
+            <a class="nav-link dropdown-toggle navbar-menu " id="navbarAbout2" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" >
              {% fontawesome_icon 'globe' %} Site
             </a>
             <ul class="dropdown-menu dropdown-menu1 nav6-dropdown" aria-labelledby="navbarAbout2" id="dropdoownSite">
@@ -193,8 +191,9 @@
                 {% if request.user.is_superuser %}
                 {% load admin_urls %}
                 <li></li> <a class="dropdown-item" href="{% url 'admin:index' %}">Admin</a></li>
-                <li></li> <a class="dropdown-item" href="{% url 'voir_articles_a_archiver' %}">Archiver articles</a></li>
                <li> <a class="dropdown-item" href="{% url 'voirEmails' %}"> voir Emails Alertes</a></li>
+                <li></li> <a class="dropdown-item" href="{% url 'voir_articles_a_archiver' %}">Archiver articles</a></li>
+
                <li> <a class="dropdown-item" href="{% url 'nettoyerActions' %}"> nettoyerActions</a></li>
                <li> <a class="dropdown-item" href="{% url 'nettoyerHistoriqueAdmin' %}"> nettoyerHistoriqueAdmin</a></li>
                 {%endif%}
