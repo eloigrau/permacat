@@ -3,7 +3,7 @@
 {% load app_filters %}
 {% block navBar %}
 
-<nav class="navbar fixed-top navbar-light bs-dark navbar-expand-xl navbarMenu dropdown-toggle1">
+<nav class="navbar fixed-top navbar-light bs-dark navbar-expand-xl navbarMenu dropdown-toggle1" id="navbar">
     <div class="container-fluid">
         <button class="navbar-toggler navbar-btn" type="button" data-toggle="collapse" data-target="#navbarsActuel" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -284,6 +284,17 @@ $('.dropdown-menu a.dropdown-toggle').on('click', function(e) {
 
   return false;
 });
+var prevScrollpos = window.pageYOffset;
+window.onscroll = function() {
+  var currentScrollPos = window.pageYOffset;
+  if (prevScrollpos > currentScrollPos) {
+    document.getElementById("navbar").style.top = "0";
+  } else {
+    document.getElementById("navbar").style.top = "-70px";
+  }
+  prevScrollpos = currentScrollPos;
+}
+
 </script>
 {% endblock %}
 

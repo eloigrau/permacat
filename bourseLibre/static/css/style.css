@@ -193,9 +193,9 @@ section.p3 {
     -webkit-box-shadow: 2px 2px 20px 0px #0D4003;
     box-shadow: 2px 2px 20px 0px #0D4003;
    border-radius: 0.4em;
-   line-height: 2.6em;
-    margin-bottom:20px;
-
+   line-height: 2.4em;
+    margin-bottom:48px;
+  transition: top 0.3s; /* Transition effect when sliding down (and up) */
 }
 .dropdown-menu {
     margin: 0rem 0 0;
