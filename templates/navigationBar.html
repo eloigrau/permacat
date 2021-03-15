@@ -122,54 +122,54 @@
                 </ul>
         </li>
         <li class="nav-item dropdown nav5 3to5">
-                <a class="nav-link dropdown-toggle navbar-menu "  href="{% url 'presentation_asso' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-drafting-compass iconleft" ></i> Activités
-                </a>
+            <a class="nav-link dropdown-toggle navbar-menu "  href="{% url 'presentation_asso' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-drafting-compass iconleft" ></i> Activités
+            </a>
 
-                <ul class="dropdown-menu dropdown-menu1 textcenter nav5-dropdown" aria-labelledby="navbarDropdownMenuLink">
-                    <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle" >Projets</a>
-                        <ul class="dropdown-menu nav5-dropdown-submenu">
-                            <li> <a class="dropdown-item" href="{% url 'blog:index_projets' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les projets </a></li>
+            <ul class="dropdown-menu dropdown-menu1 textcenter nav5-dropdown" aria-labelledby="navbarDropdownMenuLink">
+                <li class="dropdown-submenu">
+                    <a class="dropdown-item dropdown-toggle" >Projets</a>
+                    <ul class="dropdown-menu nav5-dropdown-submenu">
+                        <li> <a class="dropdown-item" href="{% url 'blog:index_projets' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les projets </a></li>
 
-                        <li class="dropdown-submenu">
-                            <a class="dropdown-item dropdown-toggle" >Projets acceptés :</a>
-                            <ul class="dropdown-menu nav5-dropdown-subsubmenu">
-                               {% for projet in liste_projets %}
-                                <li><a class=" dropdown-item " style="background:{{projet.get_couleur}};" href="{% url 'blog:lireProjet' slug=projet.slug %}"><span>{{projet.titre|truncatechars:45}}</span></a></li>
-                                {% endfor %}
-                            </ul>
-                        </li>
-
-                        <li class="dropdown-submenu">
-                            <a class="dropdown-item dropdown-toggle" >Projets Proposés </a>
-                            <ul class="dropdown-menu nav5-dropdown-subsubmenu">
-                               {% for projet in liste_projets_prop %}
-                                <li><a class=" dropdown-item " style="background:{{projet.get_couleur}};" href="{% url 'blog:lireProjet' slug=projet.slug %}"><span>{{projet.titre|truncatechars:45}}</span></a></li>
-                                {% endfor %}
-                            </ul>
-                        </li>
-                        </ul>
-                    </li>
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle" >Jardins Partagés</a>
-                        <ul class="dropdown-menu nav5-dropdown-submenu">
-                            <li> <a class="dropdown-item" href="{% url 'jardinpartage:index' %}"><i class='fa fa-folder-open iconleft' ></i>  Blog des jardins Partagés </a></li>
-                            <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=1 %}"><i class='fa fa-pagelines' ></i> Jardi Per tots</a></li>
-                            <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=2 %}"><i class='fa fa-pagelines' ></i> Jardin de Palau </a></li>
-                            <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=3 %}"><i class='fa fa-pagelines' ></i> Jardin de Lurçat </a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle" >Ateliers Collectifs </a>
-                        <ul class="dropdown-menu nav5-dropdown-submenu">
-                            <li><a class="dropdown-item" href="{% url 'ateliers:index_ateliers' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les ateliers </a></li>
-                            {% for slug_atelier, cat_nom, cat_coul in liste_ateliers %}
-                            <li><a class=" dropdown-item " style="background:{{cat_coul}};" href="{%url 'ateliers:lireAtelier' slug=slug_atelier"><span>{{cat_nom}}</span></a></li>
+                        <a class="dropdown-item dropdown-toggle" >Projets acceptés :</a>
+                        <ul class="dropdown-menu nav5-dropdown-subsubmenu">
+                           {% for projet in liste_projets %}
+                            <li><a class=" dropdown-item " style="background:{{projet.get_couleur}};" href="{% url 'blog:lireProjet' slug=projet.slug %}"><span>{{projet.titre|truncatechars:45}}</span></a></li>
                             {% endfor %}
                         </ul>
                     </li>
-                </ul>
+
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle" >Projets Proposés </a>
+                        <ul class="dropdown-menu nav5-dropdown-subsubmenu">
+                           {% for projet in liste_projets_prop %}
+                            <li><a class=" dropdown-item " style="background:{{projet.get_couleur}};" href="{% url 'blog:lireProjet' slug=projet.slug %}"><span>{{projet.titre|truncatechars:45}}</span></a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    </ul>
+                </li>
+                <li class="dropdown-submenu">
+                    <a class="dropdown-item dropdown-toggle" >Jardins Partagés</a>
+                    <ul class="dropdown-menu nav5-dropdown-submenu">
+                        <li> <a class="dropdown-item" href="{% url 'jardinpartage:index' %}"><i class='fa fa-folder-open iconleft' ></i>  Blog des jardins Partagés </a></li>
+                        <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=1 %}"><i class='fa fa-pagelines' ></i> Jardi Per tots</a></li>
+                        <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=2 %}"><i class='fa fa-pagelines' ></i> Jardin de Palau </a></li>
+                        <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=3 %}"><i class='fa fa-pagelines' ></i> Jardin de Lurçat </a></li>
+                    </ul>
+                </li>
+                <li class="dropdown-submenu">
+                    <a class="dropdown-item dropdown-toggle" >Ateliers Collectifs </a>
+                    <ul class="dropdown-menu nav5-dropdown-submenu">
+                        <li><a class="dropdown-item" href="{% url 'ateliers:index_ateliers' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les ateliers </a></li>
+                        {% for slug_atelier, cat_nom, cat_coul in liste_ateliers %}
+                        <li><a class=" dropdown-item " style="background:{{cat_coul}};" href="{%url 'ateliers:lireAtelier' slug=slug_atelier"><span>{{cat_nom}}</span></a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
         </li>
 
         <li class="nav-item nav2"><a class="nav-link" href="{% url 'blog:acceuil' %}">{% fontawesome_icon 'comments' %} Forum</a></li>
