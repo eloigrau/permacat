@@ -148,6 +148,9 @@ class Evenement(models.Model):
     def get_absolute_url(self):
         return self.article.get_absolute_url()
 
+    @property
+    def slug(self):
+        return self.article.slug
 
     @property
     def gettitre(self):
