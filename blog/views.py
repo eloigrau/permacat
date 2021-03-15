@@ -60,8 +60,8 @@ def accueil(request):
         derniers_articles = derniers_articles.exclude(asso__abreviation="fer")
     if not request.user.adherent_rtg:
         derniers_articles = derniers_articles.exclude(asso__abreviation="rtg")
-    derniers_articles_comm = Article.objects.filter(estArchive=False).order_by('-date_dernierMessage')
 
+    derniers_articles_comm = Article.objects.filter(estArchive=False).order_by('-date_dernierMessage')
     if not request.user.adherent_permacat:
         derniers_articles_comm = derniers_articles_comm.exclude(asso__abreviation="pc")
     if not request.user.adherent_fer:
@@ -144,7 +144,7 @@ def lireArticle(request, slug):
         from datetime import datetime, timedelta
         import pytz
         utc = pytz.UTC
-        date_limite = utc.localize(datetime.today() - timedelta(days=1))
+        date_limite = utc.localize(datetime.today() - timedelta(hours=1))
         if comment and not Commentaire.objects.filter(commentaire=comment.commentaire, article=article, date_creation__gt=date_limite):
             comment.article = article
             comment.auteur_comm = request.user
