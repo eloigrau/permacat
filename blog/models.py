@@ -132,7 +132,7 @@ class Article(models.Model):
             return False
 
 class Evenement(models.Model):
-    titre = models.CharField(verbose_name="Titre de l'événement (si laissé vide, ce sera le titre de l'article)",
+    titre_even = models.CharField(verbose_name="Titre de l'événement (si laissé vide, ce sera le titre de l'article)",
                              max_length=100, null=True, blank=True, default="")
     article = models.ForeignKey(Article, on_delete=models.CASCADE, help_text="L'evenement doit etre associé à un article existant (sinon créez un article avec une date)" )
     start_time = models.DateTimeField(verbose_name="Date", null=False,blank=False, help_text="jj/mm/année" , default=timezone.now)
@@ -140,7 +140,7 @@ class Evenement(models.Model):
 
 
     def __str__(self):
-        return "(" + str(self.id) + ") "+ str(self.start_time) + ": " + str(self.article)
+        return "(" + str(self.titre) + ") "+ str(self.start_time) + ": " + str(self.article)
 
     class Meta:
         unique_together = ('article', 'start_time',)
@@ -153,10 +153,10 @@ class Evenement(models.Model):
         return self.article.slug
 
     @property
-    def gettitre(self):
-        if not self.titre:
+    def titre(self):
+        if not self.titre_even:
             return self.article.titre
-        return self.titre
+        return self.titre_even
 
     @property
     def estPublic(self):
@@ -316,7 +316,7 @@ class CommentaireProjet(models.Model):
 
 
 class EvenementAcceuil(models.Model):
-    titre = models.CharField(verbose_name="Titre de l'événement (si laissé vide, ce sera le titre de l'article)",
+    titre_even = models.CharField(verbose_name="Titre de l'événement (si laissé vide, ce sera le titre de l'article)",
                              max_length=100, null=True, blank=True, default="")
     article = models.ForeignKey(Article, on_delete=models.CASCADE,
                                 help_text="L'evenement doit etre associé à un article existant (sinon créez un article avec une date)")
@@ -333,7 +333,7 @@ class EvenementAcceuil(models.Model):
         return self.article.get_absolute_url()
 
     @property
-    def gettitre(self):
-        if not self.titre:
+    def titre(self):
+        if not self.titre_even:
             return self.article.titre
-        return self.titre
+        return self.titre_even

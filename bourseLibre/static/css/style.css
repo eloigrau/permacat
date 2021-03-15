@@ -1521,6 +1521,8 @@ caption {
 	}
 	#calendar .daybefore{
 		min-height:20px;
+		display: none;
+
 	}
 
     #calendar .joursemaine{

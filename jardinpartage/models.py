@@ -122,7 +122,7 @@ class Article(models.Model):
 
 
 class Evenement(models.Model):
-    titre = models.CharField(verbose_name="Titre de l'événement (si laissé vide, ce sera le titre de l'article)",
+    titre_even = models.CharField(verbose_name="Titre de l'événement (si laissé vide, ce sera le titre de l'article)",
                              max_length=100, null=True, blank=True, default="")
     article = models.ForeignKey(Article, on_delete=models.CASCADE, help_text="L'evenement doit etre associé à un article existant (sinon créez un article avec une date)" )
     start_time = models.DateTimeField(verbose_name="Date", null=False,blank=False, help_text="jj/mm/année" , default=timezone.now)
@@ -137,10 +137,10 @@ class Evenement(models.Model):
 
 
     @property
-    def gettitre(self):
-        if not self.titre:
+    def titre(self):
+        if not self.titre_even:
             return self.article.titre
-        return self.titre
+        return self.titre_even
 
     @property
     def estPublic(self):
