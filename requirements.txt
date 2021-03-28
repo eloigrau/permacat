@@ -38,7 +38,7 @@ django-summernote==0.8.11.4
 django-tinymce==2.8.0
 django-taggit==1.1.0
 django-widget-tweaks==1.4.3
-djangorestframework==3.9.1
+djangorestframework==3.11.2
 gunicorn==19.9.0
 html5lib==1.0.1
 icalendar==4.0.3
@@ -47,14 +47,14 @@ Markdown==2.6.11
 mistune==0.8.4
 olefile==0.45.1
 phonenumbers==8.10.4
-Pillow==7.1.0
+Pillow==8.1.1
 progressbar2==3.38.0
 psycopg2-binary==2.7.7
 pytest-runner==4.2
 python-dateutil==2.7.5
 python-utils==2.3.0
 pytz==2018.7
-PyYAML==5.1
+PyYAML==5.4
 requests==2.20.1
 six==1.11.0
 sorl-thumbnail==12.5.0
