@@ -28,7 +28,7 @@
         <button type="button" class="btn dropdown-toggle btn-primary  btn-block btn-menu-forum" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
         data-target = "#idDossiers_pc"> Dossiers Permacat</button>
         <div class="dropdown-menu textcenter dropdown-menu-forum btn-menu-forum" aria-labelledby="menuAuteur"  id="idDossiers_pc">
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='pc'%}"><span>Tous les articles</span></a>
+             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='pc'%}"><span>Tous les articles PermaCat</span></a>
             <div class="dropdown-divider"></div>
             {% for categorie_id, cat_nom, cat_coul in categorie_list_pc %}
              <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='pc'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
@@ -46,7 +46,7 @@
         <button type="button" class="btn dropdown-toggle btn-primary btn-block btn-menu-forum" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
         data-target = "#idDossiers_rtg"> Dossiers RTG</button>
         <div class="dropdown-menu textcenter dropdown-menu-forum btn-menu-forum" aria-labelledby="menuAuteur"  id="idDossiers_rtg">
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='rtg'%}"><span>Tous les articles</span></a>
+             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='rtg'%}"><span>Tous les articles RTG</span></a>
             <div class="dropdown-divider"></div>
             {% for categorie_id, cat_nom, cat_coul in categorie_list_rtg %}
              <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='rtg'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
@@ -61,7 +61,7 @@
         <button type="button" class="btn dropdown-toggle btn-primary  btn-block btn-menu-forum" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
         data-target = "#idDossiers_fer"> Dossiers Fermille</button>
         <div class="dropdown-menu textcenter dropdown-menu-forum btn-menu-forum" aria-labelledby="menuAuteur"  id="idDossiers_fer">
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='fer'%}"><span>Tous les articles</span></a>
+             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='fer'%}"><span>Tous les articles Fermille</span></a>
                  <div class="dropdown-divider"></div>
             {% for categorie_id, cat_nom, cat_coul in categorie_list_fer %}
              <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='fer'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
@@ -69,6 +69,19 @@
         </div>
     </li>
     {% endif %}
+            <li class="nav-item dropdown">
+                <button type="button" class="btn dropdown-toggle btn-primary btn-block btn-menu-forum" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
+                data-target = "#idProjets"> Projets acceptés </button>
+                <div class="dropdown-menu dropdown-menu-forum textcenter btn-menu-forum"  aria-labelledby="menuAuteur"  id="idProjets">
+                    <a class="dropdown-item" style="background-color:#cbdff0;" href="{% url 'blog:index_projets' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les projets </a>
+
+                     <div class="dropdown-divider"></div>
+                    {% for projet_slug, cat_nom, cat_coul in projets_list %}
+                     <a class=" dropdown-item "  href="{% url 'blog:lireProjet' slug=projet_slug %}"><span>{{cat_nom|truncatechars:40}}</span></a>
+                    {% endfor %}
+                    <div class="dropdown-divider"></div>
+                </div>
+            </li>
 
     </ul>
 

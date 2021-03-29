@@ -3,7 +3,7 @@
 {% load app_filters %}
 {% block navBar %}
 
-<nav class="navbar fixed-top navbar-light bs-dark navbar-expand-xl navbarMenu dropdown-toggle1" id="navbar">
+<nav class="navbar navbar-light bs-dark navbar-expand-xl navbarMenu dropdown-toggle1" id="navbar">
     <div class="container-fluid">
         <button class="navbar-toggler navbar-btn" type="button" data-toggle="collapse" data-target="#navbarsActuel" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -17,9 +17,9 @@
                 <a class="nav-link dropdown-toggle navbar-menu "  href="{% url 'presentation_asso' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {% fontawesome_icon 'link' %} Groupes
                 </a>
-                <ul class="dropdown-menu dropdown-menu1 textcenter nav5-dropdown" aria-labelledby="navbarDropdownMenuLink">
+                <ul class="dropdown-menu dropdown-menu1 nav5-dropdown" aria-labelledby="navbarDropdownMenuLink">
 
-                <li><a class="dropdown-item" href="{% url 'agora' asso='public'%}"> <i class='fa fa-asterisk' ></i> Salon de discussion Général</a></li>
+                <li><a class="dropdown-item" href="{% url 'agora' asso='public'%}"> <i class='fa fa-asterisk' ></i> Salon de discussion du site</a></li>
                  <li class="divider" role="separator"></li>
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" >PermaCat</a>
@@ -27,7 +27,8 @@
    {% if request.user.adherent_permacat %}
                         <li> <a class="dropdown-item" href="{% url 'agora' asso='pc'%}"><i class='fa fa-asterisk' ></i>  Salon de discussion</a></li>
     {% endif %}
-                         <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='pc'%}"><i class='fa fa-comments' ></i> Articles </a></li>
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' %}"> Présentation</a></li>
+                         <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='pc'%}"><i class='fa fa-comments' ></i> Articles du forum</a></li>
 
 
                     {%comment%}
@@ -57,6 +58,7 @@
                             {% endcomment %}
 
 
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' %}"> Présentation</a></li>z
                             {% if request.user.adherent_permacat %}
                        <li class="divider" role="separator"></li>
                         <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='pc' %}"><i class='fa fa-address-book' ></i>  Annuaire  </a></li>
@@ -65,7 +67,6 @@
 
    {% endif %}
                             <li class="divider" role="separator"></li>
-                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' %}"> Qui sommes nous ?</a></li>
                        <li> <a class="dropdown-item" href="{% url 'charte' %}"> Charte </a></li>
                        <li> <a class="dropdown-item" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a></li>
                         <li class="divider" role="separator"></li>
@@ -80,7 +81,7 @@
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso_rtg' %}"> Présentation </a></li>
    {% if request.user.adherent_rtg %}
                             <li> <a class="dropdown-item" href="{% url 'agora' asso='rtg'%}"><i class='fa fa-asterisk' ></i> Salon de discussion</a></li>
-                            <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='rtg'%}"><i class='fa fa-comments' ></i> Articles </a></li>
+                            <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='rtg'%}"><i class='fa fa-comments' ></i> Articles du forum</a></li>
                             <li><a class="dropdown-item" href="{% url 'blog:lireArticle' slug='dossiersactions-en-cours'%}"><i class='fa fa-comments' ></i> Dossiers en cours </a></li>
                           <li class="divider" role="separator"></li>
                             <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='rtg' %}"><i class='fa fa-address-book' ></i> Annuaire  </a></li>
@@ -126,14 +127,14 @@
                 <i class="fa fa-wrench iconleft" ></i> Activités
             </a>
 
-            <ul class="dropdown-menu dropdown-menu1 textcenter nav5-dropdown" aria-labelledby="navbarDropdownMenuLink">
+            <ul class="dropdown-menu dropdown-menu1 nav5-dropdown" aria-labelledby="navbarDropdownMenuLink">
                 <li class="dropdown-submenu">
                     <a class="dropdown-item dropdown-toggle" >Projets</a>
                     <ul class="dropdown-menu nav5-dropdown-submenu">
                         <li> <a class="dropdown-item" href="{% url 'blog:index_projets' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les projets </a></li>
 
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle" >Projets acceptés :</a>
+                        <a class="dropdown-item dropdown-toggle" >Projets acceptés</a>
                         <ul class="dropdown-menu nav5-dropdown-subsubmenu">
                            {% for projet in liste_projets %}
                             <li><a class=" dropdown-item " style="background:{{projet.get_couleur}};" href="{% url 'blog:lireProjet' slug=projet.slug %}"><span>{{projet.titre|truncatechars:45}}</span></a></li>
@@ -284,6 +285,7 @@ $('.dropdown-menu a.dropdown-toggle').on('click', function(e) {
 
   return false;
 });
+{% comment %}
 var prevScrollpos = window.pageYOffset;
 window.onscroll = function() {
   var currentScrollPos = window.pageYOffset;
@@ -294,6 +296,7 @@ window.onscroll = function() {
   }
   prevScrollpos = currentScrollPos;
 }
+{% endcomment %}
 
 </script>
 {% endblock %}

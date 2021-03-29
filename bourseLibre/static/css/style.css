@@ -1,8 +1,8 @@
 
 body {
-    background: #f2f2f2;
+    /*background: #f2f2f2;
     margin: auto;
-    width: 99%;
+    width: 99%;*/
     /*padding: 10px;*/
     /*padding-top: 55px;*/
     /*font-family: Georgia, serif;*/
@@ -12,15 +12,14 @@ body {
     /*background-image: url("../img/fleur3.jpg");
     background-repeat: repeat;*/
 
- font-family: 'Chivo', sans-serif;
- font-weight: 400;
+ /*font-family: 'Chivo', sans-serif;
+ font-weight: 400;*/
+ color:black;
 }
 
-h1, h2, h3, h4, h5, h6 {
- font-family: 'Playfair Display', serif;
- font-weight: 700;
-}
-
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 2rem;
+    }
 .titreArticle:{
 /*color:black;*/
 }
@@ -174,7 +173,8 @@ section.p3 {
 .dropdown-submenu>.dropdown-menu {
     top: 0;
     left: 100%;
-    margin-top:-6px;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 /* rotate caret on hover */
@@ -188,15 +188,11 @@ section.p3 {
 .bs-dark{
     text-color:black;
   /*background-image:linear-gradient(90deg, #ffd0cc, #ffe6b3, #fcffcc, #f8ff99, #d9ffcc, #ccffdd, #ccfffb, #ccdbff);*/
-background-image:linear-gradient(40deg, #A9D0F5, white);
-    border: 2px inset rgba(28,110,164,0.65);
-    border-radius: 0px 25px 25px 25px;
-    -webkit-box-shadow: 2px 2px 20px 0px #0D4003;
-    box-shadow: 2px 2px 20px 0px #0D4003;
+background-image:linear-gradient(40deg, white, white);
+border: 1px inset rgba(28,110,164,0.65);
    border-radius: 0.4em;
    line-height: 2.4em;
     margin-bottom:45px;
- /* transition: top 0.3s;*/ /* Transition effect when sliding down (and up) */
 }
 .dropdown-menu {
     margin: 0rem 0 0;
@@ -232,16 +228,16 @@ background-image:linear-gradient(40deg, #A9D0F5, white);
    }
 
 .bs-dark .nav1 > a:hover{
-    background-color: #FF1500;
+    background-color: #ff9966;
 }
 .bs-dark .nav1 > a:focus{
-    background-color: #FF1500;
+    background-color: #ff9966;
 }
 .nav1-dropdown{
     background-color: #ff5b4d;
 }
 .cardH1{
-    background-color: #FF1500;
+    background-color: #ff9966;
 }
 .card1 > li{
     background-color: #ff5b4d;
@@ -350,16 +346,16 @@ background-image:linear-gradient(40deg, #A9D0F5, white);
 }
 
 .bs-dark .nav7 > a:hover {
-    background-color: #004CFF;
+    background-color: #6694ff;
 }
 .bs-dark .nav7 > a:focus {
-    background-color: #004CFF;
+    background-color: #6694ff;
 }
 .nav7-dropdown{
     background-color: #6694ff;
 }
 .cardH7{
-    background-color: #004CFF;
+    background-color: #6694ff;
 }
 .card7 > li{
     background-color: #6694ff;
@@ -417,7 +413,7 @@ background-image:linear-gradient(40deg, #A9D0F5, white);
 
 .bs-dark {
 
-  background-image:linear-gradient(90deg, #ffd0cc, #ffe6b3, #fcffcc, #ccffdd, #ccdbff);
+  background-image:linear-gradient(90deg, white, white);
    line-height: 2.4em;
    }
 .bs-dark .dropdown-menu1 {
