@@ -24,10 +24,10 @@
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" >PermaCat</a>
                         <ul class="dropdown-menu nav5-dropdown-submenu">
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' %}"> Présentation</a></li>
    {% if request.user.adherent_permacat %}
                         <li> <a class="dropdown-item" href="{% url 'agora' asso='pc'%}"><i class='fa fa-asterisk' ></i>  Salon de discussion</a></li>
     {% endif %}
-                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' %}"> Présentation</a></li>
                          <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='pc'%}"><i class='fa fa-comments' ></i> Articles du forum</a></li>
 
 
@@ -58,7 +58,6 @@
                             {% endcomment %}
 
 
-                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' %}"> Présentation</a></li>z
                             {% if request.user.adherent_permacat %}
                        <li class="divider" role="separator"></li>
                         <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='pc' %}"><i class='fa fa-address-book' ></i>  Annuaire  </a></li>
