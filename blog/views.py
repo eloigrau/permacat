@@ -149,7 +149,7 @@ def lireArticle(request, slug):
         if comment and not Commentaire.objects.filter(commentaire=comment.commentaire, article=article, date_creation__gt=date_limite):
             comment.article = article
             comment.auteur_comm = request.user
-            article.date_dernierMessage = comment.date_creation if comment.date_creation else now()
+            article.date_dernierMessage = now()
             article.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(strip_tags(comment.commentaire).replace('&nspb',' ')))[:96]
             if len(("(" + str(comment.auteur_comm) + ") " + str(strip_tags(comment.commentaire).replace('&nspb',' ')))) > 96:
                 article.dernierMessage += "..."
