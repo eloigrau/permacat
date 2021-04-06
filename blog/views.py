@@ -53,7 +53,7 @@ def accueil(request):
     categorie_list_projets = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets
                                          if x[0] in cat]
 
-    derniers_articles = Article.objects.filter(estArchive=False).order_by('-id')
+    derniers_articles = Article.objects.filter(estArchive=False, date_dernierMessage__isnull=False).order_by('-id')
     if not request.user.adherent_permacat:
         derniers_articles = derniers_articles.exclude(asso__abreviation="pc")
     if not request.user.adherent_fer:
