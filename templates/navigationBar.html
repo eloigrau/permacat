@@ -41,26 +41,26 @@
    <li class="dropdown-submenu">
       <a class="dropdown-item" href="{{ projet.get_absolute_url }}"><i class='fa fa-comments' ></i> {{projet.slug}} -{{projet.titre|couperTexte:40}} </a>
        <ul class="dropdown-menu nav5-dropdown-submenu">
-           <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin='1' %}"> Blog du jardin</a></li>
-           <li> <a class="dropdown-item" href="{% url 'blog:index_asso' asso='jp' %}"> Articles des jardins partagés sur le forum</a></li>
+           <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin='1' %}"> Blog du Jardi Per Tots</a></li>
+           <li> <a class="dropdown-item" href="{% url 'blog:index' %}?categorie=Jardin"> Articles des jardins partagés sur le forum</a></li>
         </ul>
          {% if projet.slug == "un-jardin-partage-en-permaculture-accessible-a-tous" or projet.slug == "jardin-de-permacat-a-perpignan" or projet.slug == "jardins-partages-a-perpignan-au-champ-de-mars" %}
  dsds
  {% elif projet.slug == "jardin-partage-de-palau" %}
                <ul class="dropdown-menu nav5-dropdown-submenu">
-           <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin='2' %}"> Blog du jardin</a></li>
-           <li> <a class="dropdown-item" href="{% url 'blog:index_asso' asso='jp' %}"> Articles des jardins partagés sur le forum</a></li>
+           <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin='2' %}"> Blog du jardin de Palau</a></li>
+           <li> <a class="dropdown-item" href="{% url 'blog:index' %}?categorie=Jardin"> Articles des jardins partagés sur le forum</a></li>
         </ul>
     {% elif projet.slug == "jardins-du-lycee-jean-lurcat" %}
       <ul class="dropdown-menu nav5-dropdown-submenu">
-           <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin='3' %}"> Blog du jardin</a></li>
-           <li> <a class="dropdown-item" href="{% url 'blog:index_asso' asso='jp' %}"> Articles des jardins partagés sur le forum</a></li>
+           <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin='3' %}"> Blog du jardin de Lurçat</a></li>
+           <li> <a class="dropdown-item" href="{% url 'blog:index' %}?categorie=Jardin"> Articles des jardins partagés sur le forum</a></li>
         </ul>
 
     {% elif projet.slug == "projet-eco-lieu" %}
       <ul class="dropdown-menu nav5-dropdown-submenu">
            <li> <a class="dropdown-item" href="{% url 'blog:index' %}?categorie=Ecovillage">Articles du forum</a></li>
-           <li> <a class="dropdown-item" href="{% url 'blog:index_asso' asso='jp' %}"> Articles des jardins partagés sur le forum</a></li>
+           <li> <a class="dropdown-item" href="'{% url blog:index' %}?categorie=Jardin"> Articles des jardins partagés sur le forum</a></li>
         </ul>
 {%endif  %}
 
