@@ -90,6 +90,7 @@
     </div>
     {% include 'blog/navbar_forum.html' %}
 </div>
+
 <div class="col-sm-12 col-lg-6">
 
     <div class="row justify-content-center">
@@ -178,6 +179,15 @@
 </div>
 
 <hr>
+<div class="row ">
+    <div class="col-sm-12 justify-content-center textcenter">
+<a href="{% url 'blog:index' %}">
+    <button type="button" class="btn  btn-primary" >Voir tous les articles du forum <i class="fa fa-arrow-right iconright"></i>
+    </button>
+</a>
+    </div>
+</div>
+<hr>
 <div class="row">
 <div class="col-sm-12 col-lg-12">
     <div class="row justify-content-center">
@@ -207,14 +217,5 @@
 </div>
 <hr>
 
-    <div class="row ">
-    <div class="col-sm-12 justify-content-center textcenter">
-<a href="{% url 'blog:index' %}">
-    <button type="button" class="btn  btn-primary" >Voir tous les articles du forum<i class="fa fa-arrow-right"></i>
-    </button>
-</a>
-    </div>
-</div>
-<hr>
 {% endblock %}
 

@@ -61,7 +61,7 @@ def accueil(request):
     if not request.user.adherent_rtg:
         derniers_articles = derniers_articles.exclude(asso__abreviation="rtg")
 
-    derniers_articles_comm = Article.objects.filter(estArchive=False).order_by('-date_dernierMessage')
+    derniers_articles_comm = Article.objects.filter(estArchive=False).order_by('date_dernierMessage')
     if not request.user.adherent_permacat:
         derniers_articles_comm = derniers_articles_comm.exclude(asso__abreviation="pc")
     if not request.user.adherent_fer:
@@ -70,7 +70,7 @@ def accueil(request):
         derniers_articles_comm = derniers_articles_comm.exclude(asso__abreviation="rtg")
 
     suivis, created = Suivis.objects.get_or_create(nom_suivi="articles")
-    return render(request, 'blog/accueil.html', {'categorie_list':categorie_list,'categorie_list_pc':categorie_list_pc,'categorie_list_rtg':categorie_list_rtg,'categorie_list_fer':categorie_list_fer,'projets_list':projets_list,'ateliers_list':ateliers_list, 'categorie_list_projets':categorie_list_projets,'derniers_articles':derniers_articles[:3],'derniers_articles_comm':derniers_articles_comm[:3], 'suivis':suivis})
+    return render(request, 'blog/accueil.html', {'categorie_list':categorie_list,'categorie_list_pc':categorie_list_pc,'categorie_list_rtg':categorie_list_rtg,'categorie_list_fer':categorie_list_fer,'projets_list':projets_list,'ateliers_list':ateliers_list, 'categorie_list_projets':categorie_list_projets,'derniers_articles':derniers_articles[:3],'derniers_articles_comm':derniers_articles_comm[::-1][:3], 'suivis':suivis})
 
 
 @login_required

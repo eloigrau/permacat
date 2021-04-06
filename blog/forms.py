@@ -215,7 +215,7 @@ class CommentaireProjetChangeForm(forms.ModelForm):
 
 
 class EvenementForm(forms.ModelForm):
-    qs = Article.objects.all()
+    qs = Article.objects.filter(estArchive=False)
     article = forms.ModelChoiceField(queryset=qs.order_by('titre')) #forms.ChoiceField(choices=Article.objects.all())
 
     class Meta:
