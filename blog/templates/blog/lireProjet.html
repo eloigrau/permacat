@@ -34,7 +34,7 @@
     </div>
     <div class="col-md-2">
         <p>
-        {%if projet.auteur == request.user%}
+        {%if projet.auteur == request.user or request.user.is_superuser%}
 		<div class="btn-group">
 
             <a href="{% url 'blog:modifierProjet' slug=projet.slug %}">
