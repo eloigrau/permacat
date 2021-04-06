@@ -245,7 +245,7 @@ class ListeArticles(ListView):
         # if not self.request.user.adherent_rtg:
         #     ateliers = ateliers.exclude(asso__abreviation="rtg")
         # context['ateliers_list'] = [(x.slug, x.titre, x.get_couleur) for x in ateliers]
-        #context['categorie_list_projets'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets if x[0] in cat]
+        context['categorie_list_projets'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets if x[0] in cat]
         context['typeFiltre'] = "aucun"
         context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="articles")
 

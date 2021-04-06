@@ -52,7 +52,7 @@ class Suffrage(models.Model):
     contenu = models.TextField(null=True, verbose_name="Description du contexte")
     date_creation = models.DateTimeField(verbose_name="Date de parution", default=timezone.now)
     estPublic = models.BooleanField(default=False, verbose_name='Public ou réservé aux membres permacat')
-    date_dernierMessage = models.DateTimeField(verbose_name="Date du dernier message", auto_now=True)
+    date_dernierMessage = models.DateTimeField(verbose_name="Date du dernier message", auto_now=False, blank=True, null=True)
     date_modification = models.DateTimeField(verbose_name="Date de modification", default=timezone.now)
     estArchive = models.BooleanField(default=False, verbose_name="Archiver la proposition")
     estAnonyme = models.BooleanField(default=False, verbose_name="Vote anonyme")

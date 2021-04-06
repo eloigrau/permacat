@@ -778,7 +778,7 @@ class Conversation(models.Model):
     profil2 = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='profil2')
     slug = models.CharField(max_length=100)
     date_creation = models.DateTimeField(auto_now_add=True, auto_now=False, verbose_name="Date de parution")
-    date_dernierMessage = models.DateTimeField(verbose_name="Date de Modification", auto_now=True)
+    date_dernierMessage = models.DateTimeField(verbose_name="Date de Modification", auto_now=False, blank=True, null=True)
     dernierMessage = models.CharField(max_length=100, default=None, blank=True, null=True)
 
     class Meta:

@@ -218,7 +218,7 @@ class Projet(models.Model):
     fichier_projet = models.FileField(upload_to='projets/%Y/%m/', blank=True, default=None, null=True)
     date_fichier = models.DateTimeField(auto_now=True, blank=True)
 
-    date_dernierMessage = models.DateTimeField(verbose_name="Date de Modification", auto_now=True)
+    date_dernierMessage = models.DateTimeField(verbose_name="Date de Modification", auto_now=False, blank=True, null=True)
     dernierMessage = models.CharField(max_length=100, default="", blank=True, null=True)
 
     start_time = models.DateTimeField(verbose_name="Date de début (optionnel, pour affichage dans l'agenda)",  null=True,blank=True, help_text="jj/mm/année")

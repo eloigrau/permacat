@@ -38,7 +38,33 @@
                         <ul class="dropdown-menu nav5-dropdown-subsubmenu">
                             <li><a class="dropdown-item" href="{% url 'blog:index_projets' %}"><i class='fa fa-folder-open iconleft' ></i>  Tous les projets </a></li>
 {% for projet in liste_projets %}
-   <li><a class="dropdown-item" href="{{ projet.get_absolute_url }}"><i class='fa fa-comments' ></i> {{projet.titre|couperTexte:40}} </a></li>
+   <li class="dropdown-submenu">
+      <a class="dropdown-item" href="{{ projet.get_absolute_url }}"><i class='fa fa-comments' ></i> {{projet.slug}} -{{projet.titre|couperTexte:40}} </a>
+       <ul class="dropdown-menu nav5-dropdown-submenu">
+           <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin='1' %}"> Blog du jardin</a></li>
+           <li> <a class="dropdown-item" href="{% url 'blog:index_asso' asso='jp' %}"> Articles des jardins partagés sur le forum</a></li>
+        </ul>
+         {% if projet.slug == "un-jardin-partage-en-permaculture-accessible-a-tous" or projet.slug == "jardin-de-permacat-a-perpignan" or projet.slug == "jardins-partages-a-perpignan-au-champ-de-mars" %}
+ dsds
+ {% elif projet.slug == "jardin-partage-de-palau" %}
+               <ul class="dropdown-menu nav5-dropdown-submenu">
+           <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin='2' %}"> Blog du jardin</a></li>
+           <li> <a class="dropdown-item" href="{% url 'blog:index_asso' asso='jp' %}"> Articles des jardins partagés sur le forum</a></li>
+        </ul>
+    {% elif projet.slug == "jardins-du-lycee-jean-lurcat" %}
+      <ul class="dropdown-menu nav5-dropdown-submenu">
+           <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin='3' %}"> Blog du jardin</a></li>
+           <li> <a class="dropdown-item" href="{% url 'blog:index_asso' asso='jp' %}"> Articles des jardins partagés sur le forum</a></li>
+        </ul>
+
+    {% elif projet.slug == "projet-eco-lieu" %}
+      <ul class="dropdown-menu nav5-dropdown-submenu">
+           <li> <a class="dropdown-item" href="{% url 'blog:index' %}?categorie=Ecovillage">Articles du forum</a></li>
+           <li> <a class="dropdown-item" href="{% url 'blog:index_asso' asso='jp' %}"> Articles des jardins partagés sur le forum</a></li>
+        </ul>
+{%endif  %}
+
+   </li>
 {% endfor %}
                         </ul>
                     </li>
@@ -135,9 +161,52 @@
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" >Projets acceptés</a>
                         <ul class="dropdown-menu nav5-dropdown-subsubmenu">
-                           {% for projet in liste_projets %}
-                            <li><a class=" dropdown-item " style="background:{{projet.get_couleur}};" href="{% url 'blog:lireProjet' slug=projet.slug %}"><span>{{projet.titre|truncatechars:45}}</span></a></li>
-                            {% endfor %}
+                            {% for projet in liste_projets %}
+     {% if projet.slug == "un-jardin-partage-en-permaculture-accessible-a-tous" or projet.slug == "jardin-de-permacat-a-perpignan" or projet.slug == "jardins-partages-a-perpignan-au-champ-de-mars" %}
+   <li class="dropdown-submenu">
+        <a class="dropdown-item dropdown-toggle" >{{projet.titre|couperTexte:40}}</a>
+       <ul class="dropdown-menu nav5-dropdown-submenu">
+           <li> <a class="dropdown-item" href="{% url 'blog:lireProjet' slug=projet.slug %}"><i class='fa fa-folder-open' ></i>  Fiche Projet</a></li>
+           <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin='1' %}"><i class='fa fa-pagelines' ></i>  Blog du jardin</a></li>
+           <li> <a class="dropdown-item" href="{% url 'blog:index_asso' asso='jp' %}"><i class='fa fa-comments' ></i>  Articles des jardins partagés sur le forum</a></li>
+        </ul>
+    </li>
+ {% elif projet.slug == "jardin-partage-de-palau" %}
+
+   <li class="dropdown-submenu">
+        <a class="dropdown-item dropdown-toggle" >{{projet.titre|couperTexte:40}}</a>
+            <ul class="dropdown-menu nav5-dropdown-submenu">
+           <li> <a class="dropdown-item" href="{% url 'blog:lireProjet' slug=projet.slug %}"><i class='fa fa-folder-open' ></i>  Fiche Projet</a></li>
+           <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin='2' %}"><i class='fa fa-pagelines' ></i>  Blog du jardin</a></li>
+           <li> <a class="dropdown-item" href="{% url 'blog:index_asso' asso='jp' %}"><i class='fa fa-comments' ></i>  Articles des jardins partagés sur le forum</a></li>
+        </ul>
+    </li>
+    {% elif projet.slug == "jardins-du-lycee-jean-lurcat" %}
+
+   <li class="dropdown-submenu">
+        <a class="dropdown-item dropdown-toggle" >{{projet.titre|couperTexte:40}}</a>
+        <ul class="dropdown-menu nav5-dropdown-submenu">
+           <li> <a class="dropdown-item" href="{% url 'blog:lireProjet' slug=projet.slug %}"><i class='fa fa-folder-open' ></i>  Fiche Projet</a></li>
+           <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin='3' %}"><i class='fa fa-pagelines' ></i>  Blog du jardin</a></li>
+           <li> <a class="dropdown-item" href="{% url 'blog:index_asso' asso='jp' %}"><i class='fa fa-comments' ></i>  Articles des jardins partagés sur le forum</a></li>
+        </ul>
+    </li>
+
+    {% elif projet.slug == "projet-eco-lieu" %}
+   <li class="dropdown-submenu">
+        <a class="dropdown-item dropdown-toggle" >{{projet.titre|couperTexte:40}}</a>
+            <ul class="dropdown-menu nav5-dropdown-submenu">
+           <li> <a class="dropdown-item" href="{% url 'blog:lireProjet' slug=projet.slug %}"><i class='fa fa-folder-open' ></i>  Fiche Projet</a></li>
+           <li> <a class="dropdown-item" href="{% url 'blog:index' %}?categorie=Ecovillage"><i class='fa fa-comments' ></i>  Articles du forum</a></li>
+        </ul>
+    </li>
+{%else  %}
+    <li><a class=" dropdown-item " style="background:{{projet.get_couleur}};" href="{% url 'blog:lireProjet' slug=projet.slug %}"><span>{{projet.titre|truncatechars:45}}</span></a></li>
+
+{%endif  %}
+
+   </li>
+{% endfor %}
                         </ul>
                     </li>
 
@@ -281,9 +350,9 @@ $('.dropdown-menu a.dropdown-toggle').on('click', function(e) {
     $('.dropdown-submenu .show').removeClass('show');
   });
 
-
   return false;
 });
+
 {% comment %}
 var prevScrollpos = window.pageYOffset;
 window.onscroll = function() {

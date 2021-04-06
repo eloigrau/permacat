@@ -55,7 +55,7 @@ class Fiche(models.Model):
     date_creation = models.DateTimeField(verbose_name="Date de parution", default=timezone.now)
     date_modification = models.DateTimeField(verbose_name="Date de modification", default=timezone.now)
 
-    date_dernierMessage = models.DateTimeField(verbose_name="Date du dernier message", auto_now=True)
+    date_dernierMessage = models.DateTimeField(verbose_name="Date du dernier message", auto_now=False, blank=True, null=True)
     dernierMessage = models.CharField(max_length=100, default=None, blank=True, null=True)
 
     tags = TaggableManager(verbose_name=("Mots-clés"), help_text=("Une liste de mots clés, séparés par des virgules."), blank=True,)
