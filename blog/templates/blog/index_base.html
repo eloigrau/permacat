@@ -43,22 +43,6 @@
 
             <div class="col-md-4 justify-content-center">
 
-                <a href="{% url 'blog:suivre_articles' %}">
-                    {% if request.user|is_following:suivis %}
-                    <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné : Cliquez pour arreter de recevoir un mail à chaque nouvel article">
-                         {% fontawesome_icon 'bell' %}
-                    </button>
-                    {% else %}
-                    <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné : Cliquez pour recevoir un mail à chaque nouvel article">
-                         {% fontawesome_icon 'bell-slash' %}
-                    </button>
-                    {% endif %}
-                </a>
-                    <a href="{% url 'blog:suiveursArticles' %}">
-                        <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Voir abonnés">
-                             {% fontawesome_icon 'list' %}
-                        </button>
-                    </a>
                    <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#help" title="En savoir plus...">
                  {% fontawesome_icon 'question-circle' %}
                 </button>

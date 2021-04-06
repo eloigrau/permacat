@@ -36,7 +36,6 @@
 </a>&ensp;
 </div>
 <div class="col-sm-12 col-md-12 col-lg-4">
-    {% comment %}
     <a href="{% url 'blog:suivre_articles' %}">
         {% if request.user|is_following:suivis %}
         <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné : Cliquez pour arreter de recevoir un mail à chaque nouvel article">
@@ -53,7 +52,6 @@
              {% fontawesome_icon 'list' %}
         </button>
     </a>
-    {% endcomment %}
    <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#help" title="En savoir plus...">
      {% fontawesome_icon 'question-circle' %}
     </button>
