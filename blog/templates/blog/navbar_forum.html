@@ -23,6 +23,15 @@
         </div>
     </li>
 
+    <li class="nav-item dropdown">
+        <button type="button" class="btn dropdown-toggle btn-primary  btn-block btn-menu-forum" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
+        data-target = "#idDossiers_projets"> Projets</button>
+        <div class="dropdown-menu textcenter dropdown-menu-forum btn-menu-forum" aria-labelledby="menuAuteur"  id="idDossiers_projets">
+            {% for categorie_id, cat_nom, cat_coul in categorie_list_projets %}
+             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index' %}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+            {% endfor %}
+        </div>
+    </li>
      {% if request.user.adherent_permacat %}
     <li class="nav-item dropdown">
         <button type="button" class="btn dropdown-toggle btn-primary  btn-block btn-menu-forum" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
@@ -33,11 +42,7 @@
             {% for categorie_id, cat_nom, cat_coul in categorie_list_pc %}
              <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='pc'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
             {% endfor %}
-            <div class="dropdown-divider"></div>
-            {% for categorie_id, cat_nom, cat_coul in categorie_list_projets %}
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='pc'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
-            {% endfor %}
-        </div>
+
     </li>
     {% endif %}
 
