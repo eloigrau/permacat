@@ -179,7 +179,7 @@ section.p3 {
 
 /* rotate caret on hover */
 .dropdown-menu > li > a:hover:after {
-    text-decoration: underline;
+
     transform: rotate(-90deg);
 }
 
@@ -663,6 +663,7 @@ article-carte{
     border-radius: 0.3em;
     border:1.5px grey solid;
     padding: 5px 80px;
+	text-decoration:none;
 }
 .article-card-header {
     padding: 0;
@@ -674,12 +675,23 @@ article-carte{
 .article_carte:hover {
 	box-shadow: 2px 3px 8px 0px;
 	min-height: 135px;
+	text-decoration:none;
+}
+a article_carte:hover {
+	text-decoration:none;
+}
+a article_carte:focus {
+	text-decoration:none;
+}
+a article_carte:active {
+	text-decoration:none;
 }
 
 .article_carte {
 	min-height: 130px;
 	margin:9px;
 	overflow: hidden;
+	text-decoration:none;
 }
 
 .bouton_dossiers_forum {
@@ -826,9 +838,9 @@ box-shadow: 0 10px 10px 0px grey;
     margin-bottom: 9px;
 }
 
-a:link           { color: #003d66 }  /* unvisited links       */
-a:visited        { color: #001f33 }  /* visited links         */
-a:hover, a:focus { text-shadow: 0px 0.2px ;}    /* user hovers, or focus */
+a:link           { color: #3366BB }  /* unvisited links       */
+a:visited        { color: #003d66 }  /* visited links         */
+a:hover, a:focus { text-shadow: 0px 0.2px ; text-decoration:none;}    /* user hovers, or focus */
 a:active         { color: #005c99 }  /* active links          */
 
 
