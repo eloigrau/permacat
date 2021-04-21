@@ -403,6 +403,8 @@ def telechargements_asso(request):
                 {'titre' : "Publication au journal officiel", 'url': static('doc/JOAFE_PDF_Unitaire_20190012_01238.pdf'),},
                 {'titre' : 'Statuts déposés', 'url': static('doc/statuts.pdf'),},
                 {'titre' : 'RIB', 'url': static('doc/rib.pdf'),},
+                {'titre' : 'CR AGO 2021', 'url': static('doc/CR/2021_AGO-Compte_rendu.pdf'),},
+                {'titre' : 'CR Réunion écovillage 16/04/2021', 'url': static('doc/CR/CR16AVRIL21_ecovillage.docx'),},
                 ]
     return render(request, 'asso/fichiers.html', {'fichiers':fichiers})
 
