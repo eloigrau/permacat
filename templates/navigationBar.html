@@ -40,14 +40,14 @@
 {% for projet in liste_projets %}
    <li class="dropdown-submenu">
       <a class="dropdown-item" href="{{ projet.get_absolute_url }}"><i class='fa fa-comments' ></i> {{projet.slug}} -{{projet.titre|couperTexte:40}} </a>
+
+ {% if projet.slug == "un-jardin-partage-en-permaculture-accessible-a-tous" or projet.slug == "jardin-de-permacat-a-perpignan" or projet.slug == "jardins-partages-a-perpignan-au-champ-de-mars" %}
        <ul class="dropdown-menu nav5-dropdown-submenu">
            <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin='1' %}"> Blog du Jardi Per Tots</a></li>
            <li> <a class="dropdown-item" href="{% url 'blog:index' %}?categorie=Jardin"> Articles des jardins partagés sur le forum</a></li>
         </ul>
-         {% if projet.slug == "un-jardin-partage-en-permaculture-accessible-a-tous" or projet.slug == "jardin-de-permacat-a-perpignan" or projet.slug == "jardins-partages-a-perpignan-au-champ-de-mars" %}
- dsds
  {% elif projet.slug == "jardin-partage-de-palau" %}
-               <ul class="dropdown-menu nav5-dropdown-submenu">
+       <ul class="dropdown-menu nav5-dropdown-submenu">
            <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin='2' %}"> Blog du jardin de Palau</a></li>
            <li> <a class="dropdown-item" href="{% url 'blog:index' %}?categorie=Jardin"> Articles des jardins partagés sur le forum</a></li>
         </ul>
@@ -72,10 +72,9 @@
                         <a class="dropdown-item dropdown-toggle" ><i class='fa fa-wrench iconleft' ></i>  Ateliers Collectifs</a>
                         <ul class="dropdown-menu nav5-dropdown-subsubmenu">
                         <li><a class="dropdown-item" href="{% url 'ateliers:acceuil' %}"><i class='fa fa-wrench iconleft' ></i>  Tous les ateliers </a></li>
-
-                            {% for projet in liste_ateliers %}
-   <li><a class="dropdown-item" href="{{ projet.get_absolute_url }}"><i class='fa fa-comments' ></i> {{projet.titre|couperTexte:30}} </a></li>
-{% endfor %}
+                        {% for projet in liste_ateliers %}
+                           <li><a class="dropdown-item" href="{{ projet.get_absolute_url }}"><i class='fa fa-comments' ></i> {{projet.titre|couperTexte:30}} </a></li>
+                        {% endfor %}
                         </ul>
                     </li>
                     {% endcomment%}
