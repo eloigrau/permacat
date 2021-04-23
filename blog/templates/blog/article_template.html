@@ -2,7 +2,7 @@
 {% load activity_tags %}
 {% load app_filters %}
 {% load fontawesome %}
-  <a href="{% url 'blog:lireArticle' slug=article.slug %}">
+  <a href="{% url 'blog:lireArticle' slug=article.slug %}" >
 <div class="card card-block article_carte textcenter d-flex "  style="background-color:{{article.get_couleur}}">
 
     <div class="article-card-header">

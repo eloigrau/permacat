@@ -727,15 +727,19 @@ def cgu(request):
 @login_required
 def liens(request):
     liens = [
+        'https://www.tizoom.fr',
         'https://www.balotilo.org/',
         'http://terre-avenirs-peyrestortes.org/',
         'http://www.peyrestroc.org',
+        'https://www.facebook.com/ramenetagraine/',
         'http://sel66.free.fr',
         'https://colibris-universite.org/mooc-permaculture/wakka.php?wiki=PagePrincipale',
         'https://ecocharte.herokuapp.com',
         'https://pacteacvi.herokuapp.com',
+        'https://www.tropique-du-papillon.com',
+        'http://www.pepiniere-passiflore.com/'
         'http://lagalline.net',
-         'https://val-respire.wixsite.com/asso',
+        'https://val-respire.wixsite.com/asso',
         'https://www.monnaielibreoccitanie.org/',
         'http://lejeu.org/',
         'http://soudaqui.cat/wordpress/',
@@ -751,6 +755,7 @@ def liens(request):
         'http://www.le-message.org/',
         'https://reporterre.net/',
         'https://la-bas.org/',
+
     ]
     return render(request, 'liens.html', {'liens':liens})
 
