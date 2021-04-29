@@ -6,6 +6,8 @@ from django_summernote.widgets import SummernoteWidget
 from bourseLibre.models import Profil
 from blog.forms import SummernoteWidgetWithCustomToolbar
 from bourseLibre.models import Asso
+from django.utils.timezone import now
+from django.shortcuts import redirect
 
 class AtelierForm(forms.ModelForm):
     referent = forms.ChoiceField(label='Référent atelier')
@@ -14,23 +16,30 @@ class AtelierForm(forms.ModelForm):
 
     class Meta:
         model = Atelier
-        fields = ['titre', 'statut', 'categorie', 'asso', 'referent', 'description', 'materiel', 'date_atelier','heure_atelier','duree_prevue', 'tarif_par_personne']
+        fields = ['titre', 'asso', 'statut', 'categorie', 'referent', 'description', 'materiel', 'start_time','heure_atelier','duree_prevue', 'tarif_par_personne']
         widgets = {
             'description': SummernoteWidget(),
             'materiel': SummernoteWidget(),
-            'date_atelier': forms.DateInput(attrs={'type':"date"}),
+            'start_time': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
             'heure_atelier': forms.TimeInput(attrs={'type':"time", },format='%H:%M'),
             'duree_prevue': forms.TimeInput(attrs={'type':"time", },format='%H:%M'),
         }
 
-    def save(self, request):
+    def save(self, request, article):
         instance = super(AtelierForm, self).save(commit=False)
-        referent = self.cleaned_data['referent']
         try:
-            instance.referent = dict(self.fields['referent'].choices)[referent]
+            referent = int(self.cleaned_data['referent'])
+            instance.referent = dict(self.fields['referent'].choices)[referent].username
         except:
+            instance.referent = dict(self.fields['referent'].choices)[referent]
             pass
 
+        if article:
+            instance.article = article
 
         max_length = Atelier._meta.get_field('slug').max_length
         instance.slug = orig = slugify(instance.titre)[:max_length]
@@ -44,7 +53,7 @@ class AtelierForm(forms.ModelForm):
         instance.auteur = request.user
         instance.save()
         try:
-            instance.save_m2m()
+            instance.save()
         except:
             pass
 
@@ -57,19 +66,23 @@ class AtelierForm(forms.ModelForm):
         listeChoix = [(i+1,u) for i, u in enumerate(Profil.objects.all().order_by('username'))]
         listeChoix.insert(0, (0, "----------------"))
         self.fields['referent'].choices = listeChoix
-        self.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if request.user.estMembre_str(x.abreviation)]
+        self.fields["asso"].choices = [(x.id, x.nom) for x in Asso.objects.all().order_by("id") if request.user.estMembre_str(x.abreviation)]
 
 class AtelierChangeForm(forms.ModelForm):
     referent = forms.ChoiceField(label='Référent(.e) atelier')
 
     class Meta:
         model = Atelier
-        fields = [ 'titre', 'statut', 'asso', 'categorie','referent', 'description', 'materiel','date_atelier',  'heure_atelier', 'duree_prevue', 'tarif_par_personne', ]
+        fields = [ 'titre', 'statut', 'asso', 'categorie', 'article', 'referent', 'description', 'materiel','start_time',  'heure_atelier', 'duree_prevue', 'tarif_par_personne', 'estArchive' ]
         widgets = {
             'description': SummernoteWidget(),
             'materiel': SummernoteWidget(),
             'outils': SummernoteWidget(),
-            'date_atelier': forms.DateInput(),
+            'start_time': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
             'heure_atelier': forms.TimeInput(attrs={'type':"time", },format='%H:%M'),
             'duree_prevue': forms.TimeInput(attrs={'type':"time", },format='%H:%M'),
         }
@@ -109,6 +122,7 @@ class CommentaireAtelierForm(forms.ModelForm):
         self.fields['commentaire'].strip = False
 
 class CommentaireAtelierChangeForm(forms.ModelForm):
+    commentaire = forms.CharField(required=False, widget=SummernoteWidget(attrs={}))
 
     class Meta:
         model = CommentaireAtelier
@@ -116,6 +130,7 @@ class CommentaireAtelierChangeForm(forms.ModelForm):
         widgets = {
             'commentaire': SummernoteWidget(),
         }
+
 
 class ContactParticipantsForm(forms.Form):
 

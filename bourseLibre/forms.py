@@ -1,18 +1,17 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, Asso, Profil, Message, MessageGeneral, Choix, InscriptionNewsletter
-from bourseLibre.captcha_local.fields import CaptchaField
-#from tinymce.widgets import TinyMCE
+from django.db.models import Q
 from django_summernote.widgets import SummernoteWidget
 from blog.forms import SummernoteWidgetWithCustomToolbar
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 fieldsCommunsProduits = ['souscategorie', 'nom_produit',  'description', 'estUneOffre', 'asso',
                 'unite_prix', 'prix',  'type_prix', 'date_debut', 'date_expiration', ]
 
 
 class ProduitCreationForm(forms.ModelForm):
-    #description = TinyMCE(attrs={'cols': 80, 'rows': 20})
     estUneOffre = forms.ChoiceField(choices=((1, "Offre"), (0, "Demande")), label='', required=True)
     asso = forms.ModelChoiceField(queryset=Asso.objects.all(), required=True, label="Offre publique ou réservée aux adhérents de l'asso :",)
 
@@ -21,12 +20,16 @@ class ProduitCreationForm(forms.ModelForm):
         exclude=('user', )
 
         fields = ['nom_produit', 'description', 'date_debut', 'date_expiration',
-                  'stock_initial', 'unite_prix','prix',]
+                  'stock_initial', 'unite_prix', 'prix',]
         widgets = {
             'date_debut': forms.DateInput(attrs={'type':"date"}, ),
             'date_expiration': forms.DateInput(attrs={'type':"date"}),
             'description': SummernoteWidget(),
         }
+
+    def __init__(self, request, *args, **kwargs):
+        super(ProduitCreationForm, self).__init__(*args, **kwargs)
+        self.fields["asso"].choices = [(x.id, x.nom) for x in Asso.objects.all().order_by("id") if request.user.estMembre_str(x.abreviation)]
 
 
     def clean(self):
@@ -125,8 +128,8 @@ class AdresseForm(forms.ModelForm):
     code_postal = forms.CharField(label="Code postal*", initial="66000", required=False)
     telephone = forms.CharField(label="Téléphone", required=False)
     pays = forms.CharField(label="Pays", initial="France",required=False)
-    latitude = forms.FloatField(label="Latitude", initial="42", required=False,widget = forms.HiddenInput())
-    longitude = forms.FloatField(label="Longitude", initial="2", required=False,widget = forms.HiddenInput())
+    latitude = forms.FloatField(label="Latitude", initial="42", required=False,widget=forms.HiddenInput())
+    longitude = forms.FloatField(label="Longitude", initial="2", required=False,widget=forms.HiddenInput())
 
     class Meta:
         model = Adresse
@@ -134,12 +137,26 @@ class AdresseForm(forms.ModelForm):
 
     def save(self, *args, **kwargs):
         adresse = super(AdresseForm, self).save(commit=False)
-        adresse.set_latlon_from_adresse()
+        adresse.save()
+        return adresse
+
+class AdresseForm2(forms.ModelForm):
+    telephone = forms.CharField(label="Téléphone", required=False)
+    latitude = forms.FloatField(label="Latitude", initial="42,2", required=True)
+    longitude = forms.FloatField(label="Longitude", initial="2,2", required=True)
+
+    class Meta:
+        model = Adresse
+        exclude = ('rue', 'commune', 'code_postal', 'pays')
+
+    def save(self, *args, **kwargs):
+        #self.cleaned_data['latitude'] = float(self.cleaned_data['latitude'])
+        adresse = super(AdresseForm2, self).save(commit=False)
         adresse.save()
         return adresse
 
 class ProfilCreationForm(UserCreationForm):
-    username = forms.CharField(label="Pseudonyme*", help_text="Attention les majuscules sont importantes...")
+    username = forms.CharField(label="Pseudonyme*", help_text="Attention : Pas d'espace, et les majuscules sont importantes...")
     description = forms.CharField(label=None, help_text="Une description de vous même", required=False, widget=forms.Textarea)
     competences = forms.CharField(label=None, help_text="Par exemple: electricien, bouturage, aromatherapie, pépinieriste, etc...", required=False, widget=forms.Textarea, )
     site_web = forms.CharField(label="Votre site web", help_text="n'oubliez pas le https://", required=False)
@@ -147,9 +164,10 @@ class ProfilCreationForm(UserCreationForm):
     email = forms.EmailField(label="Email*",)
 
     #statut_adhesion = forms.ChoiceField(choices=Choix.statut_adhesion, label='', required=True)
-    adherent_permacat = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Permacat'")
+    adherent_pc = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Permacat'")
     adherent_rtg = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Ramène Ta Graine'")
     adherent_fer = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Fermille'")
+    #adherent_gt = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Gardiens de la Terre'")
     #adherent_ame = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Animal Mieux Etre'")
     accepter_annuaire = forms.BooleanField(required=False, label="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous les inscrits")
     accepter_conditions = forms.BooleanField(required=True, label="J'ai lu et j'accepte les Conditions Générales d'Utilisation du site*",  )
@@ -163,11 +181,19 @@ class ProfilCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm):
         model = Profil
-        fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'adherent_permacat', 'adherent_rtg','adherent_fer', 'inscrit_newsletter', 'accepter_annuaire',  'accepter_conditions']
+        fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'adherent_pc', 'adherent_rtg','adherent_fer', 'adherent_scic', 'adherent_citealt','inscrit_newsletter', 'accepter_annuaire',  'accepter_conditions']
         exclude = ['slug', ]
 
+    def clean(self):
+       email = self.cleaned_data.get('email')
+       username = self.cleaned_data.get('username')
+       if Profil.objects.filter(email=email).exists():
+            raise ValidationError("Désolé, un compte avec cet email existe déjà")
+       if Profil.objects.filter(username__iexact=username).exists():
+            raise ValidationError("Désolé, un compte avec cet identifiant existe déjà")
+       return self.cleaned_data
 
-    def save(self, commit = True, is_active=False):
+    def save(self, commit=True, is_active=False):
         return super(ProfilCreationForm, self).save(commit)
         self.is_active=is_active
 
@@ -175,11 +201,10 @@ class ProfilCreationForm(UserCreationForm):
 
 class ProducteurChangeForm(UserChangeForm):
     """A form for updating users. Includes all the fields on
-    the user, but replaces the password field with admin's
-    password hash display field.
+    the user, but replaces the password field with admin's password hash display field.
     """
     email = forms.EmailField(label="Email")
-    username = forms.CharField(label="Pseudonyme")
+    username = forms.CharField(label="Pseudonyme", help_text="Attention : Pas d'espace, et les majuscules sont importantes...")
     description = forms.CharField(label="Description", help_text="Une description de vous même",widget=SummernoteWidget , required=False)
     competences = forms.CharField(label="Savoir-faire", help_text="Par exemple: electricien, bouturage, aromatherapie, etc...",widget=SummernoteWidget, required=False)
     inscrit_newsletter = forms.BooleanField(required=False)
@@ -193,7 +218,7 @@ class ProducteurChangeForm(UserChangeForm):
 
     class Meta:
         model = Profil
-        fields = ['username', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'accepter_annuaire', 'inscrit_newsletter', 'is_jardinpartage']
+        fields = ['username', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'accepter_annuaire', 'inscrit_newsletter', 'adherent_jp']
 
 
 class ProducteurChangeForm_admin(UserChangeForm):
@@ -212,12 +237,12 @@ class ProducteurChangeForm_admin(UserChangeForm):
     accepter_annuaire = forms.BooleanField(required=False)
     pseudo_june = forms.CharField(label="pseudo_june",required=False)
 
-    statut_adhesion = forms.ChoiceField(choices=Choix.statut_adhesion)
+    #statut_adhesion = forms.ChoiceField(choices=Choix.statut_adhesion)
     password = None
 
     class Meta:
         model = Profil
-        fields = ['username', 'email', 'description', 'competences', 'inscrit_newsletter', 'statut_adhesion', 'adherent_permacat',  'adherent_rtg', 'adherent_fer', 'pseudo_june', 'accepter_annuaire', 'is_jardinpartage']
+        fields = ['id','username', 'email', 'description', 'competences', 'inscrit_newsletter', 'adherent_pc',  'adherent_rtg', 'adherent_fer',  'adherent_scic', 'adherent_citealt','pseudo_june', 'accepter_annuaire', 'adherent_jp']
 
     def __init__(self, *args, **kwargs):
         super(ProducteurChangeForm_admin, self).__init__(*args, **kwargs)

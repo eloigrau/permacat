@@ -2,67 +2,14 @@
 {% load activity_tags %}
 {% load blog_filters %}
 {% load fontawesome %}
+{% load static %}
 {% load hitcount_tags %}
 
 {% block subtitle %}
 
 <div class="container-fluid">
 <div class="row">
-    <div class="col-md-2 " id="sec02">
-    </div>
-    <div class="col-md-8">
-        <p class="infos  textepetit">
-
-            <span class="badge badge-success" style="background-color:{{article.get_couleur}}" ><a href="{% url 'blog:index'  %}?categorie={{article.categorie}}" >{{ article.get_categorie_display }}</a></span>
-
-            <span class="badge badge-success">
-                {{ article.asso }}
-            </span>
-            {% if article.estArchive%}
-            <span class="badge badge-secondary">
-                archivé
-            </span>
-            {%endif%}
-            {% if article.estModifiable%}
-            <span class="badge badge-info">
-                modifiable
-            </span>
-            {%endif%}
-            <a href="{% url 'profil' article.auteur.id %}">
-                <span class="badge badge-secondary">
-               rédigé par  {{ article.auteur.username }}
-                </span>
-            </a>
-
-            <span class="badge badge-Light">
-                le {{ article.date_creation|date:"DATE_FORMAT" }}
-            </span>
-            <span class="badge badge-Light">
-            {% get_hit_count for article as nbvues %}
-            {{ nbvues }} vue{{nbvues|pluralize:"s"}}
-            </span>
-
-        <a href="{% url 'blog:suivre_article' article.slug %}">
-            {% if request.user|is_following:article %}
-            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné :  Cliquez pour arreter de recevoir des notifications concernant cet article par mail">
-                 {% fontawesome_icon 'bell' %} 
-            </button>
-            {% else %}
-            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné :  Cliquez pour recevoir les notifications concernant cet article par mail">
-                 {% fontawesome_icon 'bell-slash' %} 
-            </button>
-            {% endif %}
-        </a>
-             {% if request.user.is_superuser %}
-        <a href="{% url 'blog:suiveursArticle' article.slug %}">
-            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Voir abonnés">
-                 {% fontawesome_icon 'list' %}
-            </button>
-        </a>
-            {% endif %}
-        </p>
-    </div>
-    <div class="col-md-2">
+    <div class="col-sm-12 textcenter">
         <p>
         {%if article.auteur == request.user or request.user.is_superuser %}
 		<div class="btn-group">
@@ -91,100 +38,284 @@
 {% endblock %}
 {% block content %}
 <div class="contenu article ">
+
+<div class="container-fluid">
 <div class="row">
-<div class="col-sm-12 textcenter">
-      <h3> {{ article.titre }}</h3>
- </div>
-</div>
-    <hr>
-<div class="row"  id="sec03">
+    <div class="col-sm-12 justify-content-center">
+        <p class="infos  textepetit textcenter">
 
-    <div class="col textright" >
 
-        {%if article.start_time%}
+            {% if article.estArchive%}
+            <span class="badge badge-Light">
+                archivé
+            </span>
+            {%endif%}
+            {% if article.estModifiable%}
+            <span class="badge badge-info">
+                modifiable
+            </span>
+            {%endif%}
+            <a href="{% url 'profil' article.auteur.id %}">
+                <span class="badge badge-Light">
+               rédigé par  {{ article.auteur.username }}
+                </span>
+            </a>
 
-          <a href="{% url 'cal:agenda' %} ">
-            {%if article.end_time and article.start_time != article.end_time %}
-                Du {{ article.start_time|date:"d/m/Y"  }} au {{ article.end_time|date:"d/m/Y"  }}
-                {%else%}
-                le {{ article.start_time|date:"d/m/Y"  }}
+            <span class="badge badge-Light">
+            {% get_hit_count for article as nbvues %}
+            {{ nbvues }} vue{{nbvues|pluralize:"s"}}
+            </span>
 
+        <a href="{% url 'blog:suivre_article' article.slug %}">
+            {% if request.user|is_following:article %}
+            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné :  Cliquez pour arreter de recevoir des notifications concernant cet article par mail">
+                 {% fontawesome_icon 'bell' %}
+            </button>
+            {% else %}
+            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné :  Cliquez pour recevoir les notifications concernant cet article par mail">
+                 {% fontawesome_icon 'bell-slash' %}
+            </button>
             {% endif %}
-              </a>
-        {% endif %}
-
-        {%if article.auteur == request.user or article.estPublic or request.user.adherent_permacat %}
-            <button type="button" class="btn" data-toggle="modal" data-target="#dates">
-             </h5 class="textcenter">{% fontawesome_icon 'calendar' %} Dates {%if article.start_time %}supplémentaires{%endif%}</h5>
+        </a>
+             {% if request.user.is_superuser %}
+        <a href="{% url 'blog:suiveursArticle' article.slug %}">
+            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Voir abonnés">
+                 {% fontawesome_icon 'list' %}
             </button>
-            <!-- Modal -->
-            <div class="modal fade" id="dates" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog textcenter" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                      <div class="row justify-content-center">
-                       <h5 > Dates</h5>
-                      </div>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                      {%for date in dates %}
-                     <p>{{date.start_time |date:"l d F Y"}} : {{date.titre}}</p>
-                      {%empty%}
-                      -
-                      {%endfor%}
-                    {%if article.auteur == request.user or article.estModifiable %}
-                      <p><a class="btn btn-success" href="{% url 'blog:ajouterEvenementArticle' id=article.id %}" ><i class="fa fa-plus"></i> Ajouter une date</a></p>
-                    {% endif %}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-        {% endif %}
-
-        {% if actions %}
-            <button type="button" class="btn" data-toggle="modal" data-target="#historique">
-              {% fontawesome_icon 'bell' %} Historique
-            </button>
-            <!-- Modal -->
-            <div class="modal fade" id="historique" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog textcenter" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                      <div class="row justify-content-center">
-                          <div class="col col-sm-12">
-                      <h5 >Historique</h5>
-                          </div>
-                      </div>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="contenu historique" id="idHistorique">
-                      {%for action in actions %}
-                            {% include "notifications/notifications_template3.html" with action=action%}
-                      {%endfor%}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-        {% endif %}
+        </a>
+            {% endif %}
+        </p>
     </div>
 </div>
+
+</div>
+
 <div class="row">
-<div class="col contenuarticle">
+<div class="col-sm-12 offset-md-2 col-md-8 textcenter">
+            <span class="badge badge-info">
+                <a href="{% url 'blog:index_asso' asso=article.asso.abreviation %}" >{{ article.asso }}</a>
+            </span> -
+
+                <span class="badge badge-success" style="background-color:{{article.get_couleur}}" ><a href="{% url 'blog:index'  %}?categorie={{article.categorie}}" >{% if article.get_logo_categorie %}  <img  src="{% static article.get_logo_categorie %}" height="16px"/>  {% endif %} {{ article.get_categorie_display }}</a></span>
+
+    <div class="row titre_fiche">
+        <div class="col textcenter" >
+              <h2> {{ article.titre }}</h2>
+        </div>
+    </div>
+        {%if article.start_time%}
+    <p>
+          <a href="{% url 'cal:agenda' %} ">
+            {%if article.end_time and article.start_time != article.end_time %}
+                Du {{ article.start_time|date:"l d F Y"  }} au {{ article.end_time|date:"l d F Y"  }}
+                {%else%}
+                le {{ article.start_time|date:"l d F Y"  }}
+
+            {% endif %}
+          </a>
+    </p>
+        {% endif %}
+
+        <div class="row-sm-12 justify-content-center">
+        <div class="col-sm-12  fiche_tags">
+            <p class="textcenter">
+                {% if article.tags.names  %}<em>Mots-clés:</em>
+           {% for tag in article.tags.names %}
+            {{tag}}{%if not forloop.last%}, {%endif%}
+           {% endfor %}
+           {% endif %}
+            </p>
+        </div>
+    </div>
+
+ </div>
+
+</div>
+<hr>
+
+    <nav class="nav nav-tabs justify-content-center">
+      <a class="nav-item nav-link active" href="#contenu" data-toggle="tab">Contenu</a>
+        {% if article.album %}
+      <a class="nav-item nav-link" href="#album" data-toggle="tab">Album photo</a>
+        {% endif %}
+        {% if ateliers %}
+      <a class="nav-item nav-link" href="#ateliers" data-toggle="tab">Ateliers</a>
+        {% endif %}
+        {% if dates %}
+      <a class="nav-item nav-link" href="#dates" data-toggle="tab">Evènements</a>
+        {% endif %}
+        {% if lieux %}
+      <a class="nav-item nav-link" href="#lieux" data-toggle="tab">Lieu{{lieux|pluralize:",x"}}</a>
+        {% endif %}
+      <a class="nav-item nav-link" href="#historique" data-toggle="tab">Historique</a>
+      {% if not article.album or not ateliers or not dates %}<a class="nav-item nav-link" href="#plus" data-toggle="tab">Ajouter...</a>
+        {% endif %}
+    </nav>
+
+
+<div class="tab-content">
+  <div class="tab-pane fade show active" id="contenu">
+        <div class="contenu fiche">
    {{ article.contenu |safe}}
+  </div>
+  </div>
+
+  <div class="tab-pane fade" id="album">
+        <div class="contenu atelier">
+
+<div class="row justify-content-center">
+<div class="col-sm-12 col-md-8 col-lg-6 textcenter">
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+  <ol class="carousel-indicators">
+	    {% for photo in article.album.public %}
+            <li data-target="#carouselExampleIndicators" data-slide-to="{{forloop.counter}}" {% if forloop.first %} class="active"{% endif %}></li>
+	    {% endfor %}
+  </ol>
+  <div class="carousel-inner">
+	    {% for photo in article.album.public %}
+    <div class="carousel-item textcenter {% if forloop.first %} active {% endif %} ">
+	        <a href="{{ photo.get_absolute_url }}">
+	             <img class="d-block w-100 {% if forloop.first %} active {% endif %} " src="{{ photo.get_display_url }}" class="thumbnail" alt="{{ photo.title }}">
+	        </a>
+    </div>
+          {% endfor %}
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Précédent</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Suivant</span>
+  </a>
 </div>
 </div>
+</div>
+<hr>
+<div class="row justify-content-center">
+<div class="col-sm-12 textcenter">
+        {% if article.album.description %}<p>{{ article.album.description|safe }}</p>{% endif %}
+
+</div>
+</div>
+   <div class="row">
+        <div class="col-sm-12 offset-md-1 col-md-10 textcenter">
+             <small>
+            {%if not article.album %}
+                {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
+                       <a class="btn btn-sm btn-success textleft" href="{% url 'blog:ajouterAlbumArticle' slug=article.slug %}" ><i class="fa fa-plus"></i> Ajouter un album photo</a>
+                {% endif%}
+            {%else%}
+                 <a class="btn btn-sm btn-success textleft" href="{{ article.album.get_absolute_url }}"><i class="fa fa-arrow-right"></i> Voir tout l'album photo</a>
+
+                {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
+                    <a class="btn btn-sm btn-danger textleft" href="{% url 'blog:supprimerAlbumArticle' slug=article.slug%}"><i class="fa fa-times"></i> Enlever l'album photo de l'article</a>
+            {% endif %}
+        {%endif%}
+                 </small>
+        </div>
+        </div>
+        </div>
+  </div>
+
+
+
+  <div class="tab-pane fade " id="ateliers">
+        <div class="col-sm-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2 textcenter my-auto">
+        <div class="contenu atelier">
+        {% for atelier in ateliers %}
+        <p>
+                <a href="{{atelier.get_absolute_url}}"> <i class="fa fa-arrow-right"></i>  Atelier du {{atelier.start_time |date:"l d F Y"}} : {{atelier.titre}}</a>
+
+                {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
+                    <a class="btn btn-sm btn-danger textleft" href="{% url 'ateliers:supprimerAtelier' slug=atelier.slug%}"><i class="fa fa-times"></i> </a>
+            {% endif %}
+        </p>
+        {% endfor%}
+            <hr>
+        <p><a class="btn btn-sm  btn-success textleft" href="{% url 'ateliers:ajouterAtelier_article' article_slug=article.slug %}" ><i class="fa fa-plus"></i>  Ajouter un atelier</a>
+</p>
+          </div>
+          </div>
+  </div>
+
+
+<div class="tab-pane fade " id="dates">
+        <div class="col-sm-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2 textcenter">
+        <div class="contenu discussion_fiche">
+              {%for date in dates %}
+             <p>{{date.start_time |date:"l d F Y"}} : {{date.titre}}
+
+            {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser  %}
+                    <a class="btn btn-sm btn-danger textleft" href="{% url 'blog:supprimerEvenementArticle' slug_article=article.slug  id_evenementArticle=date.id %}" ><i class="fa fa-times"></i> </a></p>
+            {% endif %}
+            </p>
+              {%endfor%}
+            {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
+            <hr>
+              <p><a class="btn btn-sm btn-success textleft" href="{% url 'blog:ajouterEvenementArticle' id_article=article.id %}" ><i class="fa fa-plus"></i> Ajouter un événement sur l'agenda</a></p>
+            {% endif %}
+      </div>
+    </div>
+</div>
+<div class="tab-pane fade " id="lieux">
+        <div class="col-sm-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2 textcenter">
+        <div class="contenu discussion_fiche">
+              {%for lieu in lieux %}
+                <p> {{lieu}}
+            {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
+                    <a class="btn btn-sm btn-danger textleft" href="{% url 'blog:supprimerAdresseArticle' slug_article=article.slug  id_adresse=lieu.id %}" ><i class="fa fa-times"></i> </a></p>
+            {% endif %}
+              {%endfor%}
+             <p><a class="btn btn-sm btn-primary textleft" href="{% url 'blog:voirCarteLieux' id_article=article.id %}" ><i class="fa fa-compass"></i> Voir sur une carte</a></p>
+
+            {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
+            <hr>
+              <p><a class="btn btn-sm btn-success textleft" href="{% url 'blog:ajouterAdresseArticle' id_article=article.id %}" ><i class="fa fa-plus"></i> Ajouter un lieu</a></p>
+            {% endif %}
+      </div>
+    </div>
+</div>
+
+  <div class="tab-pane " id="historique">
+        <div class="col-sm-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2 textcenter">
+        <div class="contenu discussion_fiche">
+          {%for action in actions %}
+                {% include "notifications/notifications_template3.html" with action=action%}
+          {%endfor%}
+        </div>
+        </div>
+  </div>
+
+
+  <div class="tab-pane fade " id="plus">
+        <div class="col-sm-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2 textcenter">
+        <div class="contenu discussion_fiche">
+        <p>
+          <a class="btn btn-sm btn-block btn-success textleft" href="{% url 'blog:ajouterEvenementArticle' id_article=article.id %}" ><i class="fa fa-plus"></i> Ajouter un événement sur l'agenda</a>
+        </p>
+        {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
+        <p>
+          <a class="btn btn-sm btn-block btn-success textleft" href="{% url 'blog:ajouterAdresseArticle' id_article=article.id %}" ><i class="fa fa-plus"></i> Ajouter un lieu</a>
+        </p>
+        <p>
+            <a class="btn btn-sm btn-block btn-success textleft" href="{% url 'blog:ajouterAlbumArticle' slug=article.slug %}" ><i class="fa fa-plus"></i> Associer à un album photo</a>
+        </p>
+        {% endif %}
+        <p>
+            <a class="btn btn-sm btn-block  btn-success textleft" href="{% url 'ateliers:ajouterAtelier_article' article_slug=article.slug %}" ><i class="fa fa-plus"></i>  Ajouter un atelier</a>
+        </p>
+
+          </div>
+          </div>
+  </div>
+</div>
+<hr>
+
+{% include 'commentaires_discussions.html' %}
 </div>
 
 
-{% include 'commentaires.html' %}
+
 
 {% endblock %}

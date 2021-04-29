@@ -1,0 +1,75 @@
+{% extends 'vote/baseVote.html' %}
+
+{% block subtitle %}
+<div class="row">
+    <div class="col-sm-12 col-md-2 textcenter">
+             <a href="{% url 'vote:lireSuffrage' slug=suffrage.slug %}">
+                 <button type="button" class="btn  btn-success" >
+                        <i class="fa fa-arrow-left"></i>&nbsp;Revenir au suffrage
+                </button>
+             </a>&nbsp;
+    </div>
+
+	<div class="col-sm-12 col-md-10 textcenter">
+        <h3>Ajouter un suffrage</h3>
+            </div>
+</div>
+
+{% endblock %}
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-sm-12 col-md-8 ">
+        <h4 class="textcenter">Etape 1: vous avez créé le suffrage '{{suffrage}}' </h4>
+        <h4 class="textcenter">Etape 2: ajoutez maintenant une ou plusieurs questions </h4>
+        <ol>
+            <li>Les questions "binaires" sont des questions auxquelles les votants répondront par "oui", "non" ou "ne se prononce pas"</li>
+            <li>Les questions "majoritaires" sont des questions auxquelles vous donnez une ou plusieurs propositions (candidats), et les votants donneront une mention à chaque proposition/candidat, allant de "pas du tout d'accord" (0 points) à "tout à fait d'accord" (4 points). La proposition avec le meilleur score sera donnée gagnante.</li>
+        </ol>
+    </div>
+</div>
+{% if  suffrage.nbQuestionsB %}
+<div class="row  justify-content-center">
+	<div class="col-sm-12 col-md-8 textcenter">
+        <h4> Questions "binaires" du suffrage :</h4>
+        <div class="col-sm-12 textcenter">
+            {{suffrage.get_questionsB_html|safe}}
+
+        </div>
+</div>
+</div>
+{% endif %}
+
+{% if  suffrage.nbQuestionsM %}
+<div class="row justify-content-center">
+    <div class="col-sm-12 col-md-8 textcenter">
+        <h4> Questions "majoritaires" du suffrage :</h4>
+        <div class="col-sm-12 textcenter">
+            {{suffrage.get_questionsM_html|safe}}
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<hr>
+<div class="container-fluid">
+<div class="row">
+<div class="col-sm-12 textcenter">
+    <p>
+         <a href="{% url 'vote:ajouterQuestionB' slug=suffrage.slug %}">
+             <button type="button" class="btn  btn-success" >
+                    <i class="fa fa-plus"></i>&nbsp;Ajouter une ou des questions "binaires"
+            </button>
+         </a>&nbsp;
+</p>
+    <p>
+         <a href="{% url 'vote:ajouterQuestionM' slug=suffrage.slug %}">
+             <button type="button" class="btn  btn-success" >
+                    <i class="fa fa-plus"></i>&nbsp;Ajouter une question au soumise au vote majoritaire
+            </button>
+         </a>&nbsp;</p>
+</div></div>
+
+</div>
+
+{% endblock %}

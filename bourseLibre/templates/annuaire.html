@@ -1,72 +1,24 @@
 {% extends 'base_site.html' %}
 {% load static %}
-{% block header %}
-<script src="{% static 'js/sorttable.js' %}"></script>
-{% endblock %}
-{% block title %} - {{asso}} - Annuaire
+{% load staticfiles %}
+{% load app_filters %}
+{% block title %}  - Annuaire - {{asso}}
 {% endblock %}
 {% block subtitle %}
 <div class="row">
     <div class="col-sm-12 textcenter">
-    <h3>Les adhérents {{asso}}* ({{profils|length}}/{{nb_profils}})</h3>
+        {% if asso.abreviation == 'public' %}
+    <h3>Annuaire du site* ({{profils|length}}/{{nb_profils}})</h3>
+{% else %}
+    <h3>Annuaire des membres du groupe : {{asso}}* ({{profils|length}}/{{nb_profils}})</h3>
+{% endif %}
     </div>
 </div>
-<div class="row">
-    <div class="col-sm-12 textcenter">
-        <div class="btn-group btn-group-justified">
-            {% if request.user.adherent_permacat %}
-            <a href="{% url 'carte' asso='pc' %}" >
-                <button type="button" class="btn btn-primary" >Carte des inscrits Permacat</button>
-            </a>
-            {% endif %}
-            {% if request.user.adherent_rtg %}
-            <a href="{% url 'carte' asso='rtg' %}" >
-                <button type="button" class="btn btn-primary" >Carte des inscrits RTG</button>
-            </a>
-            {% endif %}
-            <a href="{% url 'carte' asso='public' %}" >
-                <button type="button" class="btn btn-primary" >Carte de tous les inscrits au site</button>
-            </a>
-        </div>
-    </div>
-</div>
-<hr>
+{% include "asso/presentation_asso_template.html" with adherent=request.user|adherent_asso:asso assos=asso.abreviation%}
 
 {% endblock %}
 {% block content %}
 
-<div class="row">
-    <div class="col-md-12">
-        <div style="overflow-x:auto;">
-    <table class="table table-condensed tableprofils table-striped sortable">
-        <thead class="thead-inverse">
-            <tr>
-                <th>Pseudo</th>
-                <th>Email</th>
-                <th>Code postal</th>
-                <th>Commune</th>
-                <th>Dernière connexion</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for profil in profils %}
-        <tr>
-           {%comment%} <td>
-                <img src="{{ profil.avatar.get_absolute_url }}" alt="pas d'image" style="width:100px;height:100px" href="{% url 'profil' profil.id %}">
-            </td>
-            {%endcomment%}
-            <td><a href="{% url 'profil' profil.id %}">{{ profil.username }}</a></td>
-            <td><a href="{% url 'profil' profil.id %}">{{ profil.email }}</a></td>
-            <td><a href="{% url 'profil' profil.id %}">{{ profil.adresse.code_postal }}</a></td>
-            <td><a href="{% url 'profil' profil.id %}">{{ profil.adresse.commune }}</a></td>
-            <td><a href="{% url 'profil' profil.id %}">{{ profil.last_login }}</a></td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    </div>
-    </div>
-    </div>
+{% include "template_annuaire.html" %}
 
-    <p class="textcenter textepetit">(*qui ont accepté d'apparaitre dans l'annuaire)</p>
 {% endblock %}

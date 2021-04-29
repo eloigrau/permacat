@@ -3,7 +3,7 @@
 {% load fontawesome %}
 {% load activity_tags %}
 <div class="row justify-content-center" >
-<div class="btn bouton_dossiers_forum">{% if asso_courante %} {{asso_courante}} {% else %} Tous les groupes {% endif %} - {% if categorie_courante %}{{categorie_courante}} {% else %} tous les articles {% endif %}</div>
+<div class="btn bouton_dossiers_forum">{% if asso_courante %} Groupe : {{asso_courante}} {% else %} Tous les groupes {% endif %} / {% if categorie_courante %}Dossier : {{categorie_courante}} {% else %} tous les dossiers {% endif %}</div>
 </div>
 <div class="row justify-content-center">
 

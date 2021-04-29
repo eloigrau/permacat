@@ -1,22 +1,37 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect, reverse
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
+from django.http import HttpResponseForbidden
 from django.urls import reverse_lazy
 from django.utils.html import strip_tags
-from .models import Article, Commentaire, Projet, CommentaireProjet, Choix, Evenement,Asso
-from .forms import ArticleForm, CommentaireArticleForm, CommentaireArticleChangeForm, ArticleChangeForm, ProjetForm, \
-    ProjetChangeForm, CommentProjetForm, CommentaireProjetChangeForm, EvenementForm, EvenementArticleForm
+from .models import Article, Commentaire, Discussion, Projet, CommentaireProjet, Choix, Evenement,Asso, AdresseArticle
+from .forms import ArticleForm, ArticleAddAlbum, CommentaireArticleForm, CommentaireArticleChangeForm, ArticleChangeForm, ProjetForm, \
+    ProjetChangeForm, CommentProjetForm, CommentaireProjetChangeForm, EvenementForm, EvenementArticleForm, AdresseArticleForm,\
+    DiscussionForm
+from .filters import ArticleFilter
+from.utils import get_suivis_forum
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
 from actstream import actions, action
 from actstream.models import followers, following, action_object_stream
 from django.utils.timezone import now
 from bourseLibre.models import Suivis
+from bourseLibre.settings import NBMAX_ARTICLES
+from bourseLibre.forms import AdresseForm, AdresseForm2
+from bourseLibre.constantes import Choix as Choix_global
+
 from bourseLibre.views import testIsMembreAsso
 from ateliers.models import Atelier
+from photologue.models import Album
 from django.views.decorators.csrf import csrf_exempt
 from hitcount.models import HitCount
 from hitcount.views import HitCountMixin
-from django.db.models import Q
+from django.db.models import Q, F
+from django.core.exceptions import PermissionDenied
+import itertools
+from datetime import datetime, timedelta
+import pytz
+from django.utils.text import slugify
+from bourseLibre.views_base import DeleteAccess
 
 # @login_required
 # def forum(request):
@@ -24,58 +39,72 @@ from django.db.models import Q
 #     articles = Article.objects.all().order_by('-date_dernierMessage')  # Nous sélectionnons tous nos articles
 #     return render(request, 'blog/forum.html', {'derniers_articles': articles })
 
+@login_required
 def accueil(request):
     cat = Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
-    categorie_list = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
+    categorie_list = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_asso["public"] if x[0] in cat]
     cat_pc = Article.objects.filter(asso__abreviation="pc").order_by('categorie').values_list('categorie', flat=True).distinct()
     categorie_list_pc = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_pc]
     cat_rtg = Article.objects.filter(asso__abreviation="rtg").order_by('categorie').values_list('categorie', flat=True).distinct()
     categorie_list_rtg = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_rtg]
     cat_fer = Article.objects.filter(asso__abreviation="fer").order_by('categorie').values_list('categorie', flat=True).distinct()
     categorie_list_fer = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_fer]
+    cat_gt = Article.objects.filter(asso__abreviation="gt").order_by('categorie').values_list('categorie',
+                                                                                                flat=True).distinct()
+    categorie_list_gt = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_gt]
+    cat_citealt = Article.objects.filter(asso__abreviation="citealt").order_by('categorie').values_list('categorie',
+                                                                                                flat=True).distinct()
+    categorie_list_citealt = [(x[0], x[1], Choix.get_couleur(x[0]), Choix.get_logo(x[0])) for x in Choix.type_annonce if x[0] in cat_citealt]
+
     proj = Projet.objects.filter(estArchive=False, statut='accep').order_by('titre')
-    if not request.user.adherent_permacat:
-        proj = proj.exclude(asso__abreviation="pc")
-    if not request.user.adherent_fer:
-        proj = proj.exclude(asso__abreviation="fer")
-    if not request.user.adherent_rtg:
-        proj = proj.exclude(asso__abreviation="rtg")
+
+    for nomAsso in Choix_global.abreviationsAsso:
+        if not getattr(request.user, "adherent_" + nomAsso):
+            proj = proj.exclude(asso__abreviation=nomAsso)
+
     projets_list = [(x.slug, x.titre, x.get_couleur) for x in proj]
 
-    ateliers = Atelier.objects.filter(date_atelier__gte=now())
-    if not request.user.adherent_permacat:
-        ateliers = ateliers.exclude(asso__abreviation="pc")
-    if not request.user.adherent_fer:
-        ateliers = ateliers.exclude(asso__abreviation="fer")
-    if not request.user.adherent_rtg:
-        ateliers = ateliers.exclude(asso__abreviation="rtg")
+    ateliers = Atelier.objects.filter(start_time__gte=now())
+
+    for nomAsso in Choix_global.abreviationsAsso:
+        if not getattr(request.user, "adherent_" + nomAsso):
+            ateliers = ateliers.exclude(asso__abreviation = nomAsso)
+
     ateliers_list = [(x.slug, x.titre, x.get_couleur) for x in ateliers]
-    categorie_list_projets = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets
-                                         if x[0] in cat]
+    categorie_list_projets = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets ]
 
     derniers_articles = Article.objects.filter(estArchive=False).order_by('-id')
-    if not request.user.adherent_permacat:
-        derniers_articles = derniers_articles.exclude(asso__abreviation="pc")
-    if not request.user.adherent_fer:
-        derniers_articles = derniers_articles.exclude(asso__abreviation="fer")
-    if not request.user.adherent_rtg:
-        derniers_articles = derniers_articles.exclude(asso__abreviation="rtg")
+    for nomAsso in Choix_global.abreviationsAsso:
+        if not getattr(request.user, "adherent_" + nomAsso):
+            derniers_articles = derniers_articles.exclude(asso__abreviation=nomAsso)
 
-    derniers_articles_comm = Article.objects.filter(estArchive=False, date_dernierMessage__isnull=False).order_by('date_dernierMessage')
-    if not request.user.adherent_permacat:
-        derniers_articles_comm = derniers_articles_comm.exclude(asso__abreviation="pc")
-    if not request.user.adherent_fer:
-        derniers_articles_comm = derniers_articles_comm.exclude(asso__abreviation="fer")
-    if not request.user.adherent_rtg:
-        derniers_articles_comm = derniers_articles_comm.exclude(asso__abreviation="rtg")
+    derniers_articles_comm = Article.objects.filter(estArchive=False, dernierMessage__isnull=False).order_by('date_dernierMessage')
 
-    suivis, created = Suivis.objects.get_or_create(nom_suivi="articles")
-    return render(request, 'blog/accueil.html', {'categorie_list':categorie_list,'categorie_list_pc':categorie_list_pc,'categorie_list_rtg':categorie_list_rtg,'categorie_list_fer':categorie_list_fer,'projets_list':projets_list,'ateliers_list':ateliers_list, 'categorie_list_projets':categorie_list_projets,'derniers_articles':derniers_articles[:6],'derniers_articles_comm':derniers_articles_comm[::-1][:6], 'suivis':suivis})
+    for nomAsso in Choix_global.abreviationsAsso:
+        if not getattr(request.user, "adherent_" + nomAsso):
+            derniers_articles_comm = derniers_articles_comm.exclude(asso__abreviation=nomAsso)
+
+    derniers_articles_modif = Article.objects.filter(Q(estArchive=False) & Q(date_modification__isnull=False) & ~Q(date_modification=F("date_creation"))).order_by('date_modification')
+
+    for nomAsso in Choix_global.abreviationsAsso:
+        if not getattr(request.user, "adherent_" + nomAsso):
+            derniers_articles_modif = derniers_articles_modif.exclude(asso__abreviation=nomAsso)
+
+    derniers = sorted(set([x for x in itertools.chain(derniers_articles_comm[::-1][:8], derniers_articles_modif[::-1][:8], derniers_articles[:8], )]), key=lambda x:x.date_modification if x.date_modification else x.date_creation)[::-1]
+
+    suivis = get_suivis_forum(request)
+
+    return render(request, 'blog/accueil.html', {'categorie_list':categorie_list,'categorie_list_pc':categorie_list_pc,'categorie_list_rtg':categorie_list_rtg,'categorie_list_fer':categorie_list_fer,'categorie_list_gt':categorie_list_gt,'categorie_list_citealt':categorie_list_citealt,'projets_list':projets_list,'ateliers_list':ateliers_list, 'categorie_list_projets':categorie_list_projets,'derniers_articles':derniers, 'suivis':suivis})
 
 
 @login_required
 def ajouterArticle(request):
     form = ArticleForm(request, request.POST or None)
+    time_threshold = datetime.now() - timedelta(hours=24)
+    articles = Article.objects.filter(auteur=request.user, date_creation__gt=time_threshold)
+    if not request.user.is_superuser and len(articles) > NBMAX_ARTICLES:
+        return render(request, 'erreur2.html', {"msg": "Vous avez déjà posté %s articles depuis 24h, veuillez patienter un peu avant de poster un nouvel article, merci !"% NBMAX_ARTICLES})
+
     if form.is_valid():
         article = form.save(request.user)
         url = article.get_absolute_url()
@@ -92,6 +121,35 @@ class ModifierArticle(UpdateView):
     model = Article
     form_class = ArticleChangeForm
     template_name_suffix = '_modifier'
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.date_modification = now()
+        self.object.save(sendMail=form.changed_data!=['estArchive'])
+        url = self.object.get_absolute_url()
+        suffix = "_" + self.object.asso.abreviation
+        if not self.object.estArchive:
+            action.send(self.request.user, verb='article_modifier'+suffix, action_object=self.object, url=url,
+                         description="a modifié l'article [%s]: '%s'" %(self.object.asso, self.object.titre))
+        elif form.changed_data==['estArchive']:
+            action.send(self.request.user, verb='article_modifier'+suffix + "-archive", action_object=self.object, url=url,
+                         description="a archivé l'article [%s]: '%s'" %(self.object.asso, self.object.titre))
+
+        #envoi_emails_articleouprojet_modifie(self.object, "L'article " +  self.object.titre + "a été modifié", True)
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_form(self,*args, **kwargs):
+        form = super(ModifierArticle, self).get_form(*args, **kwargs)
+        form.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all().order_by('nom')) if self.request.user.estMembre_str(x.abreviation)]
+        form.fields["album"].choices = [("", "---------")] + [(x.id, x.title) for i, x in enumerate(Album.objects.all().order_by('title')) if self.request.user.estMembre_str(x.asso.abreviation)]
+
+        return form
+
+# @login_required
+class ArticleAddAlbum(UpdateView):
+    model = Article
+    form_class = ArticleAddAlbum
+    template_name_suffix = '_ajouteralbum'
 #    fields = ['user','site_web','description', 'competences', 'adresse', 'avatar', 'inscrit_newsletter']
 
     def get_object(self):
@@ -105,17 +163,27 @@ class ModifierArticle(UpdateView):
             url = self.object.get_absolute_url()
             suffix = "_" + self.object.asso.abreviation
             action.send(self.request.user, verb='article_modifier'+suffix, action_object=self.object, url=url,
-                         description="a modifié l'article: '%s'" % self.object.titre)
+                         description="a associé un album à l'article: '%s'" % self.object.titre)
         #envoi_emails_articleouprojet_modifie(self.object, "L'article " +  self.object.titre + "a été modifié", True)
         return HttpResponseRedirect(self.get_success_url())
 
     def get_form(self,*args, **kwargs):
-        form = super(ModifierArticle, self).get_form(*args, **kwargs)
-        form.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if self.request.user.estMembre_str(x.abreviation)]
+        form = super(ArticleAddAlbum, self).get_form(*args, **kwargs)
+        form.fields["album"].choices = [("", "---------")] + [(x.id, x.title) for i, x in enumerate(Album.objects.all().order_by('title')) if self.request.user.estMembre_str(x.asso.abreviation)]
 
         return form
 
-class SupprimerArticle(DeleteView):
+@login_required
+def articleSupprimerAlbum(request, slug):
+    art = Article.objects.get(slug=slug)
+    if not art.estModifiable and art.auteur != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden("Vous n'avez pas l'autorisation de supprimer")
+    art.album = None
+    art.save()
+    return redirect(art.get_absolute_url())
+
+
+class SupprimerArticle(DeleteAccess, DeleteView):
     model = Article
     success_url = reverse_lazy('blog:index')
     template_name_suffix = '_supprimer'
@@ -125,45 +193,70 @@ class SupprimerArticle(DeleteView):
         return Article.objects.get(slug=self.kwargs['slug'])
 
 
-
 @login_required
 def lireArticle(request, slug):
     article = get_object_or_404(Article, slug=slug)
+    ateliers = Atelier.objects.filter(article=article).order_by('-start_time')
+    lieux = AdresseArticle.objects.filter(article=article).order_by('titre')
 
     if not article.est_autorise(request.user):
         return render(request, 'notMembre.html', {"asso": str(article.asso)})
 
-    commentaires = Commentaire.objects.filter(article=article).order_by("date_creation")
-    dates = Evenement.objects.filter(article=article).order_by("start_time")
+    discussions = article.discussion_set.all().order_by('id')
+    commentaires = {discu:Commentaire.objects.filter(discussion=discu).order_by("date_creation") for discu in discussions}
+    dates = Evenement.objects.filter(article=article).order_by("-start_time")
 
     actions = action_object_stream(article)
     hit_count = HitCount.objects.get_for_object(article)
     hit_count_response = HitCountMixin.hit_count(request, hit_count)
+    form_discussion = DiscussionForm(request.POST or None, prefix="newdiscussionform")
     form = CommentaireArticleForm(request.POST or None)
-    if form.is_valid():
+    if form_discussion.is_valid() and not Discussion.objects.filter(slug=slugify(form_discussion.cleaned_data['titre']), article=article):
+        if form_discussion.valider_unique(article):
+            discu = form_discussion.save(commit=False)
+            discu.article = article
+            form_discussion.save()
+            discussions = article.discussion_set.all().order_by('id')
+            commentaires = {discu: Commentaire.objects.filter(discussion=discu).order_by("date_creation") for discu in
+                            discussions}
+
+            context = {'article': article, 'form': CommentaireArticleForm(None), 'form_discussion': form_discussion, 'commentaires': commentaires,
+                       'dates': dates, 'actions': actions, 'ateliers': ateliers, 'lieux': lieux, "ancre": discu.slug}
+
+    elif form.is_valid() and 'message_discu' in request.POST:
+        discu = Discussion.objects.get(article=article, slug=request.POST['message_discu'].replace("#",""))
         comment = form.save(commit=False)
-        from datetime import datetime, timedelta
-        import pytz
+        form_discussion = DiscussionForm(request.POST or None, prefix="newdiscussionform")
+
         utc = pytz.UTC
         date_limite = utc.localize(datetime.today() - timedelta(hours=1))
         if comment and not Commentaire.objects.filter(commentaire=comment.commentaire, article=article, date_creation__gt=date_limite):
             comment.article = article
+            comment.discussion = discu
             comment.auteur_comm = request.user
+            article.sendMail = False
             article.date_dernierMessage = now()
             article.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(strip_tags(comment.commentaire).replace('&nspb',' ')))[:96]
             if len(("(" + str(comment.auteur_comm) + ") " + str(strip_tags(comment.commentaire).replace('&nspb',' ')))) > 96:
                 article.dernierMessage += "..."
-
-            article.save(sendMail=False)
-            comment.save()
+            form.save()
+            article.save(sendMail=False, saveModif=False)
             url = article.get_absolute_url()+"#idConversation"
             suffix = "_" + article.asso.abreviation
-            action.send(request.user, verb='article_message'+suffix, action_object=article, url=url,
-                        description="a réagi à l'article: '%s'" % article.titre)
-            #envoi_emails_articleouprojet_modifie(article, request.user.username + " a réagit au projet: " +  article.titre, True)
-        return redirect(request.path)
+            if discu.slug == 'discussion-generale':
+                desc = "a réagi à l'article: '%s'" % article.titre
+            else:
+                desc = "a réagi à l'article: (%s) '%s'" % (discu.titre, article.titre)
 
-    return render(request, 'blog/lireArticle.html', {'article': article, 'form': form, 'commentaires':commentaires, 'dates':dates, 'actions':actions},)
+            action.send(request.user, verb='article_message'+suffix, action_object=article, url=url,
+                        description=desc, discussion=discu.titre)
+            #envoi_emails_articleouprojet_modifie(article, request.user.username + " a réagit au projet: " +  article.titre, True)
+        context = {'article': article, 'form': CommentaireArticleForm(None), 'form_discussion': form_discussion, 'commentaires': commentaires,
+               'dates': dates, 'actions': actions, 'ateliers': ateliers, 'lieux': lieux, "ancre":discu.slug}
+
+    else:
+        context = {'article': article, 'form': form, 'form_discussion': form_discussion, 'commentaires':commentaires, 'dates':dates, 'actions':actions, 'ateliers':ateliers, 'lieux':lieux}
+    return render(request, 'blog/lireArticle.html', context,)
 
 @login_required
 def lireArticle_id(request, id):
@@ -175,81 +268,84 @@ class ListeArticles(ListView):
     model = Article
     context_object_name = "article_list"
     template_name = "blog/index.html"
-    paginate_by = 30
+    paginate_by = 50
 
     def get_queryset(self):
         params = dict(self.request.GET.items())
 
-        qs = Article.objects.all()
+        qs = Article.objects.filter(estArchive=False)
 
         if not self.request.user.is_authenticated:
             qs = qs.filter(asso__nom="public")
         else:
-            if not self.request.user.adherent_permacat:
-                qs = qs.exclude(asso__abreviation="pc")
-            if not self.request.user.adherent_rtg:
-                qs = qs.exclude(asso__abreviation="rtg")
-            if not self.request.user.adherent_fer:
-                qs = qs.exclude(asso__abreviation="fer")
+            for nomAsso in Choix_global.abreviationsAsso:
+                if not getattr(self.request.user, "adherent_" + nomAsso):
+                    qs = qs.exclude(asso__abreviation=nomAsso)
 
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])
         if "categorie" in params:
             qs = qs.filter(categorie=params['categorie'])
-        if "permacat" in params  and self.request.user.adherent_permacat:
+        if "permacat" in params and self.request.user.adherent_pc:
             if params['permacat'] == "True":
-                qs = qs.filter(estPublic=False)
+                qs = qs.filter(asso_abreviation="pc")
             else:
                 qs = qs.filter(estPublic=True)
 
         if "ordreTri" in params:
+            if params['ordreTri'] == "-date_dernierMessage":
+                qs = qs.filter(date_dernierMessage__isnull=False)
+            elif params['ordreTri'] == "-date_modification":
+                qs = qs.filter(date_modification__isnull=False)
             qs = qs.order_by(params['ordreTri'])
+
+            #if params['ordreTri'] == "-date_dernierMessage":
+            #    from django.db.models import Case, When, IntegerField
+            #    qs = qs.annotate(testing=Case(When(date_dernierMessage__isnull=False, then=1), default=0,
+            #                                  output_field=IntegerField())).order_by('testing', '-date_dernierMessage')
+            #elif params['ordreTri'] == "-date_modification":
+            #    from django.db.models import Case, When, IntegerField
+            #    qs = qs.annotate(testing=Case(When(date_modification__isnull=False, then=1), default=0,
+            #                                  output_field=IntegerField())).order_by('testing', '-date_modification')
+            #else:
+            #    qs = qs.order_by(params['ordreTri'])
         else:
-            qs = qs.order_by('-date_dernierMessage', '-date_creation', 'categorie', 'auteur')
+            qs = qs.order_by( '-date_creation', '-date_dernierMessage', 'categorie')
 
         self.qs = qs
-        return qs.filter(estArchive=False)
+        return qs
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
 
-        context['list_archive'] = self.qs.filter(estArchive=True)
+        context['list_archive'] = Article.objects.filter(estArchive=True)
         # context['producteur_list'] = Profil.objects.values_list('username', flat=True).distinct()
         #context['auteur_list'] = Article.objects.order_by('auteur').values_list('auteur__username', flat=True).distinct()
         cat = Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
-        context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
-        cat_pc = Article.objects.filter(asso__abreviation="pc").order_by('categorie').values_list('categorie',
-                                                                                                        flat=True).distinct()
-        context['categorie_list_pc'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_pc]
-        cat_rtg = Article.objects.filter(asso__abreviation="rtg").order_by('categorie').values_list('categorie',
-                                                                                                          flat=True).distinct()
-        context['categorie_list_rtg'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_rtg]
-        cat_fer = Article.objects.filter(asso__abreviation="fer").order_by('categorie').values_list('categorie',
-                                                                                                      flat=True).distinct()
-        context['categorie_list_fer'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_fer]
+        context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_asso["public"] if x[0] in cat]
+
+        for nomAsso in Choix_global.abreviationsAsso:
+            if getattr(self.request.user, "adherent_" + nomAsso):
+                cat = Article.objects.filter(asso__abreviation=nomAsso).order_by('categorie').values_list('categorie', flat=True).distinct()
+                if nomAsso == 'citealt':
+                    context['categorie_list_' + nomAsso] = [(x[0], x[1], Choix.get_couleur(x[0]), Choix.get_logo(x[0])) for x in
+                                                            Choix.type_annonce if x[0] in cat]
+                else:
+                    context['categorie_list_'+nomAsso] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
 
         proj = Projet.objects.filter(estArchive=False)
-        if not self.request.user.adherent_permacat:
-            proj = proj.exclude(asso__abreviation="pc")
-        if not self.request.user.adherent_fer:
-            proj = proj.exclude(asso__abreviation="fer")
-        if not self.request.user.adherent_rtg:
-            proj = proj.exclude(asso__abreviation="rtg")
-        context['projets_list'] = [(x.slug, x.titre, x.get_couleur) for x in proj]
-        #
-        # ateliers = Atelier.objects.filter(date_atelier__gte=now())
-        # if not self.request.user.adherent_permacat:
-        #     ateliers = ateliers.exclude(asso__abreviation="pc")
-        # if not self.request.user.adherent_fer:
-        #     ateliers = ateliers.exclude(asso__abreviation="fer")
-        # if not self.request.user.adherent_rtg:
-        #     ateliers = ateliers.exclude(asso__abreviation="rtg")
-        # context['ateliers_list'] = [(x.slug, x.titre, x.get_couleur) for x in ateliers]
-        context['categorie_list_projets'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets if x[0] in cat]
-        context['typeFiltre'] = "aucun"
-        context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="articles")
+        for nomAsso in Choix_global.abreviationsAsso:
+            if not getattr(self.request.user, "adherent_" + nomAsso):
+                proj = proj.exclude(asso__abreviation=nomAsso)
+        cat = proj.order_by('categorie').values_list('categorie', flat=True).distinct()
+        context['categorie_list_projets'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets]
 
+        context['projets_list'] = [(x.slug, x.titre, x.get_couleur) for x in proj]
+
+        context['typeFiltre'] = "aucun"
+
+        context['suivis'] = get_suivis_forum(self.request)
         context['ordreTriPossibles'] = Choix.ordre_tri_articles
 
         if 'auteur' in self.request.GET:
@@ -275,9 +371,12 @@ class ListeArticles(ListView):
         if 'archives' in self.request.GET:
             context['typeFiltre'] = "archives"
         if 'ordreTri' in self.request.GET:
-            context['ordre_triage'] = list(Choix.ordre_tri_articles.keys())[list(Choix.ordre_tri_articles.values()).index(self.request.GET['ordreTri'])]
+            try:
+                context['ordre_triage'] = list(Choix.ordre_tri_articles.keys())[list(Choix.ordre_tri_articles.values()).index(self.request.GET['ordreTri'])]
+            except:
+                context['ordre_triage'] =self.request.GET['ordreTri']
         else:
-            context['ordre_triage'] = "date du dernier message"
+            context['ordre_triage'] = "date de création"
         return context
 
 
@@ -285,17 +384,19 @@ class ListeArticles_asso(ListView):
     model = Article
     context_object_name = "article_list"
     template_name = "blog/index.html"
-    paginate_by = 30
+    paginate_by = 50
 
     def get_queryset(self):
         params = dict(self.request.GET.items())
         nom_asso = self.kwargs['asso']
         asso = testIsMembreAsso(self.request, nom_asso)
+        if not isinstance(asso, Asso):
+            raise PermissionDenied
 
         qs = Article.objects.all()
 
         if asso.abreviation == "public":
-            qs = qs.exclude(Q(asso__abreviation="pc")|Q(asso__abreviation="rtg")|Q(asso__abreviation="fer"))
+            qs = qs.exclude(Q(asso__abreviation="pc")|Q(asso__abreviation="rtg")|Q(asso__abreviation="fer")|Q(asso__abreviation="gt")|Q(asso__abreviation="scic")|Q(asso__abreviation="citealt"))
         else:
             qs = qs.filter(asso__abreviation=asso.abreviation)
 
@@ -303,16 +404,20 @@ class ListeArticles_asso(ListView):
             qs = qs.filter(auteur__username=params['auteur'])
         if "categorie" in params:
             qs = qs.filter(categorie=params['categorie'])
-        if "permacat" in params  and self.request.user.adherent_permacat:
+        if "permacat" in params  and self.request.user.adherent_pc:
             if params['permacat'] == "True":
                 qs = qs.filter(estPublic=False)
             else:
                 qs = qs.filter(estPublic=True)
 
         if "ordreTri" in params:
+            if params['ordreTri'] == "-date_dernierMessage":
+                qs = qs.filter(date_dernierMessage__isnull=False)
+            elif params['ordreTri'] == "-date_modification":
+                qs = qs.filter(date_modification__isnull=False)
             qs = qs.order_by(params['ordreTri'])
         else:
-            qs = qs.order_by('-date_creation', '-date_dernierMessage', 'categorie', 'auteur')
+            qs = qs.order_by( '-date_creation', '-date_dernierMessage', 'categorie')
 
         self.qs = qs
         return qs.filter(estArchive=False)
@@ -325,30 +430,34 @@ class ListeArticles_asso(ListView):
         # context['producteur_list'] = Profil.objects.values_list('username', flat=True).distinct()
         context['auteur_list'] = Article.objects.all().order_by('auteur').values_list('auteur__username', flat=True).distinct()
         cat= Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
-        context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
-        context['categorie_list_projets'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets
-                                             if x[0] in cat]
-        cat_pc = Article.objects.filter(asso__abreviation="pc").order_by('categorie').values_list('categorie',
-                                                                                                        flat=True).distinct()
-        context['categorie_list_pc'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_pc]
-        cat_rtg = Article.objects.filter(asso__abreviation="rtg").order_by('categorie').values_list('categorie',
-                                                                                                          flat=True).distinct()
-        context['categorie_list_rtg'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_rtg]
-        cat_fer = Article.objects.filter(asso__abreviation="fer").order_by('categorie').values_list('categorie',
-                                                                                                      flat=True).distinct()
-        context['categorie_list_fer'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_fer]
+        context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_asso["public"] if x[0] in cat]
+        context['categorie_list_projets'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets]
+
+        if self.kwargs['asso']:
+            assos= Asso.objects.all()
+            nom_asso = self.kwargs['asso']
+            asso = testIsMembreAsso(self.request, nom_asso)
+            if not isinstance(asso, Asso):
+                raise PermissionDenied
+
+        for nomAsso in Choix_global.abreviationsAsso:
+            if getattr(self.request.user, "adherent_" + nomAsso):
+                cat = Article.objects.filter(asso__abreviation=nomAsso).order_by('categorie').values_list('categorie', flat=True).distinct()
+                if nomAsso == 'citealt':
+                    context['categorie_list_' + nomAsso] = [(x[0], x[1], Choix.get_couleur(x[0]), Choix.get_logo(x[0])) for x in
+                                                            Choix.type_annonce if x[0] in cat]
+                else:
+                    context['categorie_list_'+nomAsso] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
 
         proj = Projet.objects.filter(estArchive=False)
-        if not self.request.user.adherent_permacat:
-            proj = proj.exclude(asso__abreviation="pc")
-        if not self.request.user.adherent_fer:
-            proj = proj.exclude(asso__abreviation="fer")
-        if not self.request.user.adherent_rtg:
-            proj = proj.exclude(asso__abreviation="rtg")
+        for nomAsso in Choix_global.abreviationsAsso:
+            if not getattr(self.request.user, "adherent_" + nomAsso):
+                proj = proj.exclude(asso__abreviation=nomAsso)
+
         context['projets_list'] = [(x.slug, x.titre, x.get_couleur) for x in proj]
         #
-        # ateliers = Atelier.objects.filter(date_atelier__gte=now())
-        # if not self.request.user.adherent_permacat:
+        # ateliers = Atelier.objects.filter(start_time__gte=now())
+        # if not self.request.user.adherent_pc:
         #     ateliers = ateliers.exclude(asso__abreviation="pc")
         # if not self.request.user.adherent_fer:
         #     ateliers = ateliers.exclude(asso__abreviation="fer")
@@ -356,13 +465,11 @@ class ListeArticles_asso(ListView):
         #     ateliers = ateliers.exclude(asso__abreviation="rtg")
         # context['ateliers_list'] = [(x.slug, x.titre, x.get_couleur) for x in ateliers]
 
-        assos= Asso.objects.all()
-        nom_asso = self.kwargs['asso']
-        asso = testIsMembreAsso(self.request, nom_asso)
         context['asso_list'] = [(x.nom, x.abreviation) for x in assos]
         context['asso_courante'] = asso
         context['typeFiltre'] = "aucun"
-        context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="articles")
+        context['suivis'] = get_suivis_forum(self.request)
+
 
         context['ordreTriPossibles'] = Choix.ordre_tri_articles
 
@@ -383,7 +490,7 @@ class ListeArticles_asso(ListView):
         if 'ordreTri' in self.request.GET:
             context['ordre_triage'] = list(Choix.ordre_tri_articles.keys())[list(Choix.ordre_tri_articles.values()).index(self.request.GET['ordreTri'])]
         else:
-            context['ordre_triage'] = "date du dernier message"
+            context['ordre_triage'] = "date de dernière modification"
 
         return context
 
@@ -439,10 +546,10 @@ class ModifierProjet(UpdateView):
 
     def get_form(self,*args, **kwargs):
         form = super(ModifierProjet, self).get_form(*args, **kwargs)
-        form.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if self.request.user.estMembre_str(x.abreviation)]
+        form.fields["asso"].choices = [(x.id, x.nom) for x in Asso.objects.all().order_by("id") if self.request.user.estMembre_str(x.abreviation)]
         return form
 
-class SupprimerProjet(DeleteView):
+class SupprimerProjet(DeleteAccess, DeleteView):
     model = Projet
     success_url = reverse_lazy('blog:index_projets')
     template_name_suffix = '_supprimer'
@@ -483,7 +590,7 @@ class ListeProjets(ListView):
     model = Projet
     context_object_name = "projet_list"
     template_name = "blog/index_projets.html"
-    paginate_by = 30
+    paginate_by = 50
 
     def get_queryset(self):
         params = dict(self.request.GET.items())
@@ -493,12 +600,9 @@ class ListeProjets(ListView):
         if not self.request.user.is_authenticated:
             qs = qs.filter(asso__abreviation="public")
         else:
-            if not self.request.user.adherent_permacat:
-                qs = qs.exclude(asso__abreviation="pc")
-            if not self.request.user.adherent_rtg:
-                qs = qs.exclude(asso__abreviation="rtg")
-            if not self.request.user.adherent_fer:
-                qs = qs.exclude(asso__abreviation="fer")
+            for nomAsso in Choix_global.abreviationsAsso:
+                if not getattr(self.request.user, "adherent_" + nomAsso):
+                    qs = qs.exclude(asso__abreviation=nomAsso)
 
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])
@@ -507,16 +611,20 @@ class ListeProjets(ListView):
         if "statut" in params:
             qs = qs.filter(statut=params['statut'])
 
-        if "permacat" in params and self.request.user.adherent_permacat:
+        if "permacat" in params and self.request.user.adherent_pc:
             if params['permacat'] == "True":
                 qs = qs.filter(estPublic=False)
             else:
                 qs = qs.filter(estPublic=True)
 
         if "ordreTri" in params:
+            if params['ordreTri'] == "-date_dernierMessage":
+                qs = qs.filter(date_dernierMessage__isnull=False)
+            elif params['ordreTri'] == "-date_modification":
+                qs = qs.filter(date_modification__isnull=False)
             qs = qs.order_by(params['ordreTri'])
         else:
-            qs = qs.order_by('-date_dernierMessage', '-date_creation', 'categorie', 'auteur')
+            qs = qs.order_by('-date_creation', '-date_dernierMessage',  'categorie', 'auteur')
 
         self.qs = qs
         return qs.filter(estArchive=False)
@@ -655,22 +763,22 @@ def articles_suivis(request, slug):
     return render(request, 'blog/articles_suivis.html', {'suiveurs': suiveurs, "article":article, })
 
 @login_required
-def articles_suiveurs(request):
-    suivi, created = Suivis.objects.get_or_create(nom_suivi='articles')
+def articles_suiveurs(request, asso_abreviation='punlic'):
+    suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_'+ str(asso_abreviation))
     suiveurs = sorted(followers(suivi), key= lambda x: str.lower(x.username))
     return render(request, 'blog/articles_suivis.html', {'suiveurs': suiveurs, })
 
 
 @login_required
 @csrf_exempt
-def suivre_articles(request, actor_only=True):
-    suivi, created = Suivis.objects.get_or_create(nom_suivi='articles')
+def suivre_articles(request, asso_abreviation='public', actor_only=True):
+    suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_' + str(asso_abreviation))
 
     if suivi in following(request.user):
         actions.unfollow(request.user, suivi, send_action=False)
     else:
         actions.follow(request.user, suivi, actor_only=actor_only, send_action=False)
-    return redirect('blog:index')
+    return redirect('blog:acceuil')
 
 @login_required
 @csrf_exempt
@@ -729,7 +837,7 @@ def ajouterEvenement(request, date=None):
         form = EvenementForm(request.POST or None)
 
     if form.is_valid():
-        form.save()
+        form.save(request)
         return redirect('cal:agenda')
 
     return render(request, 'blog/ajouterEvenement.html', {'form': form, })
@@ -737,16 +845,87 @@ def ajouterEvenement(request, date=None):
 
 
 @login_required
-def ajouterEvenementArticle(request, id):
+def ajouterEvenementArticle(request, id_article):
     form = EvenementArticleForm(request.POST or None)
 
     if form.is_valid():
-        form.save(id)
-        return lireArticle_id(request, id)
+        ev = form.save(request, id_article)
+        return redirect(ev.article)
 
     return render(request, 'blog/ajouterEvenement.html', {'form': form, })
 
 
+class SupprimerEvenementArticle(DeleteAccess, DeleteView):
+    model = Evenement
+    success_url = reverse_lazy('blog:index')
+    template_name_suffix = 'article_supprimer'
+
+    def get_object(self):
+        return Evenement.objects.get(id=self.kwargs['id_evenementArticle'])
+
+    def get_success_url(self):
+        return Article.objects.get(slug=self.kwargs['slug_article']).get_absolute_url()
+
+
+@login_required
+def ajouterAdresseArticle(request, id_article):
+    article = Article.objects.get(id=id_article)
+    form = AdresseArticleForm(request.POST or None)
+    form_adresse = AdresseForm(request.POST or None)
+    form_adresse2 = AdresseForm2(request.POST or None)
+
+    if form.is_valid() and (form_adresse.is_valid() or form_adresse2.is_valid()):
+        if 'adressebtn' in request.POST:
+            adresse = form_adresse.save()
+        else:
+            adresse = form_adresse2.save()
+        form.save(article, adresse)
+        return redirect(article)
+
+    return render(request, 'blog/ajouterAdresse.html', {'article':article, 'form': form, 'form_adresse':form_adresse, 'form_adresse2':form_adresse2 })
+
+
+class SupprimerAdresseArticle(DeleteView):
+    model = AdresseArticle
+    success_url = reverse_lazy('blog:index')
+    template_name_suffix = '_supprimer'
+
+    def get_object(self):
+        return AdresseArticle.objects.get(id=self.kwargs['id_adresse'])
+
+    def get_success_url(self):
+        return Article.objects.get(slug=self.kwargs['slug_article']).get_absolute_url()
+
+    def delete(self, request, *args, **kwargs):
+        # the Post object
+        self.object = self.get_object()
+        if self.object.article.estModifiable or self.object.article.auteur == request.user or request.user.is_superuser:
+            success_url = self.get_success_url()
+            self.object.delete()
+            return HttpResponseRedirect(success_url)
+        else:
+            return HttpResponseForbidden("Vous n'avez pas l'autorisation de supprimer")
+
+@login_required
+def voirCarteLieux(request, id_article):
+    article = Article.objects.get(id=id_article)
+    lieux = article.getLieux()
+    titre = "Lieux associés à l'article '" + str(article.titre) +"'"
+    return render(request, 'blog/carte_lieux.html', {'titre':titre, "lieux":lieux})
+
+
+
+@login_required
+def supprimerAtelierArticle(request, article_slug, atelier_slug):
+    atelier = Atelier.objects.get(slug=atelier_slug)
+    if atelier.auteur != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden("Vous n'avez pas l'autorisation de supprimer")
+    atelier.article = None
+    atelier.save()
+
+    return lireArticle(request, article_slug)
+
+# methode pour migrer les donnees
 def changerArticles_jardin(request):
     from jardinpartage.models import Article as Art_jardin, Commentaire as Comm_jardin
     articles = Article.objects.filter(categorie="Jardin")
@@ -771,3 +950,27 @@ def changerArticles_jardin(request):
         article.delete()
 
     return render(request, 'blog/accueil.html')
+
+
+
+@login_required
+def filtrer_articles(request):
+    articles_list = Article.objects.all()
+    for nomAsso in Choix_global.abreviationsAsso:
+        if not getattr(request.user, "adherent_" + nomAsso):
+            articles_list = articles_list.exclude(asso__abreviation=nomAsso)
+    f = ArticleFilter(request.GET, queryset=articles_list)
+
+    return render(request, 'blog/article_filter.html', {'filter': f})
+
+def ajax_categories(request):
+    try:
+        asso_id = request.GET.get('asso')
+        nomAsso = Asso.objects.get(id=asso_id).abreviation
+        return render(request, 'blog/ajax/categories_dropdown_list_options.html',
+                      {'categories': Choix.get_type_annonce_asso(nomAsso)})
+    except:
+        return render(request, 'blog/ajax/categories_dropdown_list_options.html', {'categories': Choix.get_type_annonce_asso("defaut")})
+
+
+

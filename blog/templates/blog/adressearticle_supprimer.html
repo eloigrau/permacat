@@ -1,0 +1,14 @@
+{% extends 'blog/baseBlog.html' %}
+{% block title %} - Enlever un lieu d'un article{% endblock %}
+{% block subtitle %}
+<div class="row ">
+<div class="col-sm-12 textcenter">
+<form action="" method="post">{% csrf_token %}
+    <p>Etes vous sûr.e de vouloir enlever le lieu "{{ adressearticle }}"?</p>
+    <input type="button"  onclick="window.history.back();"  value="Annuler" />
+    <input type="submit" value="Confirmer" />
+</form>
+</div>
+</div>
+
+{% endblock %}

@@ -9,7 +9,7 @@ Coopérateurs
 {% block subtitle %}
 <div class="row">
     <div class="col-sm-12 textcenter">
-        <h3>Liste de tous les adhérents au site</h3>
+        <h3>Liste de tous les adhérents PermaCat</h3>
     </div>
 </div>
 
@@ -20,7 +20,7 @@ Coopérateurs
                 <button type="button" class="btn btn-primary" >Envoyer un mail aux abonnés à la newletter</button>
                 </a>
 
-        {% if request.user.adherent_permacat %}
+        {% if request.user.adherent_pc %}
         <a href="{% url 'contacter_adherents' %}" >
                 <button type="button" class="btn btn-primary" >Envoyer un mail aux adhérents Permacat</button>
                 </a>

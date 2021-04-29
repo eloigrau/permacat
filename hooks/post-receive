@@ -1,0 +1,5 @@
+#!/bin/sh
+
+GIT_WORK_TREE=~/permacat git checkout -f
+supervisorctl restart permacat_supervisor
+

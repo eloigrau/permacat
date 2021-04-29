@@ -1,0 +1,54 @@
+{% extends 'base_asso.html' %}
+{% load static %}
+{% block title %} - Accueil{% endblock %}
+{% block subtitle %}
+
+<h2 class = "textcenter rowbienvenue">PermAgora</h2>
+
+{% include "asso/presentation_asso_template.html" with adherent=request.user.adherent_scic assos='scic' %}
+
+<h4 class = "textcenter rowbienvenue">Qui sommes nous ?</h4>
+{% endblock %}
+{% block content %}
+<div class="row">
+	<div class="col">
+		<p>Ce groupe est en cours de constitution... Il correspond aux personnes qui voudraient participer au projet de SCIC initié par PermaCat, en vue de : 1) mutualiser nos compétences pour développer nos activités professionnelles et 2) former un collectif pour la création d'un écolieu</p>
+		<p>
+		Nous sommes un groupe de personnes qui essayons de mettre nos rêves en commun, de créer un collectif qui puisse soutenir nos différents projets (perso et professionnels), et mutualiser des moyens pour assurer notre avenir
+		</p>
+		<p>Vous pouvez trouver nos (futurs) <a href="https://www.perma.cat/media/documents/2021/07/26/statutspermagora_MH6n8vw.docx" trget="_blank">statuts, reglement intérieur et charte ici</a>. Si vous avez des commentaires, n'hesitez pas à nous contacter</p>
+		<p>Nos projets s'articulent autour de la création d'un ecolieu et du developpement de différents pôles : agriculture, bien-etre/santé, formation, évenementiel...</p>
+		<p>Notre fonctionnement s'inspire du <a href="https://www.perma.cat/media/documents/2021/08/03/constitution_1_0_finale.pdf" target="_blank">modèle Z :</a></p>
+
+<div class="row justify-content-center">
+	<div class="col-sm-12 col-md-8 textcenter">
+		<img src="{% static 'img/modeleZ.jpg' %}" class="thumbnail" style="width:90%;" alt="ModeleZ">
+	</div>
+</div>
+
+		<p>
+		si vous aussi, vous avez envie de vivre autrement de manière écologique,
+		de construire un monde plus durable et plus respectueux de notre
+		environnement et des êtres vivants qui y vivent vous pouvez nous rejoindre !
+		</p>
+
+<hr>
+		{% if request.user.is_anonymous %}
+			<p class="textcenter">
+				 <a class="btn btn-warning" href="#" disabled> Il faut être connecté pour pouvoir s'inscrire dans ce groupe</a>
+			</p>
+		{% else %}
+
+			{% if request.user.adherent_scic %}
+			<p class="textcenter">
+				 <a class="btn btn-warning" href="{% url 'inscription_permagora' %}"> Je suis inscrit -> Je me désinscris du groupe en cliquant ici</a>
+			</p>
+			{% else %}
+			<p class="textcenter">
+				 <a class="btn btn-primary" href="{% url 'inscription_permagora' %}"> Je ne fais pas partie du groupe -> Je m'inscris en cliquant ici</a>
+			</p>
+			{% endif %}
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

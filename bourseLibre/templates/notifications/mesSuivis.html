@@ -1,19 +1,89 @@
 {% extends 'base_notifications.html' %}
-
+{% load app_filters %}
 {% block subtitle %}
-<h4>Mes suivis</h4>
+<h4>Mes Abonnements</h4>
+<p>Retrouvez ici toutes les pages auxquelles vous êtes abonné.e.s (c'est à dire les pages pour lesquelles vous recevez une info par mail). Cliquez sur "supprimer" pour ne plus recevoir de mail pour ces type d'infos</p>
 
 {% endblock %}
 {% block content %}
 
 <div class="row justify-content-center">
     <div class="col-sm-12 textcenter">
-            {% for action in actions %}
-        <p>
-            {{action}}
-        </p>
-        {%endfor%}
+        <h5>Abonnements généraux </h5>
+        <p>Vous recevez des nouvelles par mail pour chaque nouveau :</p>
+        <table class="table2 table table-condensed tableprofils table-striped sortable">
+            {% for action in follows_base %}
+                {% if action %}
+                <tr>
+                    <td> {{action.follow_object|filtrerSuivis}} </td>
+                   <td>  <a href="{% url 'supprimerAction' actionid=action.id %}" class="btn btn-danger" type="button"> supprimer</a> </td>
+                </tr>
+                {%endif%}
+            {%endfor%}
+        </table>
     </div>
 </div>
+        {% if follows_forum %}
+        <hr>
+    <div class="col-sm-12 textcenter">
+        <h5>Abonnements aux Articles du forum </h5>
+        <p>Vous recevez des nouvelles par mail pour les nouveaux articles des groupes suivants :</p>
+        <table class="table2 table table-condensed tableprofils table-striped sortable">
+            {% for action in follows_forum %}
+                {% if action %}
+                <tr>
+                    <td> {{action.follow_object|filtrerSuivisForum}} </td>
+                   <td>  <a href="{% url 'supprimerAction' actionid=action.id %}" class="btn btn-danger" type="button"> supprimer</a> </td>
+                </tr>
+                {%endif%}
+            {%endfor%}
+        </table>
+    </div>
+        {% endif %}
+        {% if follows_agora %}
+        <hr>
+    <div class="col-sm-12 textcenter">
+        <h5>Abonnements aux Salons de discussions </h5>
+        <p>Vous recevez des nouvelles par mail pour les Salons de discussions suivants :</p>
+        <table class="table2 table table-condensed tableprofils table-striped sortable">
+            {% for action in follows_agora %}
+                {% if action %}
+                <tr>
+                    <td> {{action.follow_object|filtrerSuivisAgora}} </td>
+                   <td>  <a href="{% url 'supprimerAction' actionid=action.id %}" class="btn btn-danger" type="button"> supprimer</a> </td>
+                </tr>
+                {%endif%}
+            {%endfor%}
+        </table>
+    </div>
+        {% endif %}
+
+<hr>
+
+<div class="row justify-content-center">
+    <div class="col-sm-12 textcenter">
+        <a href="{% url 'sereabonner' %}" class="btn btn-primary" type="button"> Se réabonner au forum/altermarché/conversations/projets/suffrages </a>
+   <a href="{% url 'sedesabonner' %}" class="btn btn-danger" type="button"> Se désabonner au forum/altermarché/conversations/projets/suffrages </a>
+    </div>
+</div>
+<hr>
+        {% if follows_autres %}
+        <hr>
+    <div class="col-sm-12 textcenter">
+        <h5>Abonnements particuliers </h5>
+        <p>Vous recevez des nouvelles par mail pour les articles ou projets suivants :</p>
+        <table class="table2 table table-condensed tableprofils table-striped sortable">
+            {% for action in follows_autres %}
+                {% if action %}
+                <tr>
+                    <td> {{action.follow_object}} </td>
+                   <td>  <a href="{% url 'supprimerAction' actionid=action.id %}" class="btn btn-danger" type="button"> supprimer</a> </td>
+                </tr>
+                {%endif%}
+            {%endfor%}
+        </table>
+    </div>
+        {% endif %}
+
 
 {% endblock %}

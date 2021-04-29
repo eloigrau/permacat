@@ -1,6 +1,9 @@
 from django import template
 from django.forms import CheckboxInput
 from django.utils.safestring import mark_safe
+from django.utils.text import slugify
+from bourseLibre.constantes import Choix
+from bourseLibre.models import Asso
 
 register = template.Library()
 
@@ -64,8 +67,6 @@ def ordreTriStr(value):
         return "Catégorie"
     elif value =='titre':
         return "Titre"
-    elif value =='-type_vote':
-        return "Type de vote"
     else:
         return value
 
@@ -76,3 +77,59 @@ def couperTexte(value, nb):
         return value[:nb-3] + "..."
     return value
 
+
+@register.filter(is_safe=True)
+def adherent_asso(user, asso):
+    return asso.is_membre(user)
+
+@register.filter(is_safe=True)
+def slug(txt):
+    return slugify(txt)
+
+@register.filter(is_safe=True)
+def filtrerSuivis(nomSuivis):
+    return Choix.nomSuivis[str(nomSuivis)]
+
+@register.filter(is_safe=True)
+def filtrerSuivisAgora(nomSuivis):
+    try:
+        nomAsso = str(nomSuivis).split("_",1)[1]
+        asso = Asso.objects.get(abreviation=nomAsso)
+        return "Salon de discussion " + asso.nom
+    except:
+        return str(nomSuivis)
+
+
+@register.filter(is_safe=True)
+def filtrerSuivisForum(nomSuivis):
+    try:
+        nomAsso = str(nomSuivis).split("_",1)[1]
+        asso = Asso.objects.get(abreviation=nomAsso)
+        return "Articles " + asso.nom
+    except:
+        return str(nomSuivis)
+
+@register.filter(is_safe=True)
+def distance(user1, user2):
+    dist = None
+    try:
+        dist = user1.getDistance(user2)
+    except:
+        pass
+    if dist == 0:
+        return "-"
+    elif dist == None:
+        return "-"
+
+    if dist < 10:
+        if dist < 1:
+            return "01 km"
+        dist_int = int(dist + 0.5)
+        if dist_int < 10:
+            return "0" + str(int(dist + 0.5)) + " km"
+
+    return str(int(dist + 0.5)) + " km"
+
+@register.filter
+def get_item_dict(dictionary, key):
+    return dictionary.get(key)

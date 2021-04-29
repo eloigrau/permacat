@@ -1,4 +1,4 @@
-{% extends 'jardinpartage/baseBlog.html' %}
+{% extends 'jardinpartage/base_jardins.html' %}
 {% load activity_tags %}
 {% load blog_filters %}
 {% load fontawesome %}
@@ -15,17 +15,17 @@
             <span class="badge badge-success" style="background-color:{{article.get_couleur}}" ><a href="{% url 'jardinpartage:index'  %}?categorie={{article.categorie}}"  style="background-color:{{article.get_couleur}}" class="smallcaps_h2">Jardins partagés/{{ article.get_categorie_display }}</a></span>
 
             {% if article.estArchive%}
-            <span class="badge badge-secondary">
+            <span class="badge badge-Light">
                 archivé
             </span>
             {%endif%}
-            {% if article.estModifiable%}
+            {% if article.estModifiable %}
             <span class="badge badge-info">
                 modifiable
             </span>
             {%endif%}
             <a href="{% url 'profil' article.auteur.id %}">
-                <span class="badge badge-secondary">
+                <span class="badge badge-Light">
                rédigé par  {{ article.auteur.username }}
                 </span>
             </a>
@@ -60,7 +60,7 @@
     </div>
     <div class="col-md-2">
         <p>
-        {%if article.auteur == request.user %}
+        {%if article.auteur == request.user or request.user.is_superuser %}
 		<div class="btn-group">
             <a href="{% url 'jardinpartage:modifierArticle' slug=article.slug %}">
                <button type="button" class="btn btn-sm btn-warning">
@@ -71,7 +71,7 @@
                 <span class="glyphicon glyphicon-plus"></span>&nbsp;Supprimer
                </button></a>
         </div>
-        {%elif article.estModifiable%}
+        {%elif article.estModifiable %}
             <a href="{% url 'jardinpartage:modifierArticle' slug=article.slug %}">
                <button type="button" class="btn btn-sm btn-warning">
                 <span class="glyphicon glyphicon-plus"></span>&nbsp;Modifier
@@ -86,12 +86,14 @@
 
 {% endblock %}
 {% block content %}
-     <div class="boxitem_droite">
+     <div class="textcenter">
                 <span class="badge badge-success">
                  {{article.get_jardin_display }}
             </span>
+     </div>
+     <div class="boxitem_droite">
             {% if article.estArchive%}
-            <span class="badge badge-secondary">
+            <span class="badge badge-Light">
                 archivé
             </span>
             {%endif%}
@@ -108,7 +110,7 @@
  </div>
 </div>
     <hr>
-<div class="row"  id="sec03">
+<div class="row" >
 
     <div class="col textright" >
 
@@ -124,7 +126,7 @@
               </a>
         {% endif %}
 
-        {%if article.auteur == request.user or article.estPublic or request.user.adherent_permacat %}
+        {%if article.auteur == request.user or article.estPublic or request.user.adherent_pc %}
             <button type="button" class="btn" data-toggle="modal" data-target="#dates">
              </h5 class="textcenter">{% fontawesome_icon 'calendar' %} Dates {%if article.start_time %}supplémentaires{%endif%}</h5>
             </button>
@@ -147,7 +149,7 @@
                       -
                       {%endfor%}
                     {%if article.auteur == request.user or article.estModifiable %}
-                      <p><a class="btn btn-success" href="{% url 'jardinpartage:ajouterEvenementArticle' id=article.id %}" ><i class="fa fa-plus"></i> Ajouter une date</a></p>
+                      <p><a class="btn btn-success" href="{% url 'jardinpartage:ajouterEvenementArticle' id_article=article.id %}" ><i class="fa fa-plus"></i> Ajouter une date</a></p>
                     {% endif %}
                   </div>
                 </div>

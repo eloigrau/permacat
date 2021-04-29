@@ -1,4 +1,7 @@
 {% extends 'base_site.html' %}
+{% load carto_filters %}
+{% load app_filters %}
+{% load widget_tweaks %}
 {% block headerDocument%}
 {% load leaflet_tags %}
 {%endblock%}
@@ -16,8 +19,103 @@
     <h4> {{titre}}</h4>
   </div>
 </div>
+
+
+<p class="textcenter textepetit">(* les personnes qui ont accepté d'apparaitre dans l'annuaire sont indiquées par une feuille ; les marqueurs gris concernent les colibris qui se sont inscrit sur "<a href="{% url 'carto:carte' %}" >presdecheznous.fr</a>" )</p>
+
+
+{% include "asso/presentation_asso_template.html" with adherent=request.user|adherent_asso:asso assos=asso.abreviation%}
+
 {% endblock %}
 {% block content %}
+
+<hr>
+{% if request.user.adherent_citealt %}
+<div class="row">
+    <div class="col-sm-12 textcenter">
+        <a href="https://docs.google.com/spreadsheets/d/19tiVQYasscCukeNaS_fxfOwcztk4ZjE5AWR1vWlMZEw/edit#gid=1682331242" target="_blank">
+         <button type="button" class="btn btn-primary">
+                Voir le fichier Ressourcerie 66 de la Cité Altruiste
+            </button>
+		</a>
+    </div>
+</div>
+{% endif %}
+<hr>
+<div class="row">
+    <div class="col-sm-12 textcenter">
+<button type="button" class="btn btn-info" data-toggle="modal" data-target="#help" title="Filtrer">
+Filtrer la liste des profils
+</button>
+<!-- Modal -->
+<div class="modal fade" id="help" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog textaide" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+          <div class="row justify-content-center">
+           <h5 > Filtrer les profils affichés</h5>
+              {% if asso.abreviation != "public" %}
+              <p>Parmi les membres du groupe {{ asso.nom }}</p>
+              {% else %}
+              <p>Parmi tous les inscrits sur le site</p>
+              {% endif %}
+          </div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body textleft">
+<form method="get">
+    <div class="well">
+      <div class="row">
+          <div class="form-group col-sm-12">
+              {% if asso.abreviation != "pc" and request.user.adherent_pc%}
+              <div>
+          {{ filter.form.adherent_pc.label_tag }}
+            <label class="checkbox-inline">{% render_field filter.form.adherent_pc %}</label>
+              </div>
+              {% endif %}
+              {% if asso.abreviation != "rtg" and request.user.adherent_rtg %}
+              <div>
+          {{ filter.form.adherent_rtg.label_tag }}
+            <label class="checkbox-inline">{% render_field filter.form.adherent_rtg %}</label>
+              </div>
+              {% endif %}
+              {% if asso.abreviation != "citealt" and request.user.adherent_citealt %}
+              <div>
+          {{ filter.form.adherent_citealt.label_tag }}
+            <label class="checkbox-inline">{% render_field filter.form.adherent_citealt %}</label>
+              </div>
+              {% endif %}
+              {% if asso.abreviation != "scic"  and request.user.adherent_scic %}
+              <div>
+          {{ filter.form.adherent_scic.label_tag }}
+            <label class="checkbox-inline">{% render_field filter.form.adherent_scic %}</label>
+              </div>
+              {% endif %}
+            </div>
+      </div>
+        <div class="form-group col-sm-12">
+            <label>Mot dans la description ou les compétences :</label>
+          {% render_field filter.form.compet_descrip class="form-control" %}
+        </div>
+
+    <div class="row">
+    <div class="col-md-12 textcenter">
+      <button type="submit" class="btn btn-primary">
+        <span class="glyphicon glyphicon-search"></span> Filtrer les profils
+      </button>
+    </div>
+    </div>
+</div>
+  </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+<hr>
 
 <div class="row" style="min-height:600px;">
   <div class="col-md-12" >
@@ -31,7 +129,7 @@
       <script type="text/javascript">
 
         function map_init_basic (map, options) {
-          var greenIcon = L.icon({
+          var leafIcon = L.icon({
             iconUrl: '{% static 'img/leafgreen.png' %}',
             shadowUrl: '{% static 'img/leafshadow.png' %}',
 
@@ -41,21 +139,56 @@
             shadowAnchor: [4, 62],  // the same for the shadow
             popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
         });
-        {% for profil in profils %}
+
+          var greyIcon = L.icon({
+              iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-grey.png',
+              shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41]
+        });
+          var greenIcon = L.icon({
+              iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+              shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41]
+        });
+
+        {% for ev in data %}
+            try{
+                var lat = {{ev.geo.latitude|to_numeric}};
+                var lon = {{ev.geo.longitude|to_numeric}};
+                {% with site=ev.website|safe %}
+                var marker = L.marker([lat, lon], {icon: greyIcon}).bindPopup('<a href="{%url 'carto:carte' %}#lieu_{{forloop.counter}}" > <b>{{ev.name}}</b></a>');
+                marker.addTo(map);
+                {% endwith %}
+            }
+            catch(err){ ;
+            }
+        {%endfor%}
+        {% for profil in filter.qs %}
             var lat = {{profil.adresse.get_latitude}};
             var lon = {{profil.adresse.get_longitude}};
-            var marker = L.marker([lat, lon], {icon: greenIcon}).bindPopup('<a href="{% url 'profil' profil.id %}"> {{profil.username}}</a>');
+            var marker = L.marker([lat, lon], {icon: leafIcon}).bindPopup('<a href="{% url 'profil' profil.id %}"> {{profil.username}} {% if profil.first_name%}({{profil.first_name}}{% if profil.last_name%} {{profil.last_name}}{% endif%}){% else%} {% if profil.last_name%}({{profil.last_name}}){% endif%} {% endif%} </a>');
             marker.addTo(map);
         {%endfor%}
+
+        {% if filter.qs|length == 1 %}
         map.panTo(new L.LatLng(lat, lon));
+        {%else%}
+        map.panTo(new L.LatLng(42.62914, 2.49939));
+        {%endif%}
     }
 </script>
 {% leaflet_map "yourmap" callback="window.map_init_basic" %}
 </div>
 </div>
 
-    <p class="textcenter textepetit">(*qui ont accepté d'apparaitre dans l'annuaire)</p>
-
+<hr>
+{% include "template_annuaire.html" with profils=filter.qs %}
 
 {% endblock %}
 

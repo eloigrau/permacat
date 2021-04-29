@@ -39,7 +39,7 @@
 <div class="row">
 	<div class="col-12 paddingbase detailProduit" style="background-color: {{ produit.couleur }}; min-height:200px !important">
 		<span class="badge {% if produit.estUneOffre%}badge-warning{%else%} badge-danger {%endif%}">{% if produit.estUneOffre%}Offre{%else%} Demande {%endif%}
-			{{ produit.asso }}
+			{% if not produit.estUneOffre and produit.asso.abreviation == "public" %}publique {%else%}{{ produit.asso }}{%endif%}
 		</span>
 		<div class="row"  >
 			<div class="col-md-10 ">
@@ -129,8 +129,10 @@
 		</table>
 	</div>
 
-	{% if user.id != produit.user.id and produit.estUneOffre%}
+	{% if user.id != produit.user.id %}
 	<div class="col-md-4 paddingbase">
+
+				{%comment%}
 		<div class="row justify-content-center align-items-center">
 			Quantité :
 				<div class="col-md-5">
@@ -155,6 +157,13 @@
 		<a href="{%url 'agora_conversation' produit.user.username %}?produit={{produit.id}}" class="btn btn-success btn-block  btn-lg" type="button">Envoyer un message</a>
 
 		</div>
+
+				{%endcomment%}
+		<a href="{%url 'agora_conversation' produit.user.username %}" class="btn btn-success btn-block " type="button">Envoyer un message privé</a>
+		{%comment%}
+		<a href="{%url 'profil_contact' produit.user.id %}" class="btn btn-success btn-block  btn-lg" type="button">Mail</a>
+		{%endcomment%}
+
 	</div>
 	{%elif user.id == produit.user.id%}
 	<div class="col-md-4 paddingbase">
@@ -162,14 +171,6 @@
 			Modifier</a>
 		<a href="{%url 'produit_supprimer' produit.id %}" class="btn btn-danger btn-lg btn-block" type="button">
 			Supprimer</a>
-	</div>
-	{%else%}
-	<div class="col-md-4 paddingbase">
-		<a href="{%url 'agora_conversation' produit.user.username %}" class="btn btn-success btn-block  btn-lg" type="button">Envoyer un message</a>
-		{%comment%}
-		<a href="{%url 'profil_contact' produit.user.id %}" class="btn btn-success btn-block  btn-lg" type="button">Mail</a>
-		{%endcomment%}
-
 	</div>
 	{%endif%}
 

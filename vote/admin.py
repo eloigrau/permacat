@@ -1,7 +1,12 @@
 from django.contrib import admin
-from .models import Vote, Suffrage, Commentaire
+from . import models
 # Register your models here.
 
-admin.site.register(Vote)
-admin.site.register(Suffrage)
-admin.site.register(Commentaire)
+admin.site.register(models.Vote)
+admin.site.register(models.Suffrage)
+admin.site.register(models.Question_majoritaire)
+admin.site.register(models.Proposition_m)
+admin.site.register(models.Question_binaire)
+admin.site.register(models.ReponseQuestion_m)
+admin.site.register(models.ReponseQuestion_b)
+admin.site.register(models.Commentaire)

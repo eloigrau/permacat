@@ -38,7 +38,7 @@
     <div class="row-sm-12 justify-content-center">
         <div class="col-sm-12  fiche_tags">
             <p class="textright"> 
-  {% if fiche.tags.names  %}Mots-clés:
+                {% if fiche.tags.names  %}<em>Mots-clés:</em>
            {% for tag in fiche.tags.names %}
             {{tag}}{%if not forloop.last%}, {%endif%}
            {% endfor %}
@@ -118,7 +118,7 @@
 </div>
 
     <script>
-    getElementById("id_commentaire_iframe").height = "150px"
+    document.getElementById("id_commentaire_iframe").height = "150px"
 </script>
 
 

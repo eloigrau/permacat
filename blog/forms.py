@@ -1,15 +1,21 @@
 from django import forms
-from .models import Article, Commentaire, Projet, CommentaireProjet, Evenement
+
+from django.http import HttpResponseRedirect
+from formtools.preview import FormPreview
+from .models import Article, Commentaire, Projet, CommentaireProjet, Evenement, AdresseArticle, Discussion
 from django.utils.text import slugify
 import itertools
-#from django.utils.formats import localize
-#from tinymce.widgets import TinyMCE
-from django_summernote.widgets import SummernoteWidget, SummernoteWidgetBase, SummernoteInplaceWidget
+from django_summernote.widgets import SummernoteWidget
 from django.urls import reverse
 from bourseLibre.settings import SUMMERNOTE_CONFIG as summernote_config
 from bourseLibre.models import Asso
 from django.contrib.staticfiles.templatetags.staticfiles import static
+from photologue.models import Album
+from .models import Choix
+from django.core.exceptions import ValidationError
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
 
 class SummernoteWidgetWithCustomToolbar(SummernoteWidget):
     def summernote_settings(self):
@@ -67,17 +73,24 @@ class SummernoteWidgetWithCustomToolbar(SummernoteWidget):
         return summernote_settings
 
 class ArticleForm(forms.ModelForm):
-    asso = forms.ModelChoiceField(queryset=Asso.objects.all(), required=True,
-                              label="Article public ou réservé aux adhérents de l'asso :", )
-
+    asso = forms.ModelChoiceField(queryset=Asso.objects.all().order_by("id"), required=True,
+                              label="Article public ou réservé aux membres du groupe :", )
 
     class Meta:
         model = Article
-        fields = ['categorie', 'titre', 'contenu', 'start_time', 'end_time', 'asso', 'estModifiable']
+        fields = ['asso', 'categorie', 'titre', 'contenu', 'start_time', 'end_time', 'estModifiable', 'tags']
         widgets = {
             'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'type': 'date'}),
-              'end_time': forms.DateInput(attrs={'type': 'date'}),
+              'start_time':  forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
+              'end_time': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
 
            # 'bar': SummernoteInplaceWidget(),
         }
@@ -97,65 +110,124 @@ class ArticleForm(forms.ModelForm):
 
         instance.auteur = userProfile
 
-        instance.save(sendMail)
+        instance.save()
 
         return instance
 
     def __init__(self, request, *args, **kwargs):
         super(ArticleForm, self).__init__(*args, **kwargs)
-        self.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if request.user.estMembre_str(x.abreviation)]
+        self.fields["asso"].choices = [('', '(Choisir un groupe)'), ] + [(x.id, x.nom) for x in Asso.objects.all().order_by("id") if request.user.estMembre_str(x.abreviation)]
+
+
+        if 'asso' in self.data:
+            try:
+                asso_id = int(self.data.get('asso'))
+                nomAsso = Asso.objects.get(id=asso_id).abreviation
+                self.fields["categorie"].choices = Choix.get_type_annonce_asso(nomAsso)
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk:
+            self.fields["categorie"].choices = Choix.get_type_annonce_asso("")
 
 class ArticleChangeForm(forms.ModelForm):
 
     class Meta:
         model = Article
-        fields = ['categorie', 'titre', 'contenu', 'start_time', 'end_time', 'asso', 'estModifiable', 'estArchive']
+        fields = ['asso', 'categorie', 'titre', 'contenu', 'album', 'start_time', 'end_time',  'tags', 'estModifiable', 'estArchive']
         widgets = {
             'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'class':"date", }),
-              'end_time': forms.DateInput(attrs={'class':'date', }),
+            'start_time': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
+              'end_time': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
         }
+
+class ArticleAddAlbum(forms.ModelForm):
+    album = forms.ModelChoiceField(queryset=Album.objects.all(), required=True,
+                              label="Si l'album existe déjà sur le site, choisissez l'album photo à associer ci-dessous", )
+
+    class Meta:
+        model = Article
+        fields = ['album',]
+
+
+class DiscussionForm(forms.ModelForm):
+
+    class Meta:
+        model = Discussion
+        exclude = ['article', 'slug']
+
+    def valider_unique(self, article):
+        cleaned_data = self.cleaned_data
+
+        try:
+            Discussion.objects.get(slug=slugify(cleaned_data['titre']), article=article)
+        except Discussion.DoesNotExist:
+            pass
+        else:
+            raise ValidationError('Il existe déjà une discussion avec ce titre pour cet article')
+
+        # Always return cleaned_data
+        return cleaned_data
 
 class CommentaireArticleForm(forms.ModelForm):
 
     class Meta:
         model = Commentaire
-        exclude = ['article','auteur_comm']
+        exclude = ['article', 'auteur_comm', 'discussion']
         #
         widgets = {
          'commentaire': SummernoteWidgetWithCustomToolbar(),
-               # 'commentaire': forms.Textarea(attrs={'rows': 1}),
-            }
+        }
 
     def __init__(self, request, *args, **kwargs):
         super(CommentaireArticleForm, self).__init__(request, *args, **kwargs)
         self.fields['commentaire'].strip = False
 
-
-
 class CommentaireArticleChangeForm(forms.ModelForm):
     commentaire = forms.CharField(required=False, widget=SummernoteWidget(attrs={}))
 
     class Meta:
-     model = Commentaire
-     exclude = ['article', 'auteur_comm']
+        model = Commentaire
+        exclude = ['article', 'auteur_comm', 'discussion']
+
+    #def __init__(self, request, article=None, *args, **kwargs):
+    #    super(CommentaireArticleChangeForm, self).__init__(request, *args, **kwargs)
+     #   self.fields['commentaire'].strip = False
+        #if article:
+        #    self.fields['discussion'] = forms.ModelChoiceField(queryset=Discussion.objects.filter(article=article), required=True,)
+
 
 class ProjetForm(forms.ModelForm):
     asso = forms.ModelChoiceField(queryset=Asso.objects.all(), required=True,
                               label="Projet public ou réservé aux adhérents de l'asso :", )
     class Meta:
         model = Projet
-        fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'statut',  'asso',  'start_time']
+        fields = ['asso', 'categorie', 'coresponsable', 'titre', 'contenu', 'statut', 'tags',  'start_time']
         widgets = {
         'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'type':'date'}),
-              'end_time': forms.DateInput(attrs={'type':'date'}),
+              'start_time':forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
+              'end_time': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
         }
 
     def __init__(self, request, *args, **kwargs):
         super(ProjetForm, self).__init__(*args, **kwargs)
         self.fields['contenu'].strip = False
-        self.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if request.user.estMembre_str(x.abreviation)]
+        self.fields["asso"].choices = [(x.id, x.nom) for x in Asso.objects.all().order_by("id") if request.user.estMembre_str(x.abreviation)]
 
     def save(self, userProfile, sendMail=True):
         instance = super(ProjetForm, self).save(commit=False)
@@ -181,11 +253,19 @@ class ProjetChangeForm(forms.ModelForm):
 
     class Meta:
         model = Projet
-        fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'asso', 'lien_document', 'start_time', 'end_time', 'estArchive']
+        fields = ['asso', 'categorie', 'coresponsable', 'titre', 'contenu', 'tags', 'lien_document', 'start_time', 'end_time', 'estArchive']
         widgets = {
             'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'class':'date', }),
-              'end_time': forms.DateInput(attrs={'class':'date', }),
+              'start_time': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
+              'end_time': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
         }
 
 class CommentProjetForm(forms.ModelForm):
@@ -220,26 +300,52 @@ class EvenementForm(forms.ModelForm):
 
     class Meta:
         model = Evenement
-        fields = ['start_time', 'titre_even', 'article', 'end_time', ]
+        fields = ['start_time', 'titre_even', 'article', ]
         widgets = {
-            'start_time': forms.DateInput(attrs={'type': 'date'}),
-            'end_time': forms.DateInput(attrs={'type': 'date'}),
+            'start_time': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
         }
 
+    def save(self, request):
+        instance = super(EvenementForm, self).save(commit=False)
+        instance.auteur = request.user
+        instance.save()
 
 class EvenementArticleForm(forms.ModelForm):
     class Meta:
         model = Evenement
-        fields = ['start_time', 'titre_even', 'end_time', ]
+        fields = ['start_time', 'titre_even', ]
         widgets = {
-            'start_time': forms.DateInput(attrs={'type': 'date'}),
-            'end_time': forms.DateInput(attrs={'type': 'date'}),
+            'start_time':forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
+            'end_time': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
         }
 
-    def save(self, id_article):
+    def save(self, request, id_article):
         instance = super(EvenementArticleForm, self).save(commit=False)
         article = Article.objects.get(id=id_article)
         instance.article = article
-        if not Evenement.objects.filter(start_time=instance.start_time, article=article):
-            instance.save()
+        instance.auteur = request.user
+        instance.save()
         return instance
+
+class AdresseArticleForm(forms.ModelForm):
+    class Meta:
+        model = AdresseArticle
+        fields = ['titre',]
+
+    def save(self, article, adresse):
+        instance = super(AdresseArticleForm, self).save(commit=False)
+        instance.article = article
+        instance.adresse = adresse
+        instance.save()

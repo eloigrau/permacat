@@ -4,3 +4,7 @@ db_old.db
 venv/
 db.db
 bourseLibre/settings/production.py
+bourseLibre/media/
+bourseLibre/static/media/
+bourseLibre/static_files/
+/bourseLibre/static_files/

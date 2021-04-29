@@ -5,12 +5,12 @@
 
 <div class="row justify-content-center">
     <div class="col-sm-8 offset-sm-2">
-
-<nav class="navbar navbar-light bg-light justify-content-center" style="display: inline-block;">
-    <button class="btn btn-sm btn-outline-secondary" type="button"><a href="{% url 'notificationsParDate'  %}"> Notifications par date</a></button>
-    <button class="btn btn-success" type="button">Dernières Notifications</button>
-    <button class="btn btn-sm btn-outline-secondary" type="button"><a href="{% url 'notifications'  %}"> Notifications par type</a></button>
-</nav>
+        <nav class="navbar navbar-light bg-light justify-content-center" style="display: inline-block;">
+            <button class="btn btn-sm  btn-success" type="button"><a href="{% url 'notifications_news'  %}">Dernières Notifications</a></button>
+            <button class="btn btn-sm  btn-outline-secondary" type="button"><a href="{% url 'notificationsParDate'  %}"> Notifications par date</a></button>
+            <button class="btn  btn-sm btn-outline-secondary" type="button"><a href="{% url 'notifications'  %}"> Notifications par type</a></button>
+            <button class="btn  btn-sm btn-outline-secondary" type="button"><a href="{% url 'articles_visites'  %}"> Dernières visites</a></button>
+        </nav>
     </div>
     <div class="col-sm-2 ">
         <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#help" title="En savoir plus...">
@@ -39,14 +39,28 @@
     </div>
 </div>
 <hr>
-{% endblock %}
-{% block content %}
-
 <p class = "textcenter justify-content-center">
-        <a href="{% url 'changerDateNotif' %}">
-                <button class="btn btn-outline-secondary" type="submit" data-toggle="tooltip" data-placement="bottom" title="Changer la date"> depuis le {{dateMin|date:"d/m/Y"}} à {{dateMin|date:"G:i"}}</button>
+        <a href="{% url 'notif_cejour' %}">
+                <button class="btn btn-outline-secondary" type="submit" data-toggle="tooltip" data-placement="bottom" title="Changer la date"> aujourd'hui</button>
+        </a>
+        <a href="{% url 'notif_hier' %}">
+                <button class="btn btn-outline-secondary" type="submit" data-toggle="tooltip" data-placement="bottom" title="Changer la date"> depuis hier</button>
+        </a>
+        <a href="{% url 'notif_cettesemaine' %}">
+                <button class="btn btn-outline-secondary" type="submit" data-toggle="tooltip" data-placement="bottom" title="Changer la date"> cette semaine</button>
+        </a>
+        <a href="{% url 'notif_cemois' %}">
+                <button class="btn btn-outline-secondary" type="submit" data-toggle="tooltip" data-placement="bottom" title="Changer la date"> ce mois-ci</button>
         </a>
 </p>
+<p class = "textcenter justify-content-center">
+        <a href="{% url 'changerDateNotif' %}">
+                <button class="btn btn-secondary" type="submit" data-toggle="tooltip" data-placement="bottom" title="Changer la date"> depuis le {{dateMin|date:"d/m/Y"}} à {{dateMin|date:"G:i"}}</button>
+        </a>
+</p>
+
+{% endblock %}
+{% block content %}
 
 {%if htmlArticles or htmlProjets or dico.listautres %}
 <p class = "textcenter ">
@@ -77,6 +91,8 @@
         </ul>
     </div>
 {% endif %}
+
+
 {%if  dico.listautres %}
     <div class="card carte-notif-news notif3 d-md-flex textcenter">
         <ul class="list-group list-group-flush">
@@ -88,6 +104,16 @@
       {% endfor %}
 {% endif %}
 
+{%if  dico.listinscriptions %}
+    <div class="card carte-notif-news notif3 d-md-flex textcenter">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"  style="background-color:#cce6ff">Inscriptions</li>
+      {% for action in dico.listinscriptions %}
+                {% include "notifications/notifications_template4.html" with action=action %}
+      {% endfor %}
+        </ul>
+    </div>
+{% endif %}
 
         </ul>
 

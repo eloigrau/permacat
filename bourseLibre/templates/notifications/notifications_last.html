@@ -4,11 +4,19 @@
 
 {% include 'notifications/entete.html' %}
 <nav class="navbar navbar-light bg-light sticky-top justify-content-center">
-  <form class="form-inline">
-    <button class="btn btn-outline-success " type="button">Dernières Notifications</button>
-      <button class="btn  btn-sm btn-outline-secondary" type="button"><a href="{% url 'notificationsParDate'  %}"> Notifications par date</a></button>
-      <button class="btn btn-sm btn-outline-secondary" type="button"><a href="{% url 'notifications'  %}"> Notifications par type</a></button>
-  </form>
+    <div class="justify-content-center " id="navbarProduit" >
+        <ul class="nav navbar-nav justify-content-center ">
+            <li class="nav-item  ">
+                <button class="btn btn-outline-success " type="button">Dernières Notifications</button>
+            </li>
+            <li class="nav-item  ">
+              <button class="btn  btn-sm btn-outline-secondary" type="button"><a href="{% url 'notificationsParDate'  %}"> Notifications par date</a></button>
+            </li>
+            <li class="nav-item  ">
+                <button class="btn btn-sm btn-outline-secondary" type="button"><a href="{% url 'notifications'  %}"> Notifications par type</a></button>
+            </li>
+        </ul>
+    </div>
 </nav>
 {%if actions%}
 <p class = "textcenter "> depuis la dernière fois que vous avez "marqué comme vu" (le {{request.user.date_notifications|date:"d/m/Y"}} à {{request.user.date_notifications|date:"G:i"}})</p>

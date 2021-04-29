@@ -1,25 +1,21 @@
 {% extends 'blog/baseBlog.html' %}
-{% load fontawesome %}
 {% load blog_filters %}
 {% load fontawesome %}
 {% load activity_tags %}
+{% load static %}
 
+{% block title %} - Forum {% endblock  %}
 {% block subtitle %}
 
-<div class="row">
-    <div class="col textcenter">
-       <h3> Bienvenue sur le forum</h3>
-    </div>
-</div>
 <div class="row justify-content-center">
 
-    <div class="col-sm-12 col-md-6 col-lg-4">
+    <div class="col-sm-12 col-md-12 col-lg-4">
      <div class="row no-gutters justify-content-center">
          <form class="form-inline justify-content-center  navbar-form " action="{% url 'chercher_articles' %}" method="get" role = "search">
             {% csrf_token %}
-             <div class="btn-group">
+             <div class="btn-group btn-block">
                 <div class="col" style="padding-right:0;">
-                <input class="form-control border-secondary border-right-0 rounded-0" name="id_recherche" placeholder="rechercher sur le forum..." type="text">
+                <input class="form-control border-secondary border-right-0 rounded-0" name="id_recherche" placeholder="rechercher dans le forum..." type="text">
                 </div>
                 <div class="col-auto" style="padding-left:0;">
                     <button class="btn btn-outline-secondary border-left-0 rounded-0 rounded-right" type="submit" >{% fontawesome_icon 'search' %}</button>
@@ -27,8 +23,16 @@
              </div>
          </form>
      </div>
+     <div class="justify-content-center">
+
+        <a href="{% url 'blog:filtrer_articles' %}">
+            <button type="button" class="btn  btn-success" >
+               {% fontawesome_icon 'search' %}&nbsp; Recherche avancée...
+            </button>
+        </a>
+     </div>
 </div>
-<div class="col-sm-12 col-md-6 col-lg-4">
+<div class="col-sm-12 col-md-12 col-lg-4">
 <a href="{% url 'blog:ajouterNouvelArticle' %}">
     <button type="button" class="btn  btn-success" >
         <i class="fa fa-plus"></i>&nbsp; Ajouter un article
@@ -36,22 +40,41 @@
 </a>&ensp;
 </div>
 <div class="col-sm-12 col-md-12 col-lg-4">
-    <a href="{% url 'blog:suivre_articles' %}">
-        {% if request.user|is_following:suivis %}
-        <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné : Cliquez pour arreter de recevoir un mail à chaque nouvel article">
-             {% fontawesome_icon 'bell' %}
-        </button>
-        {% else %}
-        <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné : Cliquez pour recevoir un mail à chaque nouvel article">
-             {% fontawesome_icon 'bell-slash' %}
-        </button>
-        {% endif %}
-    </a>
-    <a href="{% url 'blog:suiveursArticles' %}">
-        <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Voir abonnés">
-             {% fontawesome_icon 'list' %}
-        </button>
-    </a>
+
+    <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#suivre" title="En savoir plus...">
+     {% fontawesome_icon 'bell' %}
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="suivre" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog textaide" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+              <div class="row justify-content-center">
+               <h5 > Abonnements au forum</h5>
+              </div>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body textleft">
+            {% for nom_asso, abreviation, suivi in suivis %}
+                <p> <a href="{% url 'blog:suivre_articles' asso_abreviation=abreviation %}">
+                    {% if request.user|is_following:suivi %}
+                    <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné : Cliquez pour arreter de recevoir un mail à chaque nouvel article '{{nom_asso}}'">
+                    {% fontawesome_icon 'bell' %} Articles '{{nom_asso}}'
+                    </button>
+                    {% else %}
+                    <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné : Cliquez pour recevoir un mail à chaque nouvel article '{{nom_asso}}'">
+                         {% fontawesome_icon 'bell-slash' %} Articles '{{nom_asso}}'
+                    </button>
+                    {% endif %}
+                </a></p>
+              {% endfor%}
+          </div>
+        </div>
+      </div>
+    </div>
+
    <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#help" title="En savoir plus...">
      {% fontawesome_icon 'question-circle' %}
     </button>
@@ -80,23 +103,46 @@
 </div>
 
         <hr>
-{% endblock %}
-{% block content %}
 <div class="row">
-<div class="col-sm-12 col-lg-6">
-
-    <div class="row justify-content-center">
-        <h5>Articles du forum : </h5>
-    </div>
+<div class="col-sm-12">
+   <h5> Choisir un groupe / dossier</h5>
     {% include 'blog/navbar_forum.html' %}
 </div>
+</div>
 
-<div class="col-sm-12 col-lg-6">
+<hr>
+
+{% endblock %}
+{% block content %}
+
+<div class="row">
+<div class="col-sm-12 col-lg-12">
+    <div class="row justify-content-center">
+        <h4>Derniers articles : </h4>
+    </div>
+
+ {% include "blog/articles_template_tableau.html" with article_list=derniers_articles %}
+
+</div>
+</div>
+
+
+    <div class="row justify-content-center">
+	<a href="{% url 'blog:index' %}">
+        <button type="button" class="btn btn-success" >
+                <i class="fa fa-arrow-right"></i> Voir tous les articles du forum
+            </button>
+	</a>&ensp;
+	</div>
+{% comment %}
+<hr>
+<div class="row justify-content-center">
+<div class="col-sm-12">
 
     <div class="row justify-content-center">
     <h5>Ailleurs sur le site : </h5>
     </div>
-    <nav class="navbar justify-content-center  navbar-light bg-light textcenter">
+    <nav class="navbar justify-content-center textcenter">
         <div class="justify-content-center " id="navbarSalons">
             <ul class="nav navbar-nav justify-content-center">
             <li class="nav-item dropdown">
@@ -107,7 +153,7 @@
                          Salon Public
                         </a>
                     <div class="dropdown-divider"></div>
-                {% if request.user.adherent_permacat %}
+                {% if request.user.adherent_pc %}
                 <a class=" dropdown-item " href="{% url 'agora' asso='pc' %}">
                          Salon Permacat
                 </a>
@@ -161,7 +207,7 @@
                 <button type="button" class="btn dropdown-toggle btn-primary btn-block btn-menu-forum" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
                 data-target = "#idAteliers"> Prochains Ateliers Collectifs</button>
                 <div class="dropdown-menu dropdown-menu-forum textcenter btn-menu-forum" style="padding:0; background=#e6fbc0;" aria-labelledby="menuAuteur"  id="idAteliers">
-                    <a class="dropdown-item" style="background-color:#cbdff0;" href="{% url 'ateliers:index_ateliers' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les ateliers </a>
+                    <a class="dropdown-item" style="background-color:#cbdff0;" href="{% url 'ateliers:index_ateliers' %}"><i class='fa fa-folder-open iconleft' ></i>  Tous les ateliers </a>
                      <div class="dropdown-divider"></div>
                     {% for categorie_id, cat_nom, cat_coul in ateliers_list %}
                      <a class=" dropdown-item "  href="?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
@@ -178,44 +224,6 @@
 </div>
 </div>
 
-<hr>
-<div class="row ">
-    <div class="col-sm-12 justify-content-center textcenter">
-<a href="{% url 'blog:index' %}">
-    <button type="button" class="btn  btn-primary" >Voir tous les articles du forum <i class="fa fa-arrow-right iconright"></i>
-    </button>
-</a>
-    </div>
-</div>
-<hr>
-<div class="row">
-<div class="col-sm-12 col-lg-12">
-    <div class="row justify-content-center">
-        <h5>Derniers articles commentés : </h5>
-    </div>
-    <div class="grid-container justify-content-center">
-        {% for article in derniers_articles_comm %}
-            <div class="infinite-item my-auto">
-            {% include "blog/article_template.html" with article=article %}
-            </div>
-        {% endfor %}
-    </div>
-</div>
-</div>
-<hr>
-<div class="row justify-content-center">
-    <h5>Derniers articles créés : </h5>
-</div>
-<div class="grid-container justify-content-center">
-    {% for article in derniers_articles %}
-        <div class="infinite-item my-auto">
-        {% include "blog/article_template.html" with article=article %}
-        </div>
-    {% endfor %}
-</div>
-
-</div>
-<hr>
-
+{% endcomment %}
 {% endblock %}
 

@@ -99,13 +99,18 @@
   {% endwith %}
   {% endfor %}
 
+</div>
       <span class="input-group-btn">
 {% if boutonAnnuler %}
           <input type="button" class="btn btn-secondary"  onclick="window.history.back();"  value="Annuler" />
 {% endif %}
-      <button type="submit" class="btn btn-primary">OK</button>
+      <button id="btn-validation" type="submit" class="btn btn-primary">OK</button>
       </span>
-</div>
 
 
+<script>
+$('#btn-validation').click(function() {
+    $(this).attr('disabled',true).delay(2000).attr("disabled", false);
+});
+</script>
 

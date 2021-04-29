@@ -5,11 +5,11 @@
   <a href="{% url 'vote:lireSuffrage' slug=suffrage.slug %}">
       <div class="article-card-header smallcaps_h ">{{ suffrage.get_type_vote_display }}</div>
   <div class="card-body">
-      <h4 class="btn-cat">{{ suffrage.question }}</h4>
+      <h4 class="btn-cat">{{ suffrage.titre }}</h4>
     <span class="badge {% if suffrage.estPublic%}badge-success{%else%}  badge-warning{%endif%}" data-toggle="tooltip" data-placement="bottom" title="Suffrage {%if suffrage.estPublic%}visible par tous les inscrits{%else%}visible par les membres de Permacat seulement{%endif%}">
          {{ suffrage.asso}}
     </span>
-          <span class="badge  {% if suffrage.get_statut.0 == 0%} badge-success  {% elif suffrage.get_statut.0 == 1 %}badge-primary {% else %} badge-secondary{% endif %}" data-toggle="tooltip" data-placement="bottom" title="{{suffrage.get_statut.1}}">
+          <span class="badge  {% if suffrage.get_statut.0 == 0%} badge-success  {% elif suffrage.get_statut.0 == 1 %}badge-primary {% else %} badge-Light{% endif %}" data-toggle="tooltip" data-placement="bottom" title="{{suffrage.get_statut.1}}">
     {{suffrage.get_statut.1}}
           </span>
 

@@ -3,6 +3,7 @@
 {% load leaflet_tags %}
 {% load static %}
 {% load app_filters %}
+{% load avatar_tags %}
 {%endblock%}
 {%block header %}
 {% leaflet_js %}
@@ -32,20 +33,12 @@
               <span class="glyphicon glyphicon-shopping-cart"></span> Son activité
             </a>
         {%else%}
-            <a href="{% url 'panier_afficher'  %}" class="btn btn-success">
-              <span class="glyphicon glyphicon-shopping-bag"></span> Mon panier
-            </a>
             <a href="{% url 'conversations' %}" class="btn btn-success">
               <span class="glyphicon glyphicon-shopping-cart"></span> Mes conversations
             </a>
-            <a href="{% url 'afficher_requetes' %}" class="btn btn-success">
-              <span class="glyphicon glyphicon-shopping-cart"></span> Mes requêtes
-            </a>
-    {% comment %}
             <a href="{% url 'mesSuivis' %}" class="btn btn-success">
               <span class="glyphicon glyphicon-shopping-cart"></span> Mes abonnements
             </a>
-    {% endcomment %}
             <a href="{% url 'mesActions' %}" class="btn btn-success">
               <span class="glyphicon glyphicon-shopping-cart"></span> Mes actions
             </a>
@@ -55,7 +48,6 @@
             </a>
     </div>
   </div>
-<hr>
 {% if  user.username == request.user.username %}
 {% if nbExpires %}
 <hr>
@@ -83,10 +75,14 @@
       <table class="table table-condensed tablepanier table-striped"><tbody>
 
         <tr>
+            <td style="width:250px">Avatar :</td>
+            <td>{% avatar user class="img-circle-profil" %}</td>
+        </tr>
+        <tr>
             <td style="width:250px">Pseudo :</td>
             <td>{{ user.username }}</td>
         </tr>
-        {%if user.accepter_annuaire  or request.user == user %}
+        {%if user.accepter_annuaire or request.user == user %}
               {% if user.get_full_name %}
                 <tr>
                     <td style="width:250px">Nom :</td>
@@ -104,35 +100,33 @@
                 <td>{{ user.email }}</td>
             </tr>
 
-                    <tr>
-                        <td style="width:250px">Description :</td>
-                        <td>{{ user.description|safe }}</td>
-                    </tr>
-	      
-	    <tr>
-		<td style="width:250px">Savoir-faire :</td>
-		<td>{{ user.competences|safe }}</td>
-	    </tr>
 
                   {% if user.site_web %}
                     <tr>
                         <td style="width:250px">Site_web *:</td>
-                        <td> {{ user.site_web }}</td>
+                        <td> <a href="{{ user.site_web }}" target="_blank">{{ user.site_web }}</a></td>
                     </tr>
                   {% endif %}
            
         {% endif %}
-       {%if request.user.adherent_permacat or request.user == user %}
-	  {% if user.avatar %}
-	    <tr>
-		<td style="width:250px">Avatar *: </td>
-		<td><img src="{{ produit.avatar.url }}" alt="pas d'image" style="width:128px;height:128px"></td>
-	    </tr>
-	  {% endif %}
 
+              {% if user.description %}
+                    <tr>
+                        <td style="width:250px">Description :</td>
+                        <td>{{ user.description|safe }}</td>
+                    </tr>
+              {% endif %}
+
+              {% if user.competences %}
+	    <tr>
+		<td style="width:250px">Savoir-faire :</td>
+		<td>{{ user.competences|safe }}</td>
+	    </tr>
+              {% endif %}
+       {%if request.user.adherent_pc or request.user == user %}
 	    <tr>
 		<td style="width:250px">Adhérent Permacat *:</td>
-		<td>{{user.adherent_permacat|translateOuiNon}}</td>
+		<td>{{user.adherent_pc|translateOuiNon}}</td>
 	    </tr>
 
     {% endif %}
@@ -148,14 +142,28 @@
 		<td>{{user.adherent_fer|translateOuiNon}}</td>
 	    </tr>
     {% endif %}
+    {%if request.user.adherent_scic or request.user == user %}
+	    <tr>
+		<td style="width:250px">Adhérent PermAgora *:</td>
+		<td>{{user.adherent_scic|translateOuiNon}}</td>
+	    </tr>
+    {% endif %}
+    {%if request.user.adherent_citealt or request.user == user %}
+	    <tr>
+		<td style="width:250px">Adhérent Cité Altruiste *:</td>
+		<td>{{user.adherent_citealt|translateOuiNon}}</td>
+	    </tr>
+    {% endif %}
+    {%if request.user.adherent_jp or request.user == user %}
+        <tr>
+            <td style="width:200px">Inscrit aux jardins partagés : </td>
+            <td>{{user.adherent_jp|translateOuiNon }}
+        </tr>
+    {% endif %}
       {% if request.user == user %}
         <tr>
             <td style="width:200px">Inscrit à la newsletter ^: </td>
             <td>{{user.inscrit_newsletter|translateOuiNon }}
-        </tr>
-        <tr>
-            <td style="width:200px">Inscrit aux jardins partagés ^: </td>
-            <td>{{user.is_jardinpartage|translateOuiNon }}
         </tr>
         {% endif %}
 
@@ -229,8 +237,8 @@
   </div>
 
   <div class="col-md-6">
-  {% if request.user.adherent_rtg and user.adherent_rtg %}
-<style>
+{% if user.accepter_annuaire or request.user == user%}
+       <style>
 
             .leaflet-container {  /* all maps */
                 width:  100%;
@@ -258,44 +266,6 @@
             }
         </script>
         {% leaflet_map "yourmap" callback="window.map_init_basic" %}
-
-</div>
-</div>
-
-{% else %}
-	{%if request.user.adherent_permacat and user.adherent_permacat %}
-
-              <style>
-
-            .leaflet-container {  /* all maps */
-                width:  100%;
-                height: 100%;
-            }
-            </style>
-              <script type="text/javascript">
-                function map_init_basic (map, options) {
-
-          var greenIcon = L.icon({
-            iconUrl: '{% static 'img/leafgreen.png' %}',
-            shadowUrl: '{% static 'img/leafshadow.png' %}',
-
-            iconSize:     [38, 95], // size of the icon
-            shadowSize:   [50, 64], // size of the shadow
-            iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-            shadowAnchor: [4, 62],  // the same for the shadow
-            popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-        });
-
-                var lat = {{user.adresse.get_latitude}};
-                var lon = {{user.adresse.get_longitude}};
-                L.marker([lat, lon], {icon: greenIcon}).addTo(map);
-                map.panTo(new L.LatLng(lat, lon));
-            }
-        </script>
-        {% leaflet_map "yourmap" callback="window.map_init_basic" %}
-    	{% else %}
-    	<p>(affichage de la carte réservé aux adhérents du meme groupe)</p>
-    {% endif %}
     {% endif %}
 </div>
 </div>

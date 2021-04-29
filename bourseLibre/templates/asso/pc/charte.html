@@ -1,0 +1,20 @@
+{% extends 'base_asso.html' %}
+{% block subtitle %}<h2>Charte de PermaCat</h2>{% endblock %}
+
+
+{% block content %}
+<div class="row justify-content-center">
+<div class="col-sm-12 col-md-8">
+    <p>Les membres adhérents à l’association s’engagent à :</p>
+
+  <ul  class="list">
+				<li class="list-item listone"><span>agir dans le respect du <a href="{% url 'statuts' %}#RI">règlement intérieur</a></span></li>
+	  <li class="list-item listone"><span>agir selon les <b>principes de la permaculture</b>, et de ce qui en découle,</span></li>
+				<li class="list-item listone"><span>communiquer avec <b>bienveillance</b> et interagir de manière <b>non violente</b>,</span></li>
+				<li class="list-item listone"><span>respecter le caractère <b>apolitique et areligieux</b> de l’association, </span></li>
+				<li class="list-item listone"><span>proposer et/ou <b>participer à des échanges</b> ou des projets</span></li>
+			</ul>
+</p>
+</div>
+</div>
+{% endblock %}

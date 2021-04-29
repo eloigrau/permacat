@@ -1,0 +1,148 @@
+{% extends "photologue/root.html" %}
+{% load fontawesome %}
+{% load i18n %}
+{% load static %}
+{% load activity_tags %}
+
+{%block header %}
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/infinite.min.js' %}"></script>
+{%endblock%}
+
+{% block title %}Documents{% endblock %}
+
+{% block subtitle %}
+<div class="row align-items-center">
+    <div class="col-md-4 offset-md-4 textcenter justify-content-center">
+        <h3>Documents</h3>
+    </div>
+    <div class="col-md-4 textcenter">
+        <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#help" title="En savoir plus...">
+         {% fontawesome_icon 'question-circle' %}
+        </button>
+        <!-- Modal -->
+        <div class="modal fade" id="help" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog textaide" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                  <div class="row justify-content-center">
+                   <h5 > Documents ?</h5>
+                  </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body textleft">
+                  <p>
+                      Ici vous pouvez ajouter ou consulter des documents (pdf, doc, etc.)
+                      </p>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row align-items-center">
+<div class="col-sm-12 textcenter">
+    <div class="btn-group">
+        <a href="{% url 'photologue:ajouterDocument' %}">
+        <button type="button" class="btn btn-success" >
+                <i class="fa fa-plus"></i> Ajouter un document
+            </button>
+            </a>&ensp;
+
+        <a href="{% url 'photologue:suivre_documents' %}">
+            {% if request.user|is_following:suivis %}
+            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné : Cliquez pour arreter de recevoir un mail à chaque nouveau document">
+                 {% fontawesome_icon 'bell' %}
+            </button>
+            {% else %}
+            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné : Cliquez pour recevoir un mail à chaque nouveau document">
+                 {% fontawesome_icon 'bell-slash' %}
+            </button>
+            {% endif %}
+        </a>
+</div>
+</div>
+</div>
+{% endblock %}
+{% block content %}
+
+
+
+    {% if object_list %}
+        <div class="infinite-container">
+            <div class="grid-container justify-content-center">
+                {% for doc in object_list %}
+                <div class="infinite-item my-auto mx-auto">
+<div class="card card-block article_carte textcenter d-flex " >
+    <div class="article-card-header">
+          <div class="d-flex justify-content-center smallcaps_h ">
+             <div>
+                <span class="badge badge-success" data-toggle="tooltip" data-placement="bottom" title="Doc {%if doc.estPublic%}visible par tous les inscrits{%else%}visible par les membres de {{ doc.asso }} seulement{%endif%}">
+                {{ doc.asso }} </span>&nbsp;
+            </div>
+              <div>
+                <span class="badge btn-light"> Posté le {{ doc.date_creation|date:"DATE_FORMAT" }}
+                </span>&nbsp;
+              </div>
+              <div>
+                <span class="badge btn-light"> {{ doc.auteur }}
+                </span>&nbsp;
+              </div>
+      </div>
+    </div>
+    <div class="card-body align-items-center justify-content-center">
+        <h5>{{ doc.titre }}</h5>
+        {% if doc.tags.names %}
+            <p class="card-text">
+            <small><em>Mots-clés :</em>
+                    {% for tag in doc.tags.names %}
+                    {{tag}}{%if not forloop.last%}, {%endif%}
+                   {% endfor %}
+            </small>
+            </p>
+        {% endif%}
+        <p class="card-text bg-light" style="transform: rotate(0);">
+            <button class="btn btn-succes stretched-link" onclick="copyToClipboard('https://www.perma.cat{{doc.doc.url}}')"><i class="fa fa-link" aria-hidden="true"></i>  Copier le lien</button>
+
+        </p>
+
+        <p class="card-text bg-light" style="transform: rotate(0);">
+                    <a href="{{doc.doc.url}}" class="btn btn-succes stretched-link"><i class="fa fa-download" aria-hidden="true"></i> Télécharger ({{ doc.doc.size|filesizeformat }})</a>
+        </p>
+                  {% if request.user ==  doc.auteur or request.user.is_superuser %}
+        <p class="card-text bg-light" style="transform: rotate(0);">
+                  <a href="{{doc.get_delete_url}}" class="btn btn-error stretched-link"><i class="fa fa-times" aria-hidden="true"></i> Supprimer</a>
+
+            </p>
+                    {% endif %}
+    </div>
+
+</div>
+  </a>
+
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {%include 'pagination.html' %}
+
+    {% else %}
+        <div class="row col-lg-12">Pas de documents</div>
+    {% endif %}
+
+<script>
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+      console.log('Async: Copying to clipboard was successful!');
+    }, function(err) {
+      console.error('Async: Could not copy text: ', err);
+    });
+}
+</script>
+{% endblock %}

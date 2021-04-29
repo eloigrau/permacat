@@ -1,0 +1,78 @@
+{% extends 'base_asso.html' %}
+{% block title %} - Accueil{% endblock %}
+
+{% block subtitle %}
+
+<h2 class = "textcenter rowbienvenue">PermaCat</h2>
+
+{% include "asso/presentation_asso_template.html" with adherent=request.user.adherent_pc assos='pc' %}
+
+<h4 class = "textcenter rowbienvenue">Qui sommes nous ?</h4>
+{% endblock %}
+{% block content %}
+				<div class="row">
+					<div class="col">
+				<p>
+Nous sommes un groupe de personnes qui à l'origine se sont rencontrées
+car elles suivaient un MOOC de l'université les Colibris sur le design
+de Permaculture, il y a un an. Puis certaines personnes sont venues à
+nous lors de différentes rencontres au cours de divers projets proposés
+par les uns et les autres. Nous avons appris à nous connaitre et nous
+avons décidé de créer une association pour oser mettre en pratique nos
+idées afin de construire un groupe,  une mini société où chacun est
+accueilli dans sa différence. Pour nous guider, nous suivons les
+principes de la permaculture concernant différents aspects de la vie.
+L'idée générale est que nous avons tous de l'importance, que nous avons
+tous des compétences et que nous pouvons tous contribuer à enrichir la
+vie de chacun et construire une société plus durable, plus humaine et
+plus juste  en prenant soin des besoins  humains, de la terre, des
+animaux qui y vivent. .
+</p>
+				<p>
+Par conséquent, nous faisons l'expérience de partager nos savoirs, nos
+compétences, nos énergies, nos expériences. Nous pouvons proposer des
+projets ou en soutenir certains. Nous souhaitons devenir plus acteurs et
+plus responsables  Oui nous pouvons nous unir pour contester mais nous
+pouvons également nous unir pour construire ensemble un monde meilleur
+parce qu'ensemble, nous pensons que nous pouvons avancer plus loin.
+
+</p>
+				<p>
+Nous avons chacun un chez nous, un lieu que nous pouvons partager de
+temps à autre si nous le souhaitons. Nous avons comme principe de nous
+aider les uns les autres et d'écouter les projets de chacun selon nos
+possibilités et de les soutenir si nous le pouvons (aide matérielle,
+conceptuelle, humaine...)
+</p>
+				<p>
+Nous instaurons une journée de rencontre mensuelle (le premier dimanche
+de chaque mois). Ainsi nous découvrons chaque mois, un site, les
+adhérents de l'association, et les projets de chacun. Nous pouvons ainsi
+contribuer à l'améliorer selon notre temps et notre motivation les
+projets qui nous séduisent et qui nous rendent vivants. Nous apprenons à
+écouter les besoins des uns et des autres et également nos besoins. Nous
+apprenons à nous connaitre. Nous mettons en commun nos connaissances,
+les objets nos compétences . Nous prenons soin les uns des autres et
+apprenons les uns des autres lors de ces journées. Nous osons
+expérimenter, nous acceptons ce qui peut paraitre des échecs et nous
+essayons de comprendre et de réajuster. Nous découvrons d'autres
+manières de faire et d'être.
+</p>
+				<p>
+Pourquoi un marché Permacat : un marché original et unique d'échanges en
+différentes monnaies alternatives. Nous proposons un échange d'objets de
+services dans la monnaie que chacun choisit. Nous pensons qu'une
+multitude de possibilités existe et nous laissons le choix à chacun
+d'échanger sous la forme qui lui convient. Nous nous sommes intéressés à
+la monnaie libre que certains utilisent mais nous restons ouverts à
+d'autres possibles.
+</p>
+				<p>
+si vous aussi, vous avez envie de vivre autrement de manière écologique,
+de construire un monde plus durable et plus respectueux de notre
+environnement et des êtres vivants qui y vivent vous pouvez venir
+partager des moments avec nous !
+</p>
+				</div>
+				</div>
+{% endblock %}

@@ -9,14 +9,32 @@
 <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
 <script src="{% static 'js/infinite.min.js' %}"></script>
     {%endblock%}
+
 {%block subtitle%}
 
 
 <div class="row align-items-center atelier_titre_page_index">
     <div class="col-md-4 offset-md-4 textcenter justify-content-center">
-        <h3>Les Ateliers Collectifs</h3>
+
+        <a href="{% url 'ateliers:ajouterAtelier' %}">
+        <button type="button" class="btn btn-success" >
+                <i class="fa fa-plus"></i> Ajouter un atelier
+            </button>
+            </a>&ensp;
     </div>
     <div class="col-md-4 textcenter">
+
+                 <a href="{% url 'ateliers:suivre_ateliers' %}">
+                {% if request.user|is_following:suivis %}
+                <button type="button" class="btn btn-sm btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné : Cliquez pour arreter de recevoir un mail à chaque nouvel atelier">
+                     {% fontawesome_icon 'bell' %}
+                </button>
+                {% else %}
+                <button type="button" class="btn btn-sm btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné : Cliquez pour recevoir un mail à chaque nouvel atelier">
+                     {% fontawesome_icon 'bell-slash' %}
+                </button>
+                {% endif %}
+                 </a>
         <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#help" title="En savoir plus...">
          {% fontawesome_icon 'question-circle' %}
         </button>
@@ -45,20 +63,6 @@
     </div>
 </div>
 
-
-
-<div class="row align-items-center">
-<div class="col-sm-12 textcenter">
-    <div class="btn-group">
-        <a href="{% url 'ateliers:ajouterAtelier' %}">
-        <button type="button" class="btn btn-success" >
-                <i class="fa fa-plus"></i> Ajouter un atelier
-            </button>
-            </a>&ensp;
-</div>
-</div>
-</div>
-<hr>
 {%endblock%}
 {% block content %}
 
@@ -71,10 +75,10 @@
 <div class="infinite-item ">
    <div class="row justify-content-center ">
     <div class="col-sm-12 col-ms-10 col-lg-8 textcenter " >
-        <a  href="{% url 'ateliers:lireAtelier_id' id=atelier.id %}" class="boutonAtelier" > <div style="background-color:{{atelier.atelier.get_couleur}};
+        <a  href="{% url 'ateliers:lireAtelier' slug=atelier.slug %}" class="boutonAtelier" > <div style="background-color:{{atelier.atelier.get_couleur}};
     font-variant: small-caps;" >{{ atelier.titre }}  </div>
-            {% if atelier.date_atelier %}
-        <p class="textepetit">le {{ atelier.date_atelier|date:"DATE_FORMAT" }}</p>
+            {% if atelier.start_time %}
+        <p class="textepetit">le {{ atelier.start_time|date:"DATE_FORMAT" }}</p>
         {% endif %}</a>
 
     </div>
@@ -85,4 +89,43 @@
 </div>
 {%include 'pagination.html' %}
 
+        {% if list_archive %}
+<hr>
+        <div class="textcenter">
+            <button id="btn-archives"  type="button" class="btn btn-lg" onclick="toggle_visibility('archives');" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour afficher les archives">
+                Afficher les archives
+            </button>
+        </div>
+        <hr>
+        <div id="archives" style='display:none;'>
+            {% for atelier in list_archive %}
+   <div class="row justify-content-center ">
+    <div class="col-sm-12 col-ms-10 col-lg-8 textcenter " >
+        <a  href="{% url 'ateliers:lireAtelier_id' id=atelier.id %}" class="boutonAtelier" > <div style="background-color:{{atelier.atelier.get_couleur}};
+    font-variant: small-caps;" >{{ atelier.titre }}  </div>
+            {% if atelier.start_time %}
+        <p class="textepetit">le {{ atelier.start_time|date:"DATE_FORMAT" }}</p>
+        {% endif %}</a>
+
+    </div>
+   </div>
+            {% endfor %}
+        </div>
+
+    {% endif %}
+
+<script>
+    function toggle_visibility(id) {
+       var e = document.getElementById(id);
+       var btn = document.getElementById("btn-archives");
+       if(e.style.display == 'block'){
+          e.style.display = 'none';
+          btn.textContent = "Afficher les archives";
+      }
+       else{
+          e.style.display = 'block';
+          btn.textContent = "Cacher les archives";
+      }
+   }
+</script>
 {% endblock %}

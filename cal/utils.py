@@ -44,38 +44,59 @@ class Calendar(LocaleTextCalendar):
         events_per_day_proj = events_proj.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
         events_per_day_autre = events_autre.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
         events_per_day_autre_jardin = events_autre_jardin.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
-        events_per_day_votes = None#events_vote.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
-        events_per_day_atel = events_atel.filter(Q(date_atelier__day=day))
+        #events_per_day_votes = None#events_vote.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
+        events_per_day_atel = events_atel.filter(Q(start_time__day=day))
 
         d = ''
         for event in events_per_day_arti:
-            if event.estPublic or (not request.user.is_anonymous and request.user.adherent_permacat):
+            if event.est_autorise(request.user):
+                ajout = ""
+                try:
+                    ajout = "<img src='/static/" + event.get_logo_categorie + "' height ='13px'/> "
+                except:
+                    pass
                 titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
-                d += "<div class='event'><a href='"+event.get_absolute_url() +"'><i class='fa fa-comments iconleft'></i> "+titre+'</a> </div>'
+                d += "<div class='event'><a href='"+event.get_absolute_url() +"'><i class='fa fa-comments iconleft'></i> "+ajout+titre+'</a> </div>'
         for event in events_per_day_arti_jardin:
-            if event.estPublic or (not request.user.is_anonymous and request.user.adherent_permacat):
+            if event.est_autorise(request.user):
+                ajout = ""
+                try:
+                    ajout = "<img src='/static/" + event.get_logo_categorie + "' height ='13px'/> "
+                except:
+                    pass
                 titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
-                d += "<div class='event'><a href='"+event.get_absolute_url() +"'><i class='fa fa-pagelines iconleft'></i> "+titre+'</a> </div>'
+                d += "<div class='event'><a href='"+event.get_absolute_url() +"'><i class='fa fa-pagelines iconleft'></i> "+ajout+titre+'</a> </div>'
         for event in events_per_day_proj:
-            if event.estPublic or (not request.user.is_anonymous and request.user.adherent_permacat):
+            if event.est_autorise(request.user):
+                ajout = ""
+                try:
+                    ajout = "<img src='/static/" + event.get_logo_categorie + "' height ='13px'/> "
+                except:
+                    pass
                 titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
-                d += "<div class='event'>  <a href='"+event.get_absolute_url() +"'><i class='fa fa-folder-open iconleft' ></i> "+titre+'</a> </div>'
-        #for event in events_per_day_atel:
-         #   titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
-          #  d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-dna iconleft' ></i> "+titre+'</a> </div>'
+                d += "<div class='event'>  <a href='"+event.get_absolute_url() +"'><i class='fa fa-folder-open iconleft' ></i> "+ajout+titre+'</a> </div>'
+        for event in events_per_day_atel:
+            if event.est_autorise(request.user):
+                ajout = ""
+                try:
+                    ajout = "<img src='/static/" + event.get_logo_categorie + "' height ='13px'/> "
+                except:
+                    pass
+                titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
+                d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-wrench iconleft' ></i> "+ajout+titre+'</a> </div>'
 
         for event in events_per_day_autre:
-            if event.estPublic or (not request.user.is_anonymous and request.user.adherent_permacat):
+            if event.est_autorise(request.user):
                 titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
                 d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-comments iconleft' ></i> "+titre+'</a> </div>'
 
         for event in events_per_day_autre_jardin:
-            if event.estPublic or (not request.user.is_anonymous and request.user.adherent_permacat):
+            if event.est_autorise(request.user):
                 titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
                 d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-pagelines' ></i> "+titre+'</a> </div>'
 
         #for event in events_per_day_votes:
-         #   if event.estPublic or (not request.user.is_anonymous and request.user.adherent_permacat):
+         #   if event.estPublic or (not request.user.is_anonymous and request.user.adherent_pc):
            #     titre = event.question if len(event.question)<40 else event.question[:37] + "..."
             #    d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-bullhorn' ></i> "+titre+'</a> </div>'
 
@@ -123,7 +144,7 @@ class Calendar(LocaleTextCalendar):
         events_arti = Article.objects.filter(start_time__year=self.year, start_time__month=self.month)
         events_arti_jardin = Article_jardin.objects.filter(start_time__year=self.year, start_time__month=self.month)
         events_proj = Projet.objects.filter(start_time__year=self.year, start_time__month=self.month)
-        events_atel = Atelier.objects.filter(date_atelier__year=self.year, date_atelier__month=self.month)
+        events_atel = Atelier.objects.filter(start_time__year=self.year, start_time__month=self.month)
         events_autre = Evenement.objects.filter(start_time__year=self.year, start_time__month=self.month)
         events_autre_jardin = Evenement_jardin.objects.filter(start_time__year=self.year, start_time__month=self.month)
         events_vote = None#Suffrage.objects.filter(start_time__year=self.year, start_time__month=self.month)

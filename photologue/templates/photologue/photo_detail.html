@@ -1,0 +1,113 @@
+{% extends "photologue/root.html" %}
+{% load photologue_tags i18n %}
+
+{% block title %} - photo : {{ object.title }}{% endblock %}
+
+{% block subtitle %}
+<div class="row ">
+<div class="col-md-3 textcenter">
+
+        <a href="{{album.get_absolute_url}}" class="btn btn-success"><i class="fa fa-arrow-left"></i> Album : {{album.title}}</a>
+
+        <a href="{% url 'photologue:ajouterPhoto' albumSlug=album.slug %}">
+        <button type="button" class="btn btn-success" >
+                <i class="fa fa-plus"></i> Ajouter une photo
+            </button>
+            </a>&ensp;
+</div>
+<div class="col-md-6 textcenter">
+        <h5 class="page-header">{{ object.title }}<small><button class="btn btn-light" id="copyButton" ><i class="fa fa-link"></i></button></small></h5>
+            <p class="infos  textepetit">
+
+            <a href="{% url 'profil' object.auteur.id %}">
+                <span class="badge badge-Light">
+                postée par  {{ object.auteur.username }},
+                </span>
+            </a>
+            <span class="badge badge-Light">le {{ object.date_added }}</span>
+            </p>
+
+</div>
+
+<div class="col-sm-12 col-md-3 textcenter">
+        {%if projet.auteur == request.user or request.user.is_superuser%}
+		<div class="btn-group">
+
+            <a href="{% url 'photologue:modifierPhoto' slug=photo.slug %}">
+               <button type="button" class="btn btn-sm btn-warning">
+               &nbsp;Modifier
+               </button></a>
+            <a href="{% url 'photologue:supprimerPhoto' slug=photo.slug %}">
+               <button type="button" class="btn btn-sm btn-danger">
+               &nbsp;Supprimer
+               </button></a>
+		</div>
+        {%endif%}
+        {% if album.auteur == request.user or request.user.is_superuser or album.estModifiable %}
+    <hr>
+
+    {% endif %}
+</div>
+</div>
+
+{% endblock %}
+{% block content %}
+
+    <div class="row"  id="photos">
+        <div class="col-sm-1 textcenter my-auto">
+            {% if object.get_previous_in_album %}
+            <a href="{{ object.get_previous_in_album.get_absolute_url }}#photos"><i class="fa fa-arrow-left"></i> précédente</a>
+            {% endif %}
+        </div>
+        <div class="col-sm-10 textcenter">
+		    <a href="{{ object.image.url }}">
+		        <img src="{{ object.get_display_url }}" class="thumbnail" alt="{{ object.title }}">
+		    </a>
+        </div>
+        <div class="col-sm-1 textcenter my-auto">
+            {% if object.get_next_in_album %}
+            <a href="{{ object.get_next_in_album.get_absolute_url }}#photos">suivante <i class="fa fa-arrow-right"></i></a>
+             {% endif %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 col-md-8 offset-md-2 textcenter">
+           <p class="textepetit "> <a href="{{ object.image.url }}"> (afficher en taille réelle)</a></p>
+		    {% if object.caption %}
+            <p> {{ object.caption|safe }} </p>
+            {% endif %}
+        </div>
+    </div>
+
+{% if object.tags.names %}
+<div class="row">
+<div class="col-md-8 offset-md-2">
+    {% if object.tags.names %}
+      <p><em>Mots-clés :</em>
+            {% for tag in object.tags.names %}
+            {{tag}}{%if not forloop.last%}, {%endif%}
+           {% endfor %}
+    </p>
+       {% endif %}
+</div>
+</div>
+{% endif%}
+
+ <script>
+document.getElementById("copyButton").addEventListener("click", function() {
+    copyToClipboard();
+});
+function copyToClipboard() {
+
+var dummy = document.createElement('input'),
+text = window.location.href;
+document.body.appendChild(dummy);
+dummy.value = text;
+dummy.select();
+document.execCommand('copy');
+document.body.removeChild(dummy);
+
+}
+</script>
+{% endblock %}

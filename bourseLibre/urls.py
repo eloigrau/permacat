@@ -16,52 +16,68 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.urls import path
-from . import views, views_notifications
+from . import views, views_base, views_notifications, views_admin
 from django.views.generic import TemplateView
-from bourseLibre.views import handler400 as h400, handler403  as h403, handler404  as h404, handler500  as h500
-#from fcm_django.api.rest_framework import FCMDeviceAuthorizedViewSet
 
 # On import les vues de Django, avec un nom spécifique
 from django.contrib.auth.decorators import login_required
-
-# admin.autodiscover()
+from django.contrib.auth.views import PasswordResetView
+from django.urls import reverse_lazy
 from django.contrib import admin
-
-#from wiki import urls
+from .settings import MEDIA_ROOT
 
 admin.sites.site_header ="Admin "
 admin.sites.site_title ="Admin Permacat"
-
 
 urlpatterns = [
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^summernote/', include('django_summernote.urls')),
     url(r'^captcha/', include('bourseLibre.captcha_local.urls')),
+    url(r'^photolog/', include('photologue.urls', namespace='photologue')),
+    #url(r'^chat/', include('chat.urls')),
     path(r'agenda/', include('cal.urls')),
+    path(r'carto/', include('carto.urls')),
     url('^', include('django.contrib.auth.urls')),
+    url('avatar/', include('avatar.urls')),
     url(r'^$', views.bienvenue, name='bienvenue'),
     url(r'^bienvenue/$', views.bienvenue, name='bienvenue'),
-    url(r'^faq/$', views.faq, name='faq'),
-    url(r'^gallerie/$', views.gallerie, name='gallerie'),
+    url(r'^faq/$', views_base.faq, name='faq'),
+    url(r'^gallerie/$', views_base.gallerie, name='gallerie'),
     path(r'admin/<str:asso>', views.admin_asso, name='admin_asso'),
+    url(r'^media/(?P<path>.*)', views.accesfichier, name='accesfichier'),
+
     url(r'^permacat/fichiers/$', views.telechargements_asso, name='telechargements_asso'),
-    url(r'^permacat/adhesion_asso/$', views.adhesion_asso, name='adhesion_asso'),
     url(r'^notifications/parType/$', views_notifications.notifications, name='notifications'),
     url(r'^notifications/activite/$', views_notifications.notifications_news_regroup, name='notifications_news'),
     url(r'^notifications/parDate/$', views_notifications.notificationsParDate, name='notificationsParDate'),
     url(r'^notifications/Lues/$', views_notifications.notificationsLues, name='notificationsLues'),
-    url(r'^notifications/changerDateNotif/$', views_notifications.changerDateNotif, name='changerDateNotif'),
+    url(r'^notificatioadherent_assons/changerDateNotif/$', views_notifications.changerDateNotif, name='changerDateNotif'),
+    url(r'^notifications/notif_cejour/$', views_notifications.notif_cejour, name='notif_cejour'),
+    url(r'^notifications/notif_hier/$', views_notifications.notif_hier, name='notif_hier'),
+    url(r'^notifications/notif_cettesemaine/$', views_notifications.notif_cettesemaine, name='notif_cettesemaine'),
+    url(r'^notifications/notif_cemois/$', views_notifications.notif_cemois, name='notif_cemois'),
+    url(r'^notifications/visites/', views_notifications.voirDerniersArticlesVus, name='articles_visites'),
     url(r'^dernieresInfos/$', views_notifications.dernieresInfos, name='dernieresInfos'),
     url(r'^prochaines_rencontres/$', views.prochaines_rencontres, name='prochaines_rencontres'),
-    url(r'^permacat/presentation/$', views.presentation_asso, name='presentation_asso'),
-    url(r'^rtg/presentation/$', views.presentation_asso_rtg, name='presentation_asso_rtg'),
-    url(r'^fermille/presentation/$', views.presentation_asso_fer, name='presentation_asso_fer'),
-    url(r'^site/presentation/$', views.presentation_site, name='presentation_site'),
-    url(r'^permacat/statuts/$', views.statuts, name='statuts'),
+    path(r'presentation/<str:asso>/', views.presentation_asso, name='presentation_asso'),
+    path(r'presentation/citealtruiste/organisation', views.organisation_citealt, name='organisation_citealt'),
+    path(r'groupes/presentation/', views.presentation_groupes, name='presentation_groupes'),
+    path(r'permagora/inscription/', views.inscription_permagora, name='inscription_permagora'),
+    path(r'citealtruiste/inscription/', views.inscription_citealt, name='inscription_citealt'),
+    url(r'^site/presentation/$', views_base.presentation_site, name='presentation_site'),
+    url(r'^site/pourquoi/$', views_base.presentation_site_pkoi, name='presentation_site_pkoi'),
+    url(r'^site/conseils/$', views_base.presentation_site_conseils, name='presentation_site_conseils'),
+    url(r'^permacat/statuts/$', views_base.statuts, name='statuts'),
     #url(r'^ramenetagraine/statuts/$', views.statuts_rtg, name='statuts_rtg'),
 
 
     url(r'^gestion/', admin.site.urls, name='admin',),
+
+    #url(r'^jet/', include('jet.urls')),  # Django JET URLS
+    #url(r'^jet/dashboard/', include('jet.dashboard.urls')),  # Django JET dashboard URLS
+    #url(r'^admin/', admin.site.urls),
+
+
     url(r'^merci/$', views.merci, name='merci'),
     url(r'^forum/', include('blog.urls', namespace='bourseLibre.blog')),
     url(r'^jardins/', include('jardinpartage.urls', namespace='bourseLibre.jardinpartage')),
@@ -71,30 +87,38 @@ urlpatterns = [
     url(r'^chercher/$', login_required(views.chercher), name='chercher'),
     url(r'^chercher/forum/$', login_required(views.chercher_articles), name='chercher_articles'),
     url(r'^accounts/profil/(?P<user_id>[0-9]+)/$', login_required(views.profil), name='profil',),
-    url(r'^accounts/profil/(?P<user_username>[\w.@+-]+)/$', login_required(views.profil_nom), name='profil_nom',),
+    url(r'^accounts/profil/(?P<user_username>[\w.@+-]+)/$', login_required(views_base.profil_nom), name='profil_nom',),
     url(r'^accounts/profile/$',  login_required(views.profil_courant), name='profil_courant',),
-    url(r'^accounts/profil_inconnu/$', views.profil_inconnu, name='profil_inconnu',),
+    url(r'^accounts/profil_inconnu/$', views_base.profil_inconnu, name='profil_inconnu',),
     url(r'^accounts/profil_modifier/$', login_required(views.profil_modifier.as_view()), name='profil_modifier',),
     url(r'^accounts/profil_supprimer/$', login_required(views.profil_supprimer.as_view()), name='profil_supprimer',),
     url(r'^accounts/profil_modifier_adresse/$', login_required(views.profil_modifier_adresse.as_view()), name='profil_modifier_adresse',),
     url(r'^accounts/profil_contact/(?P<user_id>[0-9]+)/$', login_required(views.profil_contact), name='profil_contact',),
     url(r'^accounts/mesSuivis/$', login_required(views.mesSuivis), name='mesSuivis',),
+    url(r'^accounts/supprimerAction/(?P<actionid>[0-9]+)/$', login_required(views.supprimerAction), name='supprimerAction',),
     url(r'^accounts/mesActions/$', login_required(views.mesActions), name='mesActions',),
-    url(r'^accounts/mctions/$', login_required(views.mesActions), name='mesActions',),
-    url(r'^accounts/activite/(?P<pseudo>[\w.@+-]+)/$', login_required(views.activite), name='activite',),
+    url(r'^accounts/activite/(?P<pseudo>[\w.@+-]+)/$', login_required(views_base.activite), name='activite',),
     url(r'^register/$', views.register, name='senregistrer',),
+    url(r'^reset-password/$',
+        PasswordResetView.as_view(template_name='accounts/reset_password.html',
+                                  email_template_name='accounts/reset_password_email.html',
+                                  success_url=reverse_lazy('bienvenue')),
+        name='reset_password'),
     #url(r'^password/reset/$', views.reset_password, name='reset_password'),
     url(r'^password/change/$', views.change_password, name='change_password'),
     path('auth/', include('django.contrib.auth.urls')),
 
     url(r'^contact_admins/$', views.contact_admins, name='contact_admins',),
-    url(r'^charte/$', views.charte, name='charte',),
-    url(r'^cgu/$', views.cgu, name='cgu',),
-    url(r'^liens/$', views.liens, name='liens',),
-    url(r'^fairedon/$', views.fairedon, name='fairedon',),
+    url(r'^charte/$', views_base.charte, name='charte',),
+    url(r'^cgu/$', views_base.cgu, name='cgu',),
+    url(r'^liens/$', views_base.liens, name='liens',),
+    path(r'fairedon/<str:asso>/', views.fairedon_asso, name='faire_don',),
+    path(r'adhesion/<str:asso>/', views.adhesion_asso, name='adhesion_asso'),
+    path(r'adhesion/', views.adhesion_entree, name='adhesion_entree'),
     #url(r'^agenda/$', views.agenda, name='agenda',),
     path(r'annuaire/<str:asso>', login_required(views.annuaire), name='annuaire',),
     path(r'cooperateurs/listeContacts/<str:asso>', login_required(views.listeContacts), name='listeContacts',),
+    path(r'cooperateurs/listeContacts_admin/', login_required(views.listeContacts_admin), name='listeContacts_admin',),
     url(r'^cooperateurs/listeFollowers/$', login_required(views.listeFollowers), name='listeFollowers',),
     path(r'cooperateurs/carte/<str:asso>', login_required(views.carte), name='carte',),
 
@@ -139,7 +163,10 @@ urlpatterns = [
     url(r'^conversations/chercher/$', login_required(views.chercherConversation), name='chercher_conversation'),
     url(r'^suivre_conversation/$', views.suivre_conversations, name='suivre_conversations'),
     url(r'^suivre_produits/$', views.suivre_produits, name='suivre_produits'),
+    url(r'^sereabonner/$', views.sereabonner, name='sereabonner'),
+    url(r'^sedesabonner/$', views.sedesabonner, name='sedesabonner'),
     path(r'agora/<str:asso>', login_required(views.agora), name='agora'),
+    path(r'suivre_agora/<str:asso>', views.suivre_agora, name='suivre_agora'),
     url(r'^activity/', include('actstream.urls')),
 
 #    path(r'wiki_ecovillage_notifications/', include('django_nyt.urls')),
@@ -147,13 +174,16 @@ urlpatterns = [
 
 
     url(r'^inscription_newsletter/$', views.inscription_newsletter, name='inscription_newsletter', ),
-    path(r'modifier_message/<int:id>-<str:type_msg>-<str:asso>', views.modifier_message, name='modifierMessage'),
-    url(r'^voirEmails/$', views_notifications.voirEmails,  name="voirEmails"),
-    url(r'^nettoyerActions/$', views_notifications.nettoyerActions,  name="nettoyerActions"),
-    url(r'^nettoyerHistoriqueAdmin/$', views_notifications.nettoyerHistoriqueAdmin,  name="nettoyerHistoriqueAdmin"),
-    url(r'^envoyerEmailsRequete/$', views_notifications.envoyerEmailsRequete,  name="envoyerEmailsRequete"),
-    url(r'^voir_articles_a_archiver/$', views_notifications.voir_articles_a_archiver,  name="voir_articles_a_archiver"),
-    url(r'^archiverArticles/$', views_notifications.archiverArticles,  name="archiverArticles"),
+    path(r'modifier_message/<int:id>/<str:type_msg>/<str:asso>', views.modifier_message, name='modifierMessage'),
+    url(r'^voirEmails/$', views_admin.voirEmails,  name="voirEmails"),
+    url(r'^nettoyerActions/$', views_admin.nettoyerActions,  name="nettoyerActions"),
+    url(r'^nettoyerFollows/$', views_admin.nettoyerFollows,  name="nettoyerFollows"),
+    url(r'^nettoyerHistoriqueAdmin/$', views_admin.nettoyerHistoriqueAdmin,  name="nettoyerHistoriqueAdmin"),
+    url(r'^envoyerEmailsRequete/$', views_admin.envoyerEmailsRequete,  name="envoyerEmailsRequete"),
+    url(r'^voir_articles_a_archiver/$', views_admin.voir_articles_a_archiver,  name="voir_articles_a_archiver"),
+    url(r'^archiverArticles/$', views_admin.archiverArticles,  name="archiverArticles"),
+    path(r'decalerEvenements/<int:num>', views_admin.decalerEvenements,  name="decalerEvenements"),
+    url(r'^abonnerAdherentsCiteAlt/$', views_admin.abonnerAdherentsCiteAlt,  name="abonnerAdherentsCiteAlt"),
 ]
 urlpatterns += [
     url(r'^robots\.txt$', TemplateView.as_view(template_name="bourseLibre/robots.txt", content_type='text/plain')),
@@ -164,10 +194,10 @@ if settings.DEBUG:
     from django.conf.urls.static import static
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-handler404 = h404
-handler500 = h500
-handler400 = h400
-handler403 = h403
+handler404 = views_base.handler404
+handler500 = views_base.handler500
+handler400 = views_base.handler400
+handler403 = views_base.handler403
 
 if settings.LOCALL:
     import debug_toolbar

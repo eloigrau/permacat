@@ -1,4 +1,4 @@
-{% extends 'base_asso.html' %}
+{% extends 'jardinpartage/base_jardins.html' %}
 {% load static %}
 {% load blog_filters %}
 {% load fontawesome %}
@@ -8,13 +8,31 @@
 <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
 <script src="{% static 'js/infinite.min.js' %}"></script>
     {%endblock%}
+
+{%block banniere %}
+	<div class="row row_banniere_ordi" >
+		<div class="col col-xs-12 d-flex justify-content-around">
+            <img  src="{% static 'img/banniere/jardin_ordi.png' %}" width="224" height="120" alt="Logo_jardin"/>
+            <img  src="{% static 'img/banniere/jardin.png' %}" height="120" alt="Logo_jardin"/>
+        </div>
+    </div>
+	<div class="row row_banniere_smartphone">
+		<div class="col col-xs-12 d-flex justify-content-center">
+            <img class="img_banniere_smartp" src="{% static 'img/banniere/jardin_smart.png' %}" height="120" alt="Logo_jardin"/>
+        </div>
+    </div>
+{% endblock  %}
 {%block subtitle%}
 
 <div class="row">
     <div class="col-md-12 textcenter">
         <div class="row justify-content-center">
             <div class="col-md-4 offset-md-4">
-                <h3>Blog des jardins partagés</h3>
+            <a href="{% url 'jardinpartage:ajouterNouvelArticle' %}">
+            <button type="button" class="btn  btn-success" >
+                    <i class="fa fa-plus"></i>&nbsp; Ajouter un article
+                </button>
+            </a>&ensp;
             </div>
             <div class="col-md-4 ">
                 <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#help" title="En savoir plus...">
@@ -42,13 +60,13 @@
                     </div>
                   </div>
                 </div>
-                <a href="{% url 'blog:suivre_articles' %}">
+                <a href="{% url 'jardinpartage:suivre_articles' %}">
                     {% if request.user|is_following:suivis %}
-                    <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné : Cliquez pour arreter de recevoir un mail à chaque nouvel article">
+                    <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné : Cliquez pour arreter de recevoir un mail à chaque nouvel article des jardins partagés">
                          {% fontawesome_icon 'bell' %}
                     </button>
                     {% else %}
-                    <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné : Cliquez pour recevoir un mail à chaque nouvel article">
+                    <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné : Cliquez pour recevoir un mail à chaque nouvel article des jardins partagés">
                          {% fontawesome_icon 'bell-slash' %}
                     </button>
                     {% endif %}
@@ -61,6 +79,7 @@
                     </a>
         </div>
     </div>
+        <hr>
     <div class="row justify-content-center">
 	<a class="nav-item" href="#" id="navbarDropdownAsso" data-toggle="dropdown">
 	<button type="button" class="btn  btn-success dropdown-toggle" >
@@ -77,14 +96,6 @@
 		    {% endfor %}
 	</div>
 </div>
-	    <hr>
-    <div class="row justify-content-center">
-            <a href="{% url 'jardinpartage:ajouterNouvelArticle' %}">
-            <button type="button" class="btn  btn-success" >
-                    <i class="fa fa-plus"></i>&nbsp; Ajouter un article
-                </button>
-            </a>&ensp;
-    </div>
     <hr>
 </div>
 </div>
@@ -110,7 +121,7 @@
                                  </button>
                                 </a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class=" dropdown-item " style="background:white;" href="{%url 'jardinpartage:index' %}">Tous les dossiers</a>
+                                <a class=" dropdown-item " style="background:white;" href="?categorie=tout">Tous les dossiers</a>
                                 <div class="dropdown-divider"></div>
             {% for categorie_id, cat_nom, cat_coul in categorie_list %}
             <a class=" dropdown-item " style="background:{{cat_coul}};" href="?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
@@ -136,7 +147,6 @@
 			</nav>
 		</div>
 	</div>
-</div>
 
 
 {%endblock%}
@@ -145,7 +155,7 @@
 <div class="infinite-container">
     <div class="grid-container justify-content-center">
     {% for article in article_list %}
-    <div class="infinite-item my-auto">
+    <div class="infinite-item my-auto mx-auto">
             {% include "jardinpartage/article_template.html" with article=article %}
     </div>
 
@@ -163,7 +173,7 @@
 <div id="archives" style='display:none;'>
     <div class="grid-container justify-content-center">
     {% for article in list_archive %}
-    <div class="infinite-item my-auto">
+    <div class="infinite-item my-auto mx-auto">
     {% include "jardinpartage/article_template.html" with article=article %}
     <hr>
     </div>

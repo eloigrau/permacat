@@ -59,17 +59,17 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE=False
 
 
 if not LOCALL:
-    #SECURE_HSTS_SECONDS = 518400
+    SECURE_HSTS_SECONDS = 604800
     SECURE_CONTENT_TYPE_NOSNIFF = True
     #SECURE_BROWSER_XSS_FILTER = True
-    #SECURE_SSL_REDIRECT  = True
-    #SESSION_COOKIE_SECURE  = True
-    #CSRF_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT  = True
+    SESSION_COOKIE_SECURE  = True
+    CSRF_COOKIE_SECURE = True
     #X_FRAME_OPTIONS = 'DENY'
     SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
-ALLOWED_HOSTS = ['www.perma.cat']
-print("local" + str(LOCALL))
+ALLOWED_HOSTS = ['www.perma.cat', 'perma.cat']
+#print("local" + str(LOCALL))
 # Application definition
 
 # pip install django-fontawesome django-model_utils django-debug_toolbar django-haystack django-bootstrap django-extensions django-leaflet django-filter django-rest-framework django-scheduler django-widget-tweaks
@@ -83,8 +83,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.admindocs',
     'django.contrib.sites',
+    'django.contrib.postgres',
     #'django.contrib.gis',
-    'bootstrap','fontawesome','cookielaw',
+    'bootstrap','fontawesome','cookielaw_local',
     #'haystack',
     'model_utils',
     'bourseLibre',
@@ -95,6 +96,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'django_filters',
     'cal',
+    'carto',
     'vote',
     'widget_tweaks',
     'leaflet',
@@ -105,6 +107,11 @@ INSTALLED_APPS = [
     'taggit',
     'hitcount',
     'django_crontab',
+    'crispy_forms',
+    'avatar',
+    #'formtools',
+    #'channels', 'chat',
+    #'jet','jet.dashboard', 'django.contrib.admin',
     #'notifications',
     #'webpush',
     #"geoposition",
@@ -120,6 +127,8 @@ INSTALLED_APPS = [
     'mptt',
     'sekizai',
     'sorl.thumbnail',
+     'sortedm2m',
+    'photologue',
 
     #'wiki.apps.WikiConfig',
    # 'wiki.plugins.attachments.apps.AttachmentsConfig',
@@ -136,9 +145,8 @@ INSTALLED_APPS = [
     #'wiki.plugins.notifications.apps.NotificationsConfig',
 
 ]
-if LOCALL:
-    INSTALLED_APPS.append('debug_toolbar',)
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+#if LOCALL:
+#    INSTALLED_APPS.append('debug_toolbar',)
 
 # MIDDLEWARE_CLASSES = (
 #     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -169,8 +177,8 @@ MIDDLEWARE = [
     #'django.core.context_processors.request',
 
 ]
-if LOCALL:
-    MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware',)
+#if LOCALL:
+#    MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware',)
 
 
 ROOT_URLCONF = 'bourseLibre.urls'
@@ -255,6 +263,7 @@ DATETIME_INPUT_FORMATS = ('%d/%m/%Y;%H:%M',)
 TIME_INPUT_FORMATS = ('%H:%M', )
 SHORT_DATE_FORMAT = ("d F Y",)
 DATE_INPUT_FORMATS = ('%d/%m/%Y',)
+DATE_INPUT_FORMAT = '%d/%m/%Y'
 
 
 LOGIN_URL = '/auth/login/'
@@ -290,10 +299,11 @@ STATIC_ADD_ROOT = os.path.join(BASE_DIR, 'static_files_ajoutes/')
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media/')
-
-
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+DATA_UPLOAD_MAX_MEMORY_SIZE = 20971520
+MAX_UPLOAD_SIZE = 20971520
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 # LOCATION_FIELD = {
 #     'map.provider': 'openstreetmap',
@@ -366,6 +376,10 @@ SUMMERNOTE_CONFIG = {
       "link": [
         ['link', ['linkDialogShow', 'unlink']]
       ],
+    "table": [
+            ['add', ['addRowDown', 'addRowUp', 'addColLeft', 'addColRight']],
+            ['delete', ['deleteRow', 'deleteCol', 'deleteTable']],
+          ],
       "air": [
         ['color', ['color']],
         ['font', ['bold', 'underline', 'clear']],
@@ -454,11 +468,24 @@ BOWER_INSTALLED_APPS = (
 #]
 
 CRONJOBS = [
-    ('0 6 * * *', 'bourseLibre.views_notifications.envoyerEmails',['bourseLibre'], {}, '>> /home/udjango/cron-envoimails-Logs.log')
+    ('0 6 * * *', 'bourseLibre.views_admin.envoyerEmails',[], {}, ' --settings=bourseLibre.settings.production >> /home/udjango/cron-envoimails-Logs.log 2>&1')
 ]
 
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
+}
 
-#on met ça a la fin pour importer les settings de production sur le sever
+NBMAX_ARTICLES = 3
+#PHOTOLOGUE_PATH = MEDIA_ROOT + "photologue/"
+
+
+AVATAR_GRAVATAR_DEFAULT = "identicon"
+AVATAR_AUTO_GENERATE_SIZES = (80, 40)
+AVATAR_MAX_AVATARS_PER_USER = 5
+AVATAR_EXPOSE_USERNAMES = False
+
+#on met ça a la fin pour importer les settings de production sur le serveur
 try:
     from production import *
 except ImportError:

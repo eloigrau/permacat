@@ -1,8 +1,41 @@
 {% extends 'base_asso.html' %}
 {% block title %} - Adhésion{% endblock %}
 {% block subtitle %}
-<h3 class = "textcenter rowbienvenue">Payer votre cotisation en ligne</h3>
+<h3 class = "textcenter rowbienvenue">Nous soutenir financièrement en ligne</h3>
 {% endblock %}
 {% block content %}
-<iframe id="haWidget" allowtransparency="true" scrolling="auto" src="https://www.helloasso.com/associations/permaculture-catalane/adhesions/adhesion-a-l-association/widget" style="width:100%;height:750px;border:none;" onload="window.scroll(0, this.offsetTop)"></iframe><div style="width:100%;text-align:center;">Propulsé par <a href="https://www.helloasso.com" rel="nofollow">HelloAsso</a></div>
+
+
+<div class="row textcenter">
+	<div class="col-sm-12">
+        <h5>Voulez-vous :</h5>
+        <p>
+        <a href="{% url 'adhesion_asso' asso='pc' %}">
+         <button type="button" class="btn btn-primary">
+                 Adhérer à l'association Permaculture Catalane
+            </button>
+        </a></p><p>
+        <a href="{% url 'faire_don' asso='pc' %}">
+         <button type="button" class="btn btn-primary">
+                Faire un don à l'association Permaculture Catalane
+            </button>
+		</a></p><p>
+        <a href="{% url 'adhesion_asso' asso='rtg' %}">
+         <button type="button" class="btn btn-primary">
+                 Adhérer à l'association Ramène Ta Graine
+        </button>
+		</a></p><p>
+        <a href="{% url 'faire_don' asso='rtg' %}">
+         <button type="button" class="btn btn-primary">
+                Faire un don à l'association Ramène Ta Graine
+        </button>
+		</a></p><p>
+        <a href="{% url 'faire_don' asso='developpeur' %}">
+         <button type="button" class="btn btn-primary">
+                 Faire un don au déveleppeur du site web
+        </button>
+		</a></p>
+	</div>
+</div>
+
 {% endblock %}

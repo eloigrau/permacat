@@ -1,4 +1,18 @@
 {% extends 'base_forum.html' %}
+{% load static %}
 {% block titreBlog %}
-<h1>Forum PermaCat</h1>
+<h1>Forum</h1>
+{% endblock  %}
+{%block banniere %}
+	<div class="row row_banniere_ordi" >
+		<div class="col col-xs-12 d-flex justify-content-around">
+            <img  src="{% static 'img/banniere/forum_icone_ordi.png' %}" width="224" height="120" alt="Forum"/>
+            <img  src="{% static 'img/banniere/forum.png' %}" height="120" alt="Forum"/>
+        </div>
+    </div>
+	<div class="row row_banniere_smartphone">
+		<div class="col col-xs-12 d-flex justify-content-center">
+            <img class="img_banniere_smartp" src="{% static 'img/banniere/forum_icone_smartp.png' %}" height="120" alt="Forum"/>
+        </div>
+    </div>
 {% endblock  %}

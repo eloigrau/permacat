@@ -2,27 +2,108 @@
 {% load static %}
 {% load i18n %}
 {% load fontawesome %}
+{% load cookielaw_tags %}
 {%block header %}
  <script src="{% static 'js/cookielaw.js'%}" type="text/javascript"></script>
 {%endblock%}
 {%block bodyEntete%}
-<body style="background-image:linear-gradient(40deg, black, grey);">
+<body style="background-image:linear-gradient(40deg, white, #f2f2f2);">
 {%endblock%}
+
+{%block banniere %}
+	<div class="row row_banniere_ordi" >
+		<div class="col col-xs-12 d-flex justify-content-around">
+            <img  src="{% static 'img/banniere/accueil_ordi.png' %}" width="224" height="120" alt="Logo_accueil"/>
+            <img  src="{% static 'img/banniere/accueil.png' %}" height="120" alt="Logo_accueil"/>
+        </div>
+    </div>
+	<div class="row row_banniere_smartphone">
+		<div class="col col-xs-12 d-flex justify-content-center">
+            <img class="img_banniere_smartp" src="{% static 'img/banniere/accueil_smart.png' %}" height="120" alt="Logo_accueil"/>
+        </div>
+    </div>
+{% endblock  %}
+
 {% block subtitle %}
 <div class="row">
 	<div class="col-md-12">
-		<h4 class = "textcenter rowbienvenue">{% trans "Bienvenue sur le site Perma.Cat !" %}</h4>
+		<h4 class = "textcenter rowbienvenue">{% trans "Benvingut " %} {%if request.user.is_authenticated %} {{request.user.username}} {%endif%} !</h4>
 	</div>
 </div>
+
+ {% if not request.user.is_authenticated %}
+<div class="row-sm-12 justify-content-center">
+	<div class="col-sm-12 textcenter">
+		<button class="btn btn-lg btn-primary" type="button"><a href="{% url 'presentation_site_pkoi'  %}"> Pourquoi s'inscrire sur Perma.Cat ?</a></button>
+	</div>
+</div>
+{% else %}
+	{% cookielaw_banner %}
+{% endif %}
+{%endblock%}
+{% block content %}
 <div class="row">
-	<div class="col-md-6 col-sm-12 my-auto">
-		 {% if not request.user.is_authenticated %}
+	<div class="col-sm-12 my-auto">
+		<div class="row">
+			<div class="col-md-12">
+				{% if votes %}
+					<div class="row" >
+					  <div class="col-sm-12 textcenter" style ="color:#0f7407;">
+						{% for vote, avote in votes %}
+						 <p> <b><a href="{{vote.get_absolute_url}}">Un vote est en cours : "{{vote.titre|truncatechars:20}}" ({% if avote %}Vous avez déjà voté {% else %}Votez !{% endif %})</a></b></p>
+						{% endfor %}
+					  </div>
+					</div>
+				{%endif%}
+				{% if nbExpires %}
+					<hr>
+					<div class="row" >
+					  <div class="col-sm-12 textcenter" style ="color:#0f7407;">
+						  <b><a href="{% url 'supprimerProduits_expires_confirmation' %}">Vous avez {{nbExpires}} offre{{nbExpires|pluralize:",s"}} du marché qui {{nbExpires|pluralize:"a,ont"}}  expiré. Cliquez ici pour l{{nbExpires|pluralize:"a,es"}} supprimer ou l{{nbExpires|pluralize:"a,es"}}  modifier</a></b>
+					  </div>
+					</div>
+				{%endif%}
+
+				 {% if not request.user.is_authenticated %}
+
 		<div class="row textcenter">
 			<div class="col">
 				<a  href="{% url 'gallerie' %}" ><img class="imgbienvenue" src="{{STATIC_URL}}{{nomImage}}" alt="gallerie" ></a>
 			</div>
 		</div>
-		{% else %}
+					<hr>
+					<div class="row" >
+					  <div class="col-sm-12 textcenter">
+						  <b> <a href="{% url 'login' %}" class="btn btn-light btn-radius"> <i class="fa fa-user"></i> Se connecter</a>
+
+						  </b>
+					  </div>
+					</div>
+					<hr>
+					<div class="row" >
+					  <div class="col-sm-12 textcenter">
+						  <b> <a href="{% url 'senregistrer' %}" class="btn btn-light btn-radius"> <i class="fa fa-user"></i> S'inscrire sur le site</a>
+
+						  </b>
+					  </div>
+					</div>
+					<hr>
+					<div class="row" >
+					  <div class="col-sm-12 textcenter">
+						  <b> <a href="{% url 'inscription_newsletter' %}" class="btn btn-light btn-radius"><i class="fa fa-envelope-o"></i> S'inscrire à la newsletter</a>
+
+						  </b>
+					  </div>
+					</div>
+
+
+				{% endif %}
+
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-12 my-auto">
+		 {% if request.user.is_authenticated %}
 		<div class="row" >
 					  <div class="col-sm-12 textcenter">
 
@@ -44,57 +125,14 @@
 						<b>Rendez-vous réguliers :</b>
 				  </div>
 					<ul class="list-group list-group-flush textcenter">
-						<li class="list-group-item"><a href="{% url 'blog:lireArticle' 'visioconference' %}">Lundi 20h : Visioconférence Permacat</a> </li>
-						<li class="list-group-item"><a href="{% url 'blog:lireArticle' 'visioconference' %}">Vendredi 20h : Visioconférence Ecovillage / Jardin de Palau</a> </li>
-						<li class="list-group-item"><a href=" {% url 'jardinpartage:index_jardin' jardin=2 %} ">Vendredi 15h : Jardin de Palau </a> </li>
+						<li class="list-group-item"><a href="{% url 'blog:lireArticle' 'visioconference' %}">Lundi 20h30 : Visioconférence Permacat</a> </li>
+						<li class="list-group-item"><a href="{% url 'blog:lireArticle' 'visioconference' %}">Vendredi 20h30 : Visioconférence Ecovillage </a> </li>
+						<li class="list-group-item">Samedi<a href="https://www.perma.cat/forum/article/marche-de-producteurs-associatif-a-palau-del-vidre"> matin : marché associatif</a> et <a href="https://www.perma.cat/forum/article/programmation-des-ateliers-pour-les-samedi-de-juilletaout">l'après-midi : ateliers </a> </li>
 					</ul>
 				</div>
 					  </div>
-					</div>
+			</div>
 
-		{% endif %}
-
-	</div>
-	<div class="col-md-6 col-sm-12 my-auto">
-		<div class="row">
-			<div class="col-md-12">
-				{% if nbExpires %}
-					<hr>
-					<div class="row" >
-					  <div class="col-sm-12 textcenter" style ="color:#0f7407;">
-						  <b><a href="{% url 'supprimerProduits_expires_confirmation' %}">Vous avez {{nbExpires}} offre{{nbExpires|pluralize:",s"}} du marché qui {{nbExpires|pluralize:"a,ont"}}  expiré. Cliquez ici pour l{{nbExpires|pluralize:"a,es"}} supprimer ou l{{nbExpires|pluralize:"a,es"}}  modifier</a></b>
-					  </div>
-					</div>
-				{%endif%}
-
-				 {% if not request.user.is_authenticated %}
-					<hr>
-					<div class="row" >
-					  <div class="col-sm-12 textcenter">
-						  <b> <a href="{% url 'inscription_newsletter' %}" class="btn btn-light btn-radius"><i class="fa fa-envelope-o"></i> S'inscrire à la newsletter...</a>
-
-						  </b>
-					  </div>
-					</div>
-					<hr>
-					<div class="row" >
-					  <div class="col-sm-12 textcenter">
-						  <b> <a href="{% url 'login' %}" class="btn btn-light btn-radius"> <i class="fa fa-user"></i> Se connecter</a>
-
-						  </b>
-					  </div>
-					</div>
-					<hr>
-					<div class="row" >
-					  <div class="col-sm-12 textcenter">
-						  <b> <a href="{% url 'senregistrer' %}" class="btn btn-light btn-radius"> <i class="fa fa-user"></i> S'inscrire'</a>
-
-						  </b>
-					  </div>
-					</div>
-
-				{%else%}
-					<hr>
 					<div class="row" >
 					  <div class="col-sm-12 textcenter" style ="color:#0f7407;">
 						{% if nbNotif %}
@@ -121,154 +159,54 @@
 					</div>
 				<hr>
 
-				{% endif %}
+		{% endif %}
 
-{% comment %}
-				 {% if evenements %}
-				<div class="card" >
-				  <div class="card-header  textcenter">
-						<b>Prochains rendez-vous (réguliers) :</b>
-				  </div>
-					<ul class="list-group list-group-flush textcenter">
-						{% for ev in evenements %}
-						<li class="list-group-item"><a href="{% url 'blog:lireArticle' ev.article.slug %}">({{ev.date|date:"l d F"}}) {{ev.titre}}</a> </li>
-						{% endfor %}
-					</ul>
-				</div>
-				<hr>
-				{% endif %}
-{% endcomment %}
-			</div>
-		</div>
 	</div>
+
 </div>
-
-
-{% endblock %}
-
-
-{% block content %}
-
-
-
-{% comment %}
- {% if  request.user.is_authenticated %}
 
 <hr>
 
-<div class="card-deck" >
-<div class="card cardAcceuil" >
-  <div class="card-header  textcenter cardH1 ">
-		<b>Altermarché :</b>
-  </div>
-    <ul class="list-group list-group-flush textcenter card1">
-        <li class="list-group-item"><a href="{% url 'marche' %}">Consulter les annonces</a> </li>
-		<li class="list-group-item"><a href="{% url 'produit_proposer_entree' %}">Ajouter une annonce</a></li>
-		<li class="list-group-item"><a href="{% url 'marche' %}?producteur={{ user.username }}">Vos annonces</a></li>
-	</ul>
-</div>
+ {% if request.user.is_authenticated %}
+<div class="row  justify-content-center">
+<div class="col-sm-12 col-lg-12">
+    <div class="row justify-content-center">
+        <h4>Derniers articles : </h4>
+    </div>
+    <div class="grid-container justify-content-center">
+        {% for article in derniers_articles %}
+            <div class="infinite-item my-auto mx-auto">
+            {% include "blog/article_template2.html" with article=article %}
+            </div>
+        {% endfor %}
+    </div>
+    <div class="row justify-content-center">
+	<a href="{% url 'blog:index' %}">
+        <button type="button" class="btn btn-success" >
+                <i class="fa fa-arrow-right"></i> Voir tous les articles du forum
+            </button>
+	</a>&ensp;
+	</div>
 
-<div class="card cardAcceuil" >
-  <div class="card-header  textcenter cardH2">
-		<b>Forum :</b>
-  </div>
-    <ul class="list-group list-group-flush textcenter card2">
-        <li class="list-group-item"><a href="{% url 'blog:index' %}">Voir les articles</a> </li>
-		<li class="list-group-item"><a href="{% url 'agora' asso='public'%}">Accéder au salon de discussion général</a></li>
-		<li class="list-group-item"><a href="{% url 'conversations' %}">Accéder à vos conversations privées</a></li>
-	</ul>
 </div>
-
-<div class="card cardAcceuil" >
-  <div class="card-header  textcenter cardH3">
-		<b>L'association Permacat :</b>
-  </div>
-    <ul class="list-group list-group-flush textcenter card3">
-        <li class="list-group-item"><a href="{% url 'blog:index_projets' %}">Les projets de l'association</a> </li>
-		<li class="list-group-item"><a href="{% url 'carte' asso='pc' %}">La carte des adhérents</a></li>
-	</ul>
 </div>
-
-<div class="card cardAcceuil" >
-  <div class="card-header  textcenter cardH6">
-		<b>Sur le site :</b>
-  </div>
-    <ul class="list-group list-group-flush textcenter card6">
-        <li class="list-group-item"><a href="{% url 'blog:index' %}">Voir la carte des inscrits</a> </li>
-        <li class="list-group-item"><a href="{% url 'faq' %}">Foire aux questions</a> </li>
-        <li class="list-group-item"><a href="{% url 'contact_admins' %}">Contacter les administrateurs du site</a> </li>
-	</ul>
-</div>
-
-<div class="card cardAcceuil" >
-  <div class="card-header  textcenter cardH7">
-		<b>Votre profil : </b>
-  </div>
-    <ul class="list-group list-group-flush textcenter card7">
-        <li class="list-group-item"><a href="{% url 'profil_courant' %}">Consulter votre profil</a> </li>
-        <li class="list-group-item"><a href="{% url 'conversations' %}">Consulter vos messages privés</a> </li>
-        <li class="list-group-item"><a href="{% url 'afficher_requetes' %}">Consulter vos requêtes</a> </li>
-	</ul>
-</div>
+    {% endif %}
 
 </div>
 
- {% endif %}
-{% endcomment %}
+<script type="text/javascript">
+ if ('serviceWorker' in navigator) {
+    /*console.log("Will the service worker register?");*/
+    navigator.serviceWorker.register("{% static 'js/service-worker.js' %}")
+      .then(function(reg){
+       /* console.log("Yes, it did.");*/
+     }).catch(function(err) {
+       /* console.log("No it didn't. This happened:", err)*/
+    });
+ }
+</script>
 
-{% load cookielaw_tags %}
-{% cookielaw_banner %}
-
-{% comment %}
-<hr>
-<div class="row">
-		<div class="col-md-4">
-			<h2>
-				Pourquoi ?
-			</h2>
-			<p> Parce que la planète s'épuise, parce que le climat s'emballe, les humains souffrent, les animaux disparaissent... il faut redonner du sens et du lien
-			entre gens du pays. Agissons ici et maintenant !
-			</p>
-		</div>
-		<div class="col-md-4">
-			<h2>
-				Comment ?
-			</h2>
-			<p> 
-				Ce site vous offre la possibilité d'échanger des biens, des services, de créer du lien ! Adhérer à l'association vous permet de participer au réseau local d'entraide.
-				Vous pourrez proposer vos projets, participer aux suffrages et accéder aux articles réservés aux membres du marché et du forum.
-	</p>
-		</div>
-		<div class="col-md-4">
-			<h2>
-				Mais encore ?
-			</h2>
-			<p>L'association Permacat promeut les valeurs de la permaculture au sens large. Nous organisons des rencontes tous les premiers dimanches du mois, et des visioconférences tous les lundi à 19h. Ami.e catalan.e (toi qui habites en pays catalan), rejoins-nous!
-				
-			</p>
-					</div>
-</div>
-{% endcomment %}
-
-{%comment%}
-<div class="row">
-		<div class="col-md-4">
-			<a href="{% url 'marche' %}" class="btn btn-success">
-          		accéder au marché
-        	</a>
-		</div>
-		<div class="col-md-4">
-			<a href="{% url 'blog:forum' %}" class="btn btn-success">
-          		accéder aux discussions
-        	</a>
-		</div>
-		<div class="col-md-4">
-			<a href="{% url 'profil_courant' %}" class="btn btn-success">
-          		accéder à mon profil
-        	</a>
-		</div>
-</div>
-{%endcomment%}
 {% endblock %}
+
 
 

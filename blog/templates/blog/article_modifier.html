@@ -1,16 +1,44 @@
-{% extends 'base.html' %}
+{% extends 'blog/baseBlog.html' %}
 {% block title %} - Modifier l'article{% endblock %}
 {% block subtitle %}
 <h3>Modifier l'article</h3>
-
 {% endblock %}
 {% block content %}
 
 <div class="row-sm-12 row-lg-6 mx-auto">
-    {% include 'form_template.html'%}
+    <form id="articleForm" class="form-horizontal" role="form" action="" method="post"
+	enctype="multipart/form-data" ajax_categories-url="{% url 'blog:ajax_categories' %}">
+	{% csrf_token %} <input type="hidden" name="Article"
+		value="{{ article }}"> {% include 'form_template.html'%}
+</form>
 </div>
 
 
+<script>
+    $(function() {
+    // Enable on all forms
+    $('form').areYouSure();
+    });
+</script>
+
+ <script>
+
+    $("#id_asso").change(function () {
+      var url = $("#articleForm").attr("ajax_categories-url");  // get the url of the `load_cities` view
+      var asso = $(this).val();  // get the selected country ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request
+        data: {
+          'asso': asso       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#id_categorie").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
 {% endblock %}
 
 {% block comment %}{% endblock %}

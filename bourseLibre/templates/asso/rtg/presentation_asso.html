@@ -1,23 +1,17 @@
 {% extends 'base_asso.html' %}
+{% load static %}
 {% block title %} - Accueil RTG{% endblock %}
 
-			<div class="jumbotron well">
 {% block subtitle %}
 
-<h2 class = "textcenter rowbienvenue">Ramène Ta Graine</h2>
-
-{%if request.user.adherent_rtg %}
-<div class="row">
-	<div class="col-sm-12">
-		<div class="btn-group">
-			 <a class="btn btn-success" href="{% url 'annuaire'  asso='rtg' %}"> Annuaire des inscrits </a>
-			 <a class="btn btn-success" href="{% url 'carte' asso='rtg' %}"> Carte des inscrits </a>
-			 <a class="btn btn-success" href="{% url 'agora' asso='rtg' %}"> Salon RTG </a>
-			 <a class="btn btn-success" href="{% url 'blog:index_asso' asso='rtg'%}"> Forum RTG </a>
-		</div>
+<div class="row justify-content-center">
+	<div class="col-sm-12 col-md-8 textcenter">
+		<img src="{% static 'img/Logo_rtg.png' %}" class="thumbnail" style="width:100%;" alt="Logo de RTG">
 	</div>
 </div>
-				{% endif%}
+
+{% include "asso/presentation_asso_template.html" with adherent=request.user.adherent_rtg assos='rtg' %}
+
 <h4 class = "textcenter rowbienvenue">Présentation de l'association </h4>
 {% endblock %}
 {% block content %}
@@ -47,6 +41,5 @@
 		Il faut en faire la demande auprès de ramenetagraine@live.fr
 		</p>
 
-</div>
 
 {% endblock %}

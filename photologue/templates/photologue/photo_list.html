@@ -1,0 +1,28 @@
+{% extends "photologue/root.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "All photos" %}{% endblock %}
+
+{% block subtitle %}
+    <div class="row col-lg-12 textcenter">
+        <h4 class="page-header">{% trans "All photos" %}</h4>
+    </div>
+{% endblock %}
+
+{% block content %}
+
+	{% if object_list %}
+		<div class="row col-lg-12">
+		    {% for photo in object_list %}
+		        <a href="{{ photo.get_absolute_url }}">
+		             <img src="{{ photo.get_thumbnail_url }}" class="thumbnail" alt="{{ photo.title }}">
+		        </a>
+		    {% endfor %}
+		</div>
+	{% else %}
+		<div class="row">{% trans "No photos were found" %}.</div>
+	{% endif %}
+
+	{% include "photologue/includes/paginator.html" %}
+
+{% endblock %}

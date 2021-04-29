@@ -1,0 +1,113 @@
+{% extends "photologue/root.html" %}
+{% load fontawesome %}
+{% load activity_tags %}
+{% load i18n %}
+
+{% block title %}{% trans "All galleries" %}{% endblock %}
+
+{% block subtitle %}
+<div class="row align-items-center">
+    <div class="col-md-4 offset-md-4 textcenter justify-content-center">
+        <h3>{% trans "All galleries" %}</h3>
+    </div>
+    <div class="col-md-4 textcenter">
+        <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#help" title="En savoir plus...">
+         {% fontawesome_icon 'question-circle' %}
+        </button>
+        <!-- Modal -->
+        <div class="modal fade" id="help" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog textaide" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                  <div class="row justify-content-center">
+                   <h5 > Que sont les albums ?</h5>
+                  </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body textleft">
+                  <p>
+                      Les albums photos permettent de mettre sur le site des photos ! Vous pouvez crér un album, puis y ajouter des photos. Vous pouvez aussi ajouter des photos aux albums "modifiables"
+                      </p>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row align-items-center">
+<div class="col-sm-12 textcenter">
+    <div class="btn-group">
+        <a href="{% url 'photologue:ajouterAlbum' %}">
+        <button type="button" class="btn btn-success" >
+                <i class="fa fa-plus"></i> Ajouter un album
+            </button>
+            </a>&ensp;
+
+        <a href="{% url 'photologue:suivre_albums' %}">
+            {% if request.user|is_following:suivis %}
+            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné : Cliquez pour arreter de recevoir un mail à chaque nouvel album">
+                 {% fontawesome_icon 'bell' %}
+            </button>
+            {% else %}
+            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné : Cliquez pour recevoir un mail à chaque nouvel album">
+                 {% fontawesome_icon 'bell-slash' %}
+            </button>
+            {% endif %}
+        </a>
+</div>
+</div>
+</div>
+{% endblock %}
+{% block content %}
+
+
+
+    {% if object_list %}
+        {% for album in object_list %}
+            <div class="row ">
+            <div class="col-md-4 ">
+                 <p class="infos  textepetit justify-content-center textcenter">
+
+            <a href="{% url 'profil' album.auteur.id %}">
+                <span class="badge badge-Light">
+                posté par  {{ album.auteur.username }},
+                </span>
+            </a>
+            <span class="badge badge-Light">le {{ album.date_added }}</span>
+            <span class="badge badge-success"> {{ album.asso }}</span>
+             {% if album.estModifiables %}
+            <span class="badge badge-Light"> modifiable </span>
+             {% endif %}
+
+            </p>
+                <h5 class="textcenter"><a href="{{ album.get_absolute_url }}">{{ album.title }} ({{album.photo_count}})</a></h5>
+                {% if album.description %}<p>{{ album.description|safe }}</p>{% endif %}
+            </div>
+            <div class="col-md-8 justify-content-center">
+                <p>
+                {% for photo in album.sample %}
+                    <a href="{{ photo.get_absolute_url }}">
+                         <img src="{{ photo.get_thumbnail_url }}" class="thumbnail" alt="{{ photo.title }}">
+                    </a>
+                {% endfor %}
+                    {% if album.photo_count > 5 %}
+                    +...
+                    {% endif %}
+
+                </p>
+            </div>
+            </div>
+<hr>
+        {% endfor %}
+    {% else %}
+        <div class="row col-lg-12">{% trans "No galleries were found" %}.</div>
+    {% endif %}
+
+    {% include "photologue/includes/paginator.html" %}
+    
+{% endblock %}

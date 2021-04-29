@@ -1,4 +1,4 @@
-{% extends 'base_asso.html' %}
+{% extends 'base_projets.html' %}
     {% load static %}
 {% load blog_filters %}
 {% load activity_tags %}
@@ -9,13 +9,34 @@
 <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
 <script src="{% static 'js/infinite.min.js' %}"></script>
 {%endblock%}
+
+
 {%block subtitle%}
 <div class="container-fluid">
-	<div class="row">
-		<div class="col-md-12 textcenter">
-            <h4>Les projets </h4>
-        </div>
-    </div>
+
+<div class="row align-items-center">
+<div class="col-sm-12 textcenter">
+        <a href="{% url 'blog:ajouterNouveauProjet' %}">
+        <button type="button" class="btn btn-success" >
+                <i class="fa fa-plus"></i> Proposer un projet
+            </button>
+            </a>
+&nbsp;
+            <a href="{% url 'blog:suivre_projets' %}">
+
+            {% if request.user|is_following:suivis %}
+            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné :Cliquez pour arreter de recevoir un mail à chaque nouvel article">
+                 {% fontawesome_icon 'bell' %}
+            </button>
+            {% else %}
+            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné :Cliquez pour recevoir un mail à chaque nouvel article">
+                 {% fontawesome_icon 'bell-slash' %}
+            </button>
+            {% endif %}
+                </a>
+</div>
+</div>
+<hr>
 <div class="row align-items-center">
 <div class="col-sm-12 textcenter">
     <nav class="navbar navbar-expand-lg justify-content-center  navbar-light bg-light">
@@ -65,7 +86,7 @@
                     {% endfor %}
                 </div>
             </li>
-        {% if request.user.adherent_permacat %}
+        {% if request.user.adherent_pc %}
                 <li class="nav-item dropdown">
              <button type="button" class="btn  btn-block {% if request.GET.permacat %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                data-target = "#idPermacat">
@@ -92,32 +113,6 @@
     </nav>
 </div>
 </div>
-<hr>
-<div class="row align-items-center">
-<div class="col-sm-12 textcenter">
-        <a href="{% url 'blog:ajouterNouveauProjet' %}">
-        <button type="button" class="btn btn-success" >
-                <i class="fa fa-plus"></i> Proposer un projet
-            </button>
-            </a>
-&nbsp;
-            <a href="{% url 'blog:suivre_projets' %}">
-
-            {% if request.user|is_following:suivis %}
-            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné :Cliquez pour arreter de recevoir un mail à chaque nouvel article">
-                 {% fontawesome_icon 'bell' %}
-            </button>
-            {% else %}
-            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné :Cliquez pour recevoir un mail à chaque nouvel article">
-                 {% fontawesome_icon 'bell-slash' %}
-            </button>
-            {% endif %}
-                </a>
-</div>
-</div>
-    {%if not request.user.adherent_permacat %}
-<p><small>(vous n'avez pas encore accès aux projets "Permacat"... Rejoignez-nous ! :)</small></p>
-    {%endif%}
 </div>
 {%endblock%}
 {% block content %}
@@ -125,7 +120,7 @@
 <div class="infinite-container">
     <div class="grid-container justify-content-center">
     {% for projet in projet_list %}
-    <div class="infinite-item my-auto">
+    <div class="infinite-item my-auto mx-auto">
             {% include "blog/projet_template.html" with projet=projet %}
     </div>
     {% endfor %}

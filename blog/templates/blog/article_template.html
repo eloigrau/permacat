@@ -14,9 +14,8 @@
               <span class="badge badge-primary" >{{ article.get_categorie_display }}</span>&nbsp;
             </div>
               <div>
-
                 {%if article.estArchive %}
-                <span class="badge badge-secondary" data-toggle="tooltip" data-placement="bottom" title="Article archivé">
+                <span class="badge badge-Light" data-toggle="tooltip" data-placement="bottom" title="Article archivé">
                  archivé
                 </span>&nbsp;
                 {% endif %}
@@ -35,10 +34,20 @@
               </div>
       </div>
     </div>
-    <div class="card-body align-items-center  {% if not article.dernierMessage  %}d-flex  {% endif %}justify-content-center textcenter" {%if article.estArchive %} style="background-color:#e0e0d1;" {% endif %}>
+
+    <div class="card-body align-items-center  {% if not article.dernierMessage  %}d-flex  {% endif %}justify-content-center textcenter"  style="background-color:#e0e0d1;">
       <div class="row-sm-12">
           <div class="col">
-        <h5 class="btn-cat titreArticle">{{ article.titre }}</h5>
+        <h5 class="btn-cat titreArticle">{{ article.titre }}
+            </h5>
+            {% if article.album %}
+              {% with photo=article.album.get_photo_sample %}
+                {%if photo %}
+               <img src="{{ photo.0.get_thumbnail_url }}" class="thumbnail" alt="{{ photo.0.title }}">
+            {% endif %}
+                {% endwith %}
+            {% endif %}
+
     {% if article.start_time %}
       <p class="textsmall " >
           {% if article.end_time %}
@@ -53,7 +62,7 @@
         {% if article.dernierMessage  %}
         <div class="row-sm-12">
           <div class="col">
-            <p class="textsmall " >Dernier message : {{ article.dernierMessage|couperTexte:30}}</p>
+            <p class="textsmall " >Dernier message : {{ article.dernierMessage|safe|couperTexte:30}}</p>
         </div>
         </div>
         {% endif %}

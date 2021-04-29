@@ -1,21 +1,23 @@
 from django.db import models
-from bourseLibre.models import Profil, Suivis, Asso
+from blog.models import Article
 from django.urls import reverse
 from django.utils import timezone
-from taggit.managers import TaggableManager
-from bourseLibre import settings
-from django.contrib.auth.models import Group, User
 import uuid
+import datetime as dt
+from bourseLibre.models import Profil, Suivis, Asso
+from actstream.models import followers
+from actstream import action
+
 
 class Choix():
     type_atelier = ('0','Permaculture'), ('1',"Bricolage"), ('2','Cuisine'), ('3','Bien-être'),('4',"Musique"), ('5', 'Autre...')
     couleurs_ateliers = {
         '2':'#4DC490', '1':'#C0EDA0', '3':'#00AA8B', '0':'#FCE79C',
         # '0':"#e0f7de", '1':"#dcc0de",
-        # '5':"#d1ecdc",'3':"#fcf6bd", '4':"#d0f4de", '7':"#fff2a0",
+        '5':"#d1ecdc",'3':"#fcf6bd", '4':"#d0f4de", '6':"#fff2a0",
         # '9':"#ffc4c8", '2':"#bccacf", '10':"#87bfae", '11':"#bcb4b4"
     }
-    statut_atelier = ('0', 'proposition'), ('1', "accepté, en cours d'organisation"),
+    statut_atelier = ('0', 'proposition'), ('1', "accepté, en cours d'organisation"), ('2', "accepté, s'est déroule correctement"), ('3', "a été annulé"),
     type_difficulte = ('0', 'facile'), ('1', "moyen"), ("2", "difficile")
     type_jauge = ('1', "1"), ("2", "2"), ("3", "3"), ("4", "4"), ("5", "5")
     type_budget = ('0', "0"), ('1', "1"), ("2", "2"), ("3", "3")
@@ -52,7 +54,7 @@ class Atelier(models.Model):
     referent = models.CharField(max_length=120, null=True, blank=True,  verbose_name="Référent(e.s)")
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE, null=True)
 #    projet = models.OneToOneField(Projet)
-    date_atelier = models.DateField(verbose_name="Date prévue (affichage dans l'agenda)", help_text="(jj/mm/an)", default=timezone.now, blank=True, null=True)
+    start_time = models.DateField(verbose_name="Date prévue (affichage dans l'agenda)", help_text="(jj/mm/an)", default=timezone.now, blank=True, null=True)
     heure_atelier = models.TimeField(verbose_name="Heure prévue", help_text="Horaire de départ (hh:mm)", default="17:00", blank=True, null=True)
 
     date_creation = models.DateTimeField(verbose_name="Date de parution", default=timezone.now)
@@ -61,8 +63,11 @@ class Atelier(models.Model):
     date_dernierMessage = models.DateTimeField(verbose_name="Date du dernier message", auto_now=False, blank=True, null=True)
     dernierMessage = models.CharField(max_length=100, default=None, blank=True, null=True, help_text="Heure prévue (hh:mm)")
     duree_prevue = models.TimeField(verbose_name="Durée prévue", help_text="Durée de l'atelier estimée", default="02:00", blank=True, null=True)
-    tarif_par_personne = models.CharField(max_length=30, default='gratuit', help_text="Tarif de l'atelier par personne", verbose_name="Tarif de l'atelier par personne", )
+    tarif_par_personne = models.CharField(max_length=100, default='gratuit', help_text="Tarif de l'atelier par personne", verbose_name="Tarif de l'atelier par personne", )
     asso = models.ForeignKey(Asso, on_delete=models.SET_NULL, null=True)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, null=True, blank=True)
+
+    estArchive = models.BooleanField(default=False, verbose_name="Archiver l'atelier")
 
     class Meta:
         ordering = ('-date_creation', )
@@ -75,6 +80,7 @@ class Atelier(models.Model):
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
+        emails = []
         if not self.id:
             self.date_creation = timezone.now()
 
@@ -83,18 +89,48 @@ class Atelier(models.Model):
             except:
                 self.auteur = Profil.objects.first()
 
-        return super(Atelier, self).save(*args, **kwargs)
+            suivi, created = Suivis.objects.get_or_create(nom_suivi='ateliers')
+            emails = [suiv.email for suiv in followers(suivi) if  self.est_autorise(suiv)]
+
+            titre = "Nouvel atelier proposé"
+            message = "L'atelier ["+ self.asso.nom +"]' <a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.titre + "</a>' a été proposé"
+
+        ret = super(Atelier, self).save(*args, **kwargs)
+        if emails:
+            action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
+        return ret
+
 
     @property
     def get_couleur(self):
+        try:
             return Choix.couleurs_ateliers[self.categorie]
+        except:
+            return Choix.couleurs_ateliers['0']
 
     @property
-    def get_couleur_cat(self,cat):
+    def get_couleur_cat(self, cat):
+        try:
             return Choix.couleurs_ateliers[cat]
+        except:
+            return Choix.couleurs_ateliers['0']
 
 
+    def est_autorise(self, user):
+        if self.asso.abreviation == "public":
+            return True
 
+        return getattr(user, "adherent_" + self.asso.abreviation)
+
+
+    @property
+    def heure_fin_atelier(self,):
+        if self.start_time and self.duree_prevue:
+            delta = dt.timedelta(hours=self.duree_prevue.hour, minutes=self.duree_prevue.minute)
+
+            return dt.datetime.combine(self.start_time, self.heure_atelier) + delta
+        else:
+            return None
 
 class CommentaireAtelier(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE)

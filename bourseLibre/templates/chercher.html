@@ -8,32 +8,28 @@
     {%if produits_list %}
 <p>Produits trouvés au marché ({{produits_list|length}})</p>
 <div class="row listOffres">
-    {% for produit in produits_list %}
+    <div class="grid-container justify-content-center">
+        {% for produit in produits_list %}
         {% include "bourseLibre/produit_template3.html" with produit=produit %}
-    {% endfor %}
+        {% endfor %}
+    </div>
 </div>
 <hr>
     {% endif %}
 
     {%if articles_list %}
 <p>Articles trouvés dans le forum ({{articles_list|length}})</p>
-<div class="row ">
-    {% for article in articles_list %}
-<div class="col ">
-        {% include "blog/article_template_recherche.html" with article=article %}
-</div>
-    {% endfor %}
-</div>
+ {% include "blog/articles_template_tableau.html" with article_list=articles_list %}
     {% endif %}
 
     {%if commentaires_list %}
 <p>Dans les commentaires des articles du forum ({{commentaires_list|length}})</p>
 <div class="row ">
+    <div class="grid-container justify-content-center">
     {% for comm in commentaires_list %}
-<div class="col ">
-        {% include "blog/article_template_recherche.html" with article=comm.article %}
-</div>
+            {% include "blog/article_template_recherche.html" with article=comm.article %}
     {% endfor %}
+    </div>
 </div>
 <hr>
     {% endif %}
@@ -41,21 +37,21 @@
     {%if projets_list %}
 <p>Projets Permacat trouvés  ({{projets_list|length}})</p>
 <div class="row ">
+    <div class="grid-container justify-content-center">
     {% for projet in projets_list %}
-<div class="col ">
         {% include "blog/projet_template_recherche.html" with projet=projet %}
-</div>
     {% endfor %}
+    </div>
 </div>
     {% endif %}
     {%if commentairesProjet_list %}
 <p>Dans les commentaires des projets Permacat ({{commentairesProjet_list|length}})</p>
 <div class="row ">
+    <div class="grid-container justify-content-center">
     {% for comm in commentairesProjet_list %}
-<div class="col ">
         {% include "blog/projet_template_recherche.html" with projet=comm.projet %}
-</div>
     {% endfor %}
+    </div>
 </div>
     {% endif %}
     {%if profils_list %}

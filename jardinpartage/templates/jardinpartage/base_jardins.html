@@ -1,0 +1,18 @@
+{% extends 'base_jardin.html' %}
+{% load static %}
+{% block titreBlog %}
+<h1>Forum des Jardins Partagés</h1>
+{% endblock  %}
+{%block banniere %}
+	<div class="row row_banniere_ordi" >
+		<div class="col col-xs-12 d-flex justify-content-around">
+            <img  src="{% static 'img/banniere/jardin_ordi.png' %}" width="224" height="120" alt="Logo_jardins"/>
+            <img  src="{% static 'img/banniere/jardin.png' %}" height="120" alt="Logo_jardins"/>
+        </div>
+    </div>
+	<div class="row row_banniere_smartphone">
+		<div class="col col-xs-12 d-flex justify-content-center">
+            <img class="img_banniere_smartp" src="{% static 'img/banniere/jardin_smart.png' %}" height="120" alt="Logo_jardins"/>
+        </div>
+    </div>
+{% endblock  %}

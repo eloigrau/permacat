@@ -1,26 +1,98 @@
-{% extends 'vote/baseVote.html' %} {% block content %}
+{% extends 'vote/baseVote.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
 
 <div class="row">
-	<div class="col col-md-12 textcenter"><h3>Ajouter un suffrage</h3></div>
-	</div>
+	<div class="col col-md-12 textcenter"><h3>Ajouter un suffrage</h3>
+    <h4>Etape 1 : Donnez ici les renseignements généraux du vote</h4>
+    </div>
+    <input type="button"  onclick="window.history.back();"  value="Annuler" />
+</div>
 	<hr>
 {% if error_message %}
 <p>
 	<strong>{{ error_message }}</strong>
 </p>
 {% endif %}
-<div class="row">
-	<div class="col-sm-12">
-<form class="form-horizontal" role="form" action="" method="post"
+
+
+<div class="row justify-content-sm-center">
+<div class="col-sm-12 col-md-10 col-lg-9 text-center">
+	<form class="form-horizontal" role="form" action="" method="post"
 	enctype="multipart/form-data">
-	{% csrf_token %} <input type="hidden" name="Suffrage"
-		value="{{ suffrage }}"> {% include 'form_template.html'%}
-</form>
-        <script type="text/javascript">
-        {% if not request.user.adherent_permacat %}
-               var isPublic = document.getElementById('id_estPublic').style.visibility = "hidden";
-        {%endif%}
-    </script>
-</div>
+	{% csrf_token %}
+        <input type="hidden" name="Suffrage"
+		value="{{ suffrage }}"> {% include 'form_template2.html' %}
+
+{% comment %}
+{{ qb_formset.management_form }}
+{{ qm_formset.management_form }}
+
+    <div id="qb_formset">
+    {% for form in qb_formset.forms %}
+        {% include 'form_template2.html' %}
+        {% if form.can_delete %}
+            <li>{{ form.DELETE }}</li>
+        {% endif %}
+        {% if forloop.count > 0 %}
+            <input type="button" value="X" id="remove_qb">
+        {% endif %}
+    {% endfor %}
     </div>
+
+    <div id="qm_formset">
+    {% for form in qm_formset.forms %}
+        {% include 'form_template2.html' %}
+        {% if form.can_delete %}
+            <li>{{ form.DELETE }}</li>
+        {% endif %}
+        {% if forloop.count > 0 %}
+            <input type="button" value="X" id="remove_qm">
+        {% endif %}
+    {% endfor %}
+    </div>
+<div class="row justify-content-sm-center">
+<div class="col-sm-12 col-md-10 col-lg-9 text-center">
+    <input type="button" value="ajouter une question binaire" id="add_more_qb">
+    <input type="button" value="ajouter une question majoritaire" id="add_more_qm">
+</div></div>
+
+<div id="qb_empty_form" style="display:none">
+    {% include 'form_template2.html' with form=qb_formset.empty_form%}
+</div>
+<div id="qm_empty_form" style="display:none">
+    {% include 'form_template2.html' with form=qm_formset.empty_form%}
+</div>
+
+{% endcomment %}
+  <button type="submit" class="btn btn-primary">Valider et passer à la seconde étape</button>
+
+</form>
+</div>
+</div>
+{% comment %}
+  <script type="text/javascript">
+    $(document).ready(function() {
+
+      $("#add_more_qb").on("click", function() {
+          var form_idx = $("#id_qb-TOTAL_FORMS").val();
+          $newform = $("#qb_empty_form").clone(true,true)
+          $("#qb_formset").append($newform.html().replace(/__prefix__/g, form_idx));
+          $("#id_qb-TOTAL_FORMS").val(parseInt(form_idx)+1);
+      });
+
+      $("#remove_qb").on("click", function() {
+
+      });
+
+      $("#add_more_qm").on("click", function() {
+          var form_idx = $("#id_qm-TOTAL_FORMS").val();
+          $newform = $("#qm_empty_form").clone(true,true)
+          $("#qm_formset").append($newform.html().replace(/__prefix__/g, form_idx));
+          $("#id_qm-TOTAL_FORMS").val(parseInt(form_idx)+1);
+      });
+    });
+</script>
+{% endcomment %}
+
 {% endblock %}

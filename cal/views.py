@@ -4,6 +4,7 @@ from datetime import datetime,  timedelta
 from django.views import generic
 from django.utils.safestring import mark_safe
 
+from django.contrib.auth.decorators import login_required
 from blog.models import Article
 from .utils import Calendar
 from django.shortcuts import render
@@ -30,6 +31,7 @@ def next_month(d):
     month = 'mois=' + str(next_month.year) + '-' + str(next_month.month)
     return month
 
+@login_required
 def agenda(request):
     # use today's date for the calendar
     if not 'mois' in request.GET:

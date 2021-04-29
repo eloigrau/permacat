@@ -1,0 +1,34 @@
+{% extends 'base_asso.html' %}
+{% block title %} - Accueil Gardiens de la Terre{% endblock %}
+
+{% block subtitle %}
+
+<h2 class = "textcenter rowbienvenue">Les Gardiens de la Terre</h2>
+
+
+{% include "asso/presentation_asso_template.html" with adherent=request.user.adherent_gt assos='gt' %}
+
+<h4 class = "textcenter rowbienvenue">Présentation de l'association </h4>
+{% endblock %}
+{% block content %}
+<div class="row">
+	<div class="col">
+		<p>
+L'association Les Gardiens de la Terre a pour objet de développer et d'entretenir le verger-potager du Clos Mas d'en Coste (à Laroque des Albères) dans une démarche éthique, écologique et collaborative. Le projet s'appuie sur les principes de la permaculture dont les valeurs sont : prendre soin de la Terre et des êtres vivants, favoriser la biodiversité, les échanges humains, produire et partager équitablement.
+</p><p>Le Clos Mas d'en Coste est un jardin collectif permettant de faire du jardinage/maraîchage, de l'arboriculture et de l'apiculture (alternative).
+		</p>
+
+</div>
+</div>
+
+<div class="row">
+
+</div>
+<p>Pour accéder au contenu des Gardiens sur le site, il faut faire partie de l'association et faire la demande d'autorisation d'accès auprès de l'administrateur du site
+		</p>
+<p>Facebook : <a href="https://www.facebook.com/gardiens.delaterre.1/">Gardiens de la Terre</a>
+		</p>
+<p>Email : lesgardiensdelaterre66@gmail.com</p>
+
+
+{% endblock %}

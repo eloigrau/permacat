@@ -1,0 +1,36 @@
+{% extends 'base_site.html' %}
+
+{% block subtitle %}
+<h4><b>Pourquoi s'inscrire sur www.Perma.Cat ?</b></h4>
+{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+<div class="col-sm-12 col-md-8">
+
+  <ul  class="list">
+      <li class="list-item listone"><span>pour retrouver notre <b>souveraineté numérique</b> / éviter les GAFAM (Google, Amazon, Facebook, Apple, Microsoft) :ne pas dépendre d'eux, ne pas leur donner plus de pouvoir, ne pas être surveillé et manipulé en permanence</span></li>
+        <li class="list-item listone"><span>pour <b>créer du lien localement</b> et construire des <b>projets communs</b></span></li>
+        <li class="list-item listone"><span>pour participer à un <b>réseau social local</b> non polluant (ou très sobrement - beaucoup moins polluant que facebook, whatsapp, ou mếme les mails)</span></li>
+        <li class="list-item listone"><span>pour se sortir des algorithmes de <b>capture de l'attention</b> et de la <b>publicité</b></span></li>
+        <li class="list-item listone"><span>pour <b>partager facilement</b> ce qu'on a envie de partager, (sans encombrer les mails, et en toute liberté)</span></li>
+        <li class="list-item listone"><span>pour <b>proposer des ateliers</b> </span></li>
+        <li class="list-item listone"><span>pour mieux <b>"ranger"</b> les informations en commun et <b>s'organiser</b></span></li>
+        <li class="list-item listone"><span>pour <b>faire des échanges</b> sans sortir son portefeuille ou sa CB</span></li>
+        <li class="list-item listone"><span>pour avoir des <b>listes de diffusion</b> de gens interessés par des activites permacoles au sens large, dans le 66</span></li>
+        <li class="list-item listone"><span>pour faire connaitre ses <b>activités</b> et voir ce que font les autres de maniere bienveillante et dans un esprit  d'ouverture et de partage</span></li>
+        <li class="list-item listone"><span>pour partager un ensemble de <b>ressources pedagogiques</b>, scientifiques, ... </span></li>
+        <li class="list-item listone"><span>pour participer à des <b>projets collectifs</b> </span></li>
+    </ul>
+
+</div>
+</div>
+
+{% if not request.user.is_authenticated %}
+    <div class="row" >
+      <div class="col-sm-12 textcenter">
+          <b> <a href="{% url 'senregistrer' %}" class="btn btn-light btn-radius"> <i class="fa fa-arrow-right"></i> Je m'inscris sur le site</a>
+          </b>
+      </div>
+    </div>
+{% endif %}
+{% endblock %}

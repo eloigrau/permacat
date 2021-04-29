@@ -68,7 +68,7 @@
             </li>
 
 
-        {% if request.user.adherent_permacat %}
+        {% if request.user.adherent_pc %}
 
                 <li class="nav-item dropdown">
              <button type="button" class="btn btn-block {% if request.GET.permacat %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -103,14 +103,14 @@
 <div class="row align-items-center">
 <div class="col-sm-12 textcenter">
 
-        <a href="{% url 'vote:ajouterNouvelSuffrage' %}">
+        <a href="{% url 'vote:ajouterSuffrage' %}">
         <button type="button" class="btn  btn-success" >
                 <i class="fa fa-plus"></i> Ajouter un suffrage
             </button>
             </a>
 </div>
 </div>
-    {%if not request.user.adherent_permacat %}
+    {%if not request.user.adherent_pc %}
 <p class="textcenter"><small>(vous n'avez pas encore accès aux suffrages "Permacat"... Rejoignez-nous ! :)</small></p>
     {%endif%}
 {%endblock%}

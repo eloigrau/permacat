@@ -1,7 +1,20 @@
 {% extends 'base_agenda.html' %}
 {% load fontawesome %}
 {% load app_filters %}
-
+{% load static %}
+{%block banniere %}
+	<div class="row row_banniere_ordi" >
+		<div class="col col-xs-12 d-flex justify-content-around">
+            <img  src="{% static 'img/banniere/agenda_ordi.png' %}" width="224" height="120" alt="Logo_Agenda"/>
+            <img  src="{% static 'img/banniere/agenda.png' %}" height="120" alt="Logo_Agenda"/>
+        </div>
+    </div>
+	<div class="row row_banniere_smartphone">
+		<div class="col col-xs-12 d-flex justify-content-center">
+            <img  src="{% static 'img/banniere/agenda_smart.png' %}" height="120" alt="Logo_Agenda"/>
+        </div>
+    </div>
+{% endblock  %}
 {% block subtitle %}
 
         <div class="row justify-content-center">
@@ -41,8 +54,6 @@
         </a>
 
 </div>
-<hr>
-
 {% endblock %}
 
 {% block content %}

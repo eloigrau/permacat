@@ -1,0 +1,17 @@
+{% load i18n %}
+
+{# Display a randomnly-selected set of photos from a given album #}
+
+<div>
+    
+    <h2><a href="{{ album.get_absolute_url }}">{{ album.title }}</a></h2>
+    <p class="muted"><small>{% trans "Published" %} {{ album.date_added }}</small></p>
+    {% if album.description %}<p>{{ album.description|safe }}</p>{% endif %}
+    
+    {% for photo in album.sample %}
+        <a href="{{ photo.get_absolute_url }}">
+             <img src="{{ photo.get_thumbnail_url }}" class="thumbnail" alt="{{ photo.title }}">
+        </a>
+	{% endfor %}
+
+</div>

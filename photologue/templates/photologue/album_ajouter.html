@@ -1,0 +1,30 @@
+{% extends 'photologue/root.html' %}
+{% block subtitle %}
+<div class="row">
+<div class="col col-md-10"><h3>Ajouter un album</h3></div>
+	<div class="col col-md-2">
+		<a href="{% url 'photologue:album-list'  %}">
+	<button class="btn btn-info" role="button" >Sommaire</button>
+</a>
+	</div>
+</div>
+{% endblock %}
+{% block content %}
+
+
+{% if error_message %}
+<p>
+	<strong>{{ error_message }}</strong>
+</p>
+{% endif %}
+<div class="row">
+	<div class="col-sm-12">
+<form class="form-horizontal" role="form" action="" method="post"
+	enctype="multipart/form-data">
+	{% csrf_token %} <input type="hidden" name="Album"
+		value="{{ album }}"> {% include 'form_template.html'%}
+</form>
+
+</div>
+    </div>
+{% endblock %}

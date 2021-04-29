@@ -1,9 +1,12 @@
-{% extends 'jardinpartage/baseBlog.html' %} {% block content %}
+{% extends 'jardinpartage/base_jardins.html' %}
 
+
+{% block subtitle %}
 <div class="row">
 	<div class="col col-md-12 textcenter"><h3>Ajouter un article</h3></div>
-	</div>
-	<hr>
+</div>
+{% endblock %}
+{% block content %}
 {% if error_message %}
 <p>
 	<strong>{{ error_message }}</strong>
@@ -19,4 +22,11 @@
 
 </div>
     </div>
+
+<script>
+    $(function() {
+    // Enable on all forms
+    $('form').areYouSure();
+    });
+</script>
 {% endblock %}

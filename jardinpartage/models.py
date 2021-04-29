@@ -15,7 +15,7 @@ class Choix():
                   ('Agenda','Agenda'), ("todo", "A faire"), \
                    ('Documentation','Documentation'),  \
                  ('Autre','Autre'),
-    jardins_ptg = ('0', 'Tous les jardins'),('1', 'Jardi Per Tots'), ('2', 'Jardin de Palau'), ('3', 'Jardins de Lurçat')
+    jardins_ptg = ('0', 'Tous les jardins'),('1', 'Jardi Per Tots'), ('2', 'Jardin de Palau'), ('3', 'Jardins de Lurçat'), ('4', 'Gardiens de la Terre')
     couleurs_annonces = {
        # 'Annonce':"#e0f7de", 'Administratif':"#dcc0de", 'Agenda':"#d4d1de", 'Entraide':"#cebacf",
        # 'Chantier':"#d1ecdc",'Jardinage':"#fcf6bd", 'Recette':"#d0f4de", 'Bricolage':"#fff2a0",
@@ -62,14 +62,14 @@ class Article(models.Model):
     date_creation = models.DateTimeField(verbose_name="Date de parution", default=timezone.now)
     date_modification = models.DateTimeField(verbose_name="Date de modification", default=timezone.now)
     estPublic = models.BooleanField(default=False, verbose_name='Public ou réservé aux membres permacat')
-    estModifiable = models.BooleanField(default=False, verbose_name="Modifiable par n'importe qui")
+    estModifiable = models.BooleanField(default=False, verbose_name="Modifiable par les autres")
 
     date_dernierMessage = models.DateTimeField(verbose_name="Date du dernier message", auto_now=True)
     dernierMessage = models.CharField(max_length=100, default=None, blank=True, null=True)
     estArchive = models.BooleanField(default=False, verbose_name="Archiver l'article")
 
-    start_time = models.DateTimeField(verbose_name="Date de début (optionnel, affichage dans l'agenda)", null=True,blank=True, help_text="jj/mm/année")
-    end_time = models.DateTimeField(verbose_name="Date de fin (optionnel, pour affichage dans l'agenda)",  null=True,blank=True, help_text="jj/mm/année")
+    start_time = models.DateField(verbose_name="Date de l'évenement (pour affichage dans l'agenda) - date de début si l'événement a lieu sur plusieurs jours ", null=True,blank=True, help_text="jj/mm/année")
+    end_time = models.DateField(verbose_name="Date de fin (optionnel, pour affichage dans l'agenda)",  null=True,blank=True, help_text="jj/mm/année")
 
     class Meta:
         ordering = ('-date_creation', )
@@ -97,9 +97,7 @@ class Article(models.Model):
             if sendMail:
                 titre = "Article actualisé Jardins"
                 message = "L'article '<a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.titre + "</a>' des Jardins Partagés a été modifié "
-
-                emails = [suiv.email for suiv in followers(self) if
-                          self.auteur != suiv and self.est_autorise(suiv)]
+                emails = [suiv.email for suiv in followers(self) if self.est_autorise(suiv)]
 
         retour =  super(Article, self).save(*args, **kwargs)
         if emails:
@@ -125,8 +123,8 @@ class Evenement(models.Model):
     titre_even = models.CharField(verbose_name="Titre de l'événement (si laissé vide, ce sera le titre de l'article)",
                              max_length=100, null=True, blank=True, default="")
     article = models.ForeignKey(Article, on_delete=models.CASCADE, help_text="L'evenement doit etre associé à un article existant (sinon créez un article avec une date)" )
-    start_time = models.DateTimeField(verbose_name="Date", null=False,blank=False, help_text="jj/mm/année" , default=timezone.now)
-    end_time = models.DateTimeField(verbose_name="Date de fin (optionnel pour un evenement sur plusieurs jours)",  null=True,blank=True, help_text="jj/mm/année")
+    start_time = models.DateField(verbose_name="Date", null=False,blank=False, help_text="jj/mm/année" , default=timezone.now)
+    end_time = models.DateField(verbose_name="Date de fin (optionnel pour un evenement sur plusieurs jours)",  null=True,blank=True, help_text="jj/mm/année")
 
     class Meta:
         unique_together = ('article', 'start_time',)
@@ -145,6 +143,9 @@ class Evenement(models.Model):
     @property
     def estPublic(self):
         return True
+
+    def est_autorise(self, user):
+        return self.article.est_autorise(user)
 
 class Commentaire(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='auteur_comm_jardin')
@@ -177,7 +178,7 @@ class Commentaire(models.Model):
         if not self.id:
             self.date_creation = timezone.now()
             titre = "article jardins commenté "
-            message = self.auteur_comm.username + " a commenté l'article (Jardins Partagés) '<a href='https://www.perma.cat"+ self.article.get_absolute_url() + "'>"+ self.article.titre + "</a>'"
+            message = self.auteur_comm.username + " a commenté l'article [Jardins Partagés] '<a href='https://www.perma.cat"+ self.article.get_absolute_url() + "'>"+ self.article.titre + "</a>'"
             emails = [suiv.email for suiv in followers(self.article) if self.auteur_comm != suiv and self.article.est_autorise(suiv)]
 
         retour =  super(Commentaire, self).save(*args, **kwargs)

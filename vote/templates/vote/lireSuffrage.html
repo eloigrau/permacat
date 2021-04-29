@@ -1,6 +1,7 @@
 {% extends 'vote/baseVote.html' %}
 {% load activity_tags %}
 {% load blog_filters %}
+{% load vote_filters %}
 {% load fontawesome %}
 
 {% block subtitle %}
@@ -8,6 +9,11 @@
 <div class="container-fluid">
 <div class="row">
     <div class="col-md-2 " id="sec02">
+
+            <a href="{% url 'vote:index' %}">
+               <button type="button" class="btn btn-sm btn-success">
+                <span class="glyphicon glyphicon-plus"></span>&nbsp;retour à la liste des suffrages
+               </button></a>
     </div>
     <div class="col-md-8">
         <p class="infos  textepetit">Dans: <a href="{% url 'vote:index'  %}?type_vote={{suffrage.type_vote}}"  style="background-color:{{suffrage.get_couleur}}" class="smallcaps_h2">Suffrages/{{ suffrage.get_type_vote_display }}</a>, rédigé par <a href="{% url 'profil' suffrage.auteur.id %}"> {{ suffrage.auteur.username }}</a>, le {{ suffrage.date_creation|date:"DATE_FORMAT" }};
@@ -15,16 +21,17 @@
     </div>
     <div class="col-md-2">
         <p>
-        {%if suffrage.auteur == request.user and suffrage.get_statut.0 == 2%}
+        {%if suffrage.auteur == request.user %}
 		<div class="btn-group">
             <a href="{% url 'vote:modifierSuffrage' slug=suffrage.slug %}">
-               <button type="button" class="btn btn-sm btn-warning">
+               <button type="button" class="btn btn-sm btn-warning" {%if suffrage.get_statut.0 != 2 %} disabled{% endif %}>
                 <span class="glyphicon glyphicon-plus"></span>&nbsp;Modifier
                </button></a>
             <a href="{% url 'vote:supprimerSuffrage' slug=suffrage.slug %}">
-               <button type="button" class="btn btn-sm btn-danger">
+               <button type="button" class="btn btn-sm btn-danger" {%if suffrage.get_statut.0 != 2 %} disabled{% endif %}>
                 <span class="glyphicon glyphicon-plus"></span>&nbsp;Supprimer
-               </button></a>
+               </button>
+            </a>
         </div>
         {%endif%}
 
@@ -41,7 +48,7 @@
                 Suffrage {{suffrage.asso}}
             </span>
             {% if suffrage.estArchive%}
-            <span class="badge badge-secondary">
+            <span class="badge badge-Light">
                 archivé
             </span>
             {%endif%}
@@ -54,9 +61,9 @@
 <div class="contenu suffrage article">
 <div class="row">
 <div class="col-sm-12 textcenter">
-    <h3> <small>Question : </small>{{ suffrage.question }}</h3>
+    <h3> {{ suffrage.titre }}</h3>
     <p>
-                {%if suffrage.start_time%}
+        {%if suffrage.start_time%}
           <a href="{% url 'cal:agenda' %} " class="textepetit">
             {%if suffrage.end_time and suffrage.start_time != suffrage.end_time %}
                 Du {{ suffrage.start_time|date:"d/m/Y"  }} au {{ suffrage.end_time|date:"d/m/Y"  }}
@@ -67,18 +74,19 @@
               </a>
         {% endif %}
     </p>
+{%if request.user.is_superuser %}
+    {% endif  %}
        <p>
-        {%if suffrage.get_statut.0 == 1%}<a href="{% url 'vote:resultatsSuffrage' slug=suffrage.slug %}">{% endif %}
-        <button {%if suffrage.get_statut.0 == 1%} {% else %} disabled{% endif %} class="btn btn-warning">
-            {{suffrage.get_statut.1}}
-    {% if suffrage.get_statut.0 == 1 %}: {{suffrage.getResultat}}{% endif %}
+        {%if suffrage.get_statut.0 == 1%}<a href="{% url 'vote:resultatsSuffrage' slug=suffrage.slug %}"> {% endif %}
+        <button {%if suffrage.get_statut.0 == 1%} {% else %} disabled{% endif %} class="{%if suffrage.get_statut.0 == 0%}btn-success {% else %}btn btn-warning{% endif %}">
+            {{suffrage.get_statut.1}} - Voir les résultats
     </button>
     {%if suffrage.get_statut.0 == 1%}</a>{% endif %}
     </p>
  </div>
 </div>
     <hr>
-<div class="row"  id="sec03">
+<div class="row" >
     <div class="col textright" >
         {% if actions %}
             <button type="button" class="btn" data-toggle="modal" data-target="#historique">
@@ -114,35 +122,38 @@
 </div>
 <div class="row">
 <div class="col contenusuffrage">
-   {{ suffrage.contenu |safe}}
-</div>
-</div>
-
-<hr>
-<div class="row justify-content-center">
-<div class="col-sm-12">
-
-    {% if suffrage.get_statut.0 < 2 %}
-        {%if not vote %}
-        <p><a href="{% url 'vote:voter' slug=suffrage.slug %}" class="btn btn-success">Voter</a></p>
-        {% else %}
-
-    <table class="table" style=" width: 80%;
-  text-align: left;
-  padding: 2px 8px;
-  border-radius: 5px;"><tbody>
-    <tr><td style="width: 30%;">Vous avez voté :</td><td style="width: 70%;">"{{vote.getVoteStr}}"</td></tr>
-    {% if vote.commentaire %}
-    <tr><td style="width: 30%;">Commentaire :</td><td style="width: 70%;">{{vote.commentaire|safe}}</td></tr>
-    {% endif %}
-    </tbody>
-</table>
-    {% if suffrage.get_statut.0 == 0 %}
-    <div class="textcenter"><a href="{% url 'vote:modifierVote' slug=suffrage.slug %}" class="btn btn-success"> Modifier</a></div></p>
+   {{ suffrage.description }}
+    <hr>
+    {% include 'vote/template_questions.html' %}
+    {% if vote %}
+    <hr>
+    {% if suffrage.get_statut.0 == 1 %}
+        {% if vote.commentaire %}
+        <h5>Mon commentaire</h5>
+        <div>
+            {{vote.commentaire |safe}}
+        </div>
+        {% endif %}
+    {% else %}
+        <h5>(Je n'ai pas commenté le suffrage)</h5>
     {% endif %}
         {% endif %}
+
+<div class="row justify-content-center">
+<div class="col-sm-12 textcenter">
+
+    {% if suffrage.get_statut.0 == 0 %}
+        {%if not vote %}
+            <p><a href="{% url 'vote:voter' slug=suffrage.slug %}" class="btn btn-success">Voter</a></p>
+        {% else %}
+            <div class="textcenter"><a href="{% url 'vote:voter' slug=suffrage.slug %}" class="btn btn-success"> Refaire mon vote</a></div></p>
+            {% endif %}
     {% endif %}
-</div></div>
+</div>
+</div>
+</div>
+</div>
+
 </div>
 
 <hr>

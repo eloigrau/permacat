@@ -2,6 +2,7 @@
 import decimal
 import math
 import os
+from urllib import parse
 from datetime import date
 
 import django_filters
@@ -10,7 +11,6 @@ from actstream import actions, action
 from actstream.models import following, followers
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import ASCIIUsernameValidator
-# from django.utils import timezone
 from django.core.validators import MinValueValidator
 from django.core.validators import RegexValidator
 from django.db import models
@@ -23,9 +23,10 @@ from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 from model_utils.managers import InheritanceManager
 from stdimage import StdImageField
-
+from django.core.mail import send_mail
 from .constantes import Choix, DEGTORAD
-
+from .settings.production import SERVER_EMAIL
+import simplejson
 
 # from tinymce.models import HTMLField
 #from blog.models import Article
@@ -42,7 +43,7 @@ LONGITUDE_DEFAUT = '2.8954'
 class Adresse(models.Model):
     rue = models.CharField(max_length=200, blank=True, null=True)
     code_postal = models.CharField(max_length=5, blank=True, null=True, default="66000")
-    commune = models.CharField(max_length=50, blank=True, null=True, default="Perpignan")
+    commune = models.CharField(max_length=50, blank=True, null=True, default="")
     latitude = models.FloatField(blank=True, null=True, default=LATITUDE_DEFAUT)
     longitude = models.FloatField(blank=True, null=True, default=LONGITUDE_DEFAUT)
     pays = models.CharField(max_length=12, blank=True, null=True, default="France")
@@ -50,9 +51,10 @@ class Adresse(models.Model):
     telephone = models.CharField(validators=[phone_regex,], max_length=10, blank=True)  # validators should be a list
 
 
-    def save(self, *args, **kwargs):
+    def save(self, recalc=False, *args, **kwargs):
         ''' On save, update timestamps '''
-        self.set_latlon_from_adresse()
+        if recalc or not self.latitude or self.latitude == LATITUDE_DEFAUT:
+            self.set_latlon_from_adresse()
         return super(Adresse, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -60,9 +62,24 @@ class Adresse(models.Model):
 
     def __str__(self):
         if self.commune:
-            return "("+str(self.id)+") "+self.commune 
+            return "("+str(self.id)+") " + self.commune
         else:
             return "("+str(self.id)+") "+self.code_postal
+
+    def get_adresse_str(self):
+        if self.commune:
+            adress = ''
+            if self.rue:
+                adress += self.rue
+            if self.code_postal:
+                adress += ", " + self.code_postal
+            if self.commune:
+                adress += ", " + self.commune
+            if self.telephone:
+                adress += " (" + self.telephone +")"
+            return adress
+        else:
+            return "lat : " + str(self.latitude) + "; lon : " +  str(self.longitude)
 
     def __unicode__(self):
         return self.__str__()
@@ -70,21 +87,41 @@ class Adresse(models.Model):
     def set_latlon_from_adresse(self):
         address = ''
         if self.rue:
-            address += self.rue + ", "
-        address += self.code_postal
+            address += self.rue + "+"
+        address += str(self.code_postal)
         if self.commune:
-            address += " " + self.commune
-        address += ", " + self.pays
-        try:
-            api_key = os.environ["GAPI_KEY"]
-            api_response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(address, api_key))
-            api_response_dict = api_response.json()
+            address += "+" + self.commune
+        address = address.replace(" ", "+")
 
-            if api_response_dict['status'] == 'OK':
-                self.latitude = api_response_dict['results'][0]['geometry']['location']['lat']
-                self.longitude = api_response_dict['results'][0]['geometry']['location']['lng']
+        try:
+            url = "http://nominatim.openstreetmap.org/search?q=" + address + "&format=json"
+            reponse = requests.get(url)
+            data = simplejson.loads(reponse.text)
+            self.latitude = float(data[0]["lat"])
+            self.longitude = float(data[0]["lon"])
         except:
-            pass
+            try:
+                address = str(self.code_postal)
+                if self.commune:
+                    address += "+" + self.commune
+                address = address.replace(" ", "+")
+                url = "http://nominatim.openstreetmap.org/search?q=" + address + "&format=json"
+                reponse = requests.get(url)
+                data = simplejson.loads(reponse.text)
+                self.latitude = float(data[0]["lat"])
+                self.longitude = float(data[0]["lon"])
+            except:
+                try:
+                    api_key = os.environ["GAPI_KEY"]
+                    api_response = requests.get(
+                        'https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(address, api_key))
+                    api_response_dict = api_response.json()
+
+                    if api_response_dict['status'] == 'OK':
+                        self.latitude = float(api_response_dict['results'][0]['geometry']['location']['lat'])
+                        self.longitude = float(api_response_dict['results'][0]['geometry']['location']['lng'])
+                except:
+                    pass
 
     def get_latitude(self):
         if not self.latitude:
@@ -116,23 +153,49 @@ class Asso(models.Model):
         return super(Asso, self).save(*args, **kwargs)
 
     def is_membre(self, user):
-        if self.nom == "permacat" and not user.adherent_permacat:
-            return False
-        elif self.nom == "rtg" and not user.adherent_rtg:
-            return False
-        elif self.nom == "fer" and not user.adherent_fer:
+        if self.abreviation == "public":
+            return True
+        if not getattr(user, "adherent_" + self.abreviation):
             return False
         return True
 
     def getProfils(self):
         if self.abreviation == "public":
-            return Profil.objects.filter()
+            return Profil.objects.all().order_by("username")
         elif self.abreviation == "pc":
-            return Profil.objects.filter(adherent_permacat=True)
+            return Profil.objects.filter(adherent_pc=True).order_by("username")
         elif self.abreviation == "rtg":
-            return Profil.objects.filter(adherent_rtg=True)
+            return Profil.objects.filter(adherent_rtg=True).order_by("username")
         elif self.abreviation == "fer":
-            return Profil.objects.filter(adherent_fer=True)
+            return Profil.objects.filter(adherent_fer=True).order_by("username")
+        #elif self.abreviation == "gt":
+        #    return Profil.objects.filter(adherent_gt=True).order_by("username")
+        elif self.abreviation == "scic":
+            return Profil.objects.filter(adherent_scic=True).order_by("username")
+        elif self.abreviation == "citealt":
+            return Profil.objects.filter(adherent_citealt=True).order_by("username")
+        return []
+
+    def getProfils_Annuaire(self):
+        if self.abreviation == "public":
+            return Profil.objects.filter(accepter_annuaire=True).order_by("username")
+        elif self.abreviation == "pc":
+            return Profil.objects.filter(accepter_annuaire=True, adherent_pc=True).order_by("username")
+        elif self.abreviation == "rtg":
+            return Profil.objects.filter(accepter_annuaire=True, adherent_rtg=True).order_by("username")
+        elif self.abreviation == "fer":
+            return Profil.objects.filter(accepter_annuaire=True, adherent_fer=True).order_by("username")
+        #elif self.abreviation == "gt":
+        #    return Profil.objects.filter(accepter_annuaire=True, adherent_gt=True).order_by("username")
+        elif self.abreviation == "scic":
+            return Profil.objects.filter(accepter_annuaire=True, adherent_scic=True).order_by("username")
+        elif self.abreviation == "citealt":
+            return Profil.objects.filter(accepter_annuaire=True, adherent_citealt=True).order_by("username")
+        return []
+
+
+    def get_absolute_url(self):
+        return reverse_lazy('presentation_asso', asso=self.abreviation)
 
 class Profil(AbstractUser):
     username_validator = ASCIIUsernameValidator()
@@ -140,21 +203,24 @@ class Profil(AbstractUser):
     description = models.TextField(null=True, blank=True)
     competences = models.TextField(null=True, blank=True)
     adresse = models.OneToOneField(Adresse, on_delete=models.CASCADE)
-    avatar = StdImageField(null=True, blank=True, upload_to='avatars/', variations={
-        'large': (640, 480),
-        'thumbnail2': (100, 100, True)})
+    #avatar = StdImageField(null=True, blank=True, upload_to='avatars/', variations={
+    #    'large': (640, 480),
+    #    'thumbnail2': (100, 100, True)})
 
     date_registration = models.DateTimeField(verbose_name="Date de création", editable=False)
     pseudo_june = models.CharField(_('pseudo Monnaie Libre'), blank=True, default=None, null=True, max_length=50)
 
     inscrit_newsletter = models.BooleanField(verbose_name="J'accepte de recevoir des emails de Perma.cat", default=False)
-    statut_adhesion = models.IntegerField(choices=Choix.statut_adhesion, default="0")
-    adherent_permacat = models.BooleanField(verbose_name="Je suis adhérent de Permacat", default=False)
+    #statut_adhesion = models.IntegerField(choices=Choix.statut_adhesion, default="0")
+    adherent_pc = models.BooleanField(verbose_name="Je suis adhérent de Permacat", default=False)
     adherent_rtg = models.BooleanField(verbose_name="Je suis adhérent de Ramene Ta Graine", default=False)
     adherent_fer = models.BooleanField(verbose_name="Je suis adhérent de Fermille", default=False)
+    #adherent_gt = models.BooleanField(verbose_name="Je suis adhérent de Gardiens de la Terre", default=False)
+    adherent_scic = models.BooleanField(verbose_name="Je suis intéressé par l'asso PermAgora", default=False)
+    adherent_citealt = models.BooleanField(verbose_name="Je fais partie de la cité altruiste", default=False)
     accepter_conditions = models.BooleanField(verbose_name="J'ai lu et j'accepte les conditions d'utilisation du site", default=False, null=False)
     accepter_annuaire = models.BooleanField(verbose_name="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous", default=True)
-    is_jardinpartage = models.BooleanField(verbose_name="Je suis intéressé.e par les jardins partagés", default=False)
+    adherent_jp = models.BooleanField(verbose_name="Je suis intéressé.e par les jardins partagés", default=False)
 
     date_notifications = models.DateTimeField(verbose_name="Date de validation des notifications",default=now)
 
@@ -180,40 +246,38 @@ class Profil(AbstractUser):
         return reverse('profil', kwargs={'user_id':self.id})
 
     def getDistance(self, profil):
-        x1 = float(self.adresse.latitude)*DEGTORAD
-        y1 = float(self.adresse.longitude)*DEGTORAD
-        x2 = float(profil.adresse.latitude)*DEGTORAD
-        y2 = float(profil.adresse.longitude)*DEGTORAD
-        x = (y2-y1) * math.cos((x1+x2)/2)
-        y = (x2-x1)
-        return math.sqrt(x*x + y*y) * 6371
+        try:
+            x1 = float(self.adresse.latitude)*DEGTORAD
+            y1 = float(self.adresse.longitude)*DEGTORAD
+            x2 = float(profil.adresse.latitude)*DEGTORAD
+            y2 = float(profil.adresse.longitude)*DEGTORAD
+            x = (y2-y1) * math.cos((x1+x2)/2)
+            y = (x2-x1)
 
-    @property
-    def statutMembre(self):
-        return self.statut_adhesion
+            return math.sqrt(x*x + y*y) * 6371
+        except:
+            return 0
 
     @property
     def statutMembre_asso(self, asso):
         if asso == "permacat":
-            return self.adherent_permacat
+            return self.adherent_pc
         elif asso == "rtg":
             return self.adherent_rtg
         elif asso == "fer":
             return self.adherent_fer
+        elif asso == "jp":
+            return self.adherent_jp
+        elif asso == "scic":
+            return self.adherent_scic
+        elif asso == "citealt":
+            return self.adherent_citealt
 
-    @property
-    def statutMembre_str(self):
-        if self.statut_adhesion == 0:
-            return "souhaite devenir membre de l'association"
-        elif self.statut_adhesion == 1:
-            return "ne souhaite pas devenir membre"
-        elif self.statut_adhesion == 2:
-            return "membre actif"
 
     @property
     def statutMembre_str_asso(self, asso):
         if asso == "permacat":
-            if self.adherent_permacat:
+            if self.adherent_pc:
                 return "membre actif de Permacat"
             else:
                 return "Non membre de Permacat"
@@ -227,43 +291,105 @@ class Profil(AbstractUser):
                 return "membre actif de 'Fermille'"
             else:
                 return "Non membre de 'Fermille'"
+        if asso == "jp":
+            if self.adherent_jp:
+                return "membre actif des 'Jardins Partagés'"
+            else:
+                return "Non membre des 'Jardins Partagés'"
+        if asso == "scic":
+            if self.adherent_scic:
+                return "membre actif de 'PermAgora'"
+            else:
+                return "Non membre de 'PermAgora'"
+        if asso == "citealt":
+            if self.adherent_citealt:
+                return "membre actif de la 'Cité Altruiste'"
+            else:
+                return "Non membre de la 'Cité Altruiste'"
 
     def estMembre_str(self, nom_asso):
         if nom_asso == "Public" or nom_asso == "public":
             return True
-        elif self.adherent_permacat and(nom_asso == "Permacat" or nom_asso == "pc") :
+        elif self.adherent_pc and(nom_asso == "Permacat" or nom_asso == "pc") :
             return True
         elif self.adherent_rtg and (nom_asso == "Ramène Ta Graine" or nom_asso == "rtg") :
             return True
         elif self.adherent_fer and (nom_asso == "Fermille" or nom_asso == "fer") :
             return True
+        elif self.adherent_scic and (nom_asso == "PermAgora" or nom_asso == "scic") :
+            return True
+        elif self.adherent_citealt and (nom_asso == "Cité Altruiste" or nom_asso == "citealt") :
+            return True
+        #elif self.adherent_gt and (nom_asso == "Gardiens de la Terre" or nom_asso == "gt") :
+        #    return True
         else:
             return False
 
-    def est_autorise(self, user):
-        if self.asso.abreviation == "public":
+    def est_autorise(self, abreviation_asso):
+        if abreviation_asso == "public":
             return True
-        elif self.asso.abreviation == "pc":
-            return user.adherent_permacat
-        elif self.asso.abreviation == "rtg":
-            return user.adherent_rtg
-        elif self.asso.abreviation == "fer":
-            return user.adherent_fer
-        else:
-            return False
+
+        return getattr(self, "adherent_" + abreviation_asso)
 
     @property
     def inscrit_newsletter_str(self):
        return "oui" if self.inscrit_newsletter else "non"
 
+
+def envoyerMailBienvenue(user):
+    titre = "[Permacat] Inscription sur le site"
+    pseudo = user.username
+    messagetxt = "Bienvenue sur www.Perma.Cat ! Pour vous connecter, votre identifiant est : (vous pouvez le changer sur votre page de profil), merci de votre inscription. \
+    Voici quelques conseils : pour suivre ce qu'il se passe sur le site, utilisez les notifications (et n'oubliez pas d'appuyer sur 'marquer comme lu' après les avoir lu). l'agenda est un bon moyen de savoir ce qu'il se passe dans la vraie vie, visuellement.\
+    utilisez plutot l'altermarché pour les petites annonces, le forum pour annoncer les événements ou présenter des idées, et les ateliers pour... proposer des ateliers\
+    vous pouvez configurer les infos que vous recevez par mail sur la page abonnements de votre profil\
+    prenez le temps d'explorer les différentes sections du site pour vous familiariser et comprendre comment le site fonctionne et ce que vous pouvez en faire\
+    sur smartphone, vous pouvez mettre le site sur votre page d'accueil pour y accéder facilement et venir nous voir plus régulièrement.\
+    en toute circonstance, gardez le sourire :)\
+    pour toute question, consultez la Foire Aux Questions (ou posez vos questions dans l'article consacré). @ bientôt !"
+    message = "<div dir='auto'>Bienvenue sur www.Perma.Cat ! merci de votre inscription :)</div> \
+<div dir='auto'>&nbsp;</div>\
+<div dir='auto'>Pour vous connecter, votre identifiant est : "+user.username+" (attention, les majuscules sont importantes).</div>\
+<div dir='auto'>Vous pouvez changer votre pseudo ou vos infos personnelles sur votre <a href='https://www.perma.cat/accounts/profile/'>page de profil</a>)</div>\
+<div dir='auto'>&nbsp;</div>\
+<div dir='auto'>Quelques conseils :\
+<ul>\
+<li dir='auto'>pour suivre ce qu'il se passe sur le site, utilisez les <a href='https://www.perma.cat/notifications/activite/'>notifications</a> (et n'oubliez pas d'appuyer sur 'marquer comme lu' apres les avoir lu).</li>\
+<li dir='auto'>l'<a href='https://www.perma.cat/agenda/'>agenda</a> est un bon moyen de savoir ce qu'il se passe dans la vraie vie, visuellement.</li>\
+<li dir='auto'>l'<a href='https://www.perma.cat/annuaire/public'>annuaire</a> ou <a href='https://www.perma.cat/cooperateurs/carte/public'>la carte</a> sont de bons moyens de faire connaissance avec de belles personnes, près de chez vous</li>\
+<li dir='auto'>utilisez plutôt l'<a href='https://www.perma.cat/marche/lister/'>altermarch&eacute;</a> pour les petites annonces, le <a href='https://www.perma.cat/forum/accueil/'>forum</a> pour annoncer les &eacute;v&eacute;nements ou pr&eacute;senter des id&eacute;es, et les <a href='https://www.perma.cat/ateliers/liste/'>ateliers</a> pour... proposer des ateliers</li>\
+<li dir='auto'>vous pouvez configurer les infos que vous recevez par mail sur la page <a href='https://www.perma.cat/accounts/mesSuivis/'>abonnements</a> de votre profil</li>\
+<li dir='auto'>prenez le temps d'explorer les diff&eacute;rentes sections du site pour vous familiariser et comprendre comment le site fonctionne et ce que vous pouvez en faire</li>\
+<li dir='auto'>sur smartphone, vous pouvez <a href='https://www.clubic.com/tutoriels/article-891621-1-comment-ajouter-raccourci-web-page-accueil-smartphone-android.html'>mettre le site sur votre page d'accueil</a> pour y acc&eacute;der facilement et venir nous voir plus r&eacute;guli&egrave;rement.</li>\
+<li dir='auto'>gardez le sourire :)</li></ul>\
+<div dir='auto'>&nbsp;</div>\
+<div dir='auto'>pour toute question, consultez la <a href='https://www.perma.cat/faq/'>Foire Aux Questions</a> (<span style='font-family: sans-serif;'>ou <a href='https://www.perma.cat/forum/article/faq-du-site'>posez</a></span><a href='https://www.perma.cat/forum/article/faq-du-site'> vos questions dans l'article consacr&eacute;</a>).</div>\
+<div dir='auto'>&nbsp;</div>\
+<div dir='auto'>@ bient&ocirc;t !</div>\
+</div>"
+    from bourseLibre.settings.production import LOCALL
+    if not LOCALL:
+        send_mail(titre, messagetxt,
+                  SERVER_EMAIL, [user.email, SERVER_EMAIL], fail_silently=False,
+                  html_message=message)
+
+
 @receiver(post_save, sender=Profil)
 def create_user_profile(sender, instance, created, **kwargs):
     if created :
-        for suiv in ['produits', 'articles', 'projets', 'conversations', 'suffrages']:
-            suivi, created = Suivis.objects.get_or_create(nom_suivi=suiv)
-            actions.follow(instance, suivi, actor_only=True, send_action=False)
+        if instance.inscrit_newsletter:
+            for suiv in Choix.suivisPossibles:
+                suivi, created = Suivis.objects.get_or_create(nom_suivi=suiv)
+                actions.follow(instance, suivi, actor_only=True, send_action=False)
+            for abreviation in Choix.abreviationsAsso + ['public', ]:
+                if instance.est_autorise(abreviation):
+                    suivi, created = Suivis.objects.get_or_create(nom_suivi="articles_"+abreviation)
+                    actions.follow(instance, suivi, actor_only=True, send_action=False)
+                    suivi, created = Suivis.objects.get_or_create(nom_suivi="agora_"+abreviation)
+                    actions.follow(instance, suivi, actor_only=True, send_action=False)
         action.send(instance, verb='inscription', url=instance.get_absolute_url(),
                     description="s'est inscrit.e sur le site")
+        envoyerMailBienvenue(instance)
         if instance.is_superuser:
             Panier.objects.create(user=instance)
 
@@ -291,7 +417,7 @@ class Produit(models.Model):  # , BaseProduct):
     prix = models.DecimalField(max_digits=8, decimal_places=2, default=0, blank=True, validators=[MinValueValidator(0), ])
     unite_prix = models.CharField(
         max_length=8,
-        choices = Choix.monnaies,
+        choices=Choix.monnaies,
         default='lliure', verbose_name="monnaie"
     )
 
@@ -335,9 +461,9 @@ class Produit(models.Model):  # , BaseProduct):
 
         if emails:
             if self.estUneOffre:
-                message = "Nouvelle offre au marché : <a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.nom_produit + "</a>"
+                message = "Nouvelle petite annonce (offre) : ["+ self.asso.nom +"] <a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.nom_produit + "</a>"
             else:
-                message = "Nouvelle demande au marché : <a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.nom_produit + "</a>"
+                message = "Nouvelle petite annonce (demande) : ["+ self.asso.nom +"] <a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.nom_produit + "</a>"
             action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
         return retour
 
@@ -378,14 +504,8 @@ class Produit(models.Model):  # , BaseProduct):
     def est_autorise(self, user):
         if self.asso.abreviation == "public":
             return True
-        elif self.asso.abreviation == "pc":
-            return user.adherent_permacat
-        elif self.asso.abreviation == "rtg":
-            return user.adherent_rtg
-        elif self.asso.abreviation == "fer":
-            return user.adherent_fer
-        else:
-            return False
+
+        return getattr(user, "adherent_" + self.asso.abreviation)
 
     @property
     def est_public(self):
@@ -823,18 +943,6 @@ def getOrCreateConversation(nom1, nom2):
         profil_2 = Profil.objects.get(username=nom2)
         convers = Conversation.objects.create(profil1=profil_1, profil2=profil_2)
 
-        conversations = Conversation.objects.filter(Q(profil2=profil_1) | Q(profil1=profil_1))
-        for conv in conversations:
-            if conv in following(profil_1):
-                actions.follow(profil_1, convers, send_action=False)
-                break
-
-        conversations = Conversation.objects.filter(Q(profil2=profil_2) | Q(profil1=profil_2))
-        for conv in conversations:
-            if conv in following(profil_2):
-                actions.follow(profil_2, convers, send_action=False)
-                break
-
     return convers
 
 
@@ -854,7 +962,6 @@ class Message(models.Model):
     def get_edit_url(self):
         return reverse('modifierMessage',  kwargs={'id':self.id, 'type_msg':'conversation', 'asso':'convers'})
 
-    @property
     def get_absolute_url(self):
         return self.conversation.get_absolute_url()
 
@@ -876,10 +983,25 @@ class MessageGeneral(models.Model):
     def get_edit_url(self):
         return reverse('modifierMessage',  kwargs={'id':self.id, 'type_msg':'agora', 'asso':self.asso.abreviation})
 
-    @property
     def get_absolute_url(self):
-        return  reverse('agora', kwargs={'asso':self.asso.abreviation})
+        return reverse('agora', kwargs={'asso':self.asso.abreviation})
 
+    def save(self,):
+        suivis, created = Suivis.objects.get_or_create(nom_suivi='agora_' + str(self.asso.abreviation))
+        emails = [suiv.email for suiv in followers(suivis) if self.auteur != suiv and self.est_autorise(suiv)]
+        titre = "Nouveau commentaire dans le salon de discussion " + str(self.asso.nom)
+        message = "Nouveau commentaire dans <a href='https://www.perma.cat" + self.get_absolute_url() + "'>" +"le salon de discussion " + str(self.asso.nom) +  "</a>'"
+
+        if emails:
+            action.send(self.auteur, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
+
+        return super(MessageGeneral, self).save()
+
+    def est_autorise(self, user):
+        if self.asso.abreviation == "public":
+            return True
+
+        return getattr(user, "adherent_" + self.asso.abreviation)
 
 class Suivis(models.Model):
     nom_suivi = models.TextField(null=False, blank=False)
@@ -889,6 +1011,12 @@ class Suivis(models.Model):
 
     def __str__(self):
         return str(self.nom_suivi)
+
+
+#class Gestionnaire_Suivis():
+        #    def get_suivi_articles(self, asso):
+        #suivis, created = Suivis.objects.get_or_create(nom_suivi='articles_' + str(asso.abreviation))
+        #return suivis
 
 
 class InscriptionNewsletter(models.Model):

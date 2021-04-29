@@ -23,7 +23,7 @@ app_name = 'ateliers'
 urlpatterns = [
     url(r'^accueil-ateliers/$', views.accueil, name="acceuil"),
     url(r'^liste/$', views.ListeAteliers.as_view(), name="index_ateliers"),
-    url(r'^atelier/slug/(?P<slug>[-\w]+)$', views.lireAtelier_slug, name='lireAtelier'),
+    url(r'^atelier/(?P<slug>[-\w]+)$', views.lireAtelier_slug, name='lireAtelier'),
     url(r'^atelier/id/(?P<id>[-\w]+)$', views.lireAtelier_id, name='lireAtelier_id'),
     url(r'^atelier/inscription/(?P<slug>[-\w]+)$', views.inscriptionAtelier, name='inscriptionAtelier'),
     url(r'^atelier/annulerInscription/(?P<slug>[-\w]+)$', views.annulerInscription, name='annulerInscription'),
@@ -32,6 +32,8 @@ urlpatterns = [
     url(r'^modifierAtelier/(?P<slug>[-\w]+)$', login_required(views.ModifierAtelier.as_view(), login_url='/auth/login/'), name='modifierAtelier'),
     url(r'^modifierCommentaire/(?P<id>[0-9]+)$', login_required(views.ModifierCommentaire.as_view(), login_url='/auth/login/'), name='modifierCommentaireAtelier'),
     url(r'^supprimerAtelier/(?P<slug>[-\w]+)$', login_required(views.SupprimerAtelier.as_view(), login_url='/auth/login/'), name='supprimerAtelier'),
+    url(r'^ajouterAtelier/(?P<article_slug>[-\w]+)$', login_required(views.ajouterAtelier), name='ajouterAtelier_article'),
     url(r'^ajouterAtelier/$', login_required(views.ajouterAtelier), name='ajouterAtelier'),
 
+    url(r'^suivre_ateliers/$', views.suivre_ateliers, name='suivre_ateliers'),
 ]

@@ -8,15 +8,23 @@
 <script src="{% static 'js/infinite.min.js' %}"></script>
 {%endblock%}
 {% block title %} - Forum {% endblock  %}
+{%block banniere %}
+	<div class="row row_banniere_ordi" >
+		<div class="col col-xs-12 d-flex justify-content-around">
+            <img  src="{% static 'img/banniere/forum_icone_ordi.png' %}" width="224" height="120" alt="Logo_Forum"/>
+            <img  src="{% static 'img/banniere/forum.png' %}" height="120" alt="Logo_Forum"/>
+        </div>
+    </div>
+	<div class="row row_banniere_smartphone">
+		<div class="col col-xs-12 d-flex justify-content-center">
+            <img  src="{% static 'img/banniere/forum_icone_smartp.png' %}" height="120" alt="Logo_Forum"/>
+        </div>
+    </div>
+{% endblock  %}
 {%block subtitle%}
 
 <div class="row">
     <div class="col-md-12 textcenter">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <h3>Forum</h3>
-            </div>
-        </div>
 
         <div class="row justify-content-center">
             <div class="col-md-4">
@@ -31,6 +39,13 @@
                     </div>
                  </form>
              </div>
+
+             <div class="row no-gutters justify-content-center">
+    <a href="{% url 'blog:filtrer_articles' %}">
+        <button type="button" class="btn  btn-success" >
+           {% fontawesome_icon 'search' %}&nbsp; Recherche avancée...
+        </button>
+    </a>&ensp;</div>
              </div>
 
             <div class="col-md-4 justify-content-center">
@@ -43,7 +58,7 @@
 
             <div class="col-md-4 justify-content-center">
 
-                   <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#help" title="En savoir plus...">
+                <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#help" title="En savoir plus...">
                  {% fontawesome_icon 'question-circle' %}
                 </button>
                 <!-- Modal -->
@@ -67,29 +82,65 @@
                     </div>
                   </div>
                 </div>
+
+                <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#suivre" title="S'abonner...">
+     {% fontawesome_icon 'bell' %}
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="suivre" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog textaide" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+              <div class="row justify-content-center">
+               <h5 > Abonnements au forum</h5>
+              </div>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body textleft">
+            {% for nom_asso, abreviation, suivi in suivis %}
+                <p> <a href="{% url 'blog:suivre_articles' asso_abreviation=abreviation %}">
+                    {% if request.user|is_following:suivi %}
+                    <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné : Cliquez pour arreter de recevoir un mail à chaque nouvel article '{{nom_asso}}'">
+                    {% fontawesome_icon 'bell' %} Articles '{{nom_asso}}'
+                    </button>
+                    {% else %}
+                    <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné : Cliquez pour recevoir un mail à chaque nouvel article '{{nom_asso}}'">
+                         {% fontawesome_icon 'bell-slash' %} Articles '{{nom_asso}}'
+                    </button>
+                    {% endif %}
+                </a></p>
+              {% endfor%}
+          </div>
+        </div>
+      </div>
+    </div>
         </div>
     </div>
+
         <hr>
 
 </div>
 </div>
 
+
+<div class="row ">
+    <div class="col-sm-12 " style="margin-bottom:20px;">
+        <h5>Choisir un groupe / dossier :</h5>
+{% include 'blog/navbar_forum.html' %}
+    </div>
+</div>
+<div class="row ">
+    <div class="col-sm-12 my-auto">
+        {% include 'blog/navbar_forum_tri.html' %}
+    </div>
 </div>
 
 
 {%endblock%}
 {% block content %}
 
-
-<div class="row ">
-    <div class="col-sm-12 col-lg-4 panel-forum " style="margin-bottom:20px;">
-{% include 'blog/navbar_forum.html' %}
-    </div>
-    <div class="col-sm-12 col-lg-8 my-auto">
-        {% include 'blog/navbar_forum_tri.html' %}
-    </div>
-</div>
-        <hr>
 
         {% if request.GET.categorie %}
 
@@ -150,17 +201,21 @@
         </div>
         {%endif%}
 
-
         <div class="infinite-container">
-            <div class="grid-container justify-content-center">
+ {% include "blog/articles_template_tableau.html" with article_list=article_list %}
+        </div>
+{%include 'pagination.html' %}
+{% comment %}
+        <div class="infinite-container">
+            <div class="grid-container justify-content-center ">
                 {% for article in article_list %}
-                <div class="infinite-item my-auto">
-                {% include "blog/article_template.html" with article=article %}
+                <div class="infinite-item my-auto mx-auto mx-auto">
+                {% include "blog/article_template2.html" with article=article %}
                 </div>
                 {% endfor %}
             </div>
         </div>
-        {%include 'pagination.html' %}
+{% endcomment %}
 
         {% if list_archive %}
         <div class="textcenter">
@@ -169,16 +224,20 @@
             </button>
         </div>
         <hr>
-        <div id="archives" style='display:none;'>
-            {% for article in list_archive %}
-            <div class="infinite-item my-auto">
-                {% include "blog/article_template.html" with article=article %}
-            <hr>
-            </div>
-            {% endfor %}
-        </div>
 
-{% endif %}
+        <div  id="archives" style='display:none;'>
+             {% include "blog/articles_template_tableau.html" with article_list=list_archive %}
+{% comment %}
+            <div class="grid-container justify-content-center ">
+                {% for article in list_archive %}
+                <div class="infinite-item my-auto mx-auto mx-auto">
+                {% include "blog/article_template2.html" with article=article %}
+                </div>
+                {% endfor %}
+            </div>
+{% endcomment %}
+        </div>
+    {% endif %}
 
 <script>
     function toggle_visibility(id) {

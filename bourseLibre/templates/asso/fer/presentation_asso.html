@@ -1,0 +1,28 @@
+{% extends 'base_asso.html' %}
+{% block title %} Accueil Fermille {% endblock %}
+
+{% block subtitle %}
+
+<h2 class="textcenter rowbienvenue">Fermille</h2>
+
+{% include "asso/presentation_asso_template.html" with adherent=request.user.adherent_fer assos='fer' %}
+
+{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+	<div class="col justify-content-center textcenter">
+		<p>
+		<iframe allowFullScreen="allowFullScreen" src="https://www.youtube.com/embed/pcWWT1IGWuU?ecver=1&amp;iv_load_policy=3&amp;rel=0&amp;yt:stretch=16:9&amp;autohide=1&amp;color=red&amp;width=560&amp;width=560" width="560" height="315" allowtransparency="true" frameborder="0"><div><a rel="" id="O2NeOVtQ" href="https://www.abcmoney.co.uk/2020/10/08/how-has-covid-19-affected-used-car-prices-two-experts-give-their-opinion/">Covid car prices</a></div><div><a rel="" id="O2NeOVtQ" href="https://www.ihertfordshire.co.uk/preparing-for-lockdown-2-0-in-hertfordshire/">working from home</a></div><script type="text/javascript">function execute_YTvideo(){return youtube.query({ids:"channel==MINE",startDate:"2019-01-01",endDate:"2019-12-31",metrics:"views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,subscribersGained",dimensions:"day",sort:"day"}).then(function(e){},function(e){console.error("Execute error",e)})}</script></iframe>
+</p>
+		<p>
+<a href="https://www.fermille.com" target="_blank">https://www.fermille.com</a></p>
+	<div><a href="https://www.facebook.com/sebsable6675/" target="_blank">Facebook</a></div>
+		<p><a href="https://7c9aa3a1-4972-4834-aa1e-f26362f8a934.filesusr.com/ugd/f8c95b_3c504e2812d84feca047410659454c43.pdf" target="_blank">Voir les statuts</a> </p>
+	<p>
+	<p><b>Pour accéder au contenu Fermille sur le site :  </b>
+		Il faut en faire la demande auprès de <a href="{% url 'profil_nom' 'FATISEB' %}">Fatiseb</a>
+		</p>
+
+</div>
+</div>
+{% endblock %}

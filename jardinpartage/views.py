@@ -12,6 +12,7 @@ from actstream.models import followers, following, action_object_stream
 from django.utils.timezone import now
 from bourseLibre.models import Profil
 from django.db.models import Q
+from bourseLibre.views_base import DeleteAccess
 
 #from django.contrib.contenttypes.models import ContentType
 from bourseLibre.models import Suivis
@@ -28,7 +29,7 @@ from hitcount.views import HitCountMixin
 #     return render(request, 'jardinpartage/forum.html', {'derniers_articles': articles })
 
 def is_inscrit(user):
-    return user.is_jardinpartage
+    return user.adherent_jp
 
 @user_passes_test(is_inscrit, login_url='/jardins/accepter_participation')
 def accueil(request):
@@ -70,12 +71,12 @@ class ModifierArticle(UpdateView):
         if not self.object.estArchive:
             url = self.object.get_absolute_url()
             action.send(self.request.user, verb='article_modifier', action_object=self.object, url=url,
-                         description="a modifié l'article : (Jardins Partagés) '%s'" % self.object.titre)
+                         description="a modifié l'article [Jardins Partagés] '%s'" % self.object.titre)
 
         return HttpResponseRedirect(self.get_success_url())
 
 
-class SupprimerArticle(DeleteView):
+class SupprimerArticle(DeleteAccess, DeleteView):
     model = Article
     success_url = reverse_lazy('jardinpartage:index')
     template_name_suffix = '_supprimer'
@@ -108,7 +109,7 @@ def lireArticle(request, slug):
             comment.auteur_comm = request.user
             article.date_dernierMessage = comment.date_creation
             article.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(strip_tags(comment.commentaire).replace('&nspb',' ')))[:96] + "..."
-            article.save(sendMail=False)
+            article.save()
             comment.save()
             url = article.get_absolute_url()+"#idConversation"
             #suffix = "_" + article.asso.nom
@@ -144,7 +145,7 @@ class ListeArticles(UserPassesTestMixin, ListView):
 
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])
-        if "categorie" in params:
+        if "categorie" in params and params['categorie'] != "tout":
             qs = qs.filter(categorie=params['categorie'])
 
         if "ordreTri" in params:
@@ -177,7 +178,7 @@ class ListeArticles(UserPassesTestMixin, ListView):
 
         if 'auteur' in self.request.GET:
             context['typeFiltre'] = "auteur"
-        if 'categorie' in self.request.GET:
+        if 'categorie' in self.request.GET and self.request.GET['categorie'] != "tout":
             context['typeFiltre'] = "categorie"
             try:
                 context['categorie_courante'] = [x[1] for x in Choix.type_annonce if x[0] == self.request.GET['categorie']][0]
@@ -202,11 +203,11 @@ class ListeArticles_jardin(ListeArticles):
 
         #nom_jardin = [x[1] for x in Choix.jardins_ptg if x[0]==self.kwargs["jardin"]][0]
         if self.kwargs["jardin"] != "0":
-            qs = qs.filter(Q(jardin=self.kwargs["jardin"])|Q(jardin=0))
+            qs = qs.filter(Q(jardin=self.kwargs["jardin"])|Q(jardin="0"))
 
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])
-        if "categorie" in params:
+        if "categorie" in params and params['categorie'] != "tout":
             qs = qs.filter(categorie=params['categorie'])
 
         if "ordreTri" in params:
@@ -223,7 +224,7 @@ class ListeArticles_jardin(ListeArticles):
 
         context['list_archive'] = self.qs.filter(estArchive=True)
         # context['producteur_list'] = Profil.objects.values_list('username', flat=True).distinct()
-        qs =  Article.objects.all()
+        qs = Article.objects.all()
         if self.kwargs["jardin"] != "0":
             qs = qs.filter(jardin=self.kwargs["jardin"])
         context['auteur_list'] = qs.order_by('auteur').values_list('auteur__username', flat=True).distinct()
@@ -242,7 +243,7 @@ class ListeArticles_jardin(ListeArticles):
 
         if 'auteur' in self.request.GET:
             context['typeFiltre'] = "auteur"
-        if 'categorie' in self.request.GET:
+        if 'categorie' in self.request.GET and self.request.GET['categorie'] != "tout":
             context['typeFiltre'] = "categorie"
             try:
                 context['categorie_courante'] = [x[1] for x in Choix.type_annonce if x[0] == self.request.GET['categorie']][0]
@@ -296,7 +297,7 @@ def articles_suivis(request, slug):
 @login_required
 def articles_suiveurs(request):
     suivi, created = Suivis.objects.get_or_create(nom_suivi = 'articles_jardin')
-    inscrits = Profil.objects.filter(is_jardinpartage=True).order_by('username')
+    inscrits = Profil.objects.filter(adherent_jp=True).order_by('username')
     suiveurs = followers(suivi)
     return render(request, 'jardinpartage/articles_suivis.html', {'suiveurs': suiveurs, 'inscrits':inscrits})
 
@@ -305,7 +306,7 @@ def articles_suiveurs(request):
 @csrf_exempt
 @user_passes_test(is_inscrit, login_url='/jardins/accepter_participation')
 def suivre_articles(request, actor_only=True):
-    suivi, created = Suivis.objects.get_or_create(nom_suivi = 'articles_jardin')
+    suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_jardin')
 
     if suivi in following(request.user):
         actions.unfollow(request.user, suivi, send_action=False)
@@ -342,7 +343,7 @@ def ajouterEvenement(request, date=None):
         form = EvenementForm(request.POST or None)
 
     if form.is_valid():
-        form.save()
+        form.save(request)
         return redirect('cal:agenda')
 
     return render(request, 'jardinpartage/ajouterEvenement.html', {'form': form, })
@@ -351,19 +352,19 @@ def ajouterEvenement(request, date=None):
 
 @login_required
 @user_passes_test(is_inscrit, login_url='/jardins/accepter_participation')
-def ajouterEvenementArticle(request, id):
+def ajouterEvenementArticle(request, id_article):
     form = EvenementArticleForm(request.POST or None)
 
     if form.is_valid():
-        form.save(id)
-        return lireArticle_id(request, id)
+        form.save(id_article)
+        return lireArticle_id(request, id_article)
 
     return render(request, 'jardinpartage/ajouterEvenement.html', {'form': form, })
 
 def accepter_participation(request):
     form = accepterParticipationForm(request.POST or None)
     if form.is_valid():
-        request.user.is_jardinpartage = True
+        request.user.adherent_jp = True
         request.user.save()
         suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_jardin')
         actions.follow(request.user, suivi, actor_only=True, send_action=False)

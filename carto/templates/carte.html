@@ -1,0 +1,74 @@
+{% extends 'base_site.html' %}
+{% load carto_filters %}
+{% block headerDocument%}
+{% load leaflet_tags %}
+{%endblock%}
+{%block header %}
+{% load static %}
+{% load staticfiles %}
+{% leaflet_js %}
+{% leaflet_css %}
+{%endblock%}
+{% block title %} - Carte Transiscope
+{% endblock %}
+{% block subtitle %}
+<div class="row textcenter">
+  <div class="col-sm-12 textcenter">
+    <h4> {{titre}}</h4>
+      <a href="https://presdecheznous.fr/annuaire#/carte/@42.67,2.74,10z?cat=all" target='_blank'>https://presdecheznous.fr</a>
+  </div>
+</div>
+{% endblock %}
+{% block content %}
+
+<div class="row" style="min-height:600px;">
+  <div class="col-md-12" >
+      <style>
+
+    .leaflet-container {  /* all maps */
+        width:  100%;
+        height: 100%;
+    }
+    </style>
+      <script type="text/javascript">
+
+        function map_init_basic (map, options) {
+          var greenIcon = L.icon({
+              iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+              shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41]
+        });
+        {% for ev in data %}
+            try{
+                var lat = {{ev.geo.latitude|to_numeric}};
+                var lon = {{ev.geo.longitude|to_numeric}};
+                {% with site=ev.website|safe %}
+                var marker = L.marker([lat, lon], {icon: greenIcon}).bindPopup('<a href="#lieu_{{forloop.counter}}" target="_self" > ({{forloop.counter}})<b>{{ev.name}}</b></a>');
+                marker.addTo(map);
+                {% endwith %}
+            }
+            catch(err){ ;
+            }
+        {%endfor%}
+        map.panTo(new L.LatLng(42.62914, 2.49939));
+    }
+</script>
+{% leaflet_map "yourmap" callback="window.map_init_basic" %}
+</div>
+</div>
+
+{% for ev in data %}
+    {% with site=ev.website|safe %}
+    <p id="lieu_{{forloop.counter}}">({{forloop.counter}}) &nbsp;<a {%if site %}href="{{site}}" target="_blank" {% endif %}> {{ev.name}} :
+    </a> <small>({%if ev.address.streetAddress %}{{ev.address.streetAddress}}, {% endif %} {%if ev.address.postalCode %}{{ev.address.postalCode}}, {{ev.address.addressLocality}}{% endif %})</small>
+    </p>
+    {{ev.description|safe}};
+    {%endwith%}
+{%endfor%}
+
+{% endblock %}
+
+    
