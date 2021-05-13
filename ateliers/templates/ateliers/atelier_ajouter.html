@@ -1,5 +1,5 @@
-{% extends 'base_ateliers.html' %} {% block content %}
-
+{% extends 'base_ateliers.html' %}
+{% block subtitle %}
 <div class="row">
 	<div class="col col-md-10"><h3>Ajouter un atelier</h3></div>
 	<div class="col col-md-2">
@@ -8,6 +8,10 @@
 </a>
 	</div>
 	</div>
+{% endblock %}
+{% block content %}
+
+
 {% if error_message %}
 <p>
 	<strong>{{ error_message }}</strong>

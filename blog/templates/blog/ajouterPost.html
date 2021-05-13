@@ -1,9 +1,12 @@
-{% extends 'blog/baseBlog.html' %} {% block content %}
+{% extends 'blog/baseBlog.html' %}
 
+{% block subtitle %}
 <div class="row">
 	<div class="col col-md-12 textcenter"><h3>Ajouter un article</h3></div>
 	</div>
-<hr>
+{% endblock %}
+{% block content %}
+
 {% if error_message %}
 <p>
 	<strong>{{ error_message }}</strong>
