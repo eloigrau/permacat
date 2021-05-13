@@ -1,5 +1,7 @@
 
 {% load blog_filters %}
+
+{% if commentaires %}
 <div class="contenu commentaires" id="idConversation">
 {% for comment in commentaires %}
     <div class="row {% if comment.auteur.id == request.user.id %} msg-auteur  {%else%} msg-destinataire{%endif%}">
@@ -20,13 +22,10 @@
     </div>
 {% endfor %}
 </div>
-    <script>
-    var messageBody = document.querySelector('#idConversation');
-    messageBody.scrollTop = idConversation.scrollHeight - idConversation.clientHeight;
-</script>
 
 <hr>
 
+{% endif %}
 {%if not request.user.is_anonymous %}
 {% if commentaires %}
 <h5>Répondre :</h5>
@@ -46,4 +45,9 @@
 
     <script>
     getElementById("id_commentaire_iframe").height = "150px"
+</script>
+
+    <script>
+    var messageBody = document.querySelector('#idConversation');
+    messageBody.scrollTop = idConversation.scrollHeight - idConversation.clientHeight;
 </script>

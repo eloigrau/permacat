@@ -22,7 +22,7 @@
                 <li><a class="dropdown-item" href="{% url 'agora' asso='public'%}"> <i class='fa fa-asterisk' ></i> Salon de discussion du site</a></li>
                  <li class="divider" role="separator"></li>
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle" >PermaCat</a>
+                        <a class="dropdown-item dropdown-toggle"  href="test" >PermaCat</a>
                         <ul class="dropdown-menu nav5-dropdown-submenu">
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso' %}"> Présentation</a></li>
    {% if request.user.adherent_permacat %}
@@ -34,7 +34,7 @@
                     {%comment%}
                             <li class="divider" role="separator"></li>
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle" ><i class='fa fa-folder-open iconleft' ></i> Projets</a>
+                        <a class="dropdown-item dropdown-toggle"  href="test"><i class='fa fa-folder-open iconleft' ></i> Projets</a>
                         <ul class="dropdown-menu nav5-dropdown-subsubmenu">
                             <li><a class="dropdown-item" href="{% url 'blog:index_projets' %}"><i class='fa fa-folder-open iconleft' ></i>  Tous les projets </a></li>
 {% for projet in liste_projets %}
@@ -69,7 +69,7 @@
                         </ul>
                     </li>
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle" ><i class='fa fa-wrench iconleft' ></i>  Ateliers Collectifs</a>
+                        <a class="dropdown-item dropdown-toggle"  href="test"><i class='fa fa-wrench iconleft' ></i>  Ateliers Collectifs</a>
                         <ul class="dropdown-menu nav5-dropdown-subsubmenu">
                         <li><a class="dropdown-item" href="{% url 'ateliers:acceuil' %}"><i class='fa fa-wrench iconleft' ></i>  Tous les ateliers </a></li>
                         {% for projet in liste_ateliers %}
@@ -100,7 +100,7 @@
                     </li>
 
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle" >Ramène Ta Graine</a>
+                        <a class="dropdown-item dropdown-toggle"  href="test">Ramène Ta Graine</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso_rtg' %}"> Présentation </a></li>
    {% if request.user.adherent_rtg %}
@@ -118,7 +118,7 @@
                     </li>
 
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle" >Fermille</a>
+                        <a class="dropdown-item dropdown-toggle"  href="test">Fermille</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso_fer' %}"> Présentation</a></li>
    {% if request.user.adherent_fer %}
@@ -134,7 +134,7 @@
                     </li>
                     {%comment%}
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle" >Jardins Partagés</a>
+                        <a class="dropdown-item dropdown-toggle"  href="test">Jardins Partagés</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
                             <li><a class="dropdown-item" href="{% url 'agora' asso='jp'%}"> <i class='fa fa-asterisk' ></i> Salon de discussion</a></li>
                             <li><a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=1 %}"><i class='fa fa-pagelines' ></i> Jardi Per tots</a></li>
@@ -153,7 +153,7 @@
 
             <ul class="dropdown-menu dropdown-menu1 nav5-dropdown" aria-labelledby="navbarDropdownMenuLink">
                 <li class="dropdown-submenu">
-                    <a class="dropdown-item dropdown-toggle" >Projets</a>
+                    <a class="dropdown-item dropdown-toggle"  href="test">Projets</a>
                     <ul class="dropdown-menu nav5-dropdown-submenu">
 
 
@@ -162,14 +162,14 @@
                         <li> <a class="dropdown-item" href="{% url 'blog:index_projets' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les projets </a></li>
 
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle" >Projets acceptés</a>
+                        <a class="dropdown-item dropdown-toggle"  href="test">Projets acceptés</a>
                         <ul class="dropdown-menu nav5-dropdown-subsubmenu">
 
 
                         {% for projet in liste_projets %}
                          {% if projet.slug == "un-jardin-partage-en-permaculture-accessible-a-tous" or projet.slug == "jardin-de-permacat-a-perpignan" or projet.slug == "jardins-partages-a-perpignan-au-champ-de-mars" %}
                            <li class="dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle" >{{projet.titre|couperTexte:40}}</a>
+                                <a class="dropdown-item dropdown-toggle"  href="test">{{projet.titre|couperTexte:40}}</a>
                                <ul class="dropdown-menu nav5-dropdown-subsubmenu">
                                    <li> <a class="dropdown-item" href="{% url 'blog:lireProjet' slug=projet.slug %}"><i class='fa fa-folder-open' ></i>  Fiche Projet</a></li>
                                    <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin='1' %}"><i class='fa fa-pagelines' ></i>  Blog du Jardi Per Tots</a></li>
@@ -179,7 +179,7 @@
                          {% elif projet.slug == "jardin-partage-de-palau" %}
 
                            <li class="dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle" >{{projet.titre|couperTexte:40}}</a>
+                                <a class="dropdown-item dropdown-toggle"  href="test">{{projet.titre|couperTexte:40}}</a>
                                     <ul class="dropdown-menu nav5-dropdown-subsubmenu">
                                    <li> <a class="dropdown-item" href="{% url 'blog:lireProjet' slug=projet.slug %}"><i class='fa fa-folder-open' ></i>  Fiche Projet</a></li>
                                    <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin='2' %}"><i class='fa fa-pagelines' ></i>  Blog du jardin de Palau</a></li>
@@ -189,7 +189,7 @@
                             {% elif projet.slug == "jardins-du-lycee-jean-lurcat" %}
 
                            <li class="dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle" >{{projet.titre|couperTexte:40}}</a>
+                                <a class="dropdown-item dropdown-toggle"  href="test">{{projet.titre|couperTexte:40}}</a>
                                 <ul class="dropdown-menu nav5-dropdown-subsubmenu">
                                    <li> <a class="dropdown-item" href="{% url 'blog:lireProjet' slug=projet.slug %}" ><i class='fa fa-folder-open' ></i>  Fiche Projet</a></li>
                                    <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin='3' %}"><i class='fa fa-pagelines' ></i>  Blog du jardin de Lurçat</a></li>
@@ -199,7 +199,7 @@
 
                             {% elif projet.slug == "projet-eco-lieu" %}
                            <li class="dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle" >{{projet.titre|couperTexte:40}}</a>
+                                <a class="dropdown-item dropdown-toggle"  href="test">{{projet.titre|couperTexte:40}}</a>
                                     <ul class="dropdown-menu nav5-dropdown-subsubmenu">
                                    <li> <a class="dropdown-item" href="{% url 'blog:lireProjet' slug=projet.slug %}"><i class='fa fa-folder-open' ></i>  Fiche Projet</a></li>
                                    <li> <a class="dropdown-item" href="{% url 'blog:index' %}?categorie=Ecovillage"><i class='fa fa-comments' ></i>  Articles du forum</a></li>
@@ -216,7 +216,7 @@
                     </li>
 
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle" >Projets Proposés </a>
+                        <a class="dropdown-item dropdown-toggle" href="test">Projets Proposés </a>
                         <ul class="dropdown-menu nav5-dropdown-subsubmenu">
                            {% for projet in liste_projets_prop %}
                             <li><a class=" dropdown-item " style="background:{{projet.get_couleur}};" href="{% url 'blog:lireProjet' slug=projet.slug %}"><span>{{projet.titre|truncatechars:45}}</span></a></li>
@@ -226,7 +226,7 @@
                     </ul>
                 </li>
                 <li class="dropdown-submenu">
-                    <a class="dropdown-item dropdown-toggle" >Jardins Partagés</a>
+                    <a class="dropdown-item dropdown-toggle"  href="test">Jardins Partagés</a>
                     <ul class="dropdown-menu nav5-dropdown-submenu">
                         <li> <a class="dropdown-item" href="{% url 'jardinpartage:index' %}"><i class='fa fa-folder-open iconleft' ></i>  Blog des jardins Partagés </a></li>
                         <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=1 %}"><i class='fa fa-pagelines' ></i> Jardi Per tots</a></li>
@@ -235,7 +235,7 @@
                     </ul>
                 </li>
                 <li class="dropdown-submenu">
-                    <a class="dropdown-item dropdown-toggle" >Ateliers Collectifs </a>
+                    <a class="dropdown-item dropdown-toggle"  href="test">Ateliers Collectifs </a>
                     <ul class="dropdown-menu nav5-dropdown-submenu">
                         <li><a class="dropdown-item" href="{% url 'ateliers:index_ateliers' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les ateliers </a></li>
                         {% for slug_atelier, cat_nom, cat_coul in liste_ateliers %}
@@ -310,7 +310,7 @@
     <ul class="nav navbar-nav mr-auto navbar-left">
             <li class="nav-item dropdown nav3">
 
-                <a href="" class="nav-link dropdown-toggle navbar-menu"  id="navbarDropdownMenuLink_anonyme" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a href="" class="nav-link dropdown-toggle navbar-menu"  href="test" id="navbarDropdownMenuLink_anonyme" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     L'association Permacat </a>
                 <ul class="dropdown-menu nav3-dropdown" aria-labelledby="navbarDropdownMenuLink" id="dropdownAssoAnonyme">
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso' %}"> Qui sommes nous ?</a></li>

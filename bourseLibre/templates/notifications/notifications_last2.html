@@ -39,9 +39,6 @@
     </div>
 </div>
 <hr>
-{% endblock %}
-{% block content %}
-
 <p class = "textcenter justify-content-center">
         <a href="{% url 'changerDateNotif' %}">
                 <button class="btn btn-outline-secondary" type="submit" data-toggle="tooltip" data-placement="bottom" title="Changer la date"> depuis le {{dateMin|date:"d/m/Y"}} à {{dateMin|date:"G:i"}}</button>
@@ -57,6 +54,9 @@
 {% else %}
 <p class = "textcenter ">Pas de nouvelle activité </p>
 {% endif %}
+{% endblock %}
+{% block content %}
+
 
 <div class="row justify-content-center">
 <div class="">

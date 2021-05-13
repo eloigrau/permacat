@@ -443,6 +443,7 @@ border: 1px inset rgba(28,110,164,0.65);
     margin-bottom: 1em;
     border-radius: 0.2em;
     padding: 5px;
+    background: white;
 }
 .paddingbase{
     padding: 3px 3px 3px 3px;
@@ -455,6 +456,7 @@ border: 1px inset rgba(28,110,164,0.65);
     margin-bottom: 30px;
     margin-left: 10px;
     margin-right: 10px;
+    background: white;
 }
 
 .bodycontenu{
@@ -469,7 +471,6 @@ border: 1px inset rgba(28,110,164,0.65);
     /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
     min-height: 500px;
     min-width:200px;
-    background: white;
     margin-top:20px;
     margin-bottom:20px;
     /*border: 0.5px solid #053200;*/
@@ -649,7 +650,6 @@ border: 1px inset rgba(28,110,164,0.65);
 }
 
 .article{
-/*background-color: grey;*/
 border-color: #333;
 box-shadow: 0 10px 10px 0px grey;
     border-radius: 0.3em;
@@ -764,6 +764,7 @@ a article_carte:active {
     margin-bottom: 1em;
     border-radius: 0.2em;
     padding: 1px;
+    background:white;
 }
 .paddingbase{
     padding: 1px;
@@ -979,6 +980,7 @@ ul.errorlist{
     margin-bottom: 0.1em;
     border-radius: 0.02em;
     padding: 0.2px 0.2px 0.2px 0.2px;
+    background: white;
 }
 
 

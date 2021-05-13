@@ -76,11 +76,6 @@
 
 </div>
 
-
-{%endblock%}
-{% block content %}
-
-
 <div class="row ">
     <div class="col-sm-12 col-lg-4 panel-forum " style="margin-bottom:20px;">
 {% include 'blog/navbar_forum.html' %}
@@ -89,7 +84,10 @@
         {% include 'blog/navbar_forum_tri.html' %}
     </div>
 </div>
-        <hr>
+
+{%endblock%}
+{% block content %}
+
 
         {% if request.GET.categorie %}
 
