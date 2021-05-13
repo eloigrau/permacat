@@ -4,12 +4,15 @@
 {% block title %} - S'enregistrer{% endblock %}
 {%block message%}
 {%endblock%}
+{% block subtitle %}
+    <div class="row justify-content-sm-center">
+        <h3>Inscription sur le site</h3>
+        <h4>Renseignez les informations suivantes pour vous inscrire (les champs avec (*) sont obligatoires)</h4>
+    </div>
+{% endblock %}
 {% block content %}
 
 <div class="jumbotron">
-    <div class="row justify-content-sm-center">
-        <h4>Renseignez les informations suivantes pour vous inscrire (les champs avec (*) sont obligatoires)</h4>
-    </div>
     <div class="row justify-content-sm-center">
         <div class="col-sm-12 col-md-10 col-lg-8 ">
             <form role="form" action="" method="post" enctype="multipart/form-data">

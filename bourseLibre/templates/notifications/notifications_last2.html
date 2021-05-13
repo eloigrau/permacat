@@ -45,6 +45,9 @@
         </a>
 </p>
 
+{% endblock %}
+{% block content %}
+
 {%if htmlArticles or htmlProjets or dico.listautres %}
 <p class = "textcenter ">
     <a href="{% url 'notificationsLues'  %}" class="btn btn-outline-primary">
@@ -54,9 +57,6 @@
 {% else %}
 <p class = "textcenter ">Pas de nouvelle activité </p>
 {% endif %}
-{% endblock %}
-{% block content %}
-
 
 <div class="row justify-content-center">
 <div class="">

@@ -14,6 +14,8 @@
 		<h4 class = "textcenter rowbienvenue">{% trans "Bienvenue sur le site Perma.Cat !" %}</h4>
 	</div>
 </div>
+{%endblock%}
+{% block content %}
 <div class="row">
 	<div class="col-md-6 col-sm-12 my-auto">
 		 {% if not request.user.is_authenticated %}
@@ -146,12 +148,12 @@
 
 {% endblock %}
 
+{% comment %}
 
 {% block content %}
 
 
 
-{% comment %}
  {% if  request.user.is_authenticated %}
 
 <hr>
@@ -216,8 +218,6 @@
  {% endif %}
 {% endcomment %}
 
-{% load cookielaw_tags %}
-{% cookielaw_banner %}
 
 {% comment %}
 <hr>
@@ -268,7 +268,9 @@
         	</a>
 		</div>
 </div>
-{%endcomment%}
 {% endblock %}
+{%endcomment%}
 
 
+{% load cookielaw_tags %}
+{% cookielaw_banner %}
