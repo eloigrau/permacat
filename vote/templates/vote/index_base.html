@@ -140,7 +140,7 @@
 </div>
 {%include 'pagination.html' %}
 
-    {%if not request.user.adherent_permacat %}
+    {%if not request.user.adherent_pc %}
 <p><small>(vous n'avez pas encore accès aux suffrages "Permacat"... Rejoignez-nous ! :)</small></p>
     {%endif%}
 {% endblock %}

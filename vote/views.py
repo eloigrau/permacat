@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRe
 from django.urls import reverse_lazy
 from django.utils.html import strip_tags
 from .models import Suffrage, Commentaire, Choix, Vote
+from bourseLibre.constantes import Choix as Choix_global
 from .forms import SuffrageForm, CommentaireSuffrageForm, CommentaireSuffrageChangeForm, SuffrageChangeForm, \
     VoteForm, VoteChangeForm
 from django.contrib.auth.decorators import login_required
@@ -201,12 +202,9 @@ class ListeSuffrages(ListView):
         if not self.request.user.is_authenticated:
             qs = qs.filter(asso__abreviation="public")
         else:
-            if not self.request.user.adherent_permacat:
-                qs = qs.exclude(asso__abreviation="pc")
-            if not self.request.user.adherent_rtg:
-                qs = qs.exclude(asso__abreviation="rtg")
-            if not self.request.user.adherent_fer:
-                qs = qs.exclude(asso__abreviation="fer")
+            for nomAsso in Choix_global.abreviationsAsso:
+                if not getattr(self.request.user, "adherent_" + nomAsso):
+                    qs = qs.exclude(asso__abreviation=nomAsso)
 
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])
@@ -219,7 +217,7 @@ class ListeSuffrages(ListView):
                 qs = qs.filter(end_time__date__lte=now() )
             if params['statut'] == '2':
                 qs = qs.filter(Q(start_time__date__gte=now()))
-        if "permacat" in params  and self.request.user.adherent_permacat:
+        if "permacat" in params  and self.request.user.adherent_pc:
             if params['permacat'] == "True":
                 qs = qs.filter(estPublic=False)
             else:

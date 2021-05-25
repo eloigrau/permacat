@@ -138,14 +138,8 @@ class Suffrage(models.Model):
     def est_autorise(self, user):
         if self.asso.abreviation == "public":
             return True
-        elif self.asso.abreviation == "pc":
-            return user.adherent_permacat
-        elif self.asso.abreviation == "rtg":
-            return user.adherent_rtg
-        elif self.asso.abreviation == "fer":
-            return user.adherent_fer
-        else:
-            return False
+
+        return getattr(user, "adherent_" + self.asso.abreviation)
 
 class Vote(models.Model):
     choix = models.CharField(max_length=30,

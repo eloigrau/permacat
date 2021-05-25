@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from actstream.models import Action, any_stream
+from bourseLibre.constantes import Choix as Choix_global
 from django.utils.timezone import now
 from itertools import chain
 from .forms import nouvelleDateForm
@@ -23,24 +24,19 @@ def getNotifications(request, nbNotif=10, orderBy="-timestamp"):
     offres = Action.objects.filter(Q(verb='ajout_offre')|  Q(verb='ajout_offre_public')).order_by(orderBy)
     suffrages = Action.objects.filter(Q(verb='suffrage_ajout_public') | Q(verb='suffrage_ajout')).order_by(orderBy)
 
-    if request.user.adherent_permacat:
+    if request.user.adherent_pc:
         salons     = salons | Action.objects.filter((Q(verb__startswith='envoi_salon') & Q(verb__icontains='Permacat')) | (Q(verb__startswith='envoi_salon_permacat')| (Q(verb__startswith='envoi_salon_pc'))))
         articles   = articles | Action.objects.filter(Q(verb__startswith='article') & (Q(verb__icontains='Permacat') | Q(verb__icontains='permacat')| Q(verb__icontains='pc')))
         projets    = projets | Action.objects.filter(Q(verb__startswith='projet') & (Q(verb__icontains='Permacat') | Q(verb__icontains='permacat')| Q(verb__icontains='pc')))
         offres     = offres | Action.objects.filter((Q(verb__startswith='ajout_offre') & Q(verb__icontains='Permacat') )| Q(verb='ajout_offre_permacat')| Q(verb='ajout_offre_pc'))
         suffrages  = suffrages | Action.objects.filter((Q(verb__startswith='suffrage_ajout') & Q(verb__icontains='Permacat')) | Q(verb='suffrage_ajout_permacat')| Q(verb='suffrage_ajout_pc'))
 
-    if request.user.adherent_rtg:
-        salons     = salons | Action.objects.filter(Q(verb__startswith='envoi_salon') & Q(verb__icontains='rtg'))
-        articles   = articles | Action.objects.filter(Q(verb__startswith='article') & Q(verb__icontains='rtg'))
-        projets    = projets | Action.objects.filter(Q(verb__startswith='projet') & Q(verb__icontains='rtg'))
-        offres     = offres | Action.objects.filter(Q(verb__startswith='ajout_offre') & Q(verb__icontains='rtg'))
-
-    if request.user.adherent_fer:
-        salons     = salons | Action.objects.filter(Q(verb__startswith='envoi_salon') & Q(verb__icontains='fer'))
-        articles   = articles | Action.objects.filter(Q(verb__startswith='article') & Q(verb__icontains='fer'))
-        projets    = projets | Action.objects.filter(Q(verb__startswith='projet') & Q(verb__icontains='fer'))
-        offres     = offres | Action.objects.filter(Q(verb__startswith='ajout_offre') & Q(verb__icontains='fer'))
+    for nomAsso in Choix_global.abreviationsAsso:
+        if getattr(request.user, "adherent_" + nomAsso):
+            salons = salons | Action.objects.filter(Q(verb__startswith='envoi_salon') & Q(verb__icontains=nomAsso))
+            articles = articles | Action.objects.filter(Q(verb__startswith='article') & Q(verb__icontains=nomAsso))
+            projets = projets | Action.objects.filter(Q(verb__startswith='projet') & Q(verb__icontains=nomAsso))
+            offres = offres | Action.objects.filter(Q(verb__startswith='ajout_offre') & Q(verb__icontains=nomAsso))
 
     salons = salons.distinct().order_by(orderBy)[:tampon]
     articles = articles.distinct().order_by(orderBy)[:tampon]
@@ -76,12 +72,14 @@ def getNotificationsParDate(request, limiter=True, orderBy="-timestamp"):
             Q(verb__startswith='fiche')|Q(verb__startswith='atelier')|
             Q(verb='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)|
             Q(verb__startswith='inscription'))
-    if request.user.adherent_permacat:
+    if request.user.adherent_pc:
         actions = actions | Action.objects.filter(Q(verb__icontains='Permacat') | Q(verb__icontains='permacat')| Q(verb__icontains='pc'))
     if request.user.adherent_rtg:
         actions = actions | Action.objects.filter(Q(verb__icontains='rtg'))
     if request.user.adherent_fer:
         actions = actions | Action.objects.filter(Q(verb__icontains='fer'))
+    if request.user.adherent_gt:
+        actions = actions | Action.objects.filter(Q(verb__icontains='gt'))
 
     actions = actions.distinct().order_by(orderBy)
 
@@ -232,7 +230,7 @@ def getInfosJourPrecedent(request, nombreDeJours):
     timestamp_from = datetime.now().date() - timedelta(days=nombreDeJours)
     timestamp_to = datetime.now().date() - timedelta(days=nombreDeJours - 1)
 
-    if request.user.adherent_permacat:
+    if request.user.adherent_pc:
         articles    = Action.objects.filter(Q(verb='article_nouveau_permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) |
                                             Q(verb='article_nouveau_Permacat', timestamp__gte = timestamp_from,timestamp__lte = timestamp_to,) |
                                             Q(verb='article_nouveau',timestamp__gte = timestamp_from, timestamp__lte = timestamp_to,))

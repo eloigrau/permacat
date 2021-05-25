@@ -32,7 +32,7 @@
             {% endfor %}
         </div>
     </li>
-     {% if request.user.adherent_permacat %}
+     {% if request.user.adherent_pc %}
     <li class="nav-item dropdown">
         <button type="button" class="btn dropdown-toggle btn-primary  btn-block btn-menu-forum" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
         data-target = "#idDossiers_pc"> Dossiers Permacat</button>
@@ -61,6 +61,7 @@
     {% endif %}
 
 
+
      {% if request.user.adherent_fer %}
     <li class="nav-item dropdown">
         <button type="button" class="btn dropdown-toggle btn-primary  btn-block btn-menu-forum" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
@@ -75,6 +76,19 @@
     </li>
     {% endif %}
 
+     {% if request.user.adherent_gt %}
+    <li class="nav-item dropdown">
+        <button type="button" class="btn dropdown-toggle btn-primary btn-block btn-menu-forum" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
+        data-target = "#idDossiers_gt"> Dossiers Gardiens de la Terre</button>
+        <div class="dropdown-menu textcenter dropdown-menu-forum btn-menu-forum" aria-labelledby="menuAuteur"  id="idDossiers_gt">
+             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='rtg'%}"><span>Tous les articles RTG</span></a>
+            <div class="dropdown-divider"></div>
+            {% for categorie_id, cat_nom, cat_coul in categorie_list_gt %}
+             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='rtg'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+            {% endfor %}
+        </div>
+    </li>
+    {% endif %}
 
     </ul>
 

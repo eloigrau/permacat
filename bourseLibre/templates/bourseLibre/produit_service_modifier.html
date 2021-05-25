@@ -34,7 +34,7 @@ Modifier
                 document.getElementById('id_type_prix').style.visibility = "hidden";
             }
         });
-        {% if not request.user.adherent_permacat %}
+        {% if not request.user.adherent_pc %}
                var isPublique = document.getElementById('id_estPublique').style.visibility = "hidden";
         {%endif%}
     </script>

@@ -62,7 +62,7 @@
   </div>
   <div class="card carte-notif notif2  d-md-flex textcenter ">
     <div class="card-header textcenter justify-content-center" style="background-color:#8eaf9d">
-      Salon{% if request.user.adherent_permacat %}s{%endif %}
+      Salon{% if request.user.adherent_pc %}s{%endif %}
     </div>
         <ul class="list-group list-group-flush">
           {% for action in salons%}

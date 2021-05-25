@@ -25,7 +25,7 @@
                         <a class="dropdown-item dropdown-toggle"  href="test" >PermaCat</a>
                         <ul class="dropdown-menu nav5-dropdown-submenu">
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso' %}"> Présentation</a></li>
-   {% if request.user.adherent_permacat %}
+   {% if request.user.adherent_pc %}
                         <li> <a class="dropdown-item" href="{% url 'agora' asso='pc'%}"><i class='fa fa-asterisk' ></i>  Salon de discussion</a></li>
     {% endif %}
                          <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='pc'%}"><i class='fa fa-comments' ></i> Articles du forum</a></li>
@@ -83,7 +83,7 @@
                             {% endcomment %}
 
 
-                            {% if request.user.adherent_permacat %}
+                            {% if request.user.adherent_pc %}
                        <li class="divider" role="separator"></li>
                         <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='pc' %}"><i class='fa fa-address-book' ></i>  Annuaire  </a></li>
                          <li><a class="dropdown-item" href="{% url 'carte'  asso='pc' %}"><i class='fa fa-compass' ></i>  Carte  </a></li>
@@ -132,6 +132,23 @@
    {% endif %}
                       </ul>
                     </li>
+
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle"  href="test">Gardiens de la Terre</a>
+                        <ul class="dropdown-menu  nav5-dropdown-submenu">
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso_gt' %}"> Présentation</a></li>
+   {% if request.user.adherent_gt %}
+                            <li class="divider" role="separator"></li>
+                            <li> <a class="dropdown-item" href="{% url 'agora' asso='fer'%}"><i class='fa fa-asterisk' ></i> Salon de discussion</a></li>
+                            <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='gt'%}"><i class='fa fa-comments' ></i> Articles </a></li>
+                        <li class="divider" role="separator"></li>
+                          <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='gt' %}"><i class='fa fa-address-book' ></i> Annuaire  </a></li>
+                          <li> <a class="dropdown-item" href="{% url 'carte'  asso='gt' %}"><i class='fa fa-compass' ></i>  Carte  </a></li>
+
+   {% endif %}
+                      </ul>
+                    </li>
+
                     {%comment%}
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle"  href="test">Jardins Partagés</a>

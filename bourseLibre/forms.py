@@ -12,7 +12,6 @@ fieldsCommunsProduits = ['souscategorie', 'nom_produit',  'description', 'estUne
 
 
 class ProduitCreationForm(forms.ModelForm):
-    #description = TinyMCE(attrs={'cols': 80, 'rows': 20})
     estUneOffre = forms.ChoiceField(choices=((1, "Offre"), (0, "Demande")), label='', required=True)
     asso = forms.ModelChoiceField(queryset=Asso.objects.all(), required=True, label="Offre publique ou réservée aux adhérents de l'asso :",)
 
@@ -21,12 +20,16 @@ class ProduitCreationForm(forms.ModelForm):
         exclude=('user', )
 
         fields = ['nom_produit', 'description', 'date_debut', 'date_expiration',
-                  'stock_initial', 'unite_prix','prix',]
+                  'stock_initial', 'unite_prix', 'prix',]
         widgets = {
             'date_debut': forms.DateInput(attrs={'type':"date"}, ),
             'date_expiration': forms.DateInput(attrs={'type':"date"}),
             'description': SummernoteWidget(),
         }
+
+    def __init__(self, request, *args, **kwargs):
+        super(ProduitCreationForm, self).__init__(*args, **kwargs)
+        self.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if request.user.estMembre_str(x.abreviation)]
 
 
     def clean(self):
@@ -147,9 +150,10 @@ class ProfilCreationForm(UserCreationForm):
     email = forms.EmailField(label="Email*",)
 
     #statut_adhesion = forms.ChoiceField(choices=Choix.statut_adhesion, label='', required=True)
-    adherent_permacat = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Permacat'")
+    adherent_pc = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Permacat'")
     adherent_rtg = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Ramène Ta Graine'")
     adherent_fer = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Fermille'")
+    adherent_gt = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Gardiens de la Terre'")
     #adherent_ame = forms.BooleanField(required=False, label="Je suis adhérent de l'asso 'Animal Mieux Etre'")
     accepter_annuaire = forms.BooleanField(required=False, label="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous les inscrits")
     accepter_conditions = forms.BooleanField(required=True, label="J'ai lu et j'accepte les Conditions Générales d'Utilisation du site*",  )
@@ -163,7 +167,7 @@ class ProfilCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm):
         model = Profil
-        fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'adherent_permacat', 'adherent_rtg','adherent_fer', 'inscrit_newsletter', 'accepter_annuaire',  'accepter_conditions']
+        fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'adherent_pc', 'adherent_rtg','adherent_fer', 'inscrit_newsletter', 'accepter_annuaire',  'accepter_conditions']
         exclude = ['slug', ]
 
 
@@ -217,7 +221,7 @@ class ProducteurChangeForm_admin(UserChangeForm):
 
     class Meta:
         model = Profil
-        fields = ['username', 'email', 'description', 'competences', 'inscrit_newsletter', 'statut_adhesion', 'adherent_permacat',  'adherent_rtg', 'adherent_fer', 'pseudo_june', 'accepter_annuaire', 'is_jardinpartage']
+        fields = ['username', 'email', 'description', 'competences', 'inscrit_newsletter', 'statut_adhesion', 'adherent_pc',  'adherent_rtg', 'adherent_fer', 'pseudo_june', 'accepter_annuaire', 'is_jardinpartage']
 
     def __init__(self, *args, **kwargs):
         super(ProducteurChangeForm_admin, self).__init__(*args, **kwargs)

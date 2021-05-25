@@ -11,13 +11,15 @@ from actstream import actions, action
 from actstream.models import followers, following, action_object_stream
 from django.utils.timezone import now
 from bourseLibre.models import Suivis
+from bourseLibre.constantes import Choix as Choix_global
+
 from bourseLibre.views import testIsMembreAsso
 from ateliers.models import Atelier
 from django.views.decorators.csrf import csrf_exempt
 from hitcount.models import HitCount
 from hitcount.views import HitCountMixin
 from django.db.models import Q
-
+from django.core.exceptions import PermissionDenied
 # @login_required
 # def forum(request):
 #     """ Afficher tous les articles de notre blog """
@@ -33,44 +35,41 @@ def accueil(request):
     categorie_list_rtg = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_rtg]
     cat_fer = Article.objects.filter(asso__abreviation="fer").order_by('categorie').values_list('categorie', flat=True).distinct()
     categorie_list_fer = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_fer]
+    cat_gt = Article.objects.filter(asso__abreviation="gt").order_by('categorie').values_list('categorie',
+                                                                                                flat=True).distinct()
+    categorie_list_gt = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_gt]
+
     proj = Projet.objects.filter(estArchive=False, statut='accep').order_by('titre')
-    if not request.user.adherent_permacat:
-        proj = proj.exclude(asso__abreviation="pc")
-    if not request.user.adherent_fer:
-        proj = proj.exclude(asso__abreviation="fer")
-    if not request.user.adherent_rtg:
-        proj = proj.exclude(asso__abreviation="rtg")
+
+    for nomAsso in Choix_global.abreviationsAsso:
+        if not getattr(request.user, "adherent_" + nomAsso):
+            proj = proj.exclude(asso__abreviation = nomAsso)
+
     projets_list = [(x.slug, x.titre, x.get_couleur) for x in proj]
 
     ateliers = Atelier.objects.filter(date_atelier__gte=now())
-    if not request.user.adherent_permacat:
-        ateliers = ateliers.exclude(asso__abreviation="pc")
-    if not request.user.adherent_fer:
-        ateliers = ateliers.exclude(asso__abreviation="fer")
-    if not request.user.adherent_rtg:
-        ateliers = ateliers.exclude(asso__abreviation="rtg")
+
+    for nomAsso in Choix_global.abreviationsAsso:
+        if not getattr(request.user, "adherent_" + nomAsso):
+            ateliers = ateliers.exclude(asso__abreviation = nomAsso)
+
     ateliers_list = [(x.slug, x.titre, x.get_couleur) for x in ateliers]
     categorie_list_projets = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets
                                          if x[0] in cat]
 
     derniers_articles = Article.objects.filter(estArchive=False).order_by('-id')
-    if not request.user.adherent_permacat:
-        derniers_articles = derniers_articles.exclude(asso__abreviation="pc")
-    if not request.user.adherent_fer:
-        derniers_articles = derniers_articles.exclude(asso__abreviation="fer")
-    if not request.user.adherent_rtg:
-        derniers_articles = derniers_articles.exclude(asso__abreviation="rtg")
+    for nomAsso in Choix_global.abreviationsAsso:
+        if not getattr(request.user, "adherent_" + nomAsso):
+            derniers_articles = derniers_articles.exclude(asso__abreviation=nomAsso)
 
     derniers_articles_comm = Article.objects.filter(estArchive=False, date_dernierMessage__isnull=False).order_by('date_dernierMessage')
-    if not request.user.adherent_permacat:
-        derniers_articles_comm = derniers_articles_comm.exclude(asso__abreviation="pc")
-    if not request.user.adherent_fer:
-        derniers_articles_comm = derniers_articles_comm.exclude(asso__abreviation="fer")
-    if not request.user.adherent_rtg:
-        derniers_articles_comm = derniers_articles_comm.exclude(asso__abreviation="rtg")
+
+    for nomAsso in Choix_global.abreviationsAsso:
+        if not getattr(request.user, "adherent_" + nomAsso):
+            derniers_articles_comm = derniers_articles_comm.exclude(asso__abreviation=nomAsso)
 
     suivis, created = Suivis.objects.get_or_create(nom_suivi="articles")
-    return render(request, 'blog/accueil.html', {'categorie_list':categorie_list,'categorie_list_pc':categorie_list_pc,'categorie_list_rtg':categorie_list_rtg,'categorie_list_fer':categorie_list_fer,'projets_list':projets_list,'ateliers_list':ateliers_list, 'categorie_list_projets':categorie_list_projets,'derniers_articles':derniers_articles[:6],'derniers_articles_comm':derniers_articles_comm[::-1][:6], 'suivis':suivis})
+    return render(request, 'blog/accueil.html', {'categorie_list':categorie_list,'categorie_list_pc':categorie_list_pc,'categorie_list_rtg':categorie_list_rtg,'categorie_list_fer':categorie_list_fer,'categorie_list_gt':categorie_list_gt,'projets_list':projets_list,'ateliers_list':ateliers_list, 'categorie_list_projets':categorie_list_projets,'derniers_articles':derniers_articles[:6],'derniers_articles_comm':derniers_articles_comm[::-1][:6], 'suivis':suivis})
 
 
 @login_required
@@ -185,18 +184,15 @@ class ListeArticles(ListView):
         if not self.request.user.is_authenticated:
             qs = qs.filter(asso__nom="public")
         else:
-            if not self.request.user.adherent_permacat:
-                qs = qs.exclude(asso__abreviation="pc")
-            if not self.request.user.adherent_rtg:
-                qs = qs.exclude(asso__abreviation="rtg")
-            if not self.request.user.adherent_fer:
-                qs = qs.exclude(asso__abreviation="fer")
+            for nomAsso in Choix_global.abreviationsAsso:
+                if not getattr(self.request.user, "adherent_" + nomAsso):
+                    qs = qs.exclude(asso__abreviation=nomAsso)
 
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])
         if "categorie" in params:
             qs = qs.filter(categorie=params['categorie'])
-        if "permacat" in params  and self.request.user.adherent_permacat:
+        if "permacat" in params  and self.request.user.adherent_pc:
             if params['permacat'] == "True":
                 qs = qs.filter(estPublic=False)
             else:
@@ -219,33 +215,19 @@ class ListeArticles(ListView):
         #context['auteur_list'] = Article.objects.order_by('auteur').values_list('auteur__username', flat=True).distinct()
         cat = Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
         context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
-        cat_pc = Article.objects.filter(asso__abreviation="pc").order_by('categorie').values_list('categorie',
-                                                                                                        flat=True).distinct()
-        context['categorie_list_pc'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_pc]
-        cat_rtg = Article.objects.filter(asso__abreviation="rtg").order_by('categorie').values_list('categorie',
-                                                                                                          flat=True).distinct()
-        context['categorie_list_rtg'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_rtg]
-        cat_fer = Article.objects.filter(asso__abreviation="fer").order_by('categorie').values_list('categorie',
-                                                                                                      flat=True).distinct()
-        context['categorie_list_fer'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_fer]
+
+        for nomAsso in Choix_global.abreviationsAsso:
+            if not getattr(self.request.user, "adherent_" + nomAsso):
+                cat = Article.objects.filter(asso__abreviation=nomAsso).order_by('categorie').values_list('categorie', flat=True).distinct()
+                context['categorie_list_'+nomAsso] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
 
         proj = Projet.objects.filter(estArchive=False)
-        if not self.request.user.adherent_permacat:
-            proj = proj.exclude(asso__abreviation="pc")
-        if not self.request.user.adherent_fer:
-            proj = proj.exclude(asso__abreviation="fer")
-        if not self.request.user.adherent_rtg:
-            proj = proj.exclude(asso__abreviation="rtg")
+        for nomAsso in Choix_global.abreviationsAsso:
+            if not getattr(self.request.user, "adherent_" + nomAsso):
+                proj = proj.exclude(asso__abreviation=nomAsso)
+
         context['projets_list'] = [(x.slug, x.titre, x.get_couleur) for x in proj]
-        #
-        # ateliers = Atelier.objects.filter(date_atelier__gte=now())
-        # if not self.request.user.adherent_permacat:
-        #     ateliers = ateliers.exclude(asso__abreviation="pc")
-        # if not self.request.user.adherent_fer:
-        #     ateliers = ateliers.exclude(asso__abreviation="fer")
-        # if not self.request.user.adherent_rtg:
-        #     ateliers = ateliers.exclude(asso__abreviation="rtg")
-        # context['ateliers_list'] = [(x.slug, x.titre, x.get_couleur) for x in ateliers]
+
         context['categorie_list_projets'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets if x[0] in cat]
         context['typeFiltre'] = "aucun"
         context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="articles")
@@ -291,11 +273,13 @@ class ListeArticles_asso(ListView):
         params = dict(self.request.GET.items())
         nom_asso = self.kwargs['asso']
         asso = testIsMembreAsso(self.request, nom_asso)
+        if not isinstance(asso, Asso):
+            raise PermissionDenied
 
         qs = Article.objects.all()
 
         if asso.abreviation == "public":
-            qs = qs.exclude(Q(asso__abreviation="pc")|Q(asso__abreviation="rtg")|Q(asso__abreviation="fer"))
+            qs = qs.exclude(Q(asso__abreviation="pc")|Q(asso__abreviation="rtg")|Q(asso__abreviation="fer")|Q(asso__abreviation="gt"))
         else:
             qs = qs.filter(asso__abreviation=asso.abreviation)
 
@@ -303,7 +287,7 @@ class ListeArticles_asso(ListView):
             qs = qs.filter(auteur__username=params['auteur'])
         if "categorie" in params:
             qs = qs.filter(categorie=params['categorie'])
-        if "permacat" in params  and self.request.user.adherent_permacat:
+        if "permacat" in params  and self.request.user.adherent_pc:
             if params['permacat'] == "True":
                 qs = qs.filter(estPublic=False)
             else:
@@ -328,27 +312,21 @@ class ListeArticles_asso(ListView):
         context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
         context['categorie_list_projets'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets
                                              if x[0] in cat]
-        cat_pc = Article.objects.filter(asso__abreviation="pc").order_by('categorie').values_list('categorie',
-                                                                                                        flat=True).distinct()
-        context['categorie_list_pc'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_pc]
-        cat_rtg = Article.objects.filter(asso__abreviation="rtg").order_by('categorie').values_list('categorie',
-                                                                                                          flat=True).distinct()
-        context['categorie_list_rtg'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_rtg]
-        cat_fer = Article.objects.filter(asso__abreviation="fer").order_by('categorie').values_list('categorie',
-                                                                                                      flat=True).distinct()
-        context['categorie_list_fer'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_fer]
+
+        for nomAsso in Choix_global.abreviationsAsso:
+            if not getattr(self.request.user, "adherent_" + nomAsso):
+                cat = Article.objects.filter(asso__abreviation=nomAsso).order_by('categorie').values_list('categorie', flat=True).distinct()
+                context['categorie_list_'+nomAsso] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
 
         proj = Projet.objects.filter(estArchive=False)
-        if not self.request.user.adherent_permacat:
-            proj = proj.exclude(asso__abreviation="pc")
-        if not self.request.user.adherent_fer:
-            proj = proj.exclude(asso__abreviation="fer")
-        if not self.request.user.adherent_rtg:
-            proj = proj.exclude(asso__abreviation="rtg")
+        for nomAsso in Choix_global.abreviationsAsso:
+            if not getattr(self.request.user, "adherent_" + nomAsso):
+                proj = proj.exclude(asso__abreviation=nomAsso)
+
         context['projets_list'] = [(x.slug, x.titre, x.get_couleur) for x in proj]
         #
         # ateliers = Atelier.objects.filter(date_atelier__gte=now())
-        # if not self.request.user.adherent_permacat:
+        # if not self.request.user.adherent_pc:
         #     ateliers = ateliers.exclude(asso__abreviation="pc")
         # if not self.request.user.adherent_fer:
         #     ateliers = ateliers.exclude(asso__abreviation="fer")
@@ -359,6 +337,8 @@ class ListeArticles_asso(ListView):
         assos= Asso.objects.all()
         nom_asso = self.kwargs['asso']
         asso = testIsMembreAsso(self.request, nom_asso)
+        if not isinstance(asso, Asso):
+            raise PermissionDenied
         context['asso_list'] = [(x.nom, x.abreviation) for x in assos]
         context['asso_courante'] = asso
         context['typeFiltre'] = "aucun"
@@ -493,12 +473,9 @@ class ListeProjets(ListView):
         if not self.request.user.is_authenticated:
             qs = qs.filter(asso__abreviation="public")
         else:
-            if not self.request.user.adherent_permacat:
-                qs = qs.exclude(asso__abreviation="pc")
-            if not self.request.user.adherent_rtg:
-                qs = qs.exclude(asso__abreviation="rtg")
-            if not self.request.user.adherent_fer:
-                qs = qs.exclude(asso__abreviation="fer")
+            for nomAsso in Choix_global.abreviationsAsso:
+                if not getattr(self.request.user, "adherent_" + nomAsso):
+                    qs = qs.exclude(asso__abreviation=nomAsso)
 
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])
@@ -507,7 +484,7 @@ class ListeProjets(ListView):
         if "statut" in params:
             qs = qs.filter(statut=params['statut'])
 
-        if "permacat" in params and self.request.user.adherent_permacat:
+        if "permacat" in params and self.request.user.adherent_pc:
             if params['permacat'] == "True":
                 qs = qs.filter(estPublic=False)
             else:

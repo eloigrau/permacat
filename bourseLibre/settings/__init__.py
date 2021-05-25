@@ -120,6 +120,8 @@ INSTALLED_APPS = [
     'mptt',
     'sekizai',
     'sorl.thumbnail',
+    'photologue',
+     'sortedm2m',
 
     #'wiki.apps.WikiConfig',
    # 'wiki.plugins.attachments.apps.AttachmentsConfig',

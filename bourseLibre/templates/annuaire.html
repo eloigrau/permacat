@@ -14,7 +14,7 @@
 <div class="row">
     <div class="col-sm-12 textcenter">
         <div class="btn-group btn-group-justified">
-            {% if request.user.adherent_permacat %}
+            {% if request.user.adherent_pc %}
             <a href="{% url 'carte' asso='pc' %}" >
                 <button type="button" class="btn btn-primary" >Carte des inscrits Permacat</button>
             </a>
@@ -24,14 +24,22 @@
                 <button type="button" class="btn btn-primary" >Carte des inscrits RTG</button>
             </a>
             {% endif %}
+            {% if request.user.adherent_fer %}
+            <a href="{% url 'carte' asso='fer' %}" >
+                <button type="button" class="btn btn-primary" >Carte des inscrits Fermille</button>
+            </a>
+            {% endif %}
+            {% if request.user.adherent_gt %}
+            <a href="{% url 'carte' asso='gt' %}" >
+                <button type="button" class="btn btn-primary" >Carte des inscrits Gardiens de la Terre</button>
+            </a>
+            {% endif %}
             <a href="{% url 'carte' asso='public' %}" >
                 <button type="button" class="btn btn-primary" >Carte de tous les inscrits au site</button>
             </a>
         </div>
     </div>
 </div>
-<hr>
-
 {% endblock %}
 {% block content %}
 
@@ -45,7 +53,6 @@
                 <th>Email</th>
                 <th>Code postal</th>
                 <th>Commune</th>
-                <th>Dernière connexion</th>
             </tr>
         </thead>
         <tbody>
@@ -59,7 +66,6 @@
             <td><a href="{% url 'profil' profil.id %}">{{ profil.email }}</a></td>
             <td><a href="{% url 'profil' profil.id %}">{{ profil.adresse.code_postal }}</a></td>
             <td><a href="{% url 'profil' profil.id %}">{{ profil.adresse.commune }}</a></td>
-            <td><a href="{% url 'profil' profil.id %}">{{ profil.last_login }}</a></td>
         </tr>
         {% endfor %}
         </tbody>

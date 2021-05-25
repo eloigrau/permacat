@@ -122,14 +122,8 @@ class Article(models.Model):
     def est_autorise(self, user):
         if self.asso.abreviation == "public":
             return True
-        elif self.asso.abreviation == "pc":
-            return user.adherent_permacat
-        elif self.asso.abreviation == "rtg":
-            return user.adherent_rtg
-        elif self.asso.abreviation == "fer":
-            return user.adherent_fer
-        else:
-            return False
+
+        return getattr(user, "adherent_" + self.asso.abreviation)
 
 class Evenement(models.Model):
     titre_even = models.CharField(verbose_name="Titre de l'événement (si laissé vide, ce sera le titre de l'article)",
@@ -268,14 +262,8 @@ class Projet(models.Model):
     def est_autorise(self, user):
         if self.asso.abreviation == "public":
             return True
-        elif self.asso.abreviation == "pc":
-            return user.adherent_permacat
-        elif self.asso.abreviation == "rtg":
-            return user.adherent_rtg
-        elif self.asso.abreviation == "fer":
-            return user.adherent_fer
-        else:
-            return False
+
+        return getattr(user, "adherent_" + self.asso.abreviation)
 
 class CommentaireProjet(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE)

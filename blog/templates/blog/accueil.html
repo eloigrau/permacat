@@ -105,7 +105,7 @@
                          Salon Public
                         </a>
                     <div class="dropdown-divider"></div>
-                {% if request.user.adherent_permacat %}
+                {% if request.user.adherent_pc %}
                 <a class=" dropdown-item " href="{% url 'agora' asso='pc' %}">
                          Salon Permacat
                 </a>
@@ -118,6 +118,11 @@
                 {% if request.user.adherent_fer %}
                 <a class=" dropdown-item " href="{% url 'agora' asso='fer' %}">
                          Salon Fermille
+                </a>
+                    {% endif %}
+                {% if request.user.adherent_gt %}
+                <a class=" dropdown-item " href="{% url 'agora' asso='gt' %}">
+                         Salon Gardiens de la Terre
                 </a>
                     {% endif %}
                <div class="dropdown-divider"></div>

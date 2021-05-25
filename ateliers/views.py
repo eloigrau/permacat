@@ -12,6 +12,7 @@ from django.utils.timezone import now
 
 from bourseLibre.models import Suivis, Profil
 
+from bourseLibre.constantes import Choix as Choix_global
 from actstream import actions, action
 
 def accueil(request):
@@ -167,12 +168,9 @@ class ListeAteliers(ListView):
         if not self.request.user.is_authenticated:
             qs = qs.filter(asso__nom="public")
         else:
-            if not self.request.user.adherent_permacat:
-                qs = qs.exclude(asso__abreviation="pc")
-            if not self.request.user.adherent_rtg:
-                qs = qs.exclude(asso__abreviation="rtg")
-            if not self.request.user.adherent_fer:
-                qs = qs.exclude(asso__abreviation="fer")
+            for nomAsso in Choix_global.abreviationsAsso:
+                if not getattr(self.request.user, "adherent_" + nomAsso):
+                    qs = qs.exclude(asso__abreviation=nomAsso)
 
 
         if "ordreTri" in params:

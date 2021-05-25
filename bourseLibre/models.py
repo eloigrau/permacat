@@ -116,11 +116,7 @@ class Asso(models.Model):
         return super(Asso, self).save(*args, **kwargs)
 
     def is_membre(self, user):
-        if self.nom == "permacat" and not user.adherent_permacat:
-            return False
-        elif self.nom == "rtg" and not user.adherent_rtg:
-            return False
-        elif self.nom == "fer" and not user.adherent_fer:
+        if not getattr(user, "adherent_" + self.abreviation):
             return False
         return True
 
@@ -128,11 +124,13 @@ class Asso(models.Model):
         if self.abreviation == "public":
             return Profil.objects.filter()
         elif self.abreviation == "pc":
-            return Profil.objects.filter(adherent_permacat=True)
+            return Profil.objects.filter(adherent_pc=True)
         elif self.abreviation == "rtg":
             return Profil.objects.filter(adherent_rtg=True)
         elif self.abreviation == "fer":
             return Profil.objects.filter(adherent_fer=True)
+        elif self.abreviation == "gt":
+            return Profil.objects.filter(adherent_gt=True)
 
 class Profil(AbstractUser):
     username_validator = ASCIIUsernameValidator()
@@ -149,9 +147,10 @@ class Profil(AbstractUser):
 
     inscrit_newsletter = models.BooleanField(verbose_name="J'accepte de recevoir des emails de Perma.cat", default=False)
     statut_adhesion = models.IntegerField(choices=Choix.statut_adhesion, default="0")
-    adherent_permacat = models.BooleanField(verbose_name="Je suis adhérent de Permacat", default=False)
+    adherent_pc = models.BooleanField(verbose_name="Je suis adhérent de Permacat", default=False)
     adherent_rtg = models.BooleanField(verbose_name="Je suis adhérent de Ramene Ta Graine", default=False)
     adherent_fer = models.BooleanField(verbose_name="Je suis adhérent de Fermille", default=False)
+    adherent_gt = models.BooleanField(verbose_name="Je suis adhérent de Gardiens de la Terre", default=False)
     accepter_conditions = models.BooleanField(verbose_name="J'ai lu et j'accepte les conditions d'utilisation du site", default=False, null=False)
     accepter_annuaire = models.BooleanField(verbose_name="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous", default=True)
     is_jardinpartage = models.BooleanField(verbose_name="Je suis intéressé.e par les jardins partagés", default=False)
@@ -195,7 +194,7 @@ class Profil(AbstractUser):
     @property
     def statutMembre_asso(self, asso):
         if asso == "permacat":
-            return self.adherent_permacat
+            return self.adherent_pc
         elif asso == "rtg":
             return self.adherent_rtg
         elif asso == "fer":
@@ -213,7 +212,7 @@ class Profil(AbstractUser):
     @property
     def statutMembre_str_asso(self, asso):
         if asso == "permacat":
-            if self.adherent_permacat:
+            if self.adherent_pc:
                 return "membre actif de Permacat"
             else:
                 return "Non membre de Permacat"
@@ -231,11 +230,13 @@ class Profil(AbstractUser):
     def estMembre_str(self, nom_asso):
         if nom_asso == "Public" or nom_asso == "public":
             return True
-        elif self.adherent_permacat and(nom_asso == "Permacat" or nom_asso == "pc") :
+        elif self.adherent_pc and(nom_asso == "Permacat" or nom_asso == "pc") :
             return True
         elif self.adherent_rtg and (nom_asso == "Ramène Ta Graine" or nom_asso == "rtg") :
             return True
         elif self.adherent_fer and (nom_asso == "Fermille" or nom_asso == "fer") :
+            return True
+        elif self.adherent_gt and (nom_asso == "Gardiens de la Terre" or nom_asso == "gt") :
             return True
         else:
             return False
@@ -243,14 +244,8 @@ class Profil(AbstractUser):
     def est_autorise(self, user):
         if self.asso.abreviation == "public":
             return True
-        elif self.asso.abreviation == "pc":
-            return user.adherent_permacat
-        elif self.asso.abreviation == "rtg":
-            return user.adherent_rtg
-        elif self.asso.abreviation == "fer":
-            return user.adherent_fer
-        else:
-            return False
+
+        return getattr(user, "adherent_" + self.asso.abreviation)
 
     @property
     def inscrit_newsletter_str(self):
@@ -378,14 +373,8 @@ class Produit(models.Model):  # , BaseProduct):
     def est_autorise(self, user):
         if self.asso.abreviation == "public":
             return True
-        elif self.asso.abreviation == "pc":
-            return user.adherent_permacat
-        elif self.asso.abreviation == "rtg":
-            return user.adherent_rtg
-        elif self.asso.abreviation == "fer":
-            return user.adherent_fer
-        else:
-            return False
+
+        return getattr(user, "adherent_" + self.asso.abreviation)
 
     @property
     def est_public(self):
