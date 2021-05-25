@@ -110,7 +110,7 @@ def getEvenementsSemaine(request):
         ev_art = Evenement.objects.filter(Q(start_time__week=current_week) & Q(start_time__year=current_year)).order_by('start_time')
         for nomAsso in Choix_global.abreviationsAsso:
             if not getattr(request.user, "adherent_" + nomAsso):
-                ev_art = ev_art.exclude(asso__abreviation=nomAsso)
+                ev_art = ev_art.exclude(article__asso__abreviation=nomAsso)
         evenements.append(ev_art)
 
         ev_2 = Article.objects.filter(Q(start_time__week=current_week) & Q(start_time__year=current_year)).order_by('start_time')
