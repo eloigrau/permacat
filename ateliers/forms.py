@@ -44,7 +44,7 @@ class AtelierForm(forms.ModelForm):
         instance.auteur = request.user
         instance.save()
         try:
-            instance.save_m2m()
+            instance.save()
         except:
             pass
 

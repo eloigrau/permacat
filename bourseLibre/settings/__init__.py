@@ -120,8 +120,8 @@ INSTALLED_APPS = [
     'mptt',
     'sekizai',
     'sorl.thumbnail',
-    'photologue',
      'sortedm2m',
+    'photologue',
 
     #'wiki.apps.WikiConfig',
    # 'wiki.plugins.attachments.apps.AttachmentsConfig',
@@ -459,8 +459,9 @@ CRONJOBS = [
     ('0 6 * * *', 'bourseLibre.views_notifications.envoyerEmails',['bourseLibre'], {}, '>> /home/udjango/cron-envoimails-Logs.log')
 ]
 
+#PHOTOLOGUE_PATH = MEDIA_ROOT + "photologue/"
 
-#on met ça a la fin pour importer les settings de production sur le sever
+#on met ça a la fin pour importer les settings de production sur le serveur
 try:
     from production import *
 except ImportError:

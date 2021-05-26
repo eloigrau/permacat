@@ -108,7 +108,7 @@ def lireArticle(request, slug):
             comment.auteur_comm = request.user
             article.date_dernierMessage = comment.date_creation
             article.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(strip_tags(comment.commentaire).replace('&nspb',' ')))[:96] + "..."
-            article.save(sendMail=False)
+            article.save()
             comment.save()
             url = article.get_absolute_url()+"#idConversation"
             #suffix = "_" + article.asso.nom

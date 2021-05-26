@@ -172,12 +172,7 @@
                 <li class="dropdown-submenu">
                     <a class="dropdown-item dropdown-toggle"  href="test">Projets</a>
                     <ul class="dropdown-menu nav5-dropdown-submenu">
-
-
-
-
                         <li> <a class="dropdown-item" href="{% url 'blog:index_projets' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les projets </a></li>
-
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle"  href="test">Projets acceptés</a>
                         <ul class="dropdown-menu nav5-dropdown-subsubmenu">
@@ -260,6 +255,15 @@
                         {% endfor %}
                     </ul>
                 </li>
+                {% if request.user.is_superuser %}
+                <li class="dropdown-submenu">
+                    <a class="dropdown-item dropdown-toggle"  href="test">Photos </a>
+                    <ul class="dropdown-menu nav5-dropdown-submenu">
+                        <li><a class="dropdown-item" href="{% url 'photologue:album-list' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les albums </a></li>
+                        <li><a class="dropdown-item" href="{% url 'photologue:photo-list' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir toutes les photos </a></li>
+                    </ul>
+                </li>
+                  {% endif %}
             </ul>
         </li>
 

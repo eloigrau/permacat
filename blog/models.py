@@ -4,7 +4,8 @@ from django.urls import reverse
 from django.utils import timezone
 from actstream import action
 from actstream.models import followers
-from bourseLibre.settings import  LOCALL
+from bourseLibre.settings import LOCALL
+from taggit.managers import TaggableManager
 
 class Choix():
     statut_projet = ('prop','Proposition de projet'), ("AGO","Fiche projet soumise à l'AGO"), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
@@ -69,7 +70,7 @@ class Article(models.Model):
     date_creation = models.DateTimeField(verbose_name="Date de parution", default=timezone.now)
     date_modification = models.DateTimeField(verbose_name="Date de modification", default=timezone.now)
     estPublic = models.BooleanField(default=False, verbose_name='Public ou réservé aux membres permacat')
-    estModifiable = models.BooleanField(default=False, verbose_name="Modifiable par n'importe qui")
+    estModifiable = models.BooleanField(default=False, verbose_name="Modifiable par les autres")
 
     asso = models.ForeignKey(Asso, on_delete=models.SET_NULL, null=True)
 
@@ -79,6 +80,8 @@ class Article(models.Model):
 
     start_time = models.DateTimeField(verbose_name="Date de début (optionnel, affichage dans l'agenda)", null=True,blank=True, help_text="jj/mm/année")
     end_time = models.DateTimeField(verbose_name="Date de fin (optionnel, pour affichage dans l'agenda)",  null=True,blank=True, help_text="jj/mm/année")
+
+    tags = TaggableManager(verbose_name="Mots clés",  help_text="Liste de mots-clés séparés par une virgule", blank=True)
 
     class Meta:
         ordering = ('-date_creation', )
@@ -220,6 +223,8 @@ class Projet(models.Model):
 
     estArchive = models.BooleanField(default=False, verbose_name="Archiver le projet")
     asso = models.ForeignKey(Asso, on_delete=models.SET_NULL, null=True)
+
+    tags = TaggableManager(verbose_name="Mots clés", help_text="Liste de mots-clés séparés par une virgule", blank=True)
 
     class Meta:
         ordering = ('-date_creation', )

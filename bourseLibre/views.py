@@ -6,6 +6,7 @@ Created on 25 mai 2017
 '''
 from django.shortcuts import HttpResponseRedirect, render, redirect, get_object_or_404#, render, redirect, render_to_response,
 
+from django.core.exceptions import PermissionDenied
 from .forms import Produit_aliment_CreationForm, Produit_vegetal_CreationForm, Produit_objet_CreationForm, \
     Produit_service_CreationForm, ContactForm, AdresseForm, ProfilCreationForm, MessageForm, MessageGeneralForm, \
     ProducteurChangeForm, Produit_aliment_modifier_form, Produit_service_modifier_form, \
@@ -321,7 +322,7 @@ def profil_inconnu(request):
 def annuaire(request, asso):
     asso = testIsMembreAsso(request, asso)
     if not isinstance(asso, Asso):
-        return asso
+        raise PermissionDenied
     prof = asso.getProfils()
     profils = prof.filter(accepter_annuaire=True).order_by("username")
     nb_profils = len(prof)
@@ -331,7 +332,7 @@ def annuaire(request, asso):
 def listeContacts(request, asso):
     asso = testIsMembreAsso(request, asso)
     if not isinstance(asso, Asso):
-        return asso
+        raise PermissionDenied
     listeMails = [
         {"type":'user_newsletter' ,"profils":Profil.objects.filter(inscrit_newsletter=True), "titre":"Liste des inscrits à la newsletter : "},
          {"type":'anonym_newsletter' ,"profils":InscriptionNewsletter.objects.all(), "titre":"Liste des inscrits anonymes à la newsletter : "},
@@ -344,7 +345,7 @@ def listeContacts(request, asso):
 def listeFollowers(request, asso):
     asso=testIsMembreAsso(request, asso)
     if not isinstance(asso, Asso):
-        return asso
+        raise PermissionDenied
     listeArticles = []
     for art in Article.objects.all():
         suiveurs = followers(art)
@@ -366,7 +367,7 @@ def listeFollowers(request, asso):
 def carte(request, asso):
     asso=testIsMembreAsso(request, asso)
     if not isinstance(asso, Asso):
-        return asso
+        raise PermissionDenied
     profils = asso.getProfils()
     return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': "La carte des coopérateurs*" } )
 
@@ -375,7 +376,7 @@ def carte(request, asso):
 def admin_asso(request, asso):
     asso=testIsMembreAsso(request, asso)
     if not isinstance(asso, Asso):
-        return asso
+        raise PermissionDenied
     listeFichers = []
     if asso == 'permacat':
         listeFichers = [
@@ -430,7 +431,7 @@ def adhesion_asso(request):
 def carte(request, asso):
     asso = testIsMembreAsso(request, asso)
     if not isinstance(asso, Asso):
-        return asso
+        raise PermissionDenied
     profils = asso.getProfils().filter(accepter_annuaire=True).order_by("username")
     return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': "Carte des adhérents "+str(asso) + "*" } )
 
@@ -1005,7 +1006,7 @@ def activite(request, pseudo):
 def agora(request, asso):
     asso = testIsMembreAsso(request, asso)
     if not isinstance(asso, Asso):
-        return asso
+        raise PermissionDenied
     messages = MessageGeneral.objects.filter(asso__abreviation=asso.abreviation).order_by("date_creation")
     form = MessageGeneralForm(request.POST or None) 
     if form.is_valid(): 
@@ -1153,7 +1154,7 @@ def modifier_message(request, id, type_msg, asso, ):
     else:
         asso = testIsMembreAsso(request, asso)
         if not isinstance(asso, Asso):
-            return asso
+            raise PermissionDenied
         obj = MessageGeneral.objects.get(id=id, asso=asso)
 
     form = MessageChangeForm(request.POST or None, instance=obj)

@@ -31,7 +31,7 @@ class FicheForm(forms.ModelForm):
 
         instance.save()
         try:
-            instance.save_m2m()
+            instance.save()
         except:
             pass
 

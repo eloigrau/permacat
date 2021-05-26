@@ -19,7 +19,7 @@
                 {{ article.asso }}
             </span>
             {% if article.estArchive%}
-            <span class="badge badge-secondary">
+            <span class="badge badge-Light">
                 archivé
             </span>
             {%endif%}
@@ -29,7 +29,7 @@
             </span>
             {%endif%}
             <a href="{% url 'profil' article.auteur.id %}">
-                <span class="badge badge-secondary">
+                <span class="badge badge-Light">
                rédigé par  {{ article.auteur.username }}
                 </span>
             </a>
@@ -113,7 +113,6 @@
               </a>
         {% endif %}
 
-        {%if article.auteur == request.user or article.estPublic or request.user.adherent_pc %}
             <button type="button" class="btn" data-toggle="modal" data-target="#dates">
              </h5 class="textcenter">{% fontawesome_icon 'calendar' %} Dates {%if article.start_time %}supplémentaires{%endif%}</h5>
             </button>
@@ -142,8 +141,6 @@
                 </div>
               </div>
             </div>
-
-        {% endif %}
 
         {% if actions %}
             <button type="button" class="btn" data-toggle="modal" data-target="#historique">
@@ -175,10 +172,39 @@
             </div>
 
         {% endif %}
+
+        {% if article.tags.names %}
+            <button type="button" class="btn" data-toggle="modal" data-target="#tags">
+              # Mots-clés
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="tags" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog textcenter" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                      <div class="row justify-content-center">
+                          <div class="col col-sm-12">
+                      <h5 >Tags</h5>
+                          </div>
+                      </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                                 {% for tag in article.tags.names %}
+            {{tag}}{%if not forloop.last%}, {%endif%}
+           {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        {% endif %}
     </div>
 </div>
 <div class="row">
-<div class="col contenuarticle">
+<div class="col-sm-12 contenuarticle">
    {{ article.contenu |safe}}
 </div>
 </div>

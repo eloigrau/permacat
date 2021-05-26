@@ -15,7 +15,7 @@
             <span class="badge badge-success" style="background-color:{{article.get_couleur}}" ><a href="{% url 'jardinpartage:index'  %}?categorie={{article.categorie}}"  style="background-color:{{article.get_couleur}}" class="smallcaps_h2">Jardins partagés/{{ article.get_categorie_display }}</a></span>
 
             {% if article.estArchive%}
-            <span class="badge badge-secondary">
+            <span class="badge badge-Light">
                 archivé
             </span>
             {%endif%}
@@ -25,7 +25,7 @@
             </span>
             {%endif%}
             <a href="{% url 'profil' article.auteur.id %}">
-                <span class="badge badge-secondary">
+                <span class="badge badge-Light">
                rédigé par  {{ article.auteur.username }}
                 </span>
             </a>
@@ -91,7 +91,7 @@
                  {{article.get_jardin_display }}
             </span>
             {% if article.estArchive%}
-            <span class="badge badge-secondary">
+            <span class="badge badge-Light">
                 archivé
             </span>
             {%endif%}

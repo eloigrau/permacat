@@ -1,0 +1,109 @@
+{% extends "photologue/root.html" %}
+{% load i18n %}
+
+
+{% block title %}{{ album.title }}{% endblock %}
+
+{% block subtitle %}
+
+
+<div class="row ">
+
+<div class="col-md-3 textcenter">
+        <a href="{% url 'photologue:album-list' %}" class="btn btn-success"><i class="fa fa-arrow-left"></i> Tous les albums</a>
+</div>
+<div class="col-md-6 textcenter">
+        <h5 class="page-header">Album : {{ album.title }}
+ <small><button class="btn btn-light" id="copyButton" ><i class="fa fa-link"></i></button></small></h5>
+     <p class="infos  textepetit">
+
+            <a href="{% url 'profil' object.auteur.id %}">
+                <span class="badge badge-Light">
+                postée par  {{ album.auteur.username }},
+                </span>
+            </a>
+            <span class="badge badge-Light">le {{ album.date_added }}</span>
+            <span class="badge badge-success"> {{ album.asso }}</span>
+                      {% if album.estModifiables %}
+            <span class="badge badge-Light"> modifiable </span>
+             {% endif %}
+            </p>
+        {% if album.tags.names %}
+    <p><em>Mots-clés :</em>
+            {% for tag in album.tags.names %}
+            {{tag}}{%if not forloop.last%}, {%endif%}
+           {% endfor %}
+    </p>
+    {% endif%}
+    {% if album.auteur == request.user or request.user.is_superuser or album.estModifiable %}
+    <hr>
+
+     <div class="btn-group">
+        <a href="{% url 'photologue:ajouterPhoto' albumSlug=album.slug %}">
+        <button type="button" class="btn btn-success" >
+                <i class="fa fa-plus"></i> Ajouter une photo
+            </button>
+            </a>&ensp;
+    </div>
+    {% endif %}
+
+</div>
+<div class="col-sm-3 textright">
+        <p>
+    {% if album.auteur == request.user or request.user.is_superuser or album.estModifiable %}
+		<div class="btn-group">
+
+            <a href="{% url 'photologue:modifierAlbum' slug=album.slug %}">
+               <button type="button" class="btn btn-sm btn-warning">
+               &nbsp;Modifier
+               </button></a>
+        {%if projet.auteur == request.user or request.user.is_superuser%}
+            <a href="{% url 'photologue:supprimerAlbum' slug=album.slug %}">
+               <button type="button" class="btn btn-sm btn-danger">
+               &nbsp;Supprimer
+               </button></a>
+		</div>
+        {%endif%}
+    {%endif%}
+        </p>
+</div>
+</div>
+
+{% endblock %}
+{% block content %}
+
+<div class="row ">
+<div class="col-md-4 ">
+        {% if album.description %}<p>{{ album.description|safe }}</p>{% endif %}
+
+</div>
+<div class="col-md-8 ">
+	    {% for photo in album.public %}
+	        <a href="{{ photo.get_absolute_url }}">
+	             <img src="{{ photo.get_thumbnail_url }}" class="thumbnail" alt="{{ photo.title }}">
+	        </a>
+	    {% endfor %}
+
+</div>
+</div>
+
+
+
+ <script>
+document.getElementById("copyButton").addEventListener("click", function() {
+    copyToClipboard();
+});
+function copyToClipboard() {
+
+var dummy = document.createElement('input'),
+text = window.location.href;
+document.body.appendChild(dummy);
+dummy.value = text;
+dummy.select();
+document.execCommand('copy');
+document.body.removeChild(dummy);
+
+}
+</script>
+
+{% endblock %}

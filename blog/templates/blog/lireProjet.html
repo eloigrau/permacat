@@ -62,7 +62,7 @@
             </span>
 
             {% if article.estArchive%}
-            <span class="badge badge-secondary">
+            <span class="badge badge-Light">
                 archivé
             </span>
             {%endif%}
@@ -167,6 +167,18 @@
 </div>
     {% endcomment %}
 <hr>
+ {% if projet.tags.names %}
+<div class="row">
+<div class="col-sm-12">
+    <p><em>Mots-clés :</em>
+            {% for tag in projet.tags.names %}
+            {{tag}}{%if not forloop.last%}, {%endif%}
+           {% endfor %}
+    </p>
+</div>
+</div>
+    <hr>
+{% endif%}
     <div class="col-sm-12 paddingbase">
 		<table class="table table-condensed ">
 			<tbody>

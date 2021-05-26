@@ -73,7 +73,7 @@ class ArticleForm(forms.ModelForm):
 
     class Meta:
         model = Article
-        fields = ['categorie', 'titre', 'contenu', 'start_time', 'end_time', 'asso', 'estModifiable']
+        fields = ['categorie', 'titre', 'contenu', 'start_time', 'end_time', 'asso', 'estModifiable', 'tags']
         widgets = {
             'contenu': SummernoteWidget(),
               'start_time': forms.DateInput(attrs={'type': 'date'}),
@@ -97,7 +97,7 @@ class ArticleForm(forms.ModelForm):
 
         instance.auteur = userProfile
 
-        instance.save(sendMail)
+        instance.save()
 
         return instance
 
@@ -109,7 +109,7 @@ class ArticleChangeForm(forms.ModelForm):
 
     class Meta:
         model = Article
-        fields = ['categorie', 'titre', 'contenu', 'start_time', 'end_time', 'asso', 'estModifiable', 'estArchive']
+        fields = ['categorie', 'titre', 'contenu', 'start_time', 'end_time', 'asso', 'tags', 'estModifiable', 'estArchive']
         widgets = {
             'contenu': SummernoteWidget(),
               'start_time': forms.DateInput(attrs={'class':"date", }),
@@ -145,7 +145,7 @@ class ProjetForm(forms.ModelForm):
                               label="Projet public ou réservé aux adhérents de l'asso :", )
     class Meta:
         model = Projet
-        fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'statut',  'asso',  'start_time']
+        fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'statut',  'asso', 'tags',  'start_time']
         widgets = {
         'contenu': SummernoteWidget(),
               'start_time': forms.DateInput(attrs={'type':'date'}),
@@ -181,7 +181,7 @@ class ProjetChangeForm(forms.ModelForm):
 
     class Meta:
         model = Projet
-        fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'asso', 'lien_document', 'start_time', 'end_time', 'estArchive']
+        fields = ['categorie', 'coresponsable', 'titre', 'contenu', 'asso', 'tags', 'lien_document', 'start_time', 'end_time', 'estArchive']
         widgets = {
             'contenu': SummernoteWidget(),
               'start_time': forms.DateInput(attrs={'class':'date', }),

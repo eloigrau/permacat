@@ -1,0 +1,87 @@
+{% extends "photologue/root.html" %}
+{% load photologue_tags i18n %}
+
+{% block title %}{{ object.title }}{% endblock %}
+
+{% block subtitle %}
+<div class="row ">
+<div class="col-md-3 textcenter">
+        <a href="{{object.public_galleries.0.get_absolute_url}}" class="btn btn-success"><i class="fa fa-arrow-left"></i> Album : {{object.public_galleries.0}}</a>
+</div>
+<div class="col-md-6 textcenter">
+        <h5 class="page-header">Photo : {{ object.title }}</h5>
+            <p class="infos  textepetit">
+
+            <a href="{% url 'profil' object.auteur.id %}">
+                <span class="badge badge-Light">
+                postée par  {{ object.auteur.username }},
+                </span>
+            </a>
+            <span class="badge badge-Light">le {{ object.date_added }}</span>
+            </p>
+
+</div>
+
+<div class="col-sm-3 textright">
+        <p>
+        {%if projet.auteur == request.user or request.user.is_superuser%}
+		<div class="btn-group">
+
+            <a href="{% url 'photologue:modifierPhoto' slug=photo.slug %}">
+               <button type="button" class="btn btn-sm btn-warning">
+               &nbsp;Modifier
+               </button></a>
+            <a href="{% url 'photologue:supprimerPhoto' slug=photo.slug %}">
+               <button type="button" class="btn btn-sm btn-danger">
+               &nbsp;Supprimer
+               </button></a>
+		</div>
+        {%endif%}
+        </p>
+</div>
+</div>
+
+{% endblock %}
+{% block content %}
+
+    <div class="row">
+        <div class="col-sm-1 textcenter my-auto">
+            {% if object.get_previous_in_album %}
+            <a href="{{ object.get_previous_in_album.get_absolute_url }}"><i class="fa fa-arrow-left"></i></a>
+            {% endif %}
+        </div>
+        <div class="col-sm-10 textcenter">
+		    <a href="{{ object.image.url }}">
+		        <img src="{{ object.get_display_url }}" class="thumbnail" alt="{{ object.title }}">
+		    </a>
+        </div>
+        <div class="col-sm-1 textcenter my-auto">
+            {% if object.get_next_in_album %}
+            <a href="{{ object.get_next_in_album.get_absolute_url }}"><i class="fa fa-arrow-right"></i></a>
+             {% endif %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 col-md-8 offset-md-2 ">
+		    {% if object.caption %}
+            <p> <em>Légende :</em>{{ object.caption|safe }}
+            </p>
+            {% endif %}
+        </div>
+    </div>
+
+{% if object.tags.names %}
+<div class="row">
+<div class="col-md-8 offset-md-2">
+    {% if object.tags.names %}
+      <p><em>Mots-clés :</em>
+            {% for tag in object.tags.names %}
+            {{tag}}{%if not forloop.last%}, {%endif%}
+           {% endfor %}
+    </p>
+       {% endif %}
+</div>
+</div>
+{% endif%}
+{% endblock %}

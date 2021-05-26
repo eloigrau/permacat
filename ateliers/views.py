@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
 from django.urls import reverse_lazy
-from .models import Atelier, CommentaireAtelier, Choix, Atelier,InscriptionAtelier
+from .models import CommentaireAtelier, Choix, Atelier, InscriptionAtelier
 from .forms import AtelierForm, CommentaireAtelierForm, AtelierChangeForm, ContactParticipantsForm, CommentaireAtelierChangeForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
@@ -22,7 +22,7 @@ def accueil(request):
 
 @login_required
 def ajouterAtelier(request):
-    form = AtelierForm(request, request.POST or None)
+    form = AlbumForm(request, request.POST or None)
     if form.is_valid():
         atelier = form.save(request)
         action.send(request.user, verb='atelier_nouveau', action_object=atelier, url=atelier.get_absolute_url(),
