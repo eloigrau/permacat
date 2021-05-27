@@ -202,9 +202,9 @@ class ModifierPhoto(UpdateView):
         #envoi_emails_albumouprojet_modifie(self.object, "L'album " +  self.object.titre + "a été modifié", True)
         return HttpResponseRedirect(self.get_success_url())
 
-    def get_form(self,*args, **kwargs):
-        form = super(ModifierPhoto, self).get_form(*args, **kwargs)
-        form.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if self.request.user.estMembre_str(x.abreviation)]
+    #def get_form(self,*args, **kwargs):
+    #    form = super(ModifierPhoto, self).get_form(*args, **kwargs)
+    #    form.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if self.request.user.estMembre_str(x.abreviation)]
 
         return form
 
