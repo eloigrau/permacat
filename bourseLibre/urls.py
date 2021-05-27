@@ -33,9 +33,6 @@ from .settings import MEDIA_ROOT
 admin.sites.site_header ="Admin "
 admin.sites.site_title ="Admin Permacat"
 
-from django.conf.urls.static import static
-
-
 urlpatterns = [
    #url(r'^site_media/(?P<path>.*)$', include('django.views.static.serve'),
    #    {'document_root': MEDIA_ROOT, 'show_indexes': True}),
