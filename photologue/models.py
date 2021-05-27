@@ -553,10 +553,20 @@ class Photo(ImageModel):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('photologue:pl-photo', kwargs={'slug':self.slug})
+        return reverse('photologue:photologue:pl-photo', kwargs={'slug':self.slug})
+
+    def get_album(self):
+        albums = self.albums.filter()
+        if albums:
+            return albums[0]
+        return None
 
     def get_album_url(self):
-        return self.albums.filter()[0].get_absolute_url()
+        album = self.get_album()
+        if album:
+            return album.get_absolute_url()
+        else:
+            return reverse('photologue:photo-list')
 
     def get_asso(self):
         return
@@ -570,7 +580,10 @@ class Photo(ImageModel):
         We assume that the album and all its photos are on the same site.
         """
         if not album:
-            album = self.public_galleries()[0]
+            album = self.get_album()
+        if not album:
+            raise ValueError('Photo does not belong to album.')
+
         photos = album.get_photos()
         if self not in photos:
             raise ValueError('Photo does not belong to album.')
@@ -585,9 +598,9 @@ class Photo(ImageModel):
         We assume that the album and all its photos are on the same site.
         """
         if not album:
-            album = self.public_galleries()[0]
-#        if not self.is_public:
-#            raise ValueError('Cannot determine neighbours of a non-public photo.')
+            album = self.get_album()
+        if not album:
+            raise ValueError('Photo does not belong to album.')
         photos = album.get_photos()
         if self not in photos:
             raise ValueError('Photo does not belong to album.')

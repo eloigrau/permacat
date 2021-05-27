@@ -33,6 +33,8 @@ from .settings import MEDIA_ROOT
 admin.sites.site_header ="Admin "
 admin.sites.site_title ="Admin Permacat"
 
+from django.conf.urls.static import static
+
 
 urlpatterns = [
    #url(r'^site_media/(?P<path>.*)$', include('django.views.static.serve'),
@@ -165,8 +167,10 @@ urlpatterns += [
 ]
 
 from django.conf import settings
+from django.conf.urls.static import static
 if settings.DEBUG:
-    from django.conf.urls.static import static
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+else:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = h404
