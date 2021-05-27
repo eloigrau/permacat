@@ -26,6 +26,7 @@ from django.contrib.auth.decorators import login_required
 
 # admin.autodiscover()
 from django.contrib import admin
+from .settings import MEDIA_ROOT
 
 #from wiki import urls
 
@@ -34,6 +35,8 @@ admin.sites.site_title ="Admin Permacat"
 
 
 urlpatterns = [
+   #url(r'^site_media/(?P<path>.*)$', include('django.views.static.serve'),
+   #    {'document_root': MEDIA_ROOT, 'show_indexes': True}),
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^summernote/', include('django_summernote.urls')),
     url(r'^captcha/', include('bourseLibre.captcha_local.urls')),
