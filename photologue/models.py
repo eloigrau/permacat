@@ -244,7 +244,8 @@ class Album(models.Model):
 class ImageModel(models.Model):
     image = models.ImageField(_('image'),
                               max_length=IMAGE_FIELD_MAX_LENGTH,
-                              upload_to=get_storage_path)
+                              upload_to="photologue")
+                              #upload_to=get_storage_path)
     date_taken = models.DateTimeField(_('date taken'),
                                       null=True,
                                       blank=True,
