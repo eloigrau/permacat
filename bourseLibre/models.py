@@ -116,6 +116,8 @@ class Asso(models.Model):
         return super(Asso, self).save(*args, **kwargs)
 
     def is_membre(self, user):
+        if self.abreviation == "public":
+            return True
         if not getattr(user, "adherent_" + self.abreviation):
             return False
         return True
