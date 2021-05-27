@@ -10,11 +10,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RenameField(
-            model_name='evenement',
-            old_name='titre',
-            new_name='titre_even',
-        ),
         migrations.AlterField(
             model_name='article',
             name='estModifiable',

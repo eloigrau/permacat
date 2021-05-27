@@ -15,4 +15,10 @@ class Migration(migrations.Migration):
             name='jardin',
             field=models.CharField(choices=[('0', 'Tous les jardins'), ('1', 'Jardi Per Tots'), ('2', 'Jardin de Palau'), ('3', 'Jardins de Lurçat')], default='0', max_length=30, verbose_name='Jardin'),
         ),
+
+        migrations.RenameField(
+            model_name='evenement',
+            old_name='titre',
+            new_name='titre_even',
+        ),
     ]
