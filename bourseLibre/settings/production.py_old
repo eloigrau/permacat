@@ -1,0 +1,42 @@
+from . import *
+
+
+SECRET_KEY = '*(&5tv0&)&2$nfirrc7yh1@nuwesj2hc*myl13k#)v#2b4fl2!'
+GAPI_KEY = 'AIzaSyCmGcPj0ti_7aEagETrbJyHPbE3U6gVfSA'
+
+DEBUG = True
+LOCALL = False
+
+ALLOWED_HOSTS = ['82.64.236.35','permacat.majopi.fr','perma.cat', 'www.perma.cat']
+
+GMAIL_SMTP_PASSWORD = "66!Permaiole"
+EMAIL_HOST_PASSWORD = "66!Permaiole"
+SERVER_EMAIL = 'sitepermacat@gmail.com'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'sitepermacat@gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'sitepermacat@gmail.com'
+GMAIL_SMTP_USER = 'sitepermacat@gmail.com'
+EMAIL_SUBJECT_PREFIX = "[PermaCat]"
+
+
+
+DATABASES = {
+
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'site',
+        'USER': 'postgres',
+        'PASSWORD': 'AssociAtionPermAcultureCAtAlAne',
+        'HOST':'82.64.236.35',
+        'PORT': '32770',
+    }
+}
+
+DJANGO_ADMIN_LOGS_ENABLED = True
+EMAIL_USE_LOCALTIME = True
+
+
+print('Production ok')
