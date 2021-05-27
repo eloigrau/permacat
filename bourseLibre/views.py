@@ -90,10 +90,10 @@ def handler400(request, *args, **kwargs):   #requete invalide
     return response
 
 
-def tropGros(request):   #fichier trop gros
-    response = render(request, "513.html")
-    response.status_code = 513
-    return response
+#def tropGros(request):   #fichier trop gros
+  #  response = render(request, "513.html")
+ #   response.status_code = 513
+ #   return response
 
 def getEvenementsSemaine(request):
     current_week = date.today().isocalendar()[1]
