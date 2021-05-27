@@ -16,7 +16,7 @@
 			<h4>{% trans "Filter by year" %}</h4>
 			<ul>
 			{% for date in date_list %}
-				<li><a href="{% url 'photologue:pl-photo-archive-year' date.year %}">{{ date|date:"Y" }}</a></li>
+				<li><a href="{% url 'photologue:photo-archive-year' date.year %}">{{ date|date:"Y" }}</a></li>
 			{% endfor %}
 			</ul>
 

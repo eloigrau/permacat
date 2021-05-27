@@ -194,7 +194,7 @@ class Album(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('photologue:pl-album', args=[self.slug])
+        return reverse('photologue:album', args=[self.slug])
 
     def get_photos(self):
         return self.photos.all()
@@ -553,7 +553,7 @@ class Photo(ImageModel):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('photologue:photologue:pl-photo', kwargs={'slug':self.slug})
+        return reverse('photologue:photo', kwargs={'slug':self.slug})
 
     def get_album(self):
         albums = self.albums.filter()
