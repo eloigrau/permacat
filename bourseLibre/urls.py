@@ -42,7 +42,7 @@ urlpatterns = [
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^summernote/', include('django_summernote.urls')),
     url(r'^captcha/', include('bourseLibre.captcha_local.urls')),
-    url(r'^photologue/', include('photologue.urls', namespace='photologue')),
+    url(r'^photol/', include('photologue.urls', namespace='photologue')),
     path(r'agenda/', include('cal.urls')),
     url('^', include('django.contrib.auth.urls')),
     url(r'^$', views.bienvenue, name='bienvenue'),
