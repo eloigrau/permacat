@@ -167,7 +167,7 @@ class ProfilCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm):
         model = Profil
-        fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'adherent_pc', 'adherent_rtg','adherent_fer', 'inscrit_newsletter', 'accepter_annuaire',  'accepter_conditions']
+        fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'adherent_pc', 'adherent_rtg','adherent_fer', 'adherent_gt', 'inscrit_newsletter', 'accepter_annuaire',  'accepter_conditions']
         exclude = ['slug', ]
 
 
