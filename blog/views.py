@@ -647,7 +647,7 @@ def suivre_articles(request, actor_only=True):
         actions.unfollow(request.user, suivi, send_action=False)
     else:
         actions.follow(request.user, suivi, actor_only=actor_only, send_action=False)
-    return redirect('blog:index')
+    return redirect('blog:acceuil')
 
 @login_required
 @csrf_exempt

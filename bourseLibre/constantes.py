@@ -49,3 +49,5 @@ class Choix():
     type_asso = ('0', 'public'), ('1', "Permacat"), ('2', "Ramene Ta Graine") ,  #+ ((str(1+i), x.nom) for i, x in enumerate(asso))
 
     abreviationsAsso = ["pc", "rtg", "fer", "gt"]
+
+    suivisPossibles = ['produits', 'articles', 'projets', 'conversations', 'suffrages']
