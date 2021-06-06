@@ -27,9 +27,9 @@
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso' %}"> Présentation</a></li>
    {% if request.user.adherent_pc %}
                         <li> <a class="dropdown-item" href="{% url 'agora' asso='pc'%}"><i class='fa fa-asterisk' ></i>  Salon de discussion</a></li>
-    {% endif %}
-                         <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='pc'%}"><i class='fa fa-comments' ></i> Articles du forum</a></li>
 
+                         <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='pc'%}"><i class='fa fa-comments' ></i> Articles du forum</a></li>
+    {% endif %}
 
                     {%comment%}
                             <li class="divider" role="separator"></li>
