@@ -147,8 +147,9 @@ def ajouterAlbum(request):
     form = AlbumForm(request, request.POST or None)
     if form.is_valid():
         album = form.save(request)
-        #action.send(request.user, verb='album_nouveau', action_object=album, url=album.get_absolute_url(),
-         #            description="a ajouté l'album: '%s'" % album.title)
+        suffix = "_" + album.asso.abreviation
+        action.send(request.user, verb='album_nouveau' + suffix, action_object=album, url=album.get_absolute_url(),
+                    description="a ajouté l'album: '%s'" % album.title)
         return redirect(album.get_absolute_url())
     return render(request, 'photologue/album_ajouter.html', { "form": form, })
 

@@ -11,6 +11,7 @@ class BourseLibreConfig(AppConfig):
         from ateliers.models import Atelier, InscriptionAtelier
         from fiches.models import Fiche, Atelier as fiche_at
         from vote.models import Suffrage
+        from photologue.models import Album
         registry.register(self.get_model('Profil'))
         registry.register(self.get_model('MessageGeneral'))
         registry.register(self.get_model('Produit'))
@@ -31,3 +32,4 @@ class BourseLibreConfig(AppConfig):
         registry.register(Projet)
         registry.register(Group)
         registry.register(Suffrage)
+        registry.register(Album)
