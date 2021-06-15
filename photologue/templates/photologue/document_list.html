@@ -90,6 +90,11 @@
             </p>
         {% endif%}
         <p class="card-text bg-light" style="transform: rotate(0);">
+            <button class="btn btn-succes stretched-link" onclick="copyToClipboard('https://www.perma.cat{{doc.doc.url}}')"><i class="fa fa-link" aria-hidden="true"></i>  Copier le lien</button>
+
+        </p>
+
+        <p class="card-text bg-light" style="transform: rotate(0);">
                     <a href="{{doc.doc.url}}" class="btn btn-succes stretched-link"><i class="fa fa-download" aria-hidden="true"></i> Télécharger ({{ doc.doc.size|filesizeformat }})</a>
         </p>
                   {% if request.user ==  doc.auteur or request.user.is_superuser %}
@@ -112,5 +117,15 @@
     {% else %}
         <div class="row col-lg-12">Pas de documents</div>
     {% endif %}
-    
+
+<script>
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+      console.log('Async: Copying to clipboard was successful!');
+    }, function(err) {
+      console.error('Async: Could not copy text: ', err);
+    });
+}
+</script>
 {% endblock %}
