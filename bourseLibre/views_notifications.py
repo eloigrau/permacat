@@ -467,13 +467,14 @@ def envoyerEmailsRequete(request):
     return redirect('voirEmails', )
 
 def envoyerEmails():
+    print('Récupération des mails')
     listeMails = getListeMailsAlerte()
 
     print('Envoi des mails' + str(listeMails))
     send_mass_html_mail(listeMails, fail_silently=False)
     print('Suppression des alertes')
     supprimerActionsEmails()
-    supprimerActionsStartedFollowing()
+    #supprimerActionsStartedFollowing()
     print('Fait')
 
 def envoyerEmailstest():
