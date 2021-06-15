@@ -36,12 +36,19 @@ urlpatterns = [
 
     url(r'^photo/(?P<slug>[\-\d\w]+)/$', views.PhotoDetailView.as_view(), name='photo'),
     url(r'^photolist/$', views.PhotoListView.as_view(), name='photo-list'),
+    url(r'^doclist/$', views.DocListView.as_view(), name='doc-list'),
     url(r'^ajouterPhoto/(?P<albumSlug>[\-\d\w]+)$', login_required(views.ajouterPhoto), name='ajouterPhoto'),
     url(r'^ajouterAlbum/$', login_required(views.ajouterAlbum), name='ajouterAlbum'),
+    url(r'^ajouterDocument/$', login_required(views.ajouterDocument), name='ajouterDocument'),
 
     url(r'^modifierAlbum/(?P<slug>[\-\d\w]+)$', login_required(views.ModifierAlbum.as_view(), login_url='/auth/login/'), name='modifierAlbum'),
     url(r'^supprimerAlbum/(?P<slug>[\-\d\w]+)$', login_required(views.SupprimerAlbum.as_view(), login_url='/auth/login/'), name='supprimerAlbum'),
     url(r'^modifierPhoto/(?P<slug>[\-\d\w]+)$', login_required(views.ModifierPhoto.as_view(), login_url='/auth/login/'), name='modifierPhoto'),
     url(r'^supprimerPhoto/(?P<slug>[\-\d\w]+)$', login_required(views.SupprimerPhoto.as_view(), login_url='/auth/login/'), name='supprimerPhoto'),
+
+    url(r'^supprimerDocument/(?P<slug>[\-\d\w]+)$',
+        login_required(views.SupprimerDocument.as_view(), login_url='/auth/login/'), name='supprimerDocument'),
+
+    url(r'^telechargerDocument/(?P<slug>[\-\d\w]+)$',login_required(views.telechargerDocument), name='telechargerDocument'),
 
 ]

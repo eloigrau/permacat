@@ -63,7 +63,7 @@ class Article(models.Model):
     categorie = models.CharField(max_length=30,         
         choices=(Choix.type_annonce + Choix.type_annonce_projets),
         default='Annonce', verbose_name="categorie")
-    titre = models.CharField(max_length=100,)
+    titre = models.CharField(max_length=250,)
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
     slug = models.SlugField(max_length=100)
     contenu = models.TextField(null=True)
@@ -202,7 +202,7 @@ class Projet(models.Model):
     statut = models.CharField(max_length=5,
         choices=(Choix.statut_projet ),
         default='prop', verbose_name="statut")
-    titre = models.CharField(max_length=100)
+    titre = models.CharField(max_length=250)
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
     slug = models.SlugField(max_length=100)
     contenu = models.TextField(null=True)

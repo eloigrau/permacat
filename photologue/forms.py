@@ -16,7 +16,7 @@ from django.utils.encoding import force_text
 from django.template.defaultfilters import slugify
 from django.core.files.base import ContentFile
 
-from .models import Album, Photo
+from .models import Album, Photo, Document
 from bourseLibre.models import Asso
 from django_summernote.widgets import SummernoteWidget
 from django.utils.text import slugify
@@ -261,3 +261,41 @@ class PhotoChangeForm(forms.ModelForm):
         widgets = {
             'caption': SummernoteWidget(),
         }
+
+
+class DocumentForm(forms.ModelForm):
+    doc = forms.FileField(
+        label='Choisir un fichier',
+        help_text='max. 42 megabytes'
+    )
+
+    asso = forms.ModelChoiceField(queryset=Asso.objects.all(), required=True,
+                              label="Document public ou réservé aux adhérents de l'asso :", )
+
+    class Meta:
+        model = Document
+        fields = [ 'titre', 'doc', 'tags', 'asso']
+
+    def __init__(self, request, *args, **kwargs):
+        super(DocumentForm, self).__init__(*args, **kwargs)
+        self.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if request.user.estMembre_str(x.abreviation)]
+
+    def save(self, request, commit=True):
+        instance = super(DocumentForm, self).save(commit=False)
+        max_length = Photo._meta.get_field('slug').max_length
+        instance.slug = orig = slugify(instance.titre)[:max_length]
+
+        for x in itertools.count(1):
+            if not Photo.objects.filter(slug=instance.slug).exists():
+                break
+
+            # Truncate the original slug dynamically. Minus 1 for the hyphen.
+            instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
+
+        instance.auteur = request.user
+
+        if commit:
+            instance.save()
+
+
+        return instance

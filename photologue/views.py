@@ -3,9 +3,9 @@ from django.views.generic.dates import ArchiveIndexView, DateDetailView, DayArch
 from django.views.generic.detail import DetailView
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
-from .models import Photo, Album
+from .models import Photo, Album, Document
 from django.shortcuts import render, redirect
-from .forms import PhotoForm, AlbumForm, PhotoChangeForm, AlbumChangeForm
+from .forms import PhotoForm, AlbumForm, PhotoChangeForm, AlbumChangeForm, DocumentForm
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from bourseLibre.constantes import Choix as Choix_global
@@ -74,7 +74,6 @@ class PhotoListView(ListView):
 
         return  qs
 
-
 class PhotoDetailView(DetailView):
     queryset = Photo.objects.on_site()
 
@@ -82,6 +81,20 @@ class PhotoDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['galleries'] = "test"
         return context
+
+
+
+class DocListView(ListView):
+    paginate_by = 20
+
+    def get_queryset(self):
+        qs = Document.objects.all()
+
+        for nomAsso in Choix_global.abreviationsAsso:
+            if not getattr(self.request.user, "adherent_" + nomAsso):
+                qs = qs.exclude(asso__abreviation=nomAsso)
+
+        return qs
 
 
 class PhotoDateView:
@@ -218,3 +231,37 @@ class SupprimerPhoto(DeleteView):
 
     def get_success_url(self):
         return self.object.get_album_url()
+
+@login_required
+def telechargerDocument(request, slug):
+    doc = get_object_or_404(Document, slug=slug)
+    return render(doc.get_absolute_url())
+
+@login_required
+def ajouterDocument(request):
+    # Handle file upload
+    if request.method == 'POST':
+        form = DocumentForm(request, request.POST, request.FILES)
+        if form.is_valid():
+            doc = form.save(request)
+
+            # Redirect to the document list after POST
+            return HttpResponseRedirect(reverse_lazy("photologue:doc-list"))
+    else:
+        form = DocumentForm(request) # A empty, unbound form
+
+    # Render list page with the documents and the form
+    return render(request, 'photologue/document_ajouter.html', { "form": form})
+
+
+
+class SupprimerDocument(DeleteView):
+    model = Document
+    template_name_suffix = '_supprimer'
+#    fields = ['user','site_web','description', 'competences', 'adresse', 'avatar', 'inscrit_newsletter']
+
+    def get_object(self):
+        return Document.objects.get(slug=self.kwargs['slug'])
+
+    def get_success_url(self):
+        return reverse_lazy("photologue:doc-list")

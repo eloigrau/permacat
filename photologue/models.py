@@ -241,10 +241,35 @@ class Album(models.Model):
          return self.photos.all()
 
 
+class Document(models.Model):
+    doc = models.FileField( 'Document',
+                            max_length=IMAGE_FIELD_MAX_LENGTH,
+                            upload_to='documents/%Y/%m/%d', )
+
+    titre = models.CharField(_('titre'),
+                             max_length=250,
+                             unique=True)
+    slug = models.SlugField(_('slug'),
+                            unique=True,
+                            max_length=250,
+                            help_text=_('A "slug" is a unique URL-friendly title for an object.'))
+    date_creation = models.DateTimeField(_("date d'ajout"), auto_now_add =True)
+    auteur = models.ForeignKey(Profil, on_delete=models.CASCADE, null=True)
+    asso = models.ForeignKey(Asso, on_delete=models.SET_NULL, null=True)
+    tags = TaggableManager(verbose_name="Mots clés", help_text="Liste de mots-clés séparés par une virgule", blank=True)
+
+
+    def __str__(self):
+        return self.titre + " (" + str(self.doc) +")"
+
+    def get_delete_url(self):
+        return reverse("photologue:supprimerDocument", kwargs={"slug":self.slug})
+
 class ImageModel(models.Model):
     image = models.ImageField(_('image'),
                               max_length=IMAGE_FIELD_MAX_LENGTH,
-                              upload_to="photologue")
+                              upload_to="photologue",
+                              help_text = 'max. 5 Mo')
                               #upload_to=get_storage_path)
     date_taken = models.DateTimeField(_('date taken'),
                                       null=True,
@@ -566,7 +591,7 @@ class Photo(ImageModel):
         if album:
             return album.get_absolute_url()
         else:
-            return reverse('photologue:photo-list')
+            return reverse('photologue:album-list')
 
     def get_asso(self):
         return

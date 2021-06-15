@@ -367,6 +367,10 @@ SUMMERNOTE_CONFIG = {
       "link": [
         ['link', ['linkDialogShow', 'unlink']]
       ],
+    "table": [
+            ['add', ['addRowDown', 'addRowUp', 'addColLeft', 'addColRight']],
+            ['delete', ['deleteRow', 'deleteCol', 'deleteTable']],
+          ],
       "air": [
         ['color', ['color']],
         ['font', ['bold', 'underline', 'clear']],

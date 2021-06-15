@@ -10,8 +10,7 @@ from django.shortcuts import render
 from django.utils.translation import ungettext, ugettext_lazy as _
 
 from .forms import UploadZipForm
-from .models import Album, Photo, PhotoEffect, PhotoSize, \
-    Watermark
+from .models import Album, Photo, PhotoEffect, PhotoSize, Document, Watermark
 
 MULTISITE = getattr(settings, 'PHOTOLOGUE_MULTISITE', False)
 
@@ -266,3 +265,5 @@ class WatermarkAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Watermark, WatermarkAdmin)
+
+admin.site.register(Document)
