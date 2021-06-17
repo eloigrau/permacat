@@ -86,7 +86,7 @@ def getNotificationsParDate(request, limiter=True, orderBy="-timestamp"):
     if request.user.adherent_gt:
         actions = actions | Action.objects.filter(Q(verb__icontains='gt'))
 
-    actions = actions.distinct().order_by(orderBy)
+    actions = actions.order_by(orderBy).distinct()
 
     actions = [art for i, art in enumerate(actions) if i == 0 or not (art.description == actions[i-1].description and art.actor == actions[i-1].actor ) ][:50]
 
