@@ -113,7 +113,7 @@ def getNbNewNotifications(request):
     actions = getNotificationsParDate(request)
     dateMin = request.user.date_notifications.date() if request.user.date_notifications.date() > datetime.now().date() - timedelta(days=15) else datetime.now().date() - timedelta(days=15)
 
-    actions = [action for action in actions if dateMin < action.timestamp]
+    actions = [action for action in actions if dateMin < action.timestamp.date()]
 
     return len(actions)
 
