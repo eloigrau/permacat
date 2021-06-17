@@ -86,11 +86,12 @@ def getNotificationsParDate(request, limiter=True, orderBy="-timestamp"):
     if request.user.adherent_gt:
         actions = actions | Action.objects.filter(Q(verb__icontains='gt'))
 
-    actions = actions.order_by(orderBy)
+    actions = actions.order_by(orderBy).distinct()
 
     if limiter:
         actions=actions[:100]
     actions = [art for i, art in enumerate(actions) if i == 0 or not (art.description == actions[i-1].description and art.actor == actions[i-1].actor ) ][:50]
+
 
     return actions
 
@@ -98,14 +99,24 @@ def getNotificationsParDate(request, limiter=True, orderBy="-timestamp"):
 @login_required
 def get_notifications_news(request):
     actions = getNotificationsParDate(request)
-    dateMin = request.user.date_notifications.date() #if request.user.date_notifications.date() > datetime.now().date() - timedelta(days=15) else datetime.now().date() - timedelta(days=15)
+    dateMin = request.user.date_notifications.date() if request.user.date_notifications.date() > datetime.now().date() - timedelta(days=15) else datetime.now().date() - timedelta(days=15)
 
     actions = [action for action in actions if dateMin < action.timestamp.date()]
     return actions
 
 @login_required
-def getNbNewNotifications(request):
+def getNbNewNotifications_test(request):
     return len(get_notifications_news(request))
+
+@login_required
+def getNbNewNotifications(request):
+    actions = getNotificationsParDate(request)
+    dateMin = request.user.date_notifications.date() if request.user.date_notifications.date() > datetime.now().date() - timedelta(days=15) else datetime.now().date() - timedelta(days=15)
+
+    actions = [action for action in actions if dateMin < action.timestamp]
+
+    return len(actions)
+
 
 def raccourcirTempsStr(date):
     new = date.replace("heures","h")
