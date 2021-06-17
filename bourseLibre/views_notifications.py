@@ -105,7 +105,7 @@ def get_notifications_news(request, limiter=True):
 
 @login_required
 def getNbNewNotifications(request):
-    return len(get_notifications_news(request, limiter=False))
+    return len(get_notifications_news(request))
 
 def raccourcirTempsStr(date):
     new = date.replace("heures","h")
