@@ -97,8 +97,8 @@ def getNotificationsParDate(request, limiter=True, orderBy="-timestamp"):
 
 
 @login_required
-def get_notifications_news(request):
-    actions = getNotificationsParDate(request)
+def get_notifications_news(request, limiter=True):
+    actions = getNotificationsParDate(request, limiter)
     dateMin = request.user.date_notifications.date() if request.user.date_notifications.date() > datetime.now().date() - timedelta(days=15) else datetime.now().date() - timedelta(days=15)
     actions = [action for action in actions if dateMin < action.timestamp.date()]
     return actions
