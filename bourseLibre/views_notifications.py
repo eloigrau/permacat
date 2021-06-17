@@ -88,9 +88,10 @@ def getNotificationsParDate(request, limiter=True, orderBy="-timestamp"):
 
     actions = actions.distinct().order_by(orderBy)
 
+    actions = [art for i, art in enumerate(actions) if i == 0 or not (art.description == actions[i-1].description and art.actor == actions[i-1].actor ) ][:50]
+
     if limiter:
         actions=actions[:100]
-    actions = [art for i, art in enumerate(actions) if i == 0 or not (art.description == actions[i-1].description and art.actor == actions[i-1].actor ) ][:50]
 
     return actions
 
@@ -99,13 +100,12 @@ def getNotificationsParDate(request, limiter=True, orderBy="-timestamp"):
 def get_notifications_news(request):
     actions = getNotificationsParDate(request)
     dateMin = request.user.date_notifications.date() if request.user.date_notifications.date() > datetime.now().date() - timedelta(days=15) else datetime.now().date() - timedelta(days=15)
-
     actions = [action for action in actions if dateMin < action.timestamp.date()]
     return actions
 
 @login_required
 def getNbNewNotifications(request):
-    return len(get_notifications_news(request))
+    return len(get_notifications_news(request, limiter=False))
 
 def raccourcirTempsStr(date):
     new = date.replace("heures","h")
