@@ -109,7 +109,7 @@ def getNbNewNotifications_test(request):
     return len(get_notifications_news(request))
 
 @login_required
-def getNbNewNotifications(request):
+def getNbNewNotifications_test2(request):
     try:
         actions = getNotificationsParDate(request)
         dateLimite = datetime.now().date() - timedelta(days=15)
@@ -120,6 +120,14 @@ def getNbNewNotifications(request):
         return 0
 
     return len(actions)
+
+@login_required
+def getNbNewNotifications(request):
+    actions = getNotificationsParDate(request)
+    actions = [action for action in actions if request.user.date_notifications < action.timestamp]
+
+    return len(actions)
+
 
 
 def raccourcirTempsStr(date):
@@ -308,6 +316,7 @@ def changerDateNotif(request):
 
 def getListeMailsAlerte():
     actions = Action.objects.filter(verb='emails')
+    print('Nb ctions : '+ str(len(actions)))
     messagesParMails = {}
     for action in actions:
         for mail in action.data['emails']:
