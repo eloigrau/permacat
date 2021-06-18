@@ -21,8 +21,12 @@ sudo service nginx status
 sudo service nginx configtest
 sudo nano /etc/nginx/sites-enabled/permacat
 
-pg_restore -U postgres -h 82.64.236.35 -p 32770 -c -d site data.dump
+#pg_restore -U postgres -h 82.64.236.35 -p 32770 -c -d site data.dump
+pg_dump -h 82.64.236.35 -p 32770 -U postgres -F c -b -v -d -f site permacat.dump
 psql -U postgres -h 82.64.236.35 -p 32770
+##scp -P 32770 udjango@82.64.236.35:/home/udjango/permacat/permacat.dump ./permacat.dump
+##rsync -arvz -e 'ssh -p 32770' --progress udjango@82.64.236.35:/home/udjango/permacat/permacat.dump ./permacat.dump
+
 
 
 cd /home/udjango/permacat

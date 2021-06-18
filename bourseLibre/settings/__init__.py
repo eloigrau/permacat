@@ -459,9 +459,10 @@ BOWER_INSTALLED_APPS = (
 #]
 
 CRONJOBS = [
-    ('0 6 * * *', 'bourseLibre.views_notifications.envoyerEmails',['bourseLibre'], {}, ' --settings=bourseLibre.settings.production >> /home/udjango/cron-envoimails-Logs.log')
+    ('0 6 * * *', 'bourseLibre.views_notifications.envoyerEmails',['bourseLibre'], {}, ' --settings=bourseLibre.settings.production >> /home/udjango/cron-envoimails-Logs.log 2>&1')
 ]
-CRONTAB_COMMAND_SUFFIX = '2>&1'
+#CRONTAB_COMMAND_SUFFIX = '2>&1'
+CRONTAB_DJANGO_SETTINGS_MODULE = "bourseLibre.settings.production"
 
 #PHOTOLOGUE_PATH = MEDIA_ROOT + "photologue/"
 
