@@ -112,7 +112,7 @@ def getNbNewNotifications_test(request):
 def getNbNewNotifications(request):
     try:
         actions = getNotificationsParDate(request)
-        dateLimite =  datetime.now().date() - timedelta(days=15)
+        dateLimite = datetime.now().date() - timedelta(days=15)
         dateMin = request.user.date_notifications.date() if request.user.date_notifications.date() > dateLimite else dateLimite
 
         actions = [action for action in actions if dateMin < action.timestamp.date()]
