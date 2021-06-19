@@ -117,7 +117,7 @@ class ArticleChangeForm(forms.ModelForm):
 
 class ArticleAddAlbum(forms.ModelForm):
     album = forms.ModelChoiceField(queryset=Album.objects.all(), required=True,
-                              label="Choisir l'album photo à associer", )
+                              label="Si l'album existe déjà sur le site, choisissez l'album photo à associer ci-dessous", )
 
     class Meta:
         model = Article
