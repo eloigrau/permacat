@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from bourseLibre.constantes import Choix as Choix_global
 from bourseLibre.views import testIsMembreAsso
-
+from blog.models import Article
 from django.core.exceptions import PermissionDenied
 from actstream import actions, action
 from django.utils.timezone import now
@@ -32,6 +32,11 @@ class AlbumListView(ListView):
 
 class AlbumDetailView(DetailView):
     queryset = Album.objects.on_site()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['articles'] = Article.objects.filter(album=self.object)
+        return context
 
 
 class AlbumDateView:

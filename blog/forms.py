@@ -2,13 +2,12 @@ from django import forms
 from .models import Article, Commentaire, Projet, CommentaireProjet, Evenement
 from django.utils.text import slugify
 import itertools
-#from django.utils.formats import localize
-#from tinymce.widgets import TinyMCE
-from django_summernote.widgets import SummernoteWidget, SummernoteWidgetBase, SummernoteInplaceWidget
+from django_summernote.widgets import SummernoteWidget
 from django.urls import reverse
 from bourseLibre.settings import SUMMERNOTE_CONFIG as summernote_config
 from bourseLibre.models import Asso
 from django.contrib.staticfiles.templatetags.staticfiles import static
+from photologue.models import Album
 
 
 class SummernoteWidgetWithCustomToolbar(SummernoteWidget):
@@ -109,12 +108,21 @@ class ArticleChangeForm(forms.ModelForm):
 
     class Meta:
         model = Article
-        fields = ['categorie', 'titre', 'contenu', 'start_time', 'end_time', 'asso', 'tags', 'estModifiable', 'estArchive']
+        fields = ['categorie', 'titre', 'contenu', 'album', 'start_time', 'end_time', 'asso', 'tags', 'estModifiable', 'estArchive']
         widgets = {
             'contenu': SummernoteWidget(),
               'start_time': forms.DateInput(attrs={'class':"date", }),
               'end_time': forms.DateInput(attrs={'class':'date', }),
         }
+
+class ArticleAddAlbum(forms.ModelForm):
+    album = forms.ModelChoiceField(queryset=Album.objects.all(), required=True,
+                              label="Choisir l'album à associer", )
+
+    class Meta:
+        model = Article
+        fields = ['album',]
+
 
 class CommentaireArticleForm(forms.ModelForm):
 

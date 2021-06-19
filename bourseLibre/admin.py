@@ -37,7 +37,7 @@ class ArticleAdmin(admin.ModelAdmin):
 class Article_jardinAdmin(admin.ModelAdmin):
         list_display = ('titre', 'jardin', 'categorie', 'estArchive', )
 class ProjetAdmin(admin.ModelAdmin):
-    list_display = ('titre', 'estPublic', 'estArchive')
+    list_display = ('titre', 'estArchive')
 class ProduitAdmin(admin.ModelAdmin):
     list_display = ('nom_produit', 'categorie', 'estUneOffre', 'asso', 'unite_prix')
 class Adhesion_permacatAdmin(admin.ModelAdmin):

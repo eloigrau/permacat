@@ -33,6 +33,16 @@
            {% endfor %}
     </p>
     {% endif%}
+    {{articles}}
+        {% if articles %}
+    {% with total=articles.count %}
+    <p><em>Article{{total|pluralize:"s"}} associé{{total|pluralize:"s"}} : </em>
+    {%endwith%}
+            {% for article in articles %}
+        <a href="{{article.get_absolute_url}}">{{article.titre|truncatechars:10}}</a>{%if not forloop.last%}, {%endif%}
+           {% endfor %}
+    </p>
+    {% endif%}
     {% if album.auteur == request.user or request.user.is_superuser or album.estModifiable %}
     <hr>
 

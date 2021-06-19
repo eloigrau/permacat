@@ -6,6 +6,7 @@ from actstream import action
 from actstream.models import followers
 from bourseLibre.settings import LOCALL
 from taggit.managers import TaggableManager
+from photologue.models import Album
 
 class Choix():
     statut_projet = ('prop','Proposition de projet'), ("AGO","Fiche projet soumise à l'AGO"), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
@@ -82,6 +83,8 @@ class Article(models.Model):
     end_time = models.DateTimeField(verbose_name="Date de fin (optionnel, pour affichage dans l'agenda)",  null=True,blank=True, help_text="jj/mm/année")
 
     tags = TaggableManager(verbose_name="Mots clés",  help_text="Liste de mots-clés séparés par une virgule", blank=True)
+
+    album = models.ForeignKey(Album, on_delete=models.SET_NULL, null=True)
 
     class Meta:
         ordering = ('-date_creation', )

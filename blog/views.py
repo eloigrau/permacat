@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRe
 from django.urls import reverse_lazy
 from django.utils.html import strip_tags
 from .models import Article, Commentaire, Projet, CommentaireProjet, Choix, Evenement,Asso
-from .forms import ArticleForm, CommentaireArticleForm, CommentaireArticleChangeForm, ArticleChangeForm, ProjetForm, \
+from .forms import ArticleForm, ArticleAddAlbum, CommentaireArticleForm, CommentaireArticleChangeForm, ArticleChangeForm, ProjetForm, \
     ProjetChangeForm, CommentProjetForm, CommentaireProjetChangeForm, EvenementForm, EvenementArticleForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
@@ -112,6 +112,32 @@ class ModifierArticle(UpdateView):
         form = super(ModifierArticle, self).get_form(*args, **kwargs)
         form.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if self.request.user.estMembre_str(x.abreviation)]
 
+        return form
+
+# @login_required
+class ArticleAddAlbum(UpdateView):
+    model = Article
+    form_class = ArticleAddAlbum
+    template_name_suffix = '_ajouteralbum'
+#    fields = ['user','site_web','description', 'competences', 'adresse', 'avatar', 'inscrit_newsletter']
+
+    def get_object(self):
+        return Article.objects.get(slug=self.kwargs['slug'])
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.date_modification = now()
+        self.object.save(sendMail=False)
+        if not self.object.estArchive:
+            url = self.object.get_absolute_url()
+            suffix = "_" + self.object.asso.abreviation
+            action.send(self.request.user, verb='article_modifier'+suffix, action_object=self.object, url=url,
+                         description="a ajouté un album à l'article: '%s'" % self.object.titre)
+        #envoi_emails_articleouprojet_modifie(self.object, "L'article " +  self.object.titre + "a été modifié", True)
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_form(self,*args, **kwargs):
+        form = super(ArticleAddAlbum, self).get_form(*args, **kwargs)
         return form
 
 class SupprimerArticle(DeleteView):

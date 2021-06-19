@@ -173,6 +173,8 @@
 
         {% endif %}
 
+
+
         {% if article.tags.names %}
             <button type="button" class="btn" data-toggle="modal" data-target="#tags">
               # Mots-clés
@@ -203,6 +205,31 @@
         {% endif %}
     </div>
 </div>
+    {%if not article.album %}
+        {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
+    <p><a class="btn btn-success" href="{% url 'blog:ajouterAlbumArticle' slug=article.slug %}" ><i class="fa fa-plus"></i> Ajouter un album photo</a></p>
+        {% endif%}
+    {%else%}
+    <div class="row ">
+            <div class="col-sm-12 d-flex justify-content-around">
+                <div>
+                {% for photo in article.album.sample %}
+                    <a href="{{ photo.get_absolute_url }}">
+                         <img src="{{ photo.get_thumbnail_url }}" class="thumbnail" alt="{{ photo.title }}">
+                    </a>
+                {% endfor %}
+                    </div>
+                <div class="my-auto">
+                    {% if article.album.photo_count > 5 %}
+                    +...
+                    {% endif %}
+                    <a class="btn btn-info" href="{{ article.album.get_absolute_url }}"><i class="fa fa-arrow-right"></i> Voir l'album photo</a></p>
+
+                    </div>
+                </div>
+            </div>
+    {%endif%}
+
 <div class="row">
 <div class="col-sm-12 contenuarticle">
    {{ article.contenu |safe}}
