@@ -84,7 +84,7 @@ class Article(models.Model):
 
     tags = TaggableManager(verbose_name="Mots clés",  help_text="Liste de mots-clés séparés par une virgule", blank=True)
 
-    album = models.ForeignKey(Album, on_delete=models.SET_NULL, null=True)
+    album = models.ForeignKey(Album, on_delete=models.SET_NULL, null=True, blank=True, )
 
     class Meta:
         ordering = ('-date_creation', )
