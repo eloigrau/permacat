@@ -18,6 +18,7 @@ from django.core.files.base import ContentFile
 
 from .models import Album, Photo, Document
 from bourseLibre.models import Asso
+from blog.models import Article
 from django_summernote.widgets import SummernoteWidget
 from django.utils.text import slugify
 import itertools
@@ -180,10 +181,12 @@ class UploadZipForm(forms.Form):
 class AlbumForm(forms.ModelForm):
     asso = forms.ModelChoiceField(queryset=Asso.objects.all(), required=True,
                               label="Album public ou réservé aux adhérents de l'asso :", )
+    article = forms.ModelChoiceField(queryset=Article.objects.all(), required=False, empty_label=True,
+                              label="Associer l'album à un article du forum ?",)
 
     class Meta:
         model = Album
-        fields = ['title', 'description', 'asso', 'tags', 'estModifiable', ]
+        fields = ['title', 'description', 'asso', 'tags', 'article', 'estModifiable', ]
         widgets = {
             'caption': SummernoteWidget(),
         }
@@ -203,11 +206,17 @@ class AlbumForm(forms.ModelForm):
         instance.auteur = request.user
         instance.save()
 
+        if self.cleaned_data['article']:
+            art = Article.objects.get(titre=self.cleaned_data['article'])
+            art.album = instance
+            art.save()
+
         return instance
 
     def __init__(self, request, *args, **kwargs):
         super(AlbumForm, self).__init__(*args, **kwargs)
         self.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if request.user.estMembre_str(x.abreviation)]
+        self.fields["article"].choices = [('', '(non)')] + [(x.id, x.titre) for i, x in enumerate(Article.objects.filter(estArchive=False).order_by('titre')) if request.user.estMembre_str(x.asso.abreviation)]
 
 
 class AlbumChangeForm(forms.ModelForm):

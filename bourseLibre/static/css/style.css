@@ -1606,35 +1606,3 @@ position: absolute;
     min-width: 10px;
 }
 }
-
-.sti_container {
-  position: relative;
-}
-
-.boutonTexte {
-  position: relative;
-  display: inline-block;
-  padding: 15px;
-  background-color: blue;
-  cursor: pointer;
-  outline: none;
-  border: 0;
-  vertical-align: middle;
-  text-decoration: none;
-  color: #fff;
-  border-radius: 25px;
-  -webkit-transition: width 0.5s;
-  transition: width 0.5s;
-}
-
-.boutonTexte .btn-text {
-  max-width: 0;
-  display: inline-block;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.boutonTexte:hover .btn-text {
-  max-width: 300px;
-  color: white;
-}

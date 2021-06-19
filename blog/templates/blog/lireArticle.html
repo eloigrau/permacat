@@ -107,7 +107,7 @@
     </p>
         {% endif %}
  </div>
-<div class="col-sm-12 col-md-2 textcenter" >
+<div class="col-sm-12 col-md-2 " >
     <div class="dropdown">
        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="menuarticle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
           plus d'infos...
@@ -116,13 +116,13 @@
       <ul class="dropdown-menu" aria-labelledby="menuarticle">
 
         <li>
-            <button type="button" class="btn" data-toggle="modal" data-target="#dates">
+            <button type="button" class="btn textleft" data-toggle="modal" data-target="#dates">
                  {% fontawesome_icon 'calendar' %} Dates {%if article.start_time %}supplémentaires{%endif%}
                 </button>
         </li>
          {% if actions %}
           <li>
-                <button type="button" class="btn" data-toggle="modal" data-target="#historique">
+                <button type="button" class="btn textleft" data-toggle="modal" data-target="#historique">
                   {% fontawesome_icon 'bell' %} Historique
                 </button>
 
@@ -130,7 +130,7 @@
             {% endif %}
         {% if article.tags.names %}
           <li>
-                <button type="button" class="btn" data-toggle="modal" data-target="#tags">
+                <button type="button" class="btn textleft" data-toggle="modal" data-target="#tags">
                   # Mots-clés
                 </button>
     </li>
@@ -140,17 +140,17 @@
         {%if not article.album %}
             {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
 
-                    <small><a class="btn btn-sm" href="{% url 'blog:ajouterAlbumArticle' slug=article.slug %}" ><i class="fa fa-plus"></i> Ajouter un album photo</a></small>
+                    <small><a class="btn btn-sm textleft" href="{% url 'blog:ajouterAlbumArticle' slug=article.slug %}" ><i class="fa fa-plus"></i> Ajouter un album photo</a></small>
 
             {% endif%}
         {%else%}
             <li>
-             <small><a class="btn btn-sm " href="{{ article.album.get_absolute_url }}"><i class="fa fa-arrow-right"></i> Voir l'album photo</a></small>
+             <small><a class="btn btn-sm textleft" href="{{ article.album.get_absolute_url }}"><i class="fa fa-arrow-right"></i> Voir l'album photo</a></small>
             </li>
             {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
 
             <li>
-               <small> <a class="btn btn-sm " href="{% url 'blog:supprimerAlbumArticle' slug=article.slug%}"><i class="fa fa-times"></i> Enlever l'album photo</a></small>
+               <small> <a class="btn btn-sm textleft" href="{% url 'blog:supprimerAlbumArticle' slug=article.slug%}"><i class="fa fa-times"></i> Enlever l'album photo</a></small>
             </li>
             {% endif %}
         {%endif%}
