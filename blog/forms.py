@@ -117,12 +117,11 @@ class ArticleChangeForm(forms.ModelForm):
 
 class ArticleAddAlbum(forms.ModelForm):
     album = forms.ModelChoiceField(queryset=Album.objects.all(), required=True,
-                              label="Choisir l'album à associer", )
+                              label="Choisir l'album photo à associer", )
 
     class Meta:
         model = Article
         fields = ['album',]
-
 
 
 class CommentaireArticleForm(forms.ModelForm):
