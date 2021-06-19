@@ -92,17 +92,10 @@
 {% block content %}
 <div class="contenu article ">
 <div class="row">
-<div class="col-sm-12 textcenter">
+<div class="col-sm-12 offset-md-2 col-md-8 textcenter">
       <h3> {{ article.titre }}</h3>
- </div>
-</div>
-    <hr>
-<div class="row"  id="sec03">
-
-    <div class="col textright" >
-
         {%if article.start_time%}
-
+    <p>
           <a href="{% url 'cal:agenda' %} ">
             {%if article.end_time and article.start_time != article.end_time %}
                 Du {{ article.start_time|date:"d/m/Y"  }} au {{ article.end_time|date:"d/m/Y"  }}
@@ -110,13 +103,109 @@
                 le {{ article.start_time|date:"d/m/Y"  }}
 
             {% endif %}
-              </a>
+          </a>
+    </p>
         {% endif %}
+ </div>
+<div class="col-sm-12 col-md-2 textcenter" >
+    <div class="dropdown">
+       <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="menuarticle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+          plus d'infos...
+       </button>
 
+      <ul class="dropdown-menu" aria-labelledby="menuarticle">
+
+        <li>
             <button type="button" class="btn" data-toggle="modal" data-target="#dates">
-             </h5 class="textcenter">{% fontawesome_icon 'calendar' %} Dates {%if article.start_time %}supplémentaires{%endif%}</h5>
-            </button>
+                 {% fontawesome_icon 'calendar' %} Dates {%if article.start_time %}supplémentaires{%endif%}
+                </button>
+        </li>
+         {% if actions %}
+          <li>
+                <button type="button" class="btn" data-toggle="modal" data-target="#historique">
+                  {% fontawesome_icon 'bell' %} Historique
+                </button>
+
+    </li>
+            {% endif %}
+        {% if article.tags.names %}
+          <li>
+                <button type="button" class="btn" data-toggle="modal" data-target="#tags">
+                  # Mots-clés
+                </button>
+    </li>
+            {% endif %}
+        <li><hr class="dropdown-divider"></li>
+        <li>
+        {%if not article.album %}
+            {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
+
+                    <small><a class="btn btn-sm" href="{% url 'blog:ajouterAlbumArticle' slug=article.slug %}" ><i class="fa fa-plus"></i> Ajouter un album photo</a></small>
+
+            {% endif%}
+        {%else%}
+            <li>
+             <small><a class="btn btn-sm " href="{{ article.album.get_absolute_url }}"><i class="fa fa-arrow-right"></i> Voir l'album photo</a></small>
+            </li>
+            {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
+
+            <li>
+               <small> <a class="btn btn-sm " href="{% url 'blog:supprimerAlbumArticle' slug=article.slug%}"><i class="fa fa-times"></i> Enlever l'album photo</a></small>
+            </li>
+            {% endif %}
+        {%endif%}
+        </li>
+      </ul>
+    </div>
+</div>
+</div>
+         <!-- Modal -->
+            <div class="modal fade" id="historique" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog textcenter" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                      <div class="row justify-content-center">
+                          <div class="col col-sm-12">
+                      <h5 >Historique</h5>
+                          </div>
+                      </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="contenu historique" id="idHistorique">
+                      {%for action in actions %}
+                            {% include "notifications/notifications_template3.html" with action=action%}
+                      {%endfor%}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <!-- Modal -->
+            <div class="modal fade" id="tags" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog textcenter" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                      <div class="row justify-content-center">
+                          <div class="col col-sm-12">
+                      <h5 >Tags</h5>
+                          </div>
+                      </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                                 {% for tag in article.tags.names %}
+            {{tag}}{%if not forloop.last%}, {%endif%}
+           {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+ <!-- Modal -->
             <div class="modal fade" id="dates" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog textcenter" role="document">
                 <div class="modal-content">
@@ -142,98 +231,19 @@
               </div>
             </div>
 
-        {% if actions %}
-            <button type="button" class="btn" data-toggle="modal" data-target="#historique">
-              {% fontawesome_icon 'bell' %} Historique
-            </button>
-            <!-- Modal -->
-            <div class="modal fade" id="historique" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog textcenter" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                      <div class="row justify-content-center">
-                          <div class="col col-sm-12">
-                      <h5 >Historique</h5>
-                          </div>
-                      </div>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="contenu historique" id="idHistorique">
-                      {%for action in actions %}
-                            {% include "notifications/notifications_template3.html" with action=action%}
-                      {%endfor%}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
 
-        {% endif %}
-
-
-
-        {% if article.tags.names %}
-            <button type="button" class="btn" data-toggle="modal" data-target="#tags">
-              # Mots-clés
-            </button>
-            <!-- Modal -->
-            <div class="modal fade" id="tags" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog textcenter" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                      <div class="row justify-content-center">
-                          <div class="col col-sm-12">
-                      <h5 >Tags</h5>
-                          </div>
-                      </div>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                                 {% for tag in article.tags.names %}
-            {{tag}}{%if not forloop.last%}, {%endif%}
-           {% endfor %}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-        {% endif %}
-    </div>
-</div>
-
-    <div class="row ">
-    {%if not article.album %}
-        {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
-            <div class="col-sm-12 textright">
-                <small><a class="btn btn-success btn-sm" href="{% url 'blog:ajouterAlbumArticle' slug=article.slug %}" ><i class="fa fa-plus"></i> Ajouter un album photo</a></small>
-            </div>
-        {% endif%}
-    {%else%}
-            <div class="col-sm-8">
+ <div class="row">
+ <div class="col-sm-12 offset-md-1 col-md-10 textcenter">
                 {% for photo in article.album.sample %}
                     <a href="{{ photo.get_absolute_url }}">
                          <img src="{{ photo.get_thumbnail_url }}" class="thumbnail" alt="{{ photo.title }}">
                     </a>
                 {% endfor %}
-                    </div>
-                <div class="col-sm-4 textright my-auto">
                     {% if article.album.photo_count > 5 %}
                     +...
                     {% endif %}
-                    <div class="btn-group sti_container">
-                        <a class="btn btn-info btn-sm boutonTexte" href="{{ article.album.get_absolute_url_photos }}"><i class="fa fa-arrow-right"></i> Voir l'album photo</a>
-                        {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
-                        <a class="btn btn-danger btn-sm boutonTexte" href="{% url 'blog:supprimerAlbumArticle' slug=article.slug%}"><i class="fa fa-times"></i> Enlever l'album photo</a>
-                        {% endif %}
-                    </div>
             </div>
-    {%endif%}
-    </div>
+</div>
     <hr>
 
 <div class="row">
