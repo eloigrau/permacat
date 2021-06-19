@@ -26,8 +26,8 @@ pg_dump -h 82.64.236.35 -p 32770 -U postgres -F c -b -v -d -f site permacat.dump
 psql -U postgres -h 82.64.236.35 -p 32770
 ##scp -P 32770 udjango@82.64.236.35:/home/udjango/permacat/permacat.dump ./permacat.dump
 ##rsync -arvz -e 'ssh -p 32770' --progress udjango@82.64.236.35:/home/udjango/permacat/permacat.dump ./permacat.dump
-
-
+#scp /home/udjango/permacat/permacat.dump tchenrezi@tchenrezi-N750BU:/home/tchenrezi/
+cp -P 32768 eloi@82.64.236.35:/root/backups/site/pg_dump_site_2021-06-19_02-50-01.backup /home/tchenrezi/
 
 cd /home/udjango/permacat
 git pull
