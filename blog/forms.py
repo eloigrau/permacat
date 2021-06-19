@@ -124,6 +124,7 @@ class ArticleAddAlbum(forms.ModelForm):
         fields = ['album',]
 
 
+
 class CommentaireArticleForm(forms.ModelForm):
 
     class Meta:

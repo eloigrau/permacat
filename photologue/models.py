@@ -196,6 +196,13 @@ class Album(models.Model):
     def get_absolute_url(self):
         return reverse('photologue:album', args=[self.slug])
 
+    def get_absolute_url_photos(self):
+        photos = self.photos.all()
+        if photos :
+            return photos[0].get_absolute_url()
+        else:
+            return self.get_absolute_url()
+
     def get_photos(self):
         return self.photos.all()
 

@@ -205,30 +205,36 @@
         {% endif %}
     </div>
 </div>
+
+    <div class="row ">
     {%if not article.album %}
         {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
-    <p><a class="btn btn-success" href="{% url 'blog:ajouterAlbumArticle' slug=article.slug %}" ><i class="fa fa-plus"></i> Ajouter un album photo</a></p>
+            <div class="col-sm-12 textright">
+                <small><a class="btn btn-success btn-sm" href="{% url 'blog:ajouterAlbumArticle' slug=article.slug %}" ><i class="fa fa-plus"></i> Ajouter un album photo</a></small>
+            </div>
         {% endif%}
     {%else%}
-    <div class="row ">
-            <div class="col-sm-12 d-flex justify-content-around">
-                <div>
+            <div class="col-sm-8">
                 {% for photo in article.album.sample %}
                     <a href="{{ photo.get_absolute_url }}">
                          <img src="{{ photo.get_thumbnail_url }}" class="thumbnail" alt="{{ photo.title }}">
                     </a>
                 {% endfor %}
                     </div>
-                <div class="my-auto">
+                <div class="col-sm-4 textright my-auto">
                     {% if article.album.photo_count > 5 %}
                     +...
                     {% endif %}
-                    <a class="btn btn-info" href="{{ article.album.get_absolute_url }}"><i class="fa fa-arrow-right"></i> Voir l'album photo</a></p>
-
+                    <div class="btn-group sti_container">
+                        <a class="btn btn-info btn-sm boutonTexte" href="{{ article.album.get_absolute_url_photos }}"><i class="fa fa-arrow-right"></i> Voir l'album photo</a>
+                        {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
+                        <a class="btn btn-danger btn-sm boutonTexte" href="{% url 'blog:supprimerAlbumArticle' slug=article.slug%}"><i class="fa fa-times"></i> Enlever l'album photo</a>
+                        {% endif %}
                     </div>
-                </div>
             </div>
     {%endif%}
+    </div>
+    <hr>
 
 <div class="row">
 <div class="col-sm-12 contenuarticle">

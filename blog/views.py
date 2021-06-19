@@ -132,13 +132,21 @@ class ArticleAddAlbum(UpdateView):
             url = self.object.get_absolute_url()
             suffix = "_" + self.object.asso.abreviation
             action.send(self.request.user, verb='article_modifier'+suffix, action_object=self.object, url=url,
-                         description="a ajouté un album à l'article: '%s'" % self.object.titre)
+                         description="a associé un album à l'article: '%s'" % self.object.titre)
         #envoi_emails_articleouprojet_modifie(self.object, "L'article " +  self.object.titre + "a été modifié", True)
         return HttpResponseRedirect(self.get_success_url())
 
     def get_form(self,*args, **kwargs):
         form = super(ArticleAddAlbum, self).get_form(*args, **kwargs)
         return form
+
+@login_required
+def articleSupprimerAlbum(request, slug):
+    art = Article.objects.get(slug=slug)
+    art.album = None
+    art.save()
+    return redirect(art.get_absolute_url())
+
 
 class SupprimerArticle(DeleteView):
     model = Article
