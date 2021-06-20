@@ -236,8 +236,8 @@
  <div class="col-sm-12 offset-md-1 col-md-10 textcenter">
                 {% for photo in article.album.sample %}
                     <a href="{{ photo.get_absolute_url }}">
-                         <img src="{{ photo.get_thumbnail_url }}" class="thumbnail" alt="{{ photo.title }}">
-                    </a>
+                         <img src="{{ photo.get_articles_url }}" class="thumbnail" alt="{{ photo.title }}">
+                    </a>&nbsp;
                 {% endfor %}
                     {% if article.album.photo_count > 5 %}
                     +...
