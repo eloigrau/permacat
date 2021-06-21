@@ -1,5 +1,5 @@
 from django import forms
-from bourseLibre.models import Asso
+from bourseLibre.models import Asso, Profil
 from .models import Article, Choix
 from django_filters.views import FilterView
 import django_filters
@@ -12,6 +12,8 @@ class ArticleFilter(django_filters.FilterSet):
         widget=forms.CheckboxSelectMultiple)
     titre = django_filters.CharFilter(lookup_expr='icontains',)
     contenu = django_filters.CharFilter(lookup_expr='icontains', )
+    auteur = django_filters.ModelChoiceFilter(field_name='auteur', queryset=Profil.objects.all().order_by('username'),
+        )
 
     class Meta:
         model = Article
