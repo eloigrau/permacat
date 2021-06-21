@@ -26,14 +26,7 @@
              </div>
          </form>
      </div>
-        <div>
-<a href="{% url 'blog:filtrer_articles' %}">
-    <button type="button" class="btn  btn-success" >
-       {% fontawesome_icon 'search' %}&nbsp; Recherche avancée...
-    </button>
-</a>&ensp;
 
-        </div>
 </div>
 <div class="col-sm-12 col-md-6 col-lg-4">
 <a href="{% url 'blog:ajouterNouvelArticle' %}">
@@ -197,6 +190,17 @@
 </a>
     </div>
 </div>
+
+    <div class="row">
+    <div class="col-md-12 textcenter">
+    <a href="{% url 'blog:filtrer_articles' %}">
+        <button type="button" class="btn  btn-success" >
+           {% fontawesome_icon 'search' %}&nbsp; Recherche avancée...
+        </button>
+    </a>&ensp;
+
+        </div>
+    </div>
 {% endblock %}
 {% block content %}
 
