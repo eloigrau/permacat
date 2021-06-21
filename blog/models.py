@@ -60,8 +60,8 @@ class Choix():
         except:
             return Choix.couleurs_annonces["Autre"]
 
-    def get_liste_typeAnnonces():
-        return [x[1] for x in Choix.type_annonce]
+    #def get_liste_typeAnnonces():
+    #    return [x[1] for x in Choix.type_annonce]
 
 class Article(models.Model):
     categorie = models.CharField(max_length=30,         

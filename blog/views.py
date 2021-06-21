@@ -256,7 +256,7 @@ class ListeArticles(ListView):
         context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
 
         for nomAsso in Choix_global.abreviationsAsso:
-            if not getattr(self.request.user, "adherent_" + nomAsso):
+            if getattr(self.request.user, "adherent_" + nomAsso):
                 cat = Article.objects.filter(asso__abreviation=nomAsso).order_by('categorie').values_list('categorie', flat=True).distinct()
                 context['categorie_list_'+nomAsso] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
 
@@ -264,10 +264,12 @@ class ListeArticles(ListView):
         for nomAsso in Choix_global.abreviationsAsso:
             if not getattr(self.request.user, "adherent_" + nomAsso):
                 proj = proj.exclude(asso__abreviation=nomAsso)
+        cat = proj.order_by('categorie').values_list('categorie', flat=True).distinct()
+        context['categorie_list_projet'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets if
+                                            x[0] in cat]
 
         context['projets_list'] = [(x.slug, x.titre, x.get_couleur) for x in proj]
 
-        context['categorie_list_projets'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets if x[0] in cat]
         context['typeFiltre'] = "aucun"
         context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="articles")
 
@@ -352,8 +354,15 @@ class ListeArticles_asso(ListView):
         context['categorie_list_projets'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets
                                              if x[0] in cat]
 
+        if self.kwargs['asso']:
+            assos= Asso.objects.all()
+            nom_asso = self.kwargs['asso']
+            asso = testIsMembreAsso(self.request, nom_asso)
+            if not isinstance(asso, Asso):
+                raise PermissionDenied
+
         for nomAsso in Choix_global.abreviationsAsso:
-            if not getattr(self.request.user, "adherent_" + nomAsso):
+            if getattr(self.request.user, "adherent_" + nomAsso):
                 cat = Article.objects.filter(asso__abreviation=nomAsso).order_by('categorie').values_list('categorie', flat=True).distinct()
                 context['categorie_list_'+nomAsso] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
 
@@ -373,11 +382,6 @@ class ListeArticles_asso(ListView):
         #     ateliers = ateliers.exclude(asso__abreviation="rtg")
         # context['ateliers_list'] = [(x.slug, x.titre, x.get_couleur) for x in ateliers]
 
-        assos= Asso.objects.all()
-        nom_asso = self.kwargs['asso']
-        asso = testIsMembreAsso(self.request, nom_asso)
-        if not isinstance(asso, Asso):
-            raise PermissionDenied
         context['asso_list'] = [(x.nom, x.abreviation) for x in assos]
         context['asso_courante'] = asso
         context['typeFiltre'] = "aucun"
