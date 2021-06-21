@@ -18,6 +18,7 @@ from django.conf.urls import url
 from django.urls import path
 from . import views
 from django.contrib.auth.decorators import login_required
+from django_filters.views import FilterView
 
 app_name = 'blog'
 
@@ -51,6 +52,7 @@ urlpatterns = [
     url(r'^suivre_projet/(?P<slug>[-\w]+)/$', views.suivre_projet, name='suivre_projet'),
     url(r'^suivre_articles/$', views.suivre_articles, name='suivre_articles'),
     url(r'^suivre_projets/$', views.suivre_projets, name='suivre_projets'),
+    url(r'^filtrer_articles/$', views.filtrer_articles, name='filtrer_articles'),
 
     url(r'^modifierCommentaireArticle/(?P<id>[0-9]+)$',
         login_required(views.ModifierCommentaireArticle.as_view(), login_url='/auth/login/'),

@@ -5,6 +5,7 @@ from django.utils.html import strip_tags
 from .models import Article, Commentaire, Projet, CommentaireProjet, Choix, Evenement,Asso
 from .forms import ArticleForm, ArticleAddAlbum, CommentaireArticleForm, CommentaireArticleChangeForm, ArticleChangeForm, ProjetForm, \
     ProjetChangeForm, CommentProjetForm, CommentaireProjetChangeForm, EvenementForm, EvenementArticleForm
+from .filters import ArticleFilter
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
 from actstream import actions, action
@@ -786,3 +787,16 @@ def changerArticles_jardin(request):
         article.delete()
 
     return render(request, 'blog/accueil.html')
+
+
+
+@login_required
+def filtrer_articles(request):
+    articles_list = Article.objects.all()
+    for nomAsso in Choix_global.abreviationsAsso:
+        if not getattr(request.user, "adherent_" + nomAsso):
+            articles_list = articles_list.exclude(asso__abreviation=nomAsso)
+    f = ArticleFilter(request.GET, queryset=articles_list)
+
+    return render(request, 'blog/article_filter.html', {'filter': f})
+

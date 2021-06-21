@@ -9,7 +9,6 @@ from bourseLibre.models import Asso
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from photologue.models import Album
 
-
 class SummernoteWidgetWithCustomToolbar(SummernoteWidget):
     def summernote_settings(self):
         summernote_settings = summernote_config.get('summernote', {}).copy()
@@ -122,6 +121,7 @@ class ArticleAddAlbum(forms.ModelForm):
     class Meta:
         model = Article
         fields = ['album',]
+
 
 
 class CommentaireArticleForm(forms.ModelForm):
