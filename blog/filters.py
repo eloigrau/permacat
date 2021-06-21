@@ -12,7 +12,8 @@ class ArticleFilter(django_filters.FilterSet):
         widget=forms.CheckboxSelectMultiple)
     titre = django_filters.CharFilter(lookup_expr='icontains',)
     contenu = django_filters.CharFilter(lookup_expr='icontains', )
-    auteur = django_filters.ModelChoiceFilter(field_name='auteur', queryset=Profil.objects.all().order_by('username'),
+    auteur = django_filters.ModelChoiceFilter(field_name='auteur', queryset=Profil.objects.all().extra(\
+    select={'lower_name':'lower(username)'}).order_by('lower_name'),
         )
 
     class Meta:
