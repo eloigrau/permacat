@@ -22,21 +22,25 @@
     <div class="well">
       <h4 style="margin-top: 0">Filtrer les articles du forum :</h4>
       <div class="row">
-        <div class="form-group col-sm-4 col-md-3">
+        <div class="form-group col-sm-6">
             <label >Mots dans le titre :</label>
           {% render_field filter.form.titre class="form-control" %}
         </div>
-        <div class="form-group col-sm-4 col-md-3">
+        <div class="form-group col-sm-6">
             <label>Mots dans le texte de description :</label>
           {% render_field filter.form.contenu class="form-control" %}
         </div>
-        <div class="form-group col-sm-4 col-md-3">
+        <div class="form-group col-sm-4">
           {{ filter.form.auteur.label_tag }}
           {% render_field filter.form.auteur class="form-control" %}
         </div>
-        <div class="form-group col-sm-4 col-md-3">
+        <div class="form-group col-sm-4">
           {{ filter.form.categorie.label_tag }}
           {% render_field filter.form.categorie class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4">
+          {{ filter.form.date_creation.label_tag }}
+          {% render_field filter.form.date_creation class="form-control" %}
         </div>
 
         <div class="form-group col-sm-12 col-md-12">
@@ -49,6 +53,7 @@
             {% endfor %}
           </div>
         </div>
+
       </div>
     <div class="row">
     <div class="col-md-12 textcenter">

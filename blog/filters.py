@@ -1,12 +1,13 @@
 from django import forms
 from bourseLibre.models import Asso, Profil
 from .models import Article, Choix
-from django_filters.views import FilterView
+#from django_filters.views import FilterView
 import django_filters
-from django.db import models
-from django_summernote.widgets import SummernoteWidget
-from photologue.models import Album
-from bourseLibre.constantes import Choix as Choix_global
+#from django.db import models
+#from django_summernote.widgets import SummernoteWidget
+#from photologue.models import Album
+#from bourseLibre.constantes import Choix as Choix_global
+from datetime import datetime, timedelta, timezone
 
 class ArticleFilter(django_filters.FilterSet):
     asso = django_filters.ModelMultipleChoiceFilter(field_name='asso', queryset=Asso.objects.all().exclude(abreviation="jp"),
@@ -16,8 +17,14 @@ class ArticleFilter(django_filters.FilterSet):
     auteur = django_filters.ModelChoiceFilter(field_name='auteur', queryset=Profil.objects.all().extra(\
     select={'lower_name':'lower(username)'}).order_by('lower_name'),
         )
-    #date_creation = django_filters.DateFromToRangeFilter(label="Date de création de l'article")
+    #date_creation = django_filters.DateFromToRangeFilter(label="Date de création de l'article", widget=forms.DateInput(attrs={'class':"date", }))
     #start_time = django_filters.DateFromToRangeFilter(label="Date de l'evenement associé à l'article", widget=forms.DateInput(attrs={'class':"date", }))
+    date_creation = django_filters.NumberFilter(
+        field_name='date_creation', method='get_past_n_days', label="Articles créés depuis X jours")
+
+    def get_past_n_days(self, queryset, field_name, value):
+        time_threshold = datetime.now() - timedelta(days=int(value))
+        return queryset.filter(date_creation__gte=time_threshold)
 
     class Meta:
         model = Article
@@ -27,7 +34,6 @@ class ArticleFilter(django_filters.FilterSet):
             'contenu': ['icontains', ],
             'auteur': ['exact', ],
             "asso": ['exact', ],
-           # "date_creation": ['range'],
             #"start_time": ['range', ],
         }
     #
