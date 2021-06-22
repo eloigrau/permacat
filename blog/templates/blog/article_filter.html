@@ -3,7 +3,12 @@
 {% load fontawesome %}
 {% load activity_tags %}
 {% load widget_tweaks %}
+{% load static %}
 
+{% block header %}
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/infinite.min.js' %}"></script>
+{% endblock  %}
 
 {% block subtitle %}
 
@@ -12,9 +17,6 @@
        <h3> Recherche avancée sur le forum</h3>
     </div>
 </div>
-{% endblock %}
-
-{% block content %}
 
  <form method="get">
     <div class="well">
@@ -57,6 +59,20 @@
     </div>
 </div>
   </form>
+{% endblock %}
+<script>
+$(function() {
+  $('input[name="dates"]').daterangepicker({
+    opens: 'left'
+  }, function(start, end, label) {
+    $('#id_start_time_0').val(start)
+    $('#id_start_time_1').val(end)
+  });
+  $('#datePicker').removeAttr('name');
+});
+</script>
+{% block content %}
+
 
     {% comment %}
 <form method="get">

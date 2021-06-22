@@ -3,6 +3,7 @@ from bourseLibre.models import Asso, Profil
 from .models import Article, Choix
 from django_filters.views import FilterView
 import django_filters
+from django.db import models
 from django_summernote.widgets import SummernoteWidget
 from photologue.models import Album
 from bourseLibre.constantes import Choix as Choix_global
@@ -15,6 +16,8 @@ class ArticleFilter(django_filters.FilterSet):
     auteur = django_filters.ModelChoiceFilter(field_name='auteur', queryset=Profil.objects.all().extra(\
     select={'lower_name':'lower(username)'}).order_by('lower_name'),
         )
+    #date_creation = django_filters.DateFromToRangeFilter(label="Date de création de l'article")
+    #start_time = django_filters.DateFromToRangeFilter(label="Date de l'evenement associé à l'article", widget=forms.DateInput(attrs={'class':"date", }))
 
     class Meta:
         model = Article
@@ -24,6 +27,8 @@ class ArticleFilter(django_filters.FilterSet):
             'contenu': ['icontains', ],
             'auteur': ['exact', ],
             "asso": ['exact', ],
+           # "date_creation": ['range'],
+            #"start_time": ['range', ],
         }
     #
     # @property
