@@ -313,6 +313,21 @@ def changerDateNotif(request):
     else:
         return render(request, 'notifications/date_notifs.html', {'form': form})
 
+def notif_cejour(request):
+    date = datetime.now().date()
+    return redirect('/notifications/activite'+ "?fromdate=" + str(date.day) +"-" + str(date.month) + "-" + str(date.year))
+
+def notif_cettesemaine(request):
+    date_ajd = datetime.now().date()
+    date = date_ajd - timedelta(days=date_ajd.weekday())
+    return redirect('/notifications/activite'+ "?fromdate=" + str(date.day) +"-" + str(date.month) + "-" + str(date.year))
+
+def notif_cemois(request):
+    date_ajd = datetime.now().date()
+    date = date_ajd - timedelta(days=date_ajd.day - 1)
+    return redirect('/notifications/activite'+ "?fromdate=" + str(date.day) +"-" + str(date.month) + "-" + str(date.year))
+
+
 
 def getListeMailsAlerte():
     actions = Action.objects.filter(verb='emails')
