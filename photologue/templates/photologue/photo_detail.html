@@ -52,10 +52,10 @@
 {% endblock %}
 {% block content %}
 
-    <div class="row">
+    <div class="row"  id="photos">
         <div class="col-sm-1 textcenter my-auto">
             {% if object.get_previous_in_album %}
-            <a href="{{ object.get_previous_in_album.get_absolute_url }}"><i class="fa fa-arrow-left"></i> précédente</a>
+            <a href="{{ object.get_previous_in_album.get_absolute_url }}#photos"><i class="fa fa-arrow-left"></i> précédente</a>
             {% endif %}
         </div>
         <div class="col-sm-10 textcenter">
@@ -65,7 +65,7 @@
         </div>
         <div class="col-sm-1 textcenter my-auto">
             {% if object.get_next_in_album %}
-            <a href="{{ object.get_next_in_album.get_absolute_url }}">suivante <i class="fa fa-arrow-right"></i></a>
+            <a href="{{ object.get_next_in_album.get_absolute_url }}#photos">suivante <i class="fa fa-arrow-right"></i></a>
              {% endif %}
         </div>
     </div>
