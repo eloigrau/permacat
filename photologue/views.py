@@ -31,7 +31,7 @@ class AlbumListView(ListView):
         return  qs
 
 class AlbumDetailView(DetailView):
-    queryset = Album.objects.on_site()
+    queryset = Album.objects.on_site().order_by("-date_added")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -93,7 +93,7 @@ class DocListView(ListView):
     paginate_by = 20
 
     def get_queryset(self):
-        qs = Document.objects.all()
+        qs = Document.objects.all().order_by("-date_creation")
 
         for nomAsso in Choix_global.abreviationsAsso:
             if not getattr(self.request.user, "adherent_" + nomAsso):
