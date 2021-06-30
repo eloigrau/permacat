@@ -147,6 +147,7 @@ urlpatterns = [
     url(r'^conversations/chercher/$', login_required(views.chercherConversation), name='chercher_conversation'),
     url(r'^suivre_conversation/$', views.suivre_conversations, name='suivre_conversations'),
     url(r'^suivre_produits/$', views.suivre_produits, name='suivre_produits'),
+    url(r'^sereabonner/$', views.sereabonner, name='sereabonner'),
     path(r'agora/<str:asso>', login_required(views.agora), name='agora'),
     url(r'^activity/', include('actstream.urls')),
 

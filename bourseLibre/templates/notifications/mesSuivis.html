@@ -1,21 +1,31 @@
 {% extends 'base_notifications.html' %}
 
 {% block subtitle %}
-<h4>Mes suivis</h4>
+<h4>Mes Abonnements</h4>
+<p>Retrouvez ici toutes les pages auxquelles vous êtes abonné.e.s (c'est à dire les pages pour lesquelles vous recevez une info par mail). Cliquez sur "supprimer" pour ne plus recevoir de mail pour ces infos</p>
 
 {% endblock %}
 {% block content %}
 
 <div class="row justify-content-center">
     <div class="col-sm-12 textcenter">
+        <table class="table2 table table-condensed tableprofils table-striped sortable">
             {% for action in actions %}
-        {% if action %}
-        <p>
-            {{action}} <a href="{% url 'supprimerAction' actionid=action.id %}">supprimer</a>
-        </p>
-        {%endif%}
-        {%endfor%}
+                {% if action %}
+                <tr>
+                    <td> {{action.follow_object}} </td>
+                   <td>  <a href="{% url 'supprimerAction' actionid=action.id %}" class="btn btn-danger" type="button"> supprimer</a> </td>
+                </tr>
+                {%endif%}
+            {%endfor%}
+        </table>
     </div>
+
 </div>
 
+<div class="row justify-content-center">
+    <div class="col-sm-12 textcenter">
+        <a href="{% url 'sereabonner' %}" class="btn btn-primary" type="button"> Se réabonner au forum/altermarché/conversations/projets/suffrages </a>
+    </div>
+</div>
 {% endblock %}

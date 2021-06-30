@@ -1100,6 +1100,15 @@ def suivre_produits(request, actor_only=True):
     return redirect('marche')
 
 
+@login_required
+def sereabonner(request,):
+    for suiv in Choix.suivisPossibles:
+        suivi, created = Suivis.objects.get_or_create(nom_suivi = suiv)
+
+        if not suivi in following(request.user):
+            actions.follow(request.user, suivi, send_action=False)
+
+    return redirect('mesSuivis')
 
 
 def inscription_newsletter(request):
