@@ -432,7 +432,8 @@ def get_articles_a_archiver():
 
         if test:
             liste.append(article)
-    from jardinpartage.models import Article as Article_jardin
+    liste2 = []
+    from jardinpartage.models import Article as Article_jardin, Evenement as Evenement_jardin
     articles = Article_jardin.objects.filter(estArchive=False)
     for article in articles:
         test = False
@@ -445,8 +446,8 @@ def get_articles_a_archiver():
                     test = True
 
         if test:
-            liste.append(article)
-    newList = []
+            liste2.append(article)
+    liste3 = []
     for art in liste:
         eve = Evenement.objects.filter(start_time__lt=date_limite, article=art)
         for ev in eve:
@@ -457,15 +458,32 @@ def get_articles_a_archiver():
             else:
                 test = True
         if test:
-            newList.append(article)
-    return liste
+            liste3.append(article)
+
+    for art in liste2:
+        eve = Evenement_jardin.objects.filter(start_time__lt=date_limite, article=art)
+        for ev in eve:
+            test = False
+            if ev.end_time:
+                if ev.end_time < date_limite:
+                    test = True
+            else:
+                test = True
+        if test:
+            liste3.append(article)
+
+    return liste, liste2, liste3
 
 def voir_articles_a_archiver(request):
-    liste = get_articles_a_archiver()
-    return render(request, 'notifications/voirArchivage.html',{'liste': liste})
+    liste, liste2, liste3 = get_articles_a_archiver()
+    return render(request, 'notifications/voirArchivage.html',{'liste': liste, 'liste2': liste2, 'liste3': liste3})
 
 def archiverArticles(request):
-    for art in get_articles_a_archiver():
+    liste, liste2, liste3 =  get_articles_a_archiver()
+    for art in liste:
+        art.estArchive = True
+        art.save()
+    for art in liste2:
         art.estArchive = True
         art.save()
     return redirect('voir_articles_a_archiver', )

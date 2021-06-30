@@ -1,10 +1,11 @@
 {% extends 'base_notifications.html' %}
 {% load activity_tags %}
 {% block subtitle %}
-<h4>Liste des emails a envoyer ({{liste|length}})</h4>
+<h4>Liste des articles à archiver ({{liste|length}}, {{liste2|length}}, )</h4>
 {% endblock %}
 {% block content %}
 <div class="row justify-content-center">
+<p>Articles</p>
 <div class="card-deck notif ">
 <div class="card notif3 d-md-flex">
   <ul class="list-group list-group-flush " >
@@ -14,6 +15,23 @@
          <a href="{{article.get_absolute_url}}"> {{article}}, {{article.start_time}}, {{article.end_time}}</a>
       </li>
 {%endfor%}
+
+  </ul>
+</div>
+</div>
+</div>
+<p>Jardin</p>
+<div class="row justify-content-center">
+<div class="card-deck notif ">
+<div class="card notif3 d-md-flex">
+  <ul class="list-group list-group-flush " >
+
+{% for article in liste2 %}
+      <li class="list-group-item "  style=""  >
+         <a href="{{article.get_absolute_url}}"> {{article}}, {{article.start_time}}, {{article.end_time}}</a>
+      </li>
+{%endfor%}
+
   </ul>
 </div>
 </div>
