@@ -148,7 +148,19 @@ def bienvenue(request):
         nbNotif = getNbNewNotifications(request)
         nbExpires = getNbProduits_expires(request)
 
-    return render(request, 'bienvenue.html', {'nomImage':nomImage, "nbNotif": nbNotif , "nbExpires":nbExpires, "evenements":evenements, "evenements_semaine":evenements_semaine})
+
+    derniers_articles = Article.objects.filter(estArchive=False).order_by('-id')
+    for nomAsso in Choix_global.abreviationsAsso:
+        if not getattr(request.user, "adherent_" + nomAsso):
+            derniers_articles = derniers_articles.exclude(asso__abreviation=nomAsso)
+
+    derniers_articles_comm = Article.objects.filter(estArchive=False, date_dernierMessage__isnull=False).order_by('date_dernierMessage')
+
+    for nomAsso in Choix_global.abreviationsAsso:
+        if not getattr(request.user, "adherent_" + nomAsso):
+            derniers_articles_comm = derniers_articles_comm.exclude(asso__abreviation=nomAsso)
+
+    return render(request, 'bienvenue.html', {'nomImage':nomImage, "nbNotif": nbNotif , "nbExpires":nbExpires, "evenements":evenements, "evenements_semaine":evenements_semaine, "derniers_articles":derniers_articles[:6], "derniers_articles_comm":derniers_articles_comm[:6]})
 
 class MyException(Exception):
     pass

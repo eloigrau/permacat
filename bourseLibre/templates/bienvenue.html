@@ -47,7 +47,7 @@
 				  </div>
 					<ul class="list-group list-group-flush textcenter">
 						<li class="list-group-item"><a href="{% url 'blog:lireArticle' 'visioconference' %}">Lundi 20h30 : Visioconférence Permacat</a> </li>
-						<li class="list-group-item"><a href="{% url 'blog:lireArticle' 'visioconference' %}">Vendredi 20h30 : Visioconférence Ecovillage / Jardin de Palau</a> </li>
+						<li class="list-group-item"><a href="{% url 'blog:lireArticle' 'visioconference' %}">Vendredi 20h30 : Visioconférence Ecovillage </a> </li>
 						<li class="list-group-item"><a href=" {% url 'jardinpartage:index_jardin' jardin=2 %} ">Vendredi 15h : Jardin de Palau </a> </li>
 					</ul>
 				</div>
@@ -145,6 +145,35 @@
 	</div>
 </div>
 
+<hr>
+
+<div class="row">
+<div class="col-sm-12 col-lg-12">
+    <div class="row justify-content-center">
+        <h5>Derniers articles commentés : </h5>
+    </div>
+    <div class="grid-container justify-content-center">
+        {% for article in derniers_articles_comm %}
+            <div class="infinite-item my-auto">
+            {% include "blog/article_template.html" with article=article %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+</div>
+<hr>
+<div class="row justify-content-center">
+    <h5>Derniers articles créés : </h5>
+</div>
+<div class="grid-container justify-content-center">
+    {% for article in derniers_articles %}
+        <div class="infinite-item my-auto">
+        {% include "blog/article_template.html" with article=article %}
+        </div>
+    {% endfor %}
+</div>
+
+</div>
 
 {% endblock %}
 

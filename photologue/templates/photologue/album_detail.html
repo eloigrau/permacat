@@ -1,7 +1,7 @@
 {% extends "photologue/root.html" %}
 {% load i18n %}
 
-{% block title %}{{ album.title }}{% endblock %}
+{% block title %} - album : {{ album.title }}{% endblock %}
 
 {% block subtitle %}
 
@@ -10,8 +10,9 @@
 <div class="col-md-3 textcenter">
         <a href="{% url 'photologue:album-list' %}" class="btn btn-success"><i class="fa fa-arrow-left"></i> Tous les albums</a>
 </div>
+
 <div class="col-md-6 textcenter">
-        <h5 class="page-header">Album : {{ album.title }}
+        <h5>{{ album.title }}
  <small><button class="btn btn-light" id="copyButton" ><i class="fa fa-link"></i></button></small></h5>
      <p class="infos  textepetit">
 
@@ -38,27 +39,16 @@
     <p><em>Article{{total|pluralize:"s"}} associé{{total|pluralize:"s"}} : </em>
     {%endwith%}
             {% for article in articles %}
-        <a href="{{article.get_absolute_url}}">{{article.titre|truncatechars:10}}</a>{%if not forloop.last%}, {%endif%}
+        <a href="{{article.get_absolute_url}}">{{article.titre|truncatechars:80}}</a>{%if not forloop.last%}, {%endif%}
            {% endfor %}
     </p>
     {% endif%}
-    {% if album.auteur == request.user or request.user.is_superuser or album.estModifiable %}
-    <hr>
 
-     <div class="btn-group">
-        <a href="{% url 'photologue:ajouterPhoto' albumSlug=album.slug %}">
-        <button type="button" class="btn btn-success" >
-                <i class="fa fa-plus"></i> Ajouter une photo
-            </button>
-            </a>&ensp;
-    </div>
-    {% endif %}
 
 </div>
-<div class="col-sm-3 textright">
-        <p>
+<div class="col-sm-12 col-md-3 textcenter">
     {% if album.auteur == request.user or request.user.is_superuser or album.estModifiable %}
-		<div class="btn-group">
+		<div class="btn-group textcenter">
 
             <a href="{% url 'photologue:modifierAlbum' slug=album.slug %}">
                <button type="button" class="btn btn-sm btn-warning">
@@ -72,19 +62,29 @@
 		</div>
         {%endif%}
     {%endif%}
-        </p>
 </div>
 </div>
+<hr>
+
+{% if album.auteur == request.user or request.user.is_superuser or album.estModifiable %}
+
+<div class="row ">
+<div class="col-sm-12 textcenter">
+        <a href="{% url 'photologue:ajouterPhoto' albumSlug=album.slug %}">
+        <button type="button" class="btn btn-success" >
+                <i class="fa fa-plus"></i> Ajouter une photo
+            </button>
+            </a>&ensp;
+    </div>
+</div>
+<hr>
+    {% endif %}
 
 {% endblock %}
 {% block content %}
 
 <div class="row ">
-<div class="col-md-4 ">
-        {% if album.description %}<p>{{ album.description|safe }}</p>{% endif %}
-
-</div>
-<div class="col-md-8 ">
+<div class="col-sm-12 textcenter">
 	    {% for photo in album.public %}
 	        <a href="{{ photo.get_absolute_url }}">
 	             <img src="{{ photo.get_thumbnail_url }}" class="thumbnail" alt="{{ photo.title }}">
@@ -94,6 +94,12 @@
 </div>
 </div>
 
+<div class="row justify-content-center">
+<div class="col-sm-12 textcenter">
+        {% if album.description %}<p>{{ album.description|safe }}</p>{% endif %}
+
+</div>
+</div>
 
 
  <script>

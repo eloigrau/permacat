@@ -247,6 +247,8 @@ class Album(models.Model):
          """Return a queryset of all the public photos in this album."""
          return self.photos.all()
 
+    def get_photo_sample(self):
+        return self.photos.all()[:1]
 
 class Document(models.Model):
     doc = models.FileField( 'Document',

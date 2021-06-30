@@ -1,15 +1,21 @@
 {% extends "photologue/root.html" %}
 {% load photologue_tags i18n %}
 
-{% block title %}{{ object.title }}{% endblock %}
+{% block title %} - photo : {{ object.title }}{% endblock %}
 
 {% block subtitle %}
 <div class="row ">
 <div class="col-md-3 textcenter">
-        <a href="{{object.public_galleries.0.get_absolute_url}}" class="btn btn-success"><i class="fa fa-arrow-left"></i> Album : {{object.public_galleries.0}}</a>
+        <a href="{{album.get_absolute_url}}" class="btn btn-success"><i class="fa fa-arrow-left"></i> Album : {{album.title}}</a>
+
+        <a href="{% url 'photologue:ajouterPhoto' albumSlug=album.slug %}">
+        <button type="button" class="btn btn-success" >
+                <i class="fa fa-plus"></i> Ajouter une photo
+            </button>
+            </a>&ensp;
 </div>
 <div class="col-md-6 textcenter">
-        <h5 class="page-header">Photo : {{ object.title }}</h5>
+        <h5 class="page-header">{{ object.title }}</h5>
             <p class="infos  textepetit">
 
             <a href="{% url 'profil' object.auteur.id %}">
@@ -22,8 +28,7 @@
 
 </div>
 
-<div class="col-sm-3 textright">
-        <p>
+<div class="col-sm-12 col-md-3 textcenter">
         {%if projet.auteur == request.user or request.user.is_superuser%}
 		<div class="btn-group">
 
@@ -37,7 +42,10 @@
                </button></a>
 		</div>
         {%endif%}
-        </p>
+        {% if album.auteur == request.user or request.user.is_superuser or album.estModifiable %}
+    <hr>
+
+    {% endif %}
 </div>
 </div>
 
