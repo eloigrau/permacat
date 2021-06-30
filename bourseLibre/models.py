@@ -815,18 +815,6 @@ def getOrCreateConversation(nom1, nom2):
         profil_2 = Profil.objects.get(username=nom2)
         convers = Conversation.objects.create(profil1=profil_1, profil2=profil_2)
 
-        conversations = Conversation.objects.filter(Q(profil2=profil_1) | Q(profil1=profil_1))
-        for conv in conversations:
-            if conv in following(profil_1):
-                actions.follow(profil_1, convers, send_action=False)
-                break
-
-        conversations = Conversation.objects.filter(Q(profil2=profil_2) | Q(profil1=profil_2))
-        for conv in conversations:
-            if conv in following(profil_2):
-                actions.follow(profil_2, convers, send_action=False)
-                break
-
     return convers
 
 

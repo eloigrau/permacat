@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from actstream.models import Action, any_stream
+from actstream.models import Action, any_stream, Follow
 from bourseLibre.constantes import Choix as Choix_global
 from django.utils.timezone import now
 from itertools import chain
@@ -399,6 +399,18 @@ def nettoyerActions(request):
             print(action)
         except:
             action.delete()
+
+
+    follows = Follow.objects.filter(user=request.user)
+    for action in follows:
+        if not action.follow_object:
+            action.delete()
+
+        if action.follow_object.nom_suivi and "Conversation entre" in action.follow_object.nom_suivi:
+            print("follow supprimé " + action)
+            action.delete()
+
+    actions = Action.objects.all()
 
     return render(request, 'notifications/voirActions.html', {'actions': actions,})
 

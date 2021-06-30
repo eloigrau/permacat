@@ -149,16 +149,19 @@ def bienvenue(request):
         nbExpires = getNbProduits_expires(request)
 
 
-    derniers_articles = Article.objects.filter(estArchive=False).order_by('-id')
-    for nomAsso in Choix_global.abreviationsAsso:
-        if not getattr(request.user, "adherent_" + nomAsso):
-            derniers_articles = derniers_articles.exclude(asso__abreviation=nomAsso)
+    if not request.user.is_anonymous:
+        derniers_articles = Article.objects.filter(estArchive=False).order_by('-id')
+        for nomAsso in Choix_global.abreviationsAsso:
+            if not getattr(request.user, "adherent_" + nomAsso):
+                derniers_articles = derniers_articles.exclude(asso__abreviation=nomAsso)
 
-    derniers_articles_comm = Article.objects.filter(estArchive=False, date_dernierMessage__isnull=False).order_by('date_dernierMessage')
+        derniers_articles_comm = Article.objects.filter(estArchive=False, date_dernierMessage__isnull=False).order_by('date_dernierMessage')
 
-    for nomAsso in Choix_global.abreviationsAsso:
-        if not getattr(request.user, "adherent_" + nomAsso):
-            derniers_articles_comm = derniers_articles_comm.exclude(asso__abreviation=nomAsso)
+        for nomAsso in Choix_global.abreviationsAsso:
+            if not getattr(request.user, "adherent_" + nomAsso):
+                derniers_articles_comm = derniers_articles_comm.exclude(asso__abreviation=nomAsso)
+    else:
+        derniers_articles, derniers_articles_comm = [], []
 
     return render(request, 'bienvenue.html', {'nomImage':nomImage, "nbNotif": nbNotif , "nbExpires":nbExpires, "evenements":evenements, "evenements_semaine":evenements_semaine, "derniers_articles":derniers_articles[:6], "derniers_articles_comm":derniers_articles_comm[::-1][:6]})
 
@@ -996,8 +999,14 @@ def prochaines_rencontres(request):
 
 @login_required
 def mesSuivis(request):
-    actions = Follow.objects.filter(user=request.user)
-    return render(request, 'notifications/mesSuivis.html', {'actions': actions, })
+    follows = Follow.objects.filter(user=request.user)
+    for action in follows:
+        if not action.follow_object:
+            action.delete()
+
+    follows = Follow.objects.filter(user=request.user)
+
+    return render(request, 'notifications/mesSuivis.html', {'actions': follows, })
 
 @login_required
 def supprimerAction(request, actionid):
