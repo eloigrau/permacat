@@ -103,15 +103,19 @@
                 <td>{{ user.email }}</td>
             </tr>
 
+              {% if user.adresse.description %}
                     <tr>
                         <td style="width:250px">Description :</td>
                         <td>{{ user.description|safe }}</td>
                     </tr>
-	      
+              {% endif %}
+
+              {% if user.adresse.competences %}
 	    <tr>
 		<td style="width:250px">Savoir-faire :</td>
 		<td>{{ user.competences|safe }}</td>
 	    </tr>
+              {% endif %}
 
                   {% if user.site_web %}
                     <tr>
@@ -262,17 +266,7 @@
                 map.panTo(new L.LatLng(lat, lon));
             }
         </script>
-  {% if request.user.adherent_rtg and user.adherent_rtg %}
         {% leaflet_map "yourmap" callback="window.map_init_basic" %}
-    {% elif request.user.adherent_pc and user.adherent_pc %}
-        {% leaflet_map "yourmap" callback="window.map_init_basic" %}
-    {% elif request.user.adherent_fer and user.adherent_fer %}
-        {% leaflet_map "yourmap" callback="window.map_init_basic" %}
-    {% elif request.user.adherent_gt and user.adherent_gt %}
-        {% leaflet_map "yourmap" callback="window.map_init_basic" %}
-    {% else %}
-    	<p>(affichage de la carte réservé aux adhérents du meme groupe)</p>
-    {% endif %}
     {% endif %}
 </div>
 </div>
