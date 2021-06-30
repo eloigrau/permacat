@@ -407,7 +407,7 @@ def nettoyerActions(request):
             action.delete()
 
         if isinstance(action.follow_object, Conversation):
-            print("follow supprimé " + action)
+            #print("follow supprimé " + action)
             action.delete()
 
     actions = Action.objects.all()
