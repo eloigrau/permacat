@@ -6,7 +6,7 @@ from bourseLibre.constantes import Choix as Choix_global
 from django.utils.timezone import now
 from itertools import chain
 from .forms import nouvelleDateForm
-from .models import Profil
+from .models import Profil, Conversation
 from .settings.production import SERVER_EMAIL, EMAIL_HOST_PASSWORD
 from django.http import HttpResponseForbidden
 from django.core.mail.message import EmailMultiAlternatives
@@ -406,7 +406,7 @@ def nettoyerActions(request):
         if not action.follow_object:
             action.delete()
 
-        if action.follow_object.nom_suivi and "Conversation entre" in action.follow_object.nom_suivi:
+        if isinstance(action.follow_object, Conversation):
             print("follow supprimé " + action)
             action.delete()
 
