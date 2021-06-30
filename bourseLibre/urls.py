@@ -86,6 +86,7 @@ urlpatterns = [
     url(r'^accounts/profil_modifier_adresse/$', login_required(views.profil_modifier_adresse.as_view()), name='profil_modifier_adresse',),
     url(r'^accounts/profil_contact/(?P<user_id>[0-9]+)/$', login_required(views.profil_contact), name='profil_contact',),
     url(r'^accounts/mesSuivis/$', login_required(views.mesSuivis), name='mesSuivis',),
+    url(r'^accounts/supprimerAction/(?P<actionid>[0-9]+)/$', login_required(views.supprimerAction), name='supprimerAction',),
     url(r'^accounts/mesActions/$', login_required(views.mesActions), name='mesActions',),
     url(r'^accounts/mctions/$', login_required(views.mesActions), name='mesActions',),
     url(r'^accounts/activite/(?P<pseudo>[\w.@+-]+)/$', login_required(views.activite), name='activite',),

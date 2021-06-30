@@ -43,7 +43,7 @@ from django.db.models.functions import Lower
 from django.utils.html import strip_tags
 
 from actstream import actions, action
-from actstream.models import Action, following, followers, actor_stream,  any_stream, user_stream, action_object_stream, model_stream, target_stream
+from actstream.models import Action, Follow, following, followers, actor_stream,  any_stream, user_stream, action_object_stream, model_stream, target_stream
 #from fcm_django.models import FCMDevice
 # from django.http.response import JsonResponse, HttpResponse
 # from django.views.decorators.http import require_GET, require_POST
@@ -996,8 +996,18 @@ def prochaines_rencontres(request):
 
 @login_required
 def mesSuivis(request):
-    actions = following(request.user)
+    actions = Follow.objects.filter(user=request.user)
     return render(request, 'notifications/mesSuivis.html', {'actions': actions, })
+
+@login_required
+def supprimerAction(request, actionid):
+    try:
+        action = Follow.objects.get(id=actionid)
+        action.delete()
+    except:
+        messages.info(request, 'Abonnement introuvable, désolé')
+
+    return redirect('mesSuivis')
 
 
 @login_required

@@ -9,9 +9,11 @@
 <div class="row justify-content-center">
     <div class="col-sm-12 textcenter">
             {% for action in actions %}
+        {% if action %}
         <p>
-            {{action}}
+            {{action}} <a href="{% url 'supprimerAction' actionid=action.id %}">supprimer</a>
         </p>
+        {%endif%}
         {%endfor%}
     </div>
 </div>
