@@ -23,7 +23,8 @@ from bourseLibre.views import handler400 as h400, handler403  as h403, handler40
 
 # On import les vues de Django, avec un nom spécifique
 from django.contrib.auth.decorators import login_required
-
+from django.contrib.auth.views import PasswordResetView
+from django.urls import reverse_lazy
 # admin.autodiscover()
 from django.contrib import admin
 from .settings import MEDIA_ROOT
@@ -91,6 +92,11 @@ urlpatterns = [
     url(r'^accounts/mctions/$', login_required(views.mesActions), name='mesActions',),
     url(r'^accounts/activite/(?P<pseudo>[\w.@+-]+)/$', login_required(views.activite), name='activite',),
     url(r'^register/$', views.register, name='senregistrer',),
+    url(r'^reset-password/$',
+        PasswordResetView.as_view(template_name='accounts/reset_password.html',
+                                  email_template_name='accounts/reset_password_email.html',
+                                  success_url=reverse_lazy('bienvenue')),
+        name='reset_password'),
     #url(r'^password/reset/$', views.reset_password, name='reset_password'),
     url(r'^password/change/$', views.change_password, name='change_password'),
     path('auth/', include('django.contrib.auth.urls')),
