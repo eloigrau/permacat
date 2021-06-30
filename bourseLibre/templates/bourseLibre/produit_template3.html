@@ -9,7 +9,7 @@
                     </div>
                     <div class="col-xs-2">
                          <span class="badge {% if produit.estUneOffre%}badge-warning{%else%} badge-danger {%endif%}">{% if produit.estUneOffre%}Offre{%else%} Demande {%endif%}
-				 {{produit.asso}} {% if produit.est_perimee %} (expirée) {% endif %}
+				 {% if not produit.estUneOffre and produit.asso.abreviation == "public" %}publique {%else%}{{produit.asso}}  {%endif%}{% if produit.est_perimee %} (expirée) {% endif %}
 		                </span>
                     </div>
                     <div class="col-xs-5">
