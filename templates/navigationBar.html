@@ -287,15 +287,23 @@
                 <li class="divider" role="separator"></li>
                 {% if request.user.is_superuser %}
                 {% load admin_urls %}
-                <li></li> <a class="dropdown-item" href="{% url 'admin:index' %}">Admin</a></li>
-               <li> <a class="dropdown-item" href="{% url 'voirEmails' %}"> voir Emails Alertes</a></li>
-               <li> <a class="dropdown-item" href="https://www.perma.cat/gestion/bourseLibre/profil/?o=-3.2"> Utilisateurs </a></li>
-        
-                <li></li> <a class="dropdown-item" href="{% url 'voir_articles_a_archiver' %}">Archiver articles</a></li>
 
-               <li> <a class="dropdown-item" href="{% url 'nettoyerActions' %}"> nettoyerActions</a></li>
-               <li> <a class="dropdown-item" href="{% url 'nettoyerHistoriqueAdmin' %}"> nettoyerHistoriqueAdmin</a></li>
+                <li class="dropdown-submenu">
+                    <a class="dropdown-item dropdown-toggle"  href="test">Admin </a>
+                    <ul class="dropdown-menu nav5-dropdown-submenu">
+                        <li><a class="dropdown-item" href="{% url 'admin:index' %}">Admin</a></li>
+                       <li> <a class="dropdown-item" href="{% url 'voirEmails' %}"> voir Emails Alertes</a></li>
+                       <li> <a class="dropdown-item" href="https://www.perma.cat/gestion/bourseLibre/profil/?o=-3.2"> Utilisateurs </a></li>
+                               <li> <a class="dropdown-item" href="https://www.perma.cat/gestion/hitcount/hit/"> Hits </a></li>
+
+                        <li><a class="dropdown-item" href="{% url 'voir_articles_a_archiver' %}">Archiver articles</a></li>
+
+                       <li> <a class="dropdown-item" href="{% url 'nettoyerActions' %}"> nettoyerActions</a></li>
+                       <li> <a class="dropdown-item" href="{% url 'nettoyerHistoriqueAdmin' %}"> nettoyerHistoriqueAdmin</a></li>
+                    </ul>
+                </li>
                 {%endif%}
+
                 <li class="divider" role="separator"></li>
                <li> <a class="dropdown-item" href="{% url 'fairedon' %}"> Faire un don</a></li>
 
