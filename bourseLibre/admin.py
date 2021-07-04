@@ -32,6 +32,7 @@ class CustomUserAdmin(UserAdmin):
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
         )
 
+
 class ArticleAdmin(admin.ModelAdmin):
         list_display = ('titre', 'asso', 'categorie', 'estArchive', )
 class Article_jardinAdmin(admin.ModelAdmin):

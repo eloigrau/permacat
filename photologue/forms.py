@@ -15,6 +15,7 @@ from django.conf import settings
 from django.utils.encoding import force_text
 from django.template.defaultfilters import slugify
 from django.core.files.base import ContentFile
+from django.forms import ClearableFileInput
 
 from .models import Album, Photo, Document
 from bourseLibre.models import Asso
@@ -235,6 +236,7 @@ class PhotoForm(forms.ModelForm):
         fields = ['image', 'title', 'caption',  'tags']
         widgets = {
             'caption': SummernoteWidget(),
+            'image': ClearableFileInput(attrs={'multiple': True}),
         }
 
     def __init__(self, request, *args, **kwargs):
@@ -243,20 +245,7 @@ class PhotoForm(forms.ModelForm):
 
     def save(self, request, commit=True):
         instance = super(PhotoForm, self).save(commit=False)
-        max_length = Photo._meta.get_field('slug').max_length
-        instance.slug = orig = slugify(instance.title)[:max_length]
 
-        for x in itertools.count(1):
-            if not Photo.objects.filter(slug=instance.slug).exists():
-                break
-
-            # Truncate the original slug dynamically. Minus 1 for the hyphen.
-            instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
-
-        instance.auteur = request.user
-
-        if commit:
-            instance.save()
 
 
         return instance

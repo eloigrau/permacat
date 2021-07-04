@@ -552,7 +552,7 @@ class ImageModel(models.Model):
 class Photo(ImageModel):
     title = models.CharField(_('title'),
                              max_length=250,
-                             unique=True)
+                             unique=False, blank=True)
     slug = models.SlugField(_('slug'),
                             unique=True,
                             max_length=250,

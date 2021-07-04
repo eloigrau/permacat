@@ -83,6 +83,41 @@
 {% endblock %}
 {% block content %}
 
+
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+  <ol class="carousel-indicators">
+	    {% for photo in album.public %}
+            <li data-target="#carouselExampleIndicators" data-slide-to="{{forloop.counter}}" {% if forloop.first %} class="active"{% endif %}></li>
+	    {% endfor %}
+  </ol>
+  <div class="carousel-inner">
+	    {% for photo in album.public %}
+    <div class="carousel-item textcenter {% if forloop.first %} active {% endif %} ">
+	        <a href="{{ photo.get_absolute_url }}">
+	             <img class="d-block w-100 {% if forloop.first %} active {% endif %} " src="{{ photo.get_display_url }}" class="thumbnail" alt="{{ photo.title }}">
+	        </a>
+    </div>
+          {% endfor %}
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Précédent</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Suivant</span>
+  </a>
+</div>
+<hr>
+<div class="row justify-content-center">
+<div class="col-sm-12 textcenter">
+        {% if album.description %}<p>{{ album.description|safe }}</p>{% endif %}
+
+</div>
+</div>
+
+<hr>
+
 <div class="row ">
 <div class="col-sm-12 textcenter">
 	    {% for photo in album.public %}
@@ -93,14 +128,6 @@
 
 </div>
 </div>
-
-<div class="row justify-content-center">
-<div class="col-sm-12 textcenter">
-        {% if album.description %}<p>{{ album.description|safe }}</p>{% endif %}
-
-</div>
-</div>
-
 
  <script>
 document.getElementById("copyButton").addEventListener("click", function() {

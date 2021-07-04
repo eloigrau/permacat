@@ -17,6 +17,9 @@ from django.utils.timezone import now
 from bourseLibre.models import Asso
 # Album views.
 
+from django.utils.text import slugify
+import itertools
+import os
 
 class AlbumListView(ListView):
     paginate_by = 20
@@ -137,10 +140,29 @@ def ajouterPhoto(request, albumSlug):
     if request.method == 'POST':
         form = PhotoForm(request, request.POST, request.FILES)
         if form.is_valid():
-            photo = form.save(request)
-            album.photos.add(photo)
-            form.save_m2m()
-            return redirect(photo.get_absolute_url())
+            images = request.FILES.getlist("image")
+            for photofile in images:
+                f = Photo(image=photofile)
+                if not form.cleaned_data["title"]:
+                    f.title = str(os.path.splitext(f.image.file.name)[0])
+                else:
+                    f.title = form.cleaned_data["title"]
+                max_length = f._meta.get_field('slug').max_length
+                f.slug = orig = slugify(f.title)[:max_length]
+
+                for x in itertools.count(1):
+                    if not Photo.objects.filter(slug=orig).exists():
+                        break
+                    orig = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
+                # Truncate the original slug dynamically. Minus 1 for the hyphen.
+                f.slug = orig
+
+                f.auteur = request.user
+                f.save()
+                album.photos.add(f)
+            form.save(request)
+           # form.save_m2m()
+            return redirect(album.get_absolute_url())
     else:
         form = PhotoForm(request)
     return render(request, 'photologue/photo_ajouter.html', { "form": form, "album":album})
