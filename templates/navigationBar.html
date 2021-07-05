@@ -335,18 +335,51 @@
 {% else %}
 
     <ul class="nav navbar-nav mr-auto navbar-left">
-            <li class="nav-item dropdown nav3">
+        <li class="nav-item dropdown nav5 3to5">
+                <a class="nav-link dropdown-toggle navbar-menu "  href="{% url 'presentation_asso' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {% fontawesome_icon 'link' %} Les associations
+                </a>
+                <ul class="dropdown-menu dropdown-menu1 nav5-dropdown" aria-labelledby="navbarDropdownMenuLink">
+                 <li class="divider" role="separator"></li>
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle"  href="test" >PermaCat</a>
+                        <ul class="dropdown-menu nav5-dropdown-submenu">
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' %}"> Présentation</a></li>
 
-                <a href="" class="nav-link dropdown-toggle navbar-menu"  href="test" id="navbarDropdownMenuLink_anonyme" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    L'association Permacat </a>
-                <ul class="dropdown-menu nav3-dropdown" aria-labelledby="navbarDropdownMenuLink" id="dropdownAssoAnonyme">
-                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' %}"> Qui sommes nous ?</a></li>
+                            <li class="divider" role="separator"></li>
                        <li> <a class="dropdown-item" href="{% url 'charte' %}"> Charte </a></li>
                        <li> <a class="dropdown-item" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a></li>
                         <li class="divider" role="separator"></li>
-                       <li> <a class="dropdown-item" href="{% url 'adhesion_asso' %}"> Cotisation/don en ligne </a></li>
+                       <li> <a class="dropdown-item" href="{% url 'adhesion_asso' %}"> Cotisation en ligne </a></li>
+
+                        </ul>
+                    </li>
+
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle"  href="test">Ramène Ta Graine</a>
+                        <ul class="dropdown-menu  nav5-dropdown-submenu">
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso_rtg' %}"> Présentation </a></li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle"  href="test">Fermille</a>
+                        <ul class="dropdown-menu  nav5-dropdown-submenu">
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso_fer' %}"> Présentation</a></li>
+                      </ul>
+                    </li>
+
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle"  href="test">Gardiens de la Terre</a>
+                        <ul class="dropdown-menu  nav5-dropdown-submenu">
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso_gt' %}"> Présentation</a></li>
+
+                      </ul>
+                    </li>
+
                 </ul>
-            </li>
+        </li>
+
 
         <li class="nav-item dropdown nav2">
             <a class="nav-link dropdown-toggle navbar-menu" href="{% url 'profil_courant' %}" id="navbarAbout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
