@@ -38,7 +38,7 @@ django-summernote==0.8.11.4
 django-tinymce==2.8.0
 django-taggit==1.1.0
 django-widget-tweaks==1.4.3
-djangorestframework==3.9.1
+djangorestframework==3.11.2
 gunicorn==19.9.0
 html5lib==1.0.1
 icalendar==4.0.3
