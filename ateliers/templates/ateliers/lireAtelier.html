@@ -4,10 +4,6 @@
 {% block subtitle %}
 
 
-{% endblock %}
-
-{% block content %}
-
  <div class="row rowcentre">
     <div class="col-sm-6 textleft">
     </div>
@@ -24,14 +20,19 @@
                </button></a>
             </div>
             {% endif %}
+            {%if request.user.is_superuser or request.user == atelier.auteur  %}
+				<a href="{%if request.user.is_authenticated %}{% url 'ateliers:supprimerAtelier' slug=atelier.slug %}{% endif %}">
+               <button type="button" class="btn btn-sm btn-danger">
+                 &nbsp;Supprimer l'atelier
+               </button></a>
+            {% endif %}
         </div>
  </div>
+{% endblock %}
 
-
-
+{% block content %}
     <div class="row contenu atelier">
     <div class="col justify-content-center">
-
 
     <div class="row titre_atelier" style="background-color:{{atelier.atelier.get_couleur}};margin-bottom:15px;">
         <div class="col textcenter" >
