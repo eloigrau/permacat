@@ -134,30 +134,25 @@
 					</td>
 					<td class="proprieteAtelier">
 					{% if atelier.date_atelier %}
-						{{ atelier.date_atelier|date:"DATE_FORMAT"}}
-					{% if atelier.heure_atelier %}
-						à {{ atelier.heure_atelier}}
-					{% endif %}
+						le {{ atelier.date_atelier|date:"l d F Y"}}
+						{% if atelier.heure_atelier %}
+							{% if atelier.duree_prevue %}
+								de {{ atelier.heure_atelier}}h à {{ atelier.heure_fin_atelier|date:"G:i"}}h
+							{%else%}
+							à {{ atelier.heure_atelier}}
+							{% endif %}
+						{% endif %}
 					{% else %}
 						-
 					{% endif %}
 					</td>
 
 				</tr>
-					{% if atelier.duree_prevue %}
-				<tr>
-					<td class="nomProprieteAtelier">
-						Durée prévue :
-					</td>
-					<td class="proprieteAtelier">
-						{{ atelier.duree_prevue}}
-					</td>
-				</tr>
-					{% endif %}
+
 					{% if atelier.tarif_par_personne %}
 				<tr>
 					<td class="nomProprieteAtelier">
-						Prix par personne:
+						Tarif par personne:
 					</td>
 					<td class="proprieteAtelier">
 						{{ atelier.tarif_par_personne}}

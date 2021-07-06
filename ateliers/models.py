@@ -4,6 +4,7 @@ from blog.models import Article
 from django.urls import reverse
 from django.utils import timezone
 import uuid
+import datetime as dt
 
 class Choix():
     type_atelier = ('0','Permaculture'), ('1',"Bricolage"), ('2','Cuisine'), ('3','Bien-être'),('4',"Musique"), ('5', 'Autre...')
@@ -89,8 +90,8 @@ class Atelier(models.Model):
             return Choix.couleurs_ateliers[self.categorie]
 
     @property
-    def get_couleur_cat(self,cat):
-            return Choix.couleurs_ateliers[cat]
+    def get_couleur_cat(self, cat):
+        return Choix.couleurs_ateliers[cat]
 
 
     def est_autorise(self, user):
@@ -99,6 +100,15 @@ class Atelier(models.Model):
 
         return getattr(user, "adherent_" + self.asso.abreviation)
 
+
+    @property
+    def heure_fin_atelier(self,):
+        if self.date_atelier and self.duree_prevue:
+            delta = dt.timedelta(hours=self.duree_prevue.hour, minutes=self.duree_prevue.minute)
+
+            return dt.datetime.combine(self.date_atelier, self.heure_atelier) + delta
+        else:
+            return None
 
 class CommentaireAtelier(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE)
