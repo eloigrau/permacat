@@ -261,7 +261,7 @@
 {% for atelier in ateliers %}
 <div class="row align-items-center">
     <div class="col-sm-12 textcenter">
-        Atelier du {{atelier.date_atelier |date:"l d F Y"}} : <a href="{{atelier.get_absolute_url}}"> {{atelier.titre}}</a>
+        <a href="{{atelier.get_absolute_url}}"> Atelier du {{atelier.date_atelier |date:"l d F Y"}} : {{atelier.titre}}</a>
     </div>
 </div>
 {% endfor%}
