@@ -165,6 +165,13 @@ class Evenement(models.Model):
     def estPublic(self):
         return self.article.asso.id == 1
 
+
+    def est_autorise(self, user):
+        if self.article.asso.abreviation == "public":
+            return True
+
+        return getattr(user, "adherent_" + self.article.asso.abreviation)
+
 class Commentaire(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE)
     commentaire = models.TextField()
