@@ -102,4 +102,19 @@
         </div>
 
     {% endif %}
+
+<script>
+    function toggle_visibility(id) {
+       var e = document.getElementById(id);
+       var btn = document.getElementById("btn-archives");
+       if(e.style.display == 'block'){
+          e.style.display = 'none';
+          btn.textContent = "Afficher les archives";
+      }
+       else{
+          e.style.display = 'block';
+          btn.textContent = "Cacher les archives";
+      }
+   }
+</script>
 {% endblock %}
