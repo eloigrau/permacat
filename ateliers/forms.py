@@ -25,10 +25,11 @@ class AtelierForm(forms.ModelForm):
 
     def save(self, request, article):
         instance = super(AtelierForm, self).save(commit=False)
-        referent = self.cleaned_data['referent']
         try:
-            instance.referent = dict(self.fields['referent'].choices)[referent]
+            referent = int(self.cleaned_data['referent'])
+            instance.referent = dict(self.fields['referent'].choices)[referent].username
         except:
+            instance.referent = dict(self.fields['referent'].choices)[referent]
             pass
 
         if article:

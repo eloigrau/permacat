@@ -141,17 +141,17 @@
         {%if not article.album %}
             {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
 
-                    <small><a class="btn btn-sm btn-success textleft" href="{% url 'blog:ajouterAlbumArticle' slug=article.slug %}" ><i class="fa fa-plus"></i> Ajouter un album photo</a></small>
+                    <small><a class="btn btn-sm btn-success btn-block textleft" href="{% url 'blog:ajouterAlbumArticle' slug=article.slug %}" ><i class="fa fa-plus"></i> Ajouter un album photo</a></small>
 
             {% endif%}
         {%else%}
             <li>
-             <small><a class="btn btn-sm  btn-success textleft" href="{{ article.album.get_absolute_url }}"><i class="fa fa-arrow-right"></i> Voir l'album photo</a></small>
+             <small><a class="btn btn-sm btn-block btn-success textleft" href="{{ article.album.get_absolute_url }}"><i class="fa fa-arrow-right"></i> Voir l'album photo</a></small>
             </li>
             {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
 
             <li>
-               <small> <a class="btn btn-sm btn-danger textleft" href="{% url 'blog:supprimerAlbumArticle' slug=article.slug%}"><i class="fa fa-times"></i> Enlever l'album photo</a></small>
+               <small> <a class="btn btn-block btn-sm btn-danger textleft" href="{% url 'blog:supprimerAlbumArticle' slug=article.slug%}"><i class="fa fa-times"></i> Enlever l'album photo</a></small>
             </li>
             {% endif %}
         {%endif%}
