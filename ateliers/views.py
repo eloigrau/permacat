@@ -16,6 +16,9 @@ from bourseLibre.models import Suivis, Profil
 from bourseLibre.constantes import Choix as Choix_global
 from actstream import actions, action
 
+from hitcount.models import HitCount
+from hitcount.views import HitCountMixin
+
 def accueil(request):
     return redirect("ateliers:index_ateliers")
     #return render(request, 'ateliers/accueil.html')
@@ -137,6 +140,10 @@ def lireAtelier(request, atelier):
         user_inscrit = request.user.username in inscrits
     else:
         user_inscrit = []
+
+
+    hit_count = HitCount.objects.get_for_object(atelier)
+    hit_count_response = HitCountMixin.hit_count(request, hit_count)
 
     form_comment = CommentaireAtelierForm(request.POST or None)
     if form_comment.is_valid():

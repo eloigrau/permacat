@@ -1,22 +1,18 @@
 {% extends 'base_ateliers.html' %}
 {% load ateliers_filters %}
 {% load fontawesome %}
+{% load hitcount_tags %}
+
 {% block subtitle %}
 
 
  <div class="row rowcentre">
-    <div class="col-sm-6 textleft">
-    </div>
-        <div class="col-sm-6 textright">
+        <div class="col-sm-12 textcenter">
             {%if request.user.is_superuser or request.user.username == atelier.referent or request.user == atelier.auteur  %}
             <div class = "btn-group">
             <a href="{%if request.user.is_authenticated %}{% url 'ateliers:modifierAtelier' slug=atelier.slug %}{% endif %}">
                <button type="button" class="btn btn-sm btn-warning">
                  &nbsp;Modifier
-               </button></a>
-            <a href="{% url 'ateliers:contacterParticipantsAtelier' slug=atelier.slug %}">
-               <button type="button" class="btn btn-sm btn-warning">
-                 &nbsp;Contacter les participants
                </button></a>
             </div>
             {% endif %}
@@ -39,12 +35,28 @@
               <h2> Atelier : {{ atelier.titre }}</h2>
         </div>
     </div>
-
+ 	<div class="row">
     <div class="col-md-12 textcenter">
         <p class="infos  textepetit">rédigé le {{ atelier.date_creation|date:"DATE_FORMAT" }}, par <a href="{% url 'profil' atelier.auteur.id %}">{{atelier.auteur.username}}</a>, dernière modification le {{ atelier.date_modification|date:"DATE_FORMAT" }}
-        </p>
+
+
+            <span class="badge badge-Light">
+            {% get_hit_count for atelier as nbvues %}
+            {{ nbvues }} vue{{nbvues|pluralize:"s"}}
+            </span>
+		</p>
     </div>
+    </div>
+
+ 	<div class="row">
+    <div class="col-md-12 textcenter">
+            <a href="{% url 'ateliers:contacterParticipantsAtelier' slug=atelier.slug %}">
+               <button type="button" class="btn btn-sm btn-success">
+                 &nbsp;<i class='fa fa-envelope' ></i> Contacter les participants
+               </button></a>
 		<hr>
+    </div>
+    </div>
 
  <div class="row rowcentre inscrit_atelier">
         <div class="col-sm-12 textcenter">
