@@ -1276,8 +1276,10 @@ margin-bottom:10px;
 
 
 .nomProprieteAtelier{
+    background-color:Gray;
 }
-.nomProprieteAtelier{
+.proprieteAtelier{
+    background-color:LightGray;
 }
 
 .boutonAtelier{

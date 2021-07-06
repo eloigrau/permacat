@@ -64,6 +64,8 @@ class Atelier(models.Model):
     asso = models.ForeignKey(Asso, on_delete=models.SET_NULL, null=True)
     article = models.ForeignKey(Article, on_delete=models.CASCADE, null=True)
 
+    estArchive = models.BooleanField(default=False, verbose_name="Archiver l'atelier")
+
     class Meta:
         ordering = ('-date_creation', )
         

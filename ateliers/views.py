@@ -163,7 +163,7 @@ class ListeAteliers(ListView):
 
     def get_queryset(self):
         params = dict(self.request.GET.items())
-        qs = Atelier.objects.all()
+        qs = Atelier.objects.filter(estArchive=False)
 
         if "categorie" in params:
             qs = qs.filter(categorie=params['categorie'])
@@ -186,6 +186,7 @@ class ListeAteliers(ListView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
+        context['list_archive'] = Atelier.objects.filter(estArchive=True)
 
         cat= Atelier.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
         context['categorie_list'] = [x for x in Choix.type_atelier if x[0] in cat]

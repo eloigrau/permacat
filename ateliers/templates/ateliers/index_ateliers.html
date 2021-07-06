@@ -85,4 +85,21 @@
 </div>
 {%include 'pagination.html' %}
 
+        {% if list_archive %}
+        <div class="textcenter">
+            <button id="btn-archives"  type="button" class="btn btn-lg" onclick="toggle_visibility('archives');" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour afficher les archives">
+                Afficher les archives
+            </button>
+        </div>
+        <hr>
+        <div id="archives" style='display:none;'>
+            {% for article in list_archive %}
+            <div class="infinite-item my-auto">
+                {% include "blog/article_template.html" with article=article %}
+            <hr>
+            </div>
+            {% endfor %}
+        </div>
+
+    {% endif %}
 {% endblock %}

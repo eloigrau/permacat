@@ -218,7 +218,7 @@ class ListeArticles(ListView):
     def get_queryset(self):
         params = dict(self.request.GET.items())
 
-        qs = Article.objects.all()
+        qs = Article.objects.filter(estArchive=False)
 
         if not self.request.user.is_authenticated:
             qs = qs.filter(asso__nom="public")
@@ -243,13 +243,13 @@ class ListeArticles(ListView):
             qs = qs.order_by('-date_dernierMessage', '-date_creation', 'categorie', 'auteur')
 
         self.qs = qs
-        return qs.filter(estArchive=False)
+        return qs
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
 
-        context['list_archive'] = self.qs.filter(estArchive=True)
+        context['list_archive'] = Article.objects.filter(estArchive=True)
         # context['producteur_list'] = Profil.objects.values_list('username', flat=True).distinct()
         #context['auteur_list'] = Article.objects.order_by('auteur').values_list('auteur__username', flat=True).distinct()
         cat = Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
