@@ -233,7 +233,7 @@ class AlbumChangeForm(forms.ModelForm):
 class PhotoForm(forms.ModelForm):
     class Meta:
         model = Photo
-        fields = ['image', 'title', 'caption',  'tags']
+        fields = ['image', 'title', 'caption']
         widgets = {
             'caption': SummernoteWidget(),
             'image': ClearableFileInput(attrs={'multiple': True}),

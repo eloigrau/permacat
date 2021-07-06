@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'^modifierAtelier/(?P<slug>[-\w]+)$', login_required(views.ModifierAtelier.as_view(), login_url='/auth/login/'), name='modifierAtelier'),
     url(r'^modifierCommentaire/(?P<id>[0-9]+)$', login_required(views.ModifierCommentaire.as_view(), login_url='/auth/login/'), name='modifierCommentaireAtelier'),
     url(r'^supprimerAtelier/(?P<slug>[-\w]+)$', login_required(views.SupprimerAtelier.as_view(), login_url='/auth/login/'), name='supprimerAtelier'),
+    url(r'^ajouterAtelier/(?P<article_slug>[-\w]+)$', login_required(views.ajouterAtelier), name='ajouterAtelier_article'),
     url(r'^ajouterAtelier/$', login_required(views.ajouterAtelier), name='ajouterAtelier'),
 
 ]

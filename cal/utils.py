@@ -44,33 +44,34 @@ class Calendar(LocaleTextCalendar):
         events_per_day_proj = events_proj.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
         events_per_day_autre = events_autre.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
         events_per_day_autre_jardin = events_autre_jardin.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
-        events_per_day_votes = None#events_vote.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
+        #events_per_day_votes = None#events_vote.filter(Q(start_time__day=day) | Q(start_time__day__lt=day, end_time__day__gte=day))
         events_per_day_atel = events_atel.filter(Q(date_atelier__day=day))
 
         d = ''
         for event in events_per_day_arti:
-            if event.estPublic or (not request.user.is_anonymous and request.user.adherent_pc):
+            if event.est_autorise(request.user):
                 titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
                 d += "<div class='event'><a href='"+event.get_absolute_url() +"'><i class='fa fa-comments iconleft'></i> "+titre+'</a> </div>'
         for event in events_per_day_arti_jardin:
-            if event.estPublic or (not request.user.is_anonymous and request.user.adherent_pc):
+            if event.est_autorise(request.user):
                 titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
                 d += "<div class='event'><a href='"+event.get_absolute_url() +"'><i class='fa fa-pagelines iconleft'></i> "+titre+'</a> </div>'
         for event in events_per_day_proj:
-            if event.estPublic or (not request.user.is_anonymous and request.user.adherent_pc):
+            if event.est_autorise(request.user):
                 titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
                 d += "<div class='event'>  <a href='"+event.get_absolute_url() +"'><i class='fa fa-folder-open iconleft' ></i> "+titre+'</a> </div>'
-        #for event in events_per_day_atel:
-         #   titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
-          #  d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-dna iconleft' ></i> "+titre+'</a> </div>'
+        for event in events_per_day_atel:
+            if event.est_autorise(request.user):
+                titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
+                d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-dna iconleft' ></i> "+titre+'</a> </div>'
 
         for event in events_per_day_autre:
-            if event.estPublic or (not request.user.is_anonymous and request.user.adherent_pc):
+            if event.est_autorise(request.user):
                 titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
                 d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-comments iconleft' ></i> "+titre+'</a> </div>'
 
         for event in events_per_day_autre_jardin:
-            if event.estPublic or (not request.user.is_anonymous and request.user.adherent_pc):
+            if event.est_autorise(request.user):
                 titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
                 d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-pagelines' ></i> "+titre+'</a> </div>'
 

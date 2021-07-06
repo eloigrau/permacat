@@ -44,6 +44,33 @@
         </p>
     </div>
 		<hr>
+
+ <div class="row rowcentre inscrit_atelier">
+        <div class="col-sm-12 textcenter">
+            {%if request.user.is_authenticated %}
+                 {% if user_inscrit %}
+                    <p>Vous êtes inscrit à cet atelier
+                    <a href="{% url 'ateliers:annulerInscription' slug=atelier.slug %}">
+                       <button type="button" class="btn btn-warning btn-sm">
+                            Se désinscrire
+                       </button>
+                    </a>
+                        </p>
+
+
+                {% else %}
+                    <a href="{% url 'ateliers:inscriptionAtelier' slug=atelier.slug %}">
+                       <button type="button" class="btn  btn-success btn-lg">
+                            <i class="fa fa-arrow-right"></i> S'inscrire à l'atelier
+                       </button>
+                    </a>
+                {% endif %}
+            {% else %}
+            <p><a href="/auth/login/" >Connectez vous pour vous inscrire à l'atelier</a></p>
+            {% endif %}
+        </div>
+ </div>
+<hr>
     <div class="row">
         <div class="col-sm-12 ">
 			<h4>Description : </h4>
@@ -58,10 +85,21 @@
             <p>{{ atelier.materiel|safe}}</p>
         </div>
     </div>
+		<hr>
 		{% endif%}
 <div class="col-sm-12 paddingbase">
 		<table class="table table-condensed ">
 			<tbody>
+			{% if atelier.article %}
+				<tr>
+					<td class="nomProprieteAtelier">
+						Article associé :
+					</td>
+					<td class="proprieteAtelier">
+						<a href="{{ atelier.article.get_absolute_url}}">{{ atelier.article.titre}}</a>
+					</td>
+				</tr>
+			{% endif %}
 				<tr>
 					<td class="nomProprieteAtelier">
 						Catégorie :
@@ -141,33 +179,6 @@
 	</div>
 </div>
 </div>
-<div
- <div class="row rowcentre inscrit_atelier">
-        <div class="col-sm-12 textcenter">
-            {%if request.user.is_authenticated %}
-                 {% if user_inscrit %}
-                    <p>Vous êtes inscrit à cet atelier
-                    <a href="{% url 'ateliers:annulerInscription' slug=atelier.slug %}">
-                       <button type="button" class="btn btn-warning btn-sm">
-                            Se désinscrire
-                       </button>
-                    </a>
-                        </p>
-
-
-                {% else %}
-                    <a href="{% url 'ateliers:inscriptionAtelier' slug=atelier.slug %}">
-                       <button type="button" class="btn  btn-success btn-lg">
-                            <i class="fa fa-arrow-right"></i> S'inscrire à l'atelier
-                       </button>
-                    </a>
-                {% endif %}
-            {% else %}
-            <p><a href="/auth/login/" >Connectez vous pour vous inscrire à l'atelier</a></p>
-            {% endif %}
-        </div>
- </div>
-
 <hr>
 
 {% include 'commentaires.html' %}

@@ -245,10 +245,26 @@
             </div>
 </div>
     <hr>
-
 <div class="row">
 <div class="col-sm-12 contenuarticle">
    {{ article.contenu |safe}}
+</div>
+</div>
+    <hr>
+{% for atelier in ateliers %}
+<div class="row align-items-center">
+    <div class="col-sm-12 textcenter">
+        Atelier du {{atelier.date_atelier |date:"l d F Y"}} : <a href="{{atelier.get_absolute_url}}"> {{atelier.titre}}</a>
+    </div>
+</div>
+{% endfor%}
+<div class="row align-items-center">
+<div class="col-sm-12 textcenter">
+        <a href="{% url 'ateliers:ajouterAtelier_article' article_slug=article.slug %}">
+        <button type="button" class="btn btn-success" >
+                <i class="fa fa-plus"></i> Ajouter un atelier
+            </button>
+            </a>&ensp;
 </div>
 </div>
 </div>

@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.utils.html import strip_tags
 from .models import Suffrage, Commentaire, Choix, Vote
 from bourseLibre.constantes import Choix as Choix_global
-from .forms import SuffrageForm, CommentaireSuffrageForm, CommentaireSuffrageChangeForm, SuffrageChangeForm, \
+from .forms import SuffrageFormset, CommentaireSuffrageForm, CommentaireSuffrageChangeForm, SuffrageChangeForm, \
     VoteForm, VoteChangeForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
@@ -22,17 +22,36 @@ def accueil(request):
 
 @login_required
 def ajouterSuffrage(request):
-    form = SuffrageForm(request.POST or None)
-    if form.is_valid():
-        suffrage = form.save(request.user)
-        url = suffrage.get_absolute_url()
-        suffix = "_" + suffrage.asso.abreviation
-        action.send(request.user, verb='suffrage_ajout'+suffix, action_object=suffrage, url=url,
-                    description="a ajouté un suffrage : '%s'" % suffrage.question)
+    if request.method == 'GET':
+        formset = SuffrageFormset(request.GET or None)
+    elif request.method == 'POST':
+        formset = SuffrageFormset(request.POST)
+        if formset.is_valid():
+            suffrage = None
+            for form in formset:
+                # extract name from each form and save
+                question = form.cleaned_data.get('question')
+                if question:
+                    suffrage = form.save(request.user)
+                    # suffrage = Suffrage(type_vote=form.cleaned_data.get('type_vote'),
+                    #          question=question,
+                    #          auteur=request.user,
+                    #          slug=form.cleaned_data.get('slug'),
+                    #          contenu=form.cleaned_data.get('contenu'),
+                    #          slug=form.cleaned_data.get('slug'),
+                    #          estPublic=form.cleaned_data.get('estPublic'),
+                    #          asso=form.cleaned_data.get('asso'),
+                    #          estAnonyme=form.cleaned_data.get('estAnonyme'),).save()
 
-        return redirect(suffrage.get_absolute_url())
+            if suffrage:
+                url = suffrage.get_absolute_url()
+                suffix = "_" + suffrage.asso.abreviation
+                action.send(request.user, verb='suffrage_ajout'+suffix, action_object=suffrage, url=url,
+                            description="a ajouté un suffrage : '%s'" % suffrage.question)
 
-    return render(request, 'vote/ajouterSuffrage.html', { "form": form, })
+                return redirect(suffrage.get_absolute_url())
+
+    return render(request, 'vote/ajouterSuffrage.html', { "formset": formset, })
 
 
 class ModifierSuffrage(UpdateView):

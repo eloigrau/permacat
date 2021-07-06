@@ -167,7 +167,7 @@ class SupprimerArticle(DeleteView):
 @login_required
 def lireArticle(request, slug):
     article = get_object_or_404(Article, slug=slug)
-
+    ateliers= Atelier.objects.filter(article=article)
     if not article.est_autorise(request.user):
         return render(request, 'notMembre.html', {"asso": str(article.asso)})
 
@@ -201,7 +201,7 @@ def lireArticle(request, slug):
             #envoi_emails_articleouprojet_modifie(article, request.user.username + " a réagit au projet: " +  article.titre, True)
         return redirect(request.path)
 
-    return render(request, 'blog/lireArticle.html', {'article': article, 'form': form, 'commentaires':commentaires, 'dates':dates, 'actions':actions},)
+    return render(request, 'blog/lireArticle.html', {'article': article, 'form': form, 'commentaires':commentaires, 'dates':dates, 'actions':actions, 'ateliers':ateliers},)
 
 @login_required
 def lireArticle_id(request, id):

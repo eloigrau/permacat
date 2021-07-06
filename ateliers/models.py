@@ -1,10 +1,8 @@
 from django.db import models
-from bourseLibre.models import Profil, Suivis, Asso
+from bourseLibre.models import Profil, Asso
+from blog.models import Article
 from django.urls import reverse
 from django.utils import timezone
-from taggit.managers import TaggableManager
-from bourseLibre import settings
-from django.contrib.auth.models import Group, User
 import uuid
 
 class Choix():
@@ -63,6 +61,7 @@ class Atelier(models.Model):
     duree_prevue = models.TimeField(verbose_name="Durée prévue", help_text="Durée de l'atelier estimée", default="02:00", blank=True, null=True)
     tarif_par_personne = models.CharField(max_length=30, default='gratuit', help_text="Tarif de l'atelier par personne", verbose_name="Tarif de l'atelier par personne", )
     asso = models.ForeignKey(Asso, on_delete=models.SET_NULL, null=True)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, null=True)
 
     class Meta:
         ordering = ('-date_creation', )
@@ -94,6 +93,11 @@ class Atelier(models.Model):
             return Choix.couleurs_ateliers[cat]
 
 
+    def est_autorise(self, user):
+        if self.asso.abreviation == "public":
+            return True
+
+        return getattr(user, "adherent_" + self.asso.abreviation)
 
 
 class CommentaireAtelier(models.Model):

@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.contrib import messages
 from django.core.mail import send_mail, BadHeaderError
+from blog.models import Article
 
 from django.utils.timezone import now
 
@@ -21,10 +22,12 @@ def accueil(request):
 
 
 @login_required
-def ajouterAtelier(request):
-    form = AlbumForm(request, request.POST or None)
+def ajouterAtelier(request, article_slug=None):
+    form = AtelierForm(request, request.POST or None)
+    if article_slug:
+        article = Article.objects.get(slug=article_slug)
     if form.is_valid():
-        atelier = form.save(request)
+        atelier = form.save(request, article)
         action.send(request.user, verb='atelier_nouveau', action_object=atelier, url=atelier.get_absolute_url(),
                      description="a ajouté l'atelier: '%s'" % atelier.titre)
         return redirect(atelier.get_absolute_url())

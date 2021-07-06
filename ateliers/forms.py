@@ -23,7 +23,7 @@ class AtelierForm(forms.ModelForm):
             'duree_prevue': forms.TimeInput(attrs={'type':"time", },format='%H:%M'),
         }
 
-    def save(self, request):
+    def save(self, request, article):
         instance = super(AtelierForm, self).save(commit=False)
         referent = self.cleaned_data['referent']
         try:
@@ -31,6 +31,8 @@ class AtelierForm(forms.ModelForm):
         except:
             pass
 
+        if article:
+            instance.article = article
 
         max_length = Atelier._meta.get_field('slug').max_length
         instance.slug = orig = slugify(instance.titre)[:max_length]

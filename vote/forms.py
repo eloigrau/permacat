@@ -7,6 +7,7 @@ from blog.forms import SummernoteWidgetWithCustomToolbar
 from django.utils.timezone import now
 from bourseLibre.settings import LOCALL
 from bourseLibre.models import Asso
+from django.forms import formset_factory
 
 class SuffrageForm(forms.ModelForm):
     asso = forms.ModelChoiceField(queryset=Asso.objects.all(), required=True, label="Suffrage public ou réservé aux adhérents de l'asso :",)
@@ -51,6 +52,7 @@ class SuffrageForm(forms.ModelForm):
 
         return instance
 
+SuffrageFormset = formset_factory(SuffrageForm, extra=1)
 
 class SuffrageChangeForm(forms.ModelForm):
 

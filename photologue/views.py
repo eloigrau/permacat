@@ -142,7 +142,7 @@ def ajouterPhoto(request, albumSlug):
         if form.is_valid():
             images = request.FILES.getlist("image")
             for photofile in images:
-                f = Photo(image=photofile)
+                f = Photo(image=photofile, )
                 if not form.cleaned_data["title"]:
                     f.title = str(os.path.splitext(f.image.file.name)[0])
                 else:

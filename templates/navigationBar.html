@@ -30,6 +30,10 @@
 
                          <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='pc'%}"><i class='fa fa-comments' ></i> Articles du forum</a></li>
     {% endif %}
+                    {%comment%}
+                            <li><a class="dropdown-item" href="{% url 'vote:index' %}"><i class="fa fa-bullhorn iconleft"></i>  Votes </a></li>
+
+                    {%endcomment%}
 
                     {%comment%}
                             <li class="divider" role="separator"></li>
@@ -78,9 +82,7 @@
                         </ul>
                     </li>
                     {% endcomment%}
-                            {% comment %}
-                            <li><a class="dropdown-item" href="{% url 'vote:index' %}"><i class="fa fa-bullhorn iconleft"></i>  Votes </a></li>
-                            {% endcomment %}
+
 
 
                             {% if request.user.adherent_pc %}
@@ -246,6 +248,7 @@
                         <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=3 %}"><i class='fa fa-pagelines' ></i> Jardin de Lurçat </a></li>
                     </ul>
                 </li>
+                    {%comment%}
                 <li class="dropdown-submenu">
                     <a class="dropdown-item dropdown-toggle"  href="test">Ateliers Collectifs </a>
                     <ul class="dropdown-menu nav5-dropdown-submenu">
@@ -255,6 +258,7 @@
                         {% endfor %}
                     </ul>
                 </li>
+                    {%endcomment%}
                 <li class="dropdown-submenu">
                     <a class="dropdown-item dropdown-toggle"  href="test">Documents </a>
                     <ul class="dropdown-menu nav5-dropdown-submenu">
