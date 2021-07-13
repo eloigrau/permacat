@@ -133,7 +133,7 @@ def getEvenementsSemaine(request):
         evenements.append(ev_4)
 
 
-        ev_5 = Atelier.objects.filter(Q(date_atelier__week=current_week) & Q(date_atelier__year=current_year)).order_by('date_atelier')
+        ev_5 = Atelier.objects.filter(Q(start_time__week=current_week) & Q(start_time__year=current_year)).order_by('start_time')
         for nomAsso in Choix_global.abreviationsAsso:
             if not getattr(request.user, "adherent_" + nomAsso):
                 ev_5 = ev_5.exclude(asso__abreviation=nomAsso)

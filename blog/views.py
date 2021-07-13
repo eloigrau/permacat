@@ -49,7 +49,7 @@ def accueil(request):
 
     projets_list = [(x.slug, x.titre, x.get_couleur) for x in proj]
 
-    ateliers = Atelier.objects.filter(date_atelier__gte=now())
+    ateliers = Atelier.objects.filter(start_time__gte=now())
 
     for nomAsso in Choix_global.abreviationsAsso:
         if not getattr(request.user, "adherent_" + nomAsso):
@@ -373,7 +373,7 @@ class ListeArticles_asso(ListView):
 
         context['projets_list'] = [(x.slug, x.titre, x.get_couleur) for x in proj]
         #
-        # ateliers = Atelier.objects.filter(date_atelier__gte=now())
+        # ateliers = Atelier.objects.filter(start_time__gte=now())
         # if not self.request.user.adherent_pc:
         #     ateliers = ateliers.exclude(asso__abreviation="pc")
         # if not self.request.user.adherent_fer:

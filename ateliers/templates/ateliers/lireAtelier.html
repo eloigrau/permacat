@@ -145,8 +145,8 @@
 						Date prévue :
 					</td>
 					<td class="proprieteAtelier">
-					{% if atelier.date_atelier %}
-						le {{ atelier.date_atelier|date:"l d F Y"}}
+					{% if atelier.start_time %}
+						le {{ atelier.start_time|date:"l d F Y"}}
 						{% if atelier.heure_atelier %}
 							{% if atelier.duree_prevue %}
 								de {{ atelier.heure_atelier}}h à {{ atelier.heure_fin_atelier|date:"G:i"}}h

@@ -51,7 +51,7 @@ class Atelier(models.Model):
     referent = models.CharField(max_length=120, null=True, blank=True,  verbose_name="Référent(e.s)")
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE, null=True)
 #    projet = models.OneToOneField(Projet)
-    date_atelier = models.DateField(verbose_name="Date prévue (affichage dans l'agenda)", help_text="(jj/mm/an)", default=timezone.now, blank=True, null=True)
+    start_time = models.DateField(verbose_name="Date prévue (affichage dans l'agenda)", help_text="(jj/mm/an)", default=timezone.now, blank=True, null=True)
     heure_atelier = models.TimeField(verbose_name="Heure prévue", help_text="Horaire de départ (hh:mm)", default="17:00", blank=True, null=True)
 
     date_creation = models.DateTimeField(verbose_name="Date de parution", default=timezone.now)
@@ -105,10 +105,10 @@ class Atelier(models.Model):
 
     @property
     def heure_fin_atelier(self,):
-        if self.date_atelier and self.duree_prevue:
+        if self.start_time and self.duree_prevue:
             delta = dt.timedelta(hours=self.duree_prevue.hour, minutes=self.duree_prevue.minute)
 
-            return dt.datetime.combine(self.date_atelier, self.heure_atelier) + delta
+            return dt.datetime.combine(self.start_time, self.heure_atelier) + delta
         else:
             return None
 
