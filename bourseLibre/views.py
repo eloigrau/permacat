@@ -20,7 +20,7 @@ from django.urls import reverse_lazy, reverse
 from django.core.mail import mail_admins, send_mail, BadHeaderError, send_mass_mail
 from django_summernote.widgets import SummernoteWidget
 from random import choice
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime as dt
 
 from django import forms
 from django.http import Http404
@@ -141,7 +141,7 @@ def getEvenementsSemaine(request):
         evenements.append(ev_5)
 
         from itertools import chain
-        evenements = sorted(list(chain(ev_art, ev_2, ev_3, ev_4, ev_5)), key=lambda x:x.start_time)
+        evenements = sorted(list(chain(ev_art, ev_2, ev_3, ev_4, ev_5)), key=lambda x:dt(x.start_time.year, x.start_time.month, x.start_time.day, ))
 
     return evenements
 
