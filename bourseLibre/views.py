@@ -26,6 +26,7 @@ from django import forms
 from django.http import Http404
 
 from blog.models import Article, Projet, EvenementAcceuil, Evenement
+from ateliers.models import Atelier
 from jardinpartage.models import Article as Article_jardin
 
 from django.contrib import messages
@@ -131,8 +132,16 @@ def getEvenementsSemaine(request):
                 ev_4 = ev_4.exclude(asso__abreviation=nomAsso)
         evenements.append(ev_4)
 
+
+        ev_5 = Atelier.objects.filter(Q(date_atelier__week=current_week) & Q(date_atelier__year=current_year)).order_by('date_atelier')
+        for nomAsso in Choix_global.abreviationsAsso:
+            if not getattr(request.user, "adherent_" + nomAsso):
+                ev_5 = ev_5.exclude(asso__abreviation=nomAsso)
+
+        evenements.append(ev_5)
+
         from itertools import chain
-        evenements = sorted(list(chain(ev_art, ev_2, ev_3, ev_4)), key=lambda x:x.start_time)
+        evenements = sorted(list(chain(ev_art, ev_2, ev_3, ev_4, ev_5)), key=lambda x:x.start_time)
 
     return evenements
 
