@@ -63,7 +63,7 @@ class Calendar(LocaleTextCalendar):
         for event in events_per_day_atel:
             if event.est_autorise(request.user):
                 titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
-                d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-dna iconleft' ></i> "+titre+'</a> </div>'
+                d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-wrench iconleft' ></i> "+titre+'</a> </div>'
 
         for event in events_per_day_autre:
             if event.est_autorise(request.user):
