@@ -89,7 +89,10 @@ class Atelier(models.Model):
 
     @property
     def get_couleur(self):
+        try:
             return Choix.couleurs_ateliers[self.categorie]
+        except:
+            return Choix.couleurs_ateliers['0']
 
     @property
     def get_couleur_cat(self, cat):
