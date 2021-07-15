@@ -68,8 +68,8 @@ if not LOCALL:
     #X_FRAME_OPTIONS = 'DENY'
     SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
-ALLOWED_HOSTS = ['www.perma.cat']
-print("local" + str(LOCALL))
+ALLOWED_HOSTS = ['www.perma.cat', 'perma.cat']
+#print("local" + str(LOCALL))
 # Application definition
 
 # pip install django-fontawesome django-model_utils django-debug_toolbar django-haystack django-bootstrap django-extensions django-leaflet django-filter django-rest-framework django-scheduler django-widget-tweaks
