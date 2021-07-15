@@ -180,14 +180,6 @@ class ListeAteliers(ListView):
         if "categorie" in params:
             qs = qs.filter(categorie=params['categorie'])
 
-        if not self.request.user.is_authenticated:
-            qs = qs.filter(asso__nom="public")
-        else:
-            for nomAsso in Choix_global.abreviationsAsso:
-                if not getattr(self.request.user, "adherent_" + nomAsso):
-                    qs = qs.exclude(asso__abreviation=nomAsso)
-
-
         if "ordreTri" in params:
             qs = qs.order_by(params['ordreTri'])
         else:
