@@ -30,7 +30,7 @@
     <div class="row contenu atelier">
     <div class="col justify-content-center">
 
-    <div class="row titre_atelier" style="background-color:{{atelier.atelier.get_couleur}};margin-bottom:15px;">
+    <div class="row titre_atelier" style="background-color:{{atelier.atelier.get_couleur}};margin-bottom:5px;">
         <div class="col textcenter" >
               <h2> Atelier : {{ atelier.titre }}</h2>
         </div>
@@ -54,12 +54,27 @@
     <div class="col-md-12 textcenter">
             <a href="{% url 'ateliers:contacterParticipantsAtelier' slug=atelier.slug %}">
                <button type="button" class="btn btn-sm btn-success">
-                 &nbsp;<i class='fa fa-envelope' ></i> Contacter les autres participants
+                 &nbsp;<i class='fa fa-envelope' ></i> Contacter les participants
                </button></a>
 		<hr>
     </div>
     </div>
 	{% endif %}
+{% endif %}
+
+{% if atelier.start_time %}
+ <div class="row rowcentre inscrit_atelier">
+        <div class="col-sm-12 textcenter">
+						le {{ atelier.start_time|date:"l d F Y"}}
+						{% if atelier.heure_atelier %}
+							{% if atelier.duree_prevue %}
+								de {{ atelier.heure_atelier}}h à {{ atelier.heure_fin_atelier|date:"G:i"}}h
+							{%else%}
+							à {{ atelier.heure_atelier}}
+							{% endif %}
+						{% endif %}
+    </div>
+    </div>
 {% endif %}
 
  <div class="row rowcentre inscrit_atelier">
