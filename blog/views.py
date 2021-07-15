@@ -167,7 +167,7 @@ class SupprimerArticle(DeleteView):
 @login_required
 def lireArticle(request, slug):
     article = get_object_or_404(Article, slug=slug)
-    ateliers= Atelier.objects.filter(article=article)
+    ateliers= Atelier.objects.filter(article=article).order_by_('start_time')
     if not article.est_autorise(request.user):
         return render(request, 'notMembre.html', {"asso": str(article.asso)})
 

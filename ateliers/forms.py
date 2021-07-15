@@ -67,7 +67,7 @@ class AtelierChangeForm(forms.ModelForm):
 
     class Meta:
         model = Atelier
-        fields = [ 'titre', 'statut', 'asso', 'categorie','referent', 'description', 'materiel','start_time',  'heure_atelier', 'duree_prevue', 'tarif_par_personne', 'estArchive' ]
+        fields = [ 'titre', 'statut', 'asso', 'categorie', 'article', 'referent', 'description', 'materiel','start_time',  'heure_atelier', 'duree_prevue', 'tarif_par_personne', 'estArchive' ]
         widgets = {
             'description': SummernoteWidget(),
             'materiel': SummernoteWidget(),

@@ -29,6 +29,8 @@ def ajouterAtelier(request, article_slug=None):
     form = AtelierForm(request, request.POST or None)
     if article_slug:
         article = Article.objects.get(slug=article_slug)
+    else:
+        article=None
     if form.is_valid():
         atelier = form.save(request, article)
         action.send(request.user, verb='atelier_nouveau', action_object=atelier, url=atelier.get_absolute_url(),
@@ -124,14 +126,17 @@ def contacterParticipantsAtelier(request, slug):
     return render(request, 'ateliers/contacterParticipantsAtelier.html', {'atelier': atelier,  'form': form,  })
 
 
+@login_required
 def lireAtelier_slug(request, slug):
     atelier = get_object_or_404(Atelier, slug=slug)
     return lireAtelier(request, atelier)
 
+@login_required
 def lireAtelier_id(request, id):
     atelier = get_object_or_404(Atelier, id=id)
     return lireAtelier(request, atelier)
 
+@login_required
 def lireAtelier(request, atelier):
     commentaires = CommentaireAtelier.objects.filter(atelier=atelier).order_by("date_creation")
     inscrits = [x[0] for x in InscriptionAtelier.objects.filter(atelier=atelier).values_list('user__username')]

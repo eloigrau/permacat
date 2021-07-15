@@ -11,7 +11,7 @@ class Choix():
     couleurs_ateliers = {
         '2':'#4DC490', '1':'#C0EDA0', '3':'#00AA8B', '0':'#FCE79C',
         # '0':"#e0f7de", '1':"#dcc0de",
-        # '5':"#d1ecdc",'3':"#fcf6bd", '4':"#d0f4de", '7':"#fff2a0",
+        '5':"#d1ecdc",'3':"#fcf6bd", '4':"#d0f4de", '6':"#fff2a0",
         # '9':"#ffc4c8", '2':"#bccacf", '10':"#87bfae", '11':"#bcb4b4"
     }
     statut_atelier = ('0', 'proposition'), ('1', "accepté, en cours d'organisation"),
@@ -60,7 +60,7 @@ class Atelier(models.Model):
     date_dernierMessage = models.DateTimeField(verbose_name="Date du dernier message", auto_now=False, blank=True, null=True)
     dernierMessage = models.CharField(max_length=100, default=None, blank=True, null=True, help_text="Heure prévue (hh:mm)")
     duree_prevue = models.TimeField(verbose_name="Durée prévue", help_text="Durée de l'atelier estimée", default="02:00", blank=True, null=True)
-    tarif_par_personne = models.CharField(max_length=30, default='gratuit', help_text="Tarif de l'atelier par personne", verbose_name="Tarif de l'atelier par personne", )
+    tarif_par_personne = models.CharField(max_length=100, default='gratuit', help_text="Tarif de l'atelier par personne", verbose_name="Tarif de l'atelier par personne", )
     asso = models.ForeignKey(Asso, on_delete=models.SET_NULL, null=True)
     article = models.ForeignKey(Article, on_delete=models.CASCADE, null=True, blank=True)
 
