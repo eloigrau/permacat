@@ -144,7 +144,7 @@ def lireAtelier(request, atelier):
         atelier.save()
         comment.save()
         action.send(request.user, verb='atelier_message', action_object=atelier, url=atelier.get_absolute_url(),
-                    description="a réagi à la fiche: '%s'" % atelier.titre)
+                    description="a réagi à l'atelier: '%s'" % atelier.titre)
 
         return redirect(request.path)
 
