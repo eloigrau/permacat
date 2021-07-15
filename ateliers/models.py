@@ -96,7 +96,10 @@ class Atelier(models.Model):
 
     @property
     def get_couleur_cat(self, cat):
-        return Choix.couleurs_ateliers[cat]
+        try:
+            return Choix.couleurs_ateliers[cat]
+        except:
+            return Choix.couleurs_ateliers['0']
 
 
     def est_autorise(self, user):
