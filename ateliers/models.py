@@ -11,8 +11,8 @@ class Choix():
     type_atelier = ('0','Permaculture'), ('1',"Bricolage"), ('2','Cuisine'), ('3','Bien-être'),('4',"Musique"), ('5', 'Autre...')
     couleurs_ateliers = {
         '2':'#4DC490', '1':'#C0EDA0', '3':'#00AA8B', '0':'#FCE79C',
-        # '0':"#e0f7de", '1':"#dcc0de",
-        # '5':"#d1ecdc",'3':"#fcf6bd", '4':"#d0f4de", '7':"#fff2a0",
+        # '0':"#e0f7de",
+         '5':"#d1ecdc",'3':"#fcf6bd", '4':"#d0f4de", '7':"#fff2a0", '6':"#dcc0de",
         # '9':"#ffc4c8", '2':"#bccacf", '10':"#87bfae", '11':"#bcb4b4"
     }
     statut_atelier = ('0', 'proposition'), ('1', "accepté, en cours d'organisation"),
