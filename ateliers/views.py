@@ -191,7 +191,7 @@ class ListeAteliers(ListView):
         if "ordreTri" in params:
             qs = qs.order_by(params['ordreTri'])
         else:
-            qs = qs.order_by('categorie', '-date_dernierMessage', )
+            qs = qs.order_by('-start_time', 'categorie', '-date_dernierMessage', )
 
         return qs
 
