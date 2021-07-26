@@ -300,7 +300,7 @@ class ListeArticles(ListView):
         if 'ordreTri' in self.request.GET:
             context['ordre_triage'] = list(Choix.ordre_tri_articles.keys())[list(Choix.ordre_tri_articles.values()).index(self.request.GET['ordreTri'])]
         else:
-            context['ordre_triage'] = "date du dernier message"
+            context['ordre_triage'] = "date de dernière modif"
         return context
 
 

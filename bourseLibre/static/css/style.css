@@ -795,12 +795,17 @@ a article_carte:active {
         grid-template-columns: 50% 50%;
     }
 }
-@media (min-width: 1200px) {
+@media (min-width: 1300px) {
     .grid-container {
         grid-template-columns: 32% 32% 32%;
     }
     .grid-container2 {
         grid-template-columns: 50% 50% ;
+    }
+
+    .card-big-shadow {
+        max-width: 550px;
+        position: relative;
     }
 }
 
@@ -1646,11 +1651,11 @@ position: absolute;
 }
 
 .card.card-just-text .content {
-    padding: 50px 60px;
+    padding: 50px 0px;
     text-align: center;
 }
 .card .content {
-    padding: 15px 15px 10px 15px;
+    padding: 18px 18px 10px 18px;
 }
 .card[data-color="blue"] .category {
     color: #7a9e9f;
