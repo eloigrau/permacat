@@ -1651,7 +1651,7 @@ position: absolute;
 }
 
 .card.card-just-text .content {
-    padding: 50px 0px;
+    padding: 50px 10px;
     text-align: center;
 }
 .card .content {
