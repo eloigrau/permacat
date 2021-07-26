@@ -161,9 +161,9 @@
 
 
         <div class="infinite-container">
-            <div class="grid-container justify-content-center my-auto">
+            <div class="grid-container justify-content-center ">
                 {% for article in article_list %}
-                <div class="infinite-item">
+                <div class="infinite-item my-auto mx-auto mx-auto">
                 {% include "blog/article_template2.html" with article=article %}
                 </div>
                 {% endfor %}
@@ -180,7 +180,7 @@
         <hr>
         <div id="archives" style='display:none;'>
             {% for article in list_archive %}
-            <div class="infinite-item my-auto">
+            <div class="infinite-item my-auto mx-auto">
                 {% include "blog/article_template2.html" with article=article %}
             <hr>
             </div>

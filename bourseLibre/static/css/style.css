@@ -1624,7 +1624,7 @@ position: absolute;
 
 
 .card-big-shadow {
-    max-width: 320px;
+    max-width: 350px;
     position: relative;
 }
 
@@ -1646,11 +1646,11 @@ position: absolute;
 }
 
 .card.card-just-text .content {
-    padding: 50px 65px;
+    padding: 50px 60px;
     text-align: center;
 }
 .card .content {
-    padding: 20px 20px 10px 20px;
+    padding: 15px 15px 10px 15px;
 }
 .card[data-color="blue"] .category {
     color: #7a9e9f;

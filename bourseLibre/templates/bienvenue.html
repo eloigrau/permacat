@@ -155,7 +155,7 @@
     </div>
     <div class="grid-container justify-content-center">
         {% for article in derniers_articles_comm %}
-            <div class="infinite-item my-auto">
+            <div class="infinite-item my-auto mx-auto">
             {% include "blog/article_template2.html" with article=article %}
             </div>
         {% endfor %}
@@ -168,7 +168,7 @@
 </div>
 <div class="grid-container justify-content-center">
     {% for article in derniers_articles %}
-        <div class="infinite-item my-auto">
+        <div class="infinite-item my-auto mx-auto">
         {% include "blog/article_template2.html" with article=article %}
         </div>
     {% endfor %}

@@ -14,18 +14,22 @@
               <span class="badge badge-primary" >{{ article.get_categorie_display }}</span>&nbsp;
             </div>
         </div>
-        <h4 class="title">{{ article.titre }}</h4>
+            <div class="category">
+                {% if article.album %}
+                {% with photo=article.album.get_photo_sample %}
+                    {%if photo %}
+                    <img src="{{ photo.0.get_thumbnail_url }}" class="thumbnail" alt="{{ photo.0.title }}">
+                    {% endif %}
+                {% endwith %}
+                {% endif %}
+            </div>
+        <h4 class="title">
+            {{ article.titre }}
+        </h4>
     <p class="description">
-        {% if article.album %}
-        {% with photo=article.album.get_photo_sample %}
-            {%if photo %}
-            <img src="{{ photo.0.get_thumbnail_url }}" class="thumbnail" alt="{{ photo.0.title }}">
-            {% endif %}
-        {% endwith %}
-        {% endif %}
 
         {% if article.start_time %}
-        <div>
+        <span class="btn btn-Light"
           {% if article.end_time %}
           du {{ article.start_time|date:"DATE_FORMAT" }} au {{ article.end_time|date:"DATE_FORMAT" }}
           {%else%}
@@ -36,31 +40,29 @@
 
         {% if article.dernierMessage  %}
             <p class="textsmall">{{ article.dernierMessage|couperTexte:60}}</p>
-        {% else  %}
-            <p class="textsmall">{{ article.contenu|safe|couperTexte:60}}</p>
         {% endif %}
-            {%if article.estArchive %}
-                <span class="badge badge-Light" data-toggle="tooltip" data-placement="bottom" title="Article archivé">
-                 archivé
-                </span>&nbsp;
-                {% endif %}
-                <span class="badge badge-Light"> {%ifnotequal  article.date_creation|date:"DATE_FORMAT" article.date_modification|date:"DATE_FORMAT" %}Dernière modif le {{ article.date_modification|date:"DATE_FORMAT" }}{%else%}Posté le {{ article.date_creation|date:"DATE_FORMAT" }} {%endifnotequal%}
-                </span>&nbsp;
-                {% if request.user|is_following:article %}
-                <span class="badge badge-Light" data-toggle="tooltip" data-placement="bottom" title="Vous recevez des notifications concernant cet article par mail">
-                     {% fontawesome_icon 'bell' %}
-                </span>
+        <div>
+             <span class="btn btn-Light" >
 
-                {% else %}
-                <span class="badge badge-Light" data-toggle="tooltip" data-placement="bottom" title="Vous ne recevez pas de notifications concernant cet article par mail">
-                     {% fontawesome_icon 'bell-slash' %}
-                </span>
-            </div>
-            {% endif %}
+                {% if request.user|is_following:article %}
+                    {% fontawesome_icon 'bell' %}
+
+                    {% else %}
+                    {% fontawesome_icon 'bell-slash' %}
+                {% endif %}
+                 &nbsp;&nbsp;
+                {%if article.estArchive %}
+                   archivé
+                {% endif %}
+                {%ifnotequal  article.date_creation|date:"DATE_FORMAT" article.date_modification|date:"DATE_FORMAT" %} &nbsp; Dernière modif le {{ article.date_modification|date:"DATE_FORMAT" }}{%else%}&nbsp; Posté le {{ article.date_creation|date:"DATE_FORMAT" }} {%endifnotequal%}
+
+             </span>
+        </div>
         </p>
     </div>
 </div> <!-- end card -->
 
+</div>
 </div>
 
 </a>
