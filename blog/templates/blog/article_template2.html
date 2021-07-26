@@ -1,0 +1,66 @@
+
+{% load activity_tags %}
+{% load app_filters %}
+{% load fontawesome %}
+<a href="{% url 'blog:lireArticle' slug=article.slug %}">
+<div class="content-card">
+<div class="card-big-shadow">
+<div class="card card-just-text" data-background="color" data-color="green" data-radius="none">
+    <div class="content">
+        <div class="category">
+             <div>
+                <span class="badge badge-success" data-toggle="tooltip" data-placement="bottom" title="Article {%if article.estPublic%}visible par tous les inscrits{%else%}visible par les membres de {{ article.asso }} seulement{%endif%}">
+                {{ article.asso }} </span>&nbsp;
+              <span class="badge badge-primary" >{{ article.get_categorie_display }}</span>&nbsp;
+            </div>
+        </div>
+        <h4 class="title">{{ article.titre }}</h4>
+    <p class="description">
+        {% if article.album %}
+        {% with photo=article.album.get_photo_sample %}
+            {%if photo %}
+            <img src="{{ photo.0.get_thumbnail_url }}" class="thumbnail" alt="{{ photo.0.title }}">
+            {% endif %}
+        {% endwith %}
+        {% endif %}
+
+        {% if article.start_time %}
+        <div>
+          {% if article.end_time %}
+          du {{ article.start_time|date:"DATE_FORMAT" }} au {{ article.end_time|date:"DATE_FORMAT" }}
+          {%else%}
+          le {{ article.start_time|date:"DATE_FORMAT" }}
+          {% endif %}
+        </div>
+        {% endif %}
+
+        {% if article.dernierMessage  %}
+            <p class="textsmall">{{ article.dernierMessage|couperTexte:60}}</p>
+        {% else  %}
+            <p class="textsmall">{{ article.contenu|safe|couperTexte:60}}</p>
+        {% endif %}
+            {%if article.estArchive %}
+                <span class="badge badge-Light" data-toggle="tooltip" data-placement="bottom" title="Article archivé">
+                 archivé
+                </span>&nbsp;
+                {% endif %}
+                <span class="badge badge-Light"> {%ifnotequal  article.date_creation|date:"DATE_FORMAT" article.date_modification|date:"DATE_FORMAT" %}Dernière modif le {{ article.date_modification|date:"DATE_FORMAT" }}{%else%}Posté le {{ article.date_creation|date:"DATE_FORMAT" }} {%endifnotequal%}
+                </span>&nbsp;
+                {% if request.user|is_following:article %}
+                <span class="badge badge-Light" data-toggle="tooltip" data-placement="bottom" title="Vous recevez des notifications concernant cet article par mail">
+                     {% fontawesome_icon 'bell' %}
+                </span>
+
+                {% else %}
+                <span class="badge badge-Light" data-toggle="tooltip" data-placement="bottom" title="Vous ne recevez pas de notifications concernant cet article par mail">
+                     {% fontawesome_icon 'bell-slash' %}
+                </span>
+            </div>
+            {% endif %}
+        </p>
+    </div>
+</div> <!-- end card -->
+
+</div>
+
+</a>
