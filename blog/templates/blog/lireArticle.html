@@ -257,7 +257,8 @@
    {{ article.contenu |safe}}
 </div>
 </div>
-    <hr>
+{% if ateliers %}
+<hr>
 {% for atelier in ateliers %}
 <div class="row align-items-center">
     <div class="col-sm-12 textcenter">
@@ -265,6 +266,8 @@
     </div>
 </div>
 {% endfor%}
+
+{% endif%}
 </div>
 
 

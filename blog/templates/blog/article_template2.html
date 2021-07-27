@@ -2,7 +2,7 @@
 {% load activity_tags %}
 {% load app_filters %}
 {% load fontawesome %}
-<a href="{% url 'blog:lireArticle' slug=article.slug %}">
+<a href="{% url 'blog:lireArticle' slug=article.slug %}" xmlns="http://www.w3.org/1999/html">
 <div class="content-card">
 <div class="card-big-shadow">
 <div class="card card-just-text" data-background="color" data-color="green" data-radius="none">
@@ -38,9 +38,6 @@
         </span>
         {% endif %}
 
-        {% if article.dernierMessage  %}
-            <p class="textsmall">{{ article.dernierMessage|couperTexte:60}}</p>
-        {% endif %}
         <div>
              <span class="btn btn-Light" >
 
@@ -59,6 +56,12 @@
              </span>
         </div>
         </p>
+
+        {% if article.dernierMessage  %}
+        <p class="description textsmall">
+            {{ article.dernierMessage|couperTexte:60}}
+        </p>
+        {% endif %}
     </div>
 </div> <!-- end card -->
 

@@ -1606,11 +1606,8 @@ caption {
     margin-bottom: 20px;
   position: absolute;
 }
-.dropdown-menu-forum.open:hover{
-position: absolute;
-}
 .btn-menu-forum{
-    min-width: 300px;
+    min-width: 100px;
 }
 
 .panel-forum{
