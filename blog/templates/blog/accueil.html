@@ -26,6 +26,14 @@
              </div>
          </form>
      </div>
+     <div class="row justify-content-center">
+
+        <a href="{% url 'blog:filtrer_articles' %}">
+            <button type="button" class="btn  btn-success" >
+               {% fontawesome_icon 'search' %}&nbsp; Recherche avancée...
+            </button>
+        </a>&ensp;
+     </div>
 
 </div>
 <div class="col-sm-12 col-md-6 col-lg-4">
@@ -94,11 +102,6 @@
     </button>
 </a>
 
-    <a href="{% url 'blog:filtrer_articles' %}">
-        <button type="button" class="btn  btn-success" >
-           {% fontawesome_icon 'search' %}&nbsp; Rechercher dans le forum...
-        </button>
-    </a>&ensp;
 
         </div>
 </div>
