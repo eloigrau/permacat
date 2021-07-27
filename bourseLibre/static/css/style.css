@@ -1764,3 +1764,20 @@ a:hover, a:focus {
 .nav-tabs {
     text-align:center;
 }
+.nav-tabs .nav-link {
+    color: gray;
+    border: 0;
+    border-bottom: 0px solid grey;
+}
+
+.nav-tabs .nav-link:hover {
+    border: 0;
+    border-bottom: 1px solid grey;
+}
+
+.nav-tabs .nav-link.active {
+    color: #000000;
+    border: 0;
+    border-radius: 0;
+    border-bottom: 2px solid blue;
+}
