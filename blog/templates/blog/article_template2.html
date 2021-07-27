@@ -14,6 +14,9 @@
               <span class="badge badge-primary" >{{ article.get_categorie_display }}</span>&nbsp;
             </div>
         </div>
+        <h4 class="title">
+            {{ article.titre }}
+        </h4>
         <div class="category">
             {% if article.album %}
             {% with photo=article.album.get_photo_sample %}
@@ -23,9 +26,6 @@
             {% endwith %}
             {% endif %}
         </div>
-        <h4 class="title">
-            {{ article.titre }}
-        </h4>
     <p class="description">
 
         {% if article.start_time %}
@@ -54,7 +54,7 @@
                 {%if article.estArchive %}
                    archivé
                 {% endif %}
-                {%ifnotequal  article.date_creation|date:"DATE_FORMAT" article.date_modification|date:"DATE_FORMAT" %} &nbsp; Dernière modif le {{ article.date_modification|date:"DATE_FORMAT" }}{%else%}&nbsp; Posté le {{ article.date_creation|date:"DATE_FORMAT" }} {%endifnotequal%}
+                {%if article.date_modification %}{%ifnotequal  article.date_creation|date:"DATE_FORMAT" article.date_modification|date:"DATE_FORMAT" %} &nbsp; Dernière modif le {{ article.date_modification|date:"DATE_FORMAT" }}{%else%}&nbsp; Posté le {{ article.date_creation|date:"DATE_FORMAT" }} {%endifnotequal%} {%else%}&nbsp; Posté le {{ article.date_creation|date:"DATE_FORMAT" }} {% endif %}
 
              </span>
         </div>
