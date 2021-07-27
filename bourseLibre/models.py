@@ -122,17 +122,17 @@ class Asso(models.Model):
             return False
         return True
 
-    def getProfils(self):
+    def getProfilsAnnuaire(self):
         if self.abreviation == "public":
-            return Profil.objects.filter()
+            return Profil.objects.filter(accepter_annuaire=True).order_by("username")
         elif self.abreviation == "pc":
-            return Profil.objects.filter(adherent_pc=True)
+            return Profil.objects.filter(accepter_annuaire=True, adherent_pc=True).order_by("username")
         elif self.abreviation == "rtg":
-            return Profil.objects.filter(adherent_rtg=True)
+            return Profil.objects.filter(accepter_annuaire=True, adherent_rtg=True).order_by("username")
         elif self.abreviation == "fer":
-            return Profil.objects.filter(adherent_fer=True)
+            return Profil.objects.filter(accepter_annuaire=True, adherent_fer=True).order_by("username")
         elif self.abreviation == "gt":
-            return Profil.objects.filter(adherent_gt=True)
+            return Profil.objects.filter(accepter_annuaire=True, adherent_gt=True).order_by("username")
 
 class Profil(AbstractUser):
     username_validator = ASCIIUsernameValidator()

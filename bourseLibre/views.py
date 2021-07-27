@@ -347,8 +347,7 @@ def annuaire(request, asso):
     asso = testIsMembreAsso(request, asso)
     if not isinstance(asso, Asso):
         raise PermissionDenied
-    prof = asso.getProfils()
-    profils = prof.filter(accepter_annuaire=True).order_by("username")
+    prof = asso.getProfilsAnnuaire()
     nb_profils = len(prof)
     return render(request, 'annuaire.html', {'profils':profils, "nb_profils":nb_profils, "asso":asso} )
 
@@ -386,14 +385,6 @@ def listeFollowers(request, asso):
 
     return render(request, 'listeFollowers.html', {"listeArticles":listeArticles})
 
-
-@login_required
-def carte(request, asso):
-    asso=testIsMembreAsso(request, asso)
-    if not isinstance(asso, Asso):
-        raise PermissionDenied
-    profils = asso.getProfils()
-    return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': "La carte des coopérateurs*" } )
 
 
 @login_required
@@ -451,13 +442,32 @@ def telechargements_asso(request):
 def adhesion_asso(request):
     return render(request, 'asso/adhesion.html', )
 
+
 @login_required
 def carte(request, asso):
-    asso = testIsMembreAsso(request, asso)
+    asso=testIsMembreAsso(request, asso)
     if not isinstance(asso, Asso):
         raise PermissionDenied
-    profils = asso.getProfils().filter(accepter_annuaire=True).order_by("username")
-    return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': "Carte des adhérents "+str(asso) + "*" } )
+    profils = asso.getProfilsAnnuaire()
+
+    import simplejson
+    import requests
+    url = "https://presdecheznous.gogocarto.fr/api/elements.json?limit=500&bounds=1.75232%2C42.31794%2C3.24646%2C42.94034"
+
+    reponse = requests.get(url)
+    data = simplejson.loads(reponse.text)
+    ev = data["data"]
+
+    return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': "La carte des coopérateurs*", 'data':ev,  } )
+
+
+# @login_required
+# def carte(request, asso):
+#     asso = testIsMembreAsso(request, asso)
+#     if not isinstance(asso, Asso):
+#         raise PermissionDenied
+#     profils = asso.getProfilsAnnuaire().filter(accepter_annuaire=True).order_by("username")
+#     return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': "Carte des adhérents "+str(asso) + "*" } )
 
 @login_required
 def profil_contact(request, user_id):

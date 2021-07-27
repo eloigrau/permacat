@@ -42,6 +42,7 @@ urlpatterns = [
     url(r'^captcha/', include('bourseLibre.captcha_local.urls')),
     url(r'^photolog/', include('photologue.urls', namespace='photologue')),
     path(r'agenda/', include('cal.urls')),
+    path(r'carto/', include('carto.urls')),
     url('^', include('django.contrib.auth.urls')),
     url(r'^$', views.bienvenue, name='bienvenue'),
     url(r'^bienvenue/$', views.bienvenue, name='bienvenue'),
