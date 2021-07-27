@@ -73,7 +73,7 @@ class Article(models.Model):
     slug = models.SlugField(max_length=100)
     contenu = models.TextField(null=True)
     date_creation = models.DateTimeField(verbose_name="Date de parution", default=timezone.now)
-    date_modification = models.DateTimeField(verbose_name="Date de modification", default=timezone.now)
+    date_modification = models.DateTimeField(verbose_name="Date de modification", auto_now=False, null=True, )
     estPublic = models.BooleanField(default=False, verbose_name='Public ou réservé aux membres permacat')
     estModifiable = models.BooleanField(default=False, verbose_name="Modifiable par les autres")
 

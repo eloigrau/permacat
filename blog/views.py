@@ -20,7 +20,7 @@ from photologue.models import Album
 from django.views.decorators.csrf import csrf_exempt
 from hitcount.models import HitCount
 from hitcount.views import HitCountMixin
-from django.db.models import Q
+from django.db.models import Q, F
 from django.core.exceptions import PermissionDenied
 # @login_required
 # def forum(request):
@@ -64,13 +64,13 @@ def accueil(request):
         if not getattr(request.user, "adherent_" + nomAsso):
             derniers_articles = derniers_articles.exclude(asso__abreviation=nomAsso)
 
-    derniers_articles_comm = Article.objects.filter(estArchive=False, date_dernierMessage__isnull=False).order_by('date_dernierMessage')
+    derniers_articles_comm = Article.objects.filter(estArchive=False, dernierMessage__isnull=False).order_by('date_dernierMessage')
 
     for nomAsso in Choix_global.abreviationsAsso:
         if not getattr(request.user, "adherent_" + nomAsso):
             derniers_articles_comm = derniers_articles_comm.exclude(asso__abreviation=nomAsso)
 
-    derniers_articles_modif = Article.objects.filter(estArchive=False, date_modification__isnull=False).order_by('date_modification')
+    derniers_articles_modif = Article.objects.filter(Q(estArchive=False) & Q(date_modification__isnull=False) & ~Q(date_modification=F("date_creation"))).order_by('date_modification')
 
     for nomAsso in Choix_global.abreviationsAsso:
         if not getattr(request.user, "adherent_" + nomAsso):
