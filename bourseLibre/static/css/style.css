@@ -474,7 +474,7 @@ border: 1px inset rgba(28,110,164,0.65);
     min-width:200px;
     margin-top:20px;
     margin-bottom:20px;
-    background-color: rgba(255, 255, 255, .6);
+    background-color: rgba(255, 255, 255, .8);
     /*border: 0.5px solid #053200;*/
     }
 }
@@ -1288,8 +1288,8 @@ margin-bottom:10px;
 }
 
 .boutonAtelier{
-background:    #fff2cc;
-background:    linear-gradient(#fff2cc, #ffd966);
+background:    rgba(255, 255, 255, 0.6);
+/*background:    linear-gradient(#fff2cc, #ffd966);*/
 border:        2px solid #b6d7a8;
 border-radius: 6px;
 	width: 100%;

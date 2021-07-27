@@ -15,10 +15,10 @@
            data-target = "#idDossiers"> Dossiers publics </button>
         <div class="textcenter dropdown-menu dropdown-menu-forum " aria-labelledby="menuAuteur"  id="idDossiers">
 
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='public'%}"><span>Tous les articles publics</span></a>
+             <a class=" dropdown-item "  href="{% url 'blog:index_asso' asso='public'%}"><span>Tous les articles publics</span></a>
              <div class="dropdown-divider"></div>
             {% for categorie_id, cat_nom, cat_coul in categorie_list %}
-            <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='public'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+            <a class=" dropdown-item " style="background:#d0f4de;" href="{% url 'blog:index_asso' asso='public'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
             {% endfor %}
         </div>
     </li>
@@ -28,7 +28,7 @@
         data-target = "#idDossiers_projets"> Projets</button>
         <div class="dropdown-menu textcenter dropdown-menu-forum " aria-labelledby="menuAuteur"  id="idDossiers_projets">
             {% for categorie_id, cat_nom, cat_coul in categorie_list_projets %}
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index' %}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+             <a class=" dropdown-item " style="background:#d0f4de;" href="{% url 'blog:index' %}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
             {% endfor %}
         </div>
     </li>
@@ -37,10 +37,10 @@
         <button type="button" class="btn dropdown-toggle btn-primary btn-menu-forum btn-block " data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
         data-target = "#idDossiers_pc"> Permacat</button>
         <div class="dropdown-menu textcenter dropdown-menu-forum " aria-labelledby="menuAuteur"  id="idDossiers_pc">
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='pc'%}"><span>Tous les articles PermaCat</span></a>
+             <a class=" dropdown-item "  href="{% url 'blog:index_asso' asso='pc'%}"><span>Tous les articles PermaCat</span></a>
             <div class="dropdown-divider"></div>
             {% for categorie_id, cat_nom, cat_coul in categorie_list_pc %}
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='pc'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+             <a class=" dropdown-item " style="background:#d0f4de;" href="{% url 'blog:index_asso' asso='pc'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
             {% endfor %}
         </div>
     </li>
@@ -51,10 +51,10 @@
         <button type="button" class="btn dropdown-toggle btn-primary btn-menu-forum btn-block" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
         data-target = "#idDossiers_rtg"> RTG</button>
         <div class="dropdown-menu textcenter dropdown-menu-forum " aria-labelledby="menuAuteur"  id="idDossiers_rtg">
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='rtg'%}"><span>Tous les articles RTG</span></a>
+             <a class=" dropdown-item "  href="{% url 'blog:index_asso' asso='rtg'%}"><span>Tous les articles RTG</span></a>
             <div class="dropdown-divider"></div>
             {% for categorie_id, cat_nom, cat_coul in categorie_list_rtg %}
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='rtg'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+             <a class=" dropdown-item " style="background:#d0f4de;" href="{% url 'blog:index_asso' asso='rtg'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
             {% endfor %}
         </div>
     </li>
@@ -67,10 +67,10 @@
         <button type="button" class="btn dropdown-toggle btn-primary btn-menu-forum btn-block " data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
         data-target = "#idDossiers_fer"> Fermille</button>
         <div class="dropdown-menu textcenter dropdown-menu-forum " aria-labelledby="menuAuteur"  id="idDossiers_fer">
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='fer'%}"><span>Tous les articles Fermille</span></a>
+             <a class=" dropdown-item "  href="{% url 'blog:index_asso' asso='fer'%}"><span>Tous les articles Fermille</span></a>
                  <div class="dropdown-divider"></div>
             {% for categorie_id, cat_nom, cat_coul in categorie_list_fer %}
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='fer'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+             <a class=" dropdown-item " style="background:#d0f4de;" href="{% url 'blog:index_asso' asso='fer'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
             {% endfor %}
         </div>
     </li>
@@ -81,10 +81,10 @@
         <button type="button" class="btn dropdown-toggle btn-primary btn-menu-forum btn-block" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
         data-target = "#idDossiers_gt"> Gardiens de la Terre</button>
         <div class="dropdown-menu " aria-labelledby="menuAuteur"  id="idDossiers_gt">
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='gt'%}"><span>Tous les articles Gardiens de la terre</span></a>
+             <a class=" dropdown-item " href="{% url 'blog:index_asso' asso='gt'%}"><span>Tous les articles Gardiens de la terre</span></a>
             <div class="dropdown-divider"></div>
             {% for categorie_id, cat_nom, cat_coul in categorie_list_gt %}
-             <a class=" dropdown-item " style="background:{{cat_coul}};" href="{% url 'blog:index_asso' asso='gt'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+             <a class=" dropdown-item " style="background:#d0f4de;" href="{% url 'blog:index_asso' asso='gt'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
             {% endfor %}
         </div>
     </li>
