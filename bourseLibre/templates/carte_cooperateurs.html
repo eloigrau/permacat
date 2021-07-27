@@ -71,7 +71,7 @@
                 var lat = {{ev.geo.latitude|to_numeric}};
                 var lon = {{ev.geo.longitude|to_numeric}};
                 {% with site=ev.website|safe %}
-                var marker = L.marker([lat, lon], {icon: greyIcon}).bindPopup('<a {%if site %}href="{{site}}" target="_blank" {% endif %}> ({{forloop.counter}})<b>{{ev.name}}</b></a>');
+                var marker = L.marker([lat, lon], {icon: greyIcon}).bindPopup('<a href="{%url 'carto:carte' %}#lieu_{{forloop.counter}}" > <b>{{ev.name}}</b></a>');
                 marker.addTo(map);
                 {% endwith %}
             }

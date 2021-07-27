@@ -449,6 +449,11 @@ def carte(request, asso):
     if not isinstance(asso, Asso):
         raise PermissionDenied
     profils = asso.getProfilsAnnuaire()
+    if asso.abreviation == "public":
+        titre = "Carte des coopérateurs du site*"
+    else:
+        titre = "Carte des adhérents " + asso.nom + "*"
+
 
     import simplejson
     import requests
@@ -458,7 +463,7 @@ def carte(request, asso):
     data = simplejson.loads(reponse.text)
     ev = data["data"]
 
-    return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': "La carte des coopérateurs*", 'data':ev,  } )
+    return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': titre, 'data':ev,  } )
 
 
 # @login_required
