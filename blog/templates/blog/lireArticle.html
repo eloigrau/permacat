@@ -98,177 +98,122 @@
     <p>
           <a href="{% url 'cal:agenda' %} ">
             {%if article.end_time and article.start_time != article.end_time %}
-                Du {{ article.start_time|date:"d/m/Y"  }} au {{ article.end_time|date:"d/m/Y"  }}
+                Du {{ article.start_time|date:"l d F Y"  }} au {{ article.end_time|date:"l d F Y"  }}
                 {%else%}
-                le {{ article.start_time|date:"d/m/Y"  }}
+                le {{ article.start_time|date:"l d F Y"  }}
 
             {% endif %}
           </a>
     </p>
         {% endif %}
- </div>
-<div class="col-sm-12 col-md-2 " >
-    <div class="dropdown">
-       <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="menuarticle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-          plus...
-       </button>
-
-      <ul class="dropdown-menu" aria-labelledby="menuarticle">
-
-        <li>
-            <button type="button" class="btn textleft" data-toggle="modal" data-target="#dates">
-                 {% fontawesome_icon 'calendar' %} Dates {%if article.start_time %}supplémentaires{%endif%}
-                </button>
-        </li>
-         {% if actions %}
-          <li>
-                <button type="button" class="btn textleft" data-toggle="modal" data-target="#historique">
-                  {% fontawesome_icon 'bell' %} Historique
-                </button>
-
-    </li>
-            {% endif %}
-        {% if article.tags.names %}
-          <li>
-                <button type="button" class="btn textleft" data-toggle="modal" data-target="#tags">
-                  # Mots-clés
-                </button>
-    </li>
-            {% endif %}
-
-        <li><hr class="dropdown-divider"></li>
-        <li>
-        {%if not article.album %}
-            {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
-
-                    <small><a class="btn btn-sm btn-success btn-block textleft" href="{% url 'blog:ajouterAlbumArticle' slug=article.slug %}" ><i class="fa fa-plus"></i> Ajouter un album photo</a></small>
-
-            {% endif%}
-        {%else%}
-            <li>
-             <small><a class="btn btn-sm btn-block btn-success textleft" href="{{ article.album.get_absolute_url }}"><i class="fa fa-arrow-right"></i> Voir l'album photo</a></small>
-            </li>
-            {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
-
-            <li>
-               <small> <a class="btn btn-block btn-sm btn-danger textleft" href="{% url 'blog:supprimerAlbumArticle' slug=article.slug%}"><i class="fa fa-times"></i> Enlever l'album photo</a></small>
-            </li>
-            {% endif %}
-        {%endif%}
-        </li>
-
-        <li><hr class="dropdown-divider"></li>
-        <li>
-            <small><a class="btn btn-sm  btn-success textleft" href="{% url 'ateliers:ajouterAtelier_article' article_slug=article.slug %}" ><i class="fa fa-plus"></i>  Ajouter un atelier</a></small>
-        </li>
-
-      </ul>
-    </div>
-</div>
-</div>
-         <!-- Modal -->
-            <div class="modal fade" id="historique" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog textcenter" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                      <div class="row justify-content-center">
-                          <div class="col col-sm-12">
-                      <h5 >Historique</h5>
-                          </div>
-                      </div>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="contenu historique" id="idHistorique">
-                      {%for action in actions %}
-                            {% include "notifications/notifications_template3.html" with action=action%}
-                      {%endfor%}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Modal -->
-            <div class="modal fade" id="tags" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog textcenter" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                      <div class="row justify-content-center">
-                          <div class="col col-sm-12">
-                      <h5 >Tags</h5>
-                          </div>
-                      </div>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
+    <p><em>
                                  {% for tag in article.tags.names %}
             {{tag}}{%if not forloop.last%}, {%endif%}
            {% endfor %}
-                  </div>
-                </div>
-              </div>
-            </div>
- <!-- Modal -->
-            <div class="modal fade" id="dates" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog textcenter" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                      <div class="row justify-content-center">
-                       <h5 > Dates</h5>
-                      </div>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                      {%for date in dates %}
-                     <p>{{date.start_time |date:"l d F Y"}} : {{date.titre}}</p>
-                      {%empty%}
-                      -
-                      {%endfor%}
-                    {%if article.auteur == request.user or article.estModifiable %}
-                      <p><a class="btn btn-success" href="{% url 'blog:ajouterEvenementArticle' id=article.id %}" ><i class="fa fa-plus"></i> Ajouter une date</a></p>
-                    {% endif %}
-                  </div>
-                </div>
-              </div>
-            </div>
+    </em></p>
+ </div>
 
-
- <div class="row">
- <div class="col-sm-12 offset-md-1 col-md-10 textcenter">
-                {% for photo in article.album.sample %}
-                    <a href="{{ photo.get_absolute_url }}">
-                         <img src="{{ photo.get_articles_url }}" class="thumbnail" alt="{{ photo.title }}">
-                    </a>&nbsp;
-                {% endfor %}
-                    {% if article.album.photo_count > 5 %}
-                    +...
-                    {% endif %}
-            </div>
 </div>
-    <hr>
-<div class="row">
-<div class="col-sm-12 contenuarticle">
-   {{ article.contenu |safe}}
-</div>
-</div>
-{% if ateliers %}
 <hr>
-{% for atelier in ateliers %}
-<div class="row align-items-center">
-    <div class="col-sm-12 textcenter">
-        <a href="{{atelier.get_absolute_url}}"> <i class="fa fa-arrow-right"></i>  Atelier du {{atelier.start_time |date:"l d F Y"}} : {{atelier.titre}}</a>
+
+    <nav class="nav nav-tabs justify-content-center">
+      <a class="nav-item nav-link active" href="#contenu" data-toggle="tab">Description</a>
+      <a class="nav-item nav-link" href="#album" data-toggle="tab">Album photo</a>
+      <a class="nav-item nav-link" href="#ateliers" data-toggle="tab">Ateliers</a>
+      <a class="nav-item nav-link" href="#dates" data-toggle="tab">Dates</a>
+      <a class="nav-item nav-link" href="#historique" data-toggle="tab">Historique</a>
+    </nav>
+
+
+<div class="tab-content">
+  <div class="tab-pane fade show active" id="contenu">
+        <div class="contenu fiche">
+   {{ article.contenu |safe}}
+  </div>
+  </div>
+
+  <div class="tab-pane fade" id="album">
+        <div class="contenu atelier">
+   <div class="row">
+        <div class="col-sm-12 offset-md-1 col-md-10 textcenter">
+            {% for photo in article.album.sample %}
+                <a href="{{ photo.get_absolute_url }}">
+                     <img src="{{ photo.get_articles_url }}" class="thumbnail" alt="{{ photo.title }}">
+                </a>&nbsp;
+            {% endfor %}
+                {% if article.album.photo_count > 5 %}
+                +...
+                {% endif %}
+            <hr>
+             <small>
+            {%if not article.album %}
+                {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
+                       <a class="btn btn-sm btn-success textleft" href="{% url 'blog:ajouterAlbumArticle' slug=article.slug %}" ><i class="fa fa-plus"></i> Ajouter un album photo</a>
+                {% endif%}
+            {%else%}
+                 <a class="btn btn-sm btn-success textleft" href="{{ article.album.get_absolute_url }}"><i class="fa fa-arrow-right"></i> Voir tout l'album photo</a>
+
+                {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
+                    <a class="btn btn-sm btn-danger textleft" href="{% url 'blog:supprimerAlbumArticle' slug=article.slug%}"><i class="fa fa-times"></i> Enlever l'album photo de l'article</a>
+            {% endif %}
+        {%endif%}
+                 </small>
+        </div>
+        </div>
+        </div>
+  </div>
+
+
+
+  <div class="tab-pane fade " id="ateliers">
+        <div class="contenu atelier">
+        <div class="col-sm-12 textcenter">
+        {% for atelier in ateliers %}
+        <div class="row align-items-center">
+            <div class="col-sm-12 textcenter">
+                <a href="{{atelier.get_absolute_url}}"> <i class="fa fa-arrow-right"></i>  Atelier du {{atelier.start_time |date:"l d F Y"}} : {{atelier.titre}}</a>
+            </div>
+        </div>
+        {% endfor%}
+            <hr>
+        <a class="btn btn-sm  btn-success textleft" href="{% url 'ateliers:ajouterAtelier_article' article_slug=article.slug %}" ><i class="fa fa-plus"></i>  Ajouter un atelier</a></>
+
+          </div>
+          </div>
+  </div>
+
+<div class="tab-pane fade " id="dates">
+        <div class="contenu atelier">
+    <div class="row align-items-center">
+        <div class="col-sm-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2 textcenter">
+              {%for date in dates %}
+             <p>{{date.start_time |date:"l d F Y"}} : {{date.titre}}</p>
+              {%empty%}
+              -
+              {%endfor%}
+            {%if article.auteur == request.user or article.estModifiable %}
+            <hr>
+              <p><a class="btn btn-sm btn-success textleft" href="{% url 'blog:ajouterEvenementArticle' id=article.id %}" ><i class="fa fa-plus"></i> Ajouter une date</a></p>
+            {% endif %}
+      </div>
+    </div>
     </div>
 </div>
-{% endfor%}
 
-{% endif%}
+
+  <div class="tab-pane " id="historique">
+        <div class="col-sm-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2 textcenter">
+        <div class="contenu discussion_fiche">
+          {%for action in actions %}
+                {% include "notifications/notifications_template3.html" with action=action%}
+          {%endfor%}
+        </div>
+        </div>
+  </div>
+
 </div>
+</div>
+
 
 
 {% include 'commentaires.html' %}

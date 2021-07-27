@@ -30,10 +30,9 @@
 
                          <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='pc'%}"><i class='fa fa-comments' ></i> Articles du forum</a></li>
     {% endif %}
-                    {%comment%}
                             <li><a class="dropdown-item" href="{% url 'vote:index' %}"><i class="fa fa-bullhorn iconleft"></i>  Votes </a></li>
+                            <li><a class="dropdown-item" href="{% url 'fiches:acceuil' %}"><i class="fa fa-school iconleft"></i>  Kit PermaEcole </a></li>
 
-                    {%endcomment%}
 
                     {%comment%}
                             <li class="divider" role="separator"></li>
@@ -91,7 +90,7 @@
                          <li><a class="dropdown-item" href="{% url 'carte'  asso='pc' %}"><i class='fa fa-compass' ></i>  Carte  </a></li>
                          <li><a class="dropdown-item" href="{% url 'admin_asso' asso='pc' %}"><i class='fa fa-database' ></i> Administration  </a></li>
 
-   {% endif %}
+                        {% endif %}
                             <li class="divider" role="separator"></li>
                        <li> <a class="dropdown-item" href="{% url 'charte' %}"> Charte </a></li>
                        <li> <a class="dropdown-item" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a></li>

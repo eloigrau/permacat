@@ -1200,7 +1200,7 @@ table.greenTable tfoot .links a{
 }
 
 .atelier {
-    border: 9px inset rgba(28,110,164,0.65);
+    border: 7px inset rgba(28,110,164,0.65);
     border-radius: 0px 25px 25px 25px;
     -webkit-box-shadow: 5px 5px 20px 0px #0D4003;
     box-shadow: 5px 5px 20px 0px #0D4003;
@@ -1210,7 +1210,7 @@ table.greenTable tfoot .links a{
 }
 
 .ensavoirplus {
-    border: 9px inset #B37D00;
+    border: 7px inset #B37D00;
     border-radius: 0px 25px 25px 25px;
     -webkit-box-shadow: 5px 5px 20px 0px #0D4003;
     box-shadow: 5px 5px 20px 0px #0D4003;
@@ -1220,7 +1220,7 @@ table.greenTable tfoot .links a{
 }
 
 .discussion_fiche {
-    border: 9px inset #734705;
+    border: 7px inset #734705;
     border-radius: 0px 25px 25px 25px;
     -webkit-box-shadow: 5px 5px 20px 0px #0D4003;
     box-shadow: 5px 5px 20px 0px #0D4003;
@@ -1231,7 +1231,7 @@ table.greenTable tfoot .links a{
 
 
 .fiche {
-    border: 9px inset rgba(49,184,0,0.65);
+    border: 7px inset rgba(49,184,0,0.65);
     border-radius: 0px 25px 25px 25px;
     -webkit-box-shadow: 5px 5px 20px 0px #0D4003;
     box-shadow: 5px 5px 20px 0px #0D4003;
@@ -1754,4 +1754,13 @@ a:hover, a:focus {
 }
 .card[data-color="orange"] .category {
     color: #e95e37;
+}
+
+.nav-tabs > li {
+    float:none;
+    display:inline-block;
+    zoom:1;
+}
+.nav-tabs {
+    text-align:center;
 }
