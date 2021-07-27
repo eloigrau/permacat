@@ -18,7 +18,8 @@ body {
 }
 
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
     }
 .titreArticle:{
     margin-bottom: 0.5rem;
@@ -1201,9 +1202,9 @@ table.greenTable tfoot .links a{
 
 .atelier {
     border: 7px inset rgba(28,110,164,0.65);
-    border-radius: 0px 25px 25px 25px;
+    border-radius: 0px 25px 25px 25px;/*
     -webkit-box-shadow: 5px 5px 20px 0px #0D4003;
-    box-shadow: 5px 5px 20px 0px #0D4003;
+    box-shadow: 5px 5px 20px 0px #0D4003;*/
     padding: 10px;
     margin: 12px;
     min-height: 350px;
@@ -1211,9 +1212,9 @@ table.greenTable tfoot .links a{
 
 .ensavoirplus {
     border: 7px inset #B37D00;
-    border-radius: 0px 25px 25px 25px;
+    border-radius: 0px 25px 25px 25px;/*
     -webkit-box-shadow: 5px 5px 20px 0px #0D4003;
-    box-shadow: 5px 5px 20px 0px #0D4003;
+    box-shadow: 5px 5px 20px 0px #0D4003;*/
     padding: 10px;
     margin: 12px;
     min-height: 350px;
@@ -1221,9 +1222,9 @@ table.greenTable tfoot .links a{
 
 .discussion_fiche {
     border: 7px inset #734705;
-    border-radius: 0px 25px 25px 25px;
+    border-radius: 0px 25px 25px 25px;/*
     -webkit-box-shadow: 5px 5px 20px 0px #0D4003;
-    box-shadow: 5px 5px 20px 0px #0D4003;
+    box-shadow: 5px 5px 20px 0px #0D4003;*/
     padding: 10px;
     margin: 12px;
     min-height: 350px;
@@ -1233,8 +1234,8 @@ table.greenTable tfoot .links a{
 .fiche {
     border: 7px inset rgba(49,184,0,0.65);
     border-radius: 0px 25px 25px 25px;
-    -webkit-box-shadow: 5px 5px 20px 0px #0D4003;
-    box-shadow: 5px 5px 20px 0px #0D4003;
+    /*-webkit-box-shadow: 5px 5px 20px 0px #0D4003;
+    box-shadow: 5px 5px 20px 0px #0D4003;*/
     padding: 10px;
     margin: 12px;
     min-height: 350px;
