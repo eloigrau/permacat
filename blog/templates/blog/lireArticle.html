@@ -232,6 +232,7 @@
 
   <div class="tab-pane fade " id="plus">
         <div class="col-sm-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2 textcenter">
+        <div class="contenu discussion_fiche">
         {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
         <p>
           <a class="btn btn-sm btn-success textleft" href="{% url 'blog:ajouterEvenementArticle' id=article.id %}" ><i class="fa fa-plus"></i> Ajouter un evenement</a>
@@ -244,6 +245,7 @@
             <a class="btn btn-sm  btn-success textleft" href="{% url 'ateliers:ajouterAtelier_article' article_slug=article.slug %}" ><i class="fa fa-plus"></i>  Ajouter un atelier</a>
         </p>
 
+          </div>
           </div>
   </div>
 </div>
