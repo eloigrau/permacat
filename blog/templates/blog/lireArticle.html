@@ -93,6 +93,7 @@
 <div class="contenu article ">
 <div class="row">
 <div class="col-sm-12 offset-md-2 col-md-8 textcenter">
+
       <h3> {{ article.titre }}</h3>
         {%if article.start_time%}
     <p>
@@ -106,11 +107,19 @@
           </a>
     </p>
         {% endif %}
-    <p><em>
-                                 {% for tag in article.tags.names %}
+
+        <div class="row-sm-12 justify-content-center">
+        <div class="col-sm-12  fiche_tags">
+            <p class="textcenter">
+                {% if article.tags.names  %}<em>Mots-clés:</em>
+           {% for tag in article.tags.names %}
             {{tag}}{%if not forloop.last%}, {%endif%}
            {% endfor %}
-    </em></p>
+           {% endif %}
+            </p>
+        </div>
+    </div>
+
  </div>
 
 </div>
@@ -118,10 +127,18 @@
 
     <nav class="nav nav-tabs justify-content-center">
       <a class="nav-item nav-link active" href="#contenu" data-toggle="tab">Contenu</a>
+        {% if article.album %}
       <a class="nav-item nav-link" href="#album" data-toggle="tab">Album photo</a>
+        {% endif %}
+        {% if ateliers %}
       <a class="nav-item nav-link" href="#ateliers" data-toggle="tab">Ateliers</a>
-      <a class="nav-item nav-link" href="#dates" data-toggle="tab">Dates</a>
+        {% endif %}
+        {% if dates %}
+      <a class="nav-item nav-link" href="#dates" data-toggle="tab">Evènements</a>
+        {% endif %}
       <a class="nav-item nav-link" href="#historique" data-toggle="tab">Historique</a>
+      {% if not article.album or not ateliers or not dates %}<a class="nav-item nav-link" href="#plus" data-toggle="tab">Ajouter...</a>
+        {% endif %}
     </nav>
 
 
@@ -166,26 +183,24 @@
 
 
   <div class="tab-pane fade " id="ateliers">
+        <div class="col-sm-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2 textcenter my-auto">
         <div class="contenu atelier">
-        <div class="col-sm-12 textcenter">
         {% for atelier in ateliers %}
-        <div class="row align-items-center">
-            <div class="col-sm-12 textcenter">
+        <p>
                 <a href="{{atelier.get_absolute_url}}"> <i class="fa fa-arrow-right"></i>  Atelier du {{atelier.start_time |date:"l d F Y"}} : {{atelier.titre}}</a>
-            </div>
-        </div>
+        </p>
         {% endfor%}
             <hr>
-        <a class="btn btn-sm  btn-success textleft" href="{% url 'ateliers:ajouterAtelier_article' article_slug=article.slug %}" ><i class="fa fa-plus"></i>  Ajouter un atelier</a></>
-
+        <p><a class="btn btn-sm  btn-success textleft" href="{% url 'ateliers:ajouterAtelier_article' article_slug=article.slug %}" ><i class="fa fa-plus"></i>  Ajouter un atelier</a></>
+</p>
           </div>
           </div>
   </div>
 
+
 <div class="tab-pane fade " id="dates">
-        <div class="contenu atelier">
-    <div class="row align-items-center">
         <div class="col-sm-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2 textcenter">
+        <div class="contenu discussion_fiche">
               {%for date in dates %}
              <p>{{date.start_time |date:"l d F Y"}} : {{date.titre}}</p>
               {%empty%}
@@ -193,10 +208,9 @@
               {%endfor%}
             {%if article.auteur == request.user or article.estModifiable %}
             <hr>
-              <p><a class="btn btn-sm btn-success textleft" href="{% url 'blog:ajouterEvenementArticle' id=article.id %}" ><i class="fa fa-plus"></i> Ajouter une date</a></p>
+              <p><a class="btn btn-sm btn-success textleft" href="{% url 'blog:ajouterEvenementArticle' id=article.id %}" ><i class="fa fa-plus"></i> Ajouter un evenement</a></p>
             {% endif %}
       </div>
-    </div>
     </div>
 </div>
 
@@ -211,6 +225,23 @@
         </div>
   </div>
 
+
+  <div class="tab-pane fade " id="plus">
+        <div class="col-sm-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2 textcenter">
+        {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
+        <p>
+          <a class="btn btn-sm btn-success textleft" href="{% url 'blog:ajouterEvenementArticle' id=article.id %}" ><i class="fa fa-plus"></i> Ajouter un evenement</a>
+        </p>
+        <p>
+            <a class="btn btn-sm btn-success textleft" href="{% url 'blog:ajouterAlbumArticle' slug=article.slug %}" ><i class="fa fa-plus"></i> Ajouter un album photo</a>
+        </p>
+        {% endif %}
+        <p>
+            <a class="btn btn-sm  btn-success textleft" href="{% url 'ateliers:ajouterAtelier_article' article_slug=article.slug %}" ><i class="fa fa-plus"></i>  Ajouter un atelier</a>
+        </p>
+
+          </div>
+  </div>
 </div>
 </div>
 

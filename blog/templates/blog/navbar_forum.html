@@ -11,11 +11,10 @@
 
 
     <li class="nav-item dropdown ">
-        <button type="button" class="btn dropdown-toggle btn-primary btn-menu-forum" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
+        <button type="button" class="btn dropdown-toggle btn-primary btn-menu-forum btn-block " data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
            data-target = "#idDossiers"> Dossiers publics </button>
         <div class="textcenter dropdown-menu dropdown-menu-forum " aria-labelledby="menuAuteur"  id="idDossiers">
-
-             <a class=" dropdown-item "  href="{% url 'blog:index_asso' asso='public'%}"><span>Tous les articles publics</span></a>
+             <a class=" dropdown-item " href="{% url 'blog:index_asso' asso='public'%}"><span>Tous les articles publics</span></a>
              <div class="dropdown-divider"></div>
             {% for categorie_id, cat_nom, cat_coul in categorie_list %}
             <a class=" dropdown-item " style="background:#d0f4de;" href="{% url 'blog:index_asso' asso='public'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
@@ -37,7 +36,7 @@
         <button type="button" class="btn dropdown-toggle btn-primary btn-menu-forum btn-block " data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
         data-target = "#idDossiers_pc"> Permacat</button>
         <div class="dropdown-menu textcenter dropdown-menu-forum " aria-labelledby="menuAuteur"  id="idDossiers_pc">
-             <a class=" dropdown-item "  href="{% url 'blog:index_asso' asso='pc'%}"><span>Tous les articles PermaCat</span></a>
+             <a class=" dropdown-item " href="{% url 'blog:index_asso' asso='pc'%}"><span>Tous les articles PermaCat</span></a>
             <div class="dropdown-divider"></div>
             {% for categorie_id, cat_nom, cat_coul in categorie_list_pc %}
              <a class=" dropdown-item " style="background:#d0f4de;" href="{% url 'blog:index_asso' asso='pc'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
@@ -80,7 +79,7 @@
     <li class="nav-item dropdown">
         <button type="button" class="btn dropdown-toggle btn-primary btn-menu-forum btn-block" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
         data-target = "#idDossiers_gt"> Gardiens de la Terre</button>
-        <div class="dropdown-menu " aria-labelledby="menuAuteur"  id="idDossiers_gt">
+        <div class="dropdown-menu textcenter dropdown-menu-forum " aria-labelledby="menuAuteur"  id="idDossiers_gt">
              <a class=" dropdown-item " href="{% url 'blog:index_asso' asso='gt'%}"><span>Tous les articles Gardiens de la terre</span></a>
             <div class="dropdown-divider"></div>
             {% for categorie_id, cat_nom, cat_coul in categorie_list_gt %}
@@ -89,7 +88,12 @@
         </div>
     </li>
     {% endif %}
-
+    <li class="nav-item dropdown">
+        <a href="{% url 'blog:index' %}">
+            <button type="button" class="btn  btn-success btn-menu-forum btn-block" > Tous les articles du forum <i class="fa fa-arrow-right iconright"></i>
+            </button>
+        </a>
+    </li>
     </ul>
 
 </div>
