@@ -163,6 +163,8 @@
 </div>
 </div>
 <hr>
+<div class="row">
+<div class="col-sm-12 col-lg-12">
 <div class="row justify-content-center">
     <h5>Derniers articles créés : </h5>
 </div>
@@ -172,6 +174,23 @@
         {% include "blog/article_template2.html" with article=article %}
         </div>
     {% endfor %}
+</div>
+</div>
+</div>
+
+<div class="row">
+<div class="col-sm-12 col-lg-12">
+    <div class="row justify-content-center">
+        <h5>Derniers articles modifiés : </h5>
+    </div>
+    <div class="grid-container justify-content-center">
+        {% for article in derniers_articles_modif %}
+            <div class="infinite-item my-auto mx-auto">
+            {% include "blog/article_template2.html" with article=article %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
 </div>
     {% endif %}
 

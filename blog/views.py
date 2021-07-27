@@ -70,8 +70,14 @@ def accueil(request):
         if not getattr(request.user, "adherent_" + nomAsso):
             derniers_articles_comm = derniers_articles_comm.exclude(asso__abreviation=nomAsso)
 
+    derniers_articles_modif = Article.objects.filter(estArchive=False, date_modification__isnull=False).order_by('date_modification')
+
+    for nomAsso in Choix_global.abreviationsAsso:
+        if not getattr(request.user, "adherent_" + nomAsso):
+            derniers_articles_modif = derniers_articles_modif.exclude(asso__abreviation=nomAsso)
+
     suivis, created = Suivis.objects.get_or_create(nom_suivi="articles")
-    return render(request, 'blog/accueil.html', {'categorie_list':categorie_list,'categorie_list_pc':categorie_list_pc,'categorie_list_rtg':categorie_list_rtg,'categorie_list_fer':categorie_list_fer,'categorie_list_gt':categorie_list_gt,'projets_list':projets_list,'ateliers_list':ateliers_list, 'categorie_list_projets':categorie_list_projets,'derniers_articles':derniers_articles[:6],'derniers_articles_comm':derniers_articles_comm[::-1][:6], 'suivis':suivis})
+    return render(request, 'blog/accueil.html', {'categorie_list':categorie_list,'categorie_list_pc':categorie_list_pc,'categorie_list_rtg':categorie_list_rtg,'categorie_list_fer':categorie_list_fer,'categorie_list_gt':categorie_list_gt,'projets_list':projets_list,'ateliers_list':ateliers_list, 'categorie_list_projets':categorie_list_projets,'derniers_articles':derniers_articles[:6],'derniers_articles_comm':derniers_articles_comm[::-1][:6], 'derniers_articles_modif':derniers_articles_modif[::-1][:6], 'suivis':suivis})
 
 
 @login_required

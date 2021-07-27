@@ -169,10 +169,16 @@ def bienvenue(request):
         for nomAsso in Choix_global.abreviationsAsso:
             if not getattr(request.user, "adherent_" + nomAsso):
                 derniers_articles_comm = derniers_articles_comm.exclude(asso__abreviation=nomAsso)
+
+        derniers_articles_modif = Article.objects.filter(estArchive=False, date_modification__isnull=False).order_by('date_modification')
+
+        for nomAsso in Choix_global.abreviationsAsso:
+            if not getattr(request.user, "adherent_" + nomAsso):
+                derniers_articles_modif = derniers_articles_modif.exclude(asso__abreviation=nomAsso)
     else:
         derniers_articles, derniers_articles_comm = [], []
 
-    return render(request, 'bienvenue.html', {'nomImage':nomImage, "nbNotif": nbNotif , "nbExpires":nbExpires, "evenements":evenements, "evenements_semaine":evenements_semaine, "derniers_articles":derniers_articles[:6], "derniers_articles_comm":derniers_articles_comm[::-1][:6]})
+    return render(request, 'bienvenue.html', {'nomImage':nomImage, "nbNotif": nbNotif , "nbExpires":nbExpires, "evenements":evenements, "evenements_semaine":evenements_semaine, "derniers_articles":derniers_articles[:6], "derniers_articles_comm":derniers_articles_comm[::-1][:6], "derniers_articles_modif":derniers_articles_modif[::-1][:6]})
 
 class MyException(Exception):
     pass

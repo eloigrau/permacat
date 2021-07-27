@@ -51,6 +51,7 @@ class Choix():
     ordre_tri_articles = {"date de création":'-date_creation',
                              "date de la dernière modification":'-date_modification',
                              "date du dernier commentaire":'-date_dernierMessage',
+                             "date de l'evenement associé":'-date_dernierEvenement',
                              "titre": 'titre' }
     ordre_tri_projets = {"date de création":'-date_creation', "date du dernier commentaire":'-date_dernierMessage', "Type de projet":'categorie', "statut du projet":"statut", 'auteur':'auteur', 'titre':'titre'}
 

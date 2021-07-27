@@ -14,28 +14,28 @@
               <span class="badge badge-primary" >{{ article.get_categorie_display }}</span>&nbsp;
             </div>
         </div>
-            <div class="category">
-                {% if article.album %}
-                {% with photo=article.album.get_photo_sample %}
-                    {%if photo %}
-                    <img src="{{ photo.0.get_thumbnail_url }}" class="thumbnail" alt="{{ photo.0.title }}">
-                    {% endif %}
-                {% endwith %}
+        <div class="category">
+            {% if article.album %}
+            {% with photo=article.album.get_photo_sample %}
+                {%if photo %}
+                <img src="{{ photo.0.get_thumbnail_url }}" class="thumbnail" alt="{{ photo.0.title }}">
                 {% endif %}
-            </div>
+            {% endwith %}
+            {% endif %}
+        </div>
         <h4 class="title">
             {{ article.titre }}
         </h4>
     <p class="description">
 
         {% if article.start_time %}
-        <span class="btn btn-Light"
+        <span class="btn btn-success">
           {% if article.end_time %}
           du {{ article.start_time|date:"DATE_FORMAT" }} au {{ article.end_time|date:"DATE_FORMAT" }}
           {%else%}
           le {{ article.start_time|date:"DATE_FORMAT" }}
           {% endif %}
-        </div>
+        </span>
         {% endif %}
 
         {% if article.dernierMessage  %}
