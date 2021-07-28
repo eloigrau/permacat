@@ -1,5 +1,6 @@
 {% extends 'base_notifications.html' %}
 {% load activity_tags %}
+{% load hitcount_tags %}
 {% load fontawesome %}
 
 {% block subtitle %}
@@ -48,25 +49,24 @@
         <li class="list-group-item textcenter"  style="background-color:#ffc34d">Dernières visites</li>
         {% for hit in hit_count %}
         <li class="list-group-item"  style="background-color:{{color}}">
-            <a {%if hit.content_object %}href="{{ hit.content_object.get_absolute_url }} "{%endif%}>
-             ({{hit.modified}}) {{hit.content_object}}
+            <a {%if hit.hitcount.content_object %}href="{{ hit.hitcount.content_object.get_absolute_url }} "{%endif%}>
+             ({{hit.created}}) {{hit.hitcount.content_object}}
             </a>
         </li>
         {% endfor %}
     </div>
-
-{% comment %}
+</div>
+<div class="row justify-content-center">
     <div class="col-sm-12 col-md-6 textcenter">
-
-            <li class="list-group-item textcenter"  style="background-color:#ffc34d">Mes visites</li>
-{% for page in hit_count %}
+<li class="list-group-item textcenter"  style="background-color:#ffc34d">Mes visites</li>
+{% for hit in hit_count_perso %}
         <li class="list-group-item"  style="background-color:{{color}}">
-            <a {%if page.content_object %}href="{{ page.content_object.get_absolute_url }} "{%endif%}>
-             {{page.content_object}}
+            <a {%if hit.hitcount.content_object %}href="{{ hit.hitcount.content_object.get_absolute_url }} "{%endif%}>
+              ({{hit.created}}) {{hit.hitcount.content_object}}
             </a>
         </li>
 {% endfor %}
+
     </div>
-{% endcomment %}
 </div>
 {% endblock %}
