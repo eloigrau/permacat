@@ -14,9 +14,10 @@ from datetime import datetime, timedelta
 import re
 import pytz
 from django.core import mail
+from hitcount.models import HitCount, Hit
 
 @login_required
-def getNotifications(request, nbNotif=10, orderBy="-timestamp"):
+def getNotifications(request, nbNotif=15, orderBy="-timestamp"):
     tampon = nbNotif * 5
     salons = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_Public')|Q(verb='envoi_salon_public'))
     articles = Action.objects.filter(Q(verb='article_nouveau') | Q(verb='article_nouveau_Public') | Q(verb='article_message') | Q(verb='article_message_Public') |Q(verb='article_nouveau_public') | Q(verb='article_message_public') | Q(verb='article_modifier_Public')| Q(verb='article_modifier_public')| Q(verb='article_modifier')).order_by(orderBy)
@@ -90,7 +91,7 @@ def getNotificationsParDate(request, limiter=True, orderBy="-timestamp"):
 
     if limiter:
         actions=actions[:100]
-    actions = [art for i, art in enumerate(actions) if i == 0 or not (art.description == actions[i-1].description and art.actor == actions[i-1].actor ) ][:50]
+    actions = [art for i, art in enumerate(actions) if i == 0 or not (art.description == actions[i-1].description and art.actor == actions[i-1].actor ) ][:100]
 
 
     return actions
@@ -237,6 +238,8 @@ def notifications(request):
 @login_required
 def notifications_news(request):
     actions = get_notifications_news(request)
+
+    hit_count = HitCount.objects.all().order_by('-hit__created')[:10]
     return render(request, 'notifications/notifications_last.html', {'actions':actions})
 
 
@@ -566,3 +569,9 @@ def envoyerEmailstest():
 #     def do(self):
 #         envoyerEmails()
 #         #envoyerEmailstest()
+
+
+def voirDerniersArticlesVus(request):
+    hit_count = HitCount.objects.all().order_by('-hit__created')[:10]
+    hit_count_perso = HitCount.objects.filter(hit__user=request.user.id).order_by('-hit__created')[:10]
+    return render(request, 'notifications/notifications_vistes.html', {'hit_count': hit_count, 'hit_count_perso': hit_count_perso})

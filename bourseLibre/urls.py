@@ -59,6 +59,7 @@ urlpatterns = [
     url(r'^notifications/notif_cejour/$', views_notifications.notif_cejour, name='notif_cejour'),
     url(r'^notifications/notif_cettesemaine/$', views_notifications.notif_cettesemaine, name='notif_cettesemaine'),
     url(r'^notifications/notif_cemois/$', views_notifications.notif_cemois, name='notif_cemois'),
+    url(r'^notifications/visites/', views_notifications.voirDerniersArticlesVus, name='articles_visites'),
     url(r'^dernieresInfos/$', views_notifications.dernieresInfos, name='dernieresInfos'),
     url(r'^prochaines_rencontres/$', views.prochaines_rencontres, name='prochaines_rencontres'),
     url(r'^permacat/presentation/$', views.presentation_asso, name='presentation_asso'),
