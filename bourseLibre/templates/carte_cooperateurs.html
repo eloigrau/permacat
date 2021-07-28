@@ -17,6 +17,11 @@
     <h4> {{titre}}</h4>
   </div>
 </div>
+
+
+<p class="textcenter textepetit">(* les personnes qui ont accepté d'apparaitre dans l'annuaire sont indiquées par une feuille ; les marqueurs gris concernent les colibris qui se sont inscrit sur "<a href="{% url 'carto:carte' %}" >presdecheznous.fr</a>" )</p>
+
+
 {% endblock %}
 {% block content %}
 
@@ -84,9 +89,6 @@
 {% leaflet_map "yourmap" callback="window.map_init_basic" %}
 </div>
 </div>
-
-    <p class="textcenter textepetit">(* les personnes qui ont accepté d'apparaitre dans l'annuaire sont indiquées par une feuille ; les marqueurs gris concernent ceux qui se sont inscrit sur "<a href="{% url 'carto:carte' %}" >presdecheznous.fr</a>" )</p>
-
 
 {% endblock %}
 
