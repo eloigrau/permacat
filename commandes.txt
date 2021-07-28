@@ -20,6 +20,7 @@ sudo service nginx restart
 sudo service nginx status
 sudo service nginx configtest
 sudo nano /etc/nginx/sites-enabled/permacat
+sudo certbot --expand --nginx -d perma.cat,www.perma.cat
 
 #pg_restore -U postgres -h 82.64.236.35 -p 32770 -c -d site data.dump
 pg_dump -h 82.64.236.35 -p 32770 -U postgres -F c -b -v -d -f site permacat.dump

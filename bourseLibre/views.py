@@ -790,7 +790,9 @@ def cgu(request):
 @login_required
 def liens(request):
     liens = [
+        'https://grandjardin.jardiniersdunous.org /',
         'https://www.tizoom.fr',
+        'https://transiscope.org',
         'https://www.balotilo.org/',
         'http://terre-avenirs-peyrestortes.org/',
         'http://www.peyrestroc.org',
