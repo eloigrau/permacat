@@ -8,61 +8,7 @@
 
 <div class="container-fluid">
 <div class="row">
-    <div class="col-md-2 " id="sec02">
-    </div>
-    <div class="col-md-8">
-        <p class="infos  textepetit">
-
-            <span class="badge badge-success" style="background-color:{{article.get_couleur}}" ><a href="{% url 'blog:index'  %}?categorie={{article.categorie}}" >{{ article.get_categorie_display }}</a></span>
-
-            <span class="badge badge-success">
-                <a href="{% url 'blog:index'  %}?asso={{article.asso.abreviation}}" >{{ article.asso }}</a>
-            </span>
-            {% if article.estArchive%}
-            <span class="badge badge-Light">
-                archivé
-            </span>
-            {%endif%}
-            {% if article.estModifiable%}
-            <span class="badge badge-info">
-                modifiable
-            </span>
-            {%endif%}
-            <a href="{% url 'profil' article.auteur.id %}">
-                <span class="badge badge-Light">
-               rédigé par  {{ article.auteur.username }}
-                </span>
-            </a>
-
-            <span class="badge badge-Light">
-                le {{ article.date_creation|date:"DATE_FORMAT" }}
-            </span>
-            <span class="badge badge-Light">
-            {% get_hit_count for article as nbvues %}
-            {{ nbvues }} vue{{nbvues|pluralize:"s"}}
-            </span>
-
-        <a href="{% url 'blog:suivre_article' article.slug %}">
-            {% if request.user|is_following:article %}
-            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné :  Cliquez pour arreter de recevoir des notifications concernant cet article par mail">
-                 {% fontawesome_icon 'bell' %} 
-            </button>
-            {% else %}
-            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné :  Cliquez pour recevoir les notifications concernant cet article par mail">
-                 {% fontawesome_icon 'bell-slash' %} 
-            </button>
-            {% endif %}
-        </a>
-             {% if request.user.is_superuser %}
-        <a href="{% url 'blog:suiveursArticle' article.slug %}">
-            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Voir abonnés">
-                 {% fontawesome_icon 'list' %}
-            </button>
-        </a>
-            {% endif %}
-        </p>
-    </div>
-    <div class="col-md-2">
+    <div class="col-sm-12 textcenter">
         <p>
         {%if article.auteur == request.user or request.user.is_superuser %}
 		<div class="btn-group">
@@ -91,6 +37,62 @@
 {% endblock %}
 {% block content %}
 <div class="contenu article ">
+
+<div class="container-fluid">
+<div class="row">
+    <div class="col-sm-12 justify-content-center">
+        <p class="infos  textepetit textcenter">
+
+            <span class="badge badge-success" style="background-color:{{article.get_couleur}}" ><a href="{% url 'blog:index'  %}?categorie={{article.categorie}}" >{{ article.get_categorie_display }}</a></span>
+
+            <span class="badge badge-success">
+                <a href="{% url 'blog:index'  %}?asso={{article.asso.abreviation}}" >{{ article.asso }}</a>
+            </span>
+            {% if article.estArchive%}
+            <span class="badge badge-Light">
+                archivé
+            </span>
+            {%endif%}
+            {% if article.estModifiable%}
+            <span class="badge badge-info">
+                modifiable
+            </span>
+            {%endif%}
+            <a href="{% url 'profil' article.auteur.id %}">
+                <span class="badge badge-Light">
+               rédigé par  {{ article.auteur.username }}
+                </span>
+            </a>
+
+            <span class="badge badge-Light">
+            {% get_hit_count for article as nbvues %}
+            {{ nbvues }} vue{{nbvues|pluralize:"s"}}
+            </span>
+
+        <a href="{% url 'blog:suivre_article' article.slug %}">
+            {% if request.user|is_following:article %}
+            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné :  Cliquez pour arreter de recevoir des notifications concernant cet article par mail">
+                 {% fontawesome_icon 'bell' %}
+            </button>
+            {% else %}
+            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné :  Cliquez pour recevoir les notifications concernant cet article par mail">
+                 {% fontawesome_icon 'bell-slash' %}
+            </button>
+            {% endif %}
+        </a>
+             {% if request.user.is_superuser %}
+        <a href="{% url 'blog:suiveursArticle' article.slug %}">
+            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Voir abonnés">
+                 {% fontawesome_icon 'list' %}
+            </button>
+        </a>
+            {% endif %}
+        </p>
+    </div>
+</div>
+
+</div>
+
 <div class="row">
 <div class="col-sm-12 offset-md-2 col-md-8 textcenter">
 
@@ -249,10 +251,12 @@
           </div>
   </div>
 </div>
+<hr>
+
+{% include 'commentaires.html' %}
 </div>
 
 
 
-{% include 'commentaires.html' %}
 
 {% endblock %}
