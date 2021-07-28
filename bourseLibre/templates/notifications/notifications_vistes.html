@@ -43,24 +43,19 @@
 
 {% endblock %}
 {% block content %}
-
-<div class="row justify-content-center">
-    <div class="col-sm-12 col-md-8 col-lg-5 textcenter">
-
 <div class="row justify-content-center">
     <div class="col-sm-12 col-md-6 textcenter">
-
-            <li class="list-group-item textcenter"  style="background-color:#ffc34d">Dernières visites</li>
-{% for page in hit_count %}
+        <li class="list-group-item textcenter"  style="background-color:#ffc34d">Dernières visites</li>
+        {% for hit in hit_count %}
         <li class="list-group-item"  style="background-color:{{color}}">
-            <a {%if page.content_object %}href="{{ page.content_object.get_absolute_url }} "{%endif%}>
-             {{page.content_object}}
+            <a {%if hit.content_object %}href="{{ hit.content_object.get_absolute_url }} "{%endif%}>
+             ({{hit.modified}}) {{hit.content_object}}
             </a>
         </li>
-{% endfor %}
+        {% endfor %}
     </div>
 
-
+{% comment %}
     <div class="col-sm-12 col-md-6 textcenter">
 
             <li class="list-group-item textcenter"  style="background-color:#ffc34d">Mes visites</li>
@@ -72,7 +67,6 @@
         </li>
 {% endfor %}
     </div>
-</div>
-</div>
+{% endcomment %}
 </div>
 {% endblock %}
