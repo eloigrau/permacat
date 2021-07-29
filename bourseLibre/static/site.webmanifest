@@ -1,6 +1,7 @@
 {
-    "name": "",
-    "short_name": "",
+    "name": "Perma.Cat",
+    "short_name": "Perma.Cat",
+    "description": "Le site Perma.Cat",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
@@ -16,4 +17,5 @@
     "theme_color": "#ffffff",
     "background_color": "#ffffff",
     "display": "standalone"
+    "start_url": "/bienvenue/"
 }

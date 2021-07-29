@@ -160,7 +160,7 @@
     </tbody>
 </table>
     {% if suffrage.get_statut.0 == 0 %}
-    <div class="textcenter"><a href="{% url 'vote:modifierVote' slug=suffrage.slug %}" class="btn btn-success"> Modifier</a></div></p>
+        <div class="textcenter"><a href="{% url 'vote:voter' slug=suffrage.slug %}" class="btn btn-success"> Refaire mon vote</a></div></p>
     {% endif %}
         {% endif %}
     {% endif %}

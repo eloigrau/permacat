@@ -1,3 +1,5 @@
+import itertools
+
 from django.db import models
 from bourseLibre.models import Profil, Asso
 from django.urls import reverse
@@ -166,18 +168,19 @@ class Question_base(models.Model):
     def get_absolute_url(self):
         return reverse('vote:lireSuffrage', kwargs={'slug':self.suffrage.slug})
 
+    def __str__(self):
+        question = self.question
+        if self.question[-1] != "?":
+            question += "?"
+
+        return question
+
 class Question_binaire(Question_base):
     question = models.CharField(max_length=100, verbose_name="Question (oui/non) soumise au vote ?")
-
-    def __str__(self):
-        return self.question
-
 
 class Question_majoritaire(Question_base):
     question = models.CharField(max_length=100, verbose_name="Question (jugement majoritaire) soumise au vote ?")
 
-    def __str__(self):
-        return self.question
 
 class Vote(models.Model):
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='auteur_vote', null=True)
@@ -186,26 +189,36 @@ class Vote(models.Model):
     date_modification = models.DateTimeField(verbose_name="Date de modification", auto_now=True)
     commentaire = models.TextField(verbose_name="Commentaire", null=True, blank=True)
 
+    class Meta:
+        unique_together = ('auteur', 'suffrage')
+
     def __str__(self):
-        return str(self.suffrage) + " " + dict(Choix.vote_ouinon)[self.choix]
+        return str(self.suffrage) + "vote " + str(self.auteur)
 
     def getVoteStr(self):
-        return dict(Choix.vote_ouinon)[self.choix]
+        rep_b = ReponseQuestion_b.objects.filter(vote=self)
+        rep_m = ReponseQuestion_m.objects.filter(vote=self)
+        return [str(x) for x in itertools.chain(rep_b, rep_m)]
 
 class ReponseQuestion_b(models.Model):
     vote = models.ForeignKey(Vote, on_delete=models.CASCADE, related_name='rep_question_b')
-    question_b = models.ForeignKey(Question_binaire, on_delete=models.DO_NOTHING,)
+    question = models.ForeignKey(Question_binaire, on_delete=models.DO_NOTHING,)
     choix = models.CharField(max_length=30,
         choices=(Choix.vote_ouinon),
         default='', verbose_name="Choix du vote :")
 
+    def __str__(self):
+        return str(self.choix)
+
 class ReponseQuestion_m(models.Model):
     vote = models.ForeignKey(Vote, on_delete=models.CASCADE, related_name='rep_question_m')
-    question_b = models.ForeignKey(Question_majoritaire, on_delete=models.DO_NOTHING,)
+    question = models.ForeignKey(Question_majoritaire, on_delete=models.DO_NOTHING,)
     choix = models.CharField(max_length=30,
         choices=(Choix.vote_majoritaire),
         default='', verbose_name="Choix du vote :")
 
+    def __str__(self):
+        return str(self.choix)
 
 class Commentaire(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='auteur_comm_vote')

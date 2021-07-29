@@ -8,29 +8,18 @@
 <h5 class="textcenter">{{suffrage.titre}}</h5>
 
 <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="Vote"
-		value="{{ vote }}"> {% include 'form_template2.html' %}
-
-{{ rb_formset.management_form }}
-{{ rm_formset.management_form }}
+  {% csrf_token %}
 
     <div id="rb_formset">
-    {% for form in rb_formset.forms %}
+    {% for form in reponses_b_form %}
         {% include 'form_template2.html' %}
-        {% if form.can_delete %}
-            {{ form.DELETE }}
-        {% endif %}
+    {% endfor %}
+    {% for form in reponses_m_form %}
+        {% include 'form_template2.html' %}
     {% endfor %}
     </div>
 
-    <div id="rm_formset">
-    {% for form in rm_formset.forms %}
-        {% include 'form_template2.html' %}
-        {% if form.can_delete %}{{ form.DELETE }}
-        {% endif %}
-    {% endfor %}
-    </div>
-
+     {% include 'form_template2.html' %}
 
   <button type="submit" class="btn btn-primary">Je soumets mon bulletin de vote !</button>
 </form>

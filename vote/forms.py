@@ -25,8 +25,8 @@ class SuffrageForm(forms.ModelForm):
         cleaned_data = super().clean()
         date_debut = cleaned_data.get("start_time")
         date_expiration = cleaned_data.get("end_time")
-        if date_debut < now():
-            raise forms.ValidationError('Le suffrage ne peut pas démarrer avant demain')
+        #if date_debut < now():
+         #   raise forms.ValidationError('Le suffrage ne peut pas démarrer avant demain')
 
         if date_expiration <= date_debut:
             raise forms.ValidationError('La date de fin doit etre postérieure à la date de début')
@@ -127,27 +127,34 @@ Question_majoritaire_formset = formset_factory(Question_majoritaire_Form, extra=
 
 class Reponse_majoritaire_Form(forms.ModelForm):
     class Meta:
-        model = ReponseQuestion_b
-        fields = ['choix']
-
-    def __init__(self, request, *args, **kwargs):
-        super(Reponse_majoritaire_Form, self).__init__(*args, **kwargs)
-
-
-class Reponse_binaire_Form(forms.ModelForm):
-    class Meta:
         model = ReponseQuestion_m
         fields = ['choix']
 
+    def __init__(self, question, *args, **kwargs):
+        super(Reponse_majoritaire_Form, self).__init__(*args, **kwargs)
+        self.question = question
+
     def save(self, vote):
-        instance = super(Reponse_binaire_Form, self).save(commit=False)
+        instance = super(Reponse_majoritaire_Form, self).save(commit=False)
         instance.vote = vote
+        instance.question = self.question
         instance.save()
         return instance
+
+class Reponse_binaire_Form(forms.ModelForm):
+    class Meta:
+        model = ReponseQuestion_b
+        fields = ['choix']
+
+    def __init__(self, question, *args, **kwargs):
+        super(Reponse_binaire_Form, self).__init__(*args, **kwargs)
+        self.question = question
+
 
     def save(self, vote):
         instance = super(Reponse_binaire_Form, self).save(commit=False)
         instance.vote = vote
+        instance.question = self.question
         instance.save()
         return instance
 
@@ -173,8 +180,7 @@ class VoteForm(forms.ModelForm):
     def save(self, suffrage, userProfile):
         instance = super(VoteForm, self).save(commit=False)
         instance.suffrage = suffrage
-        if not instance.suffrage.estAnonyme:
-            instance.auteur = userProfile
+        instance.auteur = userProfile
         instance.save()
         return instance
 

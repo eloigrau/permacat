@@ -67,7 +67,7 @@
             try{
                 var lat = {{lieu.adresse.latitude|to_numeric}};
                 var lon = {{lieu.adresse.longitude|to_numeric}};
-                var marker = L.marker([lat, lon], {icon: greenIcon}).bindPopup(' <b>{{lieu.get_titre}}</b>');
+                var marker = L.marker([lat, lon], {icon: greenIcon}).bindPopup(' <b>{{lieu.get_titre}} {{lieu.adresse.get_adresse_str}} </b>');
                 marker.addTo(map);
             }
             catch(err){ ;

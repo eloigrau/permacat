@@ -183,28 +183,30 @@ def voter(request, slug):
 
     vote = Vote.objects.filter(auteur=request.user, suffrage=suffrage)
     if vote:
-        return render(request, 'vote/dejaVote.html',)
+        vote.delete()
 
     questions_b, questions_m = suffrage.get_questions()
 
     form = VoteForm(request.POST or None)
 
-#    reponses_b_form = [Reponse_binaire_Form(request.POST or None) for ]
-    Reponse_binaire_formset = formset_factory(Reponse_binaire_Form, )
-    Reponse_majoritaire_formset = formset_factory(Reponse_majoritaire_Form, )
+    reponses_b_form = [Reponse_binaire_Form(q, request.POST or None) for q in questions_b]
+    reponses_m_form = [Reponse_majoritaire_Form(q, request.POST or None) for q in questions_m]
+    #Reponse_binaire_formset = formset_factory(Reponse_binaire_Form, )
+    #Reponse_majoritaire_formset = formset_factory(Reponse_majoritaire_Form, )
 
-    rb_formset = Reponse_binaire_formset(request.POST or None, prefix="rb", queryset=questions_b)
-    rm_formset = Reponse_majoritaire_formset(request.POST or None, prefix="rm", queryset=questions_m)
+    #rb_formset = Reponse_binaire_formset(request.POST or None, prefix="rb")
+    #rm_formset = Reponse_majoritaire_formset(request.POST or None, prefix="rm")
 
-    if form.is_valid() and rb_formset.is_valid() and rm_formset.is_valid() :
-        vote = form.save(request.user)
-        for form in itertools.chain(rb_formset, rm_formset): # meme question
-            # extract name from each form and save
-            form.save(vote=vote)
+    if all([f.is_valid() for f in itertools.chain(reponses_b_form, reponses_m_form)]) and form.is_valid():
+        vote = form.save(suffrage, request.user)
+        for form in itertools.chain(reponses_b_form, reponses_m_form): # meme question
+            form.save(vote=vote, )
+        for form in reponses_m_form:
+            form.save(vote=vote, )
 
         return redirect(suffrage.get_absolute_url())
 
-    return render(request, 'vote/voter.html', {'suffrage': suffrage, 'form': form, 'rb_formset':rb_formset, 'rm_formset':rm_formset},)
+    return render(request, 'vote/voter.html', {'suffrage': suffrage, 'form': form, 'reponses_b_form':reponses_b_form, 'reponses_m_form':reponses_m_form},)
 
 
 
