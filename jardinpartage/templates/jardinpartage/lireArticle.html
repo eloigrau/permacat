@@ -147,7 +147,7 @@
                       -
                       {%endfor%}
                     {%if article.auteur == request.user or article.estModifiable %}
-                      <p><a class="btn btn-success" href="{% url 'jardinpartage:ajouterEvenementArticle' id=article.id %}" ><i class="fa fa-plus"></i> Ajouter une date</a></p>
+                      <p><a class="btn btn-success" href="{% url 'jardinpartage:ajouterEvenementArticle' id_article=article.id %}" ><i class="fa fa-plus"></i> Ajouter une date</a></p>
                     {% endif %}
                   </div>
                 </div>

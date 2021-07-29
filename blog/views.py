@@ -2,9 +2,9 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect, reverse
 from django.urls import reverse_lazy
 from django.utils.html import strip_tags
-from .models import Article, Commentaire, Projet, CommentaireProjet, Choix, Evenement,Asso
+from .models import Article, Commentaire, Projet, CommentaireProjet, Choix, Evenement,Asso, AdresseArticle
 from .forms import ArticleForm, ArticleAddAlbum, CommentaireArticleForm, CommentaireArticleChangeForm, ArticleChangeForm, ProjetForm, \
-    ProjetChangeForm, CommentProjetForm, CommentaireProjetChangeForm, EvenementForm, EvenementArticleForm
+    ProjetChangeForm, CommentProjetForm, CommentaireProjetChangeForm, EvenementForm, EvenementArticleForm, AdresseArticleForm
 from .filters import ArticleFilter
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
@@ -12,6 +12,7 @@ from actstream import actions, action
 from actstream.models import followers, following, action_object_stream
 from django.utils.timezone import now
 from bourseLibre.models import Suivis
+from bourseLibre.forms import AdresseForm
 from bourseLibre.constantes import Choix as Choix_global
 
 from bourseLibre.views import testIsMembreAsso
@@ -173,7 +174,9 @@ class SupprimerArticle(DeleteView):
 @login_required
 def lireArticle(request, slug):
     article = get_object_or_404(Article, slug=slug)
-    ateliers= Atelier.objects.filter(article=article).order_by('start_time')
+    ateliers = Atelier.objects.filter(article=article).order_by('start_time')
+    lieux = AdresseArticle.objects.filter(article=article).order_by('titre')
+
     if not article.est_autorise(request.user):
         return render(request, 'notMembre.html', {"asso": str(article.asso)})
 
@@ -207,7 +210,7 @@ def lireArticle(request, slug):
             #envoi_emails_articleouprojet_modifie(article, request.user.username + " a réagit au projet: " +  article.titre, True)
         return redirect(request.path)
 
-    return render(request, 'blog/lireArticle.html', {'article': article, 'form': form, 'commentaires':commentaires, 'dates':dates, 'actions':actions, 'ateliers':ateliers},)
+    return render(request, 'blog/lireArticle.html', {'article': article, 'form': form, 'commentaires':commentaires, 'dates':dates, 'actions':actions, 'ateliers':ateliers, 'lieux':lieux},)
 
 @login_required
 def lireArticle_id(request, id):
@@ -763,16 +766,37 @@ def ajouterEvenement(request, date=None):
 
 
 @login_required
-def ajouterEvenementArticle(request, id):
+def ajouterEvenementArticle(request, id_article):
     form = EvenementArticleForm(request.POST or None)
 
     if form.is_valid():
-        form.save(id)
-        return lireArticle_id(request, id)
+        form.save(id_article)
+        return lireArticle_id(request, id_article)
 
     return render(request, 'blog/ajouterEvenement.html', {'form': form, })
 
 
+@login_required
+def ajouterAdresseArticle(request, id_article):
+    article = Article.objects.get(id=id_article)
+    form = AdresseArticleForm(request.POST or None)
+    form_adresse = AdresseForm(request.POST or None)
+
+    if form.is_valid() and form_adresse.is_valid():
+        adresse = form_adresse.save()
+        form.save(article, adresse)
+        return lireArticle_id(request, id_article)
+
+    return render(request, 'blog/ajouterAdresse.html', {'article':article, 'form': form, 'form_adresse':form_adresse })
+
+@login_required
+def voirCarteLieux(request, id_article):
+    article = Article.objects.get(id=id_article)
+    lieux = article.getLieux()
+    titre = "Lieux associés à l'article '" + str(article.titre) +"'"
+    return render(request, 'blog/carte_lieux.html', {'titre':titre, "lieux":lieux})
+
+# methode pour migrer les donnees
 def changerArticles_jardin(request):
     from jardinpartage.models import Article as Art_jardin, Commentaire as Comm_jardin
     articles = Article.objects.filter(categorie="Jardin")
@@ -809,4 +833,6 @@ def filtrer_articles(request):
     f = ArticleFilter(request.GET, queryset=articles_list)
 
     return render(request, 'blog/article_filter.html', {'filter': f})
+
+
 

@@ -1,5 +1,5 @@
 from django.db import models
-from bourseLibre.models import Profil, Suivis, Asso
+from bourseLibre.models import Profil, Suivis, Asso, Adresse
 from django.urls import reverse
 from django.utils import timezone
 from actstream import action
@@ -135,6 +135,9 @@ class Article(models.Model):
             return True
 
         return getattr(user, "adherent_" + self.asso.abreviation)
+
+    def getLieux(self):
+        return AdresseArticle.objects.filter(article=self)
 
 class Evenement(models.Model):
     titre_even = models.CharField(verbose_name="Titre de l'événement (si laissé vide, ce sera le titre de l'article)",
@@ -345,3 +348,24 @@ class EvenementAcceuil(models.Model):
         if not self.titre_even:
             return self.article.titre
         return self.titre_even
+
+class AdresseArticle(models.Model):
+    titre = models.CharField(verbose_name="Nom du lieu",
+                             max_length=100, null=True, blank=True, default="")
+    adresse = models.ForeignKey(Adresse, on_delete=models.CASCADE,)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE,
+                                help_text="L'evenement doit etre associé à un article existant (sinon créez un article avec une date)")
+
+
+    def __str__(self):
+        if self.titre:
+            return str(self.titre) +  " : "+ str(self.adresse.get_adresse_str())
+        else:
+            return str(self.adresse.get_adresse_str())
+
+
+    @property
+    def get_titre(self):
+        if not self.titre:
+            return "sans titre"
+        return self.titre

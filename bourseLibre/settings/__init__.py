@@ -106,6 +106,8 @@ INSTALLED_APPS = [
     'taggit',
     'hitcount',
     'django_crontab',
+    'crispy_forms',
+
     #'notifications',
     #'webpush',
     #"geoposition",

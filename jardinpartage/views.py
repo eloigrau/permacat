@@ -28,7 +28,7 @@ from hitcount.views import HitCountMixin
 #     return render(request, 'jardinpartage/forum.html', {'derniers_articles': articles })
 
 def is_inscrit(user):
-    return user.is_jardinpartage
+    return user.adherent_jp
 
 @user_passes_test(is_inscrit, login_url='/jardins/accepter_participation')
 def accueil(request):
@@ -296,7 +296,7 @@ def articles_suivis(request, slug):
 @login_required
 def articles_suiveurs(request):
     suivi, created = Suivis.objects.get_or_create(nom_suivi = 'articles_jardin')
-    inscrits = Profil.objects.filter(is_jardinpartage=True).order_by('username')
+    inscrits = Profil.objects.filter(adherent_jp=True).order_by('username')
     suiveurs = followers(suivi)
     return render(request, 'jardinpartage/articles_suivis.html', {'suiveurs': suiveurs, 'inscrits':inscrits})
 
@@ -351,19 +351,19 @@ def ajouterEvenement(request, date=None):
 
 @login_required
 @user_passes_test(is_inscrit, login_url='/jardins/accepter_participation')
-def ajouterEvenementArticle(request, id):
+def ajouterEvenementArticle(request, id_article):
     form = EvenementArticleForm(request.POST or None)
 
     if form.is_valid():
-        form.save(id)
-        return lireArticle_id(request, id)
+        form.save(id_article)
+        return lireArticle_id(request, id_article)
 
     return render(request, 'jardinpartage/ajouterEvenement.html', {'form': form, })
 
 def accepter_participation(request):
     form = accepterParticipationForm(request.POST or None)
     if form.is_valid():
-        request.user.is_jardinpartage = True
+        request.user.adherent_jp = True
         request.user.save()
         suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_jardin')
         actions.follow(request.user, suivi, actor_only=True, send_action=False)

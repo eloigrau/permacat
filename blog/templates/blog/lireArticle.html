@@ -142,6 +142,9 @@
         {% if dates %}
       <a class="nav-item nav-link" href="#dates" data-toggle="tab">Evènements</a>
         {% endif %}
+        {% if lieux %}
+      <a class="nav-item nav-link" href="#lieux" data-toggle="tab">Lieu{{lieux|pluralize:",x"}}</a>
+        {% endif %}
       <a class="nav-item nav-link" href="#historique" data-toggle="tab">Historique</a>
       {% if not article.album or not ateliers or not dates %}<a class="nav-item nav-link" href="#plus" data-toggle="tab">Ajouter...</a>
         {% endif %}
@@ -209,17 +212,29 @@
         <div class="contenu discussion_fiche">
               {%for date in dates %}
              <p>{{date.start_time |date:"l d F Y"}} : {{date.titre}}</p>
-              {%empty%}
-              -
               {%endfor%}
             {%if article.auteur == request.user or article.estModifiable %}
             <hr>
-              <p><a class="btn btn-sm btn-success textleft" href="{% url 'blog:ajouterEvenementArticle' id=article.id %}" ><i class="fa fa-plus"></i> Ajouter un evenement</a></p>
+              <p><a class="btn btn-sm btn-success textleft" href="{% url 'blog:ajouterEvenementArticle' id_article=article.id %}" ><i class="fa fa-plus"></i> Ajouter un evenement</a></p>
             {% endif %}
       </div>
     </div>
 </div>
+<div class="tab-pane fade " id="lieux">
+        <div class="col-sm-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2 textcenter">
+        <div class="contenu discussion_fiche">
+              {%for lieu in lieux %}
+                <p> {{lieu}}</p>
+              {%endfor%}
+             <p><a class="btn btn-sm btn-primary textleft" href="{% url 'blog:voirCarteLieux' id_article=article.id %}" ><i class="fa fa-plus"></i> Voir sur la carte</a></p>
 
+            {%if article.auteur == request.user or article.estModifiable %}
+            <hr>
+              <p><a class="btn btn-sm btn-success textleft" href="{% url 'blog:ajouterAdresseArticle' id_article=article.id %}" ><i class="fa fa-plus"></i> Ajouter un lieu</a></p>
+            {% endif %}
+      </div>
+    </div>
+</div>
 
   <div class="tab-pane " id="historique">
         <div class="col-sm-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2 textcenter">
@@ -237,14 +252,17 @@
         <div class="contenu discussion_fiche">
         {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
         <p>
-          <a class="btn btn-sm btn-success textleft" href="{% url 'blog:ajouterEvenementArticle' id=article.id %}" ><i class="fa fa-plus"></i> Ajouter un evenement</a>
+          <a class="btn btn-sm btn-block btn-success textleft" href="{% url 'blog:ajouterEvenementArticle' id_article=article.id %}" ><i class="fa fa-plus"></i> Ajouter un evenement</a>
         </p>
         <p>
-            <a class="btn btn-sm btn-success textleft" href="{% url 'blog:ajouterAlbumArticle' slug=article.slug %}" ><i class="fa fa-plus"></i> Ajouter un album photo</a>
+          <a class="btn btn-sm btn-block btn-success textleft" href="{% url 'blog:ajouterAdresseArticle' id_article=article.id %}" ><i class="fa fa-plus"></i> Ajouter un lieu</a>
+        </p>
+        <p>
+            <a class="btn btn-sm btn-block btn-success textleft" href="{% url 'blog:ajouterAlbumArticle' slug=article.slug %}" ><i class="fa fa-plus"></i> Ajouter un album photo</a>
         </p>
         {% endif %}
         <p>
-            <a class="btn btn-sm  btn-success textleft" href="{% url 'ateliers:ajouterAtelier_article' article_slug=article.slug %}" ><i class="fa fa-plus"></i>  Ajouter un atelier</a>
+            <a class="btn btn-sm btn-block  btn-success textleft" href="{% url 'ateliers:ajouterAtelier_article' article_slug=article.slug %}" ><i class="fa fa-plus"></i>  Ajouter un atelier</a>
         </p>
 
           </div>

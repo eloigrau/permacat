@@ -1,5 +1,5 @@
 from django import forms
-from .models import Article, Commentaire, Projet, CommentaireProjet, Evenement
+from .models import Article, Commentaire, Projet, CommentaireProjet, Evenement, AdresseArticle
 from django.utils.text import slugify
 import itertools
 from django_summernote.widgets import SummernoteWidget
@@ -250,4 +250,14 @@ class EvenementArticleForm(forms.ModelForm):
         instance.article = article
         if not Evenement.objects.filter(start_time=instance.start_time, article=article):
             instance.save()
-        return instance
+
+class AdresseArticleForm(forms.ModelForm):
+    class Meta:
+        model = AdresseArticle
+        fields = ['titre',]
+
+    def save(self, article, adresse):
+        instance = super(AdresseArticleForm, self).save(commit=False)
+        instance.article = article
+        instance.adresse = adresse
+        instance.save()

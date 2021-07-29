@@ -5,10 +5,34 @@
 <a href="{{ suffrage.get_absolute_url }}" class="btn btn-secondary" >retour au suffrage</a>
 {% endblock %}
 {% block content %}
-<h5 class="textcenter">{{suffrage.question}}</h5>
+<h5 class="textcenter">{{suffrage.titre}}</h5>
 
 <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
-        {% include 'form_template.html' %}
+        <input type="hidden" name="Vote"
+		value="{{ vote }}"> {% include 'form_template2.html' %}
+
+{{ rb_formset.management_form }}
+{{ rm_formset.management_form }}
+
+    <div id="rb_formset">
+    {% for form in rb_formset.forms %}
+        {% include 'form_template2.html' %}
+        {% if form.can_delete %}
+            {{ form.DELETE }}
+        {% endif %}
+    {% endfor %}
+    </div>
+
+    <div id="rm_formset">
+    {% for form in rm_formset.forms %}
+        {% include 'form_template2.html' %}
+        {% if form.can_delete %}{{ form.DELETE }}
+        {% endif %}
+    {% endfor %}
+    </div>
+
+
+  <button type="submit" class="btn btn-primary">Je soumets mon bulletin de vote !</button>
 </form>
 {% endblock %}
 

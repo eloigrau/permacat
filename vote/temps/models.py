@@ -11,12 +11,6 @@ class Choix():
                      ('0', ("Oui")),
                     ('1', ("Non")),
                     ('2', ("Ne se prononce pas")))
-    vote_majoritaire = (('', '-----------'),
-                     ('0', ("pas du tout d'accord")),
-                    ('1', ("Plutot pas d'accord")),
-                    ('2', ("Neutre")),
-                    ('3', ("Plutot d'accord")),
-                    ('4', ("Tout à fait d'accord")))
 
     type_vote = (('', '-----------'),
                      ('0', ("Vote d'un projet")),
@@ -50,10 +44,10 @@ class Choix():
             return Choix.couleurs_annonces["Autre"]
 
 
-class SuffrageBase(models.Model):
+
+class Suffrage(models.Model):
     type_vote = models.CharField(max_length=30,
         choices=(Choix.type_vote), default='', verbose_name="Type de vote")
-    titre = models.CharField(max_length=100, verbose_name="Titre du sondage")
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='auteur_suffrage')
     slug = models.SlugField(max_length=100)
     description = models.TextField(null=True, verbose_name="Description du contexte")
@@ -68,15 +62,11 @@ class SuffrageBase(models.Model):
     asso = models.ForeignKey(Asso, on_delete=models.SET_NULL, null=True)
 
     class Meta:
-        abstract = True
-
-class Suffrage(SuffrageBase):
-    class Meta:
         ordering = ('-date_creation', )
         db_table = 'suffrage'
 
     def __str__(self):
-        return self.titre
+        return self.question
 
     def get_absolute_url(self):
         return reverse('vote:lireSuffrage', kwargs={'slug':self.slug})
@@ -88,7 +78,7 @@ class Suffrage(SuffrageBase):
             self.date_creation = timezone.now()
             suivi, created = Suivis.objects.get_or_create(nom_suivi='suffrages')
             titre = "Nouveau vote"
-            message = userProfile.username + " a lancé un nouveau vote: '<a href='https://www.perma.cat"+ self.get_absolute_url() + "'>"+ self.titre + "</a>'"
+            message = userProfile.username + " a lancé un nouveau vote: '<a href='https://www.perma.cat"+ self.get_absolute_url() + "'>"+ self.question + "</a>'"
             emails = [suiv.email for suiv in followers(suivi) if userProfile != suiv and self.est_autorise(suiv)]
 
         retour = super(Suffrage, self).save(*args, **kwargs)
@@ -151,61 +141,28 @@ class Suffrage(SuffrageBase):
 
         return getattr(user, "adherent_" + self.asso.abreviation)
 
+class Suffrage_ouinon(Suffrage):
+    question = models.CharField(max_length=100, verbose_name="Question soumise au vote ?")
 
-    def get_questions(self):
-        questions_b = Question_binaire.objects.filter(suffrage=self)
-        questions_m = Question_majoritaire.objects.filter(suffrage=self)
-        return questions_b, questions_m
-
-class Question_base(models.Model):
-    suffrage = models.ForeignKey(Suffrage, on_delete=models.CASCADE)
-
-    class Meta:
-        abstract = True
-
-    def get_absolute_url(self):
-        return reverse('vote:lireSuffrage', kwargs={'slug':self.suffrage.slug})
-
-class Question_binaire(Question_base):
-    question = models.CharField(max_length=100, verbose_name="Question (oui/non) soumise au vote ?")
-
-    def __str__(self):
-        return self.question
-
-
-class Question_majoritaire(Question_base):
-    question = models.CharField(max_length=100, verbose_name="Question (jugement majoritaire) soumise au vote ?")
-
-    def __str__(self):
-        return self.question
 
 class Vote(models.Model):
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='auteur_vote', null=True)
-    suffrage = models.ForeignKey(Suffrage, on_delete=models.CASCADE, related_name='suffrage')
     date_creation = models.DateTimeField(verbose_name="Date de parution", auto_now_add=True)
     date_modification = models.DateTimeField(verbose_name="Date de modification", auto_now=True)
     commentaire = models.TextField(verbose_name="Commentaire", null=True, blank=True)
+
+
+class Vote_ouinon(Vote):
+    choix = models.CharField(max_length=30,
+        choices=(Choix.vote_ouinon),
+        default='', verbose_name="Choix du vote :")
+    suffrage = models.ForeignKey(Suffrage_ouinon, on_delete=models.CASCADE, related_name='suffrage')
 
     def __str__(self):
         return str(self.suffrage) + " " + dict(Choix.vote_ouinon)[self.choix]
 
     def getVoteStr(self):
         return dict(Choix.vote_ouinon)[self.choix]
-
-class ReponseQuestion_b(models.Model):
-    vote = models.ForeignKey(Vote, on_delete=models.CASCADE, related_name='rep_question_b')
-    question_b = models.ForeignKey(Question_binaire, on_delete=models.DO_NOTHING,)
-    choix = models.CharField(max_length=30,
-        choices=(Choix.vote_ouinon),
-        default='', verbose_name="Choix du vote :")
-
-class ReponseQuestion_m(models.Model):
-    vote = models.ForeignKey(Vote, on_delete=models.CASCADE, related_name='rep_question_m')
-    question_b = models.ForeignKey(Question_majoritaire, on_delete=models.DO_NOTHING,)
-    choix = models.CharField(max_length=30,
-        choices=(Choix.vote_majoritaire),
-        default='', verbose_name="Choix du vote :")
-
 
 class Commentaire(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='auteur_comm_vote')

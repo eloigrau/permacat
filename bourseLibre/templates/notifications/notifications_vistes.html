@@ -60,11 +60,15 @@
     <div class="col-sm-12 col-md-6 textcenter">
 <li class="list-group-item textcenter"  style="background-color:#ffc34d">Mes visites</li>
 {% for hit in hit_count_perso %}
+        {% if hit.hitcount.content_object %}
+        {% ifchanged hit.hitcount.content_object.get_absolute_url %}
         <li class="list-group-item"  style="background-color:{{color}}">
             <a {%if hit.hitcount.content_object %}href="{{ hit.hitcount.content_object.get_absolute_url }} "{%endif%}>
               ({{hit.created}}) {{hit.hitcount.content_object}}
             </a>
         </li>
+        {% endif %}
+        {% endif %}
 {% endfor %}
 
     </div>

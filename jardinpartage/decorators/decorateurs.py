@@ -3,7 +3,7 @@
 # def accepterParticipation(function):
 #     def wrap(request, *args, **kwargs):
 #
-#         if request.user.is_jardinpartage:
+#         if request.user.adherent_jp:
 #             return function(request, *args, **kwargs)
 #         else:
 #             raise accepter_participation(request, *args, **kwargs )

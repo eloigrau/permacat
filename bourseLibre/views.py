@@ -122,7 +122,7 @@ def getEvenementsSemaine(request):
 
         evenements.append(ev_2)
         ev_3= []
-        if request.user.is_jardinpartage:
+        if request.user.adherent_jp:
             ev_3 = Article_jardin.objects.filter(Q(start_time__week=current_week) & Q(start_time__year=current_year)).order_by('start_time')
             evenements.append(ev_3)
 

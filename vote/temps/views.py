@@ -2,10 +2,10 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect, reverse
 from django.urls import reverse_lazy
 from django.utils.html import strip_tags
-from .models import Suffrage, Commentaire, Choix, Vote, Question_binaire, Question_majoritaire
+from .models import Suffrage, Commentaire, Choix, Vote
 from bourseLibre.constantes import Choix as Choix_global
-from .forms import SuffrageForm, CommentaireSuffrageForm, CommentaireSuffrageChangeForm, SuffrageChangeForm, \
-    VoteForm, VoteChangeForm, Question_binaire_formset, Question_majoritaire_formset, Reponse_binaire_Form, Reponse_majoritaire_Form
+from .forms import SuffrageFormset, CommentaireSuffrageForm, CommentaireSuffrageChangeForm, Suffrage_ouinon_ChangeForm, \
+    Vote_ouinon_form, Vote_ouinon_ChangeForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.utils.timezone import now
@@ -15,8 +15,6 @@ from actstream.models import followers, following, action_object_stream
 from bourseLibre.models import Suivis, Profil, Asso
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseNotAllowed
-from django.forms import formset_factory
-import itertools
 
 def accueil(request):
     return render(request, 'vote/accueil.html')
@@ -24,24 +22,37 @@ def accueil(request):
 
 @login_required
 def ajouterSuffrage(request):
-    form = SuffrageForm(request.POST or None)
-    qb_formset = Question_binaire_formset(request.POST or None, prefix="qb")
-    qm_formset = Question_majoritaire_formset(request.POST or None, prefix="qm")
-    if form.is_valid() and qb_formset.is_valid() and qm_formset.is_valid() :
-        suffrage = form.save(request.user)
-        for form in itertools.chain(qb_formset, qm_formset): # meme question
-            # extract name from each form and save
-            form.save(suffrage=suffrage)
+    if request.method == 'GET':
+        formset = SuffrageFormset(request.GET or None)
+    elif request.method == 'POST':
+        formset = SuffrageFormset(request.POST)
+        if formset.is_valid():
+            suffrage = None
+            for form in formset:
+                # extract name from each form and save
+                question = form.cleaned_data.get('question')
+                if question:
+                    suffrage = form.save(request.user)
+                    # suffrage = Suffrage(type_vote=form.cleaned_data.get('type_vote'),
+                    #          question=question,
+                    #          auteur=request.user,
+                    #          slug=form.cleaned_data.get('slug'),
+                    #          contenu=form.cleaned_data.get('contenu'),
+                    #          slug=form.cleaned_data.get('slug'),
+                    #          estPublic=form.cleaned_data.get('estPublic'),
+                    #          asso=form.cleaned_data.get('asso'),
+                    #          estAnonyme=form.cleaned_data.get('estAnonyme'),).save()
 
-        if suffrage:
-            url = suffrage.get_absolute_url()
-            suffix = "_" + suffrage.asso.abreviation
-            action.send(request.user, verb='suffrage_ajout'+suffix, action_object=suffrage, url=url,
-                        description="a ajouté un suffrage : '%s'" % suffrage.titre)
+            if suffrage:
+                url = suffrage.get_absolute_url()
+                suffix = "_" + suffrage.asso.abreviation
+                action.send(request.user, verb='suffrage_ajout'+suffix, action_object=suffrage, url=url,
+                            description="a ajouté un suffrage : '%s'" % suffrage.question)
 
-            return redirect(suffrage.get_absolute_url())
+                return redirect(suffrage.get_absolute_url())
 
-    return render(request, 'vote/ajouterSuffrage.html', { "form": form, "qb_formset":qb_formset, "qm_formset":qm_formset })
+    return render(request, 'vote/ajouterSuffrage.html', { "formset": formset, })
+
 
 class ModifierSuffrage(UpdateView):
     model = Suffrage
@@ -100,15 +111,12 @@ class SupprimerSuffrage(DeleteView):
 @login_required
 def lireSuffrage(request, slug):
     suffrage = get_object_or_404(Suffrage, slug=slug)
-    if not suffrage.est_autorise(request.user):
-        return render(request, 'notMembre.html',)
-
     try:
         voteCourant = Vote.objects.get(auteur=request.user, suffrage=suffrage)
     except:
         voteCourant = None
-
-    questions_b, questions_m = suffrage.get_questions()
+    if not suffrage.est_autorise(request.user):
+        return render(request, 'notMembre.html',)
 
     commentaires = Commentaire.objects.filter(suffrage=suffrage).order_by("date_creation")
 
@@ -131,7 +139,7 @@ def lireSuffrage(request, slug):
 
         return redirect(request.path)
 
-    return render(request, 'vote/lireSuffrage.html', {'suffrage': suffrage, 'form': form, 'commentaires':commentaires, 'actions':actions, 'questions_b':questions_b, 'questions_m':questions_m, 'vote':voteCourant},)
+    return render(request, 'vote/lireSuffrage.html', {'suffrage': suffrage, 'form': form, 'commentaires':commentaires, 'actions':actions, 'vote':voteCourant},)
 
 @login_required
 def resultatsSuffrage(request, slug):
@@ -185,26 +193,13 @@ def voter(request, slug):
     if vote:
         return render(request, 'vote/dejaVote.html',)
 
-    questions_b, questions_m = suffrage.get_questions()
-
     form = VoteForm(request.POST or None)
 
-#    reponses_b_form = [Reponse_binaire_Form(request.POST or None) for ]
-    Reponse_binaire_formset = formset_factory(Reponse_binaire_Form, )
-    Reponse_majoritaire_formset = formset_factory(Reponse_majoritaire_Form, )
-
-    rb_formset = Reponse_binaire_formset(request.POST or None, prefix="rb", queryset=questions_b)
-    rm_formset = Reponse_majoritaire_formset(request.POST or None, prefix="rm", queryset=questions_m)
-
-    if form.is_valid() and rb_formset.is_valid() and rm_formset.is_valid() :
-        vote = form.save(request.user)
-        for form in itertools.chain(rb_formset, rm_formset): # meme question
-            # extract name from each form and save
-            form.save(vote=vote)
-
+    if form.is_valid():
+        form.save(suffrage, request.user)
         return redirect(suffrage.get_absolute_url())
 
-    return render(request, 'vote/voter.html', {'suffrage': suffrage, 'form': form, 'rb_formset':rb_formset, 'rm_formset':rm_formset},)
+    return render(request, 'vote/voter.html', {'suffrage': suffrage, 'form': form},)
 
 
 

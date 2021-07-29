@@ -60,9 +60,22 @@ class Adresse(models.Model):
 
     def __str__(self):
         if self.commune:
-            return "("+str(self.id)+") "+self.commune 
+            return "("+str(self.id)+") " + self.commune
         else:
             return "("+str(self.id)+") "+self.code_postal
+
+    def get_adresse_str(self):
+        if self.commune:
+            adress = ''
+            if self.rue:
+                adress += self.rue
+            if self.code_postal:
+                adress += ", " + self.code_postal
+            if self.commune:
+                adress += ", " + self.commune
+            if self.telephone:
+                adress += " (" + self.telephone +")"
+            return adress
 
     def __unicode__(self):
         return self.__str__()
@@ -70,21 +83,30 @@ class Adresse(models.Model):
     def set_latlon_from_adresse(self):
         address = ''
         if self.rue:
-            address += self.rue + ", "
-        address += self.code_postal
+            address += self.rue + "+"
+        address += str(self.code_postal)
         if self.commune:
-            address += " " + self.commune
-        address += ", " + self.pays
+            address += "+" + self.commune
+        address += "+" + self.pays
         try:
-            api_key = os.environ["GAPI_KEY"]
-            api_response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(address, api_key))
-            api_response_dict = api_response.json()
-
-            if api_response_dict['status'] == 'OK':
-                self.latitude = api_response_dict['results'][0]['geometry']['location']['lat']
-                self.longitude = api_response_dict['results'][0]['geometry']['location']['lng']
+            import simplejson
+            url = "http://nominatim.openstreetmap.org/search?q=" + address + "&format=json"
+            reponse = requests.get(url)
+            data = simplejson.loads(reponse.text)
+            self.latitude = float(data[0]["lat"])
+            self.longitude = float(data[0]["lon"])
         except:
-            pass
+            try:
+                api_key = os.environ["GAPI_KEY"]
+                api_response = requests.get(
+                    'https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(address, api_key))
+                api_response_dict = api_response.json()
+
+                if api_response_dict['status'] == 'OK':
+                    self.latitude = float(api_response_dict['results'][0]['geometry']['location']['lat'])
+                    self.longitude = float(api_response_dict['results'][0]['geometry']['location']['lng'])
+            except:
+                pass
 
     def get_latitude(self):
         if not self.latitude:
@@ -155,7 +177,7 @@ class Profil(AbstractUser):
     adherent_gt = models.BooleanField(verbose_name="Je suis adhérent de Gardiens de la Terre", default=False)
     accepter_conditions = models.BooleanField(verbose_name="J'ai lu et j'accepte les conditions d'utilisation du site", default=False, null=False)
     accepter_annuaire = models.BooleanField(verbose_name="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous", default=True)
-    is_jardinpartage = models.BooleanField(verbose_name="Je suis intéressé.e par les jardins partagés", default=False)
+    adherent_jp = models.BooleanField(verbose_name="Je suis intéressé.e par les jardins partagés", default=False)
 
     date_notifications = models.DateTimeField(verbose_name="Date de validation des notifications",default=now)
 
