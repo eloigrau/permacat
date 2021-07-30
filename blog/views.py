@@ -776,6 +776,17 @@ def ajouterEvenementArticle(request, id_article):
     return render(request, 'blog/ajouterEvenement.html', {'form': form, })
 
 
+class SupprimerEvenementArticle(DeleteView):
+    model = AdresseArticle
+    success_url = reverse_lazy('blog:index')
+    template_name_suffix = '_supprimer'
+
+    def get_object(self):
+        return AdresseArticle.objects.get(id=self.kwargs['id_evenementArticle'])
+
+    def get_success_url(self):
+        return Article.objects.get(slug=self.kwargs['slug_article']).get_absolute_url()
+
 @login_required
 def ajouterAdresseArticle(request, id_article):
     article = Article.objects.get(id=id_article)
@@ -789,12 +800,34 @@ def ajouterAdresseArticle(request, id_article):
 
     return render(request, 'blog/ajouterAdresse.html', {'article':article, 'form': form, 'form_adresse':form_adresse })
 
+
+class SupprimerAdresseArticle(DeleteView):
+    model = AdresseArticle
+    success_url = reverse_lazy('blog:index')
+    template_name_suffix = '_supprimer'
+
+    def get_object(self):
+        return AdresseArticle.objects.get(id=self.kwargs['id_adresse'])
+
+    def get_success_url(self):
+        return Article.objects.get(slug=self.kwargs['slug_article']).get_absolute_url()
+
 @login_required
 def voirCarteLieux(request, id_article):
     article = Article.objects.get(id=id_article)
     lieux = article.getLieux()
     titre = "Lieux associés à l'article '" + str(article.titre) +"'"
     return render(request, 'blog/carte_lieux.html', {'titre':titre, "lieux":lieux})
+
+
+
+@login_required
+def supprimerAtelierArticle(request, article_slug, atelier_slug):
+    atelier = Atelier.objects.get(slug=atelier_slug)
+    atelier.article = None
+    atelier.save()
+
+    return lireArticle(request, article_slug)
 
 # methode pour migrer les donnees
 def changerArticles_jardin(request):

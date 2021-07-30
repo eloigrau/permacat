@@ -1,10 +1,10 @@
-
-{% extends 'base_altermarche.html' %}
-{% block content %}
-
+{% extends 'base.html' %}
+{% block title %} - Supprimer l'evenement{% endblock %}
+{% block subtitle %}
 <form action="" method="post">{% csrf_token %}
-    <p>Etes vous sûr.e de vouloir supprimer l'offre de "{{ produit }}"?</p>
+    <p>Etes vous sûr.e de vouloir supprimer l'evenement  "{{ avenementarticle }}"?</p>
     <input type="button"  onclick="window.history.back();"  value="Annuler" />
     <input type="submit" value="Confirmer" />
 </form>
+
 {% endblock %}
