@@ -133,6 +133,7 @@ class Reponse_majoritaire_Form(forms.ModelForm):
     def __init__(self, question, *args, **kwargs):
         super(Reponse_majoritaire_Form, self).__init__(*args, **kwargs)
         self.question = question
+        self.fields['choix'].label = question.question
 
     def save(self, vote):
         instance = super(Reponse_majoritaire_Form, self).save(commit=False)
@@ -149,6 +150,7 @@ class Reponse_binaire_Form(forms.ModelForm):
     def __init__(self, question, *args, **kwargs):
         super(Reponse_binaire_Form, self).__init__(*args, **kwargs)
         self.question = question
+        self.fields['choix'].label = question.question
 
 
     def save(self, vote):
