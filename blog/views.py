@@ -240,9 +240,9 @@ class ListeArticles(ListView):
             qs = qs.filter(auteur__username=params['auteur'])
         if "categorie" in params:
             qs = qs.filter(categorie=params['categorie'])
-        if "permacat" in params  and self.request.user.adherent_pc:
+        if "permacat" in params and self.request.user.adherent_pc:
             if params['permacat'] == "True":
-                qs = qs.filter(estPublic=False)
+                qs = qs.filter(asso_abreviation="pc")
             else:
                 qs = qs.filter(estPublic=True)
 

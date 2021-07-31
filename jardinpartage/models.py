@@ -146,6 +146,9 @@ class Evenement(models.Model):
     def estPublic(self):
         return True
 
+    def est_autorise(self, user):
+        return self.article.est_autorise(user)
+
 class Commentaire(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='auteur_comm_jardin')
     commentaire = models.TextField()
