@@ -173,6 +173,7 @@ class Evenement(models.Model):
     def est_autorise(self, user):
         return self.article.est_autorise(user)
 
+
 class Commentaire(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE)
     commentaire = models.TextField()
