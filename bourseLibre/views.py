@@ -357,7 +357,7 @@ def annuaire(request, asso):
         raise PermissionDenied
     prof = asso.getProfilsAnnuaire()
     nb_profils = len(prof)
-    return render(request, 'annuaire.html', {'profils':profils, "nb_profils":nb_profils, "asso":asso} )
+    return render(request, 'annuaire.html', {'profils':prof, "nb_profils":nb_profils, "asso":asso} )
 
 @login_required
 def listeContacts(request, asso):
