@@ -16,6 +16,7 @@ django-debug-toolbar==1.11.1
 django-djconfig==0.8.0
 django-extensions==2.1.4
 django-filter==2.0.0
+django-formtools==2.3
 django-fontawesome==1.0
 django-fontawesome-5==1.0.16
 django-haystack==2.8.1
