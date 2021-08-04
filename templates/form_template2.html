@@ -1,10 +1,11 @@
 {% load widget_tweaks %}
 {% load app_filters %}
+{% load static %}
 {% block header %}
 {{ form.media }}
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.0/moment.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+<script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/tempusdominus-bootstrap-4.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/tempusdominus-bootstrap-4.min.css' %}" />
 {% endblock %}
 
   {% for hidden_field in form.hidden_fields %}
@@ -57,7 +58,7 @@
     {% else %}
         {% if tyype != 'SummernoteWidget' %}
             {% if tyype == 'CheckboxInput' %}
-              {{field}}{{field.label}}
+              {{field}} {{field.label}}
             {% else %}
                 {% render_field field class="form-control" placeholder=field.label %}
             {% endif %}

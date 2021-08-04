@@ -107,7 +107,7 @@ INSTALLED_APPS = [
     'hitcount',
     'django_crontab',
     'crispy_forms',
-
+    'formtools',
     #'notifications',
     #'webpush',
     #"geoposition",

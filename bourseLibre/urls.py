@@ -28,6 +28,7 @@ from django.urls import reverse_lazy
 # admin.autodiscover()
 from django.contrib import admin
 from .settings import MEDIA_ROOT
+#from jugemaj import models
 
 #from wiki import urls
 
@@ -38,6 +39,7 @@ urlpatterns = [
    #url(r'^site_media/(?P<path>.*)$', include('django.views.static.serve'),
    #    {'document_root': MEDIA_ROOT, 'show_indexes': True}),
     url(r'^tinymce/', include('tinymce.urls')),
+    #url(r'^jugemaj/', include('jugemaj.urls')),
     url(r'^summernote/', include('django_summernote.urls')),
     url(r'^captcha/', include('bourseLibre.captcha_local.urls')),
     url(r'^photolog/', include('photologue.urls', namespace='photologue')),

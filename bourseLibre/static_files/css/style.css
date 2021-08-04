@@ -18,10 +18,11 @@ body {
 }
 
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
     }
 .titreArticle:{
-/*color:black;*/
+    margin-bottom: 0.5rem;
 }
 .textaide{
  font-family: 'Chivo', sans-serif;
@@ -474,7 +475,7 @@ border: 1px inset rgba(28,110,164,0.65);
     min-width:200px;
     margin-top:20px;
     margin-bottom:20px;
-    background-color: rgba(255, 255, 255, .6);
+    background-color: rgba(255, 255, 255, .8);
     /*border: 0.5px solid #053200;*/
     }
 }
@@ -795,12 +796,17 @@ a article_carte:active {
         grid-template-columns: 50% 50%;
     }
 }
-@media (min-width: 1200px) {
+@media (min-width: 1300px) {
     .grid-container {
         grid-template-columns: 32% 32% 32%;
     }
     .grid-container2 {
         grid-template-columns: 50% 50% ;
+    }
+
+    .card-big-shadow {
+        max-width: 550px;
+        position: relative;
     }
 }
 
@@ -950,6 +956,10 @@ ul.errorlist{
 }
 /* Responsive navigation menu (for mobile devices) */
 
+  table2{
+    display: inline;
+    width: 50%;
+  }
 @media screen and (max-width: 800px) {
   table,
   tbody,
@@ -957,6 +967,10 @@ ul.errorlist{
   td {
     display: block;
     width: auto!important;
+  }
+  table2{
+    display: inline;
+    width: 100%;
   }
 .foo {
       visibility:collapse;
@@ -1187,30 +1201,30 @@ table.greenTable tfoot .links a{
 }
 
 .atelier {
-    border: 9px inset rgba(28,110,164,0.65);
-    border-radius: 0px 25px 25px 25px;
+    border: 7px inset rgba(28,110,164,0.65);
+    border-radius: 0px 25px 25px 25px;/*
     -webkit-box-shadow: 5px 5px 20px 0px #0D4003;
-    box-shadow: 5px 5px 20px 0px #0D4003;
+    box-shadow: 5px 5px 20px 0px #0D4003;*/
     padding: 10px;
     margin: 12px;
     min-height: 350px;
 }
 
 .ensavoirplus {
-    border: 9px inset #B37D00;
-    border-radius: 0px 25px 25px 25px;
+    border: 7px inset #B37D00;
+    border-radius: 0px 25px 25px 25px;/*
     -webkit-box-shadow: 5px 5px 20px 0px #0D4003;
-    box-shadow: 5px 5px 20px 0px #0D4003;
+    box-shadow: 5px 5px 20px 0px #0D4003;*/
     padding: 10px;
     margin: 12px;
     min-height: 350px;
 }
 
 .discussion_fiche {
-    border: 9px inset #734705;
-    border-radius: 0px 25px 25px 25px;
+    border: 7px inset #734705;
+    border-radius: 0px 25px 25px 25px;/*
     -webkit-box-shadow: 5px 5px 20px 0px #0D4003;
-    box-shadow: 5px 5px 20px 0px #0D4003;
+    box-shadow: 5px 5px 20px 0px #0D4003;*/
     padding: 10px;
     margin: 12px;
     min-height: 350px;
@@ -1218,10 +1232,10 @@ table.greenTable tfoot .links a{
 
 
 .fiche {
-    border: 9px inset rgba(49,184,0,0.65);
+    border: 7px inset rgba(49,184,0,0.65);
     border-radius: 0px 25px 25px 25px;
-    -webkit-box-shadow: 5px 5px 20px 0px #0D4003;
-    box-shadow: 5px 5px 20px 0px #0D4003;
+    /*-webkit-box-shadow: 5px 5px 20px 0px #0D4003;
+    box-shadow: 5px 5px 20px 0px #0D4003;*/
     padding: 10px;
     margin: 12px;
     min-height: 350px;
@@ -1268,13 +1282,15 @@ margin-bottom:10px;
 
 
 .nomProprieteAtelier{
+    background-color:Gray;
 }
-.nomProprieteAtelier{
+.proprieteAtelier{
+    background-color:LightGray;
 }
 
 .boutonAtelier{
-background:    #fff2cc;
-background:    linear-gradient(#fff2cc, #ffd966);
+background:    rgba(255, 255, 255, 0.6);
+/*background:    linear-gradient(#fff2cc, #ffd966);*/
 border:        2px solid #b6d7a8;
 border-radius: 6px;
 	width: 100%;
@@ -1591,11 +1607,8 @@ caption {
     margin-bottom: 20px;
   position: absolute;
 }
-.dropdown-menu-forum.open:hover{
-position: absolute;
-}
 .btn-menu-forum{
-    min-width: 300px;
+    min-width: 100px;
 }
 
 .panel-forum{
@@ -1605,4 +1618,167 @@ position: absolute;
 .btn-menu-forum{
     min-width: 10px;
 }
+}
+
+
+
+
+
+
+
+.card-big-shadow {
+    max-width: 350px;
+    position: relative;
+}
+
+.coloured-cards .card {
+    margin-top: 30px;
+}
+
+.card[data-radius="none"] {
+    border-radius: 0px;
+}
+.card {
+    border-radius: 8px;
+    box-shadow: 0 2px 2px rgba(204, 197, 185, 0.5);
+    background-color: #FFFFFF;
+    color: #252422;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.card.card-just-text .content {
+    padding: 50px 10px;
+    text-align: center;
+}
+.card .content {
+    padding: 18px 18px 10px 18px;
+}
+.card[data-color="blue"] .category {
+    color: #7a9e9f;
+}
+.category{
+    margin-bottom: 1em;
+}
+.card .label {
+    font-size: 14px;
+    margin-bottom: 0px;
+}
+.card-big-shadow:before {
+    background-image: url("http://static.tumblr.com/i21wc39/coTmrkw40/shadow.png");
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    bottom: -12%;
+    content: "";
+    display: block;
+    left: -12%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 0;
+}
+h4, .h4 {
+    font-size: 1.5em;
+    font-weight: 600;
+    line-height: 1.2em;
+}
+h6, .h6 {
+    font-size: 0.9em;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.card .description {
+    font-size: 16px;
+}
+.content-card{
+    margin-top:30px;
+}
+a:hover, a:focus {
+    text-decoration: none;
+}
+
+/*======== COLORS ===========*/
+.card[data-color="blue"] {
+    background: #b8d8d8;
+}
+.card[data-color="blue"] .description {
+    color: #506568;
+}
+
+.card[data-color="green"] {
+    background: #d5e5a3;
+}
+.card[data-color="green"] .description {
+    color: #60773d;
+}
+.card[data-color="green"] .category {
+    color: #92ac56;
+}
+
+.card[data-color="yellow"] {
+    background: #ffe28c;
+}
+.card[data-color="yellow"] .description {
+    color: #b25825;
+}
+.card[data-color="yellow"] .category {
+    color: #d88715;
+}
+
+.card[data-color="brown"] {
+    background: #d6c1ab;
+}
+.card[data-color="brown"] .description {
+    color: #75442e;
+}
+.card[data-color="brown"] .category {
+    color: #a47e65;
+}
+
+.card[data-color="purple"] {
+    background: #baa9ba;
+}
+.card[data-color="purple"] .description {
+    color: #3a283d;
+}
+.card[data-color="purple"] .category {
+    color: #5a283d;
+}
+
+.card[data-color="orange"] {
+    background: #ff8f5e;
+}
+.card[data-color="orange"] .description {
+    color: #772510;
+}
+.card[data-color="orange"] .category {
+    color: #e95e37;
+}
+
+.nav-tabs > li {
+    float:none;
+    display:inline-block;
+    zoom:1;
+}
+.nav-tabs {
+    text-align:center;
+}
+.nav-tabs .nav-link {
+    color: gray;
+    border: 0;
+    border-bottom: 0px solid grey;
+}
+
+.nav-tabs .nav-link:hover {
+    border: 0;
+    border-bottom: 1px solid grey;
+}
+
+.nav-tabs .nav-link.active {
+    color: #000000;
+    border: 0;
+    border-radius: 0;
+    border-bottom: 2px solid blue;
 }

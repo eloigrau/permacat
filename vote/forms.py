@@ -1,13 +1,13 @@
 from django import forms
-from .models import Suffrage, Vote, Commentaire, Question_majoritaire, Question_binaire, ReponseQuestion_b, ReponseQuestion_m
+from .models import Suffrage, Vote, Commentaire, Question_majoritaire, Question_binaire, ReponseQuestion_b, ReponseQuestion_m, \
+    Proposition_m
 from django.utils.text import slugify
 import itertools
 from django_summernote.widgets import SummernoteWidget
 from blog.forms import SummernoteWidgetWithCustomToolbar
-from django.utils.timezone import now
 from bourseLibre.settings import LOCALL
 from bourseLibre.models import Asso
-from django.forms import formset_factory
+from django.forms import formset_factory, BaseFormSet
 
 class SuffrageForm(forms.ModelForm):
     asso = forms.ModelChoiceField(queryset=Asso.objects.all(), required=True, label="Suffrage public ou réservé aux adhérents de l'asso :",)
@@ -52,7 +52,6 @@ class SuffrageForm(forms.ModelForm):
 
         return instance
 
-SuffrageFormset = formset_factory(SuffrageForm, extra=1)
 
 class SuffrageChangeForm(forms.ModelForm):
 
@@ -99,6 +98,7 @@ class CommentaireSuffrageForm(forms.ModelForm):
 
 
 class Question_binaire_Form(forms.ModelForm):
+    question = forms.CharField(required=True, help_text='Question qui sera soumise au vote, et dont la réponse pourra etre oui/non/ne se prononce pas', label='Question')
 
     class Meta:
         model = Question_binaire
@@ -110,7 +110,13 @@ class Question_binaire_Form(forms.ModelForm):
         instance.save()
         return instance
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['question'].required = True
+
+
 class Question_majoritaire_Form(forms.ModelForm):
+
     class Meta:
         model = Question_majoritaire
         fields = ['question']
@@ -121,8 +127,27 @@ class Question_majoritaire_Form(forms.ModelForm):
         instance.save()
         return instance
 
-Question_binaire_formset = formset_factory(Question_binaire_Form, extra=0, can_delete=True)
-Question_majoritaire_formset = formset_factory(Question_majoritaire_Form, extra=0, can_delete=True)
+class Proposition_m_Form(forms.ModelForm):
+    class Meta:
+        model = Proposition_m
+        fields = ['proposition']
+
+    def save(self, question):
+        instance = super(Proposition_m_Form, self).save(commit=False)
+        instance.question = question
+        instance.save()
+        return instance
+
+class RequiredFormSet(BaseFormSet):
+    def __init__(self, *args, **kwargs):
+        super(RequiredFormSet, self).__init__(*args, **kwargs)
+        for form in self.forms:
+            form.empty_permitted = False
+
+
+Question_binaire_formset = formset_factory(Question_binaire_Form, formset=RequiredFormSet, extra=1, can_delete=False)
+Proposition_m_formset = formset_factory(Proposition_m_Form, formset=RequiredFormSet, extra=1, can_delete=False)
+Question_majoritaire_formset = formset_factory(Question_majoritaire_Form, extra=0, can_delete=False)
 
 
 class Reponse_majoritaire_Form(forms.ModelForm):
@@ -130,15 +155,16 @@ class Reponse_majoritaire_Form(forms.ModelForm):
         model = ReponseQuestion_m
         fields = ['choix']
 
-    def __init__(self, question, *args, **kwargs):
+    def __init__(self, proposition, *args, **kwargs):
         super(Reponse_majoritaire_Form, self).__init__(*args, **kwargs)
-        self.question = question
-        self.fields['choix'].label = question.question
+        self.proposition = proposition
+        self.question = proposition.question.question
+        self.fields['choix'].label = "Proposition : " + proposition.proposition
 
     def save(self, vote):
         instance = super(Reponse_majoritaire_Form, self).save(commit=False)
         instance.vote = vote
-        instance.question = self.question
+        instance.proposition = self.proposition
         instance.save()
         return instance
 

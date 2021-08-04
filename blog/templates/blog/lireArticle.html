@@ -218,7 +218,7 @@
              <p>{{date.start_time |date:"l d F Y"}} : {{date.titre}}
 
             {%if article.auteur == request.user or article.estModifiable %}
-                    <a class="btn btn-sm btn-danger textleft" href="{% url 'blog:supprimerEvenementArticle' slug_article=article.slug  id_evenementArticle=date.id %}" ><i class="fa fa-times"></i> X </a></p>
+                    <a class="btn btn-sm btn-danger textleft" href="{% url 'blog:supprimerEvenementArticle' slug_article=article.slug  id_evenementArticle=date.id %}" ><i class="fa fa-times"></i> </a></p>
             {% endif %}
             </p>
               {%endfor%}

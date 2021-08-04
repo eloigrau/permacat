@@ -7,6 +7,8 @@ from django.utils import timezone
 from actstream.models import followers
 from bourseLibre.models import Suivis
 from actstream import action
+from functools import cmp_to_key
+from django.core.validators import MinLengthValidator
 
 class Choix():
     vote_ouinon = (('', '-----------'),
@@ -52,6 +54,35 @@ class Choix():
             return Choix.couleurs_annonces["Autre"]
 
 
+def sort_candidats(a, b):
+    """
+    Sort candidates by their majority gauge.
+
+    a & b are the majority gauges of the candidates A & B
+    (p_A, α_A, q_A) & (p_B, α_B, q_B)
+    where
+    - α is the majority grade;
+    - p the percentage of votes strictly above α;
+    - q the percentage of votes strictly below α.
+    thus, A > B ⇔ α_A > α_B || (α_A == α_B && (p_A > max(q_A, p_B, q_B) || q_B > max(p_A, q_A, p_B)))
+    (eq. 2, p.11 of the second article in README.md)
+    """
+    a, b = a.majority_gauge(), b.majority_gauge()
+    if a[1] > b[1]:
+        return 1
+    if b[1] > a[1]:
+        return -1
+    if a[0] > max(a[2], b[0], b[2]):
+        return 1
+    if b[0] > max(b[2], a[0], a[2]):
+        return -1
+    if b[2] > max(a[0], a[2], b[0]):
+        return 1
+    if a[2] > max(b[0], b[2], a[0]):
+        return -1
+    return 0
+
+
 class SuffrageBase(models.Model):
     type_vote = models.CharField(max_length=30,
         choices=(Choix.type_vote), default='', verbose_name="Type de vote")
@@ -71,6 +102,8 @@ class SuffrageBase(models.Model):
 
     class Meta:
         abstract = True
+
+
 
 class Suffrage(SuffrageBase):
     class Meta:
@@ -128,7 +161,7 @@ class Suffrage(SuffrageBase):
     @property
     def getResultat(self):
         statut = self.get_statut
-        if  statut[0] != 1:
+        if statut[0] != 1:
             return statut[1]
         return self.getResultats()['resultat']
 
@@ -159,6 +192,10 @@ class Suffrage(SuffrageBase):
         questions_m = Question_majoritaire.objects.filter(suffrage=self)
         return questions_b, questions_m
 
+    def get_propositions(self):
+        return Proposition_m.objects.filter(question__suffrage=self)
+
+
 class Question_base(models.Model):
     suffrage = models.ForeignKey(Suffrage, on_delete=models.CASCADE)
 
@@ -169,25 +206,101 @@ class Question_base(models.Model):
         return reverse('vote:lireSuffrage', kwargs={'slug':self.suffrage.slug})
 
     def __str__(self):
-        question = self.question
-        if self.question[-1] != "?":
-            question += "?"
+        if getattr(self, "question"):
+            question = self.question
 
-        return question
+            if self.question and self.question[-1] != "?":
+                question += "?"
+
+            return question
+        return ""
+
+    def clean(self):
+        from django.core.exceptions import ValidationError
+        if getattr(self, "question") and self.question == '':
+            raise ValidationError('Empty error message')
 
 class Question_binaire(Question_base):
-    question = models.CharField(max_length=100, verbose_name="Question (oui/non) soumise au vote ?")
+    question = models.CharField(max_length=100, verbose_name="Question (oui/non) soumise au vote ?", validators=[MinLengthValidator(1)])
+
+    def getResultats(self):
+        votes = Vote.objects.filter(suffrage=self)
+        votesOui = votes.filter(choix='0')
+        votesNon = votes.filter(choix='1')
+        votesNSPP = votes.filter(choix='2')
+        nbOui = len(votesOui)
+        nbNon = len(votesNon)
+        nbNSPP = len(votesNSPP)
+        nbTotal = nbOui + nbNon + nbNSPP
+        if nbTotal > 0:
+            nbOui = (len(votesOui), str(round(len(votesOui) * 100 / nbTotal, 1)) + '%')
+            nbNon = (len(votesNon), str(round(len(votesNon) * 100 / nbTotal, 1)) + '%')
+            nbNSPP = (len(votesNSPP), str(round(len(votesNSPP) * 100 / nbTotal, 1)) + '%')
+            if nbOui > nbNon:
+                resultat = 'Oui à ' + str(round(nbOui[0] * 100 / nbTotal, 1)) + ' %'
+            elif nbNon > nbOui:
+                resultat = 'Non à ' + str(round(nbNon[0] * 100 / nbTotal, 1)) + ' %'
+            else:
+                resultat = 'Ex aequo à ' + str(round(nbOui[0] * 100 / nbTotal, 1)) + ' %'
+        else:
+            nbOui = (0, '0%')
+            nbNon = (0, '0%')
+            nbNSPP = (0, '0%')
+            resultat = "pas de votants"
+        return {'nbOui':nbOui, 'nbNon':nbNon, 'nbNSPP':nbNSPP, 'nbTotal':nbTotal, 'resultat':resultat, 'votes':votes}
+
 
 class Question_majoritaire(Question_base):
-    question = models.CharField(max_length=100, verbose_name="Question (jugement majoritaire) soumise au vote ?")
+    question = models.CharField(max_length=100, verbose_name="Question (jugement majoritaire) soumise au vote ?",  validators=[MinLengthValidator(1)])
+
+    def results(self):
+        """Get the sorted list of all Candidates for this Election."""
+        return sorted(self.proposition_m_set.all(), key=cmp_to_key(sort_candidats))
+
+    @property
+    def propositions(self):
+        return self.proposition_m_set.all()
+
+class Proposition_m(models.Model):
+    """An Election as Proposition_m as choices."""
+    question = models.ForeignKey(Question_majoritaire, on_delete=models.CASCADE)
+    proposition = models.CharField(max_length=500, verbose_name="Proposition", null=False, blank=False, )
+
+    def __str__(self):
+        """Print the candidate."""
+        return str(self.proposition)
+
+    def get_absolute_url(self):
+        """Get the candidate's Election URL."""
+        return self.question.get_absolute_url()
+
+    def majority_gauge(self):
+        """Compute the majority gauge of this Candidate."""
+        count = self.vote_set.count()
+        if not count:
+            return (0, 10, 0)
+        mention = self.vote_set.order_by('choice')[count // 2].choice
+        if mention is None:
+            print(self.vote_set.order_by('choice'))
+            mention = 6
+        return (self.vote_set.filter(choice__gt=mention).count() / count, mention,
+                self.vote_set.filter(choice__lt=mention).count() / count)
+
+    def votes(self):
+        """Get the list of the votes for this Candidate."""
+        count = self.vote_set.count()
+        if count:
+            return [self.vote_set.filter(choice=i).count() * 100 / count for i in [x[0] for x in Choix.vote_majoritaire]]
+        return [0] * len(Choix.vote_majoritaire)
+
 
 
 class Vote(models.Model):
-    auteur = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='auteur_vote', null=True)
+    auteur = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='auteur_vote')
     suffrage = models.ForeignKey(Suffrage, on_delete=models.CASCADE, related_name='suffrage')
     date_creation = models.DateTimeField(verbose_name="Date de parution", auto_now_add=True)
     date_modification = models.DateTimeField(verbose_name="Date de modification", auto_now=True)
-    commentaire = models.TextField(verbose_name="Commentaire", null=True, blank=True)
+    commentaire = models.TextField(verbose_name="Commentaire", null=True, blank=False)
 
     class Meta:
         unique_together = ('auteur', 'suffrage')
@@ -212,7 +325,7 @@ class ReponseQuestion_b(models.Model):
 
 class ReponseQuestion_m(models.Model):
     vote = models.ForeignKey(Vote, on_delete=models.CASCADE, related_name='rep_question_m')
-    question = models.ForeignKey(Question_majoritaire, on_delete=models.DO_NOTHING,)
+    proposition = models.ForeignKey(Proposition_m, on_delete=models.CASCADE,)
     choix = models.CharField(max_length=30,
         choices=(Choix.vote_majoritaire),
         default='', verbose_name="Choix du vote :")

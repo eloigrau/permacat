@@ -12,16 +12,40 @@
 
     <div id="rb_formset">
     {% for form in reponses_b_form %}
-        {% include 'form_template2.html' %}
-    {% endfor %}
-    {% for form in reponses_m_form %}
-        {% include 'form_template2.html' %}
+        <div class="row">
+        <div class="col-sm-12 col-md-2">
+            Question {{ forloop.counter }} :
+        </div>
+        <div class="col-sm-12 col-md-8">
+            {% include 'form_template2.html' %}
+        </div>
+        </div>
+        <hr>
     {% endfor %}
     </div>
+    <div id="rm_formset">
+        {% for q, form in reponses_m_form.items %}
+        <div class="row">
+            <div class="col-sm-12 col-md-2">
+                {% ifchanged q.0 %}
+                    {{q.0}}
+                {% endifchanged %}
+            </div>
+            <div class="col-sm-12 col-md-8">
+                {% include 'form_template2.html' %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <hr>
 
      {% include 'form_template2.html' %}
 
-  <button type="submit" class="btn btn-primary">Je soumets mon bulletin de vote !</button>
+        <div class="row">
+            <div class="col-sm-12 textcenter">
+                <button type="submit" class="btn btn-primary">Je soumets mon bulletin de vote !</button>
+            </div>
+        </div>
 </form>
 {% endblock %}
 

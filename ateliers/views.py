@@ -6,8 +6,10 @@ from .forms import AtelierForm, CommentaireAtelierForm, AtelierChangeForm, Conta
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail, BadHeaderError
 from blog.models import Article
+from actstream.models import following
 
 from django.utils.timezone import now
 
@@ -195,7 +197,7 @@ class ListeAteliers(ListView):
         cat= Atelier.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
         context['categorie_list'] = [x for x in Choix.type_atelier if x[0] in cat]
         context['typeFiltre'] = "aucun"
-        context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="articles")
+        context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="ateliers")
 
         context['ordreTriPossibles'] = ['-date_creation', '-date_dernierMessage', 'categorie', 'titre' ]
 
@@ -226,3 +228,16 @@ class ModifierCommentaire(UpdateView):
         self.object.date_modification = now()
         self.object.save()
         return HttpResponseRedirect(self.object.atelier.get_absolute_url())
+
+
+
+@login_required
+@csrf_exempt
+def suivre_ateliers(request, actor_only=True):
+    suivi, created = Suivis.objects.get_or_create(nom_suivi='ateliers')
+
+    if suivi in following(request.user):
+        actions.unfollow(request.user, suivi)
+    else:
+        actions.follow(request.user, suivi, actor_only=actor_only)
+    return redirect('ateliers:index_ateliers')

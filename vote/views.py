@@ -2,10 +2,10 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect, reverse
 from django.urls import reverse_lazy
 from django.utils.html import strip_tags
-from .models import Suffrage, Commentaire, Choix, Vote, Question_binaire, Question_majoritaire
+from .models import Suffrage, Commentaire, Choix, Vote, Proposition_m
 from bourseLibre.constantes import Choix as Choix_global
 from .forms import SuffrageForm, CommentaireSuffrageForm, CommentaireSuffrageChangeForm, SuffrageChangeForm, \
-    VoteForm, VoteChangeForm, Question_binaire_formset, Question_majoritaire_formset, Reponse_binaire_Form, Reponse_majoritaire_Form
+    VoteForm, VoteChangeForm, Question_majoritaire_Form, Question_binaire_formset, Proposition_m_formset, Reponse_binaire_Form, Reponse_majoritaire_Form
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.utils.timezone import now
@@ -25,13 +25,13 @@ def accueil(request):
 @login_required
 def ajouterSuffrage(request):
     form = SuffrageForm(request.POST or None)
-    qb_formset = Question_binaire_formset(request.POST or None, prefix="qb")
-    qm_formset = Question_majoritaire_formset(request.POST or None, prefix="qm")
-    if form.is_valid() and qb_formset.is_valid() and qm_formset.is_valid() :
+    #qb_formset = Question_binaire_formset(request.POST or None, prefix="qb")
+    #qm_formset = Question_majoritaire_formset(request.POST or None, prefix="qm")
+    if form.is_valid() :#and qb_formset.is_valid() and qm_formset.is_valid() :
         suffrage = form.save(request.user)
-        for form in itertools.chain(qb_formset, qm_formset): # meme question
+        #for form in itertools.chain(qb_formset, qm_formset): # meme question
             # extract name from each form and save
-            form.save(suffrage=suffrage)
+        #    form.save(suffrage=suffrage)
 
         if suffrage:
             url = suffrage.get_absolute_url()
@@ -39,9 +39,45 @@ def ajouterSuffrage(request):
             action.send(request.user, verb='suffrage_ajout'+suffix, action_object=suffrage, url=url,
                         description="a ajouté un suffrage : '%s'" % suffrage.titre)
 
-            return redirect(suffrage.get_absolute_url())
+            return render(request, 'vote/ajouterQuestions.html', {'suffrage':suffrage})
 
-    return render(request, 'vote/ajouterSuffrage.html', { "form": form, "qb_formset":qb_formset, "qm_formset":qm_formset })
+    return render(request, 'vote/ajouterSuffrage.html', { "form": form, }) #"qb_formset":qb_formset, "qm_formset":qm_formset })
+
+
+@login_required
+def ajouterQuestion(request, suffrage_slug):
+    suffrage = Suffrage.objects.get(slug=suffrage_slug)
+    return render(request, 'vote/ajouterQuestions.html', {'suffrage':suffrage})
+
+@login_required
+def ajouterQuestionB(request, suffrage_slug):
+    suffrage = Suffrage.objects.get(slug=suffrage_slug)
+    qb_formset = Question_binaire_formset(request.POST or None, prefix="qb")
+    if qb_formset.is_valid():
+        for form in qb_formset: # meme question
+            # extract name from each form and save
+            form.save(suffrage=suffrage)
+
+        return render(request, 'vote/ajouterQuestions.html', {'suffrage':suffrage})
+
+    return render(request, 'vote/ajouterQuestionB.html', { "suffrage": suffrage, "qb_formset":qb_formset})
+
+
+@login_required
+def ajouterQuestionM(request, suffrage_slug):
+    suffrage = Suffrage.objects.get(slug=suffrage_slug)
+
+    form = Question_majoritaire_Form(request.POST or None)
+    pm_formset = Proposition_m_formset(request.POST or None, prefix="pm")
+    if form.is_valid() and pm_formset.is_valid():
+        question = form.save(suffrage=suffrage)
+        for qform in pm_formset:
+            qform.save(question=question)
+
+        return redirect(question.get_absolute_url())
+
+    return render(request, 'vote/ajouterQuestionM.html', { "suffrage": suffrage, "form":form, "pm_formset": pm_formset, }) #"qb_formset":qb_formset, "qm_formset":qm_formset })
+
 
 class ModifierSuffrage(UpdateView):
     model = Suffrage
@@ -109,6 +145,7 @@ def lireSuffrage(request, slug):
         voteCourant = None
 
     questions_b, questions_m = suffrage.get_questions()
+
 
     commentaires = Commentaire.objects.filter(suffrage=suffrage).order_by("date_creation")
 
@@ -186,22 +223,20 @@ def voter(request, slug):
         vote.delete()
 
     questions_b, questions_m = suffrage.get_questions()
+    propositions_m = suffrage.get_propositions()
 
     form = VoteForm(request.POST or None)
 
-    reponses_b_form = [Reponse_binaire_Form(q, request.POST or None) for q in questions_b]
-    reponses_m_form = [Reponse_majoritaire_Form(q, request.POST or None) for q in questions_m]
-    #Reponse_binaire_formset = formset_factory(Reponse_binaire_Form, )
-    #Reponse_majoritaire_formset = formset_factory(Reponse_majoritaire_Form, )
+    reponses_b_form = [Reponse_binaire_Form(q, request.POST or None, prefix="rb" + str(i)) for i, q in enumerate(questions_b)]
+    reponses_m_form = {(p.question, p.id) : Reponse_majoritaire_Form(p, request.POST or None, prefix="rp" + str(p.id)) for p in propositions_m}
+    #reponses_m_form = [Reponse_majoritaire_Form(p, request.POST or None, prefix="rm_" + str(p.id)) for p in [Proposition_m.objects.filter(question=x) for x in questions_m]]
 
-    #rb_formset = Reponse_binaire_formset(request.POST or None, prefix="rb")
-    #rm_formset = Reponse_majoritaire_formset(request.POST or None, prefix="rm")
+   #    for p in Proposition_m.objects.filter(question=x):
+     #       reponses_m_form += Reponse_majoritaire_Form(x, request.POST or None, prefix="rm_" + str(j) + "_"+ str(p.id))
 
-    if all([f.is_valid() for f in itertools.chain(reponses_b_form, reponses_m_form)]) and form.is_valid():
+    if all([f.is_valid() for f in itertools.chain(reponses_b_form, reponses_m_form.values())]) and form.is_valid():
         vote = form.save(suffrage, request.user)
-        for form in itertools.chain(reponses_b_form, reponses_m_form): # meme question
-            form.save(vote=vote, )
-        for form in reponses_m_form:
+        for form in itertools.chain(reponses_b_form, reponses_m_form.values()): # meme question
             form.save(vote=vote, )
 
         return redirect(suffrage.get_absolute_url())

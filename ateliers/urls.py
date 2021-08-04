@@ -35,4 +35,5 @@ urlpatterns = [
     url(r'^ajouterAtelier/(?P<article_slug>[-\w]+)$', login_required(views.ajouterAtelier), name='ajouterAtelier_article'),
     url(r'^ajouterAtelier/$', login_required(views.ajouterAtelier), name='ajouterAtelier'),
 
+    url(r'^suivre_ateliers/$', views.suivre_ateliers, name='suivre_ateliers'),
 ]

@@ -1,10 +1,11 @@
 from django.db import models
-from bourseLibre.models import Profil, Asso
 from blog.models import Article
 from django.urls import reverse
 from django.utils import timezone
 import uuid
 import datetime as dt
+from bourseLibre.models import Profil, Suivis, Asso
+from actstream.models import followers
 
 class Choix():
     type_atelier = ('0','Permaculture'), ('1',"Bricolage"), ('2','Cuisine'), ('3','Bien-être'),('4',"Musique"), ('5', 'Autre...')
@@ -84,6 +85,15 @@ class Atelier(models.Model):
                 self.auteur
             except:
                 self.auteur = Profil.objects.first()
+
+            suivi, created = Suivis.objects.get_or_create(nom_suivi='ateliers')
+            emails = [suiv.email for suiv in followers(suivi) if self.auteur != suiv and self.est_autorise(suiv)]
+
+            titre = "Nouvel atelier proposé"
+            message = "L'atelier '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.titre + "</a>' a été proposé"
+
+            if emails:
+                action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
 
         return super(Atelier, self).save(*args, **kwargs)
 

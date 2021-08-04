@@ -19,3 +19,10 @@ def vote_statut(value):
 def ordreTri(value):
     newvalue = value.replace('_', ' ').replace('-', '')
     return newvalue
+
+
+
+@register.filter
+def candidate(candidate, candidates):
+    """Get a candidate from the dict."""
+    return candidates[candidate]

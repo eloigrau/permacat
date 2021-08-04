@@ -17,6 +17,18 @@
         <h3>Les Ateliers Collectifs</h3>
     </div>
     <div class="col-md-4 textcenter">
+
+                 <a href="{% url 'ateliers:suivre_ateliers' %}">
+                {% if request.user|is_following:suivis %}
+                <button type="button" class="btn btn-sm btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné : Cliquez pour arreter de recevoir un mail à chaque nouvel atelier">
+                     {% fontawesome_icon 'bell' %}
+                </button>
+                {% else %}
+                <button type="button" class="btn btn-sm btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné : Cliquez pour recevoir un mail à chaque nouvel atelier">
+                     {% fontawesome_icon 'bell-slash' %}
+                </button>
+                {% endif %}
+                 </a>
         <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#help" title="En savoir plus...">
          {% fontawesome_icon 'question-circle' %}
         </button>

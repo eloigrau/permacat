@@ -15,8 +15,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^vote__/', include(vote_urls))
 """
 from django.conf.urls import url
-from . import views
+from . import views, views_wizard
 from django.contrib.auth.decorators import login_required
+
 
 app_name = 'vote'
 
@@ -36,4 +37,11 @@ urlpatterns = [
         login_required(views.ModifierCommentaireSuffrage.as_view(), login_url='/auth/login/'),
         name='modifierCommentaireSuffrage'),
     url(r'^suivre_suffrages/$', views.suivre_suffrages, name='suivre_suffrages'),
+    url(r'^suffrage/(?P<suffrage_slug>[-\w]+)/ajouterQuestion$', views.ajouterQuestion, name='ajouterQuestion'),
+    url(r'^suffrage/(?P<suffrage_slug>[-\w]+)/ajouterQuestionB$', views.ajouterQuestionB, name='ajouterQuestionB'),
+    url(r'^suffrage/(?P<suffrage_slug>[-\w]+)/ajouterQuestionM$', views.ajouterQuestionM, name='ajouterQuestionM'),
+
+    #url(r'ajouter_suffrage/$', views_wizard.SuffrageWizard.as_view()),
+
+
 ]
