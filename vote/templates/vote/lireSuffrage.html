@@ -1,6 +1,7 @@
 {% extends 'vote/baseVote.html' %}
 {% load activity_tags %}
 {% load blog_filters %}
+{% load vote_filters %}
 {% load fontawesome %}
 
 {% block subtitle %}
@@ -72,56 +73,11 @@
               </a>
         {% endif %}
     </p>
-    {% if questions_b %}
-        <h5>Question{{questions_b|pluralize:",s"}} binaires (oui/non) : </h5>
-        <p>
-            {% for question in questions_b %}
-                <p>{{ forloop.counter }}) {{question}}</p>
-            {% endfor %}
-        </p>
-    {% endif %}
-    {% if questions_m %}
-        <h5>Question{{questions_m|pluralize:",s"}}  au jugement majoritaire (de 'pas du tout d'accord' à 'tout à fait d'accord') : </h5>
-        <p>
-            {% for question in questions_m %}
-            <p>{{ forloop.counter }}) {{question}}</p>
-                {% for proposition in question.propositions %}
-                    <p>proposition {{ forloop.counter }}: {{proposition}}</p>
-                {% endfor %}
-            {% endfor %}
-        </p>
-    {% endif %}
-    <hr>
+
        <p>
         {%if suffrage.get_statut.0 == 1%}<a href="{% url 'vote:resultatsSuffrage' slug=suffrage.slug %}"> {% endif %}
         <button {%if suffrage.get_statut.0 == 1%} {% else %} disabled{% endif %} class="btn btn-warning">
             {{suffrage.get_statut.1}}
-
-<div class="row justify-content-center">
-<div class="col-sm-12">
-
-    {% if suffrage.get_statut.0 < 2 %}
-        {%if not vote %}
-        <p><a href="{% url 'vote:voter' slug=suffrage.slug %}" class="btn btn-success">Voter</a></p>
-        {% else %}
-            <table class="table" style=" width: 80%;
-          text-align: left;
-          padding: 2px 8px;
-          border-radius: 5px;"><tbody>
-                <tr><td style="width: 30%;">Vous avez voté :</td><td style="width: 70%;">"{{vote.getVoteStr}}"</td></tr>
-                {% if vote.commentaire %}
-                <tr><td style="width: 30%;">Commentaire :</td><td style="width: 70%;">{{vote.commentaire|safe}}</td></tr>
-                {% endif %}
-                </tbody>
-            </table>
-            {% if suffrage.get_statut.0 == 0 %}
-                <div class="textcenter"><a href="{% url 'vote:voter' slug=suffrage.slug %}" class="btn btn-success"> Refaire mon vote</a></div></p>
-            {% endif %}
-        {% endif %}
-    {% endif %}
-</div>
-</div>
-
         {% if suffrage.get_statut.0 == 1 %}: {{suffrage.getResultat}}{% endif %}
     </button>
     {%if suffrage.get_statut.0 == 1%}</a>{% endif %}
@@ -165,7 +121,38 @@
 </div>
 <div class="row">
 <div class="col contenusuffrage">
-   {{ suffrage.description |safe}}
+   {{ suffrage.description }}
+    <hr>
+    {% include 'vote/template_questions.html' %}
+    <hr>
+
+<div class="row justify-content-center">
+<div class="col-sm-12">
+
+    {% if suffrage.get_statut.0 < 2 %}
+        {%if not vote %}
+        <p><a href="{% url 'vote:voter' slug=suffrage.slug %}" class="btn btn-success">Voter</a></p>
+        {% else %}
+    {% comment %}
+            <table class="table" style=" width: 80%;
+          text-align: left;
+          padding: 2px 8px;
+          border-radius: 5px;"><tbody>
+                <tr><td style="width: 30%;">Vous avez voté (questions binaires):</td><td style="width: 70%;">"{{vote.getVoteStr.0}}"</td></tr>
+                <tr><td style="width: 30%;">Vous avez voté (questions majoritaires) :</td><td style="width: 70%;">"{{vote.getVoteStr.1}}"</td></tr>
+                {% if vote.commentaire %}
+                <tr><td style="width: 30%;">Commentaire :</td><td style="width: 70%;">{{vote.commentaire|safe}}</td></tr>
+                {% endif %}
+                </tbody>
+            </table>
+    {% endcomment %}
+            {% if suffrage.get_statut.0 == 0 %}
+                <div class="textcenter"><a href="{% url 'vote:voter' slug=suffrage.slug %}" class="btn btn-success"> Refaire mon vote</a></div></p>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+</div>
+</div>
 </div>
 </div>
 

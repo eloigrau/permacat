@@ -22,6 +22,7 @@ class Choix():
                     ('3', ("Plutot d'accord")),
                     ('4', ("Tout à fait d'accord")))
 
+
     type_vote = (('', '-----------'),
                      ('0', ("Vote d'un projet")),
                     ('1', ("Vote d'une décision")),
@@ -53,6 +54,10 @@ class Choix():
         except:
             return Choix.couleurs_annonces["Autre"]
 
+def getStrFromChoix_majoritaire(choix):
+    return Choix.vote_majoritaire[[y[0] for y in Choix.vote_majoritaire].index(choix.choix)][1]
+def getStrFromChoix_ouinon(choix):
+    return Choix.vote_ouinon[[y[0] for y in Choix.vote_ouinon].index(choix.choix)][1]
 
 def sort_candidats(a, b):
     """
@@ -187,12 +192,40 @@ class Suffrage(SuffrageBase):
         return getattr(user, "adherent_" + self.asso.abreviation)
 
 
-    def get_questions(self):
+    @property
+    def questions(self):
         questions_b = Question_binaire.objects.filter(suffrage=self)
         questions_m = Question_majoritaire.objects.filter(suffrage=self)
         return questions_b, questions_m
 
-    def get_propositions(self):
+    @property
+    def get_questionsB_html(self):
+        questions_b, questions_m = self.questions
+
+        txt = "<table class='comicGreen'> <tbody> "
+        for i, q in enumerate(questions_b):
+            txt += "<tr> <td>"
+            txt += str(i) +") "+ str(q) + "</td>  </tr>"
+        txt += "</tbody> </table>"
+        return txt
+
+    @property
+    def get_questionsM_html(self):
+        questions_b, questions_m = self.questions
+
+        txt = "<table class='comicGreen'> <tbody> <thead><tr><th>Question posée</th><th>Proposition</th></thead>"
+        for i, q in enumerate(questions_m):
+            txt += "<tr> <td>"
+            txt += str(i) + ") " + str(q) + "</td> <td></td> </tr>"
+            for j, p in enumerate(q.propositions):
+                txt += "<tr> <td></td> <td>"
+                txt += str(j) + ") " + str(p) + "</td> </tr>"
+
+        txt += "</tbody> </table>"
+        return txt
+
+    @property
+    def propositions(self):
         return Proposition_m.objects.filter(question__suffrage=self)
 
 
@@ -311,7 +344,27 @@ class Vote(models.Model):
     def getVoteStr(self):
         rep_b = ReponseQuestion_b.objects.filter(vote=self)
         rep_m = ReponseQuestion_m.objects.filter(vote=self)
-        return [str(x) for x in itertools.chain(rep_b, rep_m)]
+        return [getStrFromChoix_ouinon(x) for x in rep_b], [getStrFromChoix_majoritaire(x) for x in  rep_m]
+
+    def getVoteStr_questionsB(self):
+        rep_b = ReponseQuestion_b.objects.filter(vote=self)
+        return [getStrFromChoix_ouinon(x) for x in rep_b]
+
+    def getVoteStr_questionB(self, question):
+        rep_b = ReponseQuestion_b.objects.filter(question=question)
+        if rep_b:
+            return getStrFromChoix_ouinon(rep_b[0])
+        return "pas de vote"
+
+    def getVoteStr_questionsM(self):
+        rep_m = ReponseQuestion_m.objects.filter(vote=self)
+        return [getStrFromChoix_majoritaire(x) for x in rep_m]
+
+    def getVoteStr_proposition_m(self, proposition):
+        rep_m = ReponseQuestion_m.objects.filter(proposition=proposition)
+        if rep_m:
+            return getStrFromChoix_majoritaire(rep_m[0])
+        return "pas de vote"
 
 class ReponseQuestion_b(models.Model):
     vote = models.ForeignKey(Vote, on_delete=models.CASCADE, related_name='rep_question_b')
@@ -335,7 +388,7 @@ class ReponseQuestion_m(models.Model):
 
 class Commentaire(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='auteur_comm_vote')
-    commentaire = models.TextField()
+    commentaire = models.TextField(blank=True, null=True)
     suffrage = models.ForeignKey(Suffrage, on_delete=models.CASCADE)
     date_creation = models.DateTimeField(auto_now_add=True)
 

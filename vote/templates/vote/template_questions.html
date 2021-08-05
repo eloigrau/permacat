@@ -1,0 +1,55 @@
+{% load vote_filters %}
+
+{% if questions_b %}
+        <h5>Question{{questions_b|pluralize:",s"}} "binaires" (oui/non) : </h5>
+        <table class="comicGreen">
+            <thead>
+                <tr>
+                <th>Question posée</th>
+                {%if vote %}<th>Mon vote</th>{% endif %}
+                </tr>
+            </thead>
+            <tbody>
+            {% for question in questions_b %}
+            <tr>
+            <td>{{ forloop.counter }}) {{question}}</td>
+            <td>{%if vote %}
+                "{{vote|getVoteStr_questionB:question }}"
+                {% endif %}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    {% endif %}
+    {% if questions_m %}
+        <h5>Question{{questions_m|pluralize:",s"}}  au jugement majoritaire (de 'pas du tout d'accord' à 'tout à fait d'accord') : </h5>
+
+        <table class="comicGreen">
+            <thead>
+                <tr>
+                <th>Question posée</th>
+                <th>Proposition</th>
+                {%if vote %}<th>Mon vote</th>{% endif %}
+                </tr>
+            </thead>
+            <tbody>
+            {% for question in questions_m %}
+                <tr>
+                <td>{{ forloop.counter }}) {{question}}</td>
+                <td></td>
+                {%if vote %}<td></td>{% endif %}
+                </tr>
+                {% for proposition in question.propositions %}
+                    <tr>
+                    <td></td>
+                    <td>{{ forloop.counter }}) {{proposition}}</td>
+                    {%if vote %}
+                        <td>"{{vote|getVoteStr_proposition_m:proposition }}" </td>
+                    {% endif %}
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}

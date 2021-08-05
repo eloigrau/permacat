@@ -144,7 +144,7 @@ def lireSuffrage(request, slug):
     except:
         voteCourant = None
 
-    questions_b, questions_m = suffrage.get_questions()
+    questions_b, questions_m = suffrage.questions
 
 
     commentaires = Commentaire.objects.filter(suffrage=suffrage).order_by("date_creation")
@@ -222,8 +222,8 @@ def voter(request, slug):
     if vote:
         vote.delete()
 
-    questions_b, questions_m = suffrage.get_questions()
-    propositions_m = suffrage.get_propositions()
+    questions_b, questions_m = suffrage.questions
+    propositions_m = suffrage.propositions
 
     form = VoteForm(request.POST or None)
 

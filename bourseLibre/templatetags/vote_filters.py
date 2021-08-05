@@ -26,3 +26,11 @@ def ordreTri(value):
 def candidate(candidate, candidates):
     """Get a candidate from the dict."""
     return candidates[candidate]
+
+@register.filter
+def getVoteStr_questionB(vote, question):
+    return vote.getVoteStr_questionB(question)
+
+@register.filter
+def getVoteStr_proposition_m(vote, proposition):
+    return vote.getVoteStr_proposition_m(proposition)

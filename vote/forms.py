@@ -95,6 +95,7 @@ class CommentaireSuffrageForm(forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
         super(CommentaireSuffrageForm, self).__init__(request, *args, **kwargs)
         self.fields['commentaire'].strip = False
+        self.fields['commentaire'].required = False
 
 
 class Question_binaire_Form(forms.ModelForm):
