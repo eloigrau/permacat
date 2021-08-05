@@ -137,38 +137,20 @@ class Suffrage(SuffrageBase):
             action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
         return retour
 
-    def getResultats(self):
-        votes = Vote.objects.filter(suffrage=self)
-        votesOui = votes.filter(choix='0')
-        votesNon = votes.filter(choix='1')
-        votesNSPP = votes.filter(choix='2')
-        nbOui = len(votesOui)
-        nbNon = len(votesNon)
-        nbNSPP = len(votesNSPP)
-        nbTotal = nbOui + nbNon + nbNSPP
-        if nbTotal > 0:
-            nbOui = (len(votesOui), str(round(len(votesOui) * 100 / nbTotal, 1)) + '%')
-            nbNon = (len(votesNon), str(round(len(votesNon) * 100 / nbTotal, 1)) + '%')
-            nbNSPP = (len(votesNSPP), str(round(len(votesNSPP) * 100 / nbTotal, 1)) + '%')
-            if nbOui > nbNon:
-                resultat = 'Oui à ' + str(round(nbOui[0] * 100 / nbTotal, 1)) + ' %'
-            elif nbNon > nbOui:
-                resultat = 'Non à ' + str(round(nbNon[0] * 100 / nbTotal, 1)) + ' %'
-            else:
-                resultat = 'Ex aequo à ' + str(round(nbOui[0] * 100 / nbTotal, 1)) + ' %'
-        else:
-            nbOui = (0, '0%')
-            nbNon = (0, '0%')
-            nbNSPP = (0, '0%')
-            resultat = "pas de votants"
-        return {'nbOui':nbOui, 'nbNon':nbNon, 'nbNSPP':nbNSPP, 'nbTotal':nbTotal, 'resultat':resultat, 'votes':votes}
-
     @property
     def getResultat(self):
+
         statut = self.get_statut
         if statut[0] != 1:
             return statut[1]
-        return self.getResultats()['resultat']
+
+        qsb, qsm = self.questions
+        res = ""
+        for qb in qsb:
+           res += str(qb.get_resultats())
+        for qm in qsm:
+           res += str(qm.get_resultats())
+        return res
 
     @property
     def get_statut(self):
@@ -256,8 +238,8 @@ class Question_base(models.Model):
 class Question_binaire(Question_base):
     question = models.CharField(max_length=100, verbose_name="Question (oui/non) soumise au vote ?", validators=[MinLengthValidator(1)])
 
-    def getResultats(self):
-        votes = Vote.objects.filter(suffrage=self)
+    def get_resultats(self):
+        votes = self.reponsequestion_b_set.all()
         votesOui = votes.filter(choix='0')
         votesNon = votes.filter(choix='1')
         votesNSPP = votes.filter(choix='2')
@@ -286,7 +268,7 @@ class Question_binaire(Question_base):
 class Question_majoritaire(Question_base):
     question = models.CharField(max_length=100, verbose_name="Question (jugement majoritaire) soumise au vote ?",  validators=[MinLengthValidator(1)])
 
-    def results(self):
+    def get_resultats(self):
         """Get the sorted list of all Candidates for this Election."""
         return sorted(self.proposition_m_set.all(), key=cmp_to_key(sort_candidats))
 
@@ -309,22 +291,22 @@ class Proposition_m(models.Model):
 
     def majority_gauge(self):
         """Compute the majority gauge of this Candidate."""
-        count = self.vote_set.count()
+        count = self.reponsequestion_m_set.count()
         if not count:
             return (0, 10, 0)
-        mention = self.vote_set.order_by('choice')[count // 2].choice
+        mention = self.reponsequestion_m_set.order_by('choix')[count // 2].choix
         if mention is None:
-            print(self.vote_set.order_by('choice'))
+            print(self.reponsequestion_m_set.order_by('choix'))
             mention = 6
-        return (self.vote_set.filter(choice__gt=mention).count() / count, mention,
-                self.vote_set.filter(choice__lt=mention).count() / count)
+        return (self.reponsequestion_m_set.filter(choix__gt=mention).count() / count, mention,
+                self.reponsequestion_m_set.filter(choix__lt=mention).count() / count)
 
     def votes(self):
         """Get the list of the votes for this Candidate."""
-        count = self.vote_set.count()
+        count = self.reponsequestion_m_set.count()
         if count:
-            return [self.vote_set.filter(choice=i).count() * 100 / count for i in [x[0] for x in Choix.vote_majoritaire]]
-        return [0] * len(Choix.vote_majoritaire)
+            return [self.reponsequestion_m_set.filter(choix=i).count() * 100 / count for i in [x[0] for x in Choix.vote_majoritaire[1:]]]
+        return [0] * (len(Choix.vote_majoritaire) -1)
 
 
 
@@ -380,7 +362,7 @@ class ReponseQuestion_m(models.Model):
     vote = models.ForeignKey(Vote, on_delete=models.CASCADE, related_name='rep_question_m')
     proposition = models.ForeignKey(Proposition_m, on_delete=models.CASCADE,)
     choix = models.CharField(max_length=30,
-        choices=(Choix.vote_majoritaire),
+        choices=Choix.vote_majoritaire,
         default='', verbose_name="Choix du vote :")
 
     def __str__(self):

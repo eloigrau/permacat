@@ -968,6 +968,13 @@ ul.errorlist{
     display: block;
     width: auto!important;
   }
+ table.comicGreen,
+  tbody,
+  tr,
+  td {
+    display: block;
+    width: auto!important;
+  }
   table2{
     display: inline;
     width: 100%;
@@ -1092,7 +1099,7 @@ table.greenTable {
   width: 100%;
   text-align: center;
 }
-table.greenTable td, table.greenTable th {
+D td, table.greenTable th {
   padding: 3px 2px;
 }
 table.greenTable tbody td {
