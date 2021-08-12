@@ -23,6 +23,7 @@ from hitcount.models import HitCount
 from hitcount.views import HitCountMixin
 from django.db.models import Q, F
 from django.core.exceptions import PermissionDenied
+import itertools
 # @login_required
 # def forum(request):
 #     """ Afficher tous les articles de notre blog """
@@ -77,8 +78,10 @@ def accueil(request):
         if not getattr(request.user, "adherent_" + nomAsso):
             derniers_articles_modif = derniers_articles_modif.exclude(asso__abreviation=nomAsso)
 
+    derniers = set([x for x in itertools.chain(derniers_articles[:9], derniers_articles_comm[::-1][:9], derniers_articles_modif[::-1][:9])])
+
     suivis, created = Suivis.objects.get_or_create(nom_suivi="articles")
-    return render(request, 'blog/accueil.html', {'categorie_list':categorie_list,'categorie_list_pc':categorie_list_pc,'categorie_list_rtg':categorie_list_rtg,'categorie_list_fer':categorie_list_fer,'categorie_list_gt':categorie_list_gt,'projets_list':projets_list,'ateliers_list':ateliers_list, 'categorie_list_projets':categorie_list_projets,'derniers_articles':derniers_articles[:6],'derniers_articles_comm':derniers_articles_comm[::-1][:6], 'derniers_articles_modif':derniers_articles_modif[::-1][:6], 'suivis':suivis})
+    return render(request, 'blog/accueil.html', {'categorie_list':categorie_list,'categorie_list_pc':categorie_list_pc,'categorie_list_rtg':categorie_list_rtg,'categorie_list_fer':categorie_list_fer,'categorie_list_gt':categorie_list_gt,'projets_list':projets_list,'ateliers_list':ateliers_list, 'categorie_list_projets':categorie_list_projets,'derniers_articles':derniers, 'suivis':suivis})
 
 
 @login_required

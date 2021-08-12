@@ -118,7 +118,7 @@ class Article(models.Model):
                 message = "L'article '<a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.titre + "</a>' a été modifié"
                 emails = [suiv.email for suiv in followers(self) if self.auteur != suiv and self.est_autorise(suiv)]
 
-        retour =  super(Article, self).save(*args, **kwargs)
+        retour = super(Article, self).save(*args, **kwargs)
         if emails:
             action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
         return retour

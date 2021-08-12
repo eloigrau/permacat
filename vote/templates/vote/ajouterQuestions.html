@@ -17,6 +17,8 @@
 
 {% endblock %}
 {% block content %}
+
+{% if  suffrage.nbQuestionsB %}
 <div class="row  justify-content-center">
 	<div class="col-sm-12 col-md-8 textcenter">
         <h4> Questions "binaires" du suffrage :</h4>
@@ -25,6 +27,9 @@
         </div>
 </div>
 </div>
+{% endif %}
+
+{% if  suffrage.nbQuestionsM %}
 <div class="row justify-content-center">
     <div class="col-sm-12 col-md-8 textcenter">
         <h4> Questions "majoritaires" du suffrage :</h4>
@@ -33,6 +38,7 @@
         </div>
     </div>
 </div>
+{% endif %}
 
 
 <div class="container-fluid">

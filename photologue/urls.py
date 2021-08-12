@@ -51,4 +51,7 @@ urlpatterns = [
 
     url(r'^telechargerDocument/(?P<slug>[\-\d\w]+)$',login_required(views.telechargerDocument), name='telechargerDocument'),
 
+    url(r'^suivre_albums/$', views.suivre_albums, name='suivre_albums'),
+    url(r'^suivre_documents/$', views.suivre_documents, name='suivre_documents'),
+
 ]

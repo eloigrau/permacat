@@ -62,7 +62,7 @@
 <div class="col-sm-12 textcenter">
     <h3> {{ suffrage.titre }}</h3>
     <p>
-                {%if suffrage.start_time%}
+        {%if suffrage.start_time%}
           <a href="{% url 'cal:agenda' %} " class="textepetit">
             {%if suffrage.end_time and suffrage.start_time != suffrage.end_time %}
                 Du {{ suffrage.start_time|date:"d/m/Y"  }} au {{ suffrage.end_time|date:"d/m/Y"  }}
@@ -74,11 +74,12 @@
         {% endif %}
     </p>
 
+    {{suffrage.resultats}}
        <p>
         {%if suffrage.get_statut.0 == 1%}<a href="{% url 'vote:resultatsSuffrage' slug=suffrage.slug %}"> {% endif %}
         <button {%if suffrage.get_statut.0 == 1%} {% else %} disabled{% endif %} class="btn btn-warning">
             {{suffrage.get_statut.1}}
-        {% if suffrage.get_statut.0 == 1 %}: {{suffrage.getResultat}}{% endif %}
+        {% if suffrage.get_statut.0 == 1 %}: {{suffrage.resultats}}{% endif %}
     </button>
     {%if suffrage.get_statut.0 == 1%}</a>{% endif %}
     </p>
@@ -124,10 +125,9 @@
    {{ suffrage.description }}
     <hr>
     {% include 'vote/template_questions.html' %}
-    <hr>
 
 <div class="row justify-content-center">
-<div class="col-sm-12">
+<div class="col-sm-12 textcenter">
 
     {% if suffrage.get_statut.0 < 2 %}
         {%if not vote %}

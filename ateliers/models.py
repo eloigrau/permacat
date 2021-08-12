@@ -6,6 +6,8 @@ import uuid
 import datetime as dt
 from bourseLibre.models import Profil, Suivis, Asso
 from actstream.models import followers
+from actstream import action
+
 
 class Choix():
     type_atelier = ('0','Permaculture'), ('1',"Bricolage"), ('2','Cuisine'), ('3','Bien-être'),('4',"Musique"), ('5', 'Autre...')

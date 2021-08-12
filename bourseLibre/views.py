@@ -4,6 +4,8 @@ Created on 25 mai 2017
 
 @author: tchenrezi
 '''
+import itertools
+
 from django.shortcuts import HttpResponseRedirect, render, redirect, get_object_or_404#, render, redirect, render_to_response,
 
 from django.core.exceptions import PermissionDenied
@@ -180,7 +182,9 @@ def bienvenue(request):
     else:
         derniers_articles, derniers_articles_comm, derniers_articles_modif = [], [], []
 
-    return render(request, 'bienvenue.html', {'nomImage':nomImage, "nbNotif": nbNotif , "nbExpires":nbExpires, "evenements":evenements, "evenements_semaine":evenements_semaine, "derniers_articles":derniers_articles[:6], "derniers_articles_comm":derniers_articles_comm[::-1][:6], "derniers_articles_modif":derniers_articles_modif[::-1][:6]})
+    derniers = set([x for x in itertools.chain(derniers_articles[:9], derniers_articles_comm[::-1][:9], derniers_articles_modif[::-1][:9])])
+
+    return render(request, 'bienvenue.html', {'nomImage':nomImage, "nbNotif": nbNotif , "nbExpires":nbExpires, "evenements":evenements, "evenements_semaine":evenements_semaine, "derniers_articles":derniers})
 
 class MyException(Exception):
     pass

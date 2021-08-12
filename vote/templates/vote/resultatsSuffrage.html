@@ -7,7 +7,7 @@
         <a href="{{ suffrage.get_absolute_url }}" class="btn btn-primary" ><i class="fa fa-arrow-left"></i> retour</a>
     </div>
     <div class="col-md-8 textepetit">
-        {{suffrage.question | safe}}
+        {{suffrage | safe}}
     </div>
     <div class="col-md-2 textepetit">
         Du {{ suffrage.start_time|date:"d/m/Y"  }} au {{ suffrage.end_time|date:"d/m/Y"  }}
@@ -18,8 +18,8 @@
 {% block content %}
 <div class="row">
 <div class="col-sm-12 textcenter">
-    <h5 class="textcenter">{{suffrage.question | safe}}</h5>
-    <p><button class="btn btn-static btn-success" ><emph>{{resultat}}</emph></button></p>
+    <h5 class="textcenter">{{suffrage | safe}}</h5>
+    <p><button class="btn btn-static btn-success" ><emph>{{resultats}}</emph></button></p>
 
 </div></div>
 <hr>

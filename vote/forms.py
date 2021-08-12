@@ -99,7 +99,7 @@ class CommentaireSuffrageForm(forms.ModelForm):
 
 
 class Question_binaire_Form(forms.ModelForm):
-    question = forms.CharField(required=True, help_text='Question qui sera soumise au vote, et dont la réponse pourra etre oui/non/ne se prononce pas', label='Question')
+    question = forms.CharField(required=True, max_length=150, help_text='Question qui sera soumise au vote, et dont la réponse pourra etre oui/non/ne se prononce pas', label='Question')
 
     class Meta:
         model = Question_binaire
@@ -117,6 +117,7 @@ class Question_binaire_Form(forms.ModelForm):
 
 
 class Question_majoritaire_Form(forms.ModelForm):
+    question = forms.CharField(required=True, max_length=150, help_text='Question soumise au vote par jugement majoritaire (classement des propositions)', label='Question binaire')
 
     class Meta:
         model = Question_majoritaire
@@ -129,6 +130,8 @@ class Question_majoritaire_Form(forms.ModelForm):
         return instance
 
 class Proposition_m_Form(forms.ModelForm):
+    proposition = forms.CharField(required=True, max_length=150, help_text='Question soumise au vote par jugement majoritaire (classement des propositions)', label='Question (jugement majoritaire)')
+
     class Meta:
         model = Proposition_m
         fields = ['proposition']
@@ -197,6 +200,10 @@ class CommentaireSuffrageChangeForm(forms.ModelForm):
             'commentaire': SummernoteWidget(),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['commentaire'].required = False
+
 
 class VoteForm(forms.ModelForm):
     class Meta:
@@ -213,6 +220,10 @@ class VoteForm(forms.ModelForm):
         instance.save()
         return instance
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['commentaire'].required = False
+
 class VoteChangeForm(forms.ModelForm):
     class Meta:
         model = Vote
@@ -220,6 +231,10 @@ class VoteChangeForm(forms.ModelForm):
         widgets = {
             'commentaire': SummernoteWidget(),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['commentaire'].required = False
 
 
 class CommentaireSuffrageChangeForm(forms.ModelForm):

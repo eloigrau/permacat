@@ -1,5 +1,6 @@
 {% extends "photologue/root.html" %}
 {% load fontawesome %}
+{% load activity_tags %}
 {% load i18n %}
 
 {% block title %}{% trans "All galleries" %}{% endblock %}
@@ -46,6 +47,18 @@
                 <i class="fa fa-plus"></i> Ajouter un album
             </button>
             </a>&ensp;
+
+        <a href="{% url 'photologue:suivre_albums' %}">
+            {% if request.user|is_following:suivis %}
+            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné : Cliquez pour arreter de recevoir un mail à chaque nouvel album">
+                 {% fontawesome_icon 'bell' %}
+            </button>
+            {% else %}
+            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné : Cliquez pour recevoir un mail à chaque nouvel album">
+                 {% fontawesome_icon 'bell-slash' %}
+            </button>
+            {% endif %}
+        </a>
 </div>
 </div>
 </div>

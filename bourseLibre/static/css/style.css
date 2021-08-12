@@ -1792,7 +1792,10 @@ a:hover, a:focus {
 
 
 table.comicGreen {
-  font-family: "Comic Sans MS", cursive, sans-serif;
+  /*font-family: "Comic Sans MS", cursive, sans-serif;
+  font-family: cursive, sans-serif;*/
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
   border: 2px solid #4F7849;
   background-color: #EEEEEE;
   width: 100%;
@@ -1804,7 +1807,7 @@ table.comicGreen td, table.comicGreen th {
   padding: 3px 2px;
 }
 table.comicGreen tbody td {
-  font-size: 19px;
+  font-size: 16px;
   font-weight: bold;
   color: #4F7849;
 }
@@ -1812,7 +1815,7 @@ table.comicGreen tr:nth-child(even) {
   background: #CEE0CC;
 }
 table.comicGreen thead {
-  font-size: 21px;
+  font-size: 19px;
   font-weight: bold;
   color: #FFFFFF;
   background: #4F7849;
@@ -1822,5 +1825,5 @@ table.comicGreen thead {
   border-top: 1px solid #444444;
 }
 table.comicGreen thead td {
-  font-size: 21px;
+  font-size: 19px;
 }

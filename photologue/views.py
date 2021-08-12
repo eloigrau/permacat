@@ -2,7 +2,7 @@ from django.views.generic.dates import ArchiveIndexView, DateDetailView, DayArch
     YearArchiveView
 from django.views.generic.detail import DetailView
 from django.views.generic import ListView, UpdateView, DeleteView
-from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, HttpResponseRedirect
 from .models import Photo, Album, Document
 from django.shortcuts import render, redirect
 from .forms import PhotoForm, AlbumForm, PhotoChangeForm, AlbumChangeForm, DocumentForm
@@ -13,9 +13,10 @@ from bourseLibre.views import testIsMembreAsso
 from blog.models import Article
 from django.core.exceptions import PermissionDenied
 from actstream import actions, action
-from django.utils.timezone import now
 from bourseLibre.models import Asso
-# Album views.
+from django.views.decorators.csrf import csrf_exempt
+from actstream.models import following
+from bourseLibre.models import Suivis
 
 from django.utils.text import slugify
 import itertools
@@ -31,7 +32,13 @@ class AlbumListView(ListView):
             if not getattr(self.request.user, "adherent_" + nomAsso):
                 qs = qs.exclude(asso__abreviation=nomAsso)
 
-        return  qs
+        return qs
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="albums")
+        return context
 
 class AlbumDetailView(DetailView):
     queryset = Album.objects.on_site().order_by("-date_added")
@@ -104,6 +111,11 @@ class DocListView(ListView):
 
         return qs
 
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="documents")
+        return context
 
 class PhotoDateView:
     queryset = Photo.objects.on_site()
@@ -293,3 +305,28 @@ class SupprimerDocument(DeleteView):
 
     def get_success_url(self):
         return reverse_lazy("photologue:doc-list")
+
+
+
+@login_required
+@csrf_exempt
+def suivre_documents(request, actor_only=True):
+    suivi, created = Suivis.objects.get_or_create(nom_suivi='documents')
+
+    if suivi in following(request.user):
+        actions.unfollow(request.user, suivi, send_action=False)
+    else:
+        actions.follow(request.user, suivi, actor_only=actor_only, send_action=False)
+    return redirect('photologue:doc-list')
+
+
+@login_required
+@csrf_exempt
+def suivre_albums(request, actor_only=True):
+    suivi, created = Suivis.objects.get_or_create(nom_suivi='albums')
+
+    if suivi in following(request.user):
+        actions.unfollow(request.user, suivi, send_action=False)
+    else:
+        actions.follow(request.user, suivi, actor_only=actor_only, send_action=False)
+    return redirect('photologue:album-list')

@@ -32,6 +32,11 @@ from .utils.watermark import apply_watermark
 
 from bourseLibre.models import Asso, Profil
 from taggit.managers import TaggableManager
+from django.utils import timezone
+from bourseLibre.models import Suivis
+from actstream.models import followers
+from bourseLibre.settings import LOCALL
+from actstream import action
 
 logger = logging.getLogger('photologue.models')
 
@@ -190,6 +195,28 @@ class Album(models.Model):
         verbose_name = _('album')
         verbose_name_plural = _('albums')
 
+    def save(self, sendMail=True, *args, **kwargs):
+        emails = []
+        if not self.id:
+            self.date_creation = timezone.now()
+            if sendMail:
+                suivi, created = Suivis.objects.get_or_create(nom_suivi='albums')
+                titre = "Nouvel album"
+                message = "Un album photo a été ajouté : '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.title + "</a>'"
+                emails = [suiv.email for suiv in followers(suivi) if self.auteur != suiv and self.est_autorise(suiv)]
+                if emails and not LOCALL:
+                    creation = True
+        else:
+            if sendMail:
+                titre = "Album créé"
+                message = "L'album '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.title + "</a>' a été modifié"
+                emails = [suiv.email for suiv in followers(self) if self.auteur != suiv and self.est_autorise(suiv)]
+
+        if emails:
+            action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
+
+        return super().save(*args, **kwargs)
+
     def __str__(self):
         return self.title
 
@@ -273,6 +300,33 @@ class Document(models.Model):
 
     def get_delete_url(self):
         return reverse("photologue:supprimerDocument", kwargs={"slug":self.slug})
+
+    def save(self, sendMail=True, *args, **kwargs):
+        emails = []
+        if not self.id:
+            self.date_creation = timezone.now()
+            if sendMail:
+                suivi, created = Suivis.objects.get_or_create(nom_suivi='albums')
+                titre = "Nouveau document"
+                message = "Un document a été ajouté : '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.titre + "</a>'"
+                emails = [suiv.email for suiv in followers(suivi) if self.auteur != suiv and self.est_autorise(suiv)]
+                if emails and not LOCALL:
+                    creation = True
+        else:
+            if sendMail:
+                titre = "Album créé"
+                message = "L'album '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.title + "</a>' a été modifié"
+                emails = [suiv.email for suiv in followers(self) if self.auteur != suiv and self.est_autorise(suiv)]
+                if emails and not LOCALL:
+                    creation = True
+
+        if emails:
+            action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
+
+        return super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('photologue:doc-list')
 
 class ImageModel(models.Model):
     image = models.ImageField(_('image'),
@@ -584,7 +638,8 @@ class Photo(ImageModel):
 
         if self.slug is None:
             self.slug = slugify(self.title)
-        super().save(*args, **kwargs)
+
+        return super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse('photologue:photo', kwargs={'slug':self.slug})

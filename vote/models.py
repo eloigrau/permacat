@@ -12,15 +12,15 @@ from django.core.validators import MinLengthValidator
 
 class Choix():
     vote_ouinon = (('', '-----------'),
-                     ('0', ("Oui")),
-                    ('1', ("Non")),
-                    ('2', ("Ne se prononce pas")))
+                     (0, ("Oui")),
+                    (1, ("Non")),
+                    (2, ("Ne se prononce pas")))
     vote_majoritaire = (('', '-----------'),
-                     ('0', ("pas du tout d'accord")),
-                    ('1', ("Plutot pas d'accord")),
-                    ('2', ("Neutre")),
-                    ('3', ("Plutot d'accord")),
-                    ('4', ("Tout à fait d'accord")))
+                     (0, ("pas du tout d'accord")),
+                    (1, ("Plutot pas d'accord")),
+                    (2, ("Neutre")),
+                    (3, ("Plutot d'accord")),
+                    (4, ("Tout à fait d'accord")))
 
 
     type_vote = (('', '-----------'),
@@ -55,9 +55,9 @@ class Choix():
             return Choix.couleurs_annonces["Autre"]
 
 def getStrFromChoix_majoritaire(choix):
-    return Choix.vote_majoritaire[[y[0] for y in Choix.vote_majoritaire].index(choix.choix)][1]
+    return Choix.vote_majoritaire[[y[0] for y in Choix.vote_majoritaire].index(choix)][1]
 def getStrFromChoix_ouinon(choix):
-    return Choix.vote_ouinon[[y[0] for y in Choix.vote_ouinon].index(choix.choix)][1]
+    return Choix.vote_ouinon[[y[0] for y in Choix.vote_ouinon].index(choix)][1]
 
 def sort_candidats(a, b):
     """
@@ -72,7 +72,8 @@ def sort_candidats(a, b):
     thus, A > B ⇔ α_A > α_B || (α_A == α_B && (p_A > max(q_A, p_B, q_B) || q_B > max(p_A, q_A, p_B)))
     (eq. 2, p.11 of the second article in README.md)
     """
-    a, b = a.majority_gauge(), b.majority_gauge()
+    a, b = [float(x) for x in a.majority_gauge()], [float(x) for x in b.majority_gauge()]
+
     if a[1] > b[1]:
         return 1
     if b[1] > a[1]:
@@ -137,20 +138,23 @@ class Suffrage(SuffrageBase):
             action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
         return retour
 
-    @property
-    def getResultat(self):
-
+    def get_resultats(self):
         statut = self.get_statut
-        if statut[0] != 1:
-            return statut[1]
+        #if statut[0] != 1:
+        #    return statut[1]
 
         qsb, qsm = self.questions
         res = ""
         for qb in qsb:
-           res += str(qb.get_resultats())
+            res += str(qb.get_resultats())
+            res += "\n <hr> majo"
         for qm in qsm:
-           res += str(qm.get_resultats())
+            res += str(qm.get_resultats())
         return res
+
+    @property
+    def resultats(self):
+        return self.get_resultats()
 
     @property
     def get_statut(self):
@@ -175,10 +179,24 @@ class Suffrage(SuffrageBase):
 
 
     @property
+    def questionsB(self):
+        return self.question_binaire_set.all()
+
+    @property
+    def questionsM(self):
+        return self.question_majoritaire_set.all()
+
+    @property
     def questions(self):
-        questions_b = Question_binaire.objects.filter(suffrage=self)
-        questions_m = Question_majoritaire.objects.filter(suffrage=self)
-        return questions_b, questions_m
+        return self.questionsB, self.questionsM
+
+    @property
+    def nbQuestionsB(self):
+        return len(self.questionsB)
+
+    @property
+    def nbQuestionsM(self):
+        return len(self.questionsM)
 
     @property
     def get_questionsB_html(self):
@@ -187,7 +205,7 @@ class Suffrage(SuffrageBase):
         txt = "<table class='comicGreen'> <tbody> "
         for i, q in enumerate(questions_b):
             txt += "<tr> <td>"
-            txt += str(i) +") "+ str(q) + "</td>  </tr>"
+            txt += str(i + 1) +") "+ str(q) + "</td>  </tr>"
         txt += "</tbody> </table>"
         return txt
 
@@ -198,10 +216,10 @@ class Suffrage(SuffrageBase):
         txt = "<table class='comicGreen'> <tbody> <thead><tr><th>Question posée</th><th>Proposition</th></thead>"
         for i, q in enumerate(questions_m):
             txt += "<tr> <td>"
-            txt += str(i) + ") " + str(q) + "</td> <td></td> </tr>"
+            txt += str(i+1) + ") " + str(q) + "</td> <td></td> </tr>"
             for j, p in enumerate(q.propositions):
                 txt += "<tr> <td></td> <td>"
-                txt += str(j) + ") " + str(p) + "</td> </tr>"
+                txt += str(j + 1) + ") " + str(p) + "</td> </tr>"
 
         txt += "</tbody> </table>"
         return txt
@@ -236,7 +254,7 @@ class Question_base(models.Model):
             raise ValidationError('Empty error message')
 
 class Question_binaire(Question_base):
-    question = models.CharField(max_length=100, verbose_name="Question (oui/non) soumise au vote ?", validators=[MinLengthValidator(1)])
+    question = models.CharField(max_length=150, verbose_name="Question (oui/non) soumise au vote ?", validators=[MinLengthValidator(1)])
 
     def get_resultats(self):
         votes = self.reponsequestion_b_set.all()
@@ -266,11 +284,13 @@ class Question_binaire(Question_base):
 
 
 class Question_majoritaire(Question_base):
-    question = models.CharField(max_length=100, verbose_name="Question (jugement majoritaire) soumise au vote ?",  validators=[MinLengthValidator(1)])
+    question = models.CharField(max_length=150, verbose_name="Question (jugement majoritaire) soumise au vote :",  validators=[MinLengthValidator(1)])
 
     def get_resultats(self):
         """Get the sorted list of all Candidates for this Election."""
-        return sorted(self.proposition_m_set.all(), key=cmp_to_key(sort_candidats))
+        res = sorted(self.proposition_m_set.all(), key=cmp_to_key(sort_candidats))
+        res2 = [(x, x.majority_gauge()) for x in res]
+        return res2
 
     @property
     def propositions(self):
@@ -296,7 +316,7 @@ class Proposition_m(models.Model):
             return (0, 10, 0)
         mention = self.reponsequestion_m_set.order_by('choix')[count // 2].choix
         if mention is None:
-            print(self.reponsequestion_m_set.order_by('choix'))
+            #print(self.reponsequestion_m_set.order_by('choix'))
             mention = 6
         return (self.reponsequestion_m_set.filter(choix__gt=mention).count() / count, mention,
                 self.reponsequestion_m_set.filter(choix__lt=mention).count() / count)
@@ -330,12 +350,12 @@ class Vote(models.Model):
 
     def getVoteStr_questionsB(self):
         rep_b = ReponseQuestion_b.objects.filter(vote=self)
-        return [getStrFromChoix_ouinon(x) for x in rep_b]
+        return rep_b #[getStrFromChoix_ouinon(x) for x in rep_b]
 
     def getVoteStr_questionB(self, question):
         rep_b = ReponseQuestion_b.objects.filter(question=question)
         if rep_b:
-            return getStrFromChoix_ouinon(rep_b[0])
+            return str(rep_b[0])
         return "pas de vote"
 
     def getVoteStr_questionsM(self):
@@ -345,28 +365,27 @@ class Vote(models.Model):
     def getVoteStr_proposition_m(self, proposition):
         rep_m = ReponseQuestion_m.objects.filter(proposition=proposition)
         if rep_m:
-            return getStrFromChoix_majoritaire(rep_m[0])
+            return str(rep_m[0])
         return "pas de vote"
 
 class ReponseQuestion_b(models.Model):
     vote = models.ForeignKey(Vote, on_delete=models.CASCADE, related_name='rep_question_b')
     question = models.ForeignKey(Question_binaire, on_delete=models.DO_NOTHING,)
-    choix = models.CharField(max_length=30,
-        choices=(Choix.vote_ouinon),
+    choix = models.IntegerField(choices=(Choix.vote_ouinon),
         default='', verbose_name="Choix du vote :")
 
     def __str__(self):
-        return str(self.choix)
+        return getStrFromChoix_ouinon(self.choix)
 
 class ReponseQuestion_m(models.Model):
     vote = models.ForeignKey(Vote, on_delete=models.CASCADE, related_name='rep_question_m')
     proposition = models.ForeignKey(Proposition_m, on_delete=models.CASCADE,)
-    choix = models.CharField(max_length=30,
+    choix = models.IntegerField(
         choices=Choix.vote_majoritaire,
         default='', verbose_name="Choix du vote :")
 
     def __str__(self):
-        return str(self.choix)
+        return getStrFromChoix_majoritaire(self.choix)
 
 class Commentaire(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='auteur_comm_vote')
