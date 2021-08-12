@@ -372,17 +372,18 @@ class ReponseQuestion_b(models.Model):
     vote = models.ForeignKey(Vote, on_delete=models.CASCADE, related_name='rep_question_b')
     question = models.ForeignKey(Question_binaire, on_delete=models.DO_NOTHING,)
     choix = models.IntegerField(choices=(Choix.vote_ouinon),
-        default='', verbose_name="Choix du vote :")
+        default=2, verbose_name="Choix du vote :")
 
     def __str__(self):
         return getStrFromChoix_ouinon(self.choix)
+
 
 class ReponseQuestion_m(models.Model):
     vote = models.ForeignKey(Vote, on_delete=models.CASCADE, related_name='rep_question_m')
     proposition = models.ForeignKey(Proposition_m, on_delete=models.CASCADE,)
     choix = models.IntegerField(
         choices=Choix.vote_majoritaire,
-        default='', verbose_name="Choix du vote :")
+        default=2, verbose_name="Choix du vote :")
 
     def __str__(self):
         return getStrFromChoix_majoritaire(self.choix)
