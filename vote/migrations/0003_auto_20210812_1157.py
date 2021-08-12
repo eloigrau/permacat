@@ -24,11 +24,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='reponsequestion_b',
             name='choix',
-            field=models.IntegerField(choices=[('', '-----------'), (0, 'Oui'), (1, 'Non'), (2, 'Ne se prononce pas')], default='', verbose_name='Choix du vote :'),
+            field=models.IntegerField(choices=[('', '-----------'), (0, 'Oui'), (1, 'Non'), (2, 'Ne se prononce pas')], default=2, verbose_name='Choix du vote :'),
         ),
         migrations.AlterField(
             model_name='reponsequestion_m',
             name='choix',
-            field=models.IntegerField(choices=[('', '-----------'), (0, "pas du tout d'accord"), (1, "Plutot pas d'accord"), (2, 'Neutre'), (3, "Plutot d'accord"), (4, "Tout à fait d'accord")], default='', verbose_name='Choix du vote :'),
+            field=models.IntegerField(choices=[('', '-----------'), (0, "pas du tout d'accord"), (1, "Plutot pas d'accord"), (2, 'Neutre'), (3, "Plutot d'accord"), (4, "Tout à fait d'accord")], default=2, verbose_name='Choix du vote :'),
         ),
     ]
