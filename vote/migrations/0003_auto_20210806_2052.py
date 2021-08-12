@@ -22,11 +22,6 @@ class Migration(migrations.Migration):
             field=models.CharField(max_length=150, validators=[django.core.validators.MinLengthValidator(1)], verbose_name='Question (jugement majoritaire) soumise au vote :'),
         ),
         migrations.AlterField(
-            model_name='reponsequestion_b',
-            name='choix',
-            field=models.IntegerField(choices=[('', '-----------'), ('0', 'Oui'), ('1', 'Non'), ('2', 'Ne se prononce pas')], default='', max_length=30, verbose_name='Choix du vote :'),
-        ),
-        migrations.AlterField(
             model_name='reponsequestion_m',
             name='choix',
             field=models.IntegerField(choices=[('', '-----------'), (0, "pas du tout d'accord"), (1, "Plutot pas d'accord"), (2, 'Neutre'), (3, "Plutot d'accord"), (4, "Tout à fait d'accord")], default='', verbose_name='Choix du vote :'),
