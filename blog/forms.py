@@ -1,4 +1,7 @@
 from django import forms
+
+from django.http import HttpResponseRedirect
+from formtools.preview import FormPreview
 from .models import Article, Commentaire, Projet, CommentaireProjet, Evenement, AdresseArticle
 from django.utils.text import slugify
 import itertools
@@ -102,6 +105,14 @@ class ArticleForm(forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
         super(ArticleForm, self).__init__(*args, **kwargs)
         self.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if request.user.estMembre_str(x.abreviation)]
+
+
+# class ArticleFormPreview(FormPreview):
+#
+#     def done(self, request, cleaned_data):
+#         # Do something with the cleaned_data, then redirect
+#         # to a "success" page.
+#         return HttpResponseRedirect('/form/success')
 
 class ArticleChangeForm(forms.ModelForm):
 

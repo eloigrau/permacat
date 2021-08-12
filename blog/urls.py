@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.urls import path
-from . import views
+from . import views, forms
 from django.contrib.auth.decorators import login_required
 from django_filters.views import FilterView
 
@@ -38,6 +38,7 @@ urlpatterns = [
     url(r'^suiveursProjet/(?P<slug>[-\w]+)$', views.projets_suivis, name='suiveursProjet'),
     url(r'^supprimerArticle/(?P<slug>[-\w]+)$', login_required(views.SupprimerArticle.as_view(), login_url='/auth/login/'), name='supprimerArticle'),
     url(r'^ajouterArticle/$', login_required(views.ajouterArticle), name='ajouterNouvelArticle'),
+    #path('post/', forms.ArticleFormPreview(forms.ArticleForm)),
 
     url(r'^projets/$', login_required(views.ListeProjets.as_view(), login_url='/auth/login/'), name="index_projets"),
     url(r'^projets/(?P<slug>[-\w]+)$', views.lireProjet, name='lireProjet'),

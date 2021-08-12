@@ -139,6 +139,7 @@ class Article(models.Model):
     def getLieux(self):
         return AdresseArticle.objects.filter(article=self)
 
+
 class Evenement(models.Model):
     titre_even = models.CharField(verbose_name="Titre de l'événement (si laissé vide, ce sera le titre de l'article)",
                              max_length=100, null=True, blank=True, default="")
