@@ -108,6 +108,7 @@ INSTALLED_APPS = [
     'django_crontab',
     'crispy_forms',
     'formtools',
+    #'jet','jet.dashboard', 'django.contrib.admin',
     #'notifications',
     #'webpush',
     #"geoposition",

@@ -47,10 +47,10 @@
 <div class="row justify-content-center">
     <div class="col-sm-12 col-md-6 textcenter">
         <li class="list-group-item textcenter"  style="background-color:#ffc34d">Dernières visites</li>
-        {% for hit in hit_count %}
+        {% for hit, info in hit_count.items %}
         <li class="list-group-item"  style="background-color:{{color}}">
-            <a {%if hit.hitcount.content_object %}href="{{ hit.hitcount.content_object.get_absolute_url }} "{%endif%}>
-             ({{hit.created}}) {{hit.hitcount.content_object}}
+            <a {%if hit %}href="{{ info.1 }} "{%endif%}>
+             ({{ info.0}}) {{hit}}
             </a>
         </li>
         {% endfor %}

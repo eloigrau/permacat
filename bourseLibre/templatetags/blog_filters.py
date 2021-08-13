@@ -1,6 +1,8 @@
 from django import template
 import re
 
+from hitcount.models import Hit
+
 register = template.Library()
 
 
@@ -31,3 +33,8 @@ def ordreTri(value):
 def sansOrdreTri(value):
     newvalue = value.replace('ordreTri', 'prec')
     return newvalue
+
+# @register.filter(is_safe=True)
+# def dejavu(article, user):
+#     newvalue = Hit.objects.filter(hitcount_content_object=article, user=user)
+#     return newvalue.count

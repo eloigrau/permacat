@@ -572,6 +572,9 @@ def envoyerEmailstest():
 
 
 def voirDerniersArticlesVus(request):
-    hit_count = Hit.objects.all().order_by('-created').distinct()[:10]
-    hit_count_perso = Hit.objects.filter(user=request.user.id).order_by('-created').distinct()[:10]
-    return render(request, 'notifications/notifications_vistes.html', {'hit_count': hit_count, 'hit_count_perso': hit_count_perso})
+    hit_count = Hit.objects.all().order_by('-created').distinct()[:50]
+    ht = {str(x.hitcount.content_object):[x.created, x.hitcount.content_object.get_absolute_url] for i, x in enumerate(hit_count) if x.hitcount.content_object}
+    ht = {x:y for i, (x, y) in enumerate(ht.items()) if i < 12}
+    hit_count_perso = Hit.objects.filter(user=request.user.id).order_by('-created').distinct()[:50]
+
+    return render(request, 'notifications/notifications_vistes.html', {'hit_count': ht, 'hit_count_perso': hit_count_perso})

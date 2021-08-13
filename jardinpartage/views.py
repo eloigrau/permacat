@@ -144,7 +144,7 @@ class ListeArticles(UserPassesTestMixin, ListView):
 
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])
-        if "categorie" in params:
+        if "categorie" in params and params['categorie'] != "tout":
             qs = qs.filter(categorie=params['categorie'])
 
         if "ordreTri" in params:
@@ -177,7 +177,7 @@ class ListeArticles(UserPassesTestMixin, ListView):
 
         if 'auteur' in self.request.GET:
             context['typeFiltre'] = "auteur"
-        if 'categorie' in self.request.GET:
+        if 'categorie' in self.request.GET and self.request.GET['categorie'] != "tout":
             context['typeFiltre'] = "categorie"
             try:
                 context['categorie_courante'] = [x[1] for x in Choix.type_annonce if x[0] == self.request.GET['categorie']][0]
@@ -202,11 +202,11 @@ class ListeArticles_jardin(ListeArticles):
 
         #nom_jardin = [x[1] for x in Choix.jardins_ptg if x[0]==self.kwargs["jardin"]][0]
         if self.kwargs["jardin"] != "0":
-            qs = qs.filter(Q(jardin=self.kwargs["jardin"])|Q(jardin=0))
+            qs = qs.filter(Q(jardin=self.kwargs["jardin"])|Q(jardin="0"))
 
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])
-        if "categorie" in params:
+        if "categorie" in params and params['categorie'] != "tout":
             qs = qs.filter(categorie=params['categorie'])
 
         if "ordreTri" in params:
@@ -223,7 +223,7 @@ class ListeArticles_jardin(ListeArticles):
 
         context['list_archive'] = self.qs.filter(estArchive=True)
         # context['producteur_list'] = Profil.objects.values_list('username', flat=True).distinct()
-        qs =  Article.objects.all()
+        qs = Article.objects.all()
         if self.kwargs["jardin"] != "0":
             qs = qs.filter(jardin=self.kwargs["jardin"])
         context['auteur_list'] = qs.order_by('auteur').values_list('auteur__username', flat=True).distinct()
@@ -242,7 +242,7 @@ class ListeArticles_jardin(ListeArticles):
 
         if 'auteur' in self.request.GET:
             context['typeFiltre'] = "auteur"
-        if 'categorie' in self.request.GET:
+        if 'categorie' in self.request.GET and self.request.GET['categorie'] != "tout":
             context['typeFiltre'] = "categorie"
             try:
                 context['categorie_courante'] = [x[1] for x in Choix.type_annonce if x[0] == self.request.GET['categorie']][0]

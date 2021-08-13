@@ -36,10 +36,7 @@ admin.sites.site_header ="Admin "
 admin.sites.site_title ="Admin Permacat"
 
 urlpatterns = [
-   #url(r'^site_media/(?P<path>.*)$', include('django.views.static.serve'),
-   #    {'document_root': MEDIA_ROOT, 'show_indexes': True}),
     url(r'^tinymce/', include('tinymce.urls')),
-    #url(r'^jugemaj/', include('jugemaj.urls')),
     url(r'^summernote/', include('django_summernote.urls')),
     url(r'^captcha/', include('bourseLibre.captcha_local.urls')),
     url(r'^photolog/', include('photologue.urls', namespace='photologue')),
@@ -74,6 +71,12 @@ urlpatterns = [
 
 
     url(r'^gestion/', admin.site.urls, name='admin',),
+
+    #url(r'^jet/', include('jet.urls')),  # Django JET URLS
+    #url(r'^jet/dashboard/', include('jet.dashboard.urls')),  # Django JET dashboard URLS
+    #url(r'^admin/', admin.site.urls),
+
+
     url(r'^merci/$', views.merci, name='merci'),
     url(r'^forum/', include('blog.urls', namespace='bourseLibre.blog')),
     url(r'^jardins/', include('jardinpartage.urls', namespace='bourseLibre.jardinpartage')),
