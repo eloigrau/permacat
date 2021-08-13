@@ -137,7 +137,21 @@ class AdresseForm(forms.ModelForm):
 
     def save(self, *args, **kwargs):
         adresse = super(AdresseForm, self).save(commit=False)
-        adresse.set_latlon_from_adresse()
+        adresse.save()
+        return adresse
+
+class AdresseForm2(forms.ModelForm):
+    telephone = forms.CharField(label="Téléphone", required=False)
+    latitude = forms.FloatField(label="Latitude", initial="42,2", required=True)
+    longitude = forms.FloatField(label="Longitude", initial="2,2", required=True)
+
+    class Meta:
+        model = Adresse
+        exclude = ('rue', 'commune', 'code_postal', 'pays')
+
+    def save(self, *args, **kwargs):
+        #self.cleaned_data['latitude'] = float(self.cleaned_data['latitude'])
+        adresse = super(AdresseForm2, self).save(commit=False)
         adresse.save()
         return adresse
 

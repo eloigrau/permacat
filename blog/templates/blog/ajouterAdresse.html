@@ -18,8 +18,16 @@
 <form method="post">
   {% csrf_token %}
  {% include 'form_template2.html'%}
+    <p>Donnez l'adresse :</p>
  {% include 'form_template2.html' with form=form_adresse%}
-  <button type="submit" class="btn btn-primary">Valider</button>
+  <button type="submit" name="adressebtn" class="btn btn-primary">Valider l'adresse</button>
+
+    <hr>
+  {% csrf_token %}
+    <p>Ou rentrez les coordonnées GPS (latitude, longitude) :</p>
+
+ {% include 'form_template2.html' with form=form_adresse2%}
+  <button type="submit" name="gpsbtn"  class="btn btn-primary">Valider les coordonnées GPS</button>
 </form>
 </div>
 </div>

@@ -42,7 +42,7 @@ LONGITUDE_DEFAUT = '2.8954'
 class Adresse(models.Model):
     rue = models.CharField(max_length=200, blank=True, null=True)
     code_postal = models.CharField(max_length=5, blank=True, null=True, default="66000")
-    commune = models.CharField(max_length=50, blank=True, null=True, default="Perpignan")
+    commune = models.CharField(max_length=50, blank=True, null=True, default="")
     latitude = models.FloatField(blank=True, null=True, default=LATITUDE_DEFAUT)
     longitude = models.FloatField(blank=True, null=True, default=LONGITUDE_DEFAUT)
     pays = models.CharField(max_length=12, blank=True, null=True, default="France")
@@ -52,7 +52,8 @@ class Adresse(models.Model):
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
-        self.set_latlon_from_adresse()
+        if not self.latitude:
+            self.set_latlon_from_adresse()
         return super(Adresse, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -76,6 +77,8 @@ class Adresse(models.Model):
             if self.telephone:
                 adress += " (" + self.telephone +")"
             return adress
+        else:
+            return "lat : " + str(self.latitude) + "; lon : " +  str(self.longitude)
 
     def __unicode__(self):
         return self.__str__()

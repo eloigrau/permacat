@@ -12,7 +12,7 @@ from actstream import actions, action
 from actstream.models import followers, following, action_object_stream
 from django.utils.timezone import now
 from bourseLibre.models import Suivis
-from bourseLibre.forms import AdresseForm
+from bourseLibre.forms import AdresseForm, AdresseForm2
 from bourseLibre.constantes import Choix as Choix_global
 
 from bourseLibre.views import testIsMembreAsso
@@ -795,13 +795,17 @@ def ajouterAdresseArticle(request, id_article):
     article = Article.objects.get(id=id_article)
     form = AdresseArticleForm(request.POST or None)
     form_adresse = AdresseForm(request.POST or None)
+    form_adresse2 = AdresseForm2(request.POST or None)
 
-    if form.is_valid() and form_adresse.is_valid():
-        adresse = form_adresse.save()
+    if form.is_valid() and (form_adresse.is_valid() or form_adresse2.is_valid()):
+        if 'adressebtn' in request.POST:
+            adresse = form_adresse.save()
+        else:
+            adresse = form_adresse2.save()
         form.save(article, adresse)
         return lireArticle_id(request, id_article)
 
-    return render(request, 'blog/ajouterAdresse.html', {'article':article, 'form': form, 'form_adresse':form_adresse })
+    return render(request, 'blog/ajouterAdresse.html', {'article':article, 'form': form, 'form_adresse':form_adresse, 'form_adresse2':form_adresse2 })
 
 
 class SupprimerAdresseArticle(DeleteView):
