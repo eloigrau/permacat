@@ -16,6 +16,7 @@ from django.utils.encoding import force_text
 from django.template.defaultfilters import slugify
 from django.core.files.base import ContentFile
 from django.forms import ClearableFileInput
+from django.template.defaultfilters import filesizeformat
 
 from .models import Album, Photo, Document
 from bourseLibre.models import Asso
@@ -239,15 +240,19 @@ class PhotoForm(forms.ModelForm):
             'image': ClearableFileInput(attrs={'multiple': True}),
         }
 
+    def clean_content(self):
+        content = self.cleaned_data['image']
+        if content._size > settings.MAX_UPLOAD_SIZE:
+            raise forms.ValidationError(_('Please keep filesize under %s. Current filesize %s') % (
+            filesizeformat(settings.MAX_UPLOAD_SIZE), filesizeformat(content._size)))
+        return content
+
     def __init__(self, request, *args, **kwargs):
         super(PhotoForm, self).__init__(*args, **kwargs)
      #   self.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if request.user.estMembre_str(x.abreviation)]
 
     def save(self, request, commit=True):
         instance = super(PhotoForm, self).save(commit=False)
-
-
-
         return instance
 
 

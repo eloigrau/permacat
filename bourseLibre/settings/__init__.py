@@ -144,7 +144,6 @@ INSTALLED_APPS = [
 ]
 if LOCALL:
     INSTALLED_APPS.append('debug_toolbar',)
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
 
 # MIDDLEWARE_CLASSES = (
 #     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -297,8 +296,10 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-DATA_UPLOAD_MAX_MEMORY_SIZE = 12485760
+DATA_UPLOAD_MAX_MEMORY_SIZE = 20971520
+MAX_UPLOAD_SIZE = 20971520
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 # LOCATION_FIELD = {
 #     'map.provider': 'openstreetmap',
@@ -466,6 +467,10 @@ CRONJOBS = [
     ('0 6 * * *', 'bourseLibre.views_notifications.envoyerEmails',[], {}, ' --settings=bourseLibre.settings.production >> /home/udjango/cron-envoimails-Logs.log 2>&1')
 ]
 
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
+}
 #PHOTOLOGUE_PATH = MEDIA_ROOT + "photologue/"
 
 #on met ça a la fin pour importer les settings de production sur le serveur
