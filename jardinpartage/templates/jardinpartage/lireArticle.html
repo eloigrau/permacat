@@ -19,7 +19,7 @@
                 archivé
             </span>
             {%endif%}
-            {% if article.estModifiable%}
+            {% if article.estModifiable %}
             <span class="badge badge-info">
                 modifiable
             </span>
@@ -60,7 +60,7 @@
     </div>
     <div class="col-md-2">
         <p>
-        {%if article.auteur == request.user %}
+        {%if article.auteur == request.user or request.user.is_superuser %}
 		<div class="btn-group">
             <a href="{% url 'jardinpartage:modifierArticle' slug=article.slug %}">
                <button type="button" class="btn btn-sm btn-warning">
@@ -71,7 +71,7 @@
                 <span class="glyphicon glyphicon-plus"></span>&nbsp;Supprimer
                </button></a>
         </div>
-        {%elif article.estModifiable%}
+        {%elif article.estModifiable %}
             <a href="{% url 'jardinpartage:modifierArticle' slug=article.slug %}">
                <button type="button" class="btn btn-sm btn-warning">
                 <span class="glyphicon glyphicon-plus"></span>&nbsp;Modifier
