@@ -1159,14 +1159,14 @@ def inscription_permagora(request):
         request.user.adherent_scic = False
         request.user.save()
         url = reverse('presentation_asso', kwargs={'asso': 'scic'})
-        message = str(request.user) + " s'est inscrit dans le groupe PermAgora"
+        message = str(request.user) + " s'est retiré du groupe PermAgora"
         action.send(request.user, verb='inscription_permagora', target=asso, url=url,
                     description="s'est inscrit dans le groupe PermAgora")
     else:
         request.user.adherent_scic = True
         request.user.save()
         url = reverse('presentation_asso', kwargs={'asso': 'scic'})
-        message = str(request.user) + " s'est retiré du groupe PermAgora"
+        message = str(request.user) + " s'est inscrit dans le groupe PermAgora"
         action.send(request.user, verb='inscription_permagora', target=asso, url=url,
                     description="s'est retiré du groupe PermAgora")
     return redirect('presentation_asso', asso='scic')

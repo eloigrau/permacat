@@ -26,11 +26,11 @@
 
 		{% if request.user.adherent_scic %}
 		<p class="textcenter">
-			 <a class="btn btn-success" href="{% url 'inscription_permagora' %}"> Je suis adhérent : Je me désinscris du groupe</a>
+			 <a class="btn btn-success" href="{% url 'inscription_permagora' %}"> Je suis inscrit -> Je me désinscris du groupe</a>
 		</p>
 		{% else %}
 		<p class="textcenter">
-			 <a class="btn btn-success" href="{% url 'inscription_permagora' %}"> Je ne suis pas adhérent : Je m'inscris dans le groupe</a>
+			 <a class="btn btn-success" href="{% url 'inscription_permagora' %}"> Je ne fais pas partie du groupe -> Je m'inscris </a>
 		</p>
 		{% endif %}
 	</div>
