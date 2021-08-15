@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ election }}</h1>
+
+<p>{{ election.description }}</p>
+
+<div>
+  {% for candidate in election.results %}
+  <div class="container">
+    <div class="col-md-3"><b>{{ candidate.name }}</b>
+      ({{ candidate.vote_set.count }} vote{{ candidate.vote_set.count|pluralize }})</div>
+    <div class="col-md-9">{% include "jugemaj/bar.html" %}</div>
+  </div>
+  {% endfor %}
+</div>
+
+<p class="text-center">
+<a class="btn btn-info" href="{% url "jugemaj:create_candidate" slug=election.slug %}">Nouveau</a>
+<a class="btn btn-primary" href="{% url "jugemaj:vote" slug=election.slug %}">voter</a>
+</p>
+
+{% endblock %}
