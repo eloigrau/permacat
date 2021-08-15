@@ -14,7 +14,7 @@
 {% if user.is_authenticated %}
     <ul class="nav navbar-nav  d-flex justify-content-between  w-100">
         <li class="nav-item dropdown nav5 3to5">
-                <a class="nav-link dropdown-toggle navbar-menu "  href="{% url 'presentation_asso' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle navbar-menu "  href="{% url 'presentation_groupes' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {% fontawesome_icon 'link' %} Groupes
                 </a>
                 <ul class="dropdown-menu dropdown-menu1 nav5-dropdown" aria-labelledby="navbarDropdownMenuLink">
@@ -24,7 +24,7 @@
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle"  href="test" >PermaCat</a>
                         <ul class="dropdown-menu nav5-dropdown-submenu">
-                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' %}"> Présentation</a></li>
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='pc' %}"> Présentation</a></li>
    {% if request.user.adherent_pc %}
                         <li> <a class="dropdown-item" href="{% url 'agora' asso='pc'%}"><i class='fa fa-asterisk' ></i>  Salon de discussion</a></li>
 
@@ -104,7 +104,7 @@
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle"  href="test">Ramène Ta Graine</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
-                       <li> <a class="dropdown-item" href="{% url 'presentation_asso_rtg' %}"> Présentation </a></li>
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='rtg' %}"> Présentation </a></li>
    {% if request.user.adherent_rtg %}
                             <li> <a class="dropdown-item" href="{% url 'agora' asso='rtg'%}"><i class='fa fa-asterisk' ></i> Salon de discussion</a></li>
                             <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='rtg'%}"><i class='fa fa-comments' ></i> Articles du forum</a></li>
@@ -122,7 +122,7 @@
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle"  href="test">Fermille</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
-                       <li> <a class="dropdown-item" href="{% url 'presentation_asso_fer' %}"> Présentation</a></li>
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='fer' %}"> Présentation</a></li>
    {% if request.user.adherent_fer %}
                             <li class="divider" role="separator"></li>
                             <li> <a class="dropdown-item" href="{% url 'agora' asso='fer'%}"><i class='fa fa-asterisk' ></i> Salon de discussion</a></li>
@@ -138,7 +138,7 @@
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle"  href="test">Gardiens de la Terre</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
-                       <li> <a class="dropdown-item" href="{% url 'presentation_asso_gt' %}"> Présentation</a></li>
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso'   asso='gt' %}"> Présentation</a></li>
    {% if request.user.adherent_gt %}
                             <li class="divider" role="separator"></li>
                             <li> <a class="dropdown-item" href="{% url 'agora' asso='fer'%}"><i class='fa fa-asterisk' ></i> Salon de discussion</a></li>
@@ -163,10 +163,26 @@
                     </li>
                     {%endcomment%}
 
+
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle"  href="test">PermAgora</a>
+                        <ul class="dropdown-menu  nav5-dropdown-submenu">
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso'  asso='scic' %}"> Présentation </a></li>
+   {% if request.user.adherent_scic %}
+                            <li> <a class="dropdown-item" href="{% url 'agora' asso='scic'%}"><i class='fa fa-asterisk' ></i> Salon de discussion</a></li>
+                            <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='scic'%}"><i class='fa fa-comments' ></i> Articles du forum</a></li>
+
+                          <li class="divider" role="separator"></li>
+                            <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='scic' %}"><i class='fa fa-address-book' ></i> Annuaire  </a></li>
+                          <li> <a class="dropdown-item" href="{% url 'carte'  asso='scic' %}"><i class='fa fa-compass' ></i>  Carte  </a></li>
+                            <li class="divider" role="separator"></li>
+   {% endif %}
+                        </ul>
+                    </li>
                 </ul>
         </li>
         <li class="nav-item dropdown nav5 3to5">
-            <a class="nav-link dropdown-toggle navbar-menu "  href="{% url 'presentation_asso' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle navbar-menu "  href="{% url 'blog:acceuil' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-wrench iconleft" ></i> Agora
             </a>
 
@@ -337,7 +353,7 @@
 
     <ul class="nav navbar-nav mr-auto navbar-left">
         <li class="nav-item dropdown nav5 3to5">
-                <a class="nav-link dropdown-toggle navbar-menu "  href="{% url 'presentation_asso' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle navbar-menu "  href="{% url 'presentation_groupes' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {% fontawesome_icon 'link' %} Les associations
                 </a>
                 <ul class="dropdown-menu dropdown-menu1 nav5-dropdown" aria-labelledby="navbarDropdownMenuLink">
@@ -345,7 +361,7 @@
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle"  href="test" >PermaCat</a>
                         <ul class="dropdown-menu nav5-dropdown-submenu">
-                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' %}"> Présentation</a></li>
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='pc' %}"> Présentation</a></li>
 
                             <li class="divider" role="separator"></li>
                        <li> <a class="dropdown-item" href="{% url 'charte' %}"> Charte </a></li>
@@ -359,25 +375,32 @@
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle"  href="test">Ramène Ta Graine</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
-                       <li> <a class="dropdown-item" href="{% url 'presentation_asso_rtg' %}"> Présentation </a></li>
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='rtg' %}"> Présentation </a></li>
                         </ul>
                     </li>
 
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle"  href="test">Fermille</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
-                       <li> <a class="dropdown-item" href="{% url 'presentation_asso_fer' %}"> Présentation</a></li>
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='fer' %}"> Présentation</a></li>
                       </ul>
                     </li>
 
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle"  href="test">Gardiens de la Terre</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
-                       <li> <a class="dropdown-item" href="{% url 'presentation_asso_gt' %}"> Présentation</a></li>
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='gt' %}"> Présentation</a></li>
 
                       </ul>
                     </li>
 
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle"  href="test">PermAgora</a>
+                        <ul class="dropdown-menu  nav5-dropdown-submenu">
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='scic' %}"> Présentation</a></li>
+
+                      </ul>
+                    </li>
                 </ul>
         </li>
 

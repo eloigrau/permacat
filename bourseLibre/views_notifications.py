@@ -86,6 +86,8 @@ def getNotificationsParDate(request, limiter=True, orderBy="-timestamp"):
         actions = actions | Action.objects.filter(Q(verb__icontains='fer'))
     if request.user.adherent_gt:
         actions = actions | Action.objects.filter(Q(verb__icontains='gt'))
+    if request.user.adherent_scic:
+        actions = actions | Action.objects.filter(Q(verb__icontains='scic'))
 
     actions = actions.order_by(orderBy).distinct()
 

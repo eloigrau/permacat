@@ -6,20 +6,8 @@
 
 <h2 class = "textcenter rowbienvenue">PermaCat</h2>
 
-{%if request.user.adherent_pc %}
-<div class="row">
-	<div class="col-sm-12">
-		<div class="btn-group">
-			<a href="{% url 'blog:index_projets' %}" class="btn btn-success">   Projets         </a>
-			 <a class="btn btn-success" href="{% url 'annuaire'  asso='pc' %}"> Carte des inscrits </a>
-			 <a class="btn btn-success" href="{% url 'carte' asso='pc' %}"> Carte des adhérents </a>
-			 <a class="btn btn-success" href="{% url 'agora' asso='pc' %}"> Salon permacat </a>
-			<a class="btn btn-success" href="{% url 'charte' %}"> Charte </a>
-			<a class="btn btn-success" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a>
-		</div>
-	</div>
-</div>
-				{% endif%}
+{% include "asso/presentation_asso_template.html" with adherent=request.user.adherent_pc assos='pc' %}
+
 <h4 class = "textcenter rowbienvenue">Qui sommes nous ?</h4>
 {% endblock %}
 {% block content %}

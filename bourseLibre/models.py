@@ -158,6 +158,13 @@ class Asso(models.Model):
             return Profil.objects.filter(accepter_annuaire=True, adherent_fer=True).order_by("username")
         elif self.abreviation == "gt":
             return Profil.objects.filter(accepter_annuaire=True, adherent_gt=True).order_by("username")
+        elif self.abreviation == "gt":
+            return Profil.objects.filter(accepter_annuaire=True, adherent_scic=True).order_by("username")
+        return  []
+
+
+    def get_absolute_url(self):
+        return reverse_lazy('presentation_asso', asso=self.abreviation)
 
 class Profil(AbstractUser):
     username_validator = ASCIIUsernameValidator()
@@ -178,6 +185,7 @@ class Profil(AbstractUser):
     adherent_rtg = models.BooleanField(verbose_name="Je suis adhérent de Ramene Ta Graine", default=False)
     adherent_fer = models.BooleanField(verbose_name="Je suis adhérent de Fermille", default=False)
     adherent_gt = models.BooleanField(verbose_name="Je suis adhérent de Gardiens de la Terre", default=False)
+    adherent_scic = models.BooleanField(verbose_name="Je suis intéressé par l'asso PermAgora", default=False)
     accepter_conditions = models.BooleanField(verbose_name="J'ai lu et j'accepte les conditions d'utilisation du site", default=False, null=False)
     accepter_annuaire = models.BooleanField(verbose_name="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous", default=True)
     adherent_jp = models.BooleanField(verbose_name="Je suis intéressé.e par les jardins partagés", default=False)
@@ -226,6 +234,10 @@ class Profil(AbstractUser):
             return self.adherent_rtg
         elif asso == "fer":
             return self.adherent_fer
+        elif asso == "jp":
+            return self.adherent_jp
+        elif asso == "scic":
+            return self.adherent_scic
 
     @property
     def statutMembre_str(self):
@@ -253,6 +265,16 @@ class Profil(AbstractUser):
                 return "membre actif de 'Fermille'"
             else:
                 return "Non membre de 'Fermille'"
+        if asso == "jp":
+            if self.adherent_fer:
+                return "membre actif des 'Jardins Partagés'"
+            else:
+                return "Non membre des 'Jardins Partagés'"
+        if asso == "scic":
+            if self.adherent_fer:
+                return "membre actif de 'PermAgora'"
+            else:
+                return "Non membre de 'PermAgora'"
 
     def estMembre_str(self, nom_asso):
         if nom_asso == "Public" or nom_asso == "public":

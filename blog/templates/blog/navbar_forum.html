@@ -88,6 +88,21 @@
         </div>
     </li>
     {% endif %}
+
+
+     {% if request.user.adherent_scic %}
+    <li class="nav-item dropdown">
+        <button type="button" class="btn dropdown-toggle btn-primary btn-menu-forum btn-block" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
+        data-target = "#idDossiers_scic"> PermAgora</button>
+        <div class="dropdown-menu textcenter dropdown-menu-forum " aria-labelledby="menuAuteur"  id="idDossiers_scic">
+             <a class=" dropdown-item " href="{% url 'blog:index_asso' asso='scic'%}"><span>Tous les articles PermAgora</span></a>
+            <div class="dropdown-divider"></div>
+            {% for categorie_id, cat_nom, cat_coul in categorie_list_gt %}
+             <a class=" dropdown-item " style="background:#d0f4de;" href="{% url 'blog:index_asso' asso='scic'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+            {% endfor %}
+        </div>
+    </li>
+    {% endif %}
     <li class="nav-item dropdown">
         <a href="{% url 'blog:index' %}">
             <button type="button" class="btn  btn-success btn-menu-forum btn-block" > Tous les articles du forum <i class="fa fa-arrow-right iconright"></i>

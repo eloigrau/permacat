@@ -3,20 +3,10 @@
 
 {% block subtitle %}
 
-<h2 class="textcenter rowbienvenue" xmlns="http://www.w3.org/1999/html">FERMILLE</h2>
+<h2 class="textcenter rowbienvenue">Fermille</h2>
 
-{%if request.user.adherent_fer %}
-<div class="row">
-	<div class="col-sm-12">
-		<div class="btn-group">
-			 <a class="btn btn-success" href="{% url 'annuaire'  asso='fer' %}"> Annuaire des inscrits </a>
-			 <a class="btn btn-success" href="{% url 'carte' asso='fer' %}"> Carte des adhérents </a>
-			 <a class="btn btn-success" href="{% url 'agora' asso='fer' %}"> Salon Fermille </a>
-			 <a class="btn btn-success" href="{% url 'blog:index_asso' asso='fer'%}"> Forum Fermille </a>
-		</div>
-	</div>
-</div>
-				{% endif%}
+{% include "asso/presentation_asso_template.html" with adherent=request.user.adherent_fer assos='fer' %}
+
 {% endblock %}
 {% block content %}
 <div class="row justify-content-center">

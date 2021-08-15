@@ -74,3 +74,7 @@ def couperTexte(value, nb):
         return value[:nb-3] + "..."
     return value
 
+
+@register.filter(is_safe=True)
+def adherent_asso(user, asso):
+    return asso.is_membre(user)

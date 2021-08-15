@@ -5,18 +5,9 @@
 
 <h2 class = "textcenter rowbienvenue">Les Gardiens de la Terre</h2>
 
-{%if request.user.adherent_gt %}
-<div class="row">
-	<div class="col-sm-12">
-		<div class="btn-group">
-			 <a class="btn btn-success" href="{% url 'annuaire'  asso='gt' %}"> Annuaire des inscrits </a>
-			 <a class="btn btn-success" href="{% url 'carte' asso='gt' %}"> Carte des inscrits </a>
-			 <a class="btn btn-success" href="{% url 'agora' asso='gt' %}"> Salon de discussion </a>
-			 <a class="btn btn-success" href="{% url 'blog:index_asso' asso='gt'%}"> Forum des Gardiens </a>
-		</div>
-	</div>
-</div>
-{% endif%}
+
+{% include "asso/presentation_asso_template.html" with adherent=request.user.adherent_gt assos='gt' %}
+
 <h4 class = "textcenter rowbienvenue">Présentation de l'association </h4>
 {% endblock %}
 {% block content %}

@@ -422,17 +422,12 @@ def admin_asso_rtg(request):
     ]
     return render(request, 'asso/admin_asso_rtg.html', {"listeFichers":listeFichers} )
 
-def presentation_asso(request):
-    return render(request, 'asso/presentation_asso.html')
 
-def presentation_asso_rtg(request):
-    return render(request, 'asso/rtg/presentation_asso.html')
+def presentation_asso(request, asso):
+    return render(request, 'asso/'+ asso + "/presentation_asso.html")
 
-def presentation_asso_fer(request):
-    return render(request, 'asso/fermille/presentation_asso.html')
-
-def presentation_asso_gt(request):
-    return render(request, 'asso/gt/presentation_asso.html')
+def presentation_groupes(request, asso):
+    return render(request, 'asso/presentation_groupes.html')
 
 @login_required
 def telechargements_asso(request):
@@ -475,7 +470,7 @@ def carte(request, asso):
     data = simplejson.loads(reponse.text)
     ev = data["data"]
 
-    return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': titre, 'data':ev,  } )
+    return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': titre, 'data':ev, "asso":asso} )
 
 
 # @login_required
@@ -797,9 +792,9 @@ def liens(request):
         'https://grandjardin.jardiniersdunous.org /',
         'https://www.tizoom.fr',
         'https://transiscope.org',
+        'https://www.mobicoop.fr/',
         'https://www.balotilo.org/',
         'http://terre-avenirs-peyrestortes.org/',
-        'http://www.peyrestroc.org',
         'https://www.facebook.com/ramenetagraine/',
         'http://sel66.free.fr',
         'https://colibris-universite.org/mooc-permaculture/wakka.php?wiki=PagePrincipale',
@@ -818,7 +813,7 @@ def liens(request):
         'https://cce-66.wixsite.com/mysite',
         'https://jardindenat.wixsite.com/website',
         'https://www.permapat.com',
-        'https://permaculturelne.herokuapp.com',
+        #'https://permaculturelne.herokuapp.com',
         'https://framasoft.org',
         'https://alternatiba.eu/alternatiba66/',
         'http://www.le-message.org/',
@@ -1157,6 +1152,24 @@ def inscription_newsletter(request):
         return render(request, 'merci.html', {'msg' :"Vous êtes inscrits à la newsletter"})
     return render(request, 'registration/inscription_newsletter.html', {'form':form})
 
+
+def inscription_permagora(request):
+    asso=Asso.objects.get(abreviation='scic')
+    if request.user.adherent_scic:
+        request.user.adherent_scic = False
+        request.user.save()
+        url = reverse('presentation_asso', kwargs={'asso': 'scic'})
+        message = str(request.user) + " s'est inscrit dans le groupe PermAgora"
+        action.send(request.user, verb='inscription_permagora', target=asso, url=url,
+                    description="s'est inscrit dans le groupe PermAgora")
+    else:
+        request.user.adherent_scic = True
+        request.user.save()
+        url = reverse('presentation_asso', kwargs={'asso': 'scic'})
+        message = str(request.user) + " s'est retiré du groupe PermAgora"
+        action.send(request.user, verb='inscription_permagora', target=asso, url=url,
+                    description="s'est retiré du groupe PermAgora")
+    return redirect('presentation_asso', asso='scic')
 
 @login_required
 def contacter_newsletter(request):
