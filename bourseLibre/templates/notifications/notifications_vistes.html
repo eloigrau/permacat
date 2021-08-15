@@ -50,7 +50,7 @@
         {% for hit, info in hit_count.items %}
         <li class="list-group-item"  style="background-color:{{color}}">
             <a {%if hit %}href="{{ info.1 }} "{%endif%}>
-             ({{ info.0}}) {{hit}}
+             ({{ info.0}}) {{ info.2}} - {{hit}}
             </a>
         </li>
         {% endfor %}
