@@ -160,7 +160,7 @@ class Asso(models.Model):
             return Profil.objects.filter(accepter_annuaire=True, adherent_gt=True).order_by("username")
         elif self.abreviation == "scic":
             return Profil.objects.filter(accepter_annuaire=True, adherent_scic=True).order_by("username")
-        return  []
+        return []
 
 
     def get_absolute_url(self):
