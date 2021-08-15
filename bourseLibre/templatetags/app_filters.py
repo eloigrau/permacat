@@ -1,6 +1,7 @@
 from django import template
 from django.forms import CheckboxInput
 from django.utils.safestring import mark_safe
+from django.utils.text import slugify
 
 register = template.Library()
 
@@ -78,3 +79,7 @@ def couperTexte(value, nb):
 @register.filter(is_safe=True)
 def adherent_asso(user, asso):
     return asso.is_membre(user)
+
+@register.filter(is_safe=True)
+def slug(txt):
+    return slugify(txt)

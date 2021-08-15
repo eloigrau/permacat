@@ -1,14 +1,33 @@
 {% extends 'base_site.html' %}
-{% block subtitle %}Liens intéressants à nos yeux : {% endblock %}
+{% load app_filters %}
+{% block title %}Liens {% endblock %}
+{% block subtitle %}Liens intéressants : {% endblock %}
 
 {% block content %}
+
+<nav class="nav nav-tabs justify-content-center">
+    {%for cat in liens.keys %}
+          <a class="nav-item nav-link {% if forloop.counter == 1 %}active{% endif %}" href="#{{cat|slug}}" data-toggle="tab">{{cat}}</a>
+    {% endfor %}
+</nav>
+
+
+<div class="tab-content">
+    {%for cat, liens in liens.items %}
+        <div class="tab-pane fade  {% if forloop.counter == 1 %}active show {% endif %}" id="{{cat|slug}}">
+            <div class="contenu fiche">
 <div class="row">
 <div class="col">
     <ul class="list-group">
-{%for lien in liens%}
-        <li class="list-group-item" ><a href="{{lien}}" rel="external" target="_blank">{{lien}}</a></li>
-{%endfor%}
-</ul>
+
+            {%for lien in liens %}
+            <li class="list-group-item" ><a href="{{lien}}" rel="external" target="_blank">{{lien}}</a></li>
+            {% endfor %}
+    </ul></div></div>
+
+            </div>
+        </div>
+    {% endfor %}
 </div>
-</div>
+
  {% endblock %}

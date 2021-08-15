@@ -788,39 +788,46 @@ def cgu(request):
 
 @login_required
 def liens(request):
-    liens = [
+    liens = {"généraux" :[
         'https://grandjardin.jardiniersdunous.org /',
         'https://www.tizoom.fr',
         'https://transiscope.org',
         'https://www.mobicoop.fr/',
         'https://www.balotilo.org/',
+        'https://colibris-universite.org/mooc-permaculture/wakka.php?wiki=PagePrincipale',
+        'https://www.colibris-lemouvement.org/',
+        'https://www.hameaux-legers.org/',
+        'https://framasoft.org',
+        'https://alternatiba.eu/alternatiba66/',
+    ],
+        "sites locaux " :[
         'http://terre-avenirs-peyrestortes.org/',
         'https://www.facebook.com/ramenetagraine/',
+        'https://www.facebook.com/fermille/',
         'http://sel66.free.fr',
-        'https://colibris-universite.org/mooc-permaculture/wakka.php?wiki=PagePrincipale',
+        'https://ponteillanature.wixsite.com/eco-nature',
+        'https://cce-66.wixsite.com/mysite',
+        'https://jardindenat.wixsite.com/website',
+        'https://www.permapat.com',
         'https://ecocharte.herokuapp.com',
         'https://pacteacvi.herokuapp.com',
         'https://www.tropique-du-papillon.com',
         'http://www.pepiniere-passiflore.com/'
         'http://lagalline.net',
         'https://val-respire.wixsite.com/asso',
+        ],
+        "à propos de la monnaie": [
         'https://www.monnaielibreoccitanie.org/',
         'http://lejeu.org/',
         'http://soudaqui.cat/wordpress/',
-        'https://www.colibris-lemouvement.org/',
-        'https://www.hameaux-legers.org/',
-        'https://ponteillanature.wixsite.com/eco-nature',
-        'https://cce-66.wixsite.com/mysite',
-        'https://jardindenat.wixsite.com/website',
-        'https://www.permapat.com',
+        ],
+            "medias" : [
         #'https://permaculturelne.herokuapp.com',
-        'https://framasoft.org',
-        'https://alternatiba.eu/alternatiba66/',
         'http://www.le-message.org/',
         'https://reporterre.net/',
         'https://la-bas.org/',
-
-    ]
+        ]
+    }
     return render(request, 'liens.html', {'liens':liens})
 
 def fairedon(request):
