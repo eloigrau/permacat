@@ -158,7 +158,7 @@ class Asso(models.Model):
             return Profil.objects.filter(accepter_annuaire=True, adherent_fer=True).order_by("username")
         elif self.abreviation == "gt":
             return Profil.objects.filter(accepter_annuaire=True, adherent_gt=True).order_by("username")
-        elif self.abreviation == "gt":
+        elif self.abreviation == "scic":
             return Profil.objects.filter(accepter_annuaire=True, adherent_scic=True).order_by("username")
         return  []
 
