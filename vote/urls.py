@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^vote__/', include(vote_urls))
 """
 from django.conf.urls import url
-from . import views, views_wizard
+from . import views#, views_wizard
 from django.contrib.auth.decorators import login_required
 
 
