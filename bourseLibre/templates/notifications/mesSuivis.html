@@ -27,6 +27,24 @@
         <a href="{% url 'sereabonner' %}" class="btn btn-primary" type="button"> Se réabonner au forum/altermarché/conversations/projets/suffrages </a>
     </div>
 </div>
+        {% if follows_agora %}
+        <hr>
+    <div class="col-sm-12 textcenter">
+        <h5>Abonnements aux Salons de discussions </h5>
+        <p>Vous recevez des nouvelles par mail pour les Salons de discussions suivants :</p>
+        <table class="table2 table table-condensed tableprofils table-striped sortable">
+            {% for action in follows_agora %}
+                {% if action %}
+                <tr>
+                    <td> {{action.follow_object|filtrerSuivisAgora}} </td>
+                   <td>  <a href="{% url 'supprimerAction' actionid=action.id %}" class="btn btn-danger" type="button"> supprimer</a> </td>
+                </tr>
+                {%endif%}
+            {%endfor%}
+        </table>
+    </div>
+        {% endif %}
+        {% if follows_autres %}
         <hr>
     <div class="col-sm-12 textcenter">
         <h5>Abonnements particuliers </h5>
@@ -42,6 +60,7 @@
             {%endfor%}
         </table>
     </div>
+        {% endif %}
 
 </div>
 

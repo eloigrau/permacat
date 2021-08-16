@@ -905,8 +905,18 @@ class MessageGeneral(models.Model):
 
     @property
     def get_absolute_url(self):
-        return  reverse('agora', kwargs={'asso':self.asso.abreviation})
+        return reverse('agora', kwargs={'asso':self.asso.abreviation})
 
+    def save(self,):
+        suivis, created = Suivis.objects.get_or_create(nom_suivi='agora_' + str(self.asso.abreviation))
+        emails = [suiv.email for suiv in followers(suivis) if self.auteur != suiv and self.est_autorise(suiv)]
+        titre = "Nouveau commentaire dans l'agora " + str(self.asso.nom)
+        message = "Nouveau commentaire dans <a href='https://www.perma.cat" + self.get_absolute_url() + "'>" +"l'agora " + str(self.asso.nom) +  "</a>'"
+
+        if emails:
+            action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
+
+        return super(MessageGeneral, self).save()
 
 class Suivis(models.Model):
     nom_suivi = models.TextField(null=False, blank=False)

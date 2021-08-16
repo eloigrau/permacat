@@ -1050,16 +1050,18 @@ def prochaines_rencontres(request):
 def mesSuivis(request):
 
     follows = Follow.objects.filter(user=request.user)
-    follows_base, follows_autres = [], []
+    follows_base, follows_agora, follows_autres = [], [], []
     for action in follows:
         if not action.follow_object:
             action.delete()
         if str(action.follow_object) in Choix.suivisPossibles:
             follows_base.append(action)
+        elif 'agora' in str(action.follow_object):
+            follows_agora.append(action)
         else:
             follows_autres.append(action)
 
-    return render(request, 'notifications/mesSuivis.html', {'follows_base': follows_base, 'follows_autres':follows_autres})
+    return render(request, 'notifications/mesSuivis.html', {'follows_base': follows_base, 'follows_agora':follows_agora, 'follows_autres':follows_autres})
 
 @login_required
 def supprimerAction(request, actionid):
@@ -1091,6 +1093,7 @@ def agora(request, asso):
     asso = testIsMembreAsso(request, asso)
     if not isinstance(asso, Asso):
         raise PermissionDenied
+    suivis, created = Suivis.objects.get_or_create(nom_suivi="agora_" + str(asso.abreviation))
     messages = MessageGeneral.objects.filter(asso__abreviation=asso.abreviation).order_by("date_creation")
     form = MessageGeneralForm(request.POST or None) 
     if form.is_valid(): 
@@ -1101,8 +1104,9 @@ def agora(request, asso):
         group, created = Group.objects.get_or_create(name='tous')
         url = reverse('agora', kwargs={'asso':asso.abreviation})
         action.send(request.user, verb='envoi_salon_'+str(asso.abreviation), action_object=message, target=group, url=url, description="a envoyé un message dans le salon " + str(asso.nom))
-        return redirect(request.path) 
-    return render(request, 'agora.html', {'form': form, 'messages_echanges': messages, 'asso':asso})
+
+        return redirect(request.path)
+    return render(request, 'agora.html', {'form': form, 'messages_echanges': messages, 'asso':asso, 'suivis':suivis})
 
 # class ServiceWorkerView(View):
 #     def get(self, request, *args, **kwargs):
@@ -1283,3 +1287,18 @@ def modifier_message(request, id, type_msg, asso, ):
 
     return render(request, 'modifierCommentaire.html', {'form': form, })
 
+
+@login_required
+@csrf_exempt
+def suivre_agora(request, asso, actor_only=True):
+    asso = testIsMembreAsso(request, asso)
+    if not isinstance(asso, Asso):
+        raise PermissionDenied
+
+    suivi, created = Suivis.objects.get_or_create(nom_suivi='agora_' + str(asso.abreviation))
+
+    if suivi in following(request.user):
+        actions.unfollow(request.user, suivi)
+    else:
+        actions.follow(request.user, suivi, actor_only=actor_only)
+    return redirect('agora', asso=asso.abreviation)

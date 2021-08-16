@@ -3,6 +3,7 @@ from django.forms import CheckboxInput
 from django.utils.safestring import mark_safe
 from django.utils.text import slugify
 from bourseLibre.constantes import Choix
+from bourseLibre.models import Asso
 
 register = template.Library()
 
@@ -88,3 +89,12 @@ def slug(txt):
 @register.filter(is_safe=True)
 def filtrerSuivis(nomSuivis):
     return Choix.nomSuivis[str(nomSuivis)]
+
+@register.filter(is_safe=True)
+def filtrerSuivisAgora(nomSuivis):
+    try:
+        nomAsso = str(nomSuivis).split("_",1)[1]
+        asso = Asso.objects.get(abreviation=nomAsso)
+        return "Salon de discussion " + asso.nom
+    except:
+        return str(nomSuivis)
