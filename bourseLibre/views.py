@@ -205,6 +205,9 @@ def testIsMembreAsso(request, asso):
     return Asso.objects.get(nom="Public")
 
 
+def presentation_site_pkoi(request):
+    return render(request, 'asso/permacatpkoi.html')
+
 def presentation_site(request):
     return render(request, 'presentation_site.html')
 

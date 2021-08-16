@@ -472,6 +472,8 @@ GRAPH_MODELS = {
   'all_applications': True,
   'group_models': True,
 }
+
+NBMAX_ARTICLES = 3
 #PHOTOLOGUE_PATH = MEDIA_ROOT + "photologue/"
 
 #on met ça a la fin pour importer les settings de production sur le serveur

@@ -13,6 +13,12 @@
 	<div class="col-md-12">
 		<h4 class = "textcenter rowbienvenue">{% trans "Benvingut " %} {%if request.user.is_authenticated %} {{request.user.username}} {%endif%} !</h4>
 	</div>
+
+		<div class="row textcenter">
+			<div class="col">
+				<button class="btn btn-lg btn-primary" type="button"><a href="{% url 'presentation_site_pkoi'  %}"> Pourquoi s'inscrire sur Perma.Cat ?</a></button>
+
+			</div></div>
 </div>
 {%endblock%}
 {% block content %}
@@ -24,6 +30,8 @@
 				<a  href="{% url 'gallerie' %}" ><img class="imgbienvenue" src="{{STATIC_URL}}{{nomImage}}" alt="gallerie" ></a>
 			</div>
 		</div>
+
+
 		{% else %}
 		<div class="row" >
 					  <div class="col-sm-12 textcenter">

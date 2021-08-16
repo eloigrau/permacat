@@ -49,8 +49,8 @@
         <li class="list-group-item textcenter"  style="background-color:#ffc34d">Dernières visites</li>
         {% for hit, info in hit_count.items %}
         <li class="list-group-item"  style="background-color:{{color}}">
-            <a {%if hit %}href="{{ info.1 }} "{%endif%}>
-             {{ info.2}} - {{hit}}
+            <a {%if hit %}href="{{ info.0 }} "{%endif%}>
+             {{hit}} ({% for user in info.1 %}{{user}}{% if not forloop.last %}, {% endif %}{% endfor %})
             </a>
         </li>
         {% endfor %}

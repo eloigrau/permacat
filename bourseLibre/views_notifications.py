@@ -573,8 +573,20 @@ def envoyerEmailstest():
 
 def voirDerniersArticlesVus(request):
     hit_count = Hit.objects.all().order_by('-created').distinct()[:50]
-    ht = {str(x.hitcount.content_object):[x.created, x.hitcount.content_object.get_absolute_url, x.user] for i, x in enumerate(hit_count) if x.hitcount.content_object}
-    ht = {x:y for i, (x, y) in enumerate(ht.items()) if i < 12}
-    hit_count_perso = Hit.objects.filter(user=request.user.id).order_by('-created').distinct()[:50]
+    liste = {}
+    for i, x in enumerate(hit_count) :
+        if x.hitcount.content_object:
+            if not str(x.hitcount.content_object) in liste:
+                liste[str(x.hitcount.content_object)] = [x.hitcount.content_object.get_absolute_url, [x.user, ]]
+            else:
+                if x.user not in liste[str(x.hitcount.content_object)][1]:
+                    if len(liste[str(x.hitcount.content_object)][1]) > 10:
+                        liste[str(x.hitcount.content_object)][1].append("...")
+                    else:
+                        liste[str(x.hitcount.content_object)][1].append(x.user)
+    #ht = {str(x.hitcount.content_object):[x.created, x.hitcount.content_object.get_absolute_url, x.user] for i, x in enumerate(hit_count) if x.hitcount.content_object}
+    #ht = {str(x.hitcount.content_object):[x.created, x.hitcount.content_object.get_absolute_url, x.user] for i, x in enumerate(hit_count) if x.hitcount.content_object}
+    #ht = {x:y for i, (x, y) in enumerate(ht.items()) if i < 12}
+    hit_count_perso = Hit.objects.filter(user=request.user.id).order_by('-created').distinct()[:20]
 
-    return render(request, 'notifications/notifications_vistes.html', {'hit_count': ht, 'hit_count_perso': hit_count_perso})
+    return render(request, 'notifications/notifications_visites.html', {'hit_count': liste, 'hit_count_perso': hit_count_perso})

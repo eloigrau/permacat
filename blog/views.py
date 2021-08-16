@@ -11,7 +11,9 @@ from django.views.generic import ListView, UpdateView, DeleteView
 from actstream import actions, action
 from actstream.models import followers, following, action_object_stream
 from django.utils.timezone import now
+from datetime import datetime, timedelta
 from bourseLibre.models import Suivis
+from bourseLibre.settings import NBMAX_ARTICLES
 from bourseLibre.forms import AdresseForm, AdresseForm2
 from bourseLibre.constantes import Choix as Choix_global
 
@@ -87,6 +89,11 @@ def accueil(request):
 @login_required
 def ajouterArticle(request):
     form = ArticleForm(request, request.POST or None)
+    time_threshold = datetime.now() - timedelta(hours=24)
+    articles = Article.object.filter(auteur=request.user, date_creation__gt=time_threshold)
+    if len(articles) > NBMAX_ARTICLES:
+        render(request, 'erreur2.html', {"msg": "Vous avez déjà posté 3 articles depuis 24h, veuillez patienter un peu avant de poster un nouvel article, merci !"})
+
     if form.is_valid():
         article = form.save(request.user)
         url = article.get_absolute_url()

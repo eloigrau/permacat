@@ -298,6 +298,7 @@
                <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='public' %}"><i class='fa fa-address-book' ></i> Annuaire </a></li>
                 <li> <a class="dropdown-item" href="{% url 'carte'  asso='public' %}"><i class='fa fa-compass' ></i>  Carte </a></li>
                 <li class="divider" role="separator"></li>
+               <li> <a class="dropdown-item" href="{% url 'presentation_site_pkoi' %}"> Pourquoi utiliser le site ? </a></li>
                <li> <a class="dropdown-item" href="{% url 'faq' %}"> FAQ </a></li>
                <li> <a class="dropdown-item" href="{% url 'cgu' %}"> CGU </a></li>
                <li> <a class="dropdown-item" href="{% url 'liens' %}"> Liens </a></li>
@@ -358,7 +359,6 @@
                     {% fontawesome_icon 'link' %} Les associations
                 </a>
                 <ul class="dropdown-menu dropdown-menu1 nav5-dropdown" aria-labelledby="navbarDropdownMenuLink">
-                 <li class="divider" role="separator"></li>
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle"  href="test" >PermaCat</a>
                         <ul class="dropdown-menu nav5-dropdown-submenu">
@@ -386,7 +386,7 @@
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='fer' %}"> Présentation</a></li>
                       </ul>
                     </li>
-
+                    {% comment %}
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle"  href="test">Gardiens de la Terre</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
@@ -394,6 +394,7 @@
 
                       </ul>
                     </li>
+                    {% endcomment %}
 
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle"  href="test">PermAgora</a>
@@ -411,6 +412,7 @@
               Le site
             </a>
             <ul class="dropdown-menu dropdown-menu1  nav2-dropdown" aria-labelledby="navbarAbout">
+                <li> <a class="dropdown-item" href="{% url 'presentation_site_pkoi' %}"> Pourquoi utiliser le site ? </a></li>
                <li> <a class="dropdown-item" href="{% url 'contact_admins' %}"> Nous contacter</a></li>
                     <li class="divider" role="separator"></li>
                <li> <a class="dropdown-item" href="{% url 'cgu' %}"> CGU </a></li>
