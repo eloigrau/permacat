@@ -75,21 +75,6 @@
     </li>
     {% endif %}
 
-     {% if request.user.adherent_gt %}
-    <li class="nav-item dropdown">
-        <button type="button" class="btn dropdown-toggle btn-primary btn-menu-forum btn-block" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
-        data-target = "#idDossiers_gt"> Gardiens de la Terre</button>
-        <div class="dropdown-menu textcenter dropdown-menu-forum " aria-labelledby="menuAuteur"  id="idDossiers_gt">
-             <a class=" dropdown-item " href="{% url 'blog:index_asso' asso='gt'%}"><span>Tous les articles Gardiens de la terre</span></a>
-            <div class="dropdown-divider"></div>
-            {% for categorie_id, cat_nom, cat_coul in categorie_list_gt %}
-             <a class=" dropdown-item " style="background:#d0f4de;" href="{% url 'blog:index_asso' asso='gt'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
-            {% endfor %}
-        </div>
-    </li>
-    {% endif %}
-
-
      {% if request.user.adherent_scic %}
     <li class="nav-item dropdown">
         <button type="button" class="btn dropdown-toggle btn-primary btn-menu-forum btn-block" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"

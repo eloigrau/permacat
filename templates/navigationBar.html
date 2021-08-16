@@ -134,7 +134,7 @@
    {% endif %}
                       </ul>
                     </li>
-
+   {% comment %}
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle"  href="test">Gardiens de la Terre</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
@@ -151,6 +151,7 @@
                       </ul>
                     </li>
 
+   {% endcomment %}
                     {%comment%}
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle"  href="test">Jardins Partagés</a>
@@ -183,7 +184,7 @@
         </li>
         <li class="nav-item dropdown nav5 3to5">
             <a class="nav-link dropdown-toggle navbar-menu "  href="{% url 'blog:acceuil' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-wrench iconleft" ></i> Agora
+                <i class="fa fa-wrench iconleft" ></i> Activités
             </a>
 
             <ul class="dropdown-menu dropdown-menu1 nav5-dropdown" aria-labelledby="navbarDropdownMenuLink">

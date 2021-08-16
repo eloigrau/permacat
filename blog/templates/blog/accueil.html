@@ -156,11 +156,6 @@
                          Salon Fermille
                 </a>
                     {% endif %}
-                {% if request.user.adherent_gt %}
-                <a class=" dropdown-item " href="{% url 'agora' asso='gt' %}">
-                         Salon Gardiens de la Terre
-                </a>
-                    {% endif %}
                <div class="dropdown-divider"></div>
                  <a class=" dropdown-item "href="{% url 'conversations' %}">
                        Conversations privées
