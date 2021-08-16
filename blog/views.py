@@ -90,9 +90,9 @@ def accueil(request):
 def ajouterArticle(request):
     form = ArticleForm(request, request.POST or None)
     time_threshold = datetime.now() - timedelta(hours=24)
-    articles = Article.object.filter(auteur=request.user, date_creation__gt=time_threshold)
-    if len(articles) > NBMAX_ARTICLES:
-        render(request, 'erreur2.html', {"msg": "Vous avez déjà posté 3 articles depuis 24h, veuillez patienter un peu avant de poster un nouvel article, merci !"})
+    articles = Article.objects.filter(auteur=request.user, date_creation__gt=time_threshold)
+    if not request.user.is_superuser and len(articles) > NBMAX_ARTICLES:
+        return render(request, 'erreur2.html', {"msg": "Vous avez déjà posté %s articles depuis 24h, veuillez patienter un peu avant de poster un nouvel article, merci !"% NBMAX_ARTICLES})
 
     if form.is_valid():
         article = form.save(request.user)
