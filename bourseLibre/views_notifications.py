@@ -580,8 +580,10 @@ def voirDerniersArticlesVus(request):
                 liste[str(x.hitcount.content_object)] = [x.hitcount.content_object.get_absolute_url, [x.user, ]]
             else:
                 if x.user not in liste[str(x.hitcount.content_object)][1]:
-                    if len(liste[str(x.hitcount.content_object)][1]) > 10:
+                    if len(liste[str(x.hitcount.content_object)][1]) == 10:
                         liste[str(x.hitcount.content_object)][1].append("...")
+                    elif len(liste[str(x.hitcount.content_object)][1]) > 10:
+                        pass
                     else:
                         liste[str(x.hitcount.content_object)][1].append(x.user)
     #ht = {str(x.hitcount.content_object):[x.created, x.hitcount.content_object.get_absolute_url, x.user] for i, x in enumerate(hit_count) if x.hitcount.content_object}

@@ -14,11 +14,13 @@
 		<h4 class = "textcenter rowbienvenue">{% trans "Benvingut " %} {%if request.user.is_authenticated %} {{request.user.username}} {%endif%} !</h4>
 	</div>
 
-		<div class="row textcenter">
-			<div class="col">
+		 {% if not request.user.is_authenticated %}
+		<div class="row-sm-12 justify-content-center">
+			<div class="col textcenter">
 				<button class="btn btn-lg btn-primary" type="button"><a href="{% url 'presentation_site_pkoi'  %}"> Pourquoi s'inscrire sur Perma.Cat ?</a></button>
-
-			</div></div>
+			</div>
+		</div>
+		{% endif %}
 </div>
 {%endblock%}
 {% block content %}
@@ -69,6 +71,15 @@
 	<div class="col-md-6 col-sm-12 my-auto">
 		<div class="row">
 			<div class="col-md-12">
+				{% if votes %}
+					<div class="row" >
+					  <div class="col-sm-12 textcenter" style ="color:#0f7407;">
+						{% for vote in votes %}
+						 <p> <b><a href="{{vote.get_absolute_url}}">Un vote est en cours : {{vote.titre|truncatechars:20}}. Votez !</a></b></p>
+						{% endfor %}
+					  </div>
+					</div>
+				{%endif%}
 				{% if nbExpires %}
 					<hr>
 					<div class="row" >

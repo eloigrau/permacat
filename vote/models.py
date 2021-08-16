@@ -167,6 +167,7 @@ class Suffrage(SuffrageBase):
             statut = (2, "Le vote n'a pas encore démarré ")
         return statut
 
+
     @property
     def get_couleur(self):
         return Choix.get_couleur(self.type_vote)

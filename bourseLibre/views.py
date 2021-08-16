@@ -29,6 +29,7 @@ from django.http import Http404
 
 from blog.models import Article, Projet, EvenementAcceuil, Evenement
 from ateliers.models import Atelier
+from vote.models import Suffrage, Vote
 from jardinpartage.models import Article as Article_jardin
 
 from django.contrib import messages
@@ -159,8 +160,8 @@ def bienvenue(request):
         nbNotif = getNbNewNotifications(request)
         nbExpires = getNbProduits_expires(request)
 
-
     if not request.user.is_anonymous:
+        votes = Suffrage.objects.filter(start_time__lt=now, end_time__gt=now)
         derniers_articles = Article.objects.filter(estArchive=False).order_by('-id')
         for nomAsso in Choix_global.abreviationsAsso:
             if not getattr(request.user, "adherent_" + nomAsso):
@@ -180,11 +181,11 @@ def bienvenue(request):
             if not getattr(request.user, "adherent_" + nomAsso):
                 derniers_articles_modif = derniers_articles_modif.exclude(asso__abreviation=nomAsso)
     else:
-        derniers_articles, derniers_articles_comm, derniers_articles_modif = [], [], []
+        derniers_articles, derniers_articles_comm, derniers_articles_modif, votes = [], [], [], []
 
     derniers = sorted(set([x for x in itertools.chain(derniers_articles_comm[::-1][:8], derniers_articles_modif[::-1][:8], derniers_articles[:8], )]), key=lambda x:x.date_modification if x.date_modification else x.date_creation)[::-1]
 
-    return render(request, 'bienvenue.html', {'nomImage':nomImage, "nbNotif": nbNotif , "nbExpires":nbExpires, "evenements":evenements, "evenements_semaine":evenements_semaine, "derniers_articles":derniers})
+    return render(request, 'bienvenue.html', {'nomImage':nomImage, "nbNotif": nbNotif , "nbExpires":nbExpires, "evenements":evenements, "evenements_semaine":evenements_semaine, "derniers_articles":derniers, 'votes':votes})
 
 class MyException(Exception):
     pass
