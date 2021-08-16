@@ -1,5 +1,5 @@
 {% extends 'base_notifications.html' %}
-
+{% load app_filters %}
 {% block subtitle %}
 <h4>Mes Abonnements</h4>
 <p>Retrouvez ici toutes les pages auxquelles vous êtes abonné.e.s (c'est à dire les pages pour lesquelles vous recevez une info par mail). Cliquez sur "supprimer" pour ne plus recevoir de mail pour ces infos</p>
@@ -9,8 +9,30 @@
 
 <div class="row justify-content-center">
     <div class="col-sm-12 textcenter">
+        <h5>Abonnements généraux </h5>
+        <p>Vous recevez des nouvelles par mail pour chaque nouveau :</p>
         <table class="table2 table table-condensed tableprofils table-striped sortable">
-            {% for action in actions %}
+            {% for action in follows_base %}
+                {% if action %}
+                <tr>
+                    <td> {{action.follow_object|filtrerSuivis}} </td>
+                   <td>  <a href="{% url 'supprimerAction' actionid=action.id %}" class="btn btn-danger" type="button"> supprimer</a> </td>
+                </tr>
+                {%endif%}
+            {%endfor%}
+        </table>
+
+<div class="row justify-content-center">
+    <div class="col-sm-12 textcenter">
+        <a href="{% url 'sereabonner' %}" class="btn btn-primary" type="button"> Se réabonner au forum/altermarché/conversations/projets/suffrages </a>
+    </div>
+</div>
+        <hr>
+    <div class="col-sm-12 textcenter">
+        <h5>Abonnements particuliers </h5>
+        <p>Vous recevez des nouvelles par mail pour les articles ou projets suivants :</p>
+        <table class="table2 table table-condensed tableprofils table-striped sortable">
+            {% for action in follows_autres %}
                 {% if action %}
                 <tr>
                     <td> {{action.follow_object}} </td>
@@ -23,9 +45,4 @@
 
 </div>
 
-<div class="row justify-content-center">
-    <div class="col-sm-12 textcenter">
-        <a href="{% url 'sereabonner' %}" class="btn btn-primary" type="button"> Se réabonner au forum/altermarché/conversations/projets/suffrages </a>
-    </div>
-</div>
 {% endblock %}

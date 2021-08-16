@@ -1048,14 +1048,18 @@ def prochaines_rencontres(request):
 
 @login_required
 def mesSuivis(request):
+
     follows = Follow.objects.filter(user=request.user)
+    follows_base, follows_autres = [], []
     for action in follows:
         if not action.follow_object:
             action.delete()
+        if str(action.follow_object) in Choix.suivisPossibles:
+            follows_base.append(action)
+        else:
+            follows_autres.append(action)
 
-    follows = Follow.objects.filter(user=request.user)
-
-    return render(request, 'notifications/mesSuivis.html', {'actions': follows, })
+    return render(request, 'notifications/mesSuivis.html', {'follows_base': follows_base, 'follows_autres':follows_autres})
 
 @login_required
 def supprimerAction(request, actionid):
@@ -1152,7 +1156,7 @@ def suivre_produits(request, actor_only=True):
 @login_required
 def sereabonner(request,):
     for suiv in Choix.suivisPossibles:
-        suivi, created = Suivis.objects.get_or_create(nom_suivi = suiv)
+        suivi, created = Suivis.objects.get_or_create(nom_suivi=suiv)
 
         if not suivi in following(request.user):
             actions.follow(request.user, suivi, send_action=False)

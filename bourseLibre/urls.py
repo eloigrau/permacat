@@ -97,7 +97,6 @@ urlpatterns = [
     url(r'^accounts/mesSuivis/$', login_required(views.mesSuivis), name='mesSuivis',),
     url(r'^accounts/supprimerAction/(?P<actionid>[0-9]+)/$', login_required(views.supprimerAction), name='supprimerAction',),
     url(r'^accounts/mesActions/$', login_required(views.mesActions), name='mesActions',),
-    url(r'^accounts/mctions/$', login_required(views.mesActions), name='mesActions',),
     url(r'^accounts/activite/(?P<pseudo>[\w.@+-]+)/$', login_required(views.activite), name='activite',),
     url(r'^register/$', views.register, name='senregistrer',),
     url(r'^reset-password/$',

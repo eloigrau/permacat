@@ -305,7 +305,7 @@ def articles_suiveurs(request):
 @csrf_exempt
 @user_passes_test(is_inscrit, login_url='/jardins/accepter_participation')
 def suivre_articles(request, actor_only=True):
-    suivi, created = Suivis.objects.get_or_create(nom_suivi = 'articles_jardin')
+    suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_jardin')
 
     if suivi in following(request.user):
         actions.unfollow(request.user, suivi, send_action=False)

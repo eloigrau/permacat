@@ -2,6 +2,7 @@ from django import template
 from django.forms import CheckboxInput
 from django.utils.safestring import mark_safe
 from django.utils.text import slugify
+from bourseLibre.constantes import Choix
 
 register = template.Library()
 
@@ -83,3 +84,7 @@ def adherent_asso(user, asso):
 @register.filter(is_safe=True)
 def slug(txt):
     return slugify(txt)
+
+@register.filter(is_safe=True)
+def filtrerSuivis(nomSuivis):
+    return Choix.nomSuivis[str(nomSuivis)]

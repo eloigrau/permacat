@@ -50,4 +50,14 @@ class Choix():
 
     abreviationsAsso = ["pc", "rtg", "fer", "scic"]
 
-    suivisPossibles = ['produits', 'articles', 'projets', 'conversations', 'suffrages']
+    suivisPossibles = [ 'articles', 'articles_jardin', 'projets', 'produits', 'conversations', 'documents', 'albums', 'ateliers', 'suffrages',]
+    nomSuivis = { 'articles':'Article du forum',
+                  'articles_jardin':'Article aux jardins partagés',
+                  'projets':"Projet",
+                  'produits':"Offre/demande à l'altermarché",
+                  'conversations':"Message privé",
+                  'documents': "Document téléchargeable",
+                  'albums': "Album photo",
+                  'ateliers': "Proposition d'Atelier",
+                  'suffrages': "Suffrage (vote)"
+                  }
