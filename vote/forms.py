@@ -8,6 +8,7 @@ from blog.forms import SummernoteWidgetWithCustomToolbar
 from bourseLibre.settings import LOCALL
 from bourseLibre.models import Asso
 from django.forms import formset_factory, BaseFormSet
+from django.utils.timezone import now
 
 class SuffrageForm(forms.ModelForm):
     asso = forms.ModelChoiceField(queryset=Asso.objects.all(), required=True, label="Suffrage public ou réservé aux adhérents de l'asso :",)
@@ -25,8 +26,8 @@ class SuffrageForm(forms.ModelForm):
         cleaned_data = super().clean()
         date_debut = cleaned_data.get("start_time")
         date_expiration = cleaned_data.get("end_time")
-        #if date_debut < now():
-         #   raise forms.ValidationError('Le suffrage ne peut pas démarrer avant demain')
+        if date_debut < now():
+            raise forms.ValidationError('Le suffrage ne peut pas démarrer avant demain')
 
         if date_expiration <= date_debut:
             raise forms.ValidationError('La date de fin doit etre postérieure à la date de début')

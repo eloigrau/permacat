@@ -161,7 +161,12 @@ def bienvenue(request):
         nbExpires = getNbProduits_expires(request)
 
     if not request.user.is_anonymous:
-        votes = Suffrage.objects.filter(start_time__lt=now, end_time__gt=now)
+        suffrages = Suffrage.objects.filter(start_time__lte=date.today(), end_time__gte=date.today())
+        votes = []
+        for vote in suffrages:
+            if vote.est_autorise(request.user):
+                votes.append([vote, len(Vote.objects.filter(suffrage=vote, auteur=request.user))])
+
         derniers_articles = Article.objects.filter(estArchive=False).order_by('-id')
         for nomAsso in Choix_global.abreviationsAsso:
             if not getattr(request.user, "adherent_" + nomAsso):
