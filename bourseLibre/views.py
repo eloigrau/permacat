@@ -1096,7 +1096,7 @@ def agora(request, asso):
         message.save()
         group, created = Group.objects.get_or_create(name='tous')
         url = reverse('agora', kwargs={'asso':asso.abreviation})
-        action.send(request.user, verb='envoi_salon_public', action_object=message, target=group, url=url, description="a envoyé un message dans le salon public")
+        action.send(request.user, verb='envoi_salon_'+str(asso.abreviation), action_object=message, target=group, url=url, description="a envoyé un message dans le salon " + str(asso.nom))
         return redirect(request.path) 
     return render(request, 'agora.html', {'form': form, 'messages_echanges': messages, 'asso':asso})
 

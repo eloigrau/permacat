@@ -575,7 +575,7 @@ def voirDerniersArticlesVus(request):
     hit_count = Hit.objects.all().order_by('-created').distinct()[:50]
     liste = {}
     for i, x in enumerate(hit_count) :
-        if x.hitcount.content_object:
+        if x.hitcount.content_object and len(liste) < 15:
             if not str(x.hitcount.content_object) in liste:
                 liste[str(x.hitcount.content_object)] = [x.hitcount.content_object.get_absolute_url, [x.user, ]]
             else:
