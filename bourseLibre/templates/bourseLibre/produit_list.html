@@ -160,7 +160,7 @@
         {%endif%}
 
 
-        {% if request.user.adherent_pc or request.user.adherent_rtg  or request.user.adherent_fer  or request.user.adherent_gt %}
+        {% if request.user.adherent_pc or request.user.adherent_rtg  or request.user.adherent_fer  or request.user.adherent_scic %}
             <li class="nav-item dropdown active">
              <button type="button" class="btn btn-block {% if request.GET.permacat %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                data-target = "#idPermacat">
@@ -176,8 +176,8 @@
         {% if request.user.adherent_fer %}
                       <a class="dropdown-item" href="?rtg=True">Fermille</a>
         {%endif%}
-        {% if request.user.adherent_gt %}
-                      <a class="dropdown-item" href="?rtg=True">Gardiens de la Terre</a>
+        {% if request.user.adherent_scic %}
+                      <a class="dropdown-item" href="?rtg=True">PermAgora</a>
         {%endif%}
                       <a class="dropdown-item" href="?permacat=False">Public</a>
                 </div>

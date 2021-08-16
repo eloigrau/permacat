@@ -156,8 +156,8 @@ class Asso(models.Model):
             return Profil.objects.filter(accepter_annuaire=True, adherent_rtg=True).order_by("username")
         elif self.abreviation == "fer":
             return Profil.objects.filter(accepter_annuaire=True, adherent_fer=True).order_by("username")
-        elif self.abreviation == "gt":
-            return Profil.objects.filter(accepter_annuaire=True, adherent_gt=True).order_by("username")
+        #elif self.abreviation == "gt":
+        #    return Profil.objects.filter(accepter_annuaire=True, adherent_gt=True).order_by("username")
         elif self.abreviation == "scic":
             return Profil.objects.filter(accepter_annuaire=True, adherent_scic=True).order_by("username")
         return []
@@ -184,7 +184,7 @@ class Profil(AbstractUser):
     adherent_pc = models.BooleanField(verbose_name="Je suis adhérent de Permacat", default=False)
     adherent_rtg = models.BooleanField(verbose_name="Je suis adhérent de Ramene Ta Graine", default=False)
     adherent_fer = models.BooleanField(verbose_name="Je suis adhérent de Fermille", default=False)
-    adherent_gt = models.BooleanField(verbose_name="Je suis adhérent de Gardiens de la Terre", default=False)
+    #adherent_gt = models.BooleanField(verbose_name="Je suis adhérent de Gardiens de la Terre", default=False)
     adherent_scic = models.BooleanField(verbose_name="Je suis intéressé par l'asso PermAgora", default=False)
     accepter_conditions = models.BooleanField(verbose_name="J'ai lu et j'accepte les conditions d'utilisation du site", default=False, null=False)
     accepter_annuaire = models.BooleanField(verbose_name="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous", default=True)
@@ -285,8 +285,8 @@ class Profil(AbstractUser):
             return True
         elif self.adherent_fer and (nom_asso == "Fermille" or nom_asso == "fer") :
             return True
-        elif self.adherent_gt and (nom_asso == "Gardiens de la Terre" or nom_asso == "gt") :
-            return True
+        #elif self.adherent_gt and (nom_asso == "Gardiens de la Terre" or nom_asso == "gt") :
+        #    return True
         else:
             return False
 

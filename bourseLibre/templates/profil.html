@@ -149,12 +149,6 @@
 		<td>{{user.adherent_fer|translateOuiNon}}</td>
 	    </tr>
     {% endif %}
-    {%if request.user.adherent_gt or request.user == user %}
-	    <tr>
-		<td style="width:250px">Adhérent Gardiens de la Terre *:</td>
-		<td>{{user.adherent_gt|translateOuiNon}}</td>
-	    </tr>
-    {% endif %}
     {%if request.user.adherent_scic or request.user == user %}
 	    <tr>
 		<td style="width:250px">Adhérent PermAgora *:</td>
