@@ -285,6 +285,8 @@ class Profil(AbstractUser):
             return True
         elif self.adherent_fer and (nom_asso == "Fermille" or nom_asso == "fer") :
             return True
+        elif self.adherent_scic and (nom_asso == "PermAgora" or nom_asso == "scic") :
+            return True
         #elif self.adherent_gt and (nom_asso == "Gardiens de la Terre" or nom_asso == "gt") :
         #    return True
         else:
