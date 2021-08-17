@@ -143,8 +143,8 @@ INSTALLED_APPS = [
     #'wiki.plugins.notifications.apps.NotificationsConfig',
 
 ]
-if LOCALL:
-    INSTALLED_APPS.append('debug_toolbar',)
+#if LOCALL:
+#    INSTALLED_APPS.append('debug_toolbar',)
 
 # MIDDLEWARE_CLASSES = (
 #     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -175,8 +175,8 @@ MIDDLEWARE = [
     #'django.core.context_processors.request',
 
 ]
-if LOCALL:
-    MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware',)
+#if LOCALL:
+#    MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware',)
 
 
 ROOT_URLCONF = 'bourseLibre.urls'

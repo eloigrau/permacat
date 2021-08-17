@@ -15,10 +15,16 @@
 <div class="row">
 	<div class="col-sm-12">
 <form class="form-horizontal" role="form" action="" method="post"
-	enctype="multipart/form-data">
+	enctype="multipart/form-data" >
 	{% csrf_token %} <input type="hidden" name="Article"
 		value="{{ article }}"> {% include 'form_template.html'%}
 </form>
 </div>
     </div>
+<script>
+    $(function() {
+    // Enable on all forms
+    $('form').areYouSure();
+    });
+</script>
 {% endblock %}

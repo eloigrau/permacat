@@ -44,10 +44,13 @@
 
 
     <script>
-    getElementById("id_commentaire_iframe").height = "150px"
-</script>
+    document.getElementById("id_commentaire_iframe").height = "150px"
 
-    <script>
     var messageBody = document.querySelector('#idConversation');
     messageBody.scrollTop = idConversation.scrollHeight - idConversation.clientHeight;
+
+    $(function() {
+    // Enable on all forms
+    $('form').areYouSure();
+    });
 </script>
