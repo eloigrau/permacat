@@ -96,7 +96,7 @@
                        <li> <a class="dropdown-item" href="{% url 'charte' %}"> <i class="fa fa-info-circle iconleft"></i> Charte </a></li>
                        <li> <a class="dropdown-item" href="{% url 'statuts' %}"> <i class="fa fa-info-circle iconleft"></i> Statuts et règlement intérieur </a></li>
                         <li class="divider" role="separator"></li>
-                       <li> <a class="dropdown-item" href="{% url 'adhesion_asso' asso='pc' %}"> Cotisation en ligne </a></li>
+                       <li> <a class="dropdown-item" href="{% url 'adhesion_asso' asso='pc' %}"><i class='fa fa-euro-sign iconleft ' ></i> Cotisation en ligne </a></li>
 
                         </ul>
                     </li>
@@ -115,7 +115,7 @@
                             <li class="divider" role="separator"></li>
                           <li> <a class="dropdown-item" href="https://1drv.ms/b/s!AgO84waSGnDoiDlHJeeJPxRRNJM_?e=ucgIvC"><i class='fa fa-info-circle iconleft' ></i>  Statuts  </a></li>
                             <li> <a class="dropdown-item" href="https://onedrive.live.com/?id=root&cid=E8701A9206E3BC03"><i class='fa fa-database iconleft' ></i> OneDrive  </a></li>
-                       <li> <a class="dropdown-item" href="{% url 'adhesion_asso' asso='rtg' %}"> Cotisation en ligne </a></li>
+                       <li> <a class="dropdown-item" href="{% url 'adhesion_asso' asso='rtg' %}"><i class='fa fa-euro-sign iconleft ' ></i> Cotisation en ligne </a></li>
    {% endif %}
                         </ul>
                     </li>
@@ -365,13 +365,13 @@
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle"  href="test" >PermaCat</a>
                         <ul class="dropdown-menu nav5-dropdown-submenu">
-                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='pc' %}"> Présentation</a></li>
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='pc' %}"><i class='fa fa-asterisk iconleft ' ></i>  Présentation</a></li>
 
                             <li class="divider" role="separator"></li>
-                       <li> <a class="dropdown-item" href="{% url 'charte' %}"> Charte </a></li>
-                       <li> <a class="dropdown-item" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a></li>
+                       <li> <a class="dropdown-item" href="{% url 'charte' %}"><i class="fa fa-info-circle iconleft"></i> Charte </a></li>
+                       <li> <a class="dropdown-item" href="{% url 'statuts' %}"><i class="fa fa-info-circle iconleft"></i> Statuts et règlement intérieur </a></li>
                         <li class="divider" role="separator"></li>
-                       <li> <a class="dropdown-item" href="{% url 'adhesion_asso' asso='pc' %}"> Cotisation en ligne </a></li>
+                       <li> <a class="dropdown-item" href="{% url 'adhesion_asso' asso='pc' %}"><i class='fa fa-euro-sign iconleft ' ></i> Cotisation en ligne </a></li>
 
                         </ul>
                     </li>
@@ -379,22 +379,22 @@
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle"  href="test">Ramène Ta Graine</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
-                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='rtg' %}"> Présentation </a></li>
-                       <li> <a class="dropdown-item" href="{% url 'adhesion_asso' asso='rtg' %}"> Cotisation en ligne </a></li>
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='rtg' %}"><i class='fa fa-asterisk iconleft ' ></i> Présentation </a></li>
+                       <li> <a class="dropdown-item" href="{% url 'adhesion_asso' asso='rtg' %}"><i class='fa fa-euro-sign iconleft ' ></i> Cotisation en ligne </a></li>
                         </ul>
                     </li>
 
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle"  href="test">Fermille</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
-                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='fer' %}"> Présentation</a></li>
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='fer' %}"><i class='fa fa-asterisk iconleft ' ></i>  Présentation</a></li>
                       </ul>
                     </li>
                     {% comment %}
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle"  href="test">Gardiens de la Terre</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
-                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='gt' %}"> Présentation</a></li>
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='gt' %}"><i class='fa fa-asterisk iconleft ' ></i> Présentation</a></li>
 
                       </ul>
                     </li>
@@ -403,7 +403,7 @@
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle"  href="test">PermAgora</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
-                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='scic' %}"> Présentation</a></li>
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='scic' %}"><i class='fa fa-asterisk iconleft ' ></i> Présentation</a></li>
 
                       </ul>
                     </li>
@@ -416,12 +416,12 @@
               Le site
             </a>
             <ul class="dropdown-menu dropdown-menu1  nav2-dropdown" aria-labelledby="navbarAbout">
-                <li> <a class="dropdown-item" href="{% url 'presentation_site_pkoi' %}"> Pourquoi utiliser le site ? </a></li>
-               <li> <a class="dropdown-item" href="{% url 'contact_admins' %}"> Nous contacter</a></li>
+                <li> <a class="dropdown-item" href="{% url 'presentation_site_pkoi' %}"><i class='fa fa-info-circle iconleft ' ></i> Pourquoi utiliser le site ? </a></li>
+               <li> <a class="dropdown-item" href="{% url 'contact_admins' %}"><i class='fa fa-envelope iconleft ' ></i> Nous contacter</a></li>
                     <li class="divider" role="separator"></li>
-               <li> <a class="dropdown-item" href="{% url 'cgu' %}"> CGU </a></li>
+               <li> <a class="dropdown-item" href="{% url 'cgu' %}"><i class='fa fa-info-circle iconleft ' ></i> CGU </a></li>
                     <li class="divider" role="separator"></li>
-               <li> <a class="dropdown-item" href="{% url 'faire_don' %}"> Faire un don</a></li>
+               <li> <a class="dropdown-item" href="{% url 'adhesion_entree' %}"><i class='fa fa-euro-sign iconleft ' ></i> Faire un don</a></li>
             </ul>
         </li>
     </ul>
