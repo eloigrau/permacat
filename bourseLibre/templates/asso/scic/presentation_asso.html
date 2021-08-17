@@ -1,4 +1,5 @@
 {% extends 'base_asso.html' %}
+{% load static %}
 {% block title %} - Accueil{% endblock %}
 {% block subtitle %}
 
@@ -17,7 +18,14 @@
 		</p>
 		<p>Vous pouvez trouver nos (futurs) <a href="https://www.perma.cat/media/documents/2021/07/26/statutspermagora_MH6n8vw.docx" trget="_blank">statuts, reglement intérieur et charte ici</a>. Si vous avez des commentaires, n'hesitez pas à nous contacter</p>
 		<p>Nos projets s'articulent autour de la création d'un ecolieu et du developpement de différents pôles : agriculture, bien-etre/santé, formation, évenementiel...</p>
-		<p>Notre fonctionnement s'inspire du <a href="https://www.perma.cat/media/documents/2021/08/03/constitution_1_0_finale.pdf" target="_blank">modèle Z</a></p>
+		<p>Notre fonctionnement s'inspire du <a href="https://www.perma.cat/media/documents/2021/08/03/constitution_1_0_finale.pdf" target="_blank">modèle Z :</a></p>
+
+<div class="row justify-content-center">
+	<div class="col-sm-12 col-md-8 textcenter">
+		<img src="{% static 'img/modeleZ.jpg' %}" class="thumbnail" style="width:90%;" alt="ModeleZ">
+	</div>
+</div>
+
 		<p>
 		si vous aussi, vous avez envie de vivre autrement de manière écologique,
 		de construire un monde plus durable et plus respectueux de notre

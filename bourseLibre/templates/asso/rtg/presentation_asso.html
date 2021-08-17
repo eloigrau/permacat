@@ -1,10 +1,14 @@
 {% extends 'base_asso.html' %}
+{% load static %}
 {% block title %} - Accueil RTG{% endblock %}
 
 {% block subtitle %}
 
-<h2 class = "textcenter rowbienvenue">Ramène Ta Graine</h2>
-
+<div class="row justify-content-center">
+	<div class="col-sm-12 col-md-8 textcenter">
+		<img src="{% static 'img/Logo_rtg.png' %}" class="thumbnail" style="width:100%;" alt="Logo de RTG">
+	</div>
+</div>
 
 {% include "asso/presentation_asso_template.html" with adherent=request.user.adherent_rtg assos='rtg' %}
 
