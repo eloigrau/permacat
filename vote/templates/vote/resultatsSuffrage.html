@@ -16,18 +16,14 @@
 <h3>Résultats du vote</h3>
 {% endblock %}
 {% block content %}
-  <h4>Questions binaires</h4>
+{%if res_bin %}
 <div class="row justify-content-center">
-<div class="col-sm-12 textcenter ">
-        <div style="overflow-x:auto;">
- <style type="text/css">
-.tg  {border-collapse:collapse;border-spacing:0;}
-.tg .tg-baqh{text-align:center;vertical-align:center}
-.tg .tg-0lax{text-align:left;vertical-align:center}
-</style>
-            {% for qb, res in res_bin.items %}
-            <h5>{{qb}}  {{res.resultat}}</h5>
-<table class="tg tablevotes table-condensed table-striped" cellpadding="2">
+<div class="col-sm-12 col-md-10 col-lg-8 textcenter ">
+  <h4>Questions binaires</h4>
+<div style="overflow-x:auto;">
+    {% for qb, res in res_bin.items %}
+    <h5>{{qb}}  {{res.resultat}}</h5>
+<table class="comicGreen" cellpadding="2">
 <thead>
   <tr>
     <th class="tg-0lax">Votants </th>
@@ -55,12 +51,16 @@
   </tr>
 </tbody>
 </table>
-            <hr>
+<hr>
 {% endfor %}
+</div></div></div>
+{% endif %}
+
+{%if res_majo %}
+<div class="row justify-content-center">
+<div class="col-sm-12 textcenter ">
     <h4>Questions soumises au jugement majoritaire</h4>
 
-    <div class="row justify-content-center">
-    <div class="col-sm-12 textcenter ">
         {% for qb, res in res_majo.items %}
         <h5>{{qb}}</h5>
         <p>Propositions :</p>
@@ -96,30 +96,46 @@
         </tbody>
         </table>
         {% endfor %}
-    </div></div></div>
-
+</div>
+</div>
 <hr>
 
-        <p>
-    {% if vote %}
+{% endif %}
 
-    <table class="table" style=" width: 80%;
-  text-align: left;
-  padding: 2px 8px;
-  border-radius: 5px;"><tbody>
-    <tr><td style="width: 30%;">Vous avez voté :</td><td style="width: 70%;">"{{vote.getVoteStr}}"</td></tr>
-    {% if vote.commentaire %}
-    <tr><td style="width: 30%;">Commentaire :</td><td style="width: 70%;">{{vote.commentaire|safe}}</td></tr>
-    {% endif %}
-    </tbody>
-</table>
+<div class="row justify-content-center">
+<div class="col-sm-12 col-md-10 col-lg-8 textcenter ">
+{% if vote %}
+        <p> Vous avez voté :</p>
+        {% with reponses=vote.getVoteStr   %}
+        <p>Questions binaires : </p>
+        <ol>
+            {% for rep in reponses.0 %}
+            <li> {{rep}} </li>
+            {% endfor %}
+        </ol>
+        <p>Questions soumises au jugement majoritaire : </p>
+        <ul>
+            {% for rep in reponses.1 %}
+            {% ifchanged rep.0 %}
+            </ul>
+            <p> Question : {{rep.0}} </p>
+            <ul>
+            {% endifchanged%}
+
+            <li> {{rep.1}} </li>
+            {% endfor %}
+        </ul>
+        {% endwith %}
+        {% if vote.commentaire %}
+        <tr><td style="width: 30%;">Commentaire :</td><td style="width: 70%;">{{vote.commentaire|safe}}</td></tr>
+        {% endif %}
     {% else %}
-<hr>
-    <p> Vous n'avez pas participé à ce suffrage</p>
+        <hr>
+        <p> Vous n'avez pas participé à ce suffrage</p>
     {% endif %}
-    </p>
 </div>
 </div>
+
 {% endblock %}
 
 

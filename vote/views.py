@@ -180,7 +180,7 @@ def resultatsSuffrage(request, slug):
         vote = ""
 
     return render(request, 'vote/resultatsSuffrage.html', {
-        'suffrage': suffrage, "res_bin":res_bin, "res_majo": res_majo, "choixMajo":Choix.vote_majoritaire })
+        'suffrage': suffrage, "res_bin":res_bin, "res_majo": res_majo, "choixMajo":Choix.vote_majoritaire, 'vote':vote })
 
 
 

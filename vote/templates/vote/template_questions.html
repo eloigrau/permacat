@@ -36,7 +36,7 @@
             <tbody>
             {% for question in questions_m %}
                 <tr>
-                <td {%if vote %}colspan="3"{% else %}colspan="2"{% endif %}>{{ forloop.counter }}) {{question}}</td>
+                <td class="textleft" {%if vote %}colspan="3"{% else %}colspan="2"{% endif %}>{{ forloop.counter }}) {{question}}</td>
                 </tr>
                 {% for proposition in question.propositions %}
                     <tr>

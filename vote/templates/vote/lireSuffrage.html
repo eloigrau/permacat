@@ -78,7 +78,7 @@
        <p>
         {%if suffrage.get_statut.0 == 1%}<a href="{% url 'vote:resultatsSuffrage' slug=suffrage.slug %}"> {% endif %}
         <button {%if suffrage.get_statut.0 == 1%} {% else %} disabled{% endif %} class="btn btn-warning">
-            {{suffrage.get_statut.1}}
+            {{suffrage.get_statut.1}} - Voir les résultats
     </button>
     {%if suffrage.get_statut.0 == 1%}</a>{% endif %}
     </p>
@@ -131,20 +131,6 @@
     {% if suffrage.get_statut.0 < 2 %}
         {%if not vote %}
         <p><a href="{% url 'vote:voter' slug=suffrage.slug %}" class="btn btn-success">Voter</a></p>
-        {% else %}
-    {% comment %}
-            <table class="table" style=" width: 80%;
-          text-align: left;
-          padding: 2px 8px;
-          border-radius: 5px;"><tbody>
-                <tr><td style="width: 30%;">Vous avez voté (questions binaires):</td><td style="width: 70%;">"{{vote.getVoteStr.0}}"</td></tr>
-                <tr><td style="width: 30%;">Vous avez voté (questions majoritaires) :</td><td style="width: 70%;">"{{vote.getVoteStr.1}}"</td></tr>
-                {% if vote.commentaire %}
-                <tr><td style="width: 30%;">Commentaire :</td><td style="width: 70%;">{{vote.commentaire|safe}}</td></tr>
-                {% endif %}
-                </tbody>
-            </table>
-    {% endcomment %}
             {% if suffrage.get_statut.0 == 0 %}
                 <div class="textcenter"><a href="{% url 'vote:voter' slug=suffrage.slug %}" class="btn btn-success"> Refaire mon vote</a></div></p>
             {% endif %}

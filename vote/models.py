@@ -368,27 +368,27 @@ class Vote(models.Model):
     def getVoteStr(self):
         rep_b = ReponseQuestion_b.objects.filter(vote=self)
         rep_m = ReponseQuestion_m.objects.filter(vote=self)
-        return [getStrFromChoix_ouinon(x) for x in rep_b], [getStrFromChoix_majoritaire(x) for x in  rep_m]
+        return [x.str_avecquestion() for x in rep_b], [x.str_avecquestion() for x in rep_m]
 
     def getVoteStr_questionsB(self):
         rep_b = ReponseQuestion_b.objects.filter(vote=self)
-        return rep_b #[getStrFromChoix_ouinon(x) for x in rep_b]
+        return [str(x) for x in rep_b]
 
     def getVoteStr_questionB(self, question):
-        rep_b = ReponseQuestion_b.objects.filter(question=question)
-        if rep_b:
-            return str(rep_b[0])
-        return "pas de vote"
+        try:
+            return str(ReponseQuestion_b.objects.get(question=question, vote=self))
+        except:
+            return "pas de vote"
 
     def getVoteStr_questionsM(self):
         rep_m = ReponseQuestion_m.objects.filter(vote=self)
         return [getStrFromChoix_majoritaire(x) for x in rep_m]
 
     def getVoteStr_proposition_m(self, proposition):
-        rep_m = ReponseQuestion_m.objects.filter(proposition=proposition)
-        if rep_m:
-            return str(rep_m[0])
-        return "pas de vote"
+        try:
+            return ReponseQuestion_m.objects.get(proposition=proposition, vote=self).str_sansproposition()
+        except:
+            return "pas de vote"
 
 class ReponseQuestion_b(models.Model):
     vote = models.ForeignKey(Vote, on_delete=models.CASCADE, related_name='rep_question_b')
@@ -399,6 +399,8 @@ class ReponseQuestion_b(models.Model):
     def __str__(self):
         return getStrFromChoix_ouinon(self.choix)
 
+    def str_avecquestion(self):
+        return str(self.question) + " " + getStrFromChoix_ouinon(self.choix)
 
 class ReponseQuestion_m(models.Model):
     vote = models.ForeignKey(Vote, on_delete=models.CASCADE, related_name='rep_question_m')
@@ -408,7 +410,13 @@ class ReponseQuestion_m(models.Model):
         default=2, verbose_name="Choix du vote :")
 
     def __str__(self):
+        return str(self.proposition) + ": " + getStrFromChoix_majoritaire(self.choix)
+
+    def str_sansproposition(self):
         return getStrFromChoix_majoritaire(self.choix)
+
+    def str_avecquestion(self):
+        return str(self.proposition.question), str(self)
 
 class Commentaire(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='auteur_comm_vote')
