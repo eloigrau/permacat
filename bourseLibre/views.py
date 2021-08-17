@@ -454,10 +454,25 @@ def telechargements_asso(request):
                 ]
     return render(request, 'asso/fichiers.html', {'fichiers':fichiers})
 
+
 @login_required
-def adhesion_asso(request):
+def adhesion_entree(request):
     return render(request, 'asso/adhesion.html', )
 
+
+@login_required
+def adhesion_asso(request, asso):
+    asso = Asso.objects.get(Q(nom=asso) | Q(abreviation=asso))
+    return render(request, 'asso/'+ asso.abreviation +'/adhesion.html', )
+
+
+def fairedon_asso(request, asso):
+    if asso == 'developpeur':
+        return render(request, 'asso/fairedondeveloppeur.html', )
+
+    asso = Asso.objects.filter(Q(nom=asso) | Q(abreviation=asso))
+
+    return render(request, 'asso/'+ asso.abreviation +'/fairedon.html', )
 
 @login_required
 def carte(request, asso):
@@ -839,8 +854,7 @@ def liens(request):
     }
     return render(request, 'liens.html', {'liens':liens})
 
-def fairedon(request):
-    return render(request, 'fairedon.html', )
+
 
 def agenda(request):
     return render(request, 'agenda.html', )

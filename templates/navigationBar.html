@@ -96,7 +96,7 @@
                        <li> <a class="dropdown-item" href="{% url 'charte' %}"> <i class="fa fa-info-circle iconleft"></i> Charte </a></li>
                        <li> <a class="dropdown-item" href="{% url 'statuts' %}"> <i class="fa fa-info-circle iconleft"></i> Statuts et règlement intérieur </a></li>
                         <li class="divider" role="separator"></li>
-                       <li> <a class="dropdown-item" href="{% url 'adhesion_asso' %}"> Cotisation en ligne </a></li>
+                       <li> <a class="dropdown-item" href="{% url 'adhesion_asso' asso='pc' %}"> Cotisation en ligne </a></li>
 
                         </ul>
                     </li>
@@ -115,6 +115,7 @@
                             <li class="divider" role="separator"></li>
                           <li> <a class="dropdown-item" href="https://1drv.ms/b/s!AgO84waSGnDoiDlHJeeJPxRRNJM_?e=ucgIvC"><i class='fa fa-info-circle' ></i>  Statuts  </a></li>
                             <li> <a class="dropdown-item" href="https://onedrive.live.com/?id=root&cid=E8701A9206E3BC03"><i class='fa fa-database' ></i> OneDrive  </a></li>
+                       <li> <a class="dropdown-item" href="{% url 'adhesion_asso' asso='rtg' %}"> Cotisation en ligne </a></li>
    {% endif %}
                         </ul>
                     </li>
@@ -324,7 +325,7 @@
                 {%endif%}
 
                 <li class="divider" role="separator"></li>
-               <li> <a class="dropdown-item" href="{% url 'fairedon' %}"> Faire un don</a></li>
+               <li> <a class="dropdown-item" href="{% url 'adhesion_entree' %}"> Faire un don</a></li>
 
          <li class="nav-item">
              <form class="form-inline my-2 my-lg-0 justify-content-center form-group navbar-form " action="{% url 'chercher' %}" method="get" role = "search">
@@ -370,7 +371,7 @@
                        <li> <a class="dropdown-item" href="{% url 'charte' %}"> Charte </a></li>
                        <li> <a class="dropdown-item" href="{% url 'statuts' %}"> Statuts et règlement intérieur </a></li>
                         <li class="divider" role="separator"></li>
-                       <li> <a class="dropdown-item" href="{% url 'adhesion_asso' %}"> Cotisation en ligne </a></li>
+                       <li> <a class="dropdown-item" href="{% url 'adhesion_asso' asso='pc' %}"> Cotisation en ligne </a></li>
 
                         </ul>
                     </li>
@@ -379,6 +380,7 @@
                         <a class="dropdown-item dropdown-toggle"  href="test">Ramène Ta Graine</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='rtg' %}"> Présentation </a></li>
+                       <li> <a class="dropdown-item" href="{% url 'adhesion_asso' asso='rtg' %}"> Cotisation en ligne </a></li>
                         </ul>
                     </li>
 
@@ -419,7 +421,7 @@
                     <li class="divider" role="separator"></li>
                <li> <a class="dropdown-item" href="{% url 'cgu' %}"> CGU </a></li>
                     <li class="divider" role="separator"></li>
-               <li> <a class="dropdown-item" href="{% url 'fairedon' %}"> Faire un don</a></li>
+               <li> <a class="dropdown-item" href="{% url 'faire_don' %}"> Faire un don</a></li>
             </ul>
         </li>
     </ul>
