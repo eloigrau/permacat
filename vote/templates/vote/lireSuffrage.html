@@ -74,13 +74,11 @@
         {% endif %}
     </p>
 {%if request.user.is_superuser %}
-    {{suffrage.resultats}}
     {% endif  %}
        <p>
         {%if suffrage.get_statut.0 == 1%}<a href="{% url 'vote:resultatsSuffrage' slug=suffrage.slug %}"> {% endif %}
         <button {%if suffrage.get_statut.0 == 1%} {% else %} disabled{% endif %} class="btn btn-warning">
             {{suffrage.get_statut.1}}
-        {% if suffrage.get_statut.0 == 1 %}: {{suffrage.resultats}}{% endif %}
     </button>
     {%if suffrage.get_statut.0 == 1%}</a>{% endif %}
     </p>

@@ -144,13 +144,12 @@ class Suffrage(SuffrageBase):
         #    return statut[1]
 
         qsb, qsm = self.questions
-        res = ""
+        res_qb, res_qm = {}, {}
         for qb in qsb:
-            res += str(qb.get_resultats())
-            res += "\n <hr> majo"
+            res_qb[qb] = qb.get_resultats()
         for qm in qsm:
-            res += str(qm.get_resultats())
-        return res
+            res_qm[qm] = qm.get_resultats()
+        return res_qb, res_qm
 
     @property
     def resultats(self):
@@ -254,43 +253,49 @@ class Question_base(models.Model):
         if getattr(self, "question") and self.question == '':
             raise ValidationError('Empty error message')
 
+
+class Resultat_binaire():
+
+    def __init__(self, votes):
+        self.votesOui = votes.filter(choix='0')
+        self.votesNon = votes.filter(choix='1')
+        self.votesNSPP = votes.filter(choix='2')
+        self.nbOui = len(self.votesOui)
+        self.nbNon = len(self.votesNon)
+        self.nbNSPP = len(self.votesNSPP)
+        self.nbTotal = self.nbOui + self.nbNon + self.nbNSPP
+        if self.nbTotal > 0:
+            self.nbOui = (len(self.votesOui), str(round(len(self.votesOui) * 100 / self.nbTotal, 1)) + '%')
+            self.nbNon = (len(self.votesNon), str(round(len(self.votesNon) * 100 / self.nbTotal, 1)) + '%')
+            self.nbNSPP = (len(self.votesNSPP), str(round(len(self.votesNSPP) * 100 / self.nbTotal, 1)) + '%')
+            if self.nbOui > self.nbNon:
+                self.resultat = 'Oui à ' + str(round(self.nbOui[0] * 100 / self.nbTotal, 1)) + ' %'
+            elif self.nbNon > self.nbOui:
+                self.resultat = 'Non à ' + str(round(self.nbNon[0] * 100 / self.nbTotal, 1)) + ' %'
+            else:
+                self.resultat = 'Ex aequo à ' + str(round(self.nbOui[0] * 100 / self.nbTotal, 1)) + ' %'
+        else:
+            self.nbOui = (0, '0%')
+            self.nbNon = (0, '0%')
+            self.nbNSPP = (0, '0%')
+            self.resultat = "pas de votants"
+
+
 class Question_binaire(Question_base):
     question = models.CharField(max_length=150, verbose_name="Question (oui/non) soumise au vote ?", validators=[MinLengthValidator(1)])
 
     def get_resultats(self):
         votes = self.reponsequestion_b_set.all()
-        votesOui = votes.filter(choix='0')
-        votesNon = votes.filter(choix='1')
-        votesNSPP = votes.filter(choix='2')
-        nbOui = len(votesOui)
-        nbNon = len(votesNon)
-        nbNSPP = len(votesNSPP)
-        nbTotal = nbOui + nbNon + nbNSPP
-        if nbTotal > 0:
-            nbOui = (len(votesOui), str(round(len(votesOui) * 100 / nbTotal, 1)) + '%')
-            nbNon = (len(votesNon), str(round(len(votesNon) * 100 / nbTotal, 1)) + '%')
-            nbNSPP = (len(votesNSPP), str(round(len(votesNSPP) * 100 / nbTotal, 1)) + '%')
-            if nbOui > nbNon:
-                resultat = 'Oui à ' + str(round(nbOui[0] * 100 / nbTotal, 1)) + ' %'
-            elif nbNon > nbOui:
-                resultat = 'Non à ' + str(round(nbNon[0] * 100 / nbTotal, 1)) + ' %'
-            else:
-                resultat = 'Ex aequo à ' + str(round(nbOui[0] * 100 / nbTotal, 1)) + ' %'
-        else:
-            nbOui = (0, '0%')
-            nbNon = (0, '0%')
-            nbNSPP = (0, '0%')
-            resultat = "pas de votants"
-        return {'nbOui':nbOui, 'nbNon':nbNon, 'nbNSPP':nbNSPP, 'nbTotal':nbTotal, 'resultat':resultat, 'votes':votes}
-
+        return Resultat_binaire(votes)
+        #return {'nbOui':nbOui, 'nbNon':nbNon, 'nbNSPP':nbNSPP, 'nbTotal':nbTotal, 'resultat':resultat, 'votes':votes}
 
 class Question_majoritaire(Question_base):
     question = models.CharField(max_length=150, verbose_name="Question (jugement majoritaire) soumise au vote :",  validators=[MinLengthValidator(1)])
 
     def get_resultats(self):
         """Get the sorted list of all Candidates for this Election."""
-        res = sorted(self.proposition_m_set.all(), key=cmp_to_key(sort_candidats))
-        res2 = [(x, x.majority_gauge()) for x in res]
+        res = sorted(self.proposition_m_set.all(), key=cmp_to_key(sort_candidats))[::-1]
+        res2 = [(str(x), x.majority_gauge_str(), x.percentage_per_choice()) for x in res]
         return res2
 
     @property
@@ -314,20 +319,36 @@ class Proposition_m(models.Model):
         """Compute the majority gauge of this Candidate."""
         count = self.reponsequestion_m_set.count()
         if not count:
-            return (0, 10, 0)
+            return (0, 2, 0)
         mention = self.reponsequestion_m_set.order_by('choix')[count // 2].choix
         if mention is None:
             #print(self.reponsequestion_m_set.order_by('choix'))
-            mention = 6
-        return (self.reponsequestion_m_set.filter(choix__gt=mention).count() / count, mention,
-                self.reponsequestion_m_set.filter(choix__lt=mention).count() / count)
+            mention = 2
+        return (self.reponsequestion_m_set.filter(choix__gt=mention).count() / float(count), mention,
+                self.reponsequestion_m_set.filter(choix__lt=mention).count() / float(count))
+
+    def majority_gauge_str(self):
+        """Compute the majority gauge of this Candidate."""
+        majo = self.majority_gauge()
+        return [str(round(100.0*majo[2], 0)) + "%", getStrFromChoix_majoritaire(majo[1]), str(round(100.0*majo[0])) + "%"]
+
+    def percentage_per_choice(self):
+        """Compute the majority gauge of this Candidate."""
+        count = self.reponsequestion_m_set.count()
+        if not count:
+            return [(mention, 0) for x, mention in Choix.vote_majoritaire[1:]]
+        pourcentages = []
+        for num_mention, mention in Choix.vote_majoritaire[1:]:
+            pourcentages.append([mention, int(100.0 * self.reponsequestion_m_set.filter(choix=num_mention).count()/count + 0.5)])
+        return pourcentages
+
 
     def votes(self):
         """Get the list of the votes for this Candidate."""
         count = self.reponsequestion_m_set.count()
         if count:
             return [self.reponsequestion_m_set.filter(choix=i).count() * 100 / count for i in [x[0] for x in Choix.vote_majoritaire[1:]]]
-        return [0] * (len(Choix.vote_majoritaire) -1)
+        return [0] * (len(Choix.vote_majoritaire) - 1)
 
 
 

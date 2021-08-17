@@ -12,7 +12,7 @@
             <tbody>
             {% for question in questions_b %}
             <tr>
-            <td>{{ forloop.counter }}) {{question}}</td>
+            <td class="textleft">{{ forloop.counter }}) {{question}}</td>
             <td>{%if vote %}
                 "{{vote|getVoteStr_questionB:question }}"
                 {% endif %}</td>
@@ -36,9 +36,7 @@
             <tbody>
             {% for question in questions_m %}
                 <tr>
-                <td>{{ forloop.counter }}) {{question}}</td>
-                <td></td>
-                {%if vote %}<td></td>{% endif %}
+                <td {%if vote %}colspan="3"{% else %}colspan="2"{% endif %}>{{ forloop.counter }}) {{question}}</td>
                 </tr>
                 {% for proposition in question.propositions %}
                     <tr>

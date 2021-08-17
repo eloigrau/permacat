@@ -1885,3 +1885,9 @@ table.comicGreen thead td {
         font-weight: bold;
         font-style: italic;
     }
+
+
+.listone{
+line-height:2em;
+padding-bottom:10px;
+}

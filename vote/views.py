@@ -173,15 +173,15 @@ def lireSuffrage(request, slug):
 @login_required
 def resultatsSuffrage(request, slug):
     suffrage = get_object_or_404(Suffrage, slug=slug)
-    resultats = suffrage.get_resultats()
+    res_bin, res_majo = suffrage.get_resultats()
     try:
         vote = Vote.objects.get(suffrage=suffrage, auteur=request.user)
     except:
         vote = ""
 
     return render(request, 'vote/resultatsSuffrage.html', {
-        'suffrage': suffrage, "resultats": resultats})
-        #'nbOui':resultats['nbOui'], 'nbNon':resultats['nbNon'], 'nbNSPP':resultats['nbNSPP'], 'nbTotal':resultats['nbTotal'], 'resultat':resultats['resultat'], 'vote':vote, 'votes':resultats['votes'] },)
+        'suffrage': suffrage, "res_bin":res_bin, "res_majo": res_majo, "choixMajo":Choix.vote_majoritaire })
+
 
 
 
