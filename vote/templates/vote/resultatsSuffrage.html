@@ -22,8 +22,14 @@
   <h4>Questions binaires</h4>
 <div style="overflow-x:auto;">
     {% for qb, res in res_bin.items %}
-    <h5>{{qb}}  {{res.resultat}}</h5>
-<table class="comicGreen" cellpadding="2">
+    <h5>{{qb}}  {{res.resultat}}
+
+    <button id="btn-detail-qb-{{forloop.counter}}" type="button" class="btn btn-lg" onclick="toggle_visibility('detail-qb-{{forloop.counter}}');" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour afficher les archives">
+       <i class="fa fa-eye"></i>
+    </button>
+        </h5>
+    <div id='detail-qb-{{forloop.counter}}' style='display:none;'>
+<table  class="comicGreen" cellpadding="2">
 <thead>
   <tr>
     <th class="tg-0lax">Votants </th>
@@ -51,6 +57,7 @@
   </tr>
 </tbody>
 </table>
+</div>
 <hr>
 {% endfor %}
 </div></div></div>
@@ -62,14 +69,26 @@
     <h4>Questions soumises au jugement majoritaire</h4>
 
         {% for qb, res in res_majo.items %}
-        <h5>{{qb}}</h5>
+        <h5>Question : <em>{{qb}}</em></h5>
         <p>Propositions :</p>
         <ol>
             {% for re in res%}
             <li>{{re.0}}</li>
             {% endfor %}
         </ol>
-        <table class="comicGreen" cellpadding="2px;">
+    <h5>
+    {% if res|length == 1 %}
+     Résultat : la proposition a obtenu la mention "{{res.0.1.1}}" et la note {{res.0.4}}%
+   {% else %}
+    <h5>Résultat : la proposition "<em>{{res.0.0}}</em>" l'emporte au jugement majoritaire (mention "{{res.0.1.1}}", note : {{res.0.4}}%)
+    {% endif %}
+
+    <button id="btn-detail-qm-{{forloop.counter}}"  type="button" class="btn btn-lg" onclick="toggle_visibility('detail-qm-{{forloop.counter}}');" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour afficher les archives">
+       <i class="fa fa-eye"></i>
+    </button>
+        </h5>
+        <div id='detail-qm-{{forloop.counter}}' style='display:none;'>
+        <table  class="comicGreen" cellpadding="2px;">
         <thead>
           <tr>
                 <th class="tg-0lax">Proposition  </th>
@@ -78,6 +97,7 @@
                     <th class="tg-baqh">{{choix.1}}</th>
                     {%endif%}
                 {%endfor%}
+                <th class="tg-baqh">Points (%) </th>
                 <th class="tg-baqh">Jauge majoritaire</th>
           </tr>
         </thead>
@@ -85,16 +105,18 @@
         {% for re in res%}
           <tr>
             <td class="tg-0lax">{{forloop.counter}}</td>
-            {% for nom, pourcent in re.2 %}
-                 <td class="tg-baqh">{{pourcent}}%</td>
+            {% for nom, total, pourcent in re.2 %}
+                 <td class="tg-baqh">{{pourcent}}% ({{total}})</td>
             {%endfor%}
 
-            <td class="tg-baqh">{{re.1}}</td>
+            <td class="tg-baqh">{{re.4}} </td>
+            <td class="tg-baqh">{{re.1}} </td>
           </tr>
         {%endfor%}
 
         </tbody>
         </table>
+        </div>
         {% endfor %}
 </div>
 </div>
@@ -105,7 +127,7 @@
 <div class="row justify-content-center">
 <div class="col-sm-12 col-md-10 col-lg-8 textcenter ">
 {% if vote %}
-        <p> Vous avez voté :</p>
+        <h4> Vous avez voté :</h4>
         {% with reponses=vote.getVoteStr   %}
         <p>Questions binaires : </p>
         <ol>
@@ -136,6 +158,18 @@
 </div>
 </div>
 
+
+<script>
+    function toggle_visibility(id) {
+       var e = document.getElementById(id);
+       if(e.style.display == 'inline'){
+          e.style.display = 'none';
+      }
+       else{
+          e.style.display = 'inline';
+      }
+   }
+</script>
 {% endblock %}
 
 

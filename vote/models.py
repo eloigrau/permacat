@@ -264,14 +264,21 @@ class Resultat_binaire():
         self.nbNon = len(self.votesNon)
         self.nbNSPP = len(self.votesNSPP)
         self.nbTotal = self.nbOui + self.nbNon + self.nbNSPP
+        self.nbOuiEtNon = self.nbOui + self.nbNon
         if self.nbTotal > 0:
             self.nbOui = (len(self.votesOui), str(round(len(self.votesOui) * 100 / self.nbTotal, 1)) + '%')
             self.nbNon = (len(self.votesNon), str(round(len(self.votesNon) * 100 / self.nbTotal, 1)) + '%')
             self.nbNSPP = (len(self.votesNSPP), str(round(len(self.votesNSPP) * 100 / self.nbTotal, 1)) + '%')
             if self.nbOui > self.nbNon:
-                self.resultat = 'Oui à ' + str(round(self.nbOui[0] * 100 / self.nbTotal, 1)) + ' %'
+                if not self.nbOuiEtNon:
+                    self.resultat = 'Oui à ' + str(round(self.nbOui[0] * 100 / self.nbTotal, 1)) + ' %' + ' (100% des votes exprimés)'
+                else:
+                    self.resultat = 'Oui à ' + str(round(self.nbOui[0] * 100 / self.nbTotal, 1)) + ' %' + ' (' + str(round(self.nbOui[0] * 100.0/self.nbOuiEtNon)) + ' % des votes exprimés)'
             elif self.nbNon > self.nbOui:
-                self.resultat = 'Non à ' + str(round(self.nbNon[0] * 100 / self.nbTotal, 1)) + ' %'
+                if self.nbOuiEtNon:
+                    self.resultat = 'Non à ' + str(round(self.nbNon[0] * 100 / self.nbTotal, 1)) + ' % (100% des votes exprimés)'
+                else:
+                    self.resultat = 'Non à ' + str(round(self.nbNon[0] * 100 / self.nbTotal, 1)) + ' %' + str(round(self.nbNon[0] * 100.0/self.nbOuiEtNon)) + ' % des votes exprimés)'
             else:
                 self.resultat = 'Ex aequo à ' + str(round(self.nbOui[0] * 100 / self.nbTotal, 1)) + ' %'
         else:
@@ -295,8 +302,7 @@ class Question_majoritaire(Question_base):
     def get_resultats(self):
         """Get the sorted list of all Candidates for this Election."""
         res = sorted(self.proposition_m_set.all(), key=cmp_to_key(sort_candidats))[::-1]
-        res2 = [(str(x), x.majority_gauge_str(), x.percentage_per_choice()) for x in res]
-        return res2
+        return [(str(x), x.majority_gauge_str(), x.percentage_per_choice(), x.nb_votes_absolu(), x.nb_points()) for x in res]
 
     @property
     def propositions(self):
@@ -339,17 +345,33 @@ class Proposition_m(models.Model):
             return [(mention, 0) for x, mention in Choix.vote_majoritaire[1:]]
         pourcentages = []
         for num_mention, mention in Choix.vote_majoritaire[1:]:
-            pourcentages.append([mention, int(100.0 * self.reponsequestion_m_set.filter(choix=num_mention).count()/count + 0.5)])
+            compte = self.reponsequestion_m_set.filter(choix=num_mention).count()
+            pourcentages.append([mention, compte, int(100.0 * compte/count + 0.5)])
         return pourcentages
-
 
     def votes(self):
         """Get the list of the votes for this Candidate."""
         count = self.reponsequestion_m_set.count()
         if count:
-            return [self.reponsequestion_m_set.filter(choix=i).count() * 100 / count for i in [x[0] for x in Choix.vote_majoritaire[1:]]]
+            return [self.reponsequestion_m_set.filter(choix=i).count() * 100.0 / count for i in [x[0] for x in Choix.vote_majoritaire[1:]]]
         return [0] * (len(Choix.vote_majoritaire) - 1)
 
+    def nb_votes_absolu_par_mention(self):
+        """Get the list of the votes for this Candidate."""
+        if self.nb_votes_absolu():
+            return [self.reponsequestion_m_set.filter(choix=i).count() for i in [x[0] for x in Choix.vote_majoritaire[1:]]]
+        return [0] * (len(Choix.vote_majoritaire) - 1)
+
+    def nb_votes_absolu(self):
+        """Get the list of the votes for this Candidate."""
+        return self.reponsequestion_m_set.count()
+
+    def nb_points(self):
+        """Get the list of the votes for this Candidate."""
+        if self.nb_votes_absolu():
+            # arrondi, de la somme des points calculés (mention pas du tout d'accord = 0 points, mention toutàafit d'accord = 4 points)
+            return round(sum([i*self.reponsequestion_m_set.filter(choix=i).count() for i in
+                    [x[0] for x in Choix.vote_majoritaire[1:]]])*100.0/(self.nb_votes_absolu() * 4), 1)
 
 
 class Vote(models.Model):
