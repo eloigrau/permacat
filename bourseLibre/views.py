@@ -455,12 +455,10 @@ def telechargements_asso(request):
     return render(request, 'asso/fichiers.html', {'fichiers':fichiers})
 
 
-@login_required
 def adhesion_entree(request):
     return render(request, 'asso/adhesion.html', )
 
 
-@login_required
 def adhesion_asso(request, asso):
     asso = Asso.objects.get(Q(nom=asso) | Q(abreviation=asso))
     return render(request, 'asso/'+ asso.abreviation +'/adhesion.html', )
