@@ -265,18 +265,18 @@
                     </ul>
                 </li>
                 <li class="dropdown-submenu">
-                    <a class="dropdown-item dropdown-toggle"  href="test">Suffrages </a>
-                    <ul class="dropdown-menu nav5-dropdown-submenu">
-                            <li><a class="dropdown-item" href="{% url 'vote:index' %}"><i class="fa fa-bullhorn iconleft"></i>  Liste des suffrages </a></li>
-                    </ul>
-                </li>
-                <li class="dropdown-submenu">
                     <a class="dropdown-item dropdown-toggle"  href="test">Ateliers </a>
                     <ul class="dropdown-menu nav5-dropdown-submenu">
                         <li><a class="dropdown-item" href="{% url 'ateliers:index_ateliers' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les ateliers </a></li>
                         {% for atelier in liste_ateliers %}
                         <li><a class=" dropdown-item " href="{%url 'ateliers:lireAtelier' slug=atelier.slug %}"><span>{{atelier.titre}}</span></a></li>
                         {% endfor %}
+                    </ul>
+                </li>
+                <li class="dropdown-submenu">
+                    <a class="dropdown-item dropdown-toggle"  href="test">Suffrages </a>
+                    <ul class="dropdown-menu nav5-dropdown-submenu">
+                            <li><a class="dropdown-item" href="{% url 'vote:index' %}"><i class="fa fa-bullhorn iconleft"></i>  Liste des suffrages </a></li>
                     </ul>
                 </li>
                 <li class="dropdown-submenu">
