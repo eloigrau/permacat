@@ -118,7 +118,7 @@ class Question_binaire_Form(forms.ModelForm):
 
 
 class Question_majoritaire_Form(forms.ModelForm):
-    question = forms.CharField(required=True, max_length=150, help_text='Question soumise au vote par jugement majoritaire (classement des propositions)', label='Question binaire')
+    question = forms.CharField(required=True, max_length=150, help_text='Question soumise au vote par jugement majoritaire (classement des propositions)', label='Question "majoritaire". Par exemple "qui veut etre président" ?')
 
     class Meta:
         model = Question_majoritaire
@@ -131,7 +131,7 @@ class Question_majoritaire_Form(forms.ModelForm):
         return instance
 
 class Proposition_m_Form(forms.ModelForm):
-    proposition = forms.CharField(required=True, max_length=150, help_text='Question soumise au vote par jugement majoritaire (classement des propositions)', label='Question (jugement majoritaire)')
+    proposition = forms.CharField(required=True, max_length=150, help_text='Propostion de réponse à la question posée (candidature)', label='Proposition (candidat). Par exemple "Jean Luc"' )
 
     class Meta:
         model = Proposition_m

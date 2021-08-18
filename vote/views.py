@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect, reverse
 from django.urls import reverse_lazy
 from django.utils.html import strip_tags
-from .models import Suffrage, Commentaire, Choix, Vote, Proposition_m
+from .models import Suffrage, Commentaire, Choix, Vote, Proposition_m, Question_binaire, Question_majoritaire
 from bourseLibre.constantes import Choix as Choix_global
 from .forms import SuffrageForm, CommentaireSuffrageForm, CommentaireSuffrageChangeForm, SuffrageChangeForm, \
     VoteForm, VoteChangeForm, Question_majoritaire_Form, Question_binaire_formset, Proposition_m_formset, Reponse_binaire_Form, Reponse_majoritaire_Form
@@ -45,13 +45,13 @@ def ajouterSuffrage(request):
 
 
 @login_required
-def ajouterQuestion(request, suffrage_slug):
-    suffrage = Suffrage.objects.get(slug=suffrage_slug)
+def ajouterQuestion(request, slug):
+    suffrage = Suffrage.objects.get(slug=slug)
     return render(request, 'vote/ajouterQuestions.html', {'suffrage':suffrage})
 
 @login_required
-def ajouterQuestionB(request, suffrage_slug):
-    suffrage = Suffrage.objects.get(slug=suffrage_slug)
+def ajouterQuestionB(request, slug):
+    suffrage = Suffrage.objects.get(slug=slug)
     qb_formset = Question_binaire_formset(request.POST or None, prefix="qb")
     if qb_formset.is_valid():
         for form in qb_formset: # meme question
@@ -62,10 +62,30 @@ def ajouterQuestionB(request, suffrage_slug):
 
     return render(request, 'vote/ajouterQuestionB.html', { "suffrage": suffrage, "qb_formset":qb_formset})
 
+@login_required
+def supprimerQuestionB(request, slug, id_question):
+    suffrage = get_object_or_404(Suffrage, slug=slug)
+    question = Question_binaire.objects.get(suffrage=suffrage, id=id_question)
+    question.delete()
+    return redirect(suffrage.get_modifQuestions_url())
 
 @login_required
-def ajouterQuestionM(request, suffrage_slug):
-    suffrage = Suffrage.objects.get(slug=suffrage_slug)
+def supprimerQuestionM(request, slug, id_question):
+    suffrage = get_object_or_404(Suffrage, slug=slug)
+    question = Question_majoritaire.objects.get(suffrage=suffrage, id=id_question)
+    question.delete()
+    return redirect(suffrage.get_modifQuestions_url())
+
+@login_required
+def supprimerPropositionM(request, slug, id_question, id_proposition):
+    suffrage = get_object_or_404(Suffrage, slug=slug)
+    proposition = Proposition_m.objects.get(question__id=id_question, id=id_proposition)
+    proposition.delete()
+    return redirect(suffrage.get_modifQuestions_url())
+
+@login_required
+def ajouterQuestionM(request, slug):
+    suffrage = Suffrage.objects.get(slug=slug)
 
     form = Question_majoritaire_Form(request.POST or None)
     pm_formset = Proposition_m_formset(request.POST or None, prefix="pm")

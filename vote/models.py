@@ -26,7 +26,8 @@ class Choix():
     type_vote = (('', '-----------'),
                      ('0', ("Vote d'un projet")),
                     ('1', ("Vote d'une décision")),
-                    ('2', ("Sondage")))
+                    ('2', ("Sondage")),
+                    ('3', ("Election")))
 
     couleurs_annonces = {
             '0':"#d1ecdc",
@@ -122,6 +123,9 @@ class Suffrage(SuffrageBase):
     def get_absolute_url(self):
         return reverse('vote:lireSuffrage', kwargs={'slug':self.slug})
 
+    def get_modifQuestions_url(self):
+        return reverse('vote:ajouterQuestion', kwargs={'slug':self.slug})
+
     def save(self, userProfile=None, *args, **kwargs):
         ''' On save, update timestamps '''
         emails = []
@@ -205,7 +209,8 @@ class Suffrage(SuffrageBase):
         txt = "<table class='comicGreen'> <tbody> "
         for i, q in enumerate(questions_b):
             txt += "<tr> <td>"
-            txt += str(i + 1) +") "+ str(q) + "</td>  </tr>"
+            txt += str(i + 1) +") "+ str(q) + "</td> "
+            txt += '<td> <a class="btn btn-sm btn-danger textleft" href="' + q.get_delete_url() +'"><i class="fa fa-times"></i></a></td></tr>'
         txt += "</tbody> </table>"
         return txt
 
@@ -216,10 +221,10 @@ class Suffrage(SuffrageBase):
         txt = "<table class='comicGreen'> <tbody> <thead><tr><th>Question posée</th><th>Proposition</th></thead>"
         for i, q in enumerate(questions_m):
             txt += "<tr> <td>"
-            txt += str(i+1) + ") " + str(q) + "</td> <td></td> </tr>"
+            txt += str(i+1) + ") " + str(q) + '<a class="btn btn-sm btn-danger textleft" href="' + q.get_delete_url() +'"><i class="fa fa-times"></i></a></td> <td></td> </tr>'
             for j, p in enumerate(q.propositions):
                 txt += "<tr> <td></td> <td>"
-                txt += str(j + 1) + ") " + str(p) + "</td> </tr>"
+                txt += str(j + 1) + ") " + str(p) + '<a class="btn btn-sm btn-danger textleft" href="' + p.get_delete_url() +'"><i class="fa fa-times"></i></a></td> </tr>'
 
         txt += "</tbody> </table>"
         return txt
@@ -296,6 +301,9 @@ class Question_binaire(Question_base):
         return Resultat_binaire(votes)
         #return {'nbOui':nbOui, 'nbNon':nbNon, 'nbNSPP':nbNSPP, 'nbTotal':nbTotal, 'resultat':resultat, 'votes':votes}
 
+    def get_delete_url(self):
+        return reverse("vote:supprimerQuestionB", kwargs={"id_question":self.id, 'slug':self.suffrage.slug})
+
 class Question_majoritaire(Question_base):
     question = models.CharField(max_length=150, verbose_name="Question (jugement majoritaire) soumise au vote :",  validators=[MinLengthValidator(1)])
 
@@ -307,6 +315,9 @@ class Question_majoritaire(Question_base):
     @property
     def propositions(self):
         return self.proposition_m_set.all()
+
+    def get_delete_url(self):
+        return reverse("vote:supprimerQuestionM", kwargs={"id_question":self.id, 'slug':self.suffrage.slug})
 
 class Proposition_m(models.Model):
     """An Election as Proposition_m as choices."""
@@ -320,6 +331,9 @@ class Proposition_m(models.Model):
     def get_absolute_url(self):
         """Get the candidate's Election URL."""
         return self.question.get_absolute_url()
+
+    def get_delete_url(self):
+        return reverse("vote:supprimerPropositionM", kwargs={"id_question":self.question.id, "id_proposition":self.id, 'slug':self.question.suffrage.slug})
 
     def majority_gauge(self):
         """Compute the majority gauge of this Candidate."""
@@ -414,7 +428,7 @@ class Vote(models.Model):
 
 class ReponseQuestion_b(models.Model):
     vote = models.ForeignKey(Vote, on_delete=models.CASCADE, related_name='rep_question_b')
-    question = models.ForeignKey(Question_binaire, on_delete=models.DO_NOTHING,)
+    question = models.ForeignKey(Question_binaire, on_delete=models.CASCADE,)
     choix = models.IntegerField(choices=(Choix.vote_ouinon),
         default=2, verbose_name="Choix du vote :")
 
