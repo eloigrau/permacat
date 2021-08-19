@@ -224,10 +224,10 @@ def faq(request):
     return render(request, 'faq.html')
 
 def statuts(request):
-    return render(request, 'statuts.html')
+    return render(request, 'asso/pc/statuts.html')
 
 def statuts_rtg(request):
-    return render(request, 'statuts_rtg.html')
+    return render(request, 'asso/rtg/statuts.html')
 
 def statuts_fer(request):
     return render(request, 'statuts_fer.html')
@@ -803,7 +803,7 @@ class ListeProduit_recherches(ListeProduit):
         return context
 
 def charte(request):
-    return render(request, 'asso/charte.html', )
+    return render(request, 'asso/pc/charte.html', )
 
 def cgu(request):
     return render(request, 'cgu.html', )
