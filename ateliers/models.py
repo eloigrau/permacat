@@ -80,6 +80,7 @@ class Atelier(models.Model):
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
+        emails = []
         if not self.id:
             self.date_creation = timezone.now()
 
@@ -89,15 +90,16 @@ class Atelier(models.Model):
                 self.auteur = Profil.objects.first()
 
             suivi, created = Suivis.objects.get_or_create(nom_suivi='ateliers')
-            emails = [suiv.email for suiv in followers(suivi) if self.auteur != suiv and self.est_autorise(suiv)]
+            emails = [suiv.email for suiv in followers(suivi) if  self.est_autorise(suiv)]
 
             titre = "Nouvel atelier proposé"
             message = "L'atelier '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.titre + "</a>' a été proposé"
 
-            if emails:
-                action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
+        ret = super(Atelier, self).save(*args, **kwargs)
+        if emails:
+            action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
+        return ret
 
-        return super(Atelier, self).save(*args, **kwargs)
 
     @property
     def get_couleur(self):

@@ -32,6 +32,7 @@ import itertools
 #     articles = Article.objects.all().order_by('-date_dernierMessage')  # Nous sélectionnons tous nos articles
 #     return render(request, 'blog/forum.html', {'derniers_articles': articles })
 
+@login_required
 def accueil(request):
     cat = Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
     categorie_list = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
