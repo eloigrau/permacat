@@ -124,17 +124,76 @@
 
 {% endif %}
 
+{% if votes %}
+<div class="row justify-content-center">
+<div class="col-sm-12 col-md-10 col-lg-8 textcenter ">
+    <button id="btn-detail-comments" type="button" class="btn btn-lg" onclick="toggle_visibility('detail-comments');" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour afficher les archives">
+       Voir les votes
+    </button>
+    <div id="detail-comments"  style='display:none;'>
+
+<div class="contenu commentaires" id="idConversation">
+{% for vote in votes %}
+    <div class="row msg-auteur ">
+
+        <div class="col-sm-3 col-md-3 col-lg-2">
+            <p class="infos  textepetit ">
+                 {% if not vote.suffrage.estAnonyme %}{% ifchanged%}<a href="{% url 'profil_nom' vote.auteur %}"> {{vote.auteur}}</a><br>{% endifchanged %}{{ vote.date_creation|date:"d/m/Y, G:i" }}
+                {% else %}Vote anonyme
+                {% endif %}
+</p>
+
+            </div>
+        <div class=" col-sm-9 col-md-9 col-lg-10 message ">
+
+        {% with reponses=vote.getVoteStr   %}
+        {% if reponses.0 %}
+            <p><em>Questions binaires :</em> </p>
+            <ol>
+                {% for rep in reponses.0 %}
+                <li> {{rep}} </li>
+                {% endfor %}
+            </ol>
+        {% endif %}
+        {% if reponses.1 %}
+            <p><em>Questions soumises au jugement majoritaire :</em> </p>
+            <ul>
+                {% for rep in reponses.1 %}
+                {% ifchanged rep.0 %}
+                </ul>
+                <p> Question : {{rep.0}} </p>
+                <ul>
+                {% endifchanged%}
+
+                <li> {{rep.1}} </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
+            <p><em>commentaire:</em> {{ vote.commentaire|safe}}</p>
+        </div>
+    </div>
+    <hr>
+{% endfor %}
+</div>
+    </div>
+</div></div>
+{% endif %}
+
 <div class="row justify-content-center">
 <div class="col-sm-12 col-md-10 col-lg-8 textcenter ">
 {% if vote %}
         <h4> J'ai voté :</h4>
         {% with reponses=vote.getVoteStr   %}
+        {% if reponses.0 %}
         <p>Questions binaires : </p>
         <ol>
             {% for rep in reponses.0 %}
             <li> {{rep}} </li>
             {% endfor %}
         </ol>
+        {% endif %}
+        {% if reponses.1 %}
         <p>Questions soumises au jugement majoritaire : </p>
         <ul>
             {% for rep in reponses.1 %}
@@ -147,9 +206,10 @@
             <li> {{rep.1}} </li>
             {% endfor %}
         </ul>
+        {% endif %}
         {% endwith %}
         {% if vote.commentaire %}
-        <tr><td style="width: 30%;">Commentaire :</td><td style="width: 70%;">{{vote.commentaire|safe}}</td></tr>
+        <tr><td style="width: 30%;">Mon commentaire :</td><td style="width: 70%;">{{vote.commentaire|safe}}</td></tr>
         {% endif %}
     {% else %}
         <hr>

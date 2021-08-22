@@ -762,7 +762,7 @@ class ListeProduit(ListView):
         context['choixPossibles'] = Choix.choix
         context['ordreTriPossibles'] = Choix.ordreTri
         context['distancePossibles'] = Choix.distances
-        context['producteur_list'] = Profil.objects.all()
+        context['producteur_list'] = Profil.objects.all().order_by("username")
         context['typeFiltre'] = "aucun"
         # context['form'] = self.form
         if 'producteur' in self.request.GET:

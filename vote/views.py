@@ -168,7 +168,6 @@ def lireSuffrage(request, slug):
 
 
     commentaires = Commentaire.objects.filter(suffrage=suffrage).order_by("date_creation")
-
     actions = action_object_stream(suffrage)
 
     form = CommentaireSuffrageForm(request.POST or None)
@@ -194,13 +193,14 @@ def lireSuffrage(request, slug):
 def resultatsSuffrage(request, slug):
     suffrage = get_object_or_404(Suffrage, slug=slug)
     res_bin, res_majo = suffrage.get_resultats()
+    votes = Vote.objects.filter(suffrage=suffrage)
     try:
         vote = Vote.objects.get(suffrage=suffrage, auteur=request.user)
     except:
         vote = ""
 
     return render(request, 'vote/resultatsSuffrage.html', {
-        'suffrage': suffrage, "res_bin":res_bin, "res_majo": res_majo, "choixMajo":Choix.vote_majoritaire, 'vote':vote })
+        'suffrage': suffrage, "votes":votes, "res_bin":res_bin, "res_majo": res_majo, "choixMajo":Choix.vote_majoritaire, 'vote':vote })
 
 
 
