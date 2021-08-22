@@ -214,13 +214,17 @@ class Profil(AbstractUser):
         return reverse('profil', kwargs={'user_id':self.id})
 
     def getDistance(self, profil):
-        x1 = float(self.adresse.latitude)*DEGTORAD
-        y1 = float(self.adresse.longitude)*DEGTORAD
-        x2 = float(profil.adresse.latitude)*DEGTORAD
-        y2 = float(profil.adresse.longitude)*DEGTORAD
-        x = (y2-y1) * math.cos((x1+x2)/2)
-        y = (x2-x1)
-        return math.sqrt(x*x + y*y) * 6371
+        try:
+            x1 = float(self.adresse.latitude)*DEGTORAD
+            y1 = float(self.adresse.longitude)*DEGTORAD
+            x2 = float(profil.adresse.latitude)*DEGTORAD
+            y2 = float(profil.adresse.longitude)*DEGTORAD
+            x = (y2-y1) * math.cos((x1+x2)/2)
+            y = (x2-x1)
+
+            return math.sqrt(x*x + y*y) * 6371
+        except:
+            return 0
 
     @property
     def statutMembre(self):
