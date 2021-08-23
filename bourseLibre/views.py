@@ -435,7 +435,7 @@ def admin_asso_rtg(request):
 def presentation_asso(request, asso):
     return render(request, 'asso/'+ asso + "/presentation_asso.html")
 
-def presentation_groupes(request, asso):
+def presentation_groupes(request):
     return render(request, 'asso/presentation_groupes.html')
 
 @login_required
@@ -468,7 +468,7 @@ def fairedon_asso(request, asso):
     if asso == 'developpeur':
         return render(request, 'asso/fairedondeveloppeur.html', )
 
-    asso = Asso.objects.filter(Q(nom=asso) | Q(abreviation=asso))
+    asso = Asso.objects.get(Q(nom=asso) | Q(abreviation=asso))
 
     return render(request, 'asso/'+ asso.abreviation +'/fairedon.html', )
 
@@ -1189,6 +1189,7 @@ def inscription_newsletter(request):
     return render(request, 'registration/inscription_newsletter.html', {'form':form})
 
 
+@login_required
 def inscription_permagora(request):
     asso=Asso.objects.get(abreviation='scic')
     if request.user.adherent_scic:
