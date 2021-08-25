@@ -185,14 +185,14 @@ class SupprimerArticle(DeleteView):
 @login_required
 def lireArticle(request, slug):
     article = get_object_or_404(Article, slug=slug)
-    ateliers = Atelier.objects.filter(article=article).order_by('start_time')
+    ateliers = Atelier.objects.filter(article=article).order_by('-start_time')
     lieux = AdresseArticle.objects.filter(article=article).order_by('titre')
 
     if not article.est_autorise(request.user):
         return render(request, 'notMembre.html', {"asso": str(article.asso)})
 
     commentaires = Commentaire.objects.filter(article=article).order_by("date_creation")
-    dates = Evenement.objects.filter(article=article).order_by("start_time")
+    dates = Evenement.objects.filter(article=article).order_by("-start_time")
 
     actions = action_object_stream(article)
     hit_count = HitCount.objects.get_for_object(article)
