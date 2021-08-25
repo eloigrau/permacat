@@ -74,7 +74,7 @@
             catch(err){ ;
             }
         {%endfor%}
-        {% if lieux|length == 1 %}
+        {% if lieux|length >= 1 %}
         map.panTo(new L.LatLng(lat, lon));
         {%else%}
         map.panTo(new L.LatLng(42.62914, 2.49939));
