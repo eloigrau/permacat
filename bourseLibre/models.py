@@ -52,7 +52,7 @@ class Adresse(models.Model):
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
-        if not self.latitude:
+        if not self.latitude or self.latitude==LATITUDE_DEFAUT:
             self.set_latlon_from_adresse()
         return super(Adresse, self).save(*args, **kwargs)
 
