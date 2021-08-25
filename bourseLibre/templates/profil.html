@@ -236,7 +236,7 @@
   </div>
 
   <div class="col-md-6">
-{% if user.accepter_annuaire %}
+{% if user.accepter_annuaire or request.user == user%}
        <style>
 
             .leaflet-container {  /* all maps */

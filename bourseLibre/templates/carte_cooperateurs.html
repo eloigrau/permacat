@@ -86,7 +86,11 @@
             catch(err){ ;
             }
         {%endfor%}
+        {% if profils|length == 1 %}
+        map.panTo(new L.LatLng({{profils.0.geo.latitude|to_numeric}}, {{profils.0.geo.longitude|to_numeric}}));
+        {%else%}
         map.panTo(new L.LatLng(42.62914, 2.49939));
+        {%endif%}
     }
 </script>
 {% leaflet_map "yourmap" callback="window.map_init_basic" %}
