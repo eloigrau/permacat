@@ -147,7 +147,22 @@ class Asso(models.Model):
             return False
         return True
 
-    def getProfilsAnnuaire(self):
+    def getProfils(self):
+        if self.abreviation == "public":
+            return Profil.objects.all().order_by("username")
+        elif self.abreviation == "pc":
+            return Profil.objects.filter(adherent_pc=True).order_by("username")
+        elif self.abreviation == "rtg":
+            return Profil.objects.filter(adherent_rtg=True).order_by("username")
+        elif self.abreviation == "fer":
+            return Profil.objects.filter(adherent_fer=True).order_by("username")
+        #elif self.abreviation == "gt":
+        #    return Profil.objects.filter(adherent_gt=True).order_by("username")
+        elif self.abreviation == "scic":
+            return Profil.objects.filter(adherent_scic=True).order_by("username")
+        return []
+
+    def getProfils_Annuaire(self):
         if self.abreviation == "public":
             return Profil.objects.filter(accepter_annuaire=True).order_by("username")
         elif self.abreviation == "pc":

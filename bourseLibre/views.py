@@ -368,8 +368,9 @@ def annuaire(request, asso):
     asso = testIsMembreAsso(request, asso)
     if not isinstance(asso, Asso):
         raise PermissionDenied
-    prof = asso.getProfilsAnnuaire()
+    prof = asso.getProfils()
     nb_profils = len(prof)
+    prof = prof.filter(accepter_annuaire=True)
     return render(request, 'annuaire.html', {'profils':prof, "nb_profils":nb_profils, "asso":asso} )
 
 @login_required
@@ -477,7 +478,7 @@ def carte(request, asso):
     asso=testIsMembreAsso(request, asso)
     if not isinstance(asso, Asso):
         raise PermissionDenied
-    profils = asso.getProfilsAnnuaire()
+    profils = asso.getProfils_Annuaire()
     if asso.abreviation == "public":
         titre = "Carte des coopérateurs du site*"
     else:
