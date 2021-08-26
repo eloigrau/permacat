@@ -6,6 +6,7 @@
 {% block subtitle %}
 <div class="row ">
 <div class="col-md-3 textcenter">
+
         <a href="{{album.get_absolute_url}}" class="btn btn-success"><i class="fa fa-arrow-left"></i> Album : {{album.title}}</a>
 
         <a href="{% url 'photologue:ajouterPhoto' albumSlug=album.slug %}">
@@ -13,6 +14,7 @@
                 <i class="fa fa-plus"></i> Ajouter une photo
             </button>
             </a>&ensp;
+      <button class="btn btn-succes stretched-link" onclick="copyToClipboard('{{photo.get_absolute_url}}')"><i class="fa fa-link" aria-hidden="true"></i>  Copier le lien</button>
 </div>
 <div class="col-md-6 textcenter">
         <h5 class="page-header">{{ object.title }}</h5>
@@ -92,4 +94,21 @@
 </div>
 </div>
 {% endif%}
+
+ <script>
+document.getElementById("copyButton").addEventListener("click", function() {
+    copyToClipboard();
+});
+function copyToClipboard() {
+
+var dummy = document.createElement('input'),
+text = window.location.href;
+document.body.appendChild(dummy);
+dummy.value = text;
+dummy.select();
+document.execCommand('copy');
+document.body.removeChild(dummy);
+
+}
+</script>
 {% endblock %}
