@@ -212,10 +212,12 @@ class Album(models.Model):
                 message = "L'album '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.title + "</a>' a été modifié"
                 emails = [suiv.email for suiv in followers(self) if self.auteur != suiv and self.est_autorise(suiv)]
 
+        retour = super().save(*args, **kwargs)
+
         if emails:
             action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
 
-        return super().save(*args, **kwargs)
+        return retour
 
     def __str__(self):
         return self.title
@@ -320,10 +322,12 @@ class Document(models.Model):
                 if emails and not LOCALL:
                     creation = True
 
+        retour = super().save(*args, **kwargs)
+
         if emails:
             action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
 
-        return super().save(*args, **kwargs)
+        return retour
 
     def get_absolute_url(self):
         return reverse('photologue:doc-list')
