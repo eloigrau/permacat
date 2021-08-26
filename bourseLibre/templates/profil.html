@@ -155,14 +155,16 @@
 		<td>{{user.adherent_scic|translateOuiNon}}</td>
 	    </tr>
     {% endif %}
+    {%if request.user.adherent_jp or request.user == user %}
+        <tr>
+            <td style="width:200px">Inscrit aux jardins partagés : </td>
+            <td>{{user.adherent_jp|translateOuiNon }}
+        </tr>
+    {% endif %}
       {% if request.user == user %}
         <tr>
             <td style="width:200px">Inscrit à la newsletter ^: </td>
             <td>{{user.inscrit_newsletter|translateOuiNon }}
-        </tr>
-        <tr>
-            <td style="width:200px">Inscrit aux jardins partagés ^: </td>
-            <td>{{user.adherent_jp|translateOuiNon }}
         </tr>
         {% endif %}
 
