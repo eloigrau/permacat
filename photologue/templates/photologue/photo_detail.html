@@ -14,10 +14,9 @@
                 <i class="fa fa-plus"></i> Ajouter une photo
             </button>
             </a>&ensp;
-      <button class="btn btn-succes stretched-link" onclick="copyToClipboard('{{photo.get_absolute_url}}')"><i class="fa fa-link" aria-hidden="true"></i>  Copier le lien</button>
 </div>
 <div class="col-md-6 textcenter">
-        <h5 class="page-header">{{ object.title }}</h5>
+        <h5 class="page-header">{{ object.title }}<small><button class="btn btn-light" id="copyButton" ><i class="fa fa-link"></i></button></small></h5>
             <p class="infos  textepetit">
 
             <a href="{% url 'profil' object.auteur.id %}">
