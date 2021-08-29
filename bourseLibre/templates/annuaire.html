@@ -4,12 +4,16 @@
 {% block header %}
 <script src="{% static 'js/sorttable.js' %}"></script>
 {% endblock %}
-{% block title %} - {{asso}} - Annuaire
+{% block title %}  - Annuaire - {{asso}}
 {% endblock %}
 {% block subtitle %}
 <div class="row">
     <div class="col-sm-12 textcenter">
-    <h3>Les adhérents {{asso}}* ({{profils|length}}/{{nb_profils}})</h3>
+        {% if asso.abreviation == 'public' %}
+    <h3>Annuaire du site* ({{profils|length}}/{{nb_profils}})</h3>
+{% else %}
+    <h3>Annuaire des membres du groupe : {{asso}}* ({{profils|length}}/{{nb_profils}})</h3>
+{% endif %}
     </div>
 </div>
 {% include "asso/presentation_asso_template.html" with adherent=request.user|adherent_asso:asso assos=asso.abreviation%}
