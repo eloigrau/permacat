@@ -14,7 +14,6 @@
 {% else %}
     <h3>Annuaire des membres du groupe : {{asso}}* ({{profils|length}}/{{nb_profils}})</h3>
 {% endif %}
-        {{asso.abreviation}}
     </div>
 </div>
 {% include "asso/presentation_asso_template.html" with adherent=request.user|adherent_asso:asso assos=asso.abreviation%}
