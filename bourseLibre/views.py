@@ -482,7 +482,7 @@ def carte(request, asso):
     if asso.abreviation == "public":
         titre = "Carte des coopérateurs du site*"
     else:
-        titre = "Carte des adhérents " + asso.nom + "*"
+        titre = "Carte des membres du groupe " + asso.nom + "*"
 
 
     import simplejson
