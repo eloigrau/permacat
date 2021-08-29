@@ -155,10 +155,10 @@
 		<td>{{user.adherent_scic|translateOuiNon}}</td>
 	    </tr>
     {% endif %}
-    {%if request.user.adherent_ca or request.user == user %}
+    {%if request.user.adherent_citealt or request.user == user %}
 	    <tr>
 		<td style="width:250px">Adhérent Cité Altruiste *:</td>
-		<td>{{user.adherent_ca|translateOuiNon}}</td>
+		<td>{{user.adherent_citealt|translateOuiNon}}</td>
 	    </tr>
     {% endif %}
     {%if request.user.adherent_jp or request.user == user %}

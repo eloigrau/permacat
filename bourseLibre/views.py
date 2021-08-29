@@ -1211,14 +1211,14 @@ def inscription_permagora(request):
 @login_required
 def inscription_ca(request):
     asso=Asso.objects.get(abreviation='ca')
-    if request.user.adherent_ca:
-        request.user.adherent_ca = False
+    if request.user.adherent_citealt:
+        request.user.adherent_citealt = False
         request.user.save()
         url = reverse('presentation_asso', kwargs={'asso': 'ca'})
         action.send(request.user, verb='inscription_ca', target=asso, url=url,
                     description="s'est retiré du groupe Cité Altruiste")
     else:
-        request.user.adherent_ca = True
+        request.user.adherent_citealt = True
         request.user.save()
         url = reverse('presentation_asso', kwargs={'asso': 'ca'})
         action.send(request.user, verb='inscription_ca', target=asso, url=url,

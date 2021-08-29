@@ -160,7 +160,7 @@
         {%endif%}
 
 
-        {% if request.user.adherent_pc or request.user.adherent_rtg  or request.user.adherent_fer  or request.user.adherent_scic or request.user.adherent_ca %}
+        {% if request.user.adherent_pc or request.user.adherent_rtg  or request.user.adherent_fer  or request.user.adherent_scic or request.user.adherent_citealt %}
             <li class="nav-item dropdown active">
              <button type="button" class="btn btn-block {% if request.GET.permacat %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                data-target = "#idPermacat">

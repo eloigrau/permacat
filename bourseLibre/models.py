@@ -161,7 +161,7 @@ class Asso(models.Model):
         elif self.abreviation == "scic":
             return Profil.objects.filter(adherent_scic=True).order_by("username")
         elif self.abreviation == "ca":
-            return Profil.objects.filter(adherent_ca=True).order_by("username")
+            return Profil.objects.filter(adherent_citealt=True).order_by("username")
         return []
 
     def getProfils_Annuaire(self):
@@ -178,7 +178,7 @@ class Asso(models.Model):
         elif self.abreviation == "scic":
             return Profil.objects.filter(accepter_annuaire=True, adherent_scic=True).order_by("username")
         elif self.abreviation == "ca":
-            return Profil.objects.filter(accepter_annuaire=True, adherent_ca=True).order_by("username")
+            return Profil.objects.filter(accepter_annuaire=True, adherent_citealt=True).order_by("username")
         return []
 
 
@@ -205,7 +205,7 @@ class Profil(AbstractUser):
     adherent_fer = models.BooleanField(verbose_name="Je suis adhérent de Fermille", default=False)
     #adherent_gt = models.BooleanField(verbose_name="Je suis adhérent de Gardiens de la Terre", default=False)
     adherent_scic = models.BooleanField(verbose_name="Je suis intéressé par l'asso PermAgora", default=False)
-    adherent_ca = models.BooleanField(verbose_name="Je fais partie de la cité altruiste", default=False)
+    adherent_citealt = models.BooleanField(verbose_name="Je fais partie de la cité altruiste", default=False)
     accepter_conditions = models.BooleanField(verbose_name="J'ai lu et j'accepte les conditions d'utilisation du site", default=False, null=False)
     accepter_annuaire = models.BooleanField(verbose_name="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous", default=True)
     adherent_jp = models.BooleanField(verbose_name="Je suis intéressé.e par les jardins partagés", default=False)
@@ -263,7 +263,7 @@ class Profil(AbstractUser):
         elif asso == "scic":
             return self.adherent_scic
         elif asso == "ca":
-            return self.adherent_ca
+            return self.adherent_citealt
 
     @property
     def statutMembre_str(self):
@@ -313,7 +313,7 @@ class Profil(AbstractUser):
             return True
         elif self.adherent_scic and (nom_asso == "PermAgora" or nom_asso == "scic") :
             return True
-        elif self.adherent_ca and (nom_asso == "Cité Altruiste" or nom_asso == "ca") :
+        elif self.adherent_citealt and (nom_asso == "Cité Altruiste" or nom_asso == "ca") :
             return True
         #elif self.adherent_gt and (nom_asso == "Gardiens de la Terre" or nom_asso == "gt") :
         #    return True
