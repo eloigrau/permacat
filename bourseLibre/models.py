@@ -160,7 +160,7 @@ class Asso(models.Model):
         #    return Profil.objects.filter(adherent_gt=True).order_by("username")
         elif self.abreviation == "scic":
             return Profil.objects.filter(adherent_scic=True).order_by("username")
-        elif self.abreviation == "ca":
+        elif self.abreviation == "citealt":
             return Profil.objects.filter(adherent_citealt=True).order_by("username")
         return []
 
@@ -177,7 +177,7 @@ class Asso(models.Model):
         #    return Profil.objects.filter(accepter_annuaire=True, adherent_gt=True).order_by("username")
         elif self.abreviation == "scic":
             return Profil.objects.filter(accepter_annuaire=True, adherent_scic=True).order_by("username")
-        elif self.abreviation == "ca":
+        elif self.abreviation == "citealt":
             return Profil.objects.filter(accepter_annuaire=True, adherent_citealt=True).order_by("username")
         return []
 
@@ -262,7 +262,7 @@ class Profil(AbstractUser):
             return self.adherent_jp
         elif asso == "scic":
             return self.adherent_scic
-        elif asso == "ca":
+        elif asso == "citealt":
             return self.adherent_citealt
 
     @property
@@ -313,7 +313,7 @@ class Profil(AbstractUser):
             return True
         elif self.adherent_scic and (nom_asso == "PermAgora" or nom_asso == "scic") :
             return True
-        elif self.adherent_citealt and (nom_asso == "Cité Altruiste" or nom_asso == "ca") :
+        elif self.adherent_citealt and (nom_asso == "Cité Altruiste" or nom_asso == "citealt") :
             return True
         #elif self.adherent_gt and (nom_asso == "Gardiens de la Terre" or nom_asso == "gt") :
         #    return True
