@@ -67,12 +67,6 @@
               popupAnchor: [1, -34],
               shadowSize: [41, 41]
         });
-        {% for profil in profils %}
-            var lat = {{profil.adresse.get_latitude}};
-            var lon = {{profil.adresse.get_longitude}};
-            var marker = L.marker([lat, lon], {icon: leafIcon}).bindPopup('<a href="{% url 'profil' profil.id %}"> {{profil.username}}</a>');
-            marker.addTo(map);
-        {%endfor%}
 
         {% for ev in data %}
             try{
@@ -86,6 +80,13 @@
             catch(err){ ;
             }
         {%endfor%}
+        {% for profil in profils %}
+            var lat = {{profil.adresse.get_latitude}};
+            var lon = {{profil.adresse.get_longitude}};
+            var marker = L.marker([lat, lon], {icon: leafIcon}).bindPopup('<a href="{% url 'profil' profil.id %}"> {{profil.username}}</a>');
+            marker.addTo(map);
+        {%endfor%}
+
         {% if profils|length == 1 %}
         map.panTo(new L.LatLng(lat, lon));
         {%else%}
