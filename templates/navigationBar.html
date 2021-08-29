@@ -165,6 +165,7 @@
                     {%endcomment%}
 
 
+                    {%comment%}
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle"  href="test">PermAgora</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
@@ -176,6 +177,24 @@
                           <li class="divider" role="separator"></li>
                             <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='scic' %}"><i class='fa fa-address-book iconleft' ></i> Annuaire  </a></li>
                           <li> <a class="dropdown-item" href="{% url 'carte'  asso='scic' %}"><i class='fa fa-compass iconleft' ></i>  Carte  </a></li>
+                            <li class="divider" role="separator"></li>
+   {% endif %}
+                        </ul>
+                    </li>
+                    {%endcomment%}
+
+
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle"  href="test">Cité Altruiste</a>
+                        <ul class="dropdown-menu  nav5-dropdown-submenu">
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso'  asso='ca' %}"><i class='fa fa-asterisk iconleft' ></i> Présentation </a></li>
+   {% if request.user.adherent_ca %}
+                            <li> <a class="dropdown-item" href="{% url 'agora' asso='ca'%}"><i class='fa fa-comment iconleft' ></i> Salon de discussion</a></li>
+                            <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='ca'%}"><i class='fa fa-comments iconleft' ></i> Articles du forum</a></li>
+
+                          <li class="divider" role="separator"></li>
+                            <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='ca' %}"><i class='fa fa-address-book iconleft' ></i> Annuaire  </a></li>
+                          <li> <a class="dropdown-item" href="{% url 'carte'  asso='ca' %}"><i class='fa fa-compass iconleft' ></i>  Carte  </a></li>
                             <li class="divider" role="separator"></li>
    {% endif %}
                         </ul>

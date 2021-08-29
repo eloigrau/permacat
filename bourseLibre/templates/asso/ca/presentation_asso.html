@@ -1,0 +1,43 @@
+{% extends 'base_asso.html' %}
+{% load static %}
+{% block title %} - Accueil{% endblock %}
+{% block subtitle %}
+
+<h2 class = "textcenter rowbienvenue">Cité Altruiste</h2>
+
+{% include "asso/presentation_asso_template.html" with adherent=request.user.adherent_scic assos='ca' %}
+
+<h4 class = "textcenter rowbienvenue">Qui sommes nous ?</h4>
+{% endblock %}
+{% block content %}
+<div class="row">
+	<div class="col">
+		<p>Ce groupe est en cours de constitution... aidez nous pour la description du groupe !</p>
+
+		<p>
+		si vous aussi, vous avez envie de vivre autrement de manière écologique,
+		de construire un monde plus durable et plus respectueux de notre
+		environnement et des êtres vivants qui y vivent vous pouvez nous rejoindre !
+		</p>
+		<p> Pour nous contacter, envoyez un mail à <a href="mailto:citealtruiste@gmail.com">citealtruiste@gmail.com</a>
+		</p>
+
+		{% if request.user.is_anonymous %}
+			<p class="textcenter">
+				 <a class="btn btn-success" href="#" disabled> Il faut être connecté pour pouvoir s'inscrire dans ce groupe</a>
+			</p>
+		{% else %}
+
+			{% if request.user.adherent_ca %}
+			<p class="textcenter">
+				 <a class="btn btn-success" href="{% url 'inscription_ca' %}"> Je suis inscrit -> Je me désinscris du groupe en cliquant ici</a>
+			</p>
+			{% else %}
+			<p class="textcenter">
+				 <a class="btn btn-success" href="{% url 'inscription_ca' %}"> Je ne fais pas partie du groupe -> Je m'inscris en cliquant ici</a>
+			</p>
+			{% endif %}
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

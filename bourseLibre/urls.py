@@ -64,6 +64,7 @@ urlpatterns = [
     path(r'presentation/<str:asso>/', views.presentation_asso, name='presentation_asso'),
     path(r'groupes/presentation/', views.presentation_groupes, name='presentation_groupes'),
     path(r'permagora/inscription/', views.inscription_permagora, name='inscription_permagora'),
+    path(r'citealtruiste/inscription/', views.inscription_ca, name='inscription_ca'),
     url(r'^site/presentation/$', views.presentation_site, name='presentation_site'),
     url(r'^site/pourquoi/$', views.presentation_site_pkoi, name='presentation_site_pkoi'),
     url(r'^permacat/statuts/$', views.statuts, name='statuts'),

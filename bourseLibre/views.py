@@ -1197,17 +1197,34 @@ def inscription_permagora(request):
         request.user.adherent_scic = False
         request.user.save()
         url = reverse('presentation_asso', kwargs={'asso': 'scic'})
-        message = str(request.user) + " s'est retiré du groupe PermAgora"
         action.send(request.user, verb='inscription_permagora', target=asso, url=url,
-                    description="s'est inscrit dans le groupe PermAgora")
+                    description="s'est retiré du groupe PermAgora")
     else:
         request.user.adherent_scic = True
         request.user.save()
         url = reverse('presentation_asso', kwargs={'asso': 'scic'})
-        message = str(request.user) + " s'est inscrit dans le groupe PermAgora"
         action.send(request.user, verb='inscription_permagora', target=asso, url=url,
-                    description="s'est retiré du groupe PermAgora")
+                    description="s'est inscrit au groupe PermAgora")
     return redirect('presentation_asso', asso='scic')
+
+
+@login_required
+def inscription_ca(request):
+    asso=Asso.objects.get(abreviation='ca')
+    if request.user.adherent_ca:
+        request.user.adherent_ca = False
+        request.user.save()
+        url = reverse('presentation_asso', kwargs={'asso': 'ca'})
+        action.send(request.user, verb='inscription_ca', target=asso, url=url,
+                    description="s'est retiré du groupe Cité Altruiste")
+    else:
+        request.user.adherent_ca = True
+        request.user.save()
+        url = reverse('presentation_asso', kwargs={'asso': 'ca'})
+        action.send(request.user, verb='inscription_ca', target=asso, url=url,
+                    description="s'est inscrit dans le groupe Cité Altruiste")
+    return redirect('presentation_asso', asso='ca')
+
 
 @login_required
 def contacter_newsletter(request):

@@ -86,10 +86,12 @@
 
 {% endblock %}
 {% block content %}
-     <div class="boxitem_droite">
+     <div class="textcenter">
                 <span class="badge badge-success">
                  {{article.get_jardin_display }}
             </span>
+     </div>
+     <div class="boxitem_droite">
             {% if article.estArchive%}
             <span class="badge badge-Light">
                 archivé
