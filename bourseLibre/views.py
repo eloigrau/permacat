@@ -23,7 +23,7 @@ from django.core.mail import mail_admins, send_mail, BadHeaderError, send_mass_m
 from django_summernote.widgets import SummernoteWidget
 from random import choice
 from datetime import date, timedelta, datetime as dt
-
+from django.http import HttpResponse
 from django import forms
 from django.http import Http404
 
@@ -1333,3 +1333,12 @@ def suivre_agora(request, asso, actor_only=True):
     else:
         actions.follow(request.user, suivi, actor_only=actor_only)
     return redirect('agora', asso=asso.abreviation)
+
+
+@login_required
+def accesfichier(request, path):
+    response = HttpResponse()
+    # Content-type will be detected by nginx
+    del response['Content-Type']
+    response['X-Accel-Redirect'] = '/protected/media/' + path
+    return response

@@ -49,6 +49,8 @@ urlpatterns = [
     url(r'^faq/$', views.faq, name='faq'),
     url(r'^gallerie/$', views.gallerie, name='gallerie'),
     path(r'admin/<str:asso>', views.admin_asso, name='admin_asso'),
+    url(r'^media/(?P<path>.*)', views.accesfichier, name='accesfichier'),
+
     url(r'^permacat/fichiers/$', views.telechargements_asso, name='telechargements_asso'),
     url(r'^notifications/parType/$', views_notifications.notifications, name='notifications'),
     url(r'^notifications/activite/$', views_notifications.notifications_news_regroup, name='notifications_news'),
