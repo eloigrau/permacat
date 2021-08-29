@@ -332,6 +332,13 @@ class Document(models.Model):
     def get_absolute_url(self):
         return reverse('photologue:doc-list')
 
+    def est_autorise(self, user):
+        if not self.asso:
+            return True
+        if self.asso.abreviation == "public":
+            return True
+        return getattr(user, "adherent_" + self.asso.abreviation)
+
 class ImageModel(models.Model):
     image = models.ImageField(_('image'),
                               max_length=IMAGE_FIELD_MAX_LENGTH,
