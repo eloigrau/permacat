@@ -1223,7 +1223,7 @@ def inscription_ca(request):
         url = reverse('presentation_asso', kwargs={'asso': 'ca'})
         action.send(request.user, verb='inscription_ca', target=asso, url=url,
                     description="s'est inscrit dans le groupe Cité Altruiste")
-    return redirect('presentation_asso', asso='ca')
+    return redirect('presentation_asso', asso='citealt')
 
 
 @login_required
