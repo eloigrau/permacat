@@ -50,7 +50,7 @@
 
             <div class="col-md-4 justify-content-center">
 
-                   <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#help" title="En savoir plus...">
+                <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#help" title="En savoir plus...">
                  {% fontawesome_icon 'question-circle' %}
                 </button>
                 <!-- Modal -->
@@ -74,6 +74,40 @@
                     </div>
                   </div>
                 </div>
+
+                <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#suivre" title="En savoir plus...">
+     {% fontawesome_icon 'bell' %}
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="suivre" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog textaide" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+              <div class="row justify-content-center">
+               <h5 > Abonnements au forum</h5>
+              </div>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body textleft">
+            {% for nom_asso, abreviation, suivi in suivis %}
+                <p> <a href="{% url 'blog:suivre_articles' asso_abreviation=abreviation %}">
+                    {% if request.user|is_following:suivi %}
+                    <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné : Cliquez pour arreter de recevoir un mail à chaque nouvel article '{{nom_asso}}'">
+                    {% fontawesome_icon 'bell' %} Articles '{{nom_asso}}'
+                    </button>
+                    {% else %}
+                    <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné : Cliquez pour recevoir un mail à chaque nouvel article '{{nom_asso}}'">
+                         {% fontawesome_icon 'bell-slash' %} Articles '{{nom_asso}}'
+                    </button>
+                    {% endif %}
+                </a></p>
+              {% endfor%}
+          </div>
+        </div>
+      </div>
+    </div>
         </div>
     </div>
 

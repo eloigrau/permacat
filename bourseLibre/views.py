@@ -378,12 +378,19 @@ def listeContacts(request, asso):
     asso = testIsMembreAsso(request, asso)
     if not isinstance(asso, Asso):
         raise PermissionDenied
-    listeMails = [
-        {"type":'user_newsletter' ,"profils":Profil.objects.filter(inscrit_newsletter=True), "titre":"Liste des inscrits à la newsletter : "},
-         {"type":'anonym_newsletter' ,"profils":InscriptionNewsletter.objects.all(), "titre":"Liste des inscrits anonymes à la newsletter : "},
-      {"type":'user_adherent' , "profils":Profil.objects.filter(adherent_pc=True), "titre":"Liste des adhérents : "},
-       # {"type":'user_futur_adherent', "profils":Profil.objects.filter(statut_adhesion=0), "titre":"Liste des personnes qui veulent adhérer à Permacat :"}
-    ]
+    if request.user.is_superuser:
+        listeMails = [
+            {"type":'user_newsletter' ,"profils":Profil.objects.filter(inscrit_newsletter=True), "titre":"Liste des inscrits à la newsletter : "},
+             {"type":'anonym_newsletter' ,"profils":InscriptionNewsletter.objects.all(), "titre":"Liste des inscrits anonymes à la newsletter : "},
+          {"type":'user_adherent', "profils":Profil.objects.filter(adherent_pc=True), "titre":"Liste des adhérents Permacat: "},
+           # {"type":'user_futur_adherent', "profils":Profil.objects.filter(statut_adhesion=0), "titre":"Liste des personnes qui veulent adhérer à Permacat :"}
+        ]
+    else:
+        listeMails = [
+          {"type":'user_adherent' , "profils":Profil.objects.filter(adherent_pc=True), "titre":"Liste des adhérents Permacat: "},
+           # {"type":'user_futur_adherent', "profils":Profil.objects.filter(statut_adhesion=0), "titre":"Liste des personnes qui veulent adhérer à Permacat :"}
+        ]
+
     return render(request, 'listeContacts.html', {"listeMails":listeMails, "asso":asso })
 
 @login_required
@@ -681,8 +688,8 @@ def register(request):
         adresse = form_adresse.save()
         profil_courant = form_profil.save(commit=False,is_active = False)
         profil_courant.adresse = adresse
-        if profil_courant.statut_adhesion == 2:
-            profil_courant.is_active=False
+        #if profil_courant.statut_adhesion == 2:
+        #    profil_courant.is_active=False
         profil_courant.save()
         Panier.objects.create(user=profil_courant)
         return render(request, 'userenattente.html')
@@ -1063,18 +1070,20 @@ def prochaines_rencontres(request):
 def mesSuivis(request):
 
     follows = Follow.objects.filter(user=request.user)
-    follows_base, follows_agora, follows_autres = [], [], []
+    follows_base, follows_agora, follows_autres, follows_forum = [], [], [], []
     for action in follows:
         if not action.follow_object:
             action.delete()
-        if str(action.follow_object) in Choix.suivisPossibles:
-            follows_base.append(action)
+        elif 'articles' in str(action.follow_object) and not str(action.follow_object) == "articles_jardin":
+            follows_forum.append(action)
         elif 'agora' in str(action.follow_object):
             follows_agora.append(action)
+        elif str(action.follow_object) in Choix.suivisPossibles:
+            follows_base.append(action)
         else:
             follows_autres.append(action)
 
-    return render(request, 'notifications/mesSuivis.html', {'follows_base': follows_base, 'follows_agora':follows_agora, 'follows_autres':follows_autres})
+    return render(request, 'notifications/mesSuivis.html', {'follows_base': follows_base, 'follows_agora':follows_agora, 'follows_forum':follows_forum, 'follows_autres':follows_autres})
 
 @login_required
 def supprimerAction(request, actionid):
@@ -1178,6 +1187,13 @@ def sereabonner(request,):
         if not suivi in following(request.user):
             actions.follow(request.user, suivi, send_action=False)
 
+    for abreviation in Choix.abreviationsAsso + ['public']:
+        if request.user.est_autorise(abreviation):
+            suivi, created = Suivis.objects.get_or_create(nom_suivi="articles_" + abreviation)
+            actions.follow(request.user, suivi, send_action=False)
+            suivi, created = Suivis.objects.get_or_create(nom_suivi="agora_" + abreviation)
+            actions.follow(request.user, suivi, send_action=False)
+
     return redirect('mesSuivis')
 
 
@@ -1270,7 +1286,7 @@ def contacter_adherents(request):
         if form.is_valid():
             sujet = "[permacat] Newsletter - " +  form.cleaned_data['sujet']
             message = form.cleaned_data['msg']
-            emails = [profil.email for profil in Profil.objects.filter(statut_adhesion=2)]
+            emails = [profil.email for profil in Profil.objects.filter(adherent_pc=True)]
 
             if emails and not LOCALL:
                 try:

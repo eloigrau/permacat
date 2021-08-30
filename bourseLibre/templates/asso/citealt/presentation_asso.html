@@ -12,7 +12,8 @@
 {% block content %}
 <div class="row">
 	<div class="col">
-		<p>Ce groupe est en cours de constitution... aidez nous pour la description du groupe !</p>
+		<p> Ce collectif est né suite au festival "bien vivre 66", et sous l'impulsion de Denis et de Stéphanie. Suite à deux regroupements au lac de SaintJean Pla de Corts, il a été convenu d'utiliser ce site afin de communiquer, s'organiser, etc... de façon libre et bienveillante.</p>
+		<p>(Ce groupe est en cours de constitution... aidez nous pour la description du groupe !)</p>
 
 		<p>
 		si vous aussi, vous avez envie de vivre autrement de manière écologique,
@@ -21,20 +22,20 @@
 		</p>
 		<p> Pour nous contacter, envoyez un mail à <a href="mailto:citealtruiste@gmail.com">citealtruiste@gmail.com</a>
 		</p>
-
+<hr>
 		{% if request.user.is_anonymous %}
 			<p class="textcenter">
-				 <a class="btn btn-success" href="#" disabled> Il faut être connecté pour pouvoir s'inscrire dans ce groupe</a>
+				 <a class="btn btn-warning" href="#" disabled> Il faut être connecté pour pouvoir s'inscrire dans ce groupe</a>
 			</p>
 		{% else %}
 
 			{% if request.user.adherent_citealt %}
 			<p class="textcenter">
-				 <a class="btn btn-success" href="{% url 'inscription_citealt' %}"> Je suis inscrit -> Je me désinscris du groupe en cliquant ici</a>
+				 <a class="btn btn-warning" href="{% url 'inscription_citealt' %}"> Je suis inscrit -> Je me désinscris du groupe en cliquant ici</a>
 			</p>
 			{% else %}
 			<p class="textcenter">
-				 <a class="btn btn-success" href="{% url 'inscription_citealt' %}"> Je ne fais pas partie du groupe -> Je m'inscris en cliquant ici</a>
+				 <a class="btn btn-primary" href="{% url 'inscription_citealt' %}"> Je ne fais pas partie du groupe -> Je m'inscris en cliquant ici</a>
 			</p>
 			{% endif %}
 		{% endif %}

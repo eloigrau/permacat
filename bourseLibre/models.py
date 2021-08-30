@@ -199,7 +199,7 @@ class Profil(AbstractUser):
     pseudo_june = models.CharField(_('pseudo Monnaie Libre'), blank=True, default=None, null=True, max_length=50)
 
     inscrit_newsletter = models.BooleanField(verbose_name="J'accepte de recevoir des emails de Perma.cat", default=False)
-    statut_adhesion = models.IntegerField(choices=Choix.statut_adhesion, default="0")
+    #statut_adhesion = models.IntegerField(choices=Choix.statut_adhesion, default="0")
     adherent_pc = models.BooleanField(verbose_name="Je suis adhérent de Permacat", default=False)
     adherent_rtg = models.BooleanField(verbose_name="Je suis adhérent de Ramene Ta Graine", default=False)
     adherent_fer = models.BooleanField(verbose_name="Je suis adhérent de Fermille", default=False)
@@ -246,9 +246,6 @@ class Profil(AbstractUser):
         except:
             return 0
 
-    @property
-    def statutMembre(self):
-        return self.statut_adhesion
 
     @property
     def statutMembre_asso(self, asso):
@@ -265,14 +262,6 @@ class Profil(AbstractUser):
         elif asso == "citealt":
             return self.adherent_citealt
 
-    @property
-    def statutMembre_str(self):
-        if self.statut_adhesion == 0:
-            return "souhaite devenir membre de l'association"
-        elif self.statut_adhesion == 1:
-            return "ne souhaite pas devenir membre"
-        elif self.statut_adhesion == 2:
-            return "membre actif"
 
     @property
     def statutMembre_str_asso(self, asso):
@@ -325,11 +314,11 @@ class Profil(AbstractUser):
         else:
             return False
 
-    def est_autorise(self, user):
-        if self.asso.abreviation == "public":
+    def est_autorise(self, abreviation_asso):
+        if abreviation_asso == "public":
             return True
 
-        return getattr(user, "adherent_" + self.asso.abreviation)
+        return getattr(self, "adherent_" + abreviation_asso)
 
     @property
     def inscrit_newsletter_str(self):
@@ -342,6 +331,12 @@ def create_user_profile(sender, instance, created, **kwargs):
             for suiv in Choix.suivisPossibles:
                 suivi, created = Suivis.objects.get_or_create(nom_suivi=suiv)
                 actions.follow(instance, suivi, actor_only=True, send_action=False)
+            for abreviation in Choix.abreviationsAsso + ['public', ]:
+                if instance.est_autorise(abreviation):
+                    suivi, created = Suivis.objects.get_or_create(nom_suivi="articles_"+abreviation)
+                    actions.follow(instance, suivi, actor_only=True, send_action=False)
+                    suivi, created = Suivis.objects.get_or_create(nom_suivi="agora_"+abreviation)
+                    actions.follow(instance, suivi, actor_only=True, send_action=False)
         action.send(instance, verb='inscription', url=instance.get_absolute_url(),
                     description="s'est inscrit.e sur le site")
         if instance.is_superuser:
@@ -961,6 +956,12 @@ class Suivis(models.Model):
 
     def __str__(self):
         return str(self.nom_suivi)
+
+
+#class Gestionnaire_Suivis():
+        #    def get_suivi_articles(self, asso):
+        #suivis, created = Suivis.objects.get_or_create(nom_suivi='articles_' + str(asso.abreviation))
+        #return suivis
 
 
 class InscriptionNewsletter(models.Model):

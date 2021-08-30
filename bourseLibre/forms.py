@@ -230,12 +230,12 @@ class ProducteurChangeForm_admin(UserChangeForm):
     accepter_annuaire = forms.BooleanField(required=False)
     pseudo_june = forms.CharField(label="pseudo_june",required=False)
 
-    statut_adhesion = forms.ChoiceField(choices=Choix.statut_adhesion)
+    #statut_adhesion = forms.ChoiceField(choices=Choix.statut_adhesion)
     password = None
 
     class Meta:
         model = Profil
-        fields = ['username', 'email', 'description', 'competences', 'inscrit_newsletter', 'statut_adhesion', 'adherent_pc',  'adherent_rtg', 'adherent_fer',  'adherent_scic', 'adherent_citealt','pseudo_june', 'accepter_annuaire', 'adherent_jp']
+        fields = ['username', 'email', 'description', 'competences', 'inscrit_newsletter', 'adherent_pc',  'adherent_rtg', 'adherent_fer',  'adherent_scic', 'adherent_citealt','pseudo_june', 'accepter_annuaire', 'adherent_jp']
 
     def __init__(self, *args, **kwargs):
         super(ProducteurChangeForm_admin, self).__init__(*args, **kwargs)

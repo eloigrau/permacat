@@ -6,6 +6,7 @@ from .models import Article, Commentaire, Projet, CommentaireProjet, Choix, Even
 from .forms import ArticleForm, ArticleAddAlbum, CommentaireArticleForm, CommentaireArticleChangeForm, ArticleChangeForm, ProjetForm, \
     ProjetChangeForm, CommentProjetForm, CommentaireProjetChangeForm, EvenementForm, EvenementArticleForm, AdresseArticleForm
 from .filters import ArticleFilter
+from.utils import get_suivis_forum
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
 from actstream import actions, action
@@ -83,7 +84,8 @@ def accueil(request):
 
     derniers = sorted(set([x for x in itertools.chain(derniers_articles_comm[::-1][:8], derniers_articles_modif[::-1][:8], derniers_articles[:8], )]), key=lambda x:x.date_modification if x.date_modification else x.date_creation)[::-1]
 
-    suivis, created = Suivis.objects.get_or_create(nom_suivi="articles")
+    suivis = get_suivis_forum(request)
+
     return render(request, 'blog/accueil.html', {'categorie_list':categorie_list,'categorie_list_pc':categorie_list_pc,'categorie_list_rtg':categorie_list_rtg,'categorie_list_fer':categorie_list_fer,'categorie_list_gt':categorie_list_gt,'projets_list':projets_list,'ateliers_list':ateliers_list, 'categorie_list_projets':categorie_list_projets,'derniers_articles':derniers, 'suivis':suivis})
 
 
@@ -291,8 +293,8 @@ class ListeArticles(ListView):
         context['projets_list'] = [(x.slug, x.titre, x.get_couleur) for x in proj]
 
         context['typeFiltre'] = "aucun"
-        context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="articles")
 
+        context['suivis'] = get_suivis_forum(self.request)
         context['ordreTriPossibles'] = Choix.ordre_tri_articles
 
         if 'auteur' in self.request.GET:
@@ -405,7 +407,8 @@ class ListeArticles_asso(ListView):
         context['asso_list'] = [(x.nom, x.abreviation) for x in assos]
         context['asso_courante'] = asso
         context['typeFiltre'] = "aucun"
-        context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="articles")
+        context['suivis'] = get_suivis_forum(self.request)
+
 
         context['ordreTriPossibles'] = Choix.ordre_tri_articles
 
@@ -695,16 +698,16 @@ def articles_suivis(request, slug):
     return render(request, 'blog/articles_suivis.html', {'suiveurs': suiveurs, "article":article, })
 
 @login_required
-def articles_suiveurs(request):
-    suivi, created = Suivis.objects.get_or_create(nom_suivi='articles')
+def articles_suiveurs(request, asso_abreviation='punlic'):
+    suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_'+ asso_abreviation)
     suiveurs = sorted(followers(suivi), key= lambda x: str.lower(x.username))
     return render(request, 'blog/articles_suivis.html', {'suiveurs': suiveurs, })
 
 
 @login_required
 @csrf_exempt
-def suivre_articles(request, actor_only=True):
-    suivi, created = Suivis.objects.get_or_create(nom_suivi='articles')
+def suivre_articles(request, asso_abreviation='public', actor_only=True):
+    suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_' + str(asso_abreviation))
 
     if suivi in following(request.user):
         actions.unfollow(request.user, suivi, send_action=False)

@@ -7,6 +7,7 @@ from django.utils.timezone import now
 from itertools import chain
 from .forms import nouvelleDateForm
 from .models import Profil, Conversation
+from .settings import LOCALL
 from .settings.production import SERVER_EMAIL, EMAIL_HOST_PASSWORD
 from django.http import HttpResponseForbidden
 from django.core.mail.message import EmailMultiAlternatives
@@ -534,12 +535,17 @@ def send_mass_html_mail(datatuple, fail_silently=False, auth_user=None,
                                connection=connection)
         for subject, message, html_message, sender, recipient in datatuple
     ]
-    return connection.send_messages(messages)
+    if not LOCALL:
+        return connection.send_messages(messages)
+    else:
+        print (messages)
+        return messages
 
 
 def envoyerEmailsRequete(request):
     listeMails = getListeMailsAlerte()
-    send_mass_html_mail(listeMails, fail_silently=False)
+    if not LOCALL:
+        send_mass_html_mail(listeMails, fail_silently=False)
     supprimerActionsEmails()
     supprimerActionsStartedFollowing()
     return redirect('voirEmails', )

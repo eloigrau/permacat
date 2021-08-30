@@ -42,8 +42,8 @@
             {%endcomment%}
             <td><a href="{% url 'profil' profil.id %}">{{ profil.username }}</a></td>
             <td><a href="{% url 'profil' profil.id %}">{{ profil.email }}</a></td>
-            <td><a href="{% url 'profil' profil.id %}">{{ profil.adresse.code_postal }}</a></td>
-            <td><a href="{% url 'profil' profil.id %}">{{ profil.adresse.commune }}</a></td>
+            <td>{%if profil.adresse.code_postal %}<a href="{% url 'profil' profil.id %}">{{ profil.adresse.code_postal }}</a>{% else %}-{% endif %}</td>
+            <td>{%if profil.adresse.commune %}<a href="{% url 'profil' profil.id %}">{{ profil.adresse.commune }}</a> {% else %}-{% endif %}</td>
         </tr>
         {% endfor %}
         </tbody>

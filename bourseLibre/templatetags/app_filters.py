@@ -98,3 +98,13 @@ def filtrerSuivisAgora(nomSuivis):
         return "Salon de discussion " + asso.nom
     except:
         return str(nomSuivis)
+
+
+@register.filter(is_safe=True)
+def filtrerSuivisForum(nomSuivis):
+    try:
+        nomAsso = str(nomSuivis).split("_",1)[1]
+        asso = Asso.objects.get(abreviation=nomAsso)
+        return "Articles " + asso.nom
+    except:
+        return str(nomSuivis)

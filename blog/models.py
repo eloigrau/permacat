@@ -7,7 +7,6 @@ from actstream.models import followers
 from bourseLibre.settings import LOCALL
 from taggit.managers import TaggableManager
 from photologue.models import Album
-
 class Choix():
     statut_projet = ('prop','Proposition de projet'), ("AGO","Fiche projet soumise à l'AGO"), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
 
@@ -106,7 +105,7 @@ class Article(models.Model):
         if not self.id:
             self.date_creation = timezone.now()
             if sendMail:
-                suivi, created = Suivis.objects.get_or_create(nom_suivi='articles')
+                suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_' + str(self.asso.abreviation))
                 titre = "Nouvel article"
                 message = "Un article a été posté dans le forum (" + str(self.asso.nom) + ") : '<a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.titre + "</a>'"
                 emails = [suiv.email for suiv in followers(suivi) if self.auteur != suiv and self.est_autorise(suiv)]
@@ -196,7 +195,7 @@ class Commentaire(models.Model):
         emails = []
         if not self.id:
             self.date_creation = timezone.now()
-            suivi, created = Suivis.objects.get_or_create(nom_suivi='articles')
+            suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_' + str(self.asso.abreviation))
             titre = "Article commenté"
             message = self.auteur_comm.username + " a commenté l'article '<a href='https://www.perma.cat" + self.article.get_absolute_url() + "'>" + self.article.titre + "</a>'"
             emails = [suiv.email for suiv in followers(self.article) if
