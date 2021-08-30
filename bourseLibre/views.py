@@ -1209,19 +1209,19 @@ def inscription_permagora(request):
 
 
 @login_required
-def inscription_ca(request):
-    asso=Asso.objects.get(abreviation='ca')
+def inscription_citealt(request):
+    asso=Asso.objects.get(abreviation='citealt')
     if request.user.adherent_citealt:
         request.user.adherent_citealt = False
         request.user.save()
-        url = reverse('presentation_asso', kwargs={'asso': 'ca'})
-        action.send(request.user, verb='inscription_ca', target=asso, url=url,
+        url = reverse('presentation_asso', kwargs={'asso': 'citealt'})
+        action.send(request.user, verb='inscription_citealt', target=asso, url=url,
                     description="s'est retiré du groupe Cité Altruiste")
     else:
         request.user.adherent_citealt = True
         request.user.save()
-        url = reverse('presentation_asso', kwargs={'asso': 'ca'})
-        action.send(request.user, verb='inscription_ca', target=asso, url=url,
+        url = reverse('presentation_asso', kwargs={'asso': 'citealt'})
+        action.send(request.user, verb='inscription_citealt', target=asso, url=url,
                     description="s'est inscrit dans le groupe Cité Altruiste")
     return redirect('presentation_asso', asso='citealt')
 
