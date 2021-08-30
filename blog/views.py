@@ -340,7 +340,7 @@ class ListeArticles_asso(ListView):
         qs = Article.objects.all()
 
         if asso.abreviation == "public":
-            qs = qs.exclude(Q(asso__abreviation="pc")|Q(asso__abreviation="rtg")|Q(asso__abreviation="fer")|Q(asso__abreviation="gt"))
+            qs = qs.exclude(Q(asso__abreviation="pc")|Q(asso__abreviation="rtg")|Q(asso__abreviation="fer")|Q(asso__abreviation="gt")|Q(asso__abreviation="scic")|Q(asso__abreviation="citealt"))
         else:
             qs = qs.filter(asso__abreviation=asso.abreviation)
 
