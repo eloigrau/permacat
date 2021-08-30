@@ -25,7 +25,7 @@ class AlbumAdminForm(forms.ModelForm):
 
 
 class AlbumAdmin(admin.ModelAdmin):
-    list_display = ('title', 'date_added', 'photo_count', 'asso')
+    list_display = ('title', 'asso', 'date_added', 'photo_count')
     list_filter = ['date_added', 'asso']
     if MULTISITE:
         list_filter.append('sites')

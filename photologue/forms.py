@@ -188,7 +188,7 @@ class AlbumForm(forms.ModelForm):
 
     class Meta:
         model = Album
-        fields = ['title', 'description', 'asso', 'tags', 'article', 'estModifiable', ]
+        fields = ['asso', 'title', 'description', 'tags', 'article', 'estModifiable', ]
         widgets = {
             'caption': SummernoteWidget(),
         }
@@ -225,7 +225,7 @@ class AlbumChangeForm(forms.ModelForm):
 
     class Meta:
         model = Album
-        fields = [ 'title', 'description', 'asso', 'tags', 'estModifiable',]
+        fields = ['asso', 'title', 'description',  'tags', 'estModifiable',]
         widgets = {
             'description': SummernoteWidget(),
         }
@@ -277,7 +277,7 @@ class DocumentForm(forms.ModelForm):
 
     class Meta:
         model = Document
-        fields = [ 'titre', 'doc', 'tags', 'asso']
+        fields = ['asso', 'titre', 'doc', 'tags']
 
     def __init__(self, request, *args, **kwargs):
         super(DocumentForm, self).__init__(*args, **kwargs)

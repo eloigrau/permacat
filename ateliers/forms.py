@@ -14,7 +14,7 @@ class AtelierForm(forms.ModelForm):
 
     class Meta:
         model = Atelier
-        fields = ['titre', 'statut', 'categorie', 'asso', 'referent', 'description', 'materiel', 'start_time','heure_atelier','duree_prevue', 'tarif_par_personne']
+        fields = ['titre', 'asso', 'statut', 'categorie', 'referent', 'description', 'materiel', 'start_time','heure_atelier','duree_prevue', 'tarif_par_personne']
         widgets = {
             'description': SummernoteWidget(),
             'materiel': SummernoteWidget(),

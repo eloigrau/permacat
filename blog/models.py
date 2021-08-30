@@ -84,7 +84,7 @@ class Article(models.Model):
     dernierMessage = models.CharField(max_length=100, default=None, blank=True, null=True)
     estArchive = models.BooleanField(default=False, verbose_name="Archiver l'article")
 
-    start_time = models.DateTimeField(verbose_name="Date de début (optionnel, affichage dans l'agenda)", null=True,blank=True, help_text="jj/mm/année")
+    start_time = models.DateTimeField(verbose_name="Date de l'évenement (pour affichage dans l'agenda) - date de début si l'événement a lieu sur plusieurs jours ", null=True,blank=True, help_text="jj/mm/année")
     end_time = models.DateTimeField(verbose_name="Date de fin (optionnel, pour affichage dans l'agenda)",  null=True,blank=True, help_text="jj/mm/année")
 
     tags = TaggableManager(verbose_name="Mots clés",  help_text="Liste de mots-clés séparés par une virgule", blank=True)

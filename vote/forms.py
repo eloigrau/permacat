@@ -15,7 +15,7 @@ class SuffrageForm(forms.ModelForm):
 
     class Meta:
         model = Suffrage
-        fields = ['type_vote', 'titre', 'asso', 'description', 'estAnonyme', 'start_time', 'end_time']
+        fields = ['asso', 'type_vote', 'titre', 'description', 'estAnonyme', 'start_time', 'end_time']
         widgets = {
             'contenu': SummernoteWidget(),
               'start_time': forms.DateInput(attrs={'type': 'date'}),
@@ -58,7 +58,7 @@ class SuffrageChangeForm(forms.ModelForm):
 
     class Meta:
         model = Suffrage
-        fields = ['type_vote', 'titre', 'asso', 'description', 'start_time', 'end_time', 'estAnonyme',  'estArchive']
+        fields = [ 'asso', 'type_vote', 'titre', 'description', 'start_time', 'end_time', 'estAnonyme',  'estArchive']
         widgets = {
             'contenu': SummernoteWidget(),
               'start_time': forms.DateInput(attrs={'class':"date", }),
