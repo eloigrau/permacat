@@ -292,15 +292,20 @@ class Profil(AbstractUser):
             else:
                 return "Non membre de 'Fermille'"
         if asso == "jp":
-            if self.adherent_fer:
+            if self.adherent_jp:
                 return "membre actif des 'Jardins Partagés'"
             else:
                 return "Non membre des 'Jardins Partagés'"
         if asso == "scic":
-            if self.adherent_fer:
+            if self.adherent_scic:
                 return "membre actif de 'PermAgora'"
             else:
                 return "Non membre de 'PermAgora'"
+        if asso == "citealt":
+            if self.adherent_citealt:
+                return "membre actif de la 'Cité Altruiste'"
+            else:
+                return "Non membre de la 'Cité Altruiste'"
 
     def estMembre_str(self, nom_asso):
         if nom_asso == "Public" or nom_asso == "public":

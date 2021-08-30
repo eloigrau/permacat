@@ -179,6 +179,9 @@
         {% if request.user.adherent_scic %}
                       <a class="dropdown-item" href="?rtg=True">PermAgora</a>
         {%endif%}
+        {% if request.user.adherent_citealt %}
+                      <a class="dropdown-item" href="?citealt=True">Cité Altruiste</a>
+        {%endif%}
                       <a class="dropdown-item" href="?permacat=False">Public</a>
                 </div>
             </li>

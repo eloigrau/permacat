@@ -87,7 +87,7 @@ def getNotificationsParDate(request, limiter=True, orderBy="-timestamp"):
     if request.user.adherent_scic:
         actions = actions | Action.objects.filter(Q(verb__icontains='scic'))
     if request.user.adherent_citealt:
-        actions = actions | Action.objects.filter(Q(verb__icontains='_ca'))
+        actions = actions | Action.objects.filter(Q(verb__icontains='citealt'))
 
     actions = actions.order_by(orderBy).distinct()
 

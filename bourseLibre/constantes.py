@@ -46,7 +46,7 @@ class Choix():
                     (1, _("Je souhaite utiliser le site, mais ne pas devenir membre de l'association RTG")),
                     (2, _("Je suis déjà membre de l'association Ramene Ta Graine")))
 
-    abreviationsAsso = ["pc", "rtg", "fer", "scic"]
+    abreviationsAsso = ["pc", "rtg", "fer", "scic", "citealt"]
 
     suivisPossibles = [ 'articles', 'articles_jardin', 'projets', 'produits', 'conversations', 'documents', 'albums', 'ateliers', 'suffrages',]
     nomSuivis = { 'articles':'Article du forum',

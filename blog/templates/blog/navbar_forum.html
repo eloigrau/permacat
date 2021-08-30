@@ -92,12 +92,12 @@
      {% if request.user.adherent_citealt %}
     <li class="nav-item dropdown">
         <button type="button" class="btn dropdown-toggle btn-primary btn-menu-forum btn-block" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
-        data-target = "#idDossiers_ca"> Cité Altruiste</button>
-        <div class="dropdown-menu textcenter dropdown-menu-forum " aria-labelledby="menuAuteur"  id="idDossiers_ca">
-             <a class=" dropdown-item " href="{% url 'blog:index_asso' asso='scic'%}"><span>Tous les articles Cité Altruiste</span></a>
+        data-target = "#idDossiers_citealt"> Cité Altruiste</button>
+        <div class="dropdown-menu textcenter dropdown-menu-forum " aria-labelledby="menuAuteur"  id="idDossiers_citealt">
+             <a class=" dropdown-item " href="{% url 'blog:index_asso' asso='citealt'%}"><span>Tous les articles Cité Altruiste</span></a>
             <div class="dropdown-divider"></div>
-            {% for categorie_id, cat_nom, cat_coul in categorie_list_ca %}
-             <a class=" dropdown-item " style="background:#d0f4de;" href="{% url 'blog:index_asso' asso='scic'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+            {% for categorie_id, cat_nom, cat_coul in categorie_list_citealt %}
+             <a class=" dropdown-item " style="background:#d0f4de;" href="{% url 'blog:index_asso' asso='citealt'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
             {% endfor %}
         </div>
     </li>
