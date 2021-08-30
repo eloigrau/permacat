@@ -101,14 +101,14 @@
                 <td>{{ user.email }}</td>
             </tr>
 
-              {% if user.adresse.description %}
+              {% if user.description %}
                     <tr>
                         <td style="width:250px">Description :</td>
                         <td>{{ user.description|safe }}</td>
                     </tr>
               {% endif %}
 
-              {% if user.adresse.competences %}
+              {% if user.competences %}
 	    <tr>
 		<td style="width:250px">Savoir-faire :</td>
 		<td>{{ user.competences|safe }}</td>
