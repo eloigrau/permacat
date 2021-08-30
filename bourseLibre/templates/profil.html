@@ -83,7 +83,7 @@
             <td style="width:250px">Pseudo :</td>
             <td>{{ user.username }}</td>
         </tr>
-        {%if user.accepter_annuaire  or request.user == user %}
+        {%if user.accepter_annuaire or request.user == user %}
               {% if user.get_full_name %}
                 <tr>
                     <td style="width:250px">Nom :</td>
