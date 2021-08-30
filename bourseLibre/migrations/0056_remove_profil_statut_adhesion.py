@@ -60,5 +60,5 @@ class Migration(migrations.Migration):
             model_name='profil',
             name='statut_adhesion',
         ),
-       migrations.RunPython(create_types),
+      # migrations.RunPython(create_types),
     ]
