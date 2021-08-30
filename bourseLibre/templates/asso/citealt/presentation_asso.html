@@ -30,11 +30,11 @@
 
 			{% if request.user.adherent_citealt %}
 			<p class="textcenter">
-				 <a class="btn btn-success" href="{% url 'inscription_ca' %}"> Je suis inscrit -> Je me désinscris du groupe en cliquant ici</a>
+				 <a class="btn btn-success" href="{% url 'inscription_citealt' %}"> Je suis inscrit -> Je me désinscris du groupe en cliquant ici</a>
 			</p>
 			{% else %}
 			<p class="textcenter">
-				 <a class="btn btn-success" href="{% url 'inscription_ca' %}"> Je ne fais pas partie du groupe -> Je m'inscris en cliquant ici</a>
+				 <a class="btn btn-success" href="{% url 'inscription_citealt' %}"> Je ne fais pas partie du groupe -> Je m'inscris en cliquant ici</a>
 			</p>
 			{% endif %}
 		{% endif %}
