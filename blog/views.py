@@ -126,7 +126,7 @@ class ModifierArticle(UpdateView):
             url = self.object.get_absolute_url()
             suffix = "_" + self.object.asso.abreviation
             action.send(self.request.user, verb='article_modifier'+suffix, action_object=self.object, url=url,
-                         description="a modifié l'article: '%s'" % self.object.titre)
+                         description="a modifié l'article (%s): '%s'" %(self.object.asso, self.object.titre))
         #envoi_emails_articleouprojet_modifie(self.object, "L'article " +  self.object.titre + "a été modifié", True)
         return HttpResponseRedirect(self.get_success_url())
 

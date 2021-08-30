@@ -197,7 +197,7 @@ class Commentaire(models.Model):
             self.date_creation = timezone.now()
             suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_' + str(self.asso.abreviation))
             titre = "Article commenté"
-            message = self.auteur_comm.username + " a commenté l'article '<a href='https://www.perma.cat" + self.article.get_absolute_url() + "'>" + self.article.titre + "</a>'"
+            message = self.auteur_comm.username + " a commenté l'article (" + str(self.asso.nom) + +") '<a href='https://www.perma.cat" + self.article.get_absolute_url() + "'>" + self.article.titre + "</a>'"
             emails = [suiv.email for suiv in followers(self.article) if
                       self.auteur_comm != suiv and self.article.est_autorise(suiv)]
 
