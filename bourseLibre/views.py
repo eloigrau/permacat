@@ -394,6 +394,23 @@ def listeContacts(request, asso):
     return render(request, 'listeContacts.html', {"listeMails":listeMails, "asso":asso })
 
 @login_required
+def listeContacts_admin(request):
+    if request.user.is_superuser:
+        listeMails = [
+            {"type":'user_newsletter' ,"profils":Profil.objects.all(), "titre":"Liste des inscrits au site : "},
+        {"type":'anonym_newsletter' ,"profils":InscriptionNewsletter.objects.all(), "titre":"Liste des inscrits anonymes à la newsletter : "},
+          {"type":'user_adherent', "profils":Profil.objects.filter(adherent_pc=True), "titre":"Liste des adhérents Permacat: "},
+          {"type":'user_adherent', "profils":Profil.objects.filter(adherent_rtg=True), "titre":"Liste des adhérents RTG: "},
+          {"type":'user_adherent', "profils":Profil.objects.filter(adherent_scic=True), "titre":"Liste des adhérents PermAgora: "},
+          {"type":'user_adherent', "profils":Profil.objects.filter(adherent_citealt=True), "titre":"Liste des adhérents Cite Altruiste: "},
+           # {"type":'user_futur_adherent', "profils":Profil.objects.filter(statut_adhesion=0), "titre":"Liste des personnes qui veulent adhérer à Permacat :"}
+        ]
+    else:
+        listeMails = [ ]
+
+    return render(request, 'listeContacts.html', {"listeMails":listeMails})
+
+@login_required
 def listeFollowers(request, asso):
     asso=testIsMembreAsso(request, asso)
     if not isinstance(asso, Asso):

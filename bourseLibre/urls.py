@@ -120,6 +120,7 @@ urlpatterns = [
     #url(r'^agenda/$', views.agenda, name='agenda',),
     path(r'annuaire/<str:asso>', login_required(views.annuaire), name='annuaire',),
     path(r'cooperateurs/listeContacts/<str:asso>', login_required(views.listeContacts), name='listeContacts',),
+    path(r'cooperateurs/listeContacts_admin/', login_required(views.listeContacts_admin), name='listeContacts_admin',),
     url(r'^cooperateurs/listeFollowers/$', login_required(views.listeFollowers), name='listeFollowers',),
     path(r'cooperateurs/carte/<str:asso>', login_required(views.carte), name='carte',),
 
