@@ -109,13 +109,11 @@ class Article(models.Model):
                 titre = "Nouvel article"
                 message = "Un article a été posté dans le forum (" + str(self.asso.nom) + ") : '<a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.titre + "</a>'"
                 emails = [suiv.email for suiv in followers(suivi) if self.auteur != suiv and self.est_autorise(suiv)]
-                if emails and not LOCALL:
-                    creation = True
         else:
             if sendMail:
                 titre = "Article actualisé"
                 message = "L'article '<a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.titre + "</a>' (" + str(self.asso.nom)  + ") a été modifié"
-                emails = [suiv.email for suiv in followers(self) if self.auteur != suiv and self.est_autorise(suiv)]
+                emails = [suiv.email for suiv in followers(self) if self.est_autorise(suiv)]
 
         retour = super(Article, self).save(*args, **kwargs)
         if emails:
@@ -195,9 +193,9 @@ class Commentaire(models.Model):
         emails = []
         if not self.id:
             self.date_creation = timezone.now()
-            suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_' + str(self.asso.abreviation))
+            suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_' + str(self.article.asso.abreviation))
             titre = "Article commenté"
-            message = self.auteur_comm.username + " a commenté l'article (" + str(self.asso.nom) + +") '<a href='https://www.perma.cat" + self.article.get_absolute_url() + "'>" + self.article.titre + "</a>'"
+            message = str(self.auteur_comm.username) + " a commenté l'article (" + str(self.article.asso.nom) + ") '<a href='https://www.perma.cat" + str(self.article.get_absolute_url()) + "'>" + str(self.article.titre) + "</a>'"
             emails = [suiv.email for suiv in followers(self.article) if
                       self.auteur_comm != suiv and self.article.est_autorise(suiv)]
 

@@ -699,7 +699,7 @@ def articles_suivis(request, slug):
 
 @login_required
 def articles_suiveurs(request, asso_abreviation='punlic'):
-    suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_'+ asso_abreviation)
+    suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_'+ str(asso_abreviation))
     suiveurs = sorted(followers(suivi), key= lambda x: str.lower(x.username))
     return render(request, 'blog/articles_suivis.html', {'suiveurs': suiveurs, })
 
