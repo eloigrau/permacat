@@ -1,24 +1,24 @@
 
 <div class="table-responsive-vertical shadow-z-1 infinite-item ">
   <!-- Table starts here -->
-  <table id="table" class="table_forum table-hover table-striped table-mc-green">
+  <table id="table" class="table_forum table-hover table-striped table-mc-green ">
       <thead>
         <tr>
+          <th>Titre</th>
           <th>Dossier</th>
           <th>Groupe</th>
-          <th>Titre</th>
           <th>Date</th>
         </tr>
       </thead>
       <tbody>
         {% for article in article_list %}
-        <tr>
+        <tr >
 
+          <td style="width: 100%;" data-title="Titre"><a href="{% url 'blog:lireArticle' slug=article.slug %}">{{article.titre}}  </a></td>
           <td data-title="Dossier"><span class="badge badge-primary" >{{ article.get_categorie_display }}</span>&nbsp;</td>
           <td data-title="Groupe"><span class="badge badge-info" data-toggle="tooltip" data-placement="bottom" title="Article {%if article.estPublic%}visible par tous les inscrits{%else%}visible par les membres de {{ article.asso }} seulement{%endif%}">
                 {{ article.asso }} </span>&nbsp;</td>
-          <td data-title="Titre"><a href="{% url 'blog:lireArticle' slug=article.slug %}">{{article.titre}}  </a></td>
-          <td data-title="Date">
+            <td data-title="Date">
           {% if article.start_time %}
               <span class="badge badge-success">
               {% if article.end_time %}
@@ -27,11 +27,14 @@
               le {{ article.start_time|date:"DATE_FORMAT" }}
               {% endif %}
               </span>
+            {% else %}
+              -
             {% endif %}
           </td>
 
         </tr>
         {% endfor %}
+        </div>
       </tbody>
     </table>
   </div>

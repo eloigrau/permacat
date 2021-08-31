@@ -16,7 +16,7 @@
      <div class="row no-gutters justify-content-center">
          <form class="form-inline justify-content-center  navbar-form " action="{% url 'chercher_articles' %}" method="get" role = "search">
             {% csrf_token %}
-             <div class="btn-group">
+             <div class="btn-group" style="display:inline-block;">
                 <div class="col" style="padding-right:0;">
                 <input class="form-control border-secondary border-right-0 rounded-0" name="id_recherche" placeholder="rechercher sur le forum..." type="text">
                 </div>
@@ -124,7 +124,7 @@
         <h4>Derniers articles : </h4>
     </div>
 
- {% include "blog/tableauArticlesTemplate.html" with article_list=derniers_articles %}
+ {% include "blog/articles_template_tableau.html" with article_list=derniers_articles %}
     {% comment %}
     <div class="grid-container justify-content-center">
         {% for article in derniers_articles %}
