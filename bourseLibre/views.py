@@ -1237,7 +1237,7 @@ def inscription_permagora(request):
         request.user.save()
         url = reverse('presentation_asso', kwargs={'asso': 'scic'})
         action.send(request.user, verb='inscription_permagora', target=asso, url=url,
-                    description="s'est inscrit au groupe PermAgora")
+                    description="s'est inscrit.e au groupe PermAgora")
     return redirect('presentation_asso', asso='scic')
 
 
@@ -1255,7 +1255,7 @@ def inscription_citealt(request):
         request.user.save()
         url = reverse('presentation_asso', kwargs={'asso': 'citealt'})
         action.send(request.user, verb='inscription_citealt', target=asso, url=url,
-                    description="s'est inscrit dans le groupe Cité Altruiste")
+                    description="s'est inscrit.e dans le groupe Cité Altruiste")
     return redirect('presentation_asso', asso='citealt')
 
 
