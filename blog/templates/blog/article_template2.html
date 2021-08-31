@@ -3,21 +3,21 @@
 {% load app_filters %}
 {% load blog_filters %}
 {% load fontawesome %}
-<a href="{% url 'blog:lireArticle' slug=article.slug %}" xmlns="http://www.w3.org/1999/html">
+<a href="{% url 'blog:lireArticle' slug=article.slug %}">
 <div class="content-card">
 <div class="card-big-shadow">
 <div class="card card-just-text" data-background="color" data-color="green" data-radius="none">
     <div class="content">
         <div class="category">
              <div>
-                <span class="badge badge-success" data-toggle="tooltip" data-placement="bottom" title="Article {%if article.estPublic%}visible par tous les inscrits{%else%}visible par les membres de {{ article.asso }} seulement{%endif%}">
-                {{ article.asso }} </span>&nbsp;
               <span class="badge badge-primary" >{{ article.get_categorie_display }}</span>&nbsp;
+                <span class="badge badge-info" data-toggle="tooltip" data-placement="bottom" title="Article {%if article.estPublic%}visible par tous les inscrits{%else%}visible par les membres de {{ article.asso }} seulement{%endif%}">
+                {{ article.asso }} </span>&nbsp;
             </div>
         </div>
-        <h4 class="title">
+        <h5 class="title_card">
             {{ article.titre }}
-        </h4>
+        </h5>
         <div class="category">
             {% if article.album %}
             {% with photo=article.album.get_photo_sample %}
@@ -30,7 +30,7 @@
     <p class="description">
 
         {% if article.start_time %}
-        <span class="btn btn-success">
+         <span class="badge badge-success">
           {% if article.end_time %}
           du {{ article.start_time|date:"DATE_FORMAT" }} au {{ article.end_time|date:"DATE_FORMAT" }}
           {%else%}
@@ -40,7 +40,7 @@
         {% endif %}
 
         <div>
-             <span class="btn btn-Light" >
+         <span class="badge badge-light">
 
                 {% if request.user|is_following:article %}
                     {% fontawesome_icon 'bell' %}

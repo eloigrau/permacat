@@ -45,9 +45,6 @@
 
             <span class="badge badge-success" style="background-color:{{article.get_couleur}}" ><a href="{% url 'blog:index'  %}?categorie={{article.categorie}}" >{{ article.get_categorie_display }}</a></span>
 
-            <span class="badge badge-success">
-                <a href="{% url 'blog:index'  %}?asso={{article.asso.abreviation}}" >{{ article.asso }}</a>
-            </span>
             {% if article.estArchive%}
             <span class="badge badge-Light">
                 archivé
@@ -96,6 +93,9 @@
 <div class="row">
 <div class="col-sm-12 offset-md-2 col-md-8 textcenter">
 
+            <span class="badge badge-info">
+                <a href="{% url 'blog:index_asso' asso=article.asso.abreviation %}" >{{ article.asso }}</a>
+            </span>
     <div class="row titre_fiche">
         <div class="col textcenter" >
               <h2> {{ article.titre }}</h2>
