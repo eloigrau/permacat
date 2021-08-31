@@ -48,7 +48,7 @@ class Choix():
     }
 
     ordre_tri_articles = {
-                             #"date du dernier commentaire":'-date_dernierMessage',
+                             "date du dernier commentaire":'-date_dernierMessage',
                              "date de création":'-date_creation',
                              "date de la dernière modification":'-date_modification',
                              "date associée à l'article":'start_time',
