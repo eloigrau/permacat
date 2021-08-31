@@ -320,7 +320,10 @@ class ListeArticles(ListView):
         if 'archives' in self.request.GET:
             context['typeFiltre'] = "archives"
         if 'ordreTri' in self.request.GET:
-            context['ordre_triage'] = list(Choix.ordre_tri_articles.keys())[list(Choix.ordre_tri_articles.values()).index(self.request.GET['ordreTri'])]
+            try:
+                context['ordre_triage'] = list(Choix.ordre_tri_articles.keys())[list(Choix.ordre_tri_articles.values()).index(self.request.GET['ordreTri'])]
+            except:
+                context['ordre_triage'] =self.request.GET['ordreTri']
         else:
             context['ordre_triage'] = "date de création"
         return context

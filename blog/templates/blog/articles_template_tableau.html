@@ -1,5 +1,10 @@
 {% load activity_tags %}
 {% load fontawesome %}
+{% load static %}
+
+{%block header %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style_forum.css' %}"/>
+{% endblock  %}
 <div class="table-responsive-vertical shadow-z-1 infinite-item ">
   <!-- Table starts here -->
   <table id="table" class="table_forum table-hover table-bordered table-mc-amber ">
@@ -13,22 +18,22 @@
         </tr>
       </thead>
     {% endcomment %}
-      <tbody>
+      <tbody style="display:block;">
         {% for article in article_list %}
         <tr >
-          <td data-title="Groupe"><span class="badge badge-info" data-toggle="tooltip" data-placement="bottom" title="Article {%if article.estPublic%}visible par tous les inscrits{%else%}visible par les membres de {{ article.asso }} seulement{%endif%}">
+          <td data-title="Groupe"><span class="badge badge-info" data-toggle="tooltip" data-placement="middle" title="Article {%if article.estPublic%}visible par tous les inscrits{%else%}visible par les membres de {{ article.asso }} seulement{%endif%}">
               {{ article.asso }} </span>&nbsp;</td>
             <td data-title="Dossier"><span class="badge badge-primary" >{{ article.get_categorie_display }}</span>&nbsp;</td>
 
-          <td style="width: 100%;" data-title="Titre"><a href="{% url 'blog:lireArticle' slug=article.slug %}">
-              {{article.titre}}
+          <td style="width: 100%;" data-title="Titre">
+            <a href="{% url 'blog:lireArticle' slug=article.slug %}">
+                <div class="titre_forum">{{article.titre}}</div>
 
-                 &nbsp;
+            {%if article.estArchive %}
               <span class="badge badge-light">
-                {%if article.estArchive %}
                    archivé
-                {% endif %}
              </span>
+                {% endif %}
 
           {% if article.start_time %}
               <p>
@@ -41,7 +46,7 @@
               </span>
               </p>
             {% endif %}
-          </a>
+                </a>
           </td>
 <td data-title=""><span class="badge badge-light">
                 {% if request.user|is_following:article %}
@@ -58,6 +63,7 @@
             {%else%}&nbsp;
                 Posté le  {{ article.date_creation|date:"DATE_FORMAT" }}
             {% endif %}
+    {{ article.date_dernierMessage|date:"DATE_FORMAT" }}
               </span></td>
 
         </tr>
