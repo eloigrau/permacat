@@ -16,7 +16,7 @@
      <div class="row no-gutters justify-content-center">
          <form class="form-inline justify-content-center  navbar-form " action="{% url 'chercher_articles' %}" method="get" role = "search">
             {% csrf_token %}
-             <div class="btn-group" style="display:inline-block;">
+             <div class="btn-group"">
                 <div class="col" style="padding-right:0;">
                 <input class="form-control border-secondary border-right-0 rounded-0" name="id_recherche" placeholder="rechercher sur le forum..." type="text">
                 </div>
@@ -32,7 +32,7 @@
             <button type="button" class="btn  btn-success" >
                {% fontawesome_icon 'search' %}&nbsp; Recherche avancée...
             </button>
-        </a>&ensp;
+        </a>
      </div>
 
 </div>
