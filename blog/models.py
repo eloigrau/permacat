@@ -199,7 +199,10 @@ class Commentaire(models.Model):
             emails = [suiv.email for suiv in followers(self.article) if
                       self.auteur_comm != suiv and self.article.est_autorise(suiv)]
 
-        retour =  super(Commentaire, self).save(*args, **kwargs)
+            self.article.date_dernierMessage = timezone.now()
+            self.article.save()
+
+        retour = super(Commentaire, self).save(*args, **kwargs)
         if emails:
             action.send(self, verb='emails', url=self.article.get_absolute_url(), titre=titre, message=message, emails=emails)
         return retour
@@ -307,6 +310,8 @@ class CommentaireProjet(models.Model):
         emails = []
         if not self.id:
             titre = "[Permacat] Projet commenté"
+            self.projet.date_dernierMessage = timezone.now()
+            self.projet.save()
             message = self.auteur_comm.username + " a commenté le projet '<a href='https://www.perma.cat" + self.projet.get_absolute_url() + "'>" + self.projet.titre + "</a>'"
             emails = [suiv.email for suiv in followers(self.projet) if self.auteur_comm != suiv and self.est_autorise(suiv)]
 

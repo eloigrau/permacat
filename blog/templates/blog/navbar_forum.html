@@ -24,7 +24,7 @@
 
     <li class="nav-item dropdown">
         <button type="button" class="btn dropdown-toggle btn-primary btn-menu-forum btn-block " data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
-        data-target = "#idDossiers_projets"> Projets</button>
+        data-target = "#idDossiers_projets"> Projets </button>
         <div class="dropdown-menu textcenter dropdown-menu-forum " aria-labelledby="menuAuteur"  id="idDossiers_projets">
             {% for categorie_id, cat_nom, cat_coul in categorie_list_projets %}
              <a class=" dropdown-item " style="background:#d0f4de;" href="{% url 'blog:index' %}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>

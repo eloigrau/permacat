@@ -62,8 +62,7 @@ def accueil(request):
             ateliers = ateliers.exclude(asso__abreviation = nomAsso)
 
     ateliers_list = [(x.slug, x.titre, x.get_couleur) for x in ateliers]
-    categorie_list_projets = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets
-                                         if x[0] in cat]
+    categorie_list_projets = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets ]
 
     derniers_articles = Article.objects.filter(estArchive=False).order_by('-id')
     for nomAsso in Choix_global.abreviationsAsso:
@@ -287,8 +286,7 @@ class ListeArticles(ListView):
             if not getattr(self.request.user, "adherent_" + nomAsso):
                 proj = proj.exclude(asso__abreviation=nomAsso)
         cat = proj.order_by('categorie').values_list('categorie', flat=True).distinct()
-        context['categorie_list_projet'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets if
-                                            x[0] in cat]
+        context['categorie_list_projets'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets]
 
         context['projets_list'] = [(x.slug, x.titre, x.get_couleur) for x in proj]
 
@@ -376,8 +374,7 @@ class ListeArticles_asso(ListView):
         context['auteur_list'] = Article.objects.all().order_by('auteur').values_list('auteur__username', flat=True).distinct()
         cat= Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
         context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
-        context['categorie_list_projets'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets
-                                             if x[0] in cat]
+        context['categorie_list_projets'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets]
 
         if self.kwargs['asso']:
             assos= Asso.objects.all()
