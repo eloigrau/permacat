@@ -2,6 +2,7 @@
 <div class="table-responsive-vertical shadow-z-1 infinite-item ">
   <!-- Table starts here -->
   <table id="table" class="table_forum table-hover table-striped table-mc-green ">
+    {% comment %}
       <thead>
         <tr>
           <th>Titre</th>
@@ -10,6 +11,7 @@
           <th>Date</th>
         </tr>
       </thead>
+    {% endcomment %}
       <tbody>
         {% for article in article_list %}
         <tr >
