@@ -262,7 +262,7 @@ class ListeArticles(ListView):
         if "ordreTri" in params:
             qs = qs.order_by(params['ordreTri'])
         else:
-            qs = qs.order_by('-date_dernierMessage', '-date_creation', 'categorie', 'auteur')
+            qs = qs.order_by( '-date_creation', '-date_dernierMessage', 'categorie', 'auteur')
 
         self.qs = qs
         return qs
@@ -322,7 +322,7 @@ class ListeArticles(ListView):
         if 'ordreTri' in self.request.GET:
             context['ordre_triage'] = list(Choix.ordre_tri_articles.keys())[list(Choix.ordre_tri_articles.values()).index(self.request.GET['ordreTri'])]
         else:
-            context['ordre_triage'] = "date du dernier message"
+            context['ordre_triage'] = "date de création"
         return context
 
 
