@@ -1,4 +1,5 @@
-
+{% load activity_tags %}
+{% load fontawesome %}
 <div class="table-responsive-vertical shadow-z-1 infinite-item ">
   <!-- Table starts here -->
   <table id="table" class="table_forum table-hover table-bordered table-mc-amber ">
@@ -22,6 +23,19 @@
           <td style="width: 100%;" data-title="Titre"><a href="{% url 'blog:lireArticle' slug=article.slug %}">
               {{article.titre}}
 
+                 &nbsp;
+              <span class="badge badge-light">
+                {% if request.user|is_following:article %}
+                    {% fontawesome_icon 'bell' %}
+                    {% else %}
+                    {% fontawesome_icon 'bell-slash' %}
+                {% endif %}
+                {%if article.estArchive %}
+                 &nbsp;
+                   archivé
+                {% endif %}
+             </span>
+
           {% if article.start_time %}
               <p>
               <span class="badge badge-success">
@@ -33,7 +47,19 @@
               </span>
               </p>
             {% endif %}
-          </a></td>
+          </a>
+          </td>
+<td data-title=""><span class="badge badge-light">
+                {%if article.date_modification %}
+            {%ifnotequal  article.date_creation|date:"DATE_FORMAT" article.date_modification|date:"DATE_FORMAT" %} &nbsp;
+                 Dernière modif le {{ article.date_modification|date:"DATE_FORMAT" }}
+            {%else%}&nbsp;
+                Posté le {{ article.date_creation|date:"DATE_FORMAT" }}
+            {%endifnotequal%}
+            {%else%}&nbsp;
+                Posté le  {{ article.date_creation|date:"DATE_FORMAT" }}
+            {% endif %}
+              </span></td>
 
         </tr>
         {% endfor %}
