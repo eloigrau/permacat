@@ -77,7 +77,7 @@ def getNotificationsParDate(request, limiter=True, orderBy="-timestamp"):
          Q(verb='projet_message')| Q(verb='projet_modifier')|
             Q(verb='envoi_salon')| Q(verb__icontains='public')|Q(verb__icontains='Public')|
             Q(verb__startswith='fiche')|Q(verb__startswith='atelier')|
-            Q(verb__startswith='envoi_salon_prive')|
+            Q(verb__startswith='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)|
             Q(verb__startswith='inscription'))
     if request.user.adherent_pc:
         actions = actions | Action.objects.filter(Q(verb__icontains='Permacat') | Q(verb__icontains='permacat')| Q(verb__icontains='pc'))
