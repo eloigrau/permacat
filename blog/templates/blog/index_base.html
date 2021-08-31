@@ -192,7 +192,10 @@
         </div>
         {%endif%}
 
-
+        <div class="infinite-container">
+ {% include "blog/tableauArticlesTemplate.html" with article_list=article_list %}
+        </div>
+{% comment %}
         <div class="infinite-container">
             <div class="grid-container justify-content-center ">
                 {% for article in article_list %}
@@ -202,7 +205,7 @@
                 {% endfor %}
             </div>
         </div>
-        {%include 'pagination.html' %}
+{% endcomment %}
 
         {% if list_archive %}
         <div class="textcenter">
@@ -212,7 +215,9 @@
         </div>
         <hr>
 
-        <div class="infinite-container" id="archives" style='display:none;'>
+        <div  id="archives" style='display:none;'>
+             {% include "blog/tableauArticlesTemplate.html" with article_list=list_archive %}
+{% comment %}
             <div class="grid-container justify-content-center ">
                 {% for article in list_archive %}
                 <div class="infinite-item my-auto mx-auto mx-auto">
@@ -220,6 +225,7 @@
                 </div>
                 {% endfor %}
             </div>
+{% endcomment %}
         </div>
     {% endif %}
 

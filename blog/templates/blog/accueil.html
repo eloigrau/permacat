@@ -123,6 +123,9 @@
     <div class="row justify-content-center">
         <h4>Derniers articles : </h4>
     </div>
+
+ {% include "blog/tableauArticlesTemplate.html" with article_list=derniers_articles %}
+    {% comment %}
     <div class="grid-container justify-content-center">
         {% for article in derniers_articles %}
             <div class="infinite-item my-auto mx-auto">
@@ -130,6 +133,7 @@
             </div>
         {% endfor %}
     </div>
+    {% endcomment %}
 </div>
 </div>
 
