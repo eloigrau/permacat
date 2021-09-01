@@ -84,7 +84,7 @@ INSTALLED_APPS = [
     'django.contrib.admindocs',
     'django.contrib.sites',
     #'django.contrib.gis',
-    'bootstrap','fontawesome','cookielaw',
+    'bootstrap','fontawesome','cookielaw_local',
     #'haystack',
     'model_utils',
     'bourseLibre',

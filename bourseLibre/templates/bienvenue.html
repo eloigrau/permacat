@@ -2,6 +2,7 @@
 {% load static %}
 {% load i18n %}
 {% load fontawesome %}
+{% load cookielaw_tags %}
 {%block header %}
  <script src="{% static 'js/cookielaw.js'%}" type="text/javascript"></script>
 {%endblock%}
@@ -21,6 +22,8 @@
 		<button class="btn btn-lg btn-primary" type="button"><a href="{% url 'presentation_site_pkoi'  %}"> Pourquoi s'inscrire sur Perma.Cat ?</a></button>
 	</div>
 </div>
+{% else %}
+	{% cookielaw_banner %}
 {% endif %}
 {%endblock%}
 {% block content %}
@@ -35,6 +38,7 @@
 
 
 		{% else %}
+
 		<div class="row" >
 					  <div class="col-sm-12 textcenter">
 
@@ -145,21 +149,6 @@
 
 				{% endif %}
 
-{% comment %}
-				 {% if evenements %}
-				<div class="card" >
-				  <div class="card-header  textcenter">
-						<b>Prochains rendez-vous (réguliers) :</b>
-				  </div>
-					<ul class="list-group list-group-flush textcenter">
-						{% for ev in evenements %}
-						<li class="list-group-item"><a href="{% url 'blog:lireArticle' ev.article.slug %}">({{ev.date|date:"l d F"}}) {{ev.titre}}</a> </li>
-						{% endfor %}
-					</ul>
-				</div>
-				<hr>
-				{% endif %}
-{% endcomment %}
 			</div>
 		</div>
 	</div>
@@ -205,134 +194,8 @@
     });
  }
 </script>
-{% endblock %}
-
-{% comment %}
-
-{% block content %}
-
-
-
- {% if  request.user.is_authenticated %}
-
-<hr>
-
-<div class="card-deck" >
-<div class="card cardAcceuil" >
-  <div class="card-header  textcenter cardH1 ">
-		<b>Altermarché :</b>
-  </div>
-    <ul class="list-group list-group-flush textcenter card1">
-        <li class="list-group-item"><a href="{% url 'marche' %}">Consulter les annonces</a> </li>
-		<li class="list-group-item"><a href="{% url 'produit_proposer_entree' %}">Ajouter une annonce</a></li>
-		<li class="list-group-item"><a href="{% url 'marche' %}?producteur={{ user.username }}">Vos annonces</a></li>
-	</ul>
-</div>
-
-<div class="card cardAcceuil" >
-  <div class="card-header  textcenter cardH2">
-		<b>Forum :</b>
-  </div>
-    <ul class="list-group list-group-flush textcenter card2">
-        <li class="list-group-item"><a href="{% url 'blog:index' %}">Voir les articles</a> </li>
-		<li class="list-group-item"><a href="{% url 'agora' asso='public'%}">Accéder au salon de discussion général</a></li>
-		<li class="list-group-item"><a href="{% url 'conversations' %}">Accéder à vos conversations privées</a></li>
-	</ul>
-</div>
-
-<div class="card cardAcceuil" >
-  <div class="card-header  textcenter cardH3">
-		<b>L'association Permacat :</b>
-  </div>
-    <ul class="list-group list-group-flush textcenter card3">
-        <li class="list-group-item"><a href="{% url 'blog:index_projets' %}">Les projets de l'association</a> </li>
-		<li class="list-group-item"><a href="{% url 'carte' asso='pc' %}">La carte des adhérents</a></li>
-	</ul>
-</div>
-
-<div class="card cardAcceuil" >
-  <div class="card-header  textcenter cardH6">
-		<b>Sur le site :</b>
-  </div>
-    <ul class="list-group list-group-flush textcenter card6">
-        <li class="list-group-item"><a href="{% url 'blog:index' %}">Voir la carte des inscrits</a> </li>
-        <li class="list-group-item"><a href="{% url 'faq' %}">Foire aux questions</a> </li>
-        <li class="list-group-item"><a href="{% url 'contact_admins' %}">Contacter les administrateurs du site</a> </li>
-	</ul>
-</div>
-
-<div class="card cardAcceuil" >
-  <div class="card-header  textcenter cardH7">
-		<b>Votre profil : </b>
-  </div>
-    <ul class="list-group list-group-flush textcenter card7">
-        <li class="list-group-item"><a href="{% url 'profil_courant' %}">Consulter votre profil</a> </li>
-        <li class="list-group-item"><a href="{% url 'conversations' %}">Consulter vos messages privés</a> </li>
-        <li class="list-group-item"><a href="{% url 'afficher_requetes' %}">Consulter vos requêtes</a> </li>
-	</ul>
-</div>
-
-</div>
-
- {% endif %}
-{% endcomment %}
-
-
-{% comment %}
-<hr>
-<div class="row">
-		<div class="col-md-4">
-			<h2>
-				Pourquoi ?
-			</h2>
-			<p> Parce que la planète s'épuise, parce que le climat s'emballe, les humains souffrent, les animaux disparaissent... il faut redonner du sens et du lien
-			entre gens du pays. Agissons ici et maintenant !
-			</p>
-		</div>
-		<div class="col-md-4">
-			<h2>
-				Comment ?
-			</h2>
-			<p> 
-				Ce site vous offre la possibilité d'échanger des biens, des services, de créer du lien ! Adhérer à l'association vous permet de participer au réseau local d'entraide.
-				Vous pourrez proposer vos projets, participer aux suffrages et accéder aux articles réservés aux membres du marché et du forum.
-	</p>
-		</div>
-		<div class="col-md-4">
-			<h2>
-				Mais encore ?
-			</h2>
-			<p>L'association Permacat promeut les valeurs de la permaculture au sens large. Nous organisons des rencontes tous les premiers dimanches du mois, et des visioconférences tous les lundi à 19h. Ami.e catalan.e (toi qui habites en pays catalan), rejoins-nous!
-				
-			</p>
-					</div>
-</div>
-{% endcomment %}
-
-{%comment%}
-<div class="row">
-		<div class="col-md-4">
-			<a href="{% url 'marche' %}" class="btn btn-success">
-          		accéder au marché
-        	</a>
-		</div>
-		<div class="col-md-4">
-			<a href="{% url 'blog:forum' %}" class="btn btn-success">
-          		accéder aux discussions
-        	</a>
-		</div>
-		<div class="col-md-4">
-			<a href="{% url 'profil_courant' %}" class="btn btn-success">
-          		accéder à mon profil
-        	</a>
-		</div>
-</div>
 
 {% endblock %}
 
-{%endcomment%}
 
-
-{% load cookielaw_tags %}
-{% cookielaw_banner %}
 

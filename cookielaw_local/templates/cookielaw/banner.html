@@ -1,0 +1,18 @@
+{% load i18n %}
+
+<div id="CookielawBanner">
+    <div class="container">
+        <h6>{% trans "COOKIE_INFO_HEADER" %}</h6>
+        <p>
+            <a class="btn btn-primary pull-right" href="javascript:Cookielaw.createCookielawCookie();">{% trans "COOKIE_INFO_OK" %}</a>
+            <a class="btn btn-warning pull-right" href="javascript:Cookielaw.createCookielawCookie_notaccepted();">Je n'accepte pas</a>
+         Notre site sauvegarde un traceur texte (cookie) sur votre appareil afin
+de garder votre session ouverte (vous restez connecté entre 2 accès).
+Vous pouvez désactiver l'usage des cookies en changeant les paramètres de votre
+navigateur. En poursuivant votre navigation sur notre site sans changer vos
+paramètres de navigateur, vous nous accordez la permission de conserver des
+informations sur votre appareil.
+        </p>
+    </div>
+</div>
+
