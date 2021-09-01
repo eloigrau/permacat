@@ -975,7 +975,6 @@ class MessageGeneral(models.Model):
     def get_edit_url(self):
         return reverse('modifierMessage',  kwargs={'id':self.id, 'type_msg':'agora', 'asso':self.asso.abreviation})
 
-    @property
     def get_absolute_url(self):
         return reverse('agora', kwargs={'asso':self.asso.abreviation})
 
@@ -986,9 +985,15 @@ class MessageGeneral(models.Model):
         message = "Nouveau commentaire dans <a href='https://www.perma.cat" + self.get_absolute_url() + "'>" +"l'agora " + str(self.asso.nom) +  "</a>'"
 
         if emails:
-            action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
+            action.send(self.auteur, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
 
         return super(MessageGeneral, self).save()
+
+    def est_autorise(self, user):
+        if self.asso.abreviation == "public":
+            return True
+
+        return getattr(user, "adherent_" + self.asso.abreviation)
 
 class Suivis(models.Model):
     nom_suivi = models.TextField(null=False, blank=False)
