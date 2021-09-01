@@ -331,14 +331,14 @@ def envoyerMailBienvenue(user):
     messagetxt = "Bienvenue sur www.Perma.Cat ! Pour vous connecter, votre identifiant est : (vous pouvez le changer sur votre page de profil), merci de votre inscription. \
     Voici quelques conseils : pour suivre ce qu'il se passe sur le site, utilisez les notifications (et n'oubliez pas d'appuyer sur 'marquer comme lu' après les avoir lu). l'agenda est un bon moyen de savoir ce qu'il se passe dans la vraie vie, visuellement.\
     utilisez plutot l'altermarché pour les petites annonces, le forum pour annoncer les événements ou présenter des idées, et les ateliers pour... proposer des ateliers\
-    vous pouvez configurer lesinfos que vous recevez par mail sur la page abonnements de votre profil\
+    vous pouvez configurer les infos que vous recevez par mail sur la page abonnements de votre profil\
     prenez le temps d'explorer les différentes sections du site pour vous familiariser et comprendre comment le site fonctionne et ce que vous pouvez en faire\
     sur smartphone, vous pouvez mettre le site sur votre page d'accueil pour y accéder facilement et venir nous voir plus régulièrement.\
     en toute circonstance, gardez le sourire :)\
     pour toute question, consultez la Foire Aux Questions (ou posez vos questions dans l'article consacré). @ bientôt !"
     message = "<div dir='auto'>Bienvenue sur www.Perma.Cat !</div> \
 <div dir='auto'>&nbsp;</div>\
-<div dir='auto'>Pour vous connecter, votre identifiant est : (vous pouvez le changer sur votre <a href='https://www.perma.cat/accounts/profile/'>page de profil</a>), merci de votre inscription.&nbsp;</div><li dir='auto'>en toute circonstance, gardez le sourire :)</li>\
+<div dir='auto'>Pour vous connecter, votre identifiant est : "+user.username+" \n(vous pouvez le changer sur votre <a href='https://www.perma.cat/accounts/profile/'>page de profil</a>), merci de votre inscription.&nbsp;</div><li dir='auto'>en toute circonstance, gardez le sourire :)</li>\
 </ul>\
 <div dir='auto'>&nbsp;</div>\
 <div dir='auto'>Quelques conseils :\
@@ -358,10 +358,11 @@ def envoyerMailBienvenue(user):
 <div dir='auto'>&nbsp;</div>\
 <div dir='auto'>@ bient&ocirc;t !</div>\
 </div>"
-
-    send_mail(titre, messagetxt,
-              SERVER_EMAIL, [user.email, ], fail_silently=False,
-              html_message=message)
+    from bourseLibre.settings.production import LOCALL
+    if not LOCALL:
+        send_mail(titre, messagetxt,
+                  SERVER_EMAIL, [user.email, SERVER_EMAIL], fail_silently=False,
+                  html_message=message)
 
 
 @receiver(post_save, sender=Profil)
