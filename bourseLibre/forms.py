@@ -6,6 +6,7 @@ from bourseLibre.captcha_local.fields import CaptchaField
 from django_summernote.widgets import SummernoteWidget
 from blog.forms import SummernoteWidgetWithCustomToolbar
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 fieldsCommunsProduits = ['souscategorie', 'nom_produit',  'description', 'estUneOffre', 'asso',
                 'unite_prix', 'prix',  'type_prix', 'date_debut', 'date_expiration', ]
@@ -184,8 +185,13 @@ class ProfilCreationForm(UserCreationForm):
         fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'adherent_pc', 'adherent_rtg','adherent_fer', 'adherent_scic', 'adherent_citealt','inscrit_newsletter', 'accepter_annuaire',  'accepter_conditions']
         exclude = ['slug', ]
 
+    def clean(self):
+       email = self.cleaned_data.get('email')
+       if Profil.objects.filter(email=email).exists():
+            raise ValidationError("Un compte avec cet email existe déjà")
+       return self.cleaned_data
 
-    def save(self, commit = True, is_active=False):
+    def save(self, commit=True, is_active=False):
         return super(ProfilCreationForm, self).save(commit)
         self.is_active=is_active
 

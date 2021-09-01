@@ -379,7 +379,7 @@ def create_user_profile(sender, instance, created, **kwargs):
                     actions.follow(instance, suivi, actor_only=True, send_action=False)
         action.send(instance, verb='inscription', url=instance.get_absolute_url(),
                     description="s'est inscrit.e sur le site")
-
+        envoyerMailBienvenue(instance)
         if instance.is_superuser:
             Panier.objects.create(user=instance)
 
