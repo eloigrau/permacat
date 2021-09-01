@@ -23,9 +23,9 @@ from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 from model_utils.managers import InheritanceManager
 from stdimage import StdImageField
-
+from django.core.mail import send_mail
 from .constantes import Choix, DEGTORAD
-
+from .settings.production import SERVER_EMAIL
 
 # from tinymce.models import HTMLField
 #from blog.models import Article
@@ -324,6 +324,46 @@ class Profil(AbstractUser):
     def inscrit_newsletter_str(self):
        return "oui" if self.inscrit_newsletter else "non"
 
+
+def envoyerMailBienvenue(user):
+    titre = "[Permacat] Inscription sur le site"
+    pseudo = user.username
+    messagetxt = "Bienvenue sur www.Perma.Cat ! Pour vous connecter, votre identifiant est : (vous pouvez le changer sur votre page de profil), merci de votre inscription. \
+    Voici quelques conseils : pour suivre ce qu'il se passe sur le site, utilisez les notifications (et n'oubliez pas d'appuyer sur 'marquer comme lu' après les avoir lu). l'agenda est un bon moyen de savoir ce qu'il se passe dans la vraie vie, visuellement.\
+    utilisez plutot l'altermarché pour les petites annonces, le forum pour annoncer les événements ou présenter des idées, et les ateliers pour... proposer des ateliers\
+    vous pouvez configurer lesinfos que vous recevez par mail sur la page abonnements de votre profil\
+    prenez le temps d'explorer les différentes sections du site pour vous familiariser et comprendre comment le site fonctionne et ce que vous pouvez en faire\
+    sur smartphone, vous pouvez mettre le site sur votre page d'accueil pour y accéder facilement et venir nous voir plus régulièrement.\
+    en toute circonstance, gardez le sourire :)\
+    pour toute question, consultez la Foire Aux Questions (ou posez vos questions dans l'article consacré). @ bientôt !"
+    message = "<div dir='auto'>Bienvenue sur www.Perma.Cat !</div> \
+<div dir='auto'>&nbsp;</div>\
+<div dir='auto'>Pour vous connecter, votre identifiant est : (vous pouvez le changer sur votre <a href='https://www.perma.cat/accounts/profile/'>page de profil</a>), merci de votre inscription.&nbsp;</div><li dir='auto'>en toute circonstance, gardez le sourire :)</li>\
+</ul>\
+<div dir='auto'>&nbsp;</div>\
+<div dir='auto'>Quelques conseils :\
+<ul>\
+<li dir='auto'>pour suivre ce qu'il se passe sur le site, utilisez les <a href='https://www.perma.cat/notifications/activite/'>notifications</a> (et n'oubliez pas d'appuyer sur 'marquer comme lu' apres les avoir lu).</li><li dir='auto'>en toute circonstance, gardez le sourire :)</li>\
+</ul>\
+<li dir='auto'>l'<a href='https://www.perma.cat/agenda/'>agenda</a> est un bon moyen de savoir ce qu'il se passe dans la vraie vie, visuellement.</li>\
+<li dir='auto'>utilisez plutÔt l'<a href='https://www.perma.cat/marche/lister/'>altermarch&eacute;</a> pour les petites annonces, le <a href='https://www.perma.cat/forum/accueil/'>forum</a> pour annoncer les &eacute;v&eacute;nements ou pr&eacute;senter des id&eacute;es, et les <a href='https://www.perma.cat/ateliers/liste/'>ateliers</a> pour... proposer des ateliers</li>\
+<li dir='auto'>vous pouvez configurer les infos que vous recevez par mail sur la page <a href='https://www.perma.cat/accounts/mesSuivis/'>abonnements</a> de votre profil</li>\
+<li dir='auto'>prenez le temps d'explorer les diff&eacute;rentes sections du site pour vous familiariser et comprendre comment le site fonctionne et ce que vous pouvez en faire</li><li dir='auto'>en toute circonstance, gardez le sourire :)</li>\
+</ul>\
+<li dir='auto'>sur smartphone, vous pouvez <a href='https://www.clubic.com/tutoriels/article-891621-1-comment-ajouter-raccourci-web-page-accueil-smartphone-android.html'>mettre le site sur votre page d'accueil</a> pour y acc&eacute;der facilement et venir nous voir plus r&eacute;guli&egrave;rement.</li>\
+<li dir='auto'>en toute circonstance, gardez le sourire :)</li>\
+</ul>\
+<div dir='auto'>&nbsp;</div>\
+<div dir='auto'>pour toute question, consultez la <a href='https://www.perma.cat/faq/'>Foire Aux Questions</a> (<span style='font-family: sans-serif;'>ou <a href='https://www.perma.cat/forum/article/faq-du-site'>posez</a></span><a href='https://www.perma.cat/forum/article/faq-du-site'> vos questions dans l'article consacr&eacute;</a>).</div>\
+<div dir='auto'>&nbsp;</div>\
+<div dir='auto'>@ bient&ocirc;t !</div>\
+</div>"
+
+    send_mail(titre, messagetxt,
+              SERVER_EMAIL, [user.email, ], fail_silently=False,
+              html_message=message)
+
+
 @receiver(post_save, sender=Profil)
 def create_user_profile(sender, instance, created, **kwargs):
     if created :
@@ -339,6 +379,7 @@ def create_user_profile(sender, instance, created, **kwargs):
                     actions.follow(instance, suivi, actor_only=True, send_action=False)
         action.send(instance, verb='inscription', url=instance.get_absolute_url(),
                     description="s'est inscrit.e sur le site")
+
         if instance.is_superuser:
             Panier.objects.create(user=instance)
 

@@ -535,11 +535,7 @@ def send_mass_html_mail(datatuple, fail_silently=False, auth_user=None,
                                connection=connection)
         for subject, message, html_message, sender, recipient in datatuple
     ]
-    if not LOCALL:
-        return connection.send_messages(messages)
-    else:
-        print (messages)
-        return messages
+    return connection.send_messages(messages)
 
 
 def envoyerEmailsRequete(request):
