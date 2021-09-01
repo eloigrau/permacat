@@ -244,7 +244,7 @@ class ProducteurChangeForm_admin(UserChangeForm):
 
     class Meta:
         model = Profil
-        fields = ['username', 'email', 'description', 'competences', 'inscrit_newsletter', 'adherent_pc',  'adherent_rtg', 'adherent_fer',  'adherent_scic', 'adherent_citealt','pseudo_june', 'accepter_annuaire', 'adherent_jp']
+        fields = ['id','username', 'email', 'description', 'competences', 'inscrit_newsletter', 'adherent_pc',  'adherent_rtg', 'adherent_fer',  'adherent_scic', 'adherent_citealt','pseudo_june', 'accepter_annuaire', 'adherent_jp']
 
     def __init__(self, *args, **kwargs):
         super(ProducteurChangeForm_admin, self).__init__(*args, **kwargs)

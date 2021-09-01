@@ -19,10 +19,10 @@ class CustomUserAdmin(UserAdmin):
     add_form = ProfilCreationForm
     form = ProducteurChangeForm_admin
     model = Profil
-    list_display = ['email', 'username',  'last_login', 'date_notifications', 'adherent_pc', 'adherent_rtg','adherent_fer','adherent_scic', 'adherent_citealt',
+    list_display = ['id','email', 'username',  'last_login', 'date_notifications', 'adherent_pc', 'adherent_rtg','adherent_fer','adherent_scic', 'adherent_citealt',
                     'inscrit_newsletter','accepter_annuaire',  ]
 
-    readonly_fields = ('id','date_registration','last_login','adresse')
+    readonly_fields = ('date_registration','last_login','adresse')
 
     fieldsets = (
         (None, {'fields': ('username','description','competences','pseudo_june', 'adherent_pc', 'adherent_rtg','adherent_fer', 'adherent_scic', 'adherent_citealt','adresse', 'inscrit_newsletter', 'adherent_jp', 'date_notifications','accepter_annuaire', )}),
