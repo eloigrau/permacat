@@ -25,7 +25,7 @@ class CustomUserAdmin(UserAdmin):
     readonly_fields = ('date_registration','last_login','adresse')
 
     fieldsets = (
-        (None, {'fields': ('username','description','competences','pseudo_june', 'adherent_pc', 'adherent_rtg','adherent_fer', 'adherent_scic', 'adherent_citealt','adresse', 'inscrit_newsletter', 'adherent_jp', 'date_notifications','accepter_annuaire', )}),
+        (None, {'fields': ('id','username','description','competences','pseudo_june', 'adherent_pc', 'adherent_rtg','adherent_fer', 'adherent_scic', 'adherent_citealt','adresse', 'inscrit_newsletter', 'adherent_jp', 'date_notifications','accepter_annuaire', )}),
         (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
                                        'groups', 'user_permissions')}),
