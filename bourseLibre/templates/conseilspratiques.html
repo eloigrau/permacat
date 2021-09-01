@@ -1,8 +1,14 @@
-<div dir="auto">Bienvenue sur www.Perma.Cat !</div>
-<div dir="auto">&nbsp;</div>
-<div dir="auto">Pour vous connecter, votre identifiant est : (vous pouvez le changer sur votre <a href="https://www.perma.cat/accounts/profile/">page de profil</a>), merci de votre inscription.&nbsp;</div>
-<div dir="auto">&nbsp;</div>
-<div dir="auto">Quelques conseils :
+{% extends 'base_site.html' %}
+{% block subtitle %}
+{% load fontawesome %}
+<h4><b>Quelques conseils de bonnes pratiques sur le site</b></h4>
+	<p class="'textcenter">N'hésitez pas à poser vos questions dans <a href="../forum/article/faq-du-site">l'article consacré</a></p>
+
+{% endblock %}
+{% block content %}
+
+<div class="row">
+<div class="col-sm-12">
 <ul>
 <li dir="auto">pour suivre ce qu'il se passe sur le site, utilisez les <a href="https://www.perma.cat/notifications/activite/">notifications</a> (et n'oubliez pas d'appuyer sur "marquer comme lu" apr&egrave;s les avoir lu).</li>
 <li dir="auto">l'<a href="https://www.perma.cat/agenda/">agenda</a> est un bon moyen de savoir ce qu'il se passe dans la vraie vie, visuellement.</li>
@@ -17,3 +23,6 @@
 <div dir="auto">&nbsp;</div>
 <div dir="auto">@ bient&ocirc;t !</div>
 </div>
+</div>
+
+{% endblock %}

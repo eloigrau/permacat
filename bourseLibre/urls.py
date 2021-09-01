@@ -16,10 +16,8 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.urls import path
-from . import views, views_notifications
+from . import views, views_base, views_notifications
 from django.views.generic import TemplateView
-from bourseLibre.views import handler400 as h400, handler403  as h403, handler404  as h404, handler500  as h500
-#from fcm_django.api.rest_framework import FCMDeviceAuthorizedViewSet
 
 # On import les vues de Django, avec un nom spécifique
 from django.contrib.auth.decorators import login_required
@@ -46,8 +44,8 @@ urlpatterns = [
     url('^', include('django.contrib.auth.urls')),
     url(r'^$', views.bienvenue, name='bienvenue'),
     url(r'^bienvenue/$', views.bienvenue, name='bienvenue'),
-    url(r'^faq/$', views.faq, name='faq'),
-    url(r'^gallerie/$', views.gallerie, name='gallerie'),
+    url(r'^faq/$', views_base.faq, name='faq'),
+    url(r'^gallerie/$', views_base.gallerie, name='gallerie'),
     path(r'admin/<str:asso>', views.admin_asso, name='admin_asso'),
     url(r'^media/(?P<path>.*)', views.accesfichier, name='accesfichier'),
 
@@ -67,9 +65,10 @@ urlpatterns = [
     path(r'groupes/presentation/', views.presentation_groupes, name='presentation_groupes'),
     path(r'permagora/inscription/', views.inscription_permagora, name='inscription_permagora'),
     path(r'citealtruiste/inscription/', views.inscription_citealt, name='inscription_citealt'),
-    url(r'^site/presentation/$', views.presentation_site, name='presentation_site'),
-    url(r'^site/pourquoi/$', views.presentation_site_pkoi, name='presentation_site_pkoi'),
-    url(r'^permacat/statuts/$', views.statuts, name='statuts'),
+    url(r'^site/presentation/$', views_base.presentation_site, name='presentation_site'),
+    url(r'^site/pourquoi/$', views_base.presentation_site_pkoi, name='presentation_site_pkoi'),
+    url(r'^site/conseils/$', views_base.presentation_site_conseils, name='presentation_site_conseils'),
+    url(r'^permacat/statuts/$', views_base.statuts, name='statuts'),
     #url(r'^ramenetagraine/statuts/$', views.statuts_rtg, name='statuts_rtg'),
 
 
@@ -89,9 +88,9 @@ urlpatterns = [
     url(r'^chercher/$', login_required(views.chercher), name='chercher'),
     url(r'^chercher/forum/$', login_required(views.chercher_articles), name='chercher_articles'),
     url(r'^accounts/profil/(?P<user_id>[0-9]+)/$', login_required(views.profil), name='profil',),
-    url(r'^accounts/profil/(?P<user_username>[\w.@+-]+)/$', login_required(views.profil_nom), name='profil_nom',),
+    url(r'^accounts/profil/(?P<user_username>[\w.@+-]+)/$', login_required(views_base.profil_nom), name='profil_nom',),
     url(r'^accounts/profile/$',  login_required(views.profil_courant), name='profil_courant',),
-    url(r'^accounts/profil_inconnu/$', views.profil_inconnu, name='profil_inconnu',),
+    url(r'^accounts/profil_inconnu/$', views_base.profil_inconnu, name='profil_inconnu',),
     url(r'^accounts/profil_modifier/$', login_required(views.profil_modifier.as_view()), name='profil_modifier',),
     url(r'^accounts/profil_supprimer/$', login_required(views.profil_supprimer.as_view()), name='profil_supprimer',),
     url(r'^accounts/profil_modifier_adresse/$', login_required(views.profil_modifier_adresse.as_view()), name='profil_modifier_adresse',),
@@ -99,7 +98,7 @@ urlpatterns = [
     url(r'^accounts/mesSuivis/$', login_required(views.mesSuivis), name='mesSuivis',),
     url(r'^accounts/supprimerAction/(?P<actionid>[0-9]+)/$', login_required(views.supprimerAction), name='supprimerAction',),
     url(r'^accounts/mesActions/$', login_required(views.mesActions), name='mesActions',),
-    url(r'^accounts/activite/(?P<pseudo>[\w.@+-]+)/$', login_required(views.activite), name='activite',),
+    url(r'^accounts/activite/(?P<pseudo>[\w.@+-]+)/$', login_required(views_base.activite), name='activite',),
     url(r'^register/$', views.register, name='senregistrer',),
     url(r'^reset-password/$',
         PasswordResetView.as_view(template_name='accounts/reset_password.html',
@@ -111,9 +110,9 @@ urlpatterns = [
     path('auth/', include('django.contrib.auth.urls')),
 
     url(r'^contact_admins/$', views.contact_admins, name='contact_admins',),
-    url(r'^charte/$', views.charte, name='charte',),
-    url(r'^cgu/$', views.cgu, name='cgu',),
-    url(r'^liens/$', views.liens, name='liens',),
+    url(r'^charte/$', views_base.charte, name='charte',),
+    url(r'^cgu/$', views_base.cgu, name='cgu',),
+    url(r'^liens/$', views_base.liens, name='liens',),
     path(r'fairedon/<str:asso>/', views.fairedon_asso, name='faire_don',),
     path(r'adhesion/<str:asso>/', views.adhesion_asso, name='adhesion_asso'),
     path(r'adhesion/', views.adhesion_entree, name='adhesion_entree'),
@@ -192,10 +191,10 @@ if settings.DEBUG:
     from django.conf.urls.static import static
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-handler404 = h404
-handler500 = h500
-handler400 = h400
-handler403 = h403
+handler404 = views_base.handler404
+handler500 = views_base.handler500
+handler400 = views_base.handler400
+handler403 = views_base.handler403
 
 if settings.LOCALL:
     import debug_toolbar

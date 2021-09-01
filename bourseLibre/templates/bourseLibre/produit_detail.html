@@ -131,6 +131,8 @@
 
 	{% if user.id != produit.user.id and produit.estUneOffre%}
 	<div class="col-md-4 paddingbase">
+
+				{%comment%}
 		<div class="row justify-content-center align-items-center">
 			Quantité :
 				<div class="col-md-5">
@@ -156,6 +158,8 @@
 
 		</div>
 	</div>
+
+				{%endcomment%}
 	{%elif user.id == produit.user.id%}
 	<div class="col-md-4 paddingbase">
 		<a href="{%url 'produit_modifier' produit.id %}" class="btn btn-warning btn-lg btn-block" type="button">
