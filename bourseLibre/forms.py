@@ -189,9 +189,9 @@ class ProfilCreationForm(UserCreationForm):
        email = self.cleaned_data.get('email')
        username = self.cleaned_data.get('username')
        if Profil.objects.filter(email=email).exists():
-            raise ValidationError("Un compte avec cet email existe déjà")
-       if Profil.objects.filter(username=username).exists():
-            raise ValidationError("Un compte avec cet identifiant existe déjà")
+            raise ValidationError("Désolé, un compte avec cet email existe déjà")
+       if Profil.objects.filter(username__iexact=username).exists():
+            raise ValidationError("Désolé, un compte avec cet identifiant existe déjà")
        return self.cleaned_data
 
     def save(self, commit=True, is_active=False):
@@ -221,6 +221,15 @@ class ProducteurChangeForm(UserChangeForm):
     class Meta:
         model = Profil
         fields = ['username', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'accepter_annuaire', 'inscrit_newsletter', 'adherent_jp']
+
+    def clean(self):
+       email = self.cleaned_data.get('email')
+       username = self.cleaned_data.get('username')
+       if Profil.objects.filter(email=email).exists():
+            raise ValidationError("Désolé, un compte avec cet email existe déjà")
+       if Profil.objects.filter(username__iexact=username).exists():
+            raise ValidationError("Désolé, un compte avec cet identifiant existe déjà")
+       return self.cleaned_data
 
 
 class ProducteurChangeForm_admin(UserChangeForm):
