@@ -1,8 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, Asso, Profil, Message, MessageGeneral, Choix, InscriptionNewsletter
-from bourseLibre.captcha_local.fields import CaptchaField
-#from tinymce.widgets import TinyMCE
+from django.db.models import Q
 from django_summernote.widgets import SummernoteWidget
 from blog.forms import SummernoteWidgetWithCustomToolbar
 from django.utils import timezone
@@ -221,13 +220,6 @@ class ProducteurChangeForm(UserChangeForm):
     class Meta:
         model = Profil
         fields = ['username', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'accepter_annuaire', 'inscrit_newsletter', 'adherent_jp']
-
-    def clean(self):
-       email = self.cleaned_data.get('email')
-       username = self.cleaned_data.get('username')
-       if Profil.objects.filter(username__iexact=username).exists():
-            raise ValidationError("Désolé, un compte avec cet identifiant existe déjà")
-       return self.cleaned_data
 
 
 class ProducteurChangeForm_admin(UserChangeForm):
