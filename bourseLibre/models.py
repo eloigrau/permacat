@@ -338,8 +338,7 @@ def envoyerMailBienvenue(user):
     pour toute question, consultez la Foire Aux Questions (ou posez vos questions dans l'article consacré). @ bientôt !"
     message = "<div dir='auto'>Bienvenue sur www.Perma.Cat !</div> \
 <div dir='auto'>&nbsp;</div>\
-<div dir='auto'>Pour vous connecter, votre identifiant est : "+user.username+" \n(vous pouvez le changer sur votre <a href='https://www.perma.cat/accounts/profile/'>page de profil</a>), merci de votre inscription.&nbsp;</div><li dir='auto'>en toute circonstance, gardez le sourire :)</li>\
-</ul>\
+<div dir='auto'>Pour vous connecter, votre identifiant est : "+user.username+" \n(vous pouvez le changer sur votre <a href='https://www.perma.cat/accounts/profile/'>page de profil</a>), merci de votre inscription.&nbsp;</div>\
 <div dir='auto'>&nbsp;</div>\
 <div dir='auto'>Quelques conseils :\
 <ul>\
@@ -351,7 +350,7 @@ def envoyerMailBienvenue(user):
 <li dir='auto'>prenez le temps d'explorer les diff&eacute;rentes sections du site pour vous familiariser et comprendre comment le site fonctionne et ce que vous pouvez en faire</li><li dir='auto'>en toute circonstance, gardez le sourire :)</li>\
 </ul>\
 <li dir='auto'>sur smartphone, vous pouvez <a href='https://www.clubic.com/tutoriels/article-891621-1-comment-ajouter-raccourci-web-page-accueil-smartphone-android.html'>mettre le site sur votre page d'accueil</a> pour y acc&eacute;der facilement et venir nous voir plus r&eacute;guli&egrave;rement.</li>\
-<li dir='auto'>en toute circonstance, gardez le sourire :)</li>\
+<li dir='auto'>gardez le sourire :)</li>\
 </ul>\
 <div dir='auto'>&nbsp;</div>\
 <div dir='auto'>pour toute question, consultez la <a href='https://www.perma.cat/faq/'>Foire Aux Questions</a> (<span style='font-family: sans-serif;'>ou <a href='https://www.perma.cat/forum/article/faq-du-site'>posez</a></span><a href='https://www.perma.cat/forum/article/faq-du-site'> vos questions dans l'article consacr&eacute;</a>).</div>\
