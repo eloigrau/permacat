@@ -225,8 +225,6 @@ class ProducteurChangeForm(UserChangeForm):
     def clean(self):
        email = self.cleaned_data.get('email')
        username = self.cleaned_data.get('username')
-       if Profil.objects.filter(email=email).exists():
-            raise ValidationError("Désolé, un compte avec cet email existe déjà")
        if Profil.objects.filter(username__iexact=username).exists():
             raise ValidationError("Désolé, un compte avec cet identifiant existe déjà")
        return self.cleaned_data
