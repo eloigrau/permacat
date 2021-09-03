@@ -77,8 +77,8 @@
         {% for profil in profils %}
         <tr>
             <td><a href="{% url 'profil' profil.id %}">{{ profil.username }}</a></td>
-            <td><a href="{% url 'profil' profil.id %}">{{ profil.description|safe }}</a></td>
-            <td><a href="{% url 'profil' profil.id %}">{{ profil.competences|safe }}</a></td>
+            <td>{{ profil.description|safe }}</td>
+            <td>{{ profil.competences|safe }}</td>
       </tr>
         {% endfor %}
         </tbody>
