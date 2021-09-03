@@ -20,8 +20,15 @@
 
 {% endblock %}
 {% block content %}
+<nav class="nav nav-tabs justify-content-center">
+      <a class="nav-item nav-link active" href="#adresse" data-toggle="tab">Adresse</a>
+      <a class="nav-item nav-link" href="#description" data-toggle="tab">Description</a>
+    </nav>
 
-<div class="row">
+
+<div class="tab-content">
+  <div class="tab-pane fade show active" id="adresse">
+   <div class="row">
     <div class="col-md-12">
         <div style="overflow-x:auto;">
     <table class="table table-condensed tableprofils table-striped sortable">
@@ -51,6 +58,40 @@
     </div>
     </div>
     </div>
+
+  </div>
+
+  <div class="tab-pane fade" id="description">
+   <div class="row">
+    <div class="col-md-12">
+        <div style="overflow-x:auto;">
+    <table class="table table-condensed tableprofils table-striped sortable">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Pseudo</th>
+                <th>Description</th>
+                <th>Savoir-faire</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for profil in profils %}
+        <tr>
+           {%comment%} <td>
+                <img src="{{ profil.avatar.get_absolute_url }}" alt="pas d'image" style="width:100px;height:100px" href="{% url 'profil' profil.id %}">
+            </td>
+            {%endcomment%}
+            <td><a href="{% url 'profil' profil.id %}">{{ profil.username }}</a></td>
+            <td><a href="{% url 'profil' profil.id %}">{{ profil.description }}</a></td>
+            <td><a href="{% url 'profil' profil.id %}">{{ profil.competences }}</a></td>
+      </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    </div>
+    </div>
+  </div>
+</div>
 
     <p class="textcenter textepetit">(*qui ont accepté d'apparaitre dans l'annuaire)</p>
 {% endblock %}
