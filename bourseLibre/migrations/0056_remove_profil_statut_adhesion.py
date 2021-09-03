@@ -3,7 +3,7 @@
 from django.db import migrations
 
 from bourseLibre.models import Suivis, Profil
-from bourseLibre.views_notifications import send_mass_html_mail
+from bourseLibre.views_admin import send_mass_html_mail
 from bourseLibre.constantes import Choix as Choix_global
 from actstream import actions
 from bourseLibre.settings.production import SERVER_EMAIL

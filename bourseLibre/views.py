@@ -174,7 +174,7 @@ def testIsMembreAsso(request, asso):
     if assos:
         assos = assos[0]
 
-        if not assos.is_membre(request.user):
+        if not assos.is_membre(request.user) and not request.user.is_superuser:
             return render(request, 'notMembre.html', {'asso':assos } )
         return assos
     return Asso.objects.get(nom="Public")
@@ -1100,12 +1100,16 @@ def inscription_permagora(request):
     if request.user.adherent_scic:
         request.user.adherent_scic = False
         request.user.save()
+        suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_scic')
+        actions.unfollow(request.user, suivi, send_action=False)
         url = reverse('presentation_asso', kwargs={'asso': 'scic'})
         action.send(request.user, verb='inscription_permagora', target=asso, url=url,
                     description="s'est retiré du groupe PermAgora")
     else:
         request.user.adherent_scic = True
         request.user.save()
+        suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_scic')
+        actions.follow(request.user, suivi, send_action=False)
         url = reverse('presentation_asso', kwargs={'asso': 'scic'})
         action.send(request.user, verb='inscription_permagora', target=asso, url=url,
                     description="s'est inscrit.e au groupe PermAgora")
@@ -1118,12 +1122,16 @@ def inscription_citealt(request):
     if request.user.adherent_citealt:
         request.user.adherent_citealt = False
         request.user.save()
+        suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_citealt')
+        actions.unfollow(request.user, suivi, send_action=False)
         url = reverse('presentation_asso', kwargs={'asso': 'citealt'})
         action.send(request.user, verb='inscription_citealt', target=asso, url=url,
                     description="s'est retiré du groupe Cité Altruiste")
     else:
         request.user.adherent_citealt = True
         request.user.save()
+        suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_citealt')
+        actions.follow(request.user, suivi, send_action=False)
         url = reverse('presentation_asso', kwargs={'asso': 'citealt'})
         action.send(request.user, verb='inscription_citealt', target=asso, url=url,
                     description="s'est inscrit.e dans le groupe Cité Altruiste")

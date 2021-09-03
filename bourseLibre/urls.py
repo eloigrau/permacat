@@ -16,19 +16,15 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.urls import path
-from . import views, views_base, views_notifications
+from . import views, views_base, views_notifications, views_admin
 from django.views.generic import TemplateView
 
 # On import les vues de Django, avec un nom spécifique
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import PasswordResetView
 from django.urls import reverse_lazy
-# admin.autodiscover()
 from django.contrib import admin
 from .settings import MEDIA_ROOT
-#from jugemaj import models
-
-#from wiki import urls
 
 admin.sites.site_header ="Admin "
 admin.sites.site_title ="Admin Permacat"
@@ -175,13 +171,14 @@ urlpatterns = [
 
     url(r'^inscription_newsletter/$', views.inscription_newsletter, name='inscription_newsletter', ),
     path(r'modifier_message/<int:id>-<str:type_msg>-<str:asso>', views.modifier_message, name='modifierMessage'),
-    url(r'^voirEmails/$', views_notifications.voirEmails,  name="voirEmails"),
-    url(r'^nettoyerActions/$', views_notifications.nettoyerActions,  name="nettoyerActions"),
-    url(r'^nettoyerFollows/$', views_notifications.nettoyerFollows,  name="nettoyerFollows"),
-    url(r'^nettoyerHistoriqueAdmin/$', views_notifications.nettoyerHistoriqueAdmin,  name="nettoyerHistoriqueAdmin"),
-    url(r'^envoyerEmailsRequete/$', views_notifications.envoyerEmailsRequete,  name="envoyerEmailsRequete"),
-    url(r'^voir_articles_a_archiver/$', views_notifications.voir_articles_a_archiver,  name="voir_articles_a_archiver"),
-    url(r'^archiverArticles/$', views_notifications.archiverArticles,  name="archiverArticles"),
+    url(r'^voirEmails/$', views_admin.voirEmails,  name="voirEmails"),
+    url(r'^nettoyerActions/$', views_admin.nettoyerActions,  name="nettoyerActions"),
+    url(r'^nettoyerFollows/$', views_admin.nettoyerFollows,  name="nettoyerFollows"),
+    url(r'^nettoyerHistoriqueAdmin/$', views_admin.nettoyerHistoriqueAdmin,  name="nettoyerHistoriqueAdmin"),
+    url(r'^envoyerEmailsRequete/$', views_admin.envoyerEmailsRequete,  name="envoyerEmailsRequete"),
+    url(r'^voir_articles_a_archiver/$', views_admin.voir_articles_a_archiver,  name="voir_articles_a_archiver"),
+    url(r'^archiverArticles/$', views_admin.archiverArticles,  name="archiverArticles"),
+    url(r'^abonnerAdherentsCiteAlt/$', views_admin.abonnerAdherentsCiteAlt,  name="abonnerAdherentsCiteAlt"),
 ]
 urlpatterns += [
     url(r'^robots\.txt$', TemplateView.as_view(template_name="bourseLibre/robots.txt", content_type='text/plain')),
