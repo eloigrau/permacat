@@ -89,7 +89,7 @@ def abonnerAdherentsCiteAlt(request, ):
     suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_citealt')
 
     for prof in profils:
-        actions.follow(request.user, suivi)
+        actions.follow(prof, suivi)
 
     return redirect("bienvenue")
 
