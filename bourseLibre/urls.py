@@ -177,6 +177,7 @@ urlpatterns = [
     path(r'modifier_message/<int:id>-<str:type_msg>-<str:asso>', views.modifier_message, name='modifierMessage'),
     url(r'^voirEmails/$', views_notifications.voirEmails,  name="voirEmails"),
     url(r'^nettoyerActions/$', views_notifications.nettoyerActions,  name="nettoyerActions"),
+    url(r'^nettoyerFollows/$', views_notifications.nettoyerFollows,  name="nettoyerFollows"),
     url(r'^nettoyerHistoriqueAdmin/$', views_notifications.nettoyerHistoriqueAdmin,  name="nettoyerHistoriqueAdmin"),
     url(r'^envoyerEmailsRequete/$', views_notifications.envoyerEmailsRequete,  name="envoyerEmailsRequete"),
     url(r'^voir_articles_a_archiver/$', views_notifications.voir_articles_a_archiver,  name="voir_articles_a_archiver"),

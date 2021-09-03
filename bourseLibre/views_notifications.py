@@ -407,6 +407,7 @@ def nettoyerActions(request):
             action.delete()
 
 
+def nettoyerFollows(request):
     follows = Follow.objects.filter(user=request.user)
     for action in follows:
         if not action.follow_object:
