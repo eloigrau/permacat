@@ -112,7 +112,7 @@ class Article(models.Model):
         else:
             if sendMail:
                 titre = "Article actualisé"
-                message = "L'article '<a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.titre + "</a>' (" + str(self.asso.nom)  + ") a été modifié"
+                message = "L'article (" + str(self.asso.nom) + ") '<a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.titre + "</a>' a été modifié"
                 emails = [suiv.email for suiv in followers(self) if self.est_autorise(suiv)]
 
         retour = super(Article, self).save(*args, **kwargs)
