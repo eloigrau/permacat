@@ -399,6 +399,8 @@ def supprimerActionsStartedFollowing():
         action.delete()
 
 def nettoyerActions(request):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden()
     actions = Action.objects.all()
     for action in actions:
         try:
@@ -408,6 +410,8 @@ def nettoyerActions(request):
 
 
 def nettoyerFollows(request):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden()
     follows = Follow.objects.filter(user=request.user)
     for action in follows:
         if not action.follow_object:
@@ -494,10 +498,14 @@ def get_articles_a_archiver():
     return liste, liste2, liste3
 
 def voir_articles_a_archiver(request):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden()
     liste, liste2, liste3 = get_articles_a_archiver()
     return render(request, 'notifications/voirArchivage.html',{'liste': liste, 'liste2': liste2, 'liste3': liste3})
 
 def archiverArticles(request):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden()
     liste, liste2, liste3 =  get_articles_a_archiver()
     for art in liste:
         art.estArchive = True
@@ -540,6 +548,8 @@ def send_mass_html_mail(datatuple, fail_silently=False, auth_user=None,
 
 
 def envoyerEmailsRequete(request):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden()
     listeMails = getListeMailsAlerte()
     if not LOCALL:
         send_mass_html_mail(listeMails, fail_silently=False)
@@ -548,6 +558,8 @@ def envoyerEmailsRequete(request):
     return redirect('voirEmails', )
 
 def envoyerEmails():
+    if not request.user.is_superuser:
+        return HttpResponseForbidden()
     print('Récupération des mails')
     listeMails = getListeMailsAlerte()
 
@@ -559,6 +571,8 @@ def envoyerEmails():
     print('Fait')
 
 def envoyerEmailstest():
+    if not request.user.is_superuser:
+        return HttpResponseForbidden()
     listeMails = []
     listeMails.append(('testCron', "message en txt", "<b>le message html</b>", SERVER_EMAIL, ["eloi.grau@gmail.com", ]))
     send_mass_html_mail(listeMails, fail_silently=False)
