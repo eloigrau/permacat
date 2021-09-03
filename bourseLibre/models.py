@@ -52,7 +52,7 @@ class Adresse(models.Model):
 
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
-        if not self.latitude or self.latitude==LATITUDE_DEFAUT:
+        if not self.latitude or self.latitude == LATITUDE_DEFAUT:
             self.set_latlon_from_adresse()
         return super(Adresse, self).save(*args, **kwargs)
 
@@ -245,7 +245,6 @@ class Profil(AbstractUser):
             return math.sqrt(x*x + y*y) * 6371
         except:
             return 0
-
 
     @property
     def statutMembre_asso(self, asso):

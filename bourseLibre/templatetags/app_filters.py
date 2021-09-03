@@ -108,3 +108,17 @@ def filtrerSuivisForum(nomSuivis):
         return "Articles " + asso.nom
     except:
         return str(nomSuivis)
+
+@register.filter(is_safe=True)
+def distance(user1, user2):
+    dist = None
+    try:
+        dist = user1.getDistance(user2)
+    except:
+        pass
+    if dist == 0:
+        return "-"
+    elif dist == None:
+        return "-"
+    else:
+        return str(round(dist, 1)) + "km"

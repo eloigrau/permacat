@@ -38,6 +38,7 @@
                 <th>Email</th>
                 <th>Code postal</th>
                 <th>Commune</th>
+                <th>Distance</th>
             </tr>
         </thead>
         <tbody>
@@ -49,8 +50,9 @@
             {%endcomment%}
             <td><a href="{% url 'profil' profil.id %}">{{ profil.username }}</a></td>
             <td><a href="{% url 'profil' profil.id %}">{{ profil.email }}</a></td>
-            <td>{%if profil.adresse.code_postal %}<a href="{% url 'profil' profil.id %}">{{ profil.adresse.code_postal }}</a>{% else %}-{% endif %}</td>
-            <td>{%if profil.adresse.commune %}<a href="{% url 'profil' profil.id %}">{{ profil.adresse.commune }}</a> {% else %}-{% endif %}</td>
+            <td>{%if profil.adresse.code_postal %}{{ profil.adresse.code_postal }}{% else %}-{% endif %}</td>
+            <td>{%if profil.adresse.commune %}{{ profil.adresse.commune }} {% else %}-{% endif %}</td>
+            <td><a href="{% url 'profil' profil.id %}">{{ profil|distance:request.user }}</a></td>
         </tr>
         {% endfor %}
         </tbody>
@@ -71,6 +73,7 @@
                 <th>Pseudo</th>
                 <th>Description</th>
                 <th>Savoir-faire</th>
+                <th>Distance</th>
             </tr>
         </thead>
         <tbody>
@@ -79,6 +82,7 @@
             <td><a href="{% url 'profil' profil.id %}">{{ profil.username }}</a></td>
             <td>{{ profil.description|safe }}</td>
             <td>{{ profil.competences|safe }}</td>
+            <td><a href="{% url 'profil' profil.id %}">{{ profil|distance:request.user }}</a></td>
       </tr>
         {% endfor %}
         </tbody>
