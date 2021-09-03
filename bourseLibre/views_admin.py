@@ -91,7 +91,7 @@ def abonnerAdherentsCiteAlt(request, ):
     for prof in profils:
         actions.follow(request.user, suivi)
 
-
+    return redirect("bienvenue")
 
 def nettoyerFollows(request):
     if not request.user.is_superuser:
