@@ -121,4 +121,4 @@ def distance(user1, user2):
     elif dist == None:
         return "-"
     else:
-        return str(round(dist, 0)) + " km"
+        return str(int(dist + 0.5)) + " km"
