@@ -76,13 +76,9 @@
         <tbody>
         {% for profil in profils %}
         <tr>
-           {%comment%} <td>
-                <img src="{{ profil.avatar.get_absolute_url }}" alt="pas d'image" style="width:100px;height:100px" href="{% url 'profil' profil.id %}">
-            </td>
-            {%endcomment%}
             <td><a href="{% url 'profil' profil.id %}">{{ profil.username }}</a></td>
-            <td><a href="{% url 'profil' profil.id %}">{{ profil.description }}</a></td>
-            <td><a href="{% url 'profil' profil.id %}">{{ profil.competences }}</a></td>
+            <td><a href="{% url 'profil' profil.id %}">{{ profil.description|safe }}</a></td>
+            <td><a href="{% url 'profil' profil.id %}">{{ profil.competences|safe }}</a></td>
       </tr>
         {% endfor %}
         </tbody>
