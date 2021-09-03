@@ -122,5 +122,7 @@ def distance(user1, user2):
         return "-"
     if dist < 10:
         return "0" + str(int(dist + 0.5)) + " km"
+        if dist < 1:
+            return "<1 km"
     else:
         return str(int(dist + 0.5)) + " km"
