@@ -443,14 +443,16 @@ def carte(request, asso):
     else:
         titre = "Carte des membres du groupe " + asso.nom + "*"
 
+    try:
+        import simplejson
+        import requests
+        url = "https://presdecheznous.gogocarto.fr/api/elements.json?limit=500&bounds=1.75232%2C42.31794%2C3.24646%2C42.94034"
 
-    import simplejson
-    import requests
-    url = "https://presdecheznous.gogocarto.fr/api/elements.json?limit=500&bounds=1.75232%2C42.31794%2C3.24646%2C42.94034"
-
-    reponse = requests.get(url)
-    data = simplejson.loads(reponse.text)
-    ev = data["data"]
+        reponse = requests.get(url)
+        data = simplejson.loads(reponse.text)
+        ev = data["data"]
+    except:
+        ev = []
 
     return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': titre, 'data':ev, "asso":asso} )
 
