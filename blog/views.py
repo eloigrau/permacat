@@ -36,7 +36,7 @@ import itertools
 @login_required
 def accueil(request):
     cat = Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
-    categorie_list = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
+    categorie_list = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_asso["public"] if x[0] in cat]
     cat_pc = Article.objects.filter(asso__abreviation="pc").order_by('categorie').values_list('categorie', flat=True).distinct()
     categorie_list_pc = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_pc]
     cat_rtg = Article.objects.filter(asso__abreviation="rtg").order_by('categorie').values_list('categorie', flat=True).distinct()
@@ -46,12 +46,15 @@ def accueil(request):
     cat_gt = Article.objects.filter(asso__abreviation="gt").order_by('categorie').values_list('categorie',
                                                                                                 flat=True).distinct()
     categorie_list_gt = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_gt]
+    cat_citealt = Article.objects.filter(asso__abreviation="citealt").order_by('categorie').values_list('categorie',
+                                                                                                flat=True).distinct()
+    categorie_list_citealt = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_citealt]
 
     proj = Projet.objects.filter(estArchive=False, statut='accep').order_by('titre')
 
     for nomAsso in Choix_global.abreviationsAsso:
         if not getattr(request.user, "adherent_" + nomAsso):
-            proj = proj.exclude(asso__abreviation = nomAsso)
+            proj = proj.exclude(asso__abreviation=nomAsso)
 
     projets_list = [(x.slug, x.titre, x.get_couleur) for x in proj]
 
@@ -85,7 +88,7 @@ def accueil(request):
 
     suivis = get_suivis_forum(request)
 
-    return render(request, 'blog/accueil.html', {'categorie_list':categorie_list,'categorie_list_pc':categorie_list_pc,'categorie_list_rtg':categorie_list_rtg,'categorie_list_fer':categorie_list_fer,'categorie_list_gt':categorie_list_gt,'projets_list':projets_list,'ateliers_list':ateliers_list, 'categorie_list_projets':categorie_list_projets,'derniers_articles':derniers, 'suivis':suivis})
+    return render(request, 'blog/accueil.html', {'categorie_list':categorie_list,'categorie_list_pc':categorie_list_pc,'categorie_list_rtg':categorie_list_rtg,'categorie_list_fer':categorie_list_fer,'categorie_list_gt':categorie_list_gt,'categorie_list_citealt':categorie_list_citealt,'projets_list':projets_list,'ateliers_list':ateliers_list, 'categorie_list_projets':categorie_list_projets,'derniers_articles':derniers, 'suivis':suivis})
 
 
 @login_required
@@ -274,7 +277,7 @@ class ListeArticles(ListView):
         # context['producteur_list'] = Profil.objects.values_list('username', flat=True).distinct()
         #context['auteur_list'] = Article.objects.order_by('auteur').values_list('auteur__username', flat=True).distinct()
         cat = Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
-        context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
+        context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_asso["public"] if x[0] in cat]
 
         for nomAsso in Choix_global.abreviationsAsso:
             if getattr(self.request.user, "adherent_" + nomAsso):
@@ -373,7 +376,7 @@ class ListeArticles_asso(ListView):
         # context['producteur_list'] = Profil.objects.values_list('username', flat=True).distinct()
         context['auteur_list'] = Article.objects.all().order_by('auteur').values_list('auteur__username', flat=True).distinct()
         cat= Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
-        context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
+        context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_asso["public"] if x[0] in cat]
         context['categorie_list_projets'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets]
 
         if self.kwargs['asso']:
@@ -884,6 +887,15 @@ def filtrer_articles(request):
     f = ArticleFilter(request.GET, queryset=articles_list)
 
     return render(request, 'blog/article_filter.html', {'filter': f})
+
+def ajax_categories(request):
+    try:
+        asso_id = request.GET.get('asso')
+        nomAsso = Asso.objects.get(id=asso_id).abreviation
+        return render(request, 'blog/ajax/categories_dropdown_list_options.html',
+                      {'categories': Choix.get_type_annonce_asso(nomAsso)})
+    except:
+        return render(request, 'blog/ajax/categories_dropdown_list_options.html', {'categories': Choix.get_type_annonce_asso("defaut")})
 
 
 

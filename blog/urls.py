@@ -70,4 +70,5 @@ urlpatterns = [
     url(r'^supprimerAdresseArticle/(?P<slug_article>[-\w]+)/(?P<id_adresse>[0-9]+)$', login_required(views.SupprimerAdresseArticle.as_view(), login_url='/auth/login/'), name='supprimerAdresseArticle'),
     url(r'voirCarteLieux/(?P<id_article>[0-9]+)$', views.voirCarteLieux, name='voirCarteLieux'),
 
+    path('ajax/load-categories/', views.ajax_categories, name='ajax_categories')
 ]

@@ -11,6 +11,7 @@ from bourseLibre.settings import SUMMERNOTE_CONFIG as summernote_config
 from bourseLibre.models import Asso
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from photologue.models import Album
+from .models import Choix
 
 class SummernoteWidgetWithCustomToolbar(SummernoteWidget):
     def summernote_settings(self):
@@ -68,9 +69,8 @@ class SummernoteWidgetWithCustomToolbar(SummernoteWidget):
         return summernote_settings
 
 class ArticleForm(forms.ModelForm):
-    asso = forms.ModelChoiceField(queryset=Asso.objects.all(), required=True,
-                              label="Article public ou réservé aux adhérents de l'asso :", )
-
+    asso = forms.ModelChoiceField(queryset=Asso.objects.all(), initial=0, required=True,
+                              label="Article public ou réservé aux adhérents du groupe :", )
 
     class Meta:
         model = Article
@@ -104,15 +104,18 @@ class ArticleForm(forms.ModelForm):
 
     def __init__(self, request, *args, **kwargs):
         super(ArticleForm, self).__init__(*args, **kwargs)
-        self.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if request.user.estMembre_str(x.abreviation)]
+        self.fields["asso"].choices = [('--', '-------'), ] + sorted([(x.id, x.nom) for x in Asso.objects.all() if request.user.estMembre_str(x.abreviation)], key=lambda x:x[0])
+        self.fields["categorie"].choices = [('--', '-------'), ]
 
-
-# class ArticleFormPreview(FormPreview):
-#
-#     def done(self, request, cleaned_data):
-#         # Do something with the cleaned_data, then redirect
-#         # to a "success" page.
-#         return HttpResponseRedirect('/form/success')
+        if 'asso' in self.data:
+            #try:
+                asso_id = int(self.data.get('asso'))
+                nomAsso = Asso.objects.get(id=asso_id).abreviation
+                self.fields["categorie"].choices = Choix.get_type_annonce_asso(nomAsso)
+            #except (ValueError, TypeError):
+            #    pass  # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk:
+            self.fields["categorie"].choices = Choix.get_type_annonce_asso("")
 
 class ArticleChangeForm(forms.ModelForm):
 

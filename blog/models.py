@@ -11,13 +11,22 @@ class Choix():
     statut_projet = ('prop','Proposition de projet'), ("AGO","Fiche projet soumise à l'AGO"), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
 
     type_projet = ('Part','Participation à un évènement'), ('AGO',"Organisation d'une AGO"), ('Projlong','Projet a long terme'), ('Projcourt','Projet a court terme'), ('Projponct','Projet ponctuel'),
-    type_annonce = ('Annonce','Annonce'), ('Administratif','Administratif'), ('Agenda','Agenda'),  ('Chantier','Atelier/Chantier participatif'),\
+    type_annonce_base = ('Annonce','Annonce'), ('Administratif','Administratif'), ('Agenda','Agenda'),  ('Chantier','Atelier/Chantier participatif'),\
                    ('Documentation','Documentation'),  ('covoit','Covoiturage'), \
-                    ('Point', 'Point de vue'),  ('Recette', 'Recette'), ('BonPlan','Bon Plan / achat groupé'), \
-                     ('Divers','Divers'), #('Jardi','Jardi per tots'),
+                    ('Point', 'Idée / Point de vue'),  ('Recette', 'Recette'), ('BonPlan','Bon Plan / achat groupé'), \
+                     ('Divers','Divers')
     type_annonce_projets = ('Altermarché', 'Altermarché'),  ('Ecovillage', 'Ecovillage'), \
                    ('Jardin', 'Jardins partagés'), #('KitPerma', 'Kit Perma Ecole'),
 
+    type_annonce_asso = {
+        "public": type_annonce_base,
+        "pc": type_annonce_base,
+        "scic": type_annonce_base,
+        "rtg": type_annonce_base,
+        "rtg": type_annonce_base,
+        "citealt": type_annonce_base,
+    }
+    type_annonce = type_annonce_base
     couleurs_annonces = {
        # 'Annonce':"#e0f7de", 'Administratif':"#dcc0de", 'Agenda':"#d4d1de", 'Entraide':"#cebacf",
        # 'Chantier':"#d1ecdc",'Jardinage':"#fcf6bd", 'Recette':"#d0f4de", 'Bricolage':"#fff2a0",
@@ -60,6 +69,12 @@ class Choix():
             return Choix.couleurs_annonces[categorie]
         except:
             return Choix.couleurs_annonces["Autre"]
+
+    def get_type_annonce_asso(asso):
+        try:
+            return Choix.type_annonce_asso[asso]
+        except:
+            return Choix.type_annonce
 
     #def get_liste_typeAnnonces():
     #    return [x[1] for x in Choix.type_annonce]
