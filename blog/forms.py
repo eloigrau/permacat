@@ -104,7 +104,7 @@ class ArticleForm(forms.ModelForm):
 
     def __init__(self, request, *args, **kwargs):
         super(ArticleForm, self).__init__(*args, **kwargs)
-        self.fields["asso"].choices = [('', '(Choisir un groupe)'), ] + sorted([(x.id, x.nom) for x in Asso.objects.all() if request.user.estMembre_str(x.abreviation)], key=lambda x:x[0])
+        self.fields["asso"].choices = [('', '(Choisir un groupe)'), ] + [(x.id, x.nom) for x in Asso.objects.all().order_by("id") if request.user.estMembre_str(x.abreviation)]
 
 
         if 'asso' in self.data:
@@ -177,7 +177,7 @@ class ProjetForm(forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
         super(ProjetForm, self).__init__(*args, **kwargs)
         self.fields['contenu'].strip = False
-        self.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if request.user.estMembre_str(x.abreviation)]
+        self.fields["asso"].choices = [(x.id, x.nom) for x in Asso.objects.all().order_by("id") if request.user.estMembre_str(x.abreviation)]
 
     def save(self, userProfile, sendMail=True):
         instance = super(ProjetForm, self).save(commit=False)

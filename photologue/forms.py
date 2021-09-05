@@ -217,7 +217,7 @@ class AlbumForm(forms.ModelForm):
 
     def __init__(self, request, *args, **kwargs):
         super(AlbumForm, self).__init__(*args, **kwargs)
-        self.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if request.user.estMembre_str(x.abreviation)]
+        self.fields["asso"].choices = [(x.id, x.nom) for x in Asso.objects.all() if request.user.estMembre_str(x.abreviation)]
         self.fields["article"].choices = [('', '(non)')] + [(x.id, x.titre) for i, x in enumerate(Article.objects.filter(estArchive=False).order_by('titre')) if request.user.estMembre_str(x.asso.abreviation)]
 
 
@@ -249,7 +249,7 @@ class PhotoForm(forms.ModelForm):
 
     def __init__(self, request, *args, **kwargs):
         super(PhotoForm, self).__init__(*args, **kwargs)
-     #   self.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if request.user.estMembre_str(x.abreviation)]
+     #   self.fields["asso"].choices = sorted([(x.id, x.nom) for x in Asso.objects.all() if request.user.estMembre_str(x.abreviation)], key=lambda x:x[0])
 
     def save(self, request, commit=True):
         instance = super(PhotoForm, self).save(commit=False)
@@ -281,7 +281,7 @@ class DocumentForm(forms.ModelForm):
 
     def __init__(self, request, *args, **kwargs):
         super(DocumentForm, self).__init__(*args, **kwargs)
-        self.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if request.user.estMembre_str(x.abreviation)]
+        self.fields["asso"].choices = [(x.id, x.nom) for x in Asso.objects.all().order_by("id") if request.user.estMembre_str(x.abreviation)]
 
     def save(self, request, commit=True):
         instance = super(DocumentForm, self).save(commit=False)

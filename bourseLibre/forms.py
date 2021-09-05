@@ -29,7 +29,7 @@ class ProduitCreationForm(forms.ModelForm):
 
     def __init__(self, request, *args, **kwargs):
         super(ProduitCreationForm, self).__init__(*args, **kwargs)
-        self.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if request.user.estMembre_str(x.abreviation)]
+        self.fields["asso"].choices = [(x.id, x.nom) for x in Asso.objects.all().order_by("id") if request.user.estMembre_str(x.abreviation)]
 
 
     def clean(self):

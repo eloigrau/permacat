@@ -488,7 +488,7 @@ class ModifierProjet(UpdateView):
 
     def get_form(self,*args, **kwargs):
         form = super(ModifierProjet, self).get_form(*args, **kwargs)
-        form.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all()) if self.request.user.estMembre_str(x.abreviation)]
+        form.fields["asso"].choices = [(x.id, x.nom) for x in Asso.objects.all().order_by("id") if self.request.user.estMembre_str(x.abreviation)]
         return form
 
 class SupprimerProjet(DeleteView):
