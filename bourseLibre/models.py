@@ -344,7 +344,7 @@ def envoyerMailBienvenue(user):
 <ul>\
 <li dir='auto'>pour suivre ce qu'il se passe sur le site, utilisez les <a href='https://www.perma.cat/notifications/activite/'>notifications</a> (et n'oubliez pas d'appuyer sur 'marquer comme lu' apres les avoir lu).</li>\
 <li dir='auto'>l'<a href='https://www.perma.cat/agenda/'>agenda</a> est un bon moyen de savoir ce qu'il se passe dans la vraie vie, visuellement.</li>\
-<li dir='auto'>l'annuaire est un bon moyen de faire connaissance avec de belles personnes, près de chez vous</li>\
+<li dir='auto'>l'<a href='https://www.perma.cat/annuaire/public'>annuaire</a> ou <a href='https://www.perma.cat/cooperateurs/carte/public'>la carte</a> sont de bons moyens de faire connaissance avec de belles personnes, près de chez vous</li>\
 <li dir='auto'>utilisez plutôt l'<a href='https://www.perma.cat/marche/lister/'>altermarch&eacute;</a> pour les petites annonces, le <a href='https://www.perma.cat/forum/accueil/'>forum</a> pour annoncer les &eacute;v&eacute;nements ou pr&eacute;senter des id&eacute;es, et les <a href='https://www.perma.cat/ateliers/liste/'>ateliers</a> pour... proposer des ateliers</li>\
 <li dir='auto'>vous pouvez configurer les infos que vous recevez par mail sur la page <a href='https://www.perma.cat/accounts/mesSuivis/'>abonnements</a> de votre profil</li>\
 <li dir='auto'>prenez le temps d'explorer les diff&eacute;rentes sections du site pour vous familiariser et comprendre comment le site fonctionne et ce que vous pouvez en faire</li>\
