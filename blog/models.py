@@ -26,6 +26,7 @@ class Choix():
         "rtg": type_annonce_base,
         "citealt": type_annonce_base,
     }
+
     type_annonce = type_annonce_base
     couleurs_annonces = {
        # 'Annonce':"#e0f7de", 'Administratif':"#dcc0de", 'Agenda':"#d4d1de", 'Entraide':"#cebacf",
