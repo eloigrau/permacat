@@ -69,8 +69,8 @@ class SummernoteWidgetWithCustomToolbar(SummernoteWidget):
         return summernote_settings
 
 class ArticleForm(forms.ModelForm):
-    asso = forms.ModelChoiceField(queryset=Asso.objects.all(), initial=0, required=True,
-                              label="Article public ou réservé aux adhérents du groupe :", )
+    asso = forms.ModelChoiceField(queryset=Asso.objects.all(), required=True,
+                              label="Article public ou réservé aux membres du groupe :", )
 
     class Meta:
         model = Article
@@ -104,16 +104,16 @@ class ArticleForm(forms.ModelForm):
 
     def __init__(self, request, *args, **kwargs):
         super(ArticleForm, self).__init__(*args, **kwargs)
-        self.fields["asso"].choices = [('--', '-------'), ] + sorted([(x.id, x.nom) for x in Asso.objects.all() if request.user.estMembre_str(x.abreviation)], key=lambda x:x[0])
-        self.fields["categorie"].choices = [('--', '-------'), ]
+        self.fields["asso"].choices = [('', '(Choisir un groupe)'), ] + sorted([(x.id, x.nom) for x in Asso.objects.all() if request.user.estMembre_str(x.abreviation)], key=lambda x:x[0])
+
 
         if 'asso' in self.data:
-            #try:
+            try:
                 asso_id = int(self.data.get('asso'))
                 nomAsso = Asso.objects.get(id=asso_id).abreviation
                 self.fields["categorie"].choices = Choix.get_type_annonce_asso(nomAsso)
-            #except (ValueError, TypeError):
-            #    pass  # invalid input from the client; ignore and fallback to empty City queryset
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty City queryset
         elif self.instance.pk:
             self.fields["categorie"].choices = Choix.get_type_annonce_asso("")
 
