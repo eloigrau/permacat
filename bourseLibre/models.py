@@ -2,6 +2,7 @@
 import decimal
 import math
 import os
+from urllib import parse
 from datetime import date
 
 import django_filters
@@ -10,7 +11,6 @@ from actstream import actions, action
 from actstream.models import following, followers
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import ASCIIUsernameValidator
-# from django.utils import timezone
 from django.core.validators import MinValueValidator
 from django.core.validators import RegexValidator
 from django.db import models
@@ -26,6 +26,7 @@ from stdimage import StdImageField
 from django.core.mail import send_mail
 from .constantes import Choix, DEGTORAD
 from .settings.production import SERVER_EMAIL
+import simplejson
 
 # from tinymce.models import HTMLField
 #from blog.models import Article
@@ -50,9 +51,9 @@ class Adresse(models.Model):
     telephone = models.CharField(validators=[phone_regex,], max_length=10, blank=True)  # validators should be a list
 
 
-    def save(self, *args, **kwargs):
+    def save(self, recalc=False, *args, **kwargs):
         ''' On save, update timestamps '''
-        if not self.latitude or self.latitude == LATITUDE_DEFAUT:
+        if recalc or not self.latitude or self.latitude == LATITUDE_DEFAUT:
             self.set_latlon_from_adresse()
         return super(Adresse, self).save(*args, **kwargs)
 
@@ -90,9 +91,9 @@ class Adresse(models.Model):
         address += str(self.code_postal)
         if self.commune:
             address += "+" + self.commune
-        address += "+" + self.pays
+        address = address.replace(" ", "+")
+
         try:
-            import simplejson
             url = "http://nominatim.openstreetmap.org/search?q=" + address + "&format=json"
             reponse = requests.get(url)
             data = simplejson.loads(reponse.text)
@@ -100,16 +101,27 @@ class Adresse(models.Model):
             self.longitude = float(data[0]["lon"])
         except:
             try:
-                api_key = os.environ["GAPI_KEY"]
-                api_response = requests.get(
-                    'https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(address, api_key))
-                api_response_dict = api_response.json()
-
-                if api_response_dict['status'] == 'OK':
-                    self.latitude = float(api_response_dict['results'][0]['geometry']['location']['lat'])
-                    self.longitude = float(api_response_dict['results'][0]['geometry']['location']['lng'])
+                address = str(self.code_postal)
+                if self.commune:
+                    address += "+" + self.commune
+                address = address.replace(" ", "+")
+                url = "http://nominatim.openstreetmap.org/search?q=" + address + "&format=json"
+                reponse = requests.get(url)
+                data = simplejson.loads(reponse.text)
+                self.latitude = float(data[0]["lat"])
+                self.longitude = float(data[0]["lon"])
             except:
-                pass
+                try:
+                    api_key = os.environ["GAPI_KEY"]
+                    api_response = requests.get(
+                        'https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(address, api_key))
+                    api_response_dict = api_response.json()
+
+                    if api_response_dict['status'] == 'OK':
+                        self.latitude = float(api_response_dict['results'][0]['geometry']['location']['lat'])
+                        self.longitude = float(api_response_dict['results'][0]['geometry']['location']['lng'])
+                except:
+                    pass
 
     def get_latitude(self):
         if not self.latitude:

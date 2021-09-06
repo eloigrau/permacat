@@ -593,10 +593,14 @@ class profil_modifier_adresse(UpdateView):
     model = Adresse
     form_class = AdresseForm
     template_name_suffix = '_modifier'
-    
 
     def get_object(self):
         return Adresse.objects.get(id=self.request.user.id)
+
+    def post(self, request, **kwargs):
+        self.object = self.get_object()
+        self.object.save(recalc=True)
+        return super(profil_modifier_adresse, self).post(request, **kwargs)
 
 class profil_modifier(UpdateView):
     model = Profil
