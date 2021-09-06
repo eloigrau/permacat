@@ -128,8 +128,8 @@ class AdresseForm(forms.ModelForm):
     code_postal = forms.CharField(label="Code postal*", initial="66000", required=False)
     telephone = forms.CharField(label="Téléphone", required=False)
     pays = forms.CharField(label="Pays", initial="France",required=False)
-    latitude = forms.FloatField(label="Latitude", initial="42", required=False,widget = forms.HiddenInput())
-    longitude = forms.FloatField(label="Longitude", initial="2", required=False,widget = forms.HiddenInput())
+    latitude = forms.FloatField(label="Latitude", initial="42", required=False,widget=forms.HiddenInput())
+    longitude = forms.FloatField(label="Longitude", initial="2", required=False,widget=forms.HiddenInput())
 
     class Meta:
         model = Adresse

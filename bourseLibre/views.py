@@ -595,7 +595,7 @@ class profil_modifier_adresse(UpdateView):
     template_name_suffix = '_modifier'
 
     def get_object(self):
-        return Adresse.objects.get(id=self.request.user.id)
+        return self.request.user.adresse
 
     def post(self, request, **kwargs):
         self.object = self.get_object()
