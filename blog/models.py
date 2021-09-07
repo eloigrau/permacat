@@ -168,9 +168,6 @@ class Evenement(models.Model):
     def __str__(self):
         return "(" + str(self.titre) + ") "+ str(self.start_time) + ": " + str(self.article)
 
-    class Meta:
-        unique_together = ('article', 'start_time',)
-
     def get_absolute_url(self):
         return self.article.get_absolute_url()
 
@@ -374,9 +371,6 @@ class EvenementAcceuil(models.Model):
 
     def __str__(self):
         return "(" + str(self.id) + ") "+ str(self.date) + ": " + str(self.article)
-
-    class Meta:
-        unique_together = ('article', 'date',)
 
     def get_absolute_url(self):
         return self.article.get_absolute_url()
