@@ -260,53 +260,53 @@ def envoyerEmailstest():
 
 
 def decalerEvenements(request, num):
-    if not request.user.is_superuser:
-        return HttpResponseForbidden()
 
-    from blog.models import Article, Projet, Evenement
-    from datetime import timedelta
-    decalage = timedelta(days=1)
-    if num == 0:
-        for i, article in enumerate(Article.objects.all()):
-                if article.start_time:
-                    article.start_time = article.start_time + decalage
-                    article.save()
-                    print("ok1_"+str(i) + str(article))
-                if article.end_time:
-                    article.end_time = article.end_time + decalage
-                    article.save()
-                    print("ok2_"+str(i) + str(article))
-    if num == 1:
-        for i, projet in enumerate(Projet.objects.all()):
-                if projet.start_time:
-                    projet.start_time = projet.start_time + decalage
-                    projet.save()
-                    print("ok1_"+str(i) + str(projet))
-                if projet.end_time:
-                    projet.end_time = projet.end_time + decalage
-                    projet.save()
-                    print("ok2_"+str(i) + str(projet))
-    if num == 2:
-        for i, evenement in enumerate(Evenement.objects.all()):
-                if evenement.start_time:
-                    evenement.start_time = evenement.start_time + decalage
-                    evenement.save()
-                    print("ok1_"+str(i)+"_" + str(evenement))
-                if evenement.end_time:
-                    evenement.end_time = evenement.end_time + decalage
-                    evenement.save()
-                    print("ok2_" +str(i)+ str(evenement))
-
-    if num == 3:
-        from jardinpartage.models import Article as ArticleJP
-        for i, evenement in enumerate(ArticleJP.objects.all()):
-                if evenement.start_time:
-                    evenement.start_time = evenement.start_time + decalage
-                    evenement.save()
-                    print("ok1_"+str(i)+"_" + str(evenement))
-                if evenement.end_time:
-                    evenement.end_time = evenement.end_time + decalage
-                    evenement.save()
-                    print("ok2_" +str(i)+ str(evenement))
+    return HttpResponseForbidden()
+    #
+    # from blog.models import Article, Projet, Evenement
+    # from datetime import timedelta
+    # decalage = timedelta(days=1)
+    # if num == 0:
+    #     for i, article in enumerate(Article.objects.all()):
+    #             if article.start_time:
+    #                 article.start_time = article.start_time + decalage
+    #                 article.save()
+    #                 print("ok1_"+str(i) + str(article))
+    #             if article.end_time:
+    #                 article.end_time = article.end_time + decalage
+    #                 article.save()
+    #                 print("ok2_"+str(i) + str(article))
+    # if num == 1:
+    #     for i, projet in enumerate(Projet.objects.all()):
+    #             if projet.start_time:
+    #                 projet.start_time = projet.start_time + decalage
+    #                 projet.save()
+    #                 print("ok1_"+str(i) + str(projet))
+    #             if projet.end_time:
+    #                 projet.end_time = projet.end_time + decalage
+    #                 projet.save()
+    #                 print("ok2_"+str(i) + str(projet))
+    # if num == 2:
+    #     for i, evenement in enumerate(Evenement.objects.all()):
+    #             if evenement.start_time:
+    #                 evenement.start_time = evenement.start_time + decalage
+    #                 evenement.save()
+    #                 print("ok1_"+str(i)+"_" + str(evenement))
+    #             if evenement.end_time:
+    #                 evenement.end_time = evenement.end_time + decalage
+    #                 evenement.save()
+    #                 print("ok2_" +str(i)+ str(evenement))
+    #
+    # if num == 3:
+    #     from jardinpartage.models import Article as ArticleJP
+    #     for i, evenement in enumerate(ArticleJP.objects.all()):
+    #             if evenement.start_time:
+    #                 evenement.start_time = evenement.start_time + decalage
+    #                 evenement.save()
+    #                 print("ok1_"+str(i)+"_" + str(evenement))
+    #             if evenement.end_time:
+    #                 evenement.end_time = evenement.end_time + decalage
+    #                 evenement.save()
+    #                 print("ok2_" +str(i)+ str(evenement))
 
     return redirect('bienvenue')
