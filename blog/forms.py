@@ -284,7 +284,8 @@ class EvenementArticleForm(forms.ModelForm):
         instance.article = article
         instance.auteur = request.user
         if not Evenement.objects.filter(start_time=instance.start_time, article=article):
-            instance.save()
+            return instance.save()
+        return instance
 
 class AdresseArticleForm(forms.ModelForm):
     class Meta:

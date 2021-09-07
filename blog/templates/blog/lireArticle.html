@@ -216,12 +216,12 @@
               {%for date in dates %}
              <p>{{date.start_time |date:"l d F Y"}} : {{date.titre}}
 
-            {%if article.auteur == request.user or article.estModifiable %}
+            {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser  %}
                     <a class="btn btn-sm btn-danger textleft" href="{% url 'blog:supprimerEvenementArticle' slug_article=article.slug  id_evenementArticle=date.id %}" ><i class="fa fa-times"></i> </a></p>
             {% endif %}
             </p>
               {%endfor%}
-            {%if article.auteur == request.user or article.estModifiable %}
+            {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
             <hr>
               <p><a class="btn btn-sm btn-success textleft" href="{% url 'blog:ajouterEvenementArticle' id_article=article.id %}" ><i class="fa fa-plus"></i> Ajouter un événement sur l'agenda</a></p>
             {% endif %}
@@ -233,13 +233,13 @@
         <div class="contenu discussion_fiche">
               {%for lieu in lieux %}
                 <p> {{lieu}}
-            {%if article.auteur == request.user or article.estModifiable %}
+            {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
                     <a class="btn btn-sm btn-danger textleft" href="{% url 'blog:supprimerAdresseArticle' slug_article=article.slug  id_adresse=lieu.id %}" ><i class="fa fa-times"></i> </a></p>
             {% endif %}
               {%endfor%}
              <p><a class="btn btn-sm btn-primary textleft" href="{% url 'blog:voirCarteLieux' id_article=article.id %}" ><i class="fa fa-compass"></i> Voir sur une carte</a></p>
 
-            {%if article.auteur == request.user or article.estModifiable %}
+            {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
             <hr>
               <p><a class="btn btn-sm btn-success textleft" href="{% url 'blog:ajouterAdresseArticle' id_article=article.id %}" ><i class="fa fa-plus"></i> Ajouter un lieu</a></p>
             {% endif %}

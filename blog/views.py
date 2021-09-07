@@ -812,8 +812,8 @@ def ajouterEvenementArticle(request, id_article):
     form = EvenementArticleForm(request.POST or None)
 
     if form.is_valid():
-        form.save(request, id_article)
-        return lireArticle_id(request, id_article)
+        ev = form.save(request, id_article)
+        return redirect(ev.get_absolute_url())
 
     return render(request, 'blog/ajouterEvenement.html', {'form': form, })
 
