@@ -115,7 +115,7 @@ def getEvenementsSemaine(request):
         evenements.append(ev_5)
 
         from itertools import chain
-        evenements = sorted(list(chain(ev_art, ev_2, ev_3, ev_4, ev_5)), key=lambda x:dt(x.start_time.year, x.start_time.month, x.start_time.day, ))
+        evenements = sorted([dt(x.start_time.year, x.start_time.month, x.start_time.day) for x in list(chain(ev_art, ev_2, ev_3, ev_4, ev_5))])
 
     return evenements
 
