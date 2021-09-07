@@ -71,7 +71,7 @@ class ModifierArticle(UpdateView):
         if not self.object.estArchive:
             url = self.object.get_absolute_url()
             action.send(self.request.user, verb='article_modifier', action_object=self.object, url=url,
-                         description="a modifié l'article : (Jardins Partagés) '%s'" % self.object.titre)
+                         description="a modifié l'article [Jardins Partagés] '%s'" % self.object.titre)
 
         return HttpResponseRedirect(self.get_success_url())
 

@@ -178,7 +178,7 @@ class Commentaire(models.Model):
         if not self.id:
             self.date_creation = timezone.now()
             titre = "article jardins commenté "
-            message = self.auteur_comm.username + " a commenté l'article (Jardins Partagés) '<a href='https://www.perma.cat"+ self.article.get_absolute_url() + "'>"+ self.article.titre + "</a>'"
+            message = self.auteur_comm.username + " a commenté l'article [Jardins Partagés] '<a href='https://www.perma.cat"+ self.article.get_absolute_url() + "'>"+ self.article.titre + "</a>'"
             emails = [suiv.email for suiv in followers(self.article) if self.auteur_comm != suiv and self.article.est_autorise(suiv)]
 
         retour =  super(Commentaire, self).save(*args, **kwargs)
