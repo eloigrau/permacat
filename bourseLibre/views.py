@@ -114,8 +114,9 @@ def getEvenementsSemaine(request):
 
         evenements.append(ev_5)
         utc = pytz.UTC
-        eve = sorted([(x, datetime(x.start_time.year, x.start_time.month, x.start_time.day, tzinfo=utc)) for x in list(chain(ev_art, ev_2, ev_3, ev_4, ev_5))], key=lambda x:x[1])
+        eve = sorted([(x, date(x.start_time.year, x.start_time.month, x.start_time.day)) for x in list(chain(ev_art, ev_2, ev_3, ev_4, ev_5))], key=lambda x:x[1])
         evenements = [x for x, y in eve]
+
     return evenements
 
 def bienvenue(request):

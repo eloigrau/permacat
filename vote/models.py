@@ -104,8 +104,8 @@ class SuffrageBase(models.Model):
     estArchive = models.BooleanField(default=False, verbose_name="Archiver la proposition")
     estAnonyme = models.BooleanField(default=False, verbose_name="Vote anonyme")
 
-    start_time = models.DateTimeField(verbose_name="Date de début", null=True,blank=False, help_text="jj/mm/année")
-    end_time = models.DateTimeField(verbose_name="Date de fin",  null=True,blank=False, help_text="jj/mm/année")
+    start_time = models.DateField(verbose_name="Date de début", null=True,blank=False, help_text="jj/mm/année")
+    end_time = models.DateField(verbose_name="Date de fin",  null=True,blank=False, help_text="jj/mm/année")
     asso = models.ForeignKey(Asso, on_delete=models.SET_NULL, null=True)
 
     class Meta:

@@ -68,8 +68,8 @@ class Article(models.Model):
     dernierMessage = models.CharField(max_length=100, default=None, blank=True, null=True)
     estArchive = models.BooleanField(default=False, verbose_name="Archiver l'article")
 
-    start_time = models.DateTimeField(verbose_name="Date de l'évenement (pour affichage dans l'agenda) - date de début si l'événement a lieu sur plusieurs jours ", null=True,blank=True, help_text="jj/mm/année")
-    end_time = models.DateTimeField(verbose_name="Date de fin (optionnel, pour affichage dans l'agenda)",  null=True,blank=True, help_text="jj/mm/année")
+    start_time = models.DateField(verbose_name="Date de l'évenement (pour affichage dans l'agenda) - date de début si l'événement a lieu sur plusieurs jours ", null=True,blank=True, help_text="jj/mm/année")
+    end_time = models.DateField(verbose_name="Date de fin (optionnel, pour affichage dans l'agenda)",  null=True,blank=True, help_text="jj/mm/année")
 
     class Meta:
         ordering = ('-date_creation', )
@@ -123,7 +123,7 @@ class Evenement(models.Model):
     titre_even = models.CharField(verbose_name="Titre de l'événement (si laissé vide, ce sera le titre de l'article)",
                              max_length=100, null=True, blank=True, default="")
     article = models.ForeignKey(Article, on_delete=models.CASCADE, help_text="L'evenement doit etre associé à un article existant (sinon créez un article avec une date)" )
-    start_time = models.DateTimeField(verbose_name="Date", null=False,blank=False, help_text="jj/mm/année" , default=timezone.now)
+    start_time = models.DateField(verbose_name="Date", null=False,blank=False, help_text="jj/mm/année" , default=timezone.now)
     end_time = models.DateTimeField(verbose_name="Date de fin (optionnel pour un evenement sur plusieurs jours)",  null=True,blank=True, help_text="jj/mm/année")
 
     class Meta:

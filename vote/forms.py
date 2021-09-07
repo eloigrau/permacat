@@ -61,8 +61,8 @@ class SuffrageChangeForm(forms.ModelForm):
         fields = [ 'asso', 'type_vote', 'titre', 'description', 'start_time', 'end_time', 'estAnonyme',  'estArchive']
         widgets = {
             'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'class':"date", }),
-              'end_time': forms.DateInput(attrs={'class':'date', }),
+              'start_time': forms.DateInput(attrs={'type':"date", }),
+              'end_time': forms.DateInput(attrs={'type':'date', }),
         }
 
     def save(self, userProfile):

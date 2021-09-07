@@ -4,13 +4,12 @@ from django.urls import reverse
 from django.utils import timezone
 from actstream import action
 from actstream.models import followers
-from bourseLibre.settings import LOCALL
 from taggit.managers import TaggableManager
 from photologue.models import Album
 from django.utils.text import slugify
 import uuid
 
-class Choix():
+class Choix:
     statut_projet = ('prop','Proposition de projet'), ("AGO","Fiche projet soumise à l'AGO"), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
 
     type_projet = ('Part','Participation à un évènement'), ('AGO',"Organisation d'une AGO"), ('Projlong','Projet a long terme'), ('Projcourt','Projet a court terme'), ('Projponct','Projet ponctuel'),
@@ -26,7 +25,7 @@ class Choix():
         "pc": type_annonce_base,
         "scic": type_annonce_base,
         "rtg": type_annonce_base,
-        "rtg": type_annonce_base,
+        "gt": type_annonce_base,
         "citealt": type_annonce_base,
     }
 
@@ -102,8 +101,8 @@ class Article(models.Model):
     dernierMessage = models.CharField(max_length=100, default=None, blank=True, null=True)
     estArchive = models.BooleanField(default=False, verbose_name="Archiver l'article")
 
-    start_time = models.DateTimeField(verbose_name="Date de l'évenement (pour affichage dans l'agenda) - date de début si l'événement a lieu sur plusieurs jours ", null=True,blank=True, help_text="jj/mm/année")
-    end_time = models.DateTimeField(verbose_name="Date de fin (optionnel, pour affichage dans l'agenda)",  null=True,blank=True, help_text="jj/mm/année")
+    start_time = models.DateField(verbose_name="Date de l'évenement (pour affichage dans l'agenda) - date de début si l'événement a lieu sur plusieurs jours ", null=True,blank=True, help_text="jj/mm/année")
+    end_time = models.DateField(verbose_name="Date de fin (optionnel, pour affichage dans l'agenda)",  null=True,blank=True, help_text="jj/mm/année")
 
     tags = TaggableManager(verbose_name="Mots clés",  help_text="Liste de mots-clés séparés par une virgule", blank=True)
 
@@ -162,8 +161,8 @@ class Evenement(models.Model):
     titre_even = models.CharField(verbose_name="Titre de l'événement (si laissé vide, ce sera le titre de l'article)",
                              max_length=100, null=True, blank=True, default="")
     article = models.ForeignKey(Article, on_delete=models.CASCADE, help_text="L'evenement doit etre associé à un article existant (sinon créez un article avec une date)" )
-    start_time = models.DateTimeField(verbose_name="Date", null=False,blank=False, help_text="jj/mm/année" , default=timezone.now)
-    end_time = models.DateTimeField(verbose_name="Date de fin (optionnel pour un evenement sur plusieurs jours)",  null=True,blank=True, help_text="jj/mm/année")
+    start_time = models.DateField(verbose_name="Date", null=False,blank=False, help_text="jj/mm/année" , default=timezone.now)
+    end_time = models.DateField(verbose_name="Date de fin (optionnel pour un evenement sur plusieurs jours)",  null=True,blank=True, help_text="jj/mm/année")
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -273,8 +272,8 @@ class Projet(models.Model):
     date_dernierMessage = models.DateTimeField(verbose_name="Date de Modification", auto_now=False, blank=True, null=True)
     dernierMessage = models.CharField(max_length=100, default="", blank=True, null=True)
 
-    start_time = models.DateTimeField(verbose_name="Date de début (optionnel, pour affichage dans l'agenda)",  null=True,blank=True, help_text="jj/mm/année")
-    end_time = models.DateTimeField(verbose_name="Date de fin (optionnel, pour affichage dans l'agenda)",  null=True,blank=True, help_text="jj/mm/année")
+    start_time = models.DateField(verbose_name="Date de début (optionnel, pour affichage dans l'agenda)",  null=True,blank=True, help_text="jj/mm/année")
+    end_time = models.DateField(verbose_name="Date de fin (optionnel, pour affichage dans l'agenda)",  null=True,blank=True, help_text="jj/mm/année")
 
     estArchive = models.BooleanField(default=False, verbose_name="Archiver le projet")
     asso = models.ForeignKey(Asso, on_delete=models.SET_NULL, null=True)
@@ -296,14 +295,14 @@ class Projet(models.Model):
         if not self.id:
             self.date_creation = timezone.now()
             titre = "Nouveau Projet !"
-            message = "Un nouveau projet a été proposé: ["+ self.asso.nom +"] '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.titre + "</a>'"
+            message = "Un nouveau projet a été proposé: ["+ self.asso.nom +"] '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + str(self.titre) + "</a>'"
             suivi, created = Suivis.objects.get_or_create(nom_suivi='projets')
             emails = [suiv.email for suiv in followers(suivi) if self.auteur != suiv  and self.est_autorise(suiv)]
 
         else:
             if sendMail:
                 titre = "Projet actualisé"
-                message = "Le projet ["+ self.asso.nom +"] '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.titre + "</a>' a été modifié"
+                message = "Le projet ["+ self.asso.nom +"] '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + str(self.titre) + "</a>' a été modifié"
                 emails = [suiv.email for suiv in followers(self) if
                           self.auteur != suiv and self.est_autorise(suiv)]
 
@@ -315,7 +314,7 @@ class Projet(models.Model):
     @property
     def get_couleur(self):
         try:
-            return Choix.couleurs_projets[self.categorie]
+            return Choix.couleurs_projets[str(self.categorie)]
         except:
             return Choix.couleurs_annonces["Autre"]
 

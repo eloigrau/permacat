@@ -78,8 +78,8 @@ class ArticleForm(forms.ModelForm):
         fields = ['asso', 'categorie', 'titre', 'contenu', 'start_time', 'end_time',  'estModifiable', 'tags']
         widgets = {
             'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'type': 'date'}),
-              'end_time': forms.DateInput(attrs={'type': 'date'}),
+              'start_time': forms.DateInput(attrs={'type':'date', }),
+              'end_time': forms.DateInput(attrs={'type':'date', }),
 
            # 'bar': SummernoteInplaceWidget(),
         }
@@ -125,8 +125,8 @@ class ArticleChangeForm(forms.ModelForm):
         fields = ['asso', 'categorie', 'titre', 'contenu', 'album', 'start_time', 'end_time',  'tags', 'estModifiable', 'estArchive']
         widgets = {
             'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'class':"date", }),
-              'end_time': forms.DateInput(attrs={'class':'date', }),
+              'start_time': forms.DateInput(attrs={'type':'date', }),
+              'end_time': forms.DateInput(attrs={'type':'date', }),
         }
 
 class ArticleAddAlbum(forms.ModelForm):
@@ -186,8 +186,8 @@ class ProjetForm(forms.ModelForm):
         fields = ['asso', 'categorie', 'coresponsable', 'titre', 'contenu', 'statut', 'tags',  'start_time']
         widgets = {
         'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'type':'date'}),
-              'end_time': forms.DateInput(attrs={'type':'date'}),
+              'start_time': forms.DateInput(attrs={'type':'date', }),
+              'end_time': forms.DateInput(attrs={'type':'date', }),
         }
 
     def __init__(self, request, *args, **kwargs):
@@ -222,8 +222,8 @@ class ProjetChangeForm(forms.ModelForm):
         fields = ['asso', 'categorie', 'coresponsable', 'titre', 'contenu', 'tags', 'lien_document', 'start_time', 'end_time', 'estArchive']
         widgets = {
             'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'class':'date', }),
-              'end_time': forms.DateInput(attrs={'class':'date', }),
+              'start_time': forms.DateInput(attrs={'type':'date', }),
+              'end_time': forms.DateInput(attrs={'type':'date', }),
         }
 
 class CommentProjetForm(forms.ModelForm):
@@ -284,7 +284,7 @@ class EvenementArticleForm(forms.ModelForm):
         instance.article = article
         instance.auteur = request.user
         if not Evenement.objects.filter(start_time=instance.start_time, article=article):
-            return instance.save()
+            instance.save()
         return instance
 
 class AdresseArticleForm(forms.ModelForm):

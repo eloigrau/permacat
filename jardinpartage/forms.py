@@ -104,8 +104,8 @@ class ArticleChangeForm(forms.ModelForm):
         fields = ['jardin', 'categorie', 'titre', 'contenu', 'start_time', 'end_time', 'estModifiable', 'estArchive']
         widgets = {
             'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'class':"date", }),
-              'end_time': forms.DateInput(attrs={'class':'date', }),
+              'start_time': forms.DateInput(attrs={'type':"date", }),
+              'end_time': forms.DateInput(attrs={'type':'date', }),
         }
 
 class CommentaireArticleForm(forms.ModelForm):
