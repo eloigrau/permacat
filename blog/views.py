@@ -129,7 +129,7 @@ class ModifierArticle(UpdateView):
     def form_valid(self, form):
         self.object = form.save()
         self.object.date_modification = now()
-        self.object.save(sendMail=False)
+        self.object.save(sendMail=True)
         if not self.object.estArchive:
             url = self.object.get_absolute_url()
             suffix = "_" + self.object.asso.abreviation
@@ -215,7 +215,6 @@ def lireArticle(request, slug):
         if form_discussion.valider_unique(article):
             discu = form_discussion.save(commit=False)
             discu.article = article
-            discu.save()
             form_discussion.save()
             discussions = article.discussion_set.all()
             commentaires = {discu: Commentaire.objects.filter(discussion=discu).order_by("date_creation") for discu in
@@ -235,12 +234,11 @@ def lireArticle(request, slug):
             comment.article = article
             comment.discussion = discu
             comment.auteur_comm = request.user
+            comment.sendMail = False
             article.date_dernierMessage = now()
             article.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(strip_tags(comment.commentaire).replace('&nspb',' ')))[:96]
             if len(("(" + str(comment.auteur_comm) + ") " + str(strip_tags(comment.commentaire).replace('&nspb',' ')))) > 96:
                 article.dernierMessage += "..."
-
-            article.save(sendMail=False)
             form.save()
             url = article.get_absolute_url()+"#idConversation"
             suffix = "_" + article.asso.abreviation

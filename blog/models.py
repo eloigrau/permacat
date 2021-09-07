@@ -121,6 +121,7 @@ class Article(models.Model):
     def save(self, sendMail=True, *args, **kwargs):
         ''' On save, update timestamps '''
         emails = []
+        sendMail = sendMail and getattr(self, "sendMail", True)
         if not self.id:
             self.date_creation = timezone.now()
             if sendMail:
@@ -135,6 +136,7 @@ class Article(models.Model):
                 emails = [suiv.email for suiv in followers(self) if self.est_autorise(suiv)]
 
         retour = super(Article, self).save(*args, **kwargs)
+        discussion, created = Discussion.objects.get_or_create(article=self, titre="Discussion Générale")
         if emails:
             action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
         return retour
@@ -225,7 +227,7 @@ class Commentaire(models.Model):
     def get_edit_url(self):
         return reverse('blog:modifierCommentaireArticle',  kwargs={'id':self.id})
 
-    def save(self, *args, **kwargs):
+    def save(self, sendMail=True, *args, **kwargs):
         ''' On save, update timestamps '''
         emails = []
         if not self.id:
@@ -237,7 +239,7 @@ class Commentaire(models.Model):
                       self.auteur_comm != suiv and self.article.est_autorise(suiv)]
 
             self.article.date_dernierMessage = timezone.now()
-            self.article.save()
+            self.article.save(sendMail)
 
         retour = super(Commentaire, self).save(*args, **kwargs)
         if emails:

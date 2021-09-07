@@ -171,7 +171,6 @@ class CommentaireArticleForm(forms.ModelForm):
         super(CommentaireArticleForm, self).__init__(request, *args, **kwargs)
         self.fields['commentaire'].strip = False
 
-
 class CommentaireArticleChangeForm(forms.ModelForm):
     commentaire = forms.CharField(required=False, widget=SummernoteWidget(attrs={}))
 
