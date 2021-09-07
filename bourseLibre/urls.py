@@ -170,7 +170,7 @@ urlpatterns = [
 
 
     url(r'^inscription_newsletter/$', views.inscription_newsletter, name='inscription_newsletter', ),
-    path(r'modifier_message/<int:id>-<str:type_msg>-<str:asso>', views.modifier_message, name='modifierMessage'),
+    path(r'modifier_message/<int:id>/<str:type_msg>/<str:asso>', views.modifier_message, name='modifierMessage'),
     url(r'^voirEmails/$', views_admin.voirEmails,  name="voirEmails"),
     url(r'^nettoyerActions/$', views_admin.nettoyerActions,  name="nettoyerActions"),
     url(r'^nettoyerFollows/$', views_admin.nettoyerFollows,  name="nettoyerFollows"),

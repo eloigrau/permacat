@@ -17,6 +17,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseNotAllowed
 from django.forms import formset_factory
 import itertools
+from bourseLibre.views_base import DeleteAccess
 
 def accueil(request):
     return render(request, 'vote/accueil.html')
@@ -65,6 +66,8 @@ def ajouterQuestionB(request, slug):
 @login_required
 def supprimerQuestionB(request, slug, id_question):
     suffrage = get_object_or_404(Suffrage, slug=slug)
+    if suffrage.auteur != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden("Vous n'avez pas l'autorisation de supprimer")
     question = Question_binaire.objects.get(suffrage=suffrage, id=id_question)
     question.delete()
     return redirect(suffrage.get_modifQuestions_url())
@@ -72,6 +75,8 @@ def supprimerQuestionB(request, slug, id_question):
 @login_required
 def supprimerQuestionM(request, slug, id_question):
     suffrage = get_object_or_404(Suffrage, slug=slug)
+    if suffrage.auteur != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden("Vous n'avez pas l'autorisation de supprimer")
     question = Question_majoritaire.objects.get(suffrage=suffrage, id=id_question)
     question.delete()
     return redirect(suffrage.get_modifQuestions_url())
@@ -79,6 +84,8 @@ def supprimerQuestionM(request, slug, id_question):
 @login_required
 def supprimerPropositionM(request, slug, id_question, id_proposition):
     suffrage = get_object_or_404(Suffrage, slug=slug)
+    if suffrage.auteur != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden("Vous n'avez pas l'autorisation de supprimer")
     proposition = Proposition_m.objects.get(question__id=id_question, id=id_proposition)
     proposition.delete()
     return redirect(suffrage.get_modifQuestions_url())
@@ -142,7 +149,7 @@ class ModifierVote(UpdateView):
         context['suffrage'] = Suffrage.objects.get(slug=self.kwargs['slug'])
         return context
 
-class SupprimerSuffrage(DeleteView):
+class SupprimerSuffrage(DeleteAccess, DeleteView):
     model = Suffrage
     success_url = reverse_lazy('vote:index')
     template_name_suffix = '_supprimer'

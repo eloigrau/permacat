@@ -202,14 +202,14 @@ class Album(models.Model):
             if sendMail:
                 suivi, created = Suivis.objects.get_or_create(nom_suivi='albums')
                 titre = "Nouvel album"
-                message = "Un album photo a été ajouté : '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.title + "</a>'"
+                message = "Un album photo a été ajouté : ["+ self.asso.nom +"] '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.title + "</a>'"
                 emails = [suiv.email for suiv in followers(suivi) if self.auteur != suiv and self.est_autorise(suiv)]
                 if emails and not LOCALL:
                     creation = True
         else:
             if sendMail:
                 titre = "Album créé"
-                message = "L'album '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.title + "</a>' a été modifié"
+                message = "L'album ["+ self.asso.nom +"] '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.title + "</a>' a été modifié"
                 emails = [suiv.email for suiv in followers(self) if self.auteur != suiv and self.est_autorise(suiv)]
 
         retour = super().save(*args, **kwargs)
@@ -310,14 +310,14 @@ class Document(models.Model):
             if sendMail:
                 suivi, created = Suivis.objects.get_or_create(nom_suivi='albums')
                 titre = "Nouveau document"
-                message = "Un document a été ajouté : '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.titre + "</a>'"
+                message = "Un document a été ajouté : ["+ self.asso.nom +"] '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.titre + "</a>'"
                 emails = [suiv.email for suiv in followers(suivi) if self.auteur != suiv and self.est_autorise(suiv)]
                 if emails and not LOCALL:
                     creation = True
         else:
             if sendMail:
                 titre = "Album créé"
-                message = "L'album '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.title + "</a>' a été modifié"
+                message = "L'album ["+ self.asso.nom +"] '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.title + "</a>' a été modifié"
                 emails = [suiv.email for suiv in followers(self) if self.auteur != suiv and self.est_autorise(suiv)]
                 if emails and not LOCALL:
                     creation = True

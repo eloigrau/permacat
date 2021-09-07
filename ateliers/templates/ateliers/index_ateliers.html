@@ -83,7 +83,7 @@
 <div class="infinite-item ">
    <div class="row justify-content-center ">
     <div class="col-sm-12 col-ms-10 col-lg-8 textcenter " >
-        <a  href="{% url 'ateliers:lireAtelier_id' id=atelier.id %}" class="boutonAtelier" > <div style="background-color:{{atelier.atelier.get_couleur}};
+        <a  href="{% url 'ateliers:lireAtelier' slug=atelier.slug %}" class="boutonAtelier" > <div style="background-color:{{atelier.atelier.get_couleur}};
     font-variant: small-caps;" >{{ atelier.titre }}  </div>
             {% if atelier.start_time %}
         <p class="textepetit">le {{ atelier.start_time|date:"DATE_FORMAT" }}</p>

@@ -1,10 +1,14 @@
 {% extends 'base.html' %}
 {% block title %} - Supprimer le suffrage{% endblock %}
 {% block content %}
+<div class="row ">
+<div class="col-sm-12 textcenter">
 <form action="" method="post">{% csrf_token %}
     <p>Etes vous sûr.e de vouloir supprimer le suffrage de "{{ suffrage.question }}"?</p>
     <input type="button"  onclick="window.history.back();"  value="Annuler" />
     <input type="submit" value="Confirmer" />
 </form>
+</div>
+</div>
 
 {% endblock %}

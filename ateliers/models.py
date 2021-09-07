@@ -93,7 +93,7 @@ class Atelier(models.Model):
             emails = [suiv.email for suiv in followers(suivi) if  self.est_autorise(suiv)]
 
             titre = "Nouvel atelier proposé"
-            message = "L'atelier '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.titre + "</a>' a été proposé"
+            message = "L'atelier ["+ self.asso.nom +"]'<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.titre + "</a>' a été proposé"
 
         ret = super(Atelier, self).save(*args, **kwargs)
         if emails:

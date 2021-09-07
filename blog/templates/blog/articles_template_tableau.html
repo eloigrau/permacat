@@ -58,10 +58,10 @@
             {%ifnotequal  article.date_creation|date:"DATE_FORMAT" article.date_modification|date:"DATE_FORMAT" %} &nbsp;
                  Dernière modif le {{ article.date_modification|date:"DATE_FORMAT" }}
             {%else%}&nbsp;
-                Posté le {{ article.date_creation|date:"DATE_FORMAT" }}
+                Posté par {{ article.auteur }} le {{ article.date_creation|date:"d/m/Y" }}
             {%endifnotequal%}
             {%else%}&nbsp;
-                Posté le  {{ article.date_creation|date:"DATE_FORMAT" }}
+                Posté par {{ article.auteur }} le  {{ article.date_creation|date:"d/m/Y" }}
             {% endif %}
               </span></td>
 

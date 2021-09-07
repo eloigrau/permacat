@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect, reverse
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
+from django.http import HttpResponseForbidden
 from django.urls import reverse_lazy
 from django.utils.html import strip_tags
-from .models import Article, Commentaire, Projet, CommentaireProjet, Choix, Evenement,Asso, AdresseArticle
+from .models import Article, Commentaire, Discussion, Projet, CommentaireProjet, Choix, Evenement,Asso, AdresseArticle
 from .forms import ArticleForm, ArticleAddAlbum, CommentaireArticleForm, CommentaireArticleChangeForm, ArticleChangeForm, ProjetForm, \
-    ProjetChangeForm, CommentProjetForm, CommentaireProjetChangeForm, EvenementForm, EvenementArticleForm, AdresseArticleForm
+    ProjetChangeForm, CommentProjetForm, CommentaireProjetChangeForm, EvenementForm, EvenementArticleForm, AdresseArticleForm,\
+    DiscussionForm
 from .filters import ArticleFilter
 from.utils import get_suivis_forum
 from django.contrib.auth.decorators import login_required
@@ -12,7 +14,6 @@ from django.views.generic import ListView, UpdateView, DeleteView
 from actstream import actions, action
 from actstream.models import followers, following, action_object_stream
 from django.utils.timezone import now
-from datetime import datetime, timedelta
 from bourseLibre.models import Suivis
 from bourseLibre.settings import NBMAX_ARTICLES
 from bourseLibre.forms import AdresseForm, AdresseForm2
@@ -27,6 +28,11 @@ from hitcount.views import HitCountMixin
 from django.db.models import Q, F
 from django.core.exceptions import PermissionDenied
 import itertools
+from datetime import datetime, timedelta
+import pytz
+from django.utils.text import slugify
+from bourseLibre.views_base import DeleteAccess
+
 # @login_required
 # def forum(request):
 #     """ Afficher tous les articles de notre blog """
@@ -170,12 +176,14 @@ class ArticleAddAlbum(UpdateView):
 @login_required
 def articleSupprimerAlbum(request, slug):
     art = Article.objects.get(slug=slug)
+    if not art.estModifiable and art.auteur != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden("Vous n'avez pas l'autorisation de supprimer")
     art.album = None
     art.save()
     return redirect(art.get_absolute_url())
 
 
-class SupprimerArticle(DeleteView):
+class SupprimerArticle(DeleteAccess, DeleteView):
     model = Article
     success_url = reverse_lazy('blog:index')
     template_name_suffix = '_supprimer'
@@ -183,7 +191,6 @@ class SupprimerArticle(DeleteView):
 
     def get_object(self):
         return Article.objects.get(slug=self.kwargs['slug'])
-
 
 
 @login_required
@@ -195,21 +202,38 @@ def lireArticle(request, slug):
     if not article.est_autorise(request.user):
         return render(request, 'notMembre.html', {"asso": str(article.asso)})
 
-    commentaires = Commentaire.objects.filter(article=article).order_by("date_creation")
+    discussions = article.discussion_set.all()
+    commentaires = {discu:Commentaire.objects.filter(discussion=discu).order_by("date_creation") for discu in discussions}
     dates = Evenement.objects.filter(article=article).order_by("-start_time")
 
     actions = action_object_stream(article)
     hit_count = HitCount.objects.get_for_object(article)
     hit_count_response = HitCountMixin.hit_count(request, hit_count)
+    form_discussion = DiscussionForm(request.POST or None, prefix="newdiscussionform")
     form = CommentaireArticleForm(request.POST or None)
-    if form.is_valid():
+    if form_discussion.is_valid() and not Discussion.objects.filter(slug=slugify(form_discussion.cleaned_data['titre']), article=article):
+        if form_discussion.valider_unique(article):
+            discu = form_discussion.save(commit=False)
+            discu.article = article
+            discu.save()
+            form_discussion.save()
+            discussions = article.discussion_set.all()
+            commentaires = {discu: Commentaire.objects.filter(discussion=discu).order_by("date_creation") for discu in
+                            discussions}
+
+            context = {'article': article, 'form': CommentaireArticleForm(None), 'form_discussion': form_discussion, 'commentaires': commentaires,
+                       'dates': dates, 'actions': actions, 'ateliers': ateliers, 'lieux': lieux, "ancre": discu.slug}
+
+    elif form.is_valid() and 'message_discu' in request.POST:
+        discu = Discussion.objects.get(article=article, slug=request.POST['message_discu'].replace("#",""))
         comment = form.save(commit=False)
-        from datetime import datetime, timedelta
-        import pytz
+        form_discussion = DiscussionForm(request.POST or None, prefix="newdiscussionform")
+
         utc = pytz.UTC
         date_limite = utc.localize(datetime.today() - timedelta(hours=1))
         if comment and not Commentaire.objects.filter(commentaire=comment.commentaire, article=article, date_creation__gt=date_limite):
             comment.article = article
+            comment.discussion = discu
             comment.auteur_comm = request.user
             article.date_dernierMessage = now()
             article.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(strip_tags(comment.commentaire).replace('&nspb',' ')))[:96]
@@ -217,15 +241,18 @@ def lireArticle(request, slug):
                 article.dernierMessage += "..."
 
             article.save(sendMail=False)
-            comment.save()
+            form.save()
             url = article.get_absolute_url()+"#idConversation"
             suffix = "_" + article.asso.abreviation
             action.send(request.user, verb='article_message'+suffix, action_object=article, url=url,
                         description="a réagi à l'article: '%s'" % article.titre)
             #envoi_emails_articleouprojet_modifie(article, request.user.username + " a réagit au projet: " +  article.titre, True)
-        return redirect(request.path)
+        context = {'article': article, 'form': CommentaireArticleForm(None), 'form_discussion': form_discussion, 'commentaires': commentaires,
+               'dates': dates, 'actions': actions, 'ateliers': ateliers, 'lieux': lieux, "ancre":discu.slug}
 
-    return render(request, 'blog/lireArticle.html', {'article': article, 'form': form, 'commentaires':commentaires, 'dates':dates, 'actions':actions, 'ateliers':ateliers, 'lieux':lieux},)
+    else:
+        context = {'article': article, 'form': form, 'form_discussion': form_discussion, 'commentaires':commentaires, 'dates':dates, 'actions':actions, 'ateliers':ateliers, 'lieux':lieux}
+    return render(request, 'blog/lireArticle.html', context,)
 
 @login_required
 def lireArticle_id(request, id):
@@ -491,7 +518,7 @@ class ModifierProjet(UpdateView):
         form.fields["asso"].choices = [(x.id, x.nom) for x in Asso.objects.all().order_by("id") if self.request.user.estMembre_str(x.abreviation)]
         return form
 
-class SupprimerProjet(DeleteView):
+class SupprimerProjet(DeleteAccess, DeleteView):
     model = Projet
     success_url = reverse_lazy('blog:index_projets')
     template_name_suffix = '_supprimer'
@@ -775,7 +802,7 @@ def ajouterEvenement(request, date=None):
         form = EvenementForm(request.POST or None)
 
     if form.is_valid():
-        form.save()
+        form.save(request)
         return redirect('cal:agenda')
 
     return render(request, 'blog/ajouterEvenement.html', {'form': form, })
@@ -787,22 +814,23 @@ def ajouterEvenementArticle(request, id_article):
     form = EvenementArticleForm(request.POST or None)
 
     if form.is_valid():
-        form.save(id_article)
+        form.save(request, id_article)
         return lireArticle_id(request, id_article)
 
     return render(request, 'blog/ajouterEvenement.html', {'form': form, })
 
 
-class SupprimerEvenementArticle(DeleteView):
-    model = AdresseArticle
+class SupprimerEvenementArticle(DeleteAccess, DeleteView):
+    model = Evenement
     success_url = reverse_lazy('blog:index')
-    template_name_suffix = '_supprimer'
+    template_name_suffix = 'article_supprimer'
 
     def get_object(self):
-        return AdresseArticle.objects.get(id=self.kwargs['id_evenementArticle'])
+        return Evenement.objects.get(id=self.kwargs['id_evenementArticle'])
 
     def get_success_url(self):
         return Article.objects.get(slug=self.kwargs['slug_article']).get_absolute_url()
+
 
 @login_required
 def ajouterAdresseArticle(request, id_article):
@@ -833,6 +861,16 @@ class SupprimerAdresseArticle(DeleteView):
     def get_success_url(self):
         return Article.objects.get(slug=self.kwargs['slug_article']).get_absolute_url()
 
+    def delete(self, request, *args, **kwargs):
+        # the Post object
+        self.object = self.get_object()
+        if self.object.article.estModifiable or self.object.article.auteur == request.user or request.user.is_superuser:
+            success_url = self.get_success_url()
+            self.object.delete()
+            return HttpResponseRedirect(success_url)
+        else:
+            return HttpResponseForbidden("Vous n'avez pas l'autorisation de supprimer")
+
 @login_required
 def voirCarteLieux(request, id_article):
     article = Article.objects.get(id=id_article)
@@ -845,6 +883,8 @@ def voirCarteLieux(request, id_article):
 @login_required
 def supprimerAtelierArticle(request, article_slug, atelier_slug):
     atelier = Atelier.objects.get(slug=atelier_slug)
+    if atelier.auteur != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden("Vous n'avez pas l'autorisation de supprimer")
     atelier.article = None
     atelier.save()
 

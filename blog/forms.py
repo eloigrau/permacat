@@ -2,7 +2,7 @@ from django import forms
 
 from django.http import HttpResponseRedirect
 from formtools.preview import FormPreview
-from .models import Article, Commentaire, Projet, CommentaireProjet, Evenement, AdresseArticle
+from .models import Article, Commentaire, Projet, CommentaireProjet, Evenement, AdresseArticle, Discussion
 from django.utils.text import slugify
 import itertools
 from django_summernote.widgets import SummernoteWidget
@@ -12,6 +12,7 @@ from bourseLibre.models import Asso
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from photologue.models import Album
 from .models import Choix
+from django.core.exceptions import ValidationError
 
 class SummernoteWidgetWithCustomToolbar(SummernoteWidget):
     def summernote_settings(self):
@@ -69,7 +70,7 @@ class SummernoteWidgetWithCustomToolbar(SummernoteWidget):
         return summernote_settings
 
 class ArticleForm(forms.ModelForm):
-    asso = forms.ModelChoiceField(queryset=Asso.objects.all(), required=True,
+    asso = forms.ModelChoiceField(queryset=Asso.objects.all().order_by("id"), required=True,
                               label="Article public ou réservé aux membres du groupe :", )
 
     class Meta:
@@ -137,22 +138,38 @@ class ArticleAddAlbum(forms.ModelForm):
         fields = ['album',]
 
 
+class DiscussionForm(forms.ModelForm):
+
+    class Meta:
+        model = Discussion
+        exclude = ['article', 'slug']
+
+    def valider_unique(self, article):
+        cleaned_data = self.cleaned_data
+
+        try:
+            Discussion.objects.get(slug=slugify(cleaned_data['titre']), article=article)
+        except Discussion.DoesNotExist:
+            pass
+        else:
+            raise ValidationError('Il existe déjà une discussion avec ce titre pour cet article')
+
+        # Always return cleaned_data
+        return cleaned_data
 
 class CommentaireArticleForm(forms.ModelForm):
 
     class Meta:
         model = Commentaire
-        exclude = ['article','auteur_comm']
+        exclude = ['article', 'auteur_comm', 'discussion']
         #
         widgets = {
          'commentaire': SummernoteWidgetWithCustomToolbar(),
-               # 'commentaire': forms.Textarea(attrs={'rows': 1}),
-            }
+        }
 
     def __init__(self, request, *args, **kwargs):
         super(CommentaireArticleForm, self).__init__(request, *args, **kwargs)
         self.fields['commentaire'].strip = False
-
 
 
 class CommentaireArticleChangeForm(forms.ModelForm):
@@ -167,7 +184,7 @@ class ProjetForm(forms.ModelForm):
                               label="Projet public ou réservé aux adhérents de l'asso :", )
     class Meta:
         model = Projet
-        fields = [ 'asso', 'categorie', 'coresponsable', 'titre', 'contenu', 'statut', 'tags',  'start_time']
+        fields = ['asso', 'categorie', 'coresponsable', 'titre', 'contenu', 'statut', 'tags',  'start_time']
         widgets = {
         'contenu': SummernoteWidget(),
               'start_time': forms.DateInput(attrs={'type':'date'}),
@@ -248,6 +265,10 @@ class EvenementForm(forms.ModelForm):
             'end_time': forms.DateInput(attrs={'type': 'date'}),
         }
 
+    def save(self, request):
+        instance = super(EvenementArticleForm, self).save(commit=False)
+        instance.auteur = request.user
+        instance.save()
 
 class EvenementArticleForm(forms.ModelForm):
     class Meta:
@@ -258,10 +279,11 @@ class EvenementArticleForm(forms.ModelForm):
             'end_time': forms.DateInput(attrs={'type': 'date'}),
         }
 
-    def save(self, id_article):
+    def save(self, request, id_article):
         instance = super(EvenementArticleForm, self).save(commit=False)
         article = Article.objects.get(id=id_article)
         instance.article = article
+        instance.auteur = request.user
         if not Evenement.objects.filter(start_time=instance.start_time, article=article):
             instance.save()
 

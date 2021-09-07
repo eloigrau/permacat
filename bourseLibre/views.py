@@ -7,7 +7,7 @@ Created on 25 mai 2017
 import itertools
 
 from django.shortcuts import HttpResponseRedirect, render, redirect, get_object_or_404#, render, redirect, render_to_response,
-
+from django.http import HttpResponseForbidden
 from django.core.exceptions import PermissionDenied
 from .forms import Produit_aliment_CreationForm, Produit_vegetal_CreationForm, Produit_objet_CreationForm, \
     Produit_service_CreationForm, ContactForm, AdresseForm, ProfilCreationForm, MessageForm, MessageGeneralForm, \
@@ -62,10 +62,12 @@ from bourseLibre.settings.production import SERVER_EMAIL
 from bourseLibre.settings import LOCALL
 from bourseLibre.constantes import Choix as Choix_global
 from django.utils.timezone import now
+import pytz
 
 CharField.register_lookup(Lower, "lower")
 
 from .views_notifications import getNbNewNotifications
+from bourseLibre.views_base import DeleteAccess
 
 
 def getEvenementsSemaine(request):
@@ -122,7 +124,8 @@ def bienvenue(request):
     nomImage = 'img/flo/resized0' + choice(nums)+'.png'
     nbNotif = 0
     nbExpires = 0
-    yesterday = date.today() - timedelta(hours=12)
+    utc = pytz.UTC
+    yesterday = (dt.now() - timedelta(hours=12)).replace(tzinfo=utc)
     evenements = EvenementAcceuil.objects.filter(date__gt=yesterday).order_by('date')
     evenements_semaine = getEvenementsSemaine(request)
     if request.user.is_authenticated:
@@ -130,7 +133,7 @@ def bienvenue(request):
         nbExpires = getNbProduits_expires(request)
 
     if not request.user.is_anonymous:
-        suffrages = Suffrage.objects.filter(start_time__lte=date.today(), end_time__gte=date.today())
+        suffrages = Suffrage.objects.filter(start_time__lte=dt.now(), end_time__gte=dt.now())
         votes = []
         for vote in suffrages:
             if vote.est_autorise(request.user):
@@ -258,7 +261,7 @@ class ProduitModifier(UpdateView):
 
             # @login_required
 
-class ProduitSupprimer(DeleteView):
+class ProduitSupprimer(DeleteAccess, DeleteView):
     model = Produit
     success_url = reverse_lazy('marche')
 
@@ -611,7 +614,7 @@ class profil_modifier(UpdateView):
     def get_object(self):
         return Profil.objects.get(id=self.request.user.id)
 
-class profil_supprimer(DeleteView):
+class profil_supprimer(DeleteAccess, DeleteView):
     model = Profil
     success_url = reverse_lazy('bienvenue')
 
@@ -947,6 +950,8 @@ def getNbProduits_expires(request):
 
 @login_required
 def supprimerProduits_expires_confirmation(request):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden("Vous n'avez pas l'autorisation de supprimer")
 
     qs = Produit.objects.select_subclasses()
     produits = qs.filter(user=request.user, date_expiration__lt=date.today())
@@ -954,6 +959,9 @@ def supprimerProduits_expires_confirmation(request):
 
 @login_required
 def supprimerProduits_expires(request):
+
+    if not request.user.is_superuser:
+        return HttpResponseForbidden("Vous n'avez pas l'autorisation de supprimer")
     produits = Produit.objects.filter(user=request.user, date_expiration__lt=date.today())
 
     for prod in produits:
@@ -1215,6 +1223,7 @@ def contacter_adherents(request):
 def modifier_message(request, id, type_msg, asso, ):
     if type_msg == 'conversation':
         obj = Message.objects.get(id=id)
+        conversation = obj.conversation
     else:
         asso = testIsMembreAsso(request, asso)
         if not isinstance(asso, Asso):
@@ -1225,13 +1234,17 @@ def modifier_message(request, id, type_msg, asso, ):
 
     if form.is_valid():
         object = form.save()
-        if object.message and object.message !='<br>':
+        if object.message and object.message !='<br>'and object.message !='<p><br></p>':
             object.date_modification = now()
             object.save()
-            return redirect (object.get_absolute_url)
+            return redirect(object.get_absolute_url)
         else:
             object.delete()
-            return reverse('agora', kwargs={asso:asso.abreviation})
+            if type_msg == 'conversation':
+                return redirect(conversation.get_absolute_url())
+            else:
+                return reverse('agora', kwargs={asso:asso.abreviation})
+
 
 
     return render(request, 'modifierCommentaire.html', {'form': form, })

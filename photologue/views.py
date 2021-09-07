@@ -21,6 +21,7 @@ from bourseLibre.models import Suivis
 from django.utils.text import slugify
 import itertools
 import os
+from bourseLibre.views_base import DeleteAccess
 
 class AlbumListView(ListView):
     paginate_by = 20
@@ -222,7 +223,7 @@ class ModifierAlbum(UpdateView):
 
         return form
 
-class SupprimerAlbum(DeleteView):
+class SupprimerAlbum(DeleteAccess, DeleteView):
     model = Album
     success_url = reverse_lazy('photologue:album-list')
     template_name_suffix = '_supprimer'
@@ -261,7 +262,7 @@ class ModifierPhoto(UpdateView):
 
         return form
 
-class SupprimerPhoto(DeleteView):
+class SupprimerPhoto(DeleteAccess, DeleteView):
     model = Photo
     template_name_suffix = '_supprimer'
 #    fields = ['user','site_web','description', 'competences', 'adresse', 'avatar', 'inscrit_newsletter']
@@ -295,7 +296,7 @@ def ajouterDocument(request):
 
 
 
-class SupprimerDocument(DeleteView):
+class SupprimerDocument(DeleteAccess, DeleteView):
     model = Document
     template_name_suffix = '_supprimer'
 #    fields = ['user','site_web','description', 'competences', 'adresse', 'avatar', 'inscrit_newsletter']

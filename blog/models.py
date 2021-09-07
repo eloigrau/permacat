@@ -7,6 +7,9 @@ from actstream.models import followers
 from bourseLibre.settings import LOCALL
 from taggit.managers import TaggableManager
 from photologue.models import Album
+from django.utils.text import slugify
+import uuid
+
 class Choix():
     statut_projet = ('prop','Proposition de projet'), ("AGO","Fiche projet soumise à l'AGO"), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
 
@@ -123,12 +126,12 @@ class Article(models.Model):
             if sendMail:
                 suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_' + str(self.asso.abreviation))
                 titre = "Nouvel article"
-                message = "Un article a été posté dans le forum (" + str(self.asso.nom) + ") : '<a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.titre + "</a>'"
+                message = "Un article a été posté dans le forum [" + str(self.asso.nom) + "] : '<a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.titre + "</a>'"
                 emails = [suiv.email for suiv in followers(suivi) if self.auteur != suiv and self.est_autorise(suiv)]
         else:
             if sendMail:
                 titre = "Article actualisé"
-                message = "L'article (" + str(self.asso.nom) + ") '<a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.titre + "</a>' a été modifié"
+                message = "L'article [" + str(self.asso.nom) + "] '<a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.titre + "</a>' a été modifié"
                 emails = [suiv.email for suiv in followers(self) if self.est_autorise(suiv)]
 
         retour = super(Article, self).save(*args, **kwargs)
@@ -159,7 +162,7 @@ class Evenement(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE, help_text="L'evenement doit etre associé à un article existant (sinon créez un article avec une date)" )
     start_time = models.DateTimeField(verbose_name="Date", null=False,blank=False, help_text="jj/mm/année" , default=timezone.now)
     end_time = models.DateTimeField(verbose_name="Date de fin (optionnel pour un evenement sur plusieurs jours)",  null=True,blank=True, help_text="jj/mm/année")
-
+    auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
 
     def __str__(self):
         return "(" + str(self.titre) + ") "+ str(self.start_time) + ": " + str(self.article)
@@ -187,11 +190,29 @@ class Evenement(models.Model):
     def est_autorise(self, user):
         return self.article.est_autorise(user)
 
+class Discussion(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    titre = models.CharField(blank=False, max_length=32, verbose_name="Titre de la discussion")
+    slug = models.SlugField(max_length=32, default=uuid.uuid4)
+
+    class Meta:
+        unique_together = ('article', 'slug',)
+
+    def __unicode__(self):
+        return self.__str__()
+
+    def __str__(self):
+        return str(self.titre) + " (" + str(self.article) + ")"
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.titre)
+        super(Discussion, self).save(*args, **kwargs)
 
 class Commentaire(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE)
     commentaire = models.TextField()
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    discussion = models.ForeignKey(Discussion, on_delete=models.CASCADE, null=True)
     date_creation = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
@@ -211,7 +232,7 @@ class Commentaire(models.Model):
             self.date_creation = timezone.now()
             suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_' + str(self.article.asso.abreviation))
             titre = "Article commenté"
-            message = str(self.auteur_comm.username) + " a commenté l'article (" + str(self.article.asso.nom) + ") '<a href='https://www.perma.cat" + str(self.article.get_absolute_url()) + "'>" + str(self.article.titre) + "</a>'"
+            message = str(self.auteur_comm.username) + " a commenté l'article [" + str(self.article.asso.nom) + "] '<a href='https://www.perma.cat" + str(self.article.get_absolute_url()) + "'>" + str(self.article.titre) + "</a>'"
             emails = [suiv.email for suiv in followers(self.article) if
                       self.auteur_comm != suiv and self.article.est_autorise(suiv)]
 
@@ -273,14 +294,14 @@ class Projet(models.Model):
         if not self.id:
             self.date_creation = timezone.now()
             titre = "Nouveau Projet !"
-            message = "Un nouveau projet a été proposé: '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.titre + "</a>'"
+            message = "Un nouveau projet a été proposé: ["+ self.asso.nom +"] '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.titre + "</a>'"
             suivi, created = Suivis.objects.get_or_create(nom_suivi='projets')
             emails = [suiv.email for suiv in followers(suivi) if self.auteur != suiv  and self.est_autorise(suiv)]
 
         else:
             if sendMail:
                 titre = "Projet actualisé"
-                message = "Le projet '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.titre + "</a>' a été modifié"
+                message = "Le projet ["+ self.asso.nom +"] '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.titre + "</a>' a été modifié"
                 emails = [suiv.email for suiv in followers(self) if
                           self.auteur != suiv and self.est_autorise(suiv)]
 
@@ -386,5 +407,5 @@ class AdresseArticle(models.Model):
     @property
     def get_titre(self):
         if not self.titre:
-            return "sans titre"
+            return "Sans titre"
         return self.titre

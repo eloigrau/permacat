@@ -5,6 +5,7 @@ from .models import Fiche, CommentaireFiche, Choix, Atelier
 from .forms import FicheForm, CommentaireFicheForm, FicheChangeForm, AtelierForm, AtelierChangeForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
+from bourseLibre.views_base import DeleteAccess
 
 from django.utils.timezone import now
 
@@ -81,7 +82,7 @@ class ModifierAtelier(UpdateView):
     def save(self):
         return super(ModifierAtelier, self).save()
 
-class SupprimerFiche(DeleteView):
+class SupprimerFiche(DeleteAccess, DeleteView):
     model = Fiche
     success_url = reverse_lazy('fiches:index')
     template_name_suffix = '_supprimer'

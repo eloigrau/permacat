@@ -1,0 +1,99 @@
+{% load blog_filters %}
+{% load app_filters %}
+
+{% if commentaires %}
+    <nav class="nav nav-tabs justify-content-center" id="idConversation">
+{% for discu in commentaires.keys %}
+      <a class="nav-item nav-link {% if forloop.first %} active{% endif %}" href="#{{discu.slug}}" data-toggle="tab" id="navtab_{{discu.slug}}">{{discu.titre}}</a>
+{% endfor %}
+      <a class="nav-item nav-link" href="#ajoutDiscussion" data-toggle="tab">Ajouter une discussion</a>
+   </nav>
+<div class="contenu commentaires" id="contenucommentaires">
+<div class="tab-content">
+{% for discu, comments in commentaires.items %}
+  <div class="tab-pane fade  {% if forloop.first %} active show{% endif %}" id="{{discu.slug}}">
+    {% for comment in comments %}
+    <div class="row {% if comment.auteur.id == request.user.id %} msg-auteur  {%else%} msg-destinataire{%endif%}">
+        <div class="col-sm-3 col-md-3 col-lg-2">
+            <p class="infos  textepetit ">
+                {% ifchanged %}<a href="{% url 'profil_nom' comment.auteur_comm %}"> {{comment.auteur_comm}}</a><br>{% endifchanged %}{{ comment.date_creation|date:"d/m/Y, G:i" }}
+
+                {% if request.user == comment.auteur_comm or request.user.is_superuser %}
+                <a class="boutonediter" href="{{ comment.get_edit_url  }}" role="button" help_text="éditer"><i class="fa fa-edit"></i></a>
+                {% endif %}
+            </p>
+
+            </div>
+        <div class=" col-sm-9 col-md-9 col-lg-10 message ">
+                <p>{{ comment.commentaire|safe}}</p>
+        </div>
+    </div>
+{% endfor %}
+
+  </div>
+{% endfor %}
+
+
+  <div class="tab-pane fade" id="ajoutDiscussion">
+      <p>
+      <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="col-sm-12 textcenter">
+        <div class="btn-group">
+    {% include 'form_template3.html' with form=form_discussion %}
+
+          </div>
+          </div>
+      </form>
+      </p>
+  </div>
+</div>
+</div>
+
+{%if not request.user.is_anonymous %}
+    <div id="commentaires">
+{% if commentaires %}
+<h5>Poster un message :</h5>
+{%endif%}
+<form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% include 'form_template3.html' %}
+    <input type="hidden" name="message_discu" value="discussion-generale">
+</form>
+ {% else %}
+<p><small>Vous devez vous <a href="/auth/login/">authentifier</a> pour laisser un message.</small></p>
+ {% endif %}
+        </div>
+</div>
+
+{% endif %}
+
+<script>
+ $(document).ready(function() {
+    $("#idConversation > a").on('click', function () {
+        var nom = $(this).attr("href");
+        if (nom != "#ajoutDiscussion"){
+            $("#commentaires").show();
+            $("input[name='message_discu']").attr("value", nom);
+        }else{
+            $("#commentaires").hide();
+        }
+        $("#contenucommentaires").height = "180px";
+        var messageBody = document.querySelector('#contenucommentaires');
+        messageBody.scrollTop = idConversation.scrollHeight - idConversation.clientHeight;
+    });
+
+    $(function() {
+    // Enable on all forms
+    $('form').areYouSure();
+    });
+
+    {% if ancre %}
+     window.location = '#idConversation'
+    $("#navtab_{{ancre}}").trigger('click')
+    {% endif %}
+    var messageBody = document.querySelector('#contenucommentaires');
+    messageBody.scrollTop = idConversation.scrollHeight - idConversation.clientHeight;
+});
+
+</script>

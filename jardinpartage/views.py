@@ -12,6 +12,7 @@ from actstream.models import followers, following, action_object_stream
 from django.utils.timezone import now
 from bourseLibre.models import Profil
 from django.db.models import Q
+from bourseLibre.views_base import DeleteAccess
 
 #from django.contrib.contenttypes.models import ContentType
 from bourseLibre.models import Suivis
@@ -75,7 +76,7 @@ class ModifierArticle(UpdateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class SupprimerArticle(DeleteView):
+class SupprimerArticle(DeleteAccess, DeleteView):
     model = Article
     success_url = reverse_lazy('jardinpartage:index')
     template_name_suffix = '_supprimer'
@@ -342,7 +343,7 @@ def ajouterEvenement(request, date=None):
         form = EvenementForm(request.POST or None)
 
     if form.is_valid():
-        form.save()
+        form.save(request)
         return redirect('cal:agenda')
 
     return render(request, 'jardinpartage/ajouterEvenement.html', {'form': form, })

@@ -6,7 +6,8 @@ Created on 25 mai 2017
 '''
 import itertools
 
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
+from django.http import HttpResponseForbidden
 
 from .models import Profil
 from django.contrib.auth.decorators import login_required
@@ -136,3 +137,14 @@ def activite(request, pseudo):
     stream = actor_stream(profil)
 
     return render(request, 'notifications/sesActions.html', {"pseudo":pseudo, "stream":stream})
+
+class DeleteAccess:
+    def delete(self, request, *args, **kwargs):
+        # the Post object
+        self.object = self.get_object()
+        if self.object.auteur == request.user or request.user.is_superuser:
+            success_url = self.get_success_url()
+            self.object.delete()
+            return HttpResponseRedirect(success_url)
+        else:
+            return HttpResponseForbidden("Vous n'avez pas l'autorisation de supprimer cet item")

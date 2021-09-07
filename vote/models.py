@@ -9,6 +9,7 @@ from bourseLibre.models import Suivis
 from actstream import action
 from functools import cmp_to_key
 from django.core.validators import MinLengthValidator
+from django.core.exceptions import ValidationError
 
 class Choix():
     vote_ouinon = (('', '-----------'),
@@ -254,7 +255,7 @@ class Question_base(models.Model):
         return ""
 
     def clean(self):
-        from django.core.exceptions import ValidationError
+
         if getattr(self, "question") and self.question == '':
             raise ValidationError('Empty error message')
 

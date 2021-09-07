@@ -14,6 +14,7 @@ from actstream.models import following
 from django.utils.timezone import now
 
 from bourseLibre.models import Suivis, Profil
+from bourseLibre.views_base import DeleteAccess
 
 from bourseLibre.constantes import Choix as Choix_global
 from actstream import actions, action
@@ -67,15 +68,13 @@ class ModifierAtelier(UpdateView):
                                         self.request.user.estMembre_str(x[1])]
         return form
 
-class SupprimerAtelier(DeleteView):
+class SupprimerAtelier(DeleteAccess, DeleteView):
     model = Atelier
     success_url = reverse_lazy('ateliers:index_ateliers')
     template_name_suffix = '_supprimer'
 
     def get_object(self):
         return Atelier.objects.get(slug=self.kwargs['slug'])
-
-
 
 @login_required
 def inscriptionAtelier(request, slug):

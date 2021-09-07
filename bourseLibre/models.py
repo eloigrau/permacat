@@ -461,9 +461,9 @@ class Produit(models.Model):  # , BaseProduct):
 
         if emails:
             if self.estUneOffre:
-                message = "Nouvelle offre au marché : <a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.nom_produit + "</a>"
+                message = "Nouvelle petite annonce (offre) : ["+ self.asso.nom +"]<a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.nom_produit + "</a>"
             else:
-                message = "Nouvelle demande au marché : <a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.nom_produit + "</a>"
+                message = "Nouvelle petite annonce (demande) : ["+ self.asso.nom +"] <a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.nom_produit + "</a>"
             action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
         return retour
 
@@ -990,8 +990,8 @@ class MessageGeneral(models.Model):
     def save(self,):
         suivis, created = Suivis.objects.get_or_create(nom_suivi='agora_' + str(self.asso.abreviation))
         emails = [suiv.email for suiv in followers(suivis) if self.auteur != suiv and self.est_autorise(suiv)]
-        titre = "Nouveau commentaire dans l'agora " + str(self.asso.nom)
-        message = "Nouveau commentaire dans <a href='https://www.perma.cat" + self.get_absolute_url() + "'>" +"l'agora " + str(self.asso.nom) +  "</a>'"
+        titre = "Nouveau commentaire dans le salon de discussion " + str(self.asso.nom)
+        message = "Nouveau commentaire dans <a href='https://www.perma.cat" + self.get_absolute_url() + "'>" +"le salon de discussion " + str(self.asso.nom) +  "</a>'"
 
         if emails:
             action.send(self.auteur, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)

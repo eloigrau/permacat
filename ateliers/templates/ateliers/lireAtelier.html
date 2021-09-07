@@ -37,6 +37,11 @@
     </div>
  	<div class="row">
     <div class="col-md-12 textcenter">
+		<p>
+            <span class="badge badge-info">
+                {{ atelier.asso }}</a>
+            </span>
+		</p>
         <p class="infos  textepetit">rédigé le {{ atelier.date_creation|date:"DATE_FORMAT" }}, par <a href="{% url 'profil' atelier.auteur.id %}">{{atelier.auteur.username}}</a>, dernière modification le {{ atelier.date_modification|date:"DATE_FORMAT" }}
 
 

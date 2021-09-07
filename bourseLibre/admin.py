@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from .models import  Adresse, Produit, Panier, Item, Adhesion_permacat, Asso, MessageGeneral, Conversation, InscriptionNewsletter
-from blog.models import Article, Projet, Commentaire, CommentaireProjet, Evenement, EvenementAcceuil, AdresseArticle
+from blog.models import Article, Projet, Commentaire, Discussion, CommentaireProjet, Evenement, EvenementAcceuil, AdresseArticle
 from jardinpartage.models import Article as Art_jardin, Commentaire as Comm_jardin
 from fiches.models import Fiche, Atelier as atelier_fiche, CommentaireFiche
 from ateliers.models import Atelier, CommentaireAtelier, InscriptionAtelier
@@ -63,6 +63,7 @@ admin.site.register(Adhesion_permacat, Adhesion_permacatAdmin)
 
 admin.site.register(Conversation)
 admin.site.register(Commentaire)
+admin.site.register(Discussion)
 admin.site.register(Comm_jardin)
 admin.site.register(CommentaireProjet)
 

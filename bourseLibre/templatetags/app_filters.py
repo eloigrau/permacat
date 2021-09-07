@@ -129,3 +129,7 @@ def distance(user1, user2):
             return "0" + str(int(dist + 0.5)) + " km"
 
     return str(int(dist + 0.5)) + " km"
+
+@register.filter
+def get_item_dict(dictionary, key):
+    return dictionary.get(key)
