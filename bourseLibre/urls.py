@@ -178,6 +178,7 @@ urlpatterns = [
     url(r'^envoyerEmailsRequete/$', views_admin.envoyerEmailsRequete,  name="envoyerEmailsRequete"),
     url(r'^voir_articles_a_archiver/$', views_admin.voir_articles_a_archiver,  name="voir_articles_a_archiver"),
     url(r'^archiverArticles/$', views_admin.archiverArticles,  name="archiverArticles"),
+    path(r'decalerEvenements/<int:num>', views_admin.decalerEvenements,  name="decalerEvenements"),
     url(r'^abonnerAdherentsCiteAlt/$', views_admin.abonnerAdherentsCiteAlt,  name="abonnerAdherentsCiteAlt"),
 ]
 urlpatterns += [
