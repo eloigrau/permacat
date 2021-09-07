@@ -14,7 +14,7 @@ class Choix():
     statut_projet = ('prop','Proposition de projet'), ("AGO","Fiche projet soumise à l'AGO"), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
 
     type_projet = ('Part','Participation à un évènement'), ('AGO',"Organisation d'une AGO"), ('Projlong','Projet a long terme'), ('Projcourt','Projet a court terme'), ('Projponct','Projet ponctuel'),
-    type_annonce_base = ('Annonce','Annonce'), ('Administratif','Administratif'), ('Agenda','Agenda'),  ('Chantier','Atelier/Chantier participatif'),\
+    type_annonce_base = ('Annonce','Annonce'), ('Administratif','Organisation'), ('Agenda','Agenda'),  ('Chantier','Atelier/Chantier participatif'),\
                    ('Documentation','Documentation'),  ('covoit','Covoiturage'), \
                     ('Point', 'Idée / Point de vue'),  ('Recette', 'Recette'), ('BonPlan','Bon Plan / achat groupé'), \
                      ('Divers','Divers')
