@@ -22,7 +22,7 @@ from django.urls import reverse_lazy, reverse
 from django.core.mail import mail_admins, send_mail, BadHeaderError, send_mass_mail
 from django_summernote.widgets import SummernoteWidget
 from random import choice
-from datetime import date, timedelta, datetime as dt
+from datetime import date, timedelta, datetime
 from django.http import HttpResponse
 from django import forms
 from django.http import Http404
@@ -68,6 +68,7 @@ CharField.register_lookup(Lower, "lower")
 
 from .views_notifications import getNbNewNotifications
 from bourseLibre.views_base import DeleteAccess
+from itertools import chain
 
 
 def getEvenementsSemaine(request):
@@ -112,9 +113,8 @@ def getEvenementsSemaine(request):
                 ev_5 = ev_5.exclude(asso__abreviation=nomAsso)
 
         evenements.append(ev_5)
-
-        from itertools import chain
-        eve = sorted([(x, dt(x.start_time.year, x.start_time.month, x.start_time.day).isoformat() for x in list(chain(ev_art, ev_2, ev_3, ev_4, ev_5))], key=lambda x:x[1])
+        utc = pytz.UTC
+        eve = sorted([(x, datetime(x.start_time.year, x.start_time.month, x.start_time.day, tzinfo=utc)) for x in list(chain(ev_art, ev_2, ev_3, ev_4, ev_5))], key=lambda x:x[1])
         evenements = [x for x, y in eve]
     return evenements
 
@@ -124,7 +124,7 @@ def bienvenue(request):
     nbNotif = 0
     nbExpires = 0
     utc = pytz.UTC
-    yesterday = (dt.now() - timedelta(hours=12)).replace(tzinfo=utc)
+    yesterday = (datetime.now() - timedelta(hours=12)).replace(tzinfo=utc)
     evenements = EvenementAcceuil.objects.filter(date__gt=yesterday).order_by('date')
     evenements_semaine = getEvenementsSemaine(request)
     if request.user.is_authenticated:
@@ -132,7 +132,7 @@ def bienvenue(request):
         nbExpires = getNbProduits_expires(request)
 
     if not request.user.is_anonymous:
-        suffrages = Suffrage.objects.filter(start_time__lte=dt.now(), end_time__gte=dt.now())
+        suffrages = Suffrage.objects.filter(start_time__lte=datetime.now(), end_time__gte=datetime.now())
         votes = []
         for vote in suffrages:
             if vote.est_autorise(request.user):
