@@ -75,13 +75,12 @@ def getEvenementsSemaine(request):
     current_year = date.today().isocalendar()[0]
     evenements = []
 
-    if request.user.is_anonymous:
+    if not request.user.is_anonymous:
         ev = Evenement.objects.filter(Q(start_time__week=current_week) & Q(start_time__year=current_year)).order_by('start_time')
 
         for nomAsso in Choix_global.abreviationsAsso:
             ev = ev.exclude(article__asso__abreviation=nomAsso)
-        evenements = ev
-    else:
+        evenements = []
 
         ev_art = Evenement.objects.filter(Q(start_time__week=current_week) & Q(start_time__year=current_year)).order_by('start_time')
         for nomAsso in Choix_global.abreviationsAsso:
@@ -115,8 +114,8 @@ def getEvenementsSemaine(request):
         evenements.append(ev_5)
 
         from itertools import chain
-        evenements = sorted(list(chain(ev_art, ev_2, ev_3, ev_4, ev_5)), key=lambda x:dt(x.start_time.year, x.start_time.month, x.start_time.day, ))
-
+        eve = sorted([(x, dt(x.start_time.year, x.start_time.month, x.start_time.day)) for x in list(chain(ev_art, ev_2, ev_3, ev_4, ev_5))], key=lambda x:x[1])
+        evenements = [x for x, y in eve]
     return evenements
 
 def bienvenue(request):
