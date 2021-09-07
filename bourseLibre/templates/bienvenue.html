@@ -28,17 +28,67 @@
 {%endblock%}
 {% block content %}
 <div class="row">
-	<div class="col-md-6 col-sm-12 my-auto">
-		 {% if not request.user.is_authenticated %}
+	<div class="col-sm-12 my-auto">
+		<div class="row">
+			<div class="col-md-12">
+				{% if votes %}
+					<div class="row" >
+					  <div class="col-sm-12 textcenter" style ="color:#0f7407;">
+						{% for vote, avote in votes %}
+						 <p> <b><a href="{{vote.get_absolute_url}}">Un vote est en cours : "{{vote.titre|truncatechars:20}}" ({% if avote %}Vous avez déjà voté {% else %}Votez !{% endif %})</a></b></p>
+						{% endfor %}
+					  </div>
+					</div>
+				{%endif%}
+				{% if nbExpires %}
+					<hr>
+					<div class="row" >
+					  <div class="col-sm-12 textcenter" style ="color:#0f7407;">
+						  <b><a href="{% url 'supprimerProduits_expires_confirmation' %}">Vous avez {{nbExpires}} offre{{nbExpires|pluralize:",s"}} du marché qui {{nbExpires|pluralize:"a,ont"}}  expiré. Cliquez ici pour l{{nbExpires|pluralize:"a,es"}} supprimer ou l{{nbExpires|pluralize:"a,es"}}  modifier</a></b>
+					  </div>
+					</div>
+				{%endif%}
+
+				 {% if not request.user.is_authenticated %}
+
 		<div class="row textcenter">
 			<div class="col">
 				<a  href="{% url 'gallerie' %}" ><img class="imgbienvenue" src="{{STATIC_URL}}{{nomImage}}" alt="gallerie" ></a>
 			</div>
 		</div>
+					<hr>
+					<div class="row" >
+					  <div class="col-sm-12 textcenter">
+						  <b> <a href="{% url 'login' %}" class="btn btn-light btn-radius"> <i class="fa fa-user"></i> Se connecter</a>
+
+						  </b>
+					  </div>
+					</div>
+					<hr>
+					<div class="row" >
+					  <div class="col-sm-12 textcenter">
+						  <b> <a href="{% url 'senregistrer' %}" class="btn btn-light btn-radius"> <i class="fa fa-user"></i> S'inscrire sur le site</a>
+
+						  </b>
+					  </div>
+					</div>
+					<hr>
+					<div class="row" >
+					  <div class="col-sm-12 textcenter">
+						  <b> <a href="{% url 'inscription_newsletter' %}" class="btn btn-light btn-radius"><i class="fa fa-envelope-o"></i> S'inscrire à la newsletter</a>
+
+						  </b>
+					  </div>
+					</div>
 
 
-		{% else %}
+				{% endif %}
 
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-12 my-auto">
+		 {% if request.user.is_authenticated %}
 		<div class="row" >
 					  <div class="col-sm-12 textcenter">
 
@@ -66,60 +116,8 @@
 					</ul>
 				</div>
 					  </div>
-					</div>
+			</div>
 
-		{% endif %}
-
-	</div>
-	<div class="col-md-6 col-sm-12 my-auto">
-		<div class="row">
-			<div class="col-md-12">
-				{% if votes %}
-					<div class="row" >
-					  <div class="col-sm-12 textcenter" style ="color:#0f7407;">
-						{% for vote, avote in votes %}
-						 <p> <b><a href="{{vote.get_absolute_url}}">Un vote est en cours : "{{vote.titre|truncatechars:20}}" ({% if avote %}Vous avez déjà voté {% else %}Votez !{% endif %})</a></b></p>
-						{% endfor %}
-					  </div>
-					</div>
-				{%endif%}
-				{% if nbExpires %}
-					<hr>
-					<div class="row" >
-					  <div class="col-sm-12 textcenter" style ="color:#0f7407;">
-						  <b><a href="{% url 'supprimerProduits_expires_confirmation' %}">Vous avez {{nbExpires}} offre{{nbExpires|pluralize:",s"}} du marché qui {{nbExpires|pluralize:"a,ont"}}  expiré. Cliquez ici pour l{{nbExpires|pluralize:"a,es"}} supprimer ou l{{nbExpires|pluralize:"a,es"}}  modifier</a></b>
-					  </div>
-					</div>
-				{%endif%}
-
-				 {% if not request.user.is_authenticated %}
-					<hr>
-					<div class="row" >
-					  <div class="col-sm-12 textcenter">
-						  <b> <a href="{% url 'inscription_newsletter' %}" class="btn btn-light btn-radius"><i class="fa fa-envelope-o"></i> S'inscrire à la newsletter...</a>
-
-						  </b>
-					  </div>
-					</div>
-					<hr>
-					<div class="row" >
-					  <div class="col-sm-12 textcenter">
-						  <b> <a href="{% url 'login' %}" class="btn btn-light btn-radius"> <i class="fa fa-user"></i> Se connecter</a>
-
-						  </b>
-					  </div>
-					</div>
-					<hr>
-					<div class="row" >
-					  <div class="col-sm-12 textcenter">
-						  <b> <a href="{% url 'senregistrer' %}" class="btn btn-light btn-radius"> <i class="fa fa-user"></i> S'inscrire</a>
-
-						  </b>
-					  </div>
-					</div>
-
-				{%else%}
-					<hr>
 					<div class="row" >
 					  <div class="col-sm-12 textcenter" style ="color:#0f7407;">
 						{% if nbNotif %}
@@ -146,11 +144,10 @@
 					</div>
 				<hr>
 
-				{% endif %}
+		{% endif %}
 
-			</div>
-		</div>
 	</div>
+
 </div>
 
 <hr>
