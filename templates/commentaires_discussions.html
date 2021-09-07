@@ -69,6 +69,10 @@
 {% endif %}
 
 <script>
+    document.getElementById("id_commentaire_iframe").height = "150px";
+    var messageBody = document.querySelector('#contenucommentaires');
+    messageBody.scrollTop = contenucommentaires.scrollHeight - contenucommentaires.clientHeight;
+
  $(document).ready(function() {
     $("#idConversation > a").on('click', function () {
         var nom = $(this).attr("href");
@@ -78,9 +82,10 @@
         }else{
             $("#commentaires").hide();
         }
-        $("#contenucommentaires").height = "180px";
+
         var messageBody = document.querySelector('#contenucommentaires');
-        messageBody.scrollTop = idConversation.scrollHeight - idConversation.clientHeight;
+        messageBody.scrollTop = contenucommentaires.scrollHeight - contenucommentaires.clientHeight;
+
     });
 
     $(function() {
@@ -92,8 +97,5 @@
      window.location = '#idConversation'
     $("#navtab_{{ancre}}").trigger('click')
     {% endif %}
-    var messageBody = document.querySelector('#contenucommentaires');
-    messageBody.scrollTop = idConversation.scrollHeight - idConversation.clientHeight;
 });
-
 </script>
