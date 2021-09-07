@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='discussion',
             name='slug',
-            field=models.SlugField(default=uuid.uuid4, max_length=32),
+            field=models.SlugField(default=uuid.uuid4, max_length=100),
         ),
         migrations.AlterField(
             model_name='discussion',
