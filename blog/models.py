@@ -122,6 +122,7 @@ class Article(models.Model):
         emails = []
         sendMail = sendMail and getattr(self, "sendMail", True)
         if not self.id:
+            discussion, created = Discussion.objects.get_or_create(article=self, titre="Discussion Générale")
             self.date_creation = timezone.now()
             if sendMail:
                 suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_' + str(self.asso.abreviation))
@@ -135,7 +136,6 @@ class Article(models.Model):
                 emails = [suiv.email for suiv in followers(self) if self.est_autorise(suiv)]
 
         retour = super(Article, self).save(*args, **kwargs)
-        discussion, created = Discussion.objects.get_or_create(article=self, titre="Discussion Générale")
         if emails:
             action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
         return retour
