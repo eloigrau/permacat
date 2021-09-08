@@ -265,7 +265,7 @@ class EvenementForm(forms.ModelForm):
         }
 
     def save(self, request):
-        instance = super(EvenementArticleForm, self).save(commit=False)
+        instance = super(EvenementForm, self).save(commit=False)
         instance.auteur = request.user
         instance.save()
 
