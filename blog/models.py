@@ -227,7 +227,7 @@ class Commentaire(models.Model):
     def get_edit_url(self):
         return reverse('blog:modifierCommentaireArticle',  kwargs={'id':self.id})
 
-    def save(self, sendMail=True, *args, **kwargs):
+    def save(self, sendMail=False, *args, **kwargs):
         ''' On save, update timestamps '''
         emails = []
         if not self.id:

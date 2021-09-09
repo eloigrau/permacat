@@ -234,12 +234,13 @@ def lireArticle(request, slug):
             comment.article = article
             comment.discussion = discu
             comment.auteur_comm = request.user
-            comment.sendMail = False
+            article.sendMail = False
             article.date_dernierMessage = now()
             article.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(strip_tags(comment.commentaire).replace('&nspb',' ')))[:96]
             if len(("(" + str(comment.auteur_comm) + ") " + str(strip_tags(comment.commentaire).replace('&nspb',' ')))) > 96:
                 article.dernierMessage += "..."
             form.save()
+            article.save(sendMail=False)
             url = article.get_absolute_url()+"#idConversation"
             suffix = "_" + article.asso.abreviation
             action.send(request.user, verb='article_message'+suffix, action_object=article, url=url,

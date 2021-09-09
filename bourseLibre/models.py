@@ -461,7 +461,7 @@ class Produit(models.Model):  # , BaseProduct):
 
         if emails:
             if self.estUneOffre:
-                message = "Nouvelle petite annonce (offre) : ["+ self.asso.nom +"]<a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.nom_produit + "</a>"
+                message = "Nouvelle petite annonce (offre) : ["+ self.asso.nom +"] <a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.nom_produit + "</a>"
             else:
                 message = "Nouvelle petite annonce (demande) : ["+ self.asso.nom +"] <a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.nom_produit + "</a>"
             action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)

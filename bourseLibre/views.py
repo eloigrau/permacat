@@ -114,7 +114,7 @@ def getEvenementsSemaine(request):
 
         evenements.append(ev_5)
         utc = pytz.UTC
-        y= []
+        y = []
         for ev in list(chain(ev_art, ev_2, ev_3, ev_4, ev_5)):
             try:
                 y.append((ev, date(ev.start_time.year, ev.start_time.month, ev.start_time.day)))
