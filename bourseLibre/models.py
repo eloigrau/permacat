@@ -962,7 +962,6 @@ class Message(models.Model):
     def get_edit_url(self):
         return reverse('modifierMessage',  kwargs={'id':self.id, 'type_msg':'conversation', 'asso':'convers'})
 
-    @property
     def get_absolute_url(self):
         return self.conversation.get_absolute_url()
 
