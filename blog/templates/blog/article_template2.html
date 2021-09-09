@@ -60,7 +60,7 @@
 
         {% if article.dernierMessage  %}
         <p class="description textsmall">
-            {{ article.dernierMessage|couperTexte:90}}
+            {{ article.dernierMessage|safe|couperTexte:90}}
         </p>
         {% endif %}
     </div>

@@ -62,7 +62,7 @@
         {% if article.dernierMessage  %}
         <div class="row-sm-12">
           <div class="col">
-            <p class="textsmall " >Dernier message : {{ article.dernierMessage|couperTexte:30}}</p>
+            <p class="textsmall " >Dernier message : {{ article.dernierMessage|safe|couperTexte:30}}</p>
         </div>
         </div>
         {% endif %}
