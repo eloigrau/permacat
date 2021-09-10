@@ -1883,6 +1883,12 @@ padding-bottom:10px;
     }
 }
 
+@media(max-width: 500px) {
+    .img_banniere_smartp{
+        width:100%;
+        height:auto;
+    }
+}
  .btn-chercher{
  display: block !important;
  }
