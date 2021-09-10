@@ -9,11 +9,21 @@ var Cookielaw = {
         } else {
             expires = "";
         }
-        document.cookie = name + "=" + value + expires + "; path=/";
+        document.cookie = name + "=" + value + expires + "; path=/ ;" + "samesite=lax ; secure";
     },
 
     createCookielawCookie: function () {
         this.createCookie('cookielaw_accepted', '1', 10 * 365);
+
+        if (typeof (window.jQuery) === 'function') {
+            jQuery('#CookielawBanner').slideToggle();
+        } else {
+            document.getElementById('CookielawBanner').style.display = 'none';
+        }
+    },
+
+    createCookielawCookie_notaccepted: function () {
+        this.createCookie('cookielaw_accepted', '0', 10 * 365);
 
         if (typeof (window.jQuery) === 'function') {
             jQuery('#CookielawBanner').slideToggle();

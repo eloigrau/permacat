@@ -8,15 +8,23 @@
 <script src="{% static 'js/infinite.min.js' %}"></script>
 {%endblock%}
 {% block title %} - Forum {% endblock  %}
+{%block banniere %}
+	<div class="row row_banniere_ordi" >
+		<div class="col col-xs-12 d-flex justify-content-around">
+            <img  src="{% static 'img/banniere/forum_icone_ordi.png' %}" width="280" height="150" alt="Forum"/>
+            <img  src="{% static 'img/banniere/forum_txt_ordi2.png' %}" height="150" alt="Forum"/>
+        </div>
+    </div>
+	<div class="row row_banniere_smartphone">
+		<div class="col col-xs-12 d-flex justify-content-center">
+            <img  src="{% static 'img/banniere/forum_icone_smartp.png' %}" height="180" alt="Forum"/>
+        </div>
+    </div>
+{% endblock  %}
 {%block subtitle%}
 
 <div class="row">
     <div class="col-md-12 textcenter">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <h3>Forum</h3>
-            </div>
-        </div>
 
         <div class="row justify-content-center">
             <div class="col-md-4">

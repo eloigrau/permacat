@@ -20,7 +20,7 @@
     {% endcomment %}
       <tbody style="display:block;">
         {% for article in article_list %}
-        <tr >
+        <tr style="background-color:{{article.get_couleur}}">
           <td data-title="Groupe"><span class="badge badge-info" data-toggle="tooltip" data-placement="middle" title="Article {%if article.estPublic%}visible par tous les inscrits{%else%}visible par les membres de {{ article.asso }} seulement{%endif%}">
               {{ article.asso }} </span>&nbsp;</td>
             <td data-title="Dossier"><span class="badge badge-primary" >{{ article.get_categorie_display }}</span>&nbsp;</td>

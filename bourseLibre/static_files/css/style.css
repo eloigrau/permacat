@@ -708,6 +708,7 @@ a article_carte:active {
 	border-radius:8px;
 	display:inline-block;
 	cursor:pointer;
+	pointer-events: none;
 	color:#ffffff;
 	font-size:18px;
 	font-weight:bold;
@@ -1797,7 +1798,6 @@ a:hover, a:focus {
 .nav-tabs > li {
     float:none;
     display:inline-block;
-   /* zoom:1;*/
 }
 .nav-tabs {
     text-align:center;
