@@ -40,6 +40,11 @@
   vertical-align: bottom;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
+
+.table_forum > tbody > tr > td.center {
+  text-align: center;
+  }
+
 .table_forum > caption + thead > tr:first-child > th,
 .table_forum > colgroup + thead > tr:first-child > th,
 .table_forum > thead:first-child > tr:first-child > th,

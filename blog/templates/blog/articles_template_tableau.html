@@ -21,9 +21,9 @@
       <tbody style="display:block;">
         {% for article in article_list %}
         <tr >
-          <td data-title="Groupe"><span class="badge badge-info" data-toggle="tooltip" data-placement="middle" title="Article {%if article.estPublic%}visible par tous les inscrits{%else%}visible par les membres de {{ article.asso }} seulement{%endif%}">
+          <td data-title="Groupe" class="center"><span class="badge badge-info" data-toggle="tooltip" data-placement="middle" title="Article {%if article.estPublic%}visible par tous les inscrits{%else%}visible par les membres de {{ article.asso }} seulement{%endif%}">
               {{ article.asso }} </span>&nbsp;</td>
-            <td data-title="Dossier"><span class="badge badge-primary" style="background-color:{{article.get_couleur}}; color : #666666;">{{ article.get_categorie_display }}</span>&nbsp;</td>
+            <td data-title="Dossier" class="center"><span class="badge badge-primary" style="background-color:{{article.get_couleur}}; color : #666666;">{{ article.get_categorie_display }}</span>&nbsp;</td>
 
           <td style="width: 100%;" data-title="Titre">
             <a href="{% url 'blog:lireArticle' slug=article.slug %}">
