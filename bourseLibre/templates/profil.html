@@ -101,6 +101,16 @@
                 <td>{{ user.email }}</td>
             </tr>
 
+
+                  {% if user.site_web %}
+                    <tr>
+                        <td style="width:250px">Site_web *:</td>
+                        <td> <a href="{{ user.site_web }}" target="_blank">{{ user.site_web }}</a></td>
+                    </tr>
+                  {% endif %}
+           
+        {% endif %}
+
               {% if user.description %}
                     <tr>
                         <td style="width:250px">Description :</td>
@@ -114,15 +124,6 @@
 		<td>{{ user.competences|safe }}</td>
 	    </tr>
               {% endif %}
-
-                  {% if user.site_web %}
-                    <tr>
-                        <td style="width:250px">Site_web *:</td>
-                        <td> <a href="{{ user.site_web }}" target="_blank">{{ user.site_web }}</a></td>
-                    </tr>
-                  {% endif %}
-           
-        {% endif %}
        {%if request.user.adherent_pc or request.user == user %}
 	  {% if user.avatar %}
 	    <tr>

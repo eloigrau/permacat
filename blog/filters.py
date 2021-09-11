@@ -1,12 +1,7 @@
 from django import forms
 from bourseLibre.models import Asso, Profil
-from .models import Article, Choix
-#from django_filters.views import FilterView
+from .models import Article
 import django_filters
-#from django.db import models
-#from django_summernote.widgets import SummernoteWidget
-#from photologue.models import Album
-#from bourseLibre.constantes import Choix as Choix_global
 from datetime import datetime, timedelta, timezone
 
 class ArticleFilter(django_filters.FilterSet):
@@ -40,13 +35,3 @@ class ArticleFilter(django_filters.FilterSet):
             "estArchive": ['exact', ],
             #"start_time": ['range', ],
         }
-    #
-    # @property
-    # def qs(self):
-    #     parent = super().qs
-    #     user = getattr(self.request, 'user', None)
-    #
-    #     for nomAsso in Choix_global.abreviationsAsso:
-    #         if not getattr(user, "adherent_" + nomAsso):
-    #             parent = parent.exclude(asso__abreviation=nomAsso)
-    #     return parent

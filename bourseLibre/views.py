@@ -69,6 +69,7 @@ CharField.register_lookup(Lower, "lower")
 from .views_notifications import getNbNewNotifications
 from bourseLibre.views_base import DeleteAccess
 from itertools import chain
+from .filters import ProfilCarteFilter
 
 
 def getEvenementsSemaine(request):
@@ -447,10 +448,13 @@ def carte(request, asso):
     if not isinstance(asso, Asso):
         raise PermissionDenied
     profils = asso.getProfils_Annuaire()
+
     if asso.abreviation == "public":
-        titre = "Carte des coopérateurs du site*"
+        titre = "Carte des coopérateurs du site (%s)*"%len(profils)
     else:
         titre = "Carte des membres du groupe " + asso.nom + "*"
+
+    profils_filtres = ProfilCarteFilter(request.GET, queryset=profils)
 
     try:
         import simplejson
@@ -463,7 +467,7 @@ def carte(request, asso):
     except:
         ev = []
 
-    return render(request, 'carte_cooperateurs.html', {'profils':profils, 'titre': titre, 'data':ev, "asso":asso} )
+    return render(request, 'carte_cooperateurs.html', {'filter':profils_filtres, 'titre': titre, 'data':ev, "asso":asso} )
 
 
 # @login_required

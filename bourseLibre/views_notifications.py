@@ -6,42 +6,36 @@ from bourseLibre.constantes import Choix as Choix_global
 from django.utils.timezone import now
 from itertools import chain
 from .forms import nouvelleDateForm
-from .models import Profil, Conversation
-from .settings import LOCALL
-from .settings.production import SERVER_EMAIL, EMAIL_HOST_PASSWORD
-from django.http import HttpResponseForbidden
-from django.core.mail.message import EmailMultiAlternatives
 from datetime import datetime, timedelta
-import re
-import pytz
-from django.core import mail
+from pytz import UTC as utc
 from hitcount.models import HitCount, Hit
 
 @login_required
 def getNotifications(request, nbNotif=15, orderBy="-timestamp"):
     tampon = nbNotif * 5
-    salons = Action.objects.filter(Q(verb='envoi_salon') | Q(verb='envoi_salon_Public')|Q(verb='envoi_salon_public'))
-    articles = Action.objects.filter(Q(verb='article_nouveau') | Q(verb='article_nouveau_Public') | Q(verb='article_message') | Q(verb='article_message_Public') |Q(verb='article_nouveau_public') | Q(verb='article_message_public') | Q(verb='article_modifier_Public')| Q(verb='article_modifier_public')| Q(verb='article_modifier')).order_by(orderBy)
-    projets = Action.objects.filter(Q(verb='projet_nouveau') | Q(verb='projet_nouveau_Public') | Q(verb='projet_message')|Q(verb='projet_message_Public')| Q(verb='projet_nouveau_public') | Q(verb='projet_message_public') |Q(verb='projet_modifier') |  Q(verb='projet_modifier_Public')).order_by(orderBy)
-    offres = Action.objects.filter(Q(verb='ajout_offre')|  Q(verb='ajout_offre_public')).order_by(orderBy)
-    suffrages = Action.objects.filter(Q(verb='suffrage_ajout_public') | Q(verb='suffrage_ajout')).order_by(orderBy)
-    albums = Action.objects.filter(Q(verb='album_nouveau_public')).order_by(orderBy)
+    dateMin = (datetime.now() - timedelta(days=30)).replace(tzinfo=utc)
+    salons = Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb='envoi_salon') | Q(verb='envoi_salon_Public')|Q(verb='envoi_salon_public'))).order_by(orderBy)
+    articles = Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb='article_nouveau') | Q(verb='article_nouveau_Public') | Q(verb='article_message') | Q(verb='article_message_Public') |Q(verb='article_nouveau_public') | Q(verb='article_message_public') | Q(verb='article_modifier_Public')| Q(verb='article_modifier_public')| Q(verb='article_modifier'))).order_by(orderBy)
+    projets = Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb='projet_nouveau') | Q(verb='projet_nouveau_Public') | Q(verb='projet_message')|Q(verb='projet_message_Public')| Q(verb='projet_nouveau_public') | Q(verb='projet_message_public') |Q(verb='projet_modifier') |  Q(verb='projet_modifier_Public'))).order_by(orderBy)
+    offres = Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb='ajout_offre')|  Q(verb='ajout_offre_public'))).order_by(orderBy)
+    suffrages = Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb='suffrage_ajout_public') | Q(verb='suffrage_ajout'))).order_by(orderBy)
+    albums = Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb='album_nouveau_public'))).order_by(orderBy)
 
     if request.user.adherent_pc:
-        salons     = salons | Action.objects.filter((Q(verb__startswith='envoi_salon') & Q(verb__icontains='Permacat')) | (Q(verb__startswith='envoi_salon_permacat')| (Q(verb__startswith='envoi_salon_pc'))))
-        articles   = articles | Action.objects.filter(Q(verb__startswith='article') & (Q(verb__icontains='Permacat') | Q(verb__icontains='permacat')| Q(verb__icontains='pc')))
-        projets    = projets | Action.objects.filter(Q(verb__startswith='projet') & (Q(verb__icontains='Permacat') | Q(verb__icontains='permacat')| Q(verb__icontains='pc')))
-        offres     = offres | Action.objects.filter((Q(verb__startswith='ajout_offre') & Q(verb__icontains='Permacat') )| Q(verb='ajout_offre_permacat')| Q(verb='ajout_offre_pc'))
-        suffrages  = suffrages | Action.objects.filter((Q(verb__startswith='suffrage_ajout') & Q(verb__icontains='Permacat')) | Q(verb='suffrage_ajout_permacat')| Q(verb='suffrage_ajout_pc'))
-        albums = albums | Action.objects.filter(Q(verb='album_nouveau_pc')).order_by(orderBy)
+        salons     = salons | Action.objects.filter(Q(timestamp__gt=dateMin) & ((Q(verb__startswith='envoi_salon') & Q(verb__icontains='Permacat')) | (Q(verb__startswith='envoi_salon_permacat')| (Q(verb__startswith='envoi_salon_pc')))))
+        articles   = articles | Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb__startswith='article') & (Q(verb__icontains='Permacat') | Q(verb__icontains='permacat')| Q(verb__icontains='pc'))))
+        projets    = projets | Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb__startswith='projet') & (Q(verb__icontains='Permacat') | Q(verb__icontains='permacat')| Q(verb__icontains='pc'))))
+        offres     = offres | Action.objects.filter(Q(timestamp__gt=dateMin) & ((Q(verb__startswith='ajout_offre') & Q(verb__icontains='Permacat') )| Q(verb='ajout_offre_permacat')| Q(verb='ajout_offre_pc')))
+        suffrages  = suffrages | Action.objects.filter(Q(timestamp__gt=dateMin) & ((Q(verb__startswith='suffrage_ajout') & Q(verb__icontains='Permacat')) | Q(verb='suffrage_ajout_permacat')| Q(verb='suffrage_ajout_pc')))
+        albums = albums | Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb='album_nouveau_pc'))).order_by(orderBy)
 
     for nomAsso in Choix_global.abreviationsAsso:
         if getattr(request.user, "adherent_" + nomAsso):
-            salons = salons | Action.objects.filter(Q(verb__startswith='envoi_salon') & Q(verb__icontains=nomAsso))
-            articles = articles | Action.objects.filter(Q(verb__startswith='article') & Q(verb__icontains=nomAsso))
-            projets = projets | Action.objects.filter(Q(verb__startswith='projet') & Q(verb__icontains=nomAsso))
-            offres = offres | Action.objects.filter(Q(verb__startswith='ajout_offre') & Q(verb__icontains=nomAsso))
-            albums = albums | Action.objects.filter(Q(verb__startswith='album_nouveau') & Q(verb__icontains=nomAsso))
+            salons = salons | Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb__startswith='envoi_salon') & Q(verb__icontains=nomAsso)))
+            articles = articles | Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb__startswith='article') & Q(verb__icontains=nomAsso)))
+            projets = projets | Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb__startswith='projet') & Q(verb__icontains=nomAsso)))
+            offres = offres | Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb__startswith='ajout_offre') & Q(verb__icontains=nomAsso)))
+            albums = albums | Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb__startswith='album_nouveau') & Q(verb__icontains=nomAsso)))
 
     salons = salons.distinct().order_by(orderBy)[:tampon]
     articles = articles.distinct().order_by(orderBy)[:tampon]
@@ -69,57 +63,52 @@ def getNotifications(request, nbNotif=15, orderBy="-timestamp"):
     return salons, articles, projets, offres, conversations, fiches, ateliers, inscription, suffrages, albums
 
 @login_required
-def getNotificationsParDate(request, limiter=True, orderBy="-timestamp"):
+def getNotificationsParDate(request, dateMinimum=None, orderBy="-timestamp"):
+    if dateMinimum:
+        dateMin = dateMinimum if dateMinimum.date() > datetime.now().date() - timedelta(
+            days=365) else datetime.now().date() - timedelta(days=90)
+    else:
+        dateMin = (datetime.now() - timedelta(days=60)).replace(tzinfo=utc)
 
-    actions = Action.objects.filter( \
+    actions = Action.objects.filter(Q(timestamp__gt=dateMin) & ( \
          Q(verb='article_nouveau') | Q(verb='article_message')|
          Q(verb='article_modifier')|Q(verb='projet_nouveau') |
          Q(verb='projet_message')| Q(verb='projet_modifier')|
             Q(verb='envoi_salon')| Q(verb__icontains='public')|Q(verb__icontains='Public')|
             Q(verb__startswith='fiche')|Q(verb__startswith='atelier')|
             Q(verb__startswith='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)|
-            Q(verb__startswith='inscription'))
+            Q(verb__startswith='inscription')))
     if request.user.adherent_pc:
-        actions = actions | Action.objects.filter(Q(verb__icontains='Permacat') | Q(verb__icontains='permacat')| Q(verb__icontains='pc'))
+        actions = actions | Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb__icontains='Permacat') | Q(verb__icontains='permacat')| Q(verb__icontains='pc')))
     if request.user.adherent_rtg:
-        actions = actions | Action.objects.filter(Q(verb__icontains='rtg'))
+        actions = actions | Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb__icontains='rtg')))
     if request.user.adherent_fer:
-        actions = actions | Action.objects.filter(Q(verb__icontains='fer'))
+        actions = actions | Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb__icontains='fer')))
     if request.user.adherent_scic:
-        actions = actions | Action.objects.filter(Q(verb__icontains='scic'))
+        actions = actions | Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb__icontains='scic')))
     if request.user.adherent_citealt:
-        actions = actions | Action.objects.filter(Q(verb__icontains='citealt'))
+        actions = actions | Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb__icontains='citealt')))
 
     actions = actions.order_by(orderBy).distinct()
 
-    if limiter:
-        actions=actions[:100]
-    actions = [art for i, art in enumerate(actions) if i == 0 or not (art.description == actions[i-1].description and art.actor == actions[i-1].actor ) ][:100]
+    actions = [art for i, art in enumerate(actions[:200]) if i == 0 or not (art.description == actions[i-1].description and art.actor == actions[i-1].actor ) ]
 
 
     return actions
 
 
-@login_required
-def get_notifications_news(request):
-    actions = getNotificationsParDate(request)
-    dateMin = request.user.date_notifications.date() if request.user.date_notifications.date() > datetime.now().date() - timedelta(days=15) else datetime.now().date() - timedelta(days=15)
-
-    actions = [action for action in actions if dateMin < action.timestamp.date()]
-    return actions
 
 @login_required
 def getNbNewNotifications_test(request):
-    return len(get_notifications_news(request))
+    return len(getNotificationsParDate(request))
 
 @login_required
 def getNbNewNotifications_test2(request):
     try:
-        actions = getNotificationsParDate(request)
         dateLimite = datetime.now().date() - timedelta(days=15)
         dateMin = request.user.date_notifications.date() if request.user.date_notifications.date() > dateLimite else dateLimite
 
-        actions = [action for action in actions if dateMin < action.timestamp.date()]
+        actions = getNotificationsParDate(request, dateMinimum=dateMin)
     except:
         return 0
 
@@ -127,8 +116,7 @@ def getNbNewNotifications_test2(request):
 
 @login_required
 def getNbNewNotifications(request):
-    actions = getNotificationsParDate(request)
-    actions = [action for action in actions if request.user.date_notifications < action.timestamp]
+    actions = getNotificationsParDate(request, dateMinimum=request.user.date_notifications)
 
     return len(actions)
 
@@ -148,7 +136,6 @@ def notifications_news_regroup(request):
     dicoTexte = {}
     dicoTexte['dicoarticles'] = {}
 
-    utc = pytz.UTC
     if "fromdate" in request.GET:
         dateMin = datetime.strptime(request.GET["fromdate"], '%d-%m-%Y').replace(tzinfo=utc)
     else:
@@ -240,7 +227,7 @@ def notifications(request):
 
 @login_required
 def notifications_news(request):
-    actions = get_notifications_news(request)
+    actions = getNotificationsParDate(request)
 
     hit_count = HitCount.objects.all().order_by('-hit__created')[:10]
     return render(request, 'notifications/notifications_last.html', {'actions':actions})
@@ -321,6 +308,10 @@ def changerDateNotif(request):
 
 def notif_cejour(request):
     date = datetime.now().date()
+    return redirect('/notifications/activite'+ "?fromdate=" + str(date.day) +"-" + str(date.month) + "-" + str(date.year))
+
+def notif_hier(request):
+    date = datetime.now().date() - timedelta(days=1)
     return redirect('/notifications/activite'+ "?fromdate=" + str(date.day) +"-" + str(date.month) + "-" + str(date.year))
 
 def notif_cettesemaine(request):

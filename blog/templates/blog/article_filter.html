@@ -84,15 +84,6 @@ $(function() {
 </script>
 {% block content %}
 
-
-    {% comment %}
-<form method="get">
-        {{ filter.form.as_p }}
-      <button type="submit" class="btn btn-primary">
-        <span class="glyphicon glyphicon-search"></span> Filtrer
-      </button>
-    </form>
-    {% endcomment %}
 <hr>
  <p>Articles trouvés dans le forum ({{filter.qs|length}})</p>
 

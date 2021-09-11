@@ -7,10 +7,10 @@
   <div class="card-body" {%if projet.estArchive %} style="background-color:#e0e0d1;" {% endif %}>
         <h5 class="titreArticle">
             {{ projet.titre }}</h5>
-        <span class="badge badge-primary" data-toggle="tooltip" data-placement="bottom" title="Projet {%if projet.estPublic%}visible par tous les inscrits{%else%}visible par les membres de Permacat seulement{%endif%}">
+        <span class="badge badge-primary" data-toggle="tooltip" data-placement="bottom" title="Projet {%if projet.estPublic%}visible par tous les inscrits{%else%}{{projet.asso.nom}}{%endif%}">
                 {{ projet.get_statut_display }}
             </span>
-        <span class="badge  badge-success " data-toggle="tooltip" data-placement="bottom" title="Projet {%if projet.estPublic%}visible par tous les inscrits{%else%}visible par les membres de Permacat seulement{%endif%}">
+        <span class="badge  badge-success " data-toggle="tooltip" data-placement="bottom" title="Projet {%if projet.estPublic%}visible par tous les inscrits{%else%}visible par les membres de {{projet.asso.nom}}{%endif%}">
                 {{projet.asso}}
             </span>
       {%if article.estArchive %}

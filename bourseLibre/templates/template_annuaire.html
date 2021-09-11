@@ -1,0 +1,76 @@
+{% load app_filters %}
+<nav class="nav nav-tabs justify-content-center">
+      <a class="nav-item nav-link active" href="#adresse" data-toggle="tab"><h6>Adresse</h6></a>
+      <a class="nav-item nav-link" href="#description" data-toggle="tab"><h6>Description</h6></a>
+    </nav>
+
+<div class="tab-content">
+  <div class="tab-pane fade show active" id="adresse">
+   <div class="row">
+    <div class="col-md-12">
+        <div style="overflow-x:auto;">
+    <table class="table table-condensed tableprofils table-striped sortable">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Pseudo</th>
+                <th>Email</th>
+                <th>Code postal</th>
+                <th>Commune</th>
+                <th>Distance**</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for profil in profils %}
+        <tr>
+           {%comment%} <td>
+                <img src="{{ profil.avatar.get_absolute_url }}" alt="pas d'image" style="width:100px;height:100px" href="{% url 'profil' profil.id %}">
+            </td>
+            {%endcomment%}
+            <td><a href="{% url 'profil' profil.id %}">{{ profil.username }}</a></td>
+            <td><a href="{% url 'profil' profil.id %}">{{ profil.email }}</a></td>
+            <td>{%if profil.adresse.code_postal %}{{ profil.adresse.code_postal }}{% else %}-{% endif %}</td>
+            <td>{%if profil.adresse.commune %}{{ profil.adresse.commune }} {% else %}-{% endif %}</td>
+            <td><a href="{% url 'profil' profil.id %}">{{ profil|distance:request.user }}</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    </div>
+    </div>
+
+  </div>
+
+  <div class="tab-pane fade" id="description">
+   <div class="row">
+    <div class="col-md-12">
+        <div style="overflow-x:auto;">
+    <table class="table table-condensed tableprofils table-striped sortable">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Pseudo</th>
+                <th>Description</th>
+                <th>Savoir-faire</th>
+                <th>Distance**</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for profil in profils %}
+        <tr>
+            <td><a href="{% url 'profil' profil.id %}">{{ profil.username }}</a></td>
+            <td>{{ profil.description|safe }}</td>
+            <td>{{ profil.competences|safe }}</td>
+            <td><a href="{% url 'profil' profil.id %}">{{ profil|distance:request.user }}</a></td>
+      </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    </div>
+    </div>
+  </div>
+</div>
+    <p class="textcenter textepetit">(*qui ont accepté d'apparaitre dans l'annuaire)</p>
+    <p class="textcenter textepetit">(**la distance est calculée à vol d'oiseau entre l'adresse indiquée sur votre profil, et l'adresse du collègue)</p>
+
+

@@ -1,6 +1,7 @@
 {% extends 'base_site.html' %}
 {% load carto_filters %}
 {% load app_filters %}
+{% load widget_tweaks %}
 {% block headerDocument%}
 {% load leaflet_tags %}
 {%endblock%}
@@ -27,7 +28,71 @@
 
 {% endblock %}
 {% block content %}
+<div class="row">
+    <div class="col-sm-12 textcenter">
+<button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#help" title="Filtrer">
+Filtrer la liste des profils
+</button>
+<!-- Modal -->
+<div class="modal fade" id="help" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog textaide" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+          <div class="row justify-content-center">
+           <h5 > Filtrer les profils affichés</h5>
+          </div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body textleft">
+<form method="get">
+    <div class="well">
+      <div class="row">
+          <div class="form-group col-sm-12">
+              <div>
+          {{ filter.form.adherent_pc.label_tag }}
+            <label class="checkbox-inline">{% render_field filter.form.adherent_pc %}</label>
+              </div>
+              <div>
+          {{ filter.form.adherent_rtg.label_tag }}
+            <label class="checkbox-inline">{% render_field filter.form.adherent_rtg %}</label>
+              </div>
+              <div>
+          {{ filter.form.adherent_citealt.label_tag }}
+            <label class="checkbox-inline">{% render_field filter.form.adherent_citealt %}</label>
+              </div>
+              <div>
+          {{ filter.form.adherent_scic.label_tag }}
+            <label class="checkbox-inline">{% render_field filter.form.adherent_scic %}</label>
+              </div>
+            </div>
+      </div>
+        <div class="form-group col-sm-12">
+            <label>Description :</label>
+          {% render_field filter.form.description class="form-control" %}
+        </div>
+        <div class="form-group col-sm-12">
+            <label>Compétences :</label>
+          {% render_field filter.form.competences class="form-control" %}
+        </div>
 
+    <div class="row">
+    <div class="col-md-12 textcenter">
+      <button type="submit" class="btn btn-primary">
+        <span class="glyphicon glyphicon-search"></span> Filtrer les profils
+      </button>
+    </div>
+    </div>
+</div>
+  </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+<hr>
 <div class="row" style="min-height:600px;">
   <div class="col-md-12" >
       <style>
@@ -80,14 +145,14 @@
             catch(err){ ;
             }
         {%endfor%}
-        {% for profil in profils %}
+        {% for profil in filter.qs %}
             var lat = {{profil.adresse.get_latitude}};
             var lon = {{profil.adresse.get_longitude}};
             var marker = L.marker([lat, lon], {icon: leafIcon}).bindPopup('<a href="{% url 'profil' profil.id %}"> {{profil.username}}</a>');
             marker.addTo(map);
         {%endfor%}
 
-        {% if profils|length == 1 %}
+        {% if filter.qs|length == 1 %}
         map.panTo(new L.LatLng(lat, lon));
         {%else%}
         map.panTo(new L.LatLng(42.62914, 2.49939));
@@ -97,6 +162,9 @@
 {% leaflet_map "yourmap" callback="window.map_init_basic" %}
 </div>
 </div>
+
+<hr>
+{% include "template_annuaire.html" with profils=filter.qs %}
 
 {% endblock %}
 
