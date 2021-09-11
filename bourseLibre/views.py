@@ -448,13 +448,15 @@ def carte(request, asso):
     if not isinstance(asso, Asso):
         raise PermissionDenied
     profils = asso.getProfils_Annuaire()
+    nbProf = len(profils)
 
-    if asso.abreviation == "public":
-        titre = "Carte des coopérateurs du site (%s)*"%len(profils)
-    else:
-        titre = "Carte des membres du groupe " + asso.nom + "*"
+    if asso.abreviation != "public":
+        titre = "Carte des membres du groupe " + asso.nom + " (%s)*"%(nbProf)
 
     profils_filtres = ProfilCarteFilter(request.GET, queryset=profils)
+
+    if asso.abreviation == "public":
+        titre = "Carte des coopérateurs du site (%d)*"%len(profils)
 
     try:
         import simplejson
