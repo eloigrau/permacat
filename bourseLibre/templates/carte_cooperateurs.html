@@ -28,6 +28,9 @@
 
 {% endblock %}
 {% block content %}
+
+{% if asso.abreviation == 'public' %}
+<hr>
 <div class="row">
     <div class="col-sm-12 textcenter">
 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#help" title="Filtrer">
@@ -93,6 +96,7 @@ Filtrer la liste des profils
 </div>
 </div>
 <hr>
+{% endif %}
 <div class="row" style="min-height:600px;">
   <div class="col-md-12" >
       <style>
