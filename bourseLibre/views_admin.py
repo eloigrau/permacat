@@ -25,7 +25,7 @@ def getListeMailsAlerte():
 
     listeMails = []
     for mail, messages in messagesParMails.items():
-        titre = "[Permacat] Du nouveau sur Perma.Cat"
+        titre = "[Perma.Cat] Du nouveau sur Perma.Cat"
         try:
             pseudo = Profil.objects.get(email=mail).username
         except:
@@ -36,7 +36,7 @@ def getListeMailsAlerte():
             message += "<li>" + m + "</li>"
             try:
                 r = re.search("htt(.*?)>", m).group(1)[:-1]
-                messagetxt += re.sub('<[^>]+>', '', m) + " : htt" + r+ "\n"
+                messagetxt += re.sub('<[^>]+>', '', m) + " : htt" + r + "\n"
             except:
                 messagetxt += re.sub('<[^>]+>', '', m) + "\n"
 
