@@ -29,7 +29,6 @@
 {% endblock %}
 {% block content %}
 
-{% if asso.abreviation == 'public' %}
 <hr>
 <div class="row">
     <div class="col-sm-12 textcenter">
@@ -43,6 +42,11 @@ Filtrer la liste des profils
       <div class="modal-header">
           <div class="row justify-content-center">
            <h5 > Filtrer les profils affichés</h5>
+              {% if asso.abreviation != "public" %}
+              <p>Parmi les membres du groupe {{ asso.nom }}</p>
+              {% else %}
+              <p>Parmi tous les inscrits sur le site</p>
+              {% endif %}
           </div>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -53,31 +57,35 @@ Filtrer la liste des profils
     <div class="well">
       <div class="row">
           <div class="form-group col-sm-12">
+              {% if asso.abreviation != "pc" and request.user.dherent_pc%}
               <div>
           {{ filter.form.adherent_pc.label_tag }}
             <label class="checkbox-inline">{% render_field filter.form.adherent_pc %}</label>
               </div>
+              {% endif %}
+              {% if asso.abreviation != "rtg" and request.user.adherent_rtg %}
               <div>
           {{ filter.form.adherent_rtg.label_tag }}
             <label class="checkbox-inline">{% render_field filter.form.adherent_rtg %}</label>
               </div>
+              {% endif %}
+              {% if asso.abreviation != "citealt" and request.user.adherent_citealt %}
               <div>
           {{ filter.form.adherent_citealt.label_tag }}
             <label class="checkbox-inline">{% render_field filter.form.adherent_citealt %}</label>
               </div>
+              {% endif %}
+              {% if asso.abreviation != "scic"  and request.user.adherent_scic %}
               <div>
           {{ filter.form.adherent_scic.label_tag }}
             <label class="checkbox-inline">{% render_field filter.form.adherent_scic %}</label>
               </div>
+              {% endif %}
             </div>
       </div>
         <div class="form-group col-sm-12">
-            <label>Mot dans la description :</label>
-          {% render_field filter.form.description class="form-control" %}
-        </div>
-        <div class="form-group col-sm-12">
-            <label>Mot dans les compétences :</label>
-          {% render_field filter.form.competences class="form-control" %}
+            <label>Mot dans la description ou les compétences :</label>
+          {% render_field filter.form.compet_descrip class="form-control" %}
         </div>
 
     <div class="row">
@@ -96,7 +104,7 @@ Filtrer la liste des profils
 </div>
 </div>
 <hr>
-{% endif %}
+
 <div class="row" style="min-height:600px;">
   <div class="col-md-12" >
       <style>
