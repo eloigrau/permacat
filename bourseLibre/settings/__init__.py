@@ -261,6 +261,7 @@ DATETIME_INPUT_FORMATS = ('%d/%m/%Y;%H:%M',)
 TIME_INPUT_FORMATS = ('%H:%M', )
 SHORT_DATE_FORMAT = ("d F Y",)
 DATE_INPUT_FORMATS = ('%d/%m/%Y',)
+DATE_INPUT_FORMAT = '%d/%m/%Y'
 
 
 LOGIN_URL = '/auth/login/'

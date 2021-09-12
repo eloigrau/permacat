@@ -14,6 +14,9 @@ from photologue.models import Album
 from .models import Choix
 from django.core.exceptions import ValidationError
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
 class SummernoteWidgetWithCustomToolbar(SummernoteWidget):
     def summernote_settings(self):
         summernote_settings = summernote_config.get('summernote', {}).copy()
@@ -75,7 +78,7 @@ class ArticleForm(forms.ModelForm):
 
     class Meta:
         model = Article
-        fields = ['asso', 'categorie', 'titre', 'contenu', 'start_time', 'end_time',  'estModifiable', 'tags']
+        fields = ['asso', 'categorie', 'titre', 'contenu', 'start_time', 'end_time', 'estModifiable', 'tags']
         widgets = {
             'contenu': SummernoteWidget(),
               'start_time': forms.DateInput(attrs={'type':'date', }),
@@ -258,10 +261,9 @@ class EvenementForm(forms.ModelForm):
 
     class Meta:
         model = Evenement
-        fields = ['start_time', 'titre_even', 'article', 'end_time', ]
+        fields = ['start_time', 'titre_even', 'article', ]
         widgets = {
             'start_time': forms.DateInput(attrs={'type': 'date'}),
-            'end_time': forms.DateInput(attrs={'type': 'date'}),
         }
 
     def save(self, request):
@@ -272,7 +274,7 @@ class EvenementForm(forms.ModelForm):
 class EvenementArticleForm(forms.ModelForm):
     class Meta:
         model = Evenement
-        fields = ['start_time', 'titre_even', 'end_time', ]
+        fields = ['start_time', 'titre_even', ]
         widgets = {
             'start_time': forms.DateInput(attrs={'type': 'date'}),
             'end_time': forms.DateInput(attrs={'type': 'date'}),
