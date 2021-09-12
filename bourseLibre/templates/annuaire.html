@@ -1,9 +1,7 @@
 {% extends 'base_site.html' %}
 {% load static %}
+{% load staticfiles %}
 {% load app_filters %}
-{% block header %}
-<script src="{% static 'js/sorttable.js' %}"></script>
-{% endblock %}
 {% block title %}  - Annuaire - {{asso}}
 {% endblock %}
 {% block subtitle %}

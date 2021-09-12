@@ -1,4 +1,10 @@
 {% load app_filters %}
+
+{% block header %}
+{% load static %}
+<script src="{% static 'js/sorttable.js' %}"></script>
+{% endblock %}
+
 <nav class="nav nav-tabs justify-content-center">
       <a class="nav-item nav-link active" href="#adresse" data-toggle="tab"><h6>Adresse</h6></a>
       <a class="nav-item nav-link" href="#description" data-toggle="tab"><h6>Description</h6></a>

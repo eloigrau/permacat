@@ -152,7 +152,7 @@ Filtrer la liste des profils
         {% for profil in filter.qs %}
             var lat = {{profil.adresse.get_latitude}};
             var lon = {{profil.adresse.get_longitude}};
-            var marker = L.marker([lat, lon], {icon: leafIcon}).bindPopup('<a href="{% url 'profil' profil.id %}"> {{profil.username}}</a>');
+            var marker = L.marker([lat, lon], {icon: leafIcon}).bindPopup('<a href="{% url 'profil' profil.id %}"> {{profil.username}} : {% if profil.first_name%}{{profil.first_name}}{% endif%} {% if profil.last_name%}{{profil.last_name}}{% endif%} </a>');
             marker.addTo(map);
         {%endfor%}
 
