@@ -283,8 +283,7 @@ class EvenementArticleForm(forms.ModelForm):
         article = Article.objects.get(id=id_article)
         instance.article = article
         instance.auteur = request.user
-        if not Evenement.objects.filter(start_time=instance.start_time, article=article):
-            instance.save()
+        instance.save()
         return instance
 
 class AdresseArticleForm(forms.ModelForm):
