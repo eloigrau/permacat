@@ -261,10 +261,10 @@
   <div class="tab-pane fade " id="plus">
         <div class="col-sm-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2 textcenter">
         <div class="contenu discussion_fiche">
-        {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
         <p>
           <a class="btn btn-sm btn-block btn-success textleft" href="{% url 'blog:ajouterEvenementArticle' id_article=article.id %}" ><i class="fa fa-plus"></i> Ajouter un événement sur l'agenda</a>
         </p>
+        {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
         <p>
           <a class="btn btn-sm btn-block btn-success textleft" href="{% url 'blog:ajouterAdresseArticle' id_article=article.id %}" ><i class="fa fa-plus"></i> Ajouter un lieu</a>
         </p>
