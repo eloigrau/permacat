@@ -19,13 +19,7 @@
 
     {%if articles_list %}
 <p>Articles trouvés dans le forum ({{articles_list|length}})</p>
-<div class="row ">
-    <div class="grid-container justify-content-center">
-    {% for article in articles_list %}
-        {% include "blog/article_template_recherche.html" with article=article %}
-    {% endfor %}
-    </div>
-</div>
+ {% include "blog/articles_template_tableau.html" with article_list=articles_list %}
     {% endif %}
 
     {%if commentaires_list %}

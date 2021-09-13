@@ -60,9 +60,9 @@ class Choix:
     }
 
     ordre_tri_articles = {
-                             #"date du dernier commentaire":'-date_dernierMessage',
+                             "date du dernier commentaire":'-date_dernierMessage',
                              "date de création":'-date_creation',
-                             "date de la dernière modification":'-date_modification',
+                             "date de la dernière modification":'-derniereDate',
                              "date associée à l'article":'start_time',
                              "titre": 'titre' }
     ordre_tri_projets = {"date de création":'-date_creation', "date du dernier commentaire":'-date_dernierMessage', "Type de projet":'categorie', "statut du projet":"statut", 'auteur':'auteur', 'titre':'titre'}
@@ -160,6 +160,13 @@ class Article(models.Model):
     def getLieux(self):
         return AdresseArticle.objects.filter(article=self)
 
+    @property
+    def derniereDate(self):
+        derniere_date = self.date_modification if self.date_modification else self.date_creation
+        if self.date_dernierMessage and self.date_dernierMessage > derniere_date:
+            return self.date_dernierMessage
+        else:
+            return derniere_date
 
 class Evenement(models.Model):
     titre_even = models.CharField(verbose_name="Titre de l'événement (si laissé vide, ce sera le titre de l'article)",

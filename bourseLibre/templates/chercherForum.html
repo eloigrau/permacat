@@ -1,7 +1,7 @@
 {% extends 'base_site.html' %}
 {% load fontawesome %}
 
-{% block title %} - rechercher dns le forum{% endblock %}
+{% block title %} - rechercher dans le forum{% endblock %}
 
 {% block subtitle %}<h5>Résultats de la recherche dans le forum : "{{recherche}}"</h5>
 
@@ -23,13 +23,7 @@
 {% block content %}
 
 <p>Articles trouvés dans le forum ({{articles_list|length}})</p>
-<div class="row ">
-    {% for article in articles_list %}
-        <div class="col ">
-            {% include "blog/article_template_recherche.html" with article=article %}
-        </div>
-    {% endfor %}
-</div>
+ {% include "blog/articles_template_tableau.html" with article_list=articles_list %}
 <hr>
     {%if commentaires_list %}
     <p>Dans les commentaires des articles du forum ({{commentaires_list|length}})</p>
@@ -45,24 +39,12 @@
     {% endif%}
     {%if articles_jardin_list %}
     <p>Articles trouvés dans le forum des jardins partagés ({{articles_jardin_list|length}})</p>
-    <div class="row ">
-        {% for article in articles_jardin_list %}
-            <div class="col ">
-                {% include "jardinpartage/article_template_recherche.html" with article=article %}
-            </div>
-        {% endfor %}
-    </div>
-
+    {% include "blog/articles_template_tableau.html" with article_list=articles_jardin_list %}
     <hr>
     {% endif%}
 {%if commentaires_jardin_list %}
     <p>Dans les commentaires des articles du forum des jardins partagés ({{commentaires_jardin_list|length}})</p>
-    <div class="row ">
-        {% for comm in commentaires_jardin_list %}
-            <div class="col ">
-                {% include "jardinpartage/article_template_recherche.html" with article=comm.article %}
-            </div>
-        {% endfor %}
-    </div>
+
+    {% include "blog/articles_template_tableau.html" with article_list=commentaires_jardin_list %}
 {% endif%}
 {% endblock %}

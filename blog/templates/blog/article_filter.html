@@ -87,15 +87,6 @@ $(function() {
 <hr>
  <p>Articles trouvés dans le forum ({{filter.qs|length}})</p>
 
-<div class="infinite-container">
-    <div class="grid-container justify-content-center">
-        {% for article in filter.qs %}
-        <div class="infinite-item my-auto mx-auto">
-        {% include "blog/article_template2.html" with article=article %}
-        </div>
-        {% endfor %}
-    </div>
-</div>
-{%include 'pagination.html' %}
+ {% include "blog/articles_template_tableau.html" with article_list=filter.qs %}
 
 {% endblock %}
