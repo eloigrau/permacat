@@ -9,18 +9,26 @@ import re
 from django.core import mail
 from actstream import actions
 
+def getMessage(action):
+    message = action.data['message']
+    if "a commenté" in message:
+        mess = message.split("a commenté ")
+        message = mess[1] + " a été commenté"
+    return message
+
 def getListeMailsAlerte():
     actions = Action.objects.filter(verb='emails')
     print('Nb ctions : '+ str(len(actions)))
     messagesParMails = {}
     for action in actions:
         for mail in action.data['emails']:
+            message = getMessage(action)
             if not mail in messagesParMails:
-                messagesParMails[mail] = [action.data['message'], ]
+                messagesParMails[mail] = [message, ]
             else:
                 for x in messagesParMails[mail]:
-                    if not action.data['message'] in messagesParMails[mail]:
-                        messagesParMails[mail].append(action.data['message'])
+                    if not message in messagesParMails[mail]:
+                        messagesParMails[mail].append(message)
 
 
     listeMails = []

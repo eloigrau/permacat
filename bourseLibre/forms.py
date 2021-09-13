@@ -156,7 +156,7 @@ class AdresseForm2(forms.ModelForm):
         return adresse
 
 class ProfilCreationForm(UserCreationForm):
-    username = forms.CharField(label="Pseudonyme*", help_text="Attention les majuscules sont importantes...")
+    username = forms.CharField(label="Pseudonyme*", help_text="Attention : Pas d'espace, et les majuscules sont importantes...")
     description = forms.CharField(label=None, help_text="Une description de vous même", required=False, widget=forms.Textarea)
     competences = forms.CharField(label=None, help_text="Par exemple: electricien, bouturage, aromatherapie, pépinieriste, etc...", required=False, widget=forms.Textarea, )
     site_web = forms.CharField(label="Votre site web", help_text="n'oubliez pas le https://", required=False)
@@ -205,7 +205,7 @@ class ProducteurChangeForm(UserChangeForm):
     password hash display field.
     """
     email = forms.EmailField(label="Email")
-    username = forms.CharField(label="Pseudonyme")
+    username = forms.CharField(label="Pseudonyme", help_text="Attention : Pas d'espace, et les majuscules sont importantes...")
     description = forms.CharField(label="Description", help_text="Une description de vous même",widget=SummernoteWidget , required=False)
     competences = forms.CharField(label="Savoir-faire", help_text="Par exemple: electricien, bouturage, aromatherapie, etc...",widget=SummernoteWidget, required=False)
     inscrit_newsletter = forms.BooleanField(required=False)
