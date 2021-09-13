@@ -57,7 +57,7 @@ Filtrer la liste des profils
     <div class="well">
       <div class="row">
           <div class="form-group col-sm-12">
-              {% if asso.abreviation != "pc" and request.user.dherent_pc%}
+              {% if asso.abreviation != "pc" and request.user.adherent_pc%}
               <div>
           {{ filter.form.adherent_pc.label_tag }}
             <label class="checkbox-inline">{% render_field filter.form.adherent_pc %}</label>
