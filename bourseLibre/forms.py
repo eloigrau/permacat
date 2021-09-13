@@ -201,8 +201,7 @@ class ProfilCreationForm(UserCreationForm):
 
 class ProducteurChangeForm(UserChangeForm):
     """A form for updating users. Includes all the fields on
-    the user, but replaces the password field with admin's
-    password hash display field.
+    the user, but replaces the password field with admin's password hash display field.
     """
     email = forms.EmailField(label="Email")
     username = forms.CharField(label="Pseudonyme", help_text="Attention : Pas d'espace, et les majuscules sont importantes...")
