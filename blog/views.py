@@ -243,7 +243,7 @@ def lireArticle(request, slug):
             article.save(sendMail=False)
             url = article.get_absolute_url()+"#idConversation"
             suffix = "_" + article.asso.abreviation
-            if discu.slug == 'discussion_generale':
+            if discu.slug == 'discussion-generale':
                 desc = "a réagi à l'article: '%s'" % article.titre
             else:
                 desc = "a réagi à l'article: (%s) '%s'" % (discu.titre, article.titre)
