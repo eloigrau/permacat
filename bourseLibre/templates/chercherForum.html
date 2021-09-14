@@ -44,7 +44,12 @@
     {% endif%}
 {%if commentaires_jardin_list %}
     <p>Dans les commentaires des articles du forum des jardins partagés ({{commentaires_jardin_list|length}})</p>
-
-    {% include "blog/articles_template_tableau.html" with article_list=commentaires_jardin_list %}
+    <div class="row ">
+        {% for comm in commentaires_jardin_list %}
+            <div class="col ">
+                {% include "jardinpartage/article_template_recherche.html" with article=comm.article %}
+            </div>
+        {% endfor %}
+    </div>
 {% endif%}
 {% endblock %}

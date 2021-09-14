@@ -295,7 +295,7 @@ class ListeArticles(ListView):
         if "ordreTri" in params:
             qs = qs.order_by(params['ordreTri'])
         else:
-            qs = sorted(qs, key=lambda x:x.derniereDate)[::-1]
+            qs = qs.order_by( '-date_creation', '-date_dernierMessage', 'categorie')
 
         self.qs = qs
         return qs
@@ -394,7 +394,7 @@ class ListeArticles_asso(ListView):
         if "ordreTri" in params:
             qs = qs.order_by(params['ordreTri'])
         else:
-            qs = sorted(qs, key=lambda x:x.derniereDate)[::-1]
+            qs = qs.order_by( '-date_creation', '-date_dernierMessage', 'categorie')
 
         self.qs = qs
         return qs.filter(estArchive=False)
