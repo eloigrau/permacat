@@ -166,7 +166,7 @@ def notifications_news_regroup(request):
         for action in actions :
             htmlArticles += "<li>"
             if action.description.startswith("a réagi"):
-                if "discussion" in action.data:
+                if "discussion" in action.data and action.data['discussion'] != 'Discussion Générale':
                     htmlArticles += "(" + action.data['discussion'] + ") "
                 htmlArticles += "commenté par "
 
