@@ -86,8 +86,7 @@
 
                             {% if request.user.adherent_pc %}
                        <li class="divider" role="separator"></li>
-                        <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='pc' %}"><i class='fa fa-address-book' ></i>  Annuaire  </a></li>
-                         <li><a class="dropdown-item" href="{% url 'carte'  asso='pc' %}"><i class='fa fa-compass' ></i>  Carte  </a></li>
+                         <li><a class="dropdown-item" href="{% url 'carte'  asso='pc' %}"><i class='fa fa-compass' ></i>  Carte / Annuaire  </a></li>
                          <li><a class="dropdown-item" href="{% url 'admin_asso' asso='pc' %}"><i class='fa fa-database' ></i> Administration  </a></li>
 
                         {% endif %}
@@ -109,8 +108,7 @@
                             <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='rtg'%}"><i class='fa fa-comments iconleft' ></i> Articles du forum</a></li>
                             <li><a class="dropdown-item" href="{% url 'blog:lireArticle' slug='dossiersactions-en-cours'%}"><i class='fa fa-comments iconleft' ></i> Dossiers en cours </a></li>
                           <li class="divider" role="separator"></li>
-                            <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='rtg' %}"><i class='fa fa-address-book iconleft' ></i> Annuaire  </a></li>
-                          <li> <a class="dropdown-item" href="{% url 'carte'  asso='rtg' %}"><i class='fa fa-compass iconleft' ></i>  Carte  </a></li>
+                          <li> <a class="dropdown-item" href="{% url 'carte'  asso='rtg' %}"><i class='fa fa-compass iconleft' ></i>  Carte / Annuaire </a></li>
                             <li class="divider" role="separator"></li>
                           <li> <a class="dropdown-item" href="https://1drv.ms/b/s!AgO84waSGnDoiDlHJeeJPxRRNJM_?e=ucgIvC" target="_blank"><i class='fa fa-info-circle iconleft' ></i>  Statuts  </a></li>
                             <li> <a class="dropdown-item" href="https://onedrive.live.com/?id=root&cid=E8701A9206E3BC03" target="_blank"><i class='fa fa-database iconleft' ></i> OneDrive  </a></li>
@@ -128,8 +126,7 @@
                             <li> <a class="dropdown-item" href="{% url 'agora' asso='fer'%}"><i class='fa fa-comment iconleft' ></i> Salon de discussion</a></li>
                             <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='fer'%}"><i class='fa fa-comments iconleft' ></i> Articles </a></li>
                         <li class="divider" role="separator"></li>
-                          <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='fer' %}"><i class='fa fa-address-book iconleft' ></i> Annuaire  </a></li>
-                          <li> <a class="dropdown-item" href="{% url 'carte'  asso='fer' %}"><i class='fa fa-compass iconleft' ></i>  Carte  </a></li>
+                          <li> <a class="dropdown-item" href="{% url 'carte'  asso='fer' %}"><i class='fa fa-compass iconleft' ></i>  Carte / Annuaire </a></li>
 
    {% endif %}
                       </ul>
@@ -144,8 +141,7 @@
                             <li> <a class="dropdown-item" href="{% url 'agora' asso='fer'%}"><i class='fa fa-commnent iconleft' ></i> Salon de discussion</a></li>
                             <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='gt'%}"><i class='fa fa-comments iconleft' ></i> Articles </a></li>
                         <li class="divider" role="separator"></li>
-                          <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='gt' %}"><i class='fa fa-address-book iconleft' ></i> Annuaire  </a></li>
-                          <li> <a class="dropdown-item" href="{% url 'carte'  asso='gt' %}"><i class='fa fa-compass iconleft' ></i>  Carte  </a></li>
+                          <li> <a class="dropdown-item" href="{% url 'carte'  asso='gt' %}"><i class='fa fa-compass iconleft' ></i>  Carte / Annuaire  </a></li>
 
    {% endif %}
                       </ul>
@@ -160,6 +156,7 @@
                             <li><a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=1 %}"><i class='fa fa-pagelines' ></i> Jardi Per tots</a></li>
                             <li><a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=2 %}"><i class='fa fa-pagelines' ></i> Jardin de Palau </a></li>
                             <li><a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=3 %}"><i class='fa fa-pagelines' ></i> Jardin de Lurçat </a></li>
+                            <li><a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=4 %}"><i class='fa fa-pagelines' ></i> Gardiens de la Terre </a></li>
                         </ul>
                     </li>
                     {%endcomment%}
@@ -174,8 +171,7 @@
                             <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='scic'%}"><i class='fa fa-comments iconleft' ></i> Articles du forum</a></li>
 
                           <li class="divider" role="separator"></li>
-                            <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='scic' %}"><i class='fa fa-address-book iconleft' ></i> Annuaire  </a></li>
-                          <li> <a class="dropdown-item" href="{% url 'carte'  asso='scic' %}"><i class='fa fa-compass iconleft' ></i>  Carte  </a></li>
+                          <li> <a class="dropdown-item" href="{% url 'carte'  asso='scic' %}"><i class='fa fa-compass iconleft' ></i>  Carte / Annuaire  </a></li>
                             <li class="divider" role="separator"></li>
    {% endif %}
                         </ul>
@@ -191,8 +187,7 @@
                             <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='citealt'%}"><i class='fa fa-comments iconleft' ></i> Articles du forum</a></li>
 
                           <li class="divider" role="separator"></li>
-                            <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='citealt' %}"><i class='fa fa-address-book iconleft' ></i> Annuaire  </a></li>
-                          <li> <a class="dropdown-item" href="{% url 'carte'  asso='citealt' %}"><i class='fa fa-compass iconleft' ></i>  Carte  </a></li>
+                          <li> <a class="dropdown-item" href="{% url 'carte'  asso='citealt' %}"><i class='fa fa-compass iconleft' ></i>  Carte / Annuaire  </a></li>
                             <li class="divider" role="separator"></li>
    {% endif %}
                         </ul>
@@ -318,8 +313,7 @@
              {% fontawesome_icon 'globe' %} Site
             </a>
             <ul class="dropdown-menu dropdown-menu1 nav6-dropdown" aria-labelledby="navbarAbout2" id="dropdoownSite">
-               <li> <a class="dropdown-item" href="{% url 'annuaire'  asso='public' %}"><i class='fa fa-address-book' ></i> Annuaire </a></li>
-                <li> <a class="dropdown-item" href="{% url 'carte'  asso='public' %}"><i class='fa fa-compass' ></i>  Carte </a></li>
+                <li> <a class="dropdown-item" href="{% url 'carte'  asso='public' %}"><i class='fa fa-compass' ></i>  Carte / Annuaire </a></li>
                 <li class="divider" role="separator"></li>
                <li> <a class="dropdown-item" href="{% url 'presentation_site_pkoi' %}"> Pourquoi utiliser le site ? </a></li>
                <li> <a class="dropdown-item" href="{% url 'presentation_site_conseils' %}"> Conseils d'utilisation </a></li>
