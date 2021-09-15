@@ -21,7 +21,6 @@ class ProfilCarteFilter(django_filters.FilterSet):
     def get_competencedesritpion_filter(self, queryset, field_name, value):
         return queryset.filter(Q(description__icontains=value)|Q(competences__icontains=value))
 
-
     class Meta:
         model = Profil
         fields = {
