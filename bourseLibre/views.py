@@ -447,8 +447,9 @@ def carte(request, asso):
     asso=testIsMembreAsso(request, asso)
     if not isinstance(asso, Asso):
         raise PermissionDenied
-    profils = asso.getProfils_Annuaire()
+    profils = asso.getProfils()
     nbProf = len(profils)
+    profils = asso.getProfils_Annuaire()
 
     profils_filtres = ProfilCarteFilter(request.GET, queryset=profils)
 
