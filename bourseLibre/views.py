@@ -456,7 +456,7 @@ def carte(request, asso):
     profils_filtres = ProfilCarteFilter(request.GET, queryset=profils)
 
     if asso.abreviation == "public":
-        titre = "Carte des coopérateurs du site (%d)*"%len(profils)
+        titre = "Carte des inscrits du site (%d/%d)*"%(len(profils), nbProf)
 
     try:
         import simplejson
