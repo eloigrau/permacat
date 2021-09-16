@@ -81,8 +81,16 @@ class ArticleForm(forms.ModelForm):
         fields = ['asso', 'categorie', 'titre', 'contenu', 'start_time', 'end_time', 'estModifiable', 'tags']
         widgets = {
             'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'type':'date', }),
-              'end_time': forms.DateInput(attrs={'type':'date', }),
+              'start_time':  forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
+              'end_time': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
 
            # 'bar': SummernoteInplaceWidget(),
         }
@@ -128,8 +136,16 @@ class ArticleChangeForm(forms.ModelForm):
         fields = ['asso', 'categorie', 'titre', 'contenu', 'album', 'start_time', 'end_time',  'tags', 'estModifiable', 'estArchive']
         widgets = {
             'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'type':'date', }),
-              'end_time': forms.DateInput(attrs={'type':'date', }),
+            'start_time': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
+              'end_time': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
         }
 
 class ArticleAddAlbum(forms.ModelForm):
@@ -189,8 +205,16 @@ class ProjetForm(forms.ModelForm):
         fields = ['asso', 'categorie', 'coresponsable', 'titre', 'contenu', 'statut', 'tags',  'start_time']
         widgets = {
         'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'type':'date', }),
-              'end_time': forms.DateInput(attrs={'type':'date', }),
+              'start_time':forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
+              'end_time': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
         }
 
     def __init__(self, request, *args, **kwargs):
@@ -225,8 +249,16 @@ class ProjetChangeForm(forms.ModelForm):
         fields = ['asso', 'categorie', 'coresponsable', 'titre', 'contenu', 'tags', 'lien_document', 'start_time', 'end_time', 'estArchive']
         widgets = {
             'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'type':'date', }),
-              'end_time': forms.DateInput(attrs={'type':'date', }),
+              'start_time': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
+              'end_time': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
         }
 
 class CommentProjetForm(forms.ModelForm):
@@ -263,7 +295,11 @@ class EvenementForm(forms.ModelForm):
         model = Evenement
         fields = ['start_time', 'titre_even', 'article', ]
         widgets = {
-            'start_time': forms.DateInput(attrs={'type': 'date'}),
+            'start_time': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
         }
 
     def save(self, request):
@@ -276,8 +312,16 @@ class EvenementArticleForm(forms.ModelForm):
         model = Evenement
         fields = ['start_time', 'titre_even', ]
         widgets = {
-            'start_time': forms.DateInput(attrs={'type': 'date'}),
-            'end_time': forms.DateInput(attrs={'type': 'date'}),
+            'start_time':forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
+            'end_time': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
         }
 
     def save(self, request, id_article):

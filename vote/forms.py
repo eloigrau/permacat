@@ -18,8 +18,16 @@ class SuffrageForm(forms.ModelForm):
         fields = ['asso', 'type_vote', 'titre', 'description', 'estAnonyme', 'start_time', 'end_time']
         widgets = {
             'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'type': 'date'}),
-              'end_time': forms.DateInput(attrs={'type': 'date'}),
+              'start_time': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
+              'end_time': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
         }
 
     def clean(self):
@@ -61,8 +69,16 @@ class SuffrageChangeForm(forms.ModelForm):
         fields = [ 'asso', 'type_vote', 'titre', 'description', 'start_time', 'end_time', 'estAnonyme',  'estArchive']
         widgets = {
             'contenu': SummernoteWidget(),
-              'start_time': forms.DateInput(attrs={'type':"date", }),
-              'end_time': forms.DateInput(attrs={'type':'date', }),
+              'start_time': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
+              'end_time': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
         }
 
     def save(self, userProfile):

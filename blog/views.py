@@ -121,10 +121,13 @@ class ModifierArticle(UpdateView):
     model = Article
     form_class = ArticleChangeForm
     template_name_suffix = '_modifier'
-#    fields = ['user','site_web','description', 'competences', 'adresse', 'avatar', 'inscrit_newsletter']
 
-    def get_object(self):
-        return Article.objects.get(slug=self.kwargs['slug'])
+    def get_initial(self):
+        """initialize your's form values here"""
+
+        base_initial = super().get_initial()
+        base_initial['start_time'] = self.object.start_time
+        return base_initial
 
     def form_valid(self, form):
         self.object = form.save()
