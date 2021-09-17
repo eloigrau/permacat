@@ -14,4 +14,4 @@ def carte(request):
     data = simplejson.loads(reponse.text)
     ev = data["data"]
 
-    return render(request, 'carte.html', {'data':ev, 'titre': "La carte des colibris dans la région (presdecheznous.fr))" } )
+    return render(request, 'carte.html', {'data':ev, 'titre': "La carte des colibris dans la région (presdecheznous.fr)" } )

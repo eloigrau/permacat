@@ -1,4 +1,4 @@
-{% extends 'base_asso.html' %}
+{% extends 'base_projets.html' %}
     {% load static %}
 {% load blog_filters %}
 {% load activity_tags %}
@@ -10,19 +10,7 @@
 <script src="{% static 'js/infinite.min.js' %}"></script>
 {%endblock%}
 
-{%block banniere %}
-	<div class="row row_banniere_ordi" >
-		<div class="col col-xs-12 d-flex justify-content-around">
-            <img  src="{% static 'img/banniere/projets_ordi.png' %}" width="280" height="150" alt="Logo_projets"/>
-            <img  src="{% static 'img/banniere/projets.png' %}" height="150" alt="Logo_projets"/>
-        </div>
-    </div>
-	<div class="row row_banniere_smartphone">
-		<div class="col col-xs-12 d-flex justify-content-center">
-            <img class="img_banniere_smartp" src="{% static 'img/banniere/projets_smart.png' %}" height="180" alt="Logo_projets"/>
-        </div>
-    </div>
-{% endblock  %}
+
 {%block subtitle%}
 <div class="container-fluid">
 

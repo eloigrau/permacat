@@ -127,6 +127,7 @@
     {% include 'vote/template_questions.html' %}
     {% if vote %}
     <hr>
+    {% if suffrage.get_statut.0 == 1 %}
         {% if vote.commentaire %}
         <h5>Mon commentaire</h5>
         <div>
@@ -134,8 +135,9 @@
         </div>
         {% endif %}
     {% else %}
-        <h5>Je n'ai pas participé au vote</h5>
+        <h5>(Je n'ai pas commenté le suffrage)</h5>
     {% endif %}
+        {% endif %}
 
 <div class="row justify-content-center">
 <div class="col-sm-12 textcenter">

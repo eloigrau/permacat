@@ -104,8 +104,8 @@ class SuffrageBase(models.Model):
     estArchive = models.BooleanField(default=False, verbose_name="Archiver la proposition")
     estAnonyme = models.BooleanField(default=False, verbose_name="Vote anonyme")
 
-    start_time = models.DateField(verbose_name="Date de début", null=True,blank=False, help_text="jj/mm/année")
-    end_time = models.DateField(verbose_name="Date de fin",  null=True,blank=False, help_text="jj/mm/année")
+    start_time = models.DateField(verbose_name="Date de début du vote", null=True,blank=False, help_text="jj/mm/année")
+    end_time = models.DateField(verbose_name="Date de fin du vote",  null=True,blank=False, help_text="jj/mm/année")
     asso = models.ForeignKey(Asso, on_delete=models.SET_NULL, null=True)
 
     class Meta:
@@ -162,8 +162,8 @@ class Suffrage(SuffrageBase):
 
     @property
     def get_statut(self):
-        if self.start_time < timezone.now():
-            if self.end_time > timezone.now():
+        if self.start_time < timezone.now().date():
+            if self.end_time > timezone.now().date():
                 statut = (0, "Le vote est en cours ")
             else:
                 statut = (1, "Le vote est terminé ")

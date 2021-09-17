@@ -34,7 +34,7 @@ class SuffrageForm(forms.ModelForm):
         cleaned_data = super().clean()
         date_debut = cleaned_data.get("start_time")
         date_expiration = cleaned_data.get("end_time")
-        if date_debut < now():
+        if date_debut < now().date():
             raise forms.ValidationError('Le suffrage ne peut pas démarrer avant demain')
 
         if date_expiration <= date_debut:

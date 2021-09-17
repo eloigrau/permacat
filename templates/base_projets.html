@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+    {%block bodyEntete%}
+<body style="background-image:linear-gradient(40deg, #66ff99, white);">
+    {%endblock%}
+{%block banniere %}
+	<div class="row row_banniere_ordi" >
+		<div class="col col-xs-12 d-flex justify-content-around">
+            <img  src="{% static 'img/banniere/projets_ordi.png' %}" width="280" height="150" alt="Logo_projets"/>
+            <img  src="{% static 'img/banniere/projets.png' %}" height="150" alt="Logo_projets"/>
+        </div>
+    </div>
+	<div class="row row_banniere_smartphone">
+		<div class="col col-xs-12 d-flex justify-content-center">
+            <img class="img_banniere_smartp" src="{% static 'img/banniere/projets_smart.png' %}" height="180" alt="Logo_projets"/>
+        </div>
+    </div>
+{% endblock  %}

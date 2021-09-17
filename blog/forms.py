@@ -196,7 +196,7 @@ class CommentaireArticleChangeForm(forms.ModelForm):
 
     class Meta:
      model = Commentaire
-     exclude = ['article', 'auteur_comm']
+     exclude = ['article', 'auteur_comm', 'discussion']
 
 class ProjetForm(forms.ModelForm):
     asso = forms.ModelChoiceField(queryset=Asso.objects.all(), required=True,

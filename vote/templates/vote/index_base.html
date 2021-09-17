@@ -1,4 +1,4 @@
-{% extends 'base_asso.html' %}
+{% extends 'vote/baseVote.html' %}
 {% load static %}
 {% load blog_filters %}
 {% load vote_filters %}
@@ -11,19 +11,6 @@
 <script src="{% static 'js/infinite.min.js' %}"></script>
     {%endblock%}
 
-{%block banniere %}
-	<div class="row row_banniere_ordi" >
-		<div class="col col-xs-12 d-flex justify-content-around">
-            <img  src="{% static 'img/banniere/suffrage_ordi.png' %}" width="280" height="150" alt="Logo_suffrages"/>
-            <img  src="{% static 'img/banniere/suffrage.png' %}" height="150" alt="Logo_suffrages"/>
-        </div>
-    </div>
-	<div class="row row_banniere_smartphone">
-		<div class="col col-xs-12 d-flex justify-content-center">
-            <img class="img_banniere_smartp" src="{% static 'img/banniere/suffrage_smart.png' %}" height="180" alt="Logo_suffrages"/>
-        </div>
-    </div>
-{% endblock  %}
 {%block subtitle%}
 	<div class="row justify-content-center">
 		<div class="sol-sm-12 col-md-8 offset-md-2  textcenter">
