@@ -17,6 +17,7 @@ class Choix:
                    ('Documentation','Documentation'),  ('covoit','Covoiturage'), \
                     ('Point', 'Idée / Point de vue'),  ('Recette', 'Recette'), ('BonPlan','Bon Plan / achat groupé'), \
                      ('Divers','Divers')
+    type_annonce_citealt_groupes = ('groupe1', "Groupe de Perpignan"), ('groupe2', "Groupe des Albères"), ('groupe3', "Groupe des Aspres"), ('groupe4', "Groupe du Vallespir"),  ('groupe5', "Groupe du Ribéral"),  ('groupe6', "Groupe du Conflent"),('groupe6', "Groupe de la côte"),
     type_annonce_projets = ('Altermarché', 'Altermarché'),  ('Ecovillage', 'Ecovillage'), \
                    ('Jardin', 'Jardins partagés'), #('KitPerma', 'Kit Perma Ecole'),
 
@@ -26,10 +27,10 @@ class Choix:
         "scic": type_annonce_base,
         "rtg": type_annonce_base,
         "gt": type_annonce_base,
-        "citealt": type_annonce_base,
+        "citealt": type_annonce_base + type_annonce_citealt_groupes,
     }
 
-    type_annonce = type_annonce_base
+    type_annonce = type_annonce_base + type_annonce_citealt_groupes
     couleurs_annonces = {
        # 'Annonce':"#e0f7de", 'Administratif':"#dcc0de", 'Agenda':"#d4d1de", 'Entraide':"#cebacf",
        # 'Chantier':"#d1ecdc",'Jardinage':"#fcf6bd", 'Recette':"#d0f4de", 'Bricolage':"#fff2a0",

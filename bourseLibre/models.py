@@ -417,7 +417,7 @@ class Produit(models.Model):  # , BaseProduct):
     prix = models.DecimalField(max_digits=8, decimal_places=2, default=0, blank=True, validators=[MinValueValidator(0), ])
     unite_prix = models.CharField(
         max_length=8,
-        choices = Choix.monnaies,
+        choices=Choix.monnaies,
         default='lliure', verbose_name="monnaie"
     )
 

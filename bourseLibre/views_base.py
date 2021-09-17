@@ -142,9 +142,26 @@ class DeleteAccess:
     def delete(self, request, *args, **kwargs):
         # the Post object
         self.object = self.get_object()
-        if self.object.auteur == request.user or request.user.is_superuser:
-            success_url = self.get_success_url()
-            self.object.delete()
-            return HttpResponseRedirect(success_url)
+        if hasattr(self.object, 'auteur'):
+            if self.object.auteur == request.user or request.user.is_superuser:
+                success_url = self.get_success_url()
+                self.object.delete()
+                return HttpResponseRedirect(success_url)
+            else:
+                return HttpResponseForbidden("Vous n'avez pas l'autorisation de supprimer cet item")
+        elif hasattr(self.object, 'user'):
+            if self.object.user == request.user or request.user.is_superuser:
+                success_url = self.get_success_url()
+                self.object.delete()
+                return HttpResponseRedirect(success_url)
+            else:
+                return HttpResponseForbidden("Vous n'avez pas l'autorisation de supprimer cet item")
         else:
-            return HttpResponseForbidden("Vous n'avez pas l'autorisation de supprimer cet item")
+            if self.object == request.user or request.user.is_superuser:
+                success_url = self.get_success_url()
+                self.object.delete()
+                return HttpResponseRedirect(success_url)
+            else:
+                return HttpResponseForbidden("Vous n'avez pas l'autorisation de supprimer cet item")
+
+
