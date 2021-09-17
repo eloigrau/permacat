@@ -197,26 +197,26 @@
                     </li>
                 </ul>
         </li>
-        <li class="nav-item dropdown nav5 3to5">
+        <li class="nav-item dropdown nav8">
             <a class="nav-link dropdown-toggle navbar-menu "  href="{% url 'blog:acceuil' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-wrench iconleft" ></i> Activités
             </a>
 
-            <ul class="dropdown-menu dropdown-menu1 nav5-dropdown" aria-labelledby="navbarDropdownMenuLink">
+            <ul class="dropdown-menu dropdown-menu1 nav8-dropdown" aria-labelledby="navbarDropdownMenuLink">
                 <li class="dropdown-submenu">
                     <a class="dropdown-item dropdown-toggle"  href="test">Projets</a>
-                    <ul class="dropdown-menu nav5-dropdown-submenu">
+                    <ul class="dropdown-menu nav8-dropdown-submenu">
                         <li> <a class="dropdown-item" href="{% url 'blog:index_projets' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les projets </a></li>
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle"  href="test">Projets acceptés</a>
-                        <ul class="dropdown-menu nav5-dropdown-subsubmenu">
+                        <ul class="dropdown-menu nav8-dropdown-subsubmenu">
 
 
                         {% for projet in liste_projets %}
                          {% if projet.slug == "un-jardin-partage-en-permaculture-accessible-a-tous" or projet.slug == "jardin-de-permacat-a-perpignan" or projet.slug == "jardins-partages-a-perpignan-au-champ-de-mars" %}
                            <li class="dropdown-submenu">
                                 <a class="dropdown-item dropdown-toggle"  href="test">{{projet.titre|couperTexte:40}}</a>
-                               <ul class="dropdown-menu nav5-dropdown-subsubmenu">
+                               <ul class="dropdown-menu nav8-dropdown-subsubmenu">
                                    <li> <a class="dropdown-item" href="{% url 'blog:lireProjet' slug=projet.slug %}"><i class='fa fa-folder-open' ></i>  Fiche Projet</a></li>
                                    <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin='1' %}"><i class='fa fa-pagelines' ></i>  Blog du Jardi Per Tots</a></li>
                                    <li> <a class="dropdown-item" href="{% url 'blog:index' %}?categorie=Jardin"><i class='fa fa-comments' ></i>  Articles des jardins partagés sur le forum</a></li>
@@ -226,7 +226,7 @@
 
                            <li class="dropdown-submenu">
                                 <a class="dropdown-item dropdown-toggle"  href="test">{{projet.titre|couperTexte:40}}</a>
-                                    <ul class="dropdown-menu nav5-dropdown-subsubmenu">
+                                    <ul class="dropdown-menu nav8-dropdown-subsubmenu">
                                    <li> <a class="dropdown-item" href="{% url 'blog:lireProjet' slug=projet.slug %}"><i class='fa fa-folder-open' ></i>  Fiche Projet</a></li>
                                    <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin='2' %}"><i class='fa fa-pagelines' ></i>  Blog du jardin de Palau</a></li>
                                    <li> <a class="dropdown-item" href="{% url 'blog:index' %}?categorie=Jardin"><i class='fa fa-comments' ></i>  Articles des jardins partagés sur le forum</a></li>
@@ -236,7 +236,7 @@
 
                            <li class="dropdown-submenu">
                                 <a class="dropdown-item dropdown-toggle"  href="test">{{projet.titre|couperTexte:40}}</a>
-                                <ul class="dropdown-menu nav5-dropdown-subsubmenu">
+                                <ul class="dropdown-menu nav8-dropdown-subsubmenu">
                                    <li> <a class="dropdown-item" href="{% url 'blog:lireProjet' slug=projet.slug %}" ><i class='fa fa-folder-open' ></i>  Fiche Projet</a></li>
                                    <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin='3' %}"><i class='fa fa-pagelines' ></i>  Blog du jardin de Lurçat</a></li>
                                    <li> <a class="dropdown-item" href="{% url 'blog:index' %}?categorie=Jardin"><i class='fa fa-comments' ></i>  Articles des Jardins Partagés sur le forum</a></li>
@@ -246,13 +246,13 @@
                             {% elif projet.slug == "projet-eco-lieu" %}
                            <li class="dropdown-submenu">
                                 <a class="dropdown-item dropdown-toggle"  href="test">{{projet.titre|couperTexte:40}}</a>
-                                    <ul class="dropdown-menu nav5-dropdown-subsubmenu">
+                                    <ul class="dropdown-menu nav8-dropdown-subsubmenu">
                                    <li> <a class="dropdown-item" href="{% url 'blog:lireProjet' slug=projet.slug %}"><i class='fa fa-folder-open' ></i>  Fiche Projet</a></li>
                                    <li> <a class="dropdown-item" href="{% url 'blog:index' %}?categorie=Ecovillage"><i class='fa fa-comments' ></i>  Articles du forum</a></li>
                                 </ul>
                             </li>
                         {%else  %}
-                            <li><a class=" dropdown-item nav5-dropdown-subsubmenu" href="{% url 'blog:lireProjet' slug=projet.slug %}"><span>{{projet.titre|truncatechars:45}}</span></a></li>
+                            <li><a class=" dropdown-item nav8-dropdown-subsubmenu" href="{% url 'blog:lireProjet' slug=projet.slug %}"><span>{{projet.titre|truncatechars:45}}</span></a></li>
 
                         {%endif  %}
 
@@ -262,7 +262,7 @@
 
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle" href="test">Projets Proposés </a>
-                        <ul class="dropdown-menu nav5-dropdown-subsubmenu">
+                        <ul class="dropdown-menu nav8-dropdown-subsubmenu">
                            {% for projet in liste_projets_prop %}
                             <li><a class=" dropdown-item " style="background:{{projet.get_couleur}};" href="{% url 'blog:lireProjet' slug=projet.slug %}"><span>{{projet.titre|truncatechars:45}}</span></a></li>
                             {% endfor %}
@@ -272,7 +272,7 @@
                 </li>
                 <li class="dropdown-submenu">
                     <a class="dropdown-item dropdown-toggle"  href="test">Jardins Partagés</a>
-                    <ul class="dropdown-menu nav5-dropdown-submenu">
+                    <ul class="dropdown-menu nav8-dropdown-submenu">
                         <li> <a class="dropdown-item" href="{% url 'jardinpartage:index' %}"><i class='fa fa-folder-open iconleft' ></i>  Blog des jardins Partagés </a></li>
                         <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=1 %}"><i class='fa fa-pagelines' ></i> Jardi Per tots</a></li>
                         <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=2 %}"><i class='fa fa-pagelines' ></i> Jardin de Palau </a></li>
@@ -282,7 +282,7 @@
                 </li>
                 <li class="dropdown-submenu">
                     <a class="dropdown-item dropdown-toggle"  href="test">Ateliers </a>
-                    <ul class="dropdown-menu nav5-dropdown-submenu">
+                    <ul class="dropdown-menu nav8-dropdown-submenu">
                         <li><a class="dropdown-item" href="{% url 'ateliers:index_ateliers' %}"><i class='fa fa-folder-open iconleft' ></i>  Tous les ateliers </a></li>
                         {% for atelier in liste_ateliers %}
                         <li><a class=" dropdown-item " href="{%url 'ateliers:lireAtelier' slug=atelier.slug %}"><span>{{atelier.titre}} {% if atelier.start_time %}({{ atelier.start_time|date:"d/m" }}){% endif %} </span></a></li>
@@ -291,13 +291,13 @@
                 </li>
                 <li class="dropdown-submenu">
                     <a class="dropdown-item dropdown-toggle"  href="test">Suffrages </a>
-                    <ul class="dropdown-menu nav5-dropdown-submenu">
+                    <ul class="dropdown-menu nav8-dropdown-submenu">
                             <li><a class="dropdown-item" href="{% url 'vote:index' %}"><i class="fa fa-bullhorn iconleft"></i>  Liste des suffrages </a></li>
                     </ul>
                 </li>
                 <li class="dropdown-submenu">
                     <a class="dropdown-item dropdown-toggle"  href="test">Documents </a>
-                    <ul class="dropdown-menu nav5-dropdown-submenu">
+                    <ul class="dropdown-menu nav8-dropdown-submenu">
                         <li><a class="dropdown-item" href="{% url 'photologue:album-list' %}"> Albums photo</a></li>
                         <li><a class="dropdown-item" href="{% url 'photologue:doc-list' %}"> Autres documents </a></li>
                     </ul>
