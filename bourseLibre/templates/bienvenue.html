@@ -9,6 +9,21 @@
 {%block bodyEntete%}
 <body style="background-image:linear-gradient(40deg, white, #f2f2f2);">
 {%endblock%}
+
+{%block banniere %}
+	<div class="row row_banniere_ordi" >
+		<div class="col col-xs-12 d-flex justify-content-around">
+            <img  src="{% static 'img/banniere/accueil_ordi.png' %}" width="280" height="150" alt="Forum"/>
+            <img  src="{% static 'img/banniere/accueil.png' %}" height="150" alt="Forum"/>
+        </div>
+    </div>
+	<div class="row row_banniere_smartphone">
+		<div class="col col-xs-12 d-flex justify-content-center">
+            <img class="img_banniere_smartp" src="{% static 'img/banniere/accueil_smart.png' %}" height="180" alt="Forum"/>
+        </div>
+    </div>
+{% endblock  %}
+
 {% block subtitle %}
 <div class="row">
 	<div class="col-md-12">

@@ -9,13 +9,46 @@
 <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
 <script src="{% static 'js/infinite.min.js' %}"></script>
 {%endblock%}
-{%block subtitle%}
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-md-12 textcenter">
-            <h4>Les projets </h4>
+
+{%block banniere %}
+	<div class="row row_banniere_ordi" >
+		<div class="col col-xs-12 d-flex justify-content-around">
+            <img  src="{% static 'img/banniere/projets_ordi.png' %}" width="280" height="150" alt="Forum"/>
+            <img  src="{% static 'img/banniere/projets.png' %}" height="150" alt="Forum"/>
         </div>
     </div>
+	<div class="row row_banniere_smartphone">
+		<div class="col col-xs-12 d-flex justify-content-center">
+            <img class="img_banniere_smartp" src="{% static 'img/banniere/projets_smart.png' %}" height="180" alt="Forum"/>
+        </div>
+    </div>
+{% endblock  %}
+{%block subtitle%}
+<div class="container-fluid">
+
+<div class="row align-items-center">
+<div class="col-sm-12 textcenter">
+        <a href="{% url 'blog:ajouterNouveauProjet' %}">
+        <button type="button" class="btn btn-success" >
+                <i class="fa fa-plus"></i> Proposer un projet
+            </button>
+            </a>
+&nbsp;
+            <a href="{% url 'blog:suivre_projets' %}">
+
+            {% if request.user|is_following:suivis %}
+            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné :Cliquez pour arreter de recevoir un mail à chaque nouvel article">
+                 {% fontawesome_icon 'bell' %}
+            </button>
+            {% else %}
+            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné :Cliquez pour recevoir un mail à chaque nouvel article">
+                 {% fontawesome_icon 'bell-slash' %}
+            </button>
+            {% endif %}
+                </a>
+</div>
+</div>
+    <hr>
 <div class="row align-items-center">
 <div class="col-sm-12 textcenter">
     <nav class="navbar navbar-expand-lg justify-content-center  navbar-light bg-light">
@@ -92,32 +125,6 @@
     </nav>
 </div>
 </div>
-<hr>
-<div class="row align-items-center">
-<div class="col-sm-12 textcenter">
-        <a href="{% url 'blog:ajouterNouveauProjet' %}">
-        <button type="button" class="btn btn-success" >
-                <i class="fa fa-plus"></i> Proposer un projet
-            </button>
-            </a>
-&nbsp;
-            <a href="{% url 'blog:suivre_projets' %}">
-
-            {% if request.user|is_following:suivis %}
-            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné :Cliquez pour arreter de recevoir un mail à chaque nouvel article">
-                 {% fontawesome_icon 'bell' %}
-            </button>
-            {% else %}
-            <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné :Cliquez pour recevoir un mail à chaque nouvel article">
-                 {% fontawesome_icon 'bell-slash' %}
-            </button>
-            {% endif %}
-                </a>
-</div>
-</div>
-    {%if not request.user.adherent_pc %}
-<p><small>(vous n'avez pas encore accès aux projets "Permacat"... Rejoignez-nous ! :)</small></p>
-    {%endif%}
 </div>
 {%endblock%}
 {% block content %}

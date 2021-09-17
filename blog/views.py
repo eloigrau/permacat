@@ -845,7 +845,7 @@ def ajouterAdresseArticle(request, id_article):
         else:
             adresse = form_adresse2.save()
         form.save(article, adresse)
-        return lireArticle_id(request, id_article)
+        return redirect(article)
 
     return render(request, 'blog/ajouterAdresse.html', {'article':article, 'form': form, 'form_adresse':form_adresse, 'form_adresse2':form_adresse2 })
 

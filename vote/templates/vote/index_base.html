@@ -10,12 +10,42 @@
 <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
 <script src="{% static 'js/infinite.min.js' %}"></script>
     {%endblock%}
+
+{%block banniere %}
+	<div class="row row_banniere_ordi" >
+		<div class="col col-xs-12 d-flex justify-content-around">
+            <img  src="{% static 'img/banniere/suffrage_ordi.png' %}" width="280" height="150" alt="Forum"/>
+            <img  src="{% static 'img/banniere/suffrage.png' %}" height="150" alt="Forum"/>
+        </div>
+    </div>
+	<div class="row row_banniere_smartphone">
+		<div class="col col-xs-12 d-flex justify-content-center">
+            <img class="img_banniere_smartp" src="{% static 'img/banniere/suffrage_smart.png' %}" height="180" alt="Forum"/>
+        </div>
+    </div>
+{% endblock  %}
 {%block subtitle%}
 	<div class="row justify-content-center">
 		<div class="sol-sm-12 col-md-8 offset-md-2  textcenter">
-            <h3>Suffrages</h3>
+    <a href="{% url 'vote:ajouterSuffrage' %}">
+        <button type="button" class="btn  btn-success" >
+        <i class="fa fa-plus"></i> Ajouter un suffrage
+        </button>
+    </a>
        </div>
 		<div class="sol-sm-12 col-md-2 textcenter">
+
+     <a href="{% url 'vote:suivre_suffrages' %}">
+    {% if request.user|is_following:suivis %}
+    <button type="button" class="btn btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné : Cliquez pour arreter de recevoir un mail à chaque nouvel article">
+         {% fontawesome_icon 'bell' %}
+    </button>
+    {% else %}
+    <button type="button" class="btn btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné : Cliquez pour recevoir un mail à chaque nouvel article">
+         {% fontawesome_icon 'bell-slash' %}
+    </button>
+    {% endif %}
+     </a>
         <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#help" title="En savoir plus...">
                  {% fontawesome_icon 'question-circle' %}
         </button>
@@ -46,28 +76,6 @@
           </div>
         </div>
     </div>
-</div>
-<hr>
-<div class="row align-items-center">
-<div class="col-md-12 textcenter">
-    <a href="{% url 'vote:ajouterSuffrage' %}">
-        <button type="button" class="btn  btn-success" >
-        <i class="fa fa-plus"></i> Ajouter un suffrage
-        </button>
-    </a>
-
-     <a href="{% url 'vote:suivre_suffrages' %}">
-    {% if request.user|is_following:suivis %}
-    <button type="button" class="btn btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné : Cliquez pour arreter de recevoir un mail à chaque nouvel article">
-         {% fontawesome_icon 'bell' %}
-    </button>
-    {% else %}
-    <button type="button" class="btn btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné : Cliquez pour recevoir un mail à chaque nouvel article">
-         {% fontawesome_icon 'bell-slash' %}
-    </button>
-    {% endif %}
-     </a>
-</div>
 </div>
 <hr>
 	<div class="row align-items-center">

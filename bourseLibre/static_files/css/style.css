@@ -791,6 +791,7 @@ a article_carte:active {
     .grid-container2 {
         grid-template-columns: 100% ;
     }
+
 }
 
 @media (min-width: 600px) {
@@ -800,6 +801,7 @@ a article_carte:active {
     .grid-container2 {
         grid-template-columns: 50% 50%;
     }
+
 }
 @media (min-width: 1200px) {
     .grid-container {
@@ -1862,3 +1864,31 @@ table.comicGreen thead td {
 line-height:2em;
 padding-bottom:10px;
 }
+
+
+@media(max-width: 960px) {
+    .row_banniere_ordi{
+        display:none;
+    }
+    .row_banniere_smartphone{
+        display:flex;
+    }
+}
+@media(min-width: 961px) {
+    .row_banniere_ordi{
+        display:flex;
+    }
+    .row_banniere_smartphone{
+        display:none;
+    }
+}
+
+@media(max-width: 500px) {
+    .img_banniere_smartp{
+        width:100%;
+        height:auto;
+    }
+}
+ .btn-chercher{
+ display: block !important;
+ }

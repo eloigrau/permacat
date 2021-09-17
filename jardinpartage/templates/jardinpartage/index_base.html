@@ -8,13 +8,31 @@
 <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
 <script src="{% static 'js/infinite.min.js' %}"></script>
     {%endblock%}
+
+{%block banniere %}
+	<div class="row row_banniere_ordi" >
+		<div class="col col-xs-12 d-flex justify-content-around">
+            <img  src="{% static 'img/banniere/jardin_ordi.png' %}" width="280" height="150" alt="Forum"/>
+            <img  src="{% static 'img/banniere/jardin.png' %}" height="150" alt="Forum"/>
+        </div>
+    </div>
+	<div class="row row_banniere_smartphone">
+		<div class="col col-xs-12 d-flex justify-content-center">
+            <img class="img_banniere_smartp" src="{% static 'img/banniere/jardin_smart.png' %}" height="180" alt="Forum"/>
+        </div>
+    </div>
+{% endblock  %}
 {%block subtitle%}
 
 <div class="row">
     <div class="col-md-12 textcenter">
         <div class="row justify-content-center">
             <div class="col-md-4 offset-md-4">
-                <h3>Blog des jardins partagés</h3>
+            <a href="{% url 'jardinpartage:ajouterNouvelArticle' %}">
+            <button type="button" class="btn  btn-success" >
+                    <i class="fa fa-plus"></i>&nbsp; Ajouter un article
+                </button>
+            </a>&ensp;
             </div>
             <div class="col-md-4 ">
                 <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#help" title="En savoir plus...">
@@ -61,6 +79,7 @@
                     </a>
         </div>
     </div>
+        <hr>
     <div class="row justify-content-center">
 	<a class="nav-item" href="#" id="navbarDropdownAsso" data-toggle="dropdown">
 	<button type="button" class="btn  btn-success dropdown-toggle" >
@@ -77,14 +96,6 @@
 		    {% endfor %}
 	</div>
 </div>
-	    <hr>
-    <div class="row justify-content-center">
-            <a href="{% url 'jardinpartage:ajouterNouvelArticle' %}">
-            <button type="button" class="btn  btn-success" >
-                    <i class="fa fa-plus"></i>&nbsp; Ajouter un article
-                </button>
-            </a>&ensp;
-    </div>
     <hr>
 </div>
 </div>
