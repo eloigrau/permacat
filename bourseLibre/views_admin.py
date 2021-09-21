@@ -18,7 +18,7 @@ def getMessage(action):
 
 def getListeMailsAlerte():
     actions = Action.objects.filter(verb='emails')
-    print('Nb ctions : '+ str(len(actions)))
+    print('Nb actions : ' + str(len(actions)))
     messagesParMails = {}
     for action in actions:
         for mail in action.data['emails']:

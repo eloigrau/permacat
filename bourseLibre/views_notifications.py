@@ -210,7 +210,7 @@ def notifications_news_regroup(request):
             elif action.description.startswith("a modif"):
                 htmlProjets += "modifié par "
             else:
-                htmlProjets +=  str(action.actor) + " " + action.description
+                htmlProjets += str(action.actor) + " " + action.description
             htmlProjets += str(action.actor) + "&nbsp;&nbsp;<small> (il y a " + raccourcirTempsStr(
                 action.timesince()) + ")</small></li>"
         htmlProjets += " </ul></a></li>"
