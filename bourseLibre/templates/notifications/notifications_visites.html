@@ -47,6 +47,8 @@
 <div class="row justify-content-center">
     <div class="col-sm-12 col-md-6 textcenter">
         <li class="list-group-item textcenter"  style="background-color:#ffc34d">Dernières visites</li>
+        <li class="list-group-item textcenter textepetit">{{hit_count_nb.0}} vue{{hit_count_nb.0|pluralize:",s"}} aujourd'hui, {{hit_count_nb.1}} cette semaine, et {{hit_count_nb.2}} ce mois-ci. {{hit_count_nb.3}} connexions aujourd'hui</p>
+        </li>
         {% for hit, info in hit_count.items %}
         <li class="list-group-item"  style="background-color:{{color}}">
             <a {%if hit %}href="{{ info.0 }} "{%endif%}>
@@ -56,7 +58,6 @@
         {% endfor %}
     </div>
 </div>
-<p class="textcenter textepetit">{{hit_count_nb.0}} vues aujourd'hui, {{hit_count_nb.1}} cette semaine, et {{hit_count_nb.2}} ce mois-ci. {{hit_count_nb.3}} connexions aujourd'hui</p>
 
 <div class="row justify-content-center">
     <div class="col-sm-12 col-md-6 textcenter">

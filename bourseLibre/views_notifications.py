@@ -350,8 +350,8 @@ def voirDerniersArticlesVus(request):
                    # else:
                     liste[str(nom)][1].append(x.user)
     #ht = {str(x.hitcount.content_object): [x.created, x.hitcount.content_object.get_absolute_url, x.user] for i, x in enumerate(hit_count) if x.hitcount.content_object}
-
+    liste = {x: y for i, (x, y) in enumerate(liste.items()) if i <15}
     hit_count_perso = Hit.objects.filter(user=request.user.id).order_by('-created').distinct()[:20]
 
-    return render(request, 'notifications/notifications_visites.html', {'hit_count': liste[:15], 'hit_count_perso': hit_count_perso, 'hit_count_nb':hit_count_nb})
+    return render(request, 'notifications/notifications_visites.html', {'hit_count': liste, 'hit_count_perso': hit_count_perso, 'hit_count_nb':hit_count_nb})
 
