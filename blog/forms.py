@@ -195,8 +195,8 @@ class CommentaireArticleChangeForm(forms.ModelForm):
     commentaire = forms.CharField(required=False, widget=SummernoteWidget(attrs={}))
 
     class Meta:
-     model = Commentaire
-     exclude = ['article', 'auteur_comm', 'discussion']
+        model = Commentaire
+        exclude = ['article', 'auteur_comm', 'discussion']
 
     #def __init__(self, request, article=None, *args, **kwargs):
     #    super(CommentaireArticleChangeForm, self).__init__(request, *args, **kwargs)
