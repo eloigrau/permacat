@@ -198,6 +198,13 @@ class CommentaireArticleChangeForm(forms.ModelForm):
      model = Commentaire
      exclude = ['article', 'auteur_comm', 'discussion']
 
+    #def __init__(self, request, article=None, *args, **kwargs):
+    #    super(CommentaireArticleChangeForm, self).__init__(request, *args, **kwargs)
+     #   self.fields['commentaire'].strip = False
+        #if article:
+        #    self.fields['discussion'] = forms.ModelChoiceField(queryset=Discussion.objects.filter(article=article), required=True,)
+
+
 class ProjetForm(forms.ModelForm):
     asso = forms.ModelChoiceField(queryset=Asso.objects.all(), required=True,
                               label="Projet public ou réservé aux adhérents de l'asso :", )

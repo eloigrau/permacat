@@ -50,12 +50,14 @@
         {% for hit, info in hit_count.items %}
         <li class="list-group-item"  style="background-color:{{color}}">
             <a {%if hit %}href="{{ info.0 }} "{%endif%}>
-             {{hit}} {% comment %} ({% for user in info.1 %}{{user}}{% if not forloop.last %}, {% endif %}{% endfor %}){% endcomment %}
+             {{hit}} ({{ info.1|length }} vues) {% comment %} ({% for user in info.1 %}{{user}}{% if not forloop.last %}, {% endif %}{% endfor %}){% endcomment %}
             </a>
         </li>
         {% endfor %}
     </div>
 </div>
+<p class="textcenter textepetit">{{hit_count_nb.0}} vues aujourd'hui, {{hit_count_nb.1}} cette semaine, et {{hit_count_nb.2}} ce mois-ci. {{hit_count_nb.3}} connexions aujourd'hui</p>
+
 <div class="row justify-content-center">
     <div class="col-sm-12 col-md-6 textcenter">
 <li class="list-group-item textcenter"  style="background-color:#ffc34d">Mes visites</li>
