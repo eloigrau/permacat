@@ -338,7 +338,7 @@ def voirDerniersArticlesVus(request):
     hit_count_nb.append(Profil.objects.filter(last_login__gte=date_ajd).count())
     liste = {}
     for i, x in enumerate(hit_count):
-        if x.hitcount.content_object:
+        if i < 20 and x.hitcount.content_object:
             if not str(x.hitcount.content_object) in liste:
                 liste[str(x.hitcount.content_object)] = [x.hitcount.content_object.get_absolute_url, [x.user, ]]
             else:
