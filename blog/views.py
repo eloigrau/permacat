@@ -54,7 +54,7 @@ def accueil(request):
     categorie_list_gt = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_gt]
     cat_citealt = Article.objects.filter(asso__abreviation="citealt").order_by('categorie').values_list('categorie',
                                                                                                 flat=True).distinct()
-    categorie_list_citealt = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_citealt]
+    categorie_list_citealt = [(x[0], x[1], Choix.get_couleur(x[0]), Choix.get_logo(x[0])) for x in Choix.type_annonce if x[0] in cat_citealt]
 
     proj = Projet.objects.filter(estArchive=False, statut='accep').order_by('titre')
 
@@ -309,7 +309,11 @@ class ListeArticles(ListView):
         for nomAsso in Choix_global.abreviationsAsso:
             if getattr(self.request.user, "adherent_" + nomAsso):
                 cat = Article.objects.filter(asso__abreviation=nomAsso).order_by('categorie').values_list('categorie', flat=True).distinct()
-                context['categorie_list_'+nomAsso] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
+                if nomAsso == 'citealt':
+                    context['categorie_list_' + nomAsso] = [(x[0], x[1], Choix.get_couleur(x[0]), Choix.get_logo(x[0])) for x in
+                                                            Choix.type_annonce if x[0] in cat]
+                else:
+                    context['categorie_list_'+nomAsso] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
 
         proj = Projet.objects.filter(estArchive=False)
         for nomAsso in Choix_global.abreviationsAsso:
@@ -416,7 +420,11 @@ class ListeArticles_asso(ListView):
         for nomAsso in Choix_global.abreviationsAsso:
             if getattr(self.request.user, "adherent_" + nomAsso):
                 cat = Article.objects.filter(asso__abreviation=nomAsso).order_by('categorie').values_list('categorie', flat=True).distinct()
-                context['categorie_list_'+nomAsso] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
+                if nomAsso == 'citealt':
+                    context['categorie_list_' + nomAsso] = [(x[0], x[1], Choix.get_couleur(x[0]), Choix.get_logo(x[0])) for x in
+                                                            Choix.type_annonce if x[0] in cat]
+                else:
+                    context['categorie_list_'+nomAsso] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
 
         proj = Projet.objects.filter(estArchive=False)
         for nomAsso in Choix_global.abreviationsAsso:

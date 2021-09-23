@@ -17,7 +17,8 @@ class Choix:
                    ('Documentation','Documentation'),  ('covoit','Covoiturage'), \
                     ('Point', 'Idée / Point de vue'),  ('Recette', 'Recette'), ('BonPlan','Bon Plan / achat groupé'), \
                      ('Divers','Divers')
-    type_annonce_citealt_groupes = ('groupe1', "Groupe de Perpignan"), ('groupe2', "Groupe des Albères"), ('groupe3', "Groupe des Aspres"), ('groupe4', "Groupe du Vallespir"),  ('groupe5', "Groupe du Ribéral"),  ('groupe6', "Groupe du Conflent"),('groupe6', "Groupe de la côte"),
+    type_annonce_citealt_groupes = ('groupe1', "Groupe de Perpignan"), ('groupe2', "Groupe des Albères"), ('groupe3', "Groupe des Aspres"), ('groupe4', "Groupe du Vallespir"),  ('groupe5', "Groupe du Ribéral"),  ('groupe7', "Groupe du Conflent"),('groupe6', "Groupe de la côte"),
+    type_annonce_citealt_groupes_logo = {'groupe1':'img/cercles/cercleBleu.png','groupe2':'img/cercles/cercleRouge.png','groupe3':'img/cercles/cercleVert.png','groupe4':'img/cercles/cercleBleuClair.png','groupe5':'img/cercles/cercleOrange.png','groupe6':'img/cercles/cercleBlanc.png','groupe7':'img/cercles/cercleJaune.png',}
     type_annonce_projets = ('Altermarché', 'Altermarché'),  ('Ecovillage', 'Ecovillage'), \
                    ('Jardin', 'Jardins partagés'), #('KitPerma', 'Kit Perma Ecole'),
 
@@ -73,6 +74,12 @@ class Choix:
             return Choix.couleurs_annonces[categorie]
         except:
             return Choix.couleurs_annonces["Autre"]
+
+    def get_logo(categorie):
+        try:
+            return Choix.type_annonce_citealt_groupes_logo[categorie]
+        except:
+            return None
 
     def get_type_annonce_asso(asso):
         try:
@@ -151,6 +158,11 @@ class Article(models.Model):
             return Choix.couleurs_annonces[self.categorie]
         except:
             return Choix.couleurs_annonces["Autre"]
+
+
+    @property
+    def get_logo_categorie(self):
+        return Choix.get_logo(self.categorie)
 
     def est_autorise(self, user):
         if self.asso.abreviation == "public":

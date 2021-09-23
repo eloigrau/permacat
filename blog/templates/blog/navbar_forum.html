@@ -96,8 +96,8 @@
         <div class="dropdown-menu textcenter dropdown-menu-forum " aria-labelledby="menuAuteur"  id="idDossiers_citealt">
              <a class=" dropdown-item " href="{% url 'blog:index_asso' asso='citealt'%}"><span>Tous les articles Cité Altruiste</span></a>
             <div class="dropdown-divider"></div>
-            {% for categorie_id, cat_nom, cat_coul in categorie_list_citealt %}
-             <a class=" dropdown-item " style="background:#d0f4de;" href="{% url 'blog:index_asso' asso='citealt'%}?categorie={{categorie_id}}"><span>{{cat_nom}}</span></a>
+            {% for categorie_id, cat_nom, cat_coul, cat_logo in categorie_list_citealt %}
+             <a class=" dropdown-item " style="background:#d0f4de;" href="{% url 'blog:index_asso' asso='citealt'%}?categorie={{categorie_id}}"><span>{% if cat_logo %}  <img  src="{% static cat_logo %}" height="16px"/>  {% endif %}{{cat_nom}}</span></a>
             {% endfor %}
         </div>
     </li>

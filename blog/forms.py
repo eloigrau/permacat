@@ -148,7 +148,6 @@ class ArticleChangeForm(forms.ModelForm):
                        }),
         }
 
-
 class ArticleAddAlbum(forms.ModelForm):
     album = forms.ModelChoiceField(queryset=Album.objects.all(), required=True,
                               label="Si l'album existe déjà sur le site, choisissez l'album photo à associer ci-dessous", )

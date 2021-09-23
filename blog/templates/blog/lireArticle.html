@@ -2,6 +2,7 @@
 {% load activity_tags %}
 {% load blog_filters %}
 {% load fontawesome %}
+{% load static %}
 {% load hitcount_tags %}
 
 {% block subtitle %}
@@ -43,7 +44,7 @@
     <div class="col-sm-12 justify-content-center">
         <p class="infos  textepetit textcenter">
 
-            <span class="badge badge-success" style="background-color:{{article.get_couleur}}" ><a href="{% url 'blog:index'  %}?categorie={{article.categorie}}" >{{ article.get_categorie_display }}</a></span>
+            <span class="badge badge-success" style="background-color:{{article.get_couleur}}" ><a href="{% url 'blog:index'  %}?categorie={{article.categorie}}" >{% if article.get_logo_categorie %}  <img  src="{% static article.get_logo_categorie %}" height="16px"/>  {% endif %} {{ article.get_categorie_display }}</a></span>
 
             {% if article.estArchive%}
             <span class="badge badge-Light">
