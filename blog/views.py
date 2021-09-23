@@ -198,7 +198,7 @@ def lireArticle(request, slug):
     if not article.est_autorise(request.user):
         return render(request, 'notMembre.html', {"asso": str(article.asso)})
 
-    discussions = article.discussion_set.all()
+    discussions = article.discussion_set.all().order_by('id')
     commentaires = {discu:Commentaire.objects.filter(discussion=discu).order_by("date_creation") for discu in discussions}
     dates = Evenement.objects.filter(article=article).order_by("-start_time")
 
@@ -212,7 +212,7 @@ def lireArticle(request, slug):
             discu = form_discussion.save(commit=False)
             discu.article = article
             form_discussion.save()
-            discussions = article.discussion_set.all()
+            discussions = article.discussion_set.all().order_by('id')
             commentaires = {discu: Commentaire.objects.filter(discussion=discu).order_by("date_creation") for discu in
                             discussions}
 
