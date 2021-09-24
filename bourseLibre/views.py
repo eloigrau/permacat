@@ -962,18 +962,12 @@ def getNbProduits_expires(request):
 
 @login_required
 def supprimerProduits_expires_confirmation(request):
-    if not request.user.is_superuser:
-        return HttpResponseForbidden("Vous n'avez pas l'autorisation de supprimer")
-
     qs = Produit.objects.select_subclasses()
     produits = qs.filter(user=request.user, date_expiration__lt=date.today())
     return render(request, 'bourseLibre/produitexpires_confirm_delete.html', {'produits': produits,})
 
 @login_required
 def supprimerProduits_expires(request):
-
-    if not request.user.is_superuser:
-        return HttpResponseForbidden("Vous n'avez pas l'autorisation de supprimer")
     produits = Produit.objects.filter(user=request.user, date_expiration__lt=date.today())
 
     for prod in produits:
