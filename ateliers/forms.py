@@ -6,6 +6,8 @@ from django_summernote.widgets import SummernoteWidget
 from bourseLibre.models import Profil
 from blog.forms import SummernoteWidgetWithCustomToolbar
 from bourseLibre.models import Asso
+from django.utils.timezone import now
+from django.shortcuts import redirect
 
 class AtelierForm(forms.ModelForm):
     referent = forms.ChoiceField(label='Référent atelier')
@@ -128,6 +130,7 @@ class CommentaireAtelierChangeForm(forms.ModelForm):
         widgets = {
             'commentaire': SummernoteWidget(),
         }
+
 
 class ContactParticipantsForm(forms.Form):
 
