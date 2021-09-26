@@ -252,14 +252,3 @@ class VoteChangeForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['commentaire'].required = False
-
-
-class CommentaireSuffrageChangeForm(forms.ModelForm):
-    commentaire = forms.CharField(required=False, widget=SummernoteWidget(attrs={}))
-
-    class Meta:
-        model = Commentaire
-        exclude = ['suffrage', 'auteur_comm']
-        widgets = {
-            'commentaire': SummernoteWidget(),
-            }

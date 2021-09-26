@@ -226,7 +226,7 @@ class ModifierCommentaire(UpdateView):
         self.object = form.save()
         self.object.date_modification = now()
         self.object.save()
-        return HttpResponseRedirect(self.object.atelier.get_absolute_url())
+        return redirect(self.object.atelier)
 
 
 

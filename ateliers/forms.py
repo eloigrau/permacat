@@ -120,6 +120,7 @@ class CommentaireAtelierForm(forms.ModelForm):
         self.fields['commentaire'].strip = False
 
 class CommentaireAtelierChangeForm(forms.ModelForm):
+    commentaire = forms.CharField(required=False, widget=SummernoteWidget(attrs={}))
 
     class Meta:
         model = CommentaireAtelier
