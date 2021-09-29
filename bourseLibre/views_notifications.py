@@ -298,6 +298,7 @@ def dernieresInfos(request):
     return render(request, 'notifications/notifications_news.html', {'info_parjour': info_parjour,})
 
 
+@login_required
 def changerDateNotif(request):
     form = nouvelleDateForm(request.POST or None, )
     if form.is_valid():
@@ -310,25 +311,30 @@ def changerDateNotif(request):
     else:
         return render(request, 'notifications/date_notifs.html', {'form': form})
 
+@login_required
 def notif_cejour(request):
     date = datetime.now().date()
     return redirect('/notifications/activite'+ "?fromdate=" + str(date.day) +"-" + str(date.month) + "-" + str(date.year))
 
+@login_required
 def notif_hier(request):
     date = datetime.now().date() - timedelta(days=1)
     return redirect('/notifications/activite'+ "?fromdate=" + str(date.day) +"-" + str(date.month) + "-" + str(date.year))
 
+@login_required
 def notif_cettesemaine(request):
     date_ajd = datetime.now().date()
     date = date_ajd - timedelta(days=date_ajd.weekday())
     return redirect('/notifications/activite'+ "?fromdate=" + str(date.day) +"-" + str(date.month) + "-" + str(date.year))
 
+@login_required
 def notif_cemois(request):
     date_ajd = datetime.now().date()
     date = date_ajd - timedelta(days=date_ajd.day - 1)
     return redirect('/notifications/activite'+ "?fromdate=" + str(date.day) +"-" + str(date.month) + "-" + str(date.year))
 
 
+@login_required
 def voirDerniersArticlesVus(request):
     date_ajd = datetime.now().date()
     hit_count = Hit.objects.filter(created__gte=date_ajd - timedelta(days=33)).order_by('-created').distinct()
