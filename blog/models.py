@@ -143,6 +143,7 @@ class Article(models.Model):
                 titre = "Article actualisé"
                 message = "L'article [" + str(self.asso.nom) + "] '<a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.titre + "</a>' a été modifié"
                 emails = [suiv.email for suiv in followers(self) if self.est_autorise(suiv)]
+            self.date_modification = timezone.now()
 
         retour = super(Article, self).save(*args, **kwargs)
         if creation:
