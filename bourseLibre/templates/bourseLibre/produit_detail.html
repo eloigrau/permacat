@@ -129,7 +129,7 @@
 		</table>
 	</div>
 
-	{% if user.id != produit.user.id and produit.estUneOffre%}
+	{% if user.id != produit.user.id %}
 	<div class="col-md-4 paddingbase">
 
 				{%comment%}
@@ -157,23 +157,20 @@
 		<a href="{%url 'agora_conversation' produit.user.username %}?produit={{produit.id}}" class="btn btn-success btn-block  btn-lg" type="button">Envoyer un message</a>
 
 		</div>
-	</div>
 
 				{%endcomment%}
+		<a href="{%url 'agora_conversation' produit.user.username %}" class="btn btn-success btn-block " type="button">Envoyer un message privé</a>
+		{%comment%}
+		<a href="{%url 'profil_contact' produit.user.id %}" class="btn btn-success btn-block  btn-lg" type="button">Mail</a>
+		{%endcomment%}
+
+	</div>
 	{%elif user.id == produit.user.id%}
 	<div class="col-md-4 paddingbase">
 		<a href="{%url 'produit_modifier' produit.id %}" class="btn btn-warning btn-lg btn-block" type="button">
 			Modifier</a>
 		<a href="{%url 'produit_supprimer' produit.id %}" class="btn btn-danger btn-lg btn-block" type="button">
 			Supprimer</a>
-	</div>
-	{%else%}
-	<div class="col-md-4 paddingbase">
-		<a href="{%url 'agora_conversation' produit.user.username %}" class="btn btn-success btn-block " type="button">Envoyer un message privé</a>
-		{%comment%}
-		<a href="{%url 'profil_contact' produit.user.id %}" class="btn btn-success btn-block  btn-lg" type="button">Mail</a>
-		{%endcomment%}
-
 	</div>
 	{%endif%}
 
