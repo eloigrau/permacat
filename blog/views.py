@@ -236,7 +236,7 @@ def lireArticle(request, slug):
             if len(("(" + str(comment.auteur_comm) + ") " + str(strip_tags(comment.commentaire).replace('&nspb',' ')))) > 96:
                 article.dernierMessage += "..."
             form.save()
-            article.save(sendMail=False)
+            article.save(sendMail=False, saveModif=False)
             url = article.get_absolute_url()+"#idConversation"
             suffix = "_" + article.asso.abreviation
             if discu.slug == 'discussion-generale':
