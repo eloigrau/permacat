@@ -1,0 +1,45 @@
+{% extends 'base_asso.html' %}
+{% load static %}
+{% block title %} - Accueil{% endblock %}
+{% block subtitle %}
+
+{% include "asso/presentation_asso_template.html" with adherent=request.user.adherent_citealt assos='citealt' %}
+
+{% endblock %}
+{% block content %}
+{% if request.user.adherent_citealt %}
+<p class="textcenter textepetit">Cliquer sur un cercle pour accéder aux articles du forum concerné</p>
+			<p class="textcenter">
+				<object data="{% static 'img/citealt/organigramme_ca2.svg' %}" width="100%"
+    type="image/svg+xml">
+
+<img src="{% static 'img/citealt/organigramme_ca2.png' %}" width="100%"
+    alt="Cite Altruiste" />
+</object>
+			</p>
+		<hr>
+		{% endif %}
+
+		{% if request.user.is_anonymous %}
+			<p class="textcenter">
+				 <a class="btn btn-warning" href="#" disabled> Il faut être connecté pour pouvoir s'inscrire dans ce groupe</a>
+			</p>
+		{% else %}
+
+			{% if request.user.adherent_citealt %}
+			<p class="textcenter">
+				 <a class="btn btn-warning" href="{% url 'inscription_citealt' %}"> Je suis inscrit -> Je me désinscris du groupe en cliquant ici</a>
+			</p>
+			<p class="textcenter">
+				 <a class="btn btn-warning" href="https://bit.ly/altruiste" target="_blank"> <i class="fa fa-arrow-right"></i> Remplir le formulaire pour la Ressourcerie 66</a>
+			</p>
+			{% else %}
+			<p class="textcenter">
+				 <a class="btn btn-primary" href="{% url 'inscription_citealt' %}"> Je ne fais pas partie du groupe -> Je m'inscris en cliquant ici</a>
+			</p>
+			{% endif %}
+		{% endif %}
+
+	</div>
+</div>
+{% endblock %}

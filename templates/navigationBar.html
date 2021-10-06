@@ -189,6 +189,7 @@
    {% if request.user.adherent_citealt %}
                             <li class="divider" role="separator"></li>
                           <li> <a class="dropdown-item" href="{% url 'carte'  asso='citealt' %}"><i class='fa fa-compass iconleft' ></i>  Carte / Annuaire  </a></li>
+                          <li> <a class="dropdown-item" href="{% url 'organisation_citealt' %}"><i class='fa fa-sitemap iconleft' ></i>  Organisation  </a></li>
                             <li class="divider" role="separator"></li>
                             <li> <a class="dropdown-item" href="{% url 'agora' asso='citealt'%}"><i class='fa fa-comment iconleft' ></i> Salon de discussion</a></li>
                             <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='citealt'%}"><i class='fa fa-comments iconleft' ></i> Articles du forum</a></li>

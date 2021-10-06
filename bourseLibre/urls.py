@@ -59,6 +59,7 @@ urlpatterns = [
     url(r'^dernieresInfos/$', views_notifications.dernieresInfos, name='dernieresInfos'),
     url(r'^prochaines_rencontres/$', views.prochaines_rencontres, name='prochaines_rencontres'),
     path(r'presentation/<str:asso>/', views.presentation_asso, name='presentation_asso'),
+    path(r'presentation/citealtruiste/organisation', views.organisation_citealt, name='organisation_citealt'),
     path(r'groupes/presentation/', views.presentation_groupes, name='presentation_groupes'),
     path(r'permagora/inscription/', views.inscription_permagora, name='inscription_permagora'),
     path(r'citealtruiste/inscription/', views.inscription_citealt, name='inscription_citealt'),

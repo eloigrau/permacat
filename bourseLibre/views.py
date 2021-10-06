@@ -405,6 +405,10 @@ def admin_asso_rtg(request):
 def presentation_asso(request, asso):
     return render(request, 'asso/'+ asso + "/presentation_asso.html")
 
+def organisation_citealt(request):
+    return render(request, "asso/citealt/organisation.html")
+
+
 def presentation_groupes(request):
     return render(request, 'asso/presentation_groupes.html')
 

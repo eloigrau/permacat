@@ -17,6 +17,8 @@ class Choix:
                    ('Documentation','Documentation'),  ('covoit','Covoiturage'), \
                     ('Point', 'Idée / Point de vue'),  ('Recette', 'Recette'), ('BonPlan','Bon Plan / achat groupé'), \
                      ('Divers','Divers')
+    type_annonce_citealt_orga = ('orga1', "Cercle Organisation"), ('orga2', "Cercle Informatique"), ('orga3', "Cercle Communication"), ('orga4', "Cercle Animation"),  ('orga5', "Cercle Médiation")
+    type_annonce_citealt_themes = ('theme1', "Cercle Education"), ('theme2', "Cercle Ecolieux"), ('theme3', "Cercle Santé"), ('theme4', "Cercle Echanges"),  ('theme5', "Cercle Agriculture"),  ('theme6', "Cercle Célébration")
     type_annonce_citealt_groupes = ('groupe1', "Groupe de Perpignan"), ('groupe2', "Groupe des Albères"), ('groupe3', "Groupe des Aspres"), ('groupe4', "Groupe du Vallespir"),  ('groupe5', "Groupe du Ribéral"),  ('groupe7', "Groupe du Conflent"),('groupe6', "Groupe de la côte"),
     type_annonce_citealt_groupes_logo = {'groupe1':'img/cercles/cercleBleu.png','groupe2':'img/cercles/cercleRouge.png','groupe3':'img/cercles/cercleVert.png','groupe4':'img/cercles/cercleBleuClair.png','groupe5':'img/cercles/cercleOrange.png','groupe6':'img/cercles/cercleBlanc.png','groupe7':'img/cercles/cercleJaune.png',}
     type_annonce_projets = ('Altermarché', 'Altermarché'),  ('Ecovillage', 'Ecovillage'), \
@@ -28,10 +30,10 @@ class Choix:
         "scic": type_annonce_base,
         "rtg": type_annonce_base,
         "gt": type_annonce_base,
-        "citealt": type_annonce_base + type_annonce_citealt_groupes,
+        "citealt": type_annonce_base + type_annonce_citealt_groupes + type_annonce_citealt_orga + type_annonce_citealt_themes,
     }
 
-    type_annonce = type_annonce_base + type_annonce_citealt_groupes
+    type_annonce = type_annonce_base + type_annonce_citealt_groupes + type_annonce_citealt_orga + type_annonce_citealt_themes
     couleurs_annonces = {
        # 'Annonce':"#e0f7de", 'Administratif':"#dcc0de", 'Agenda':"#d4d1de", 'Entraide':"#cebacf",
        # 'Chantier':"#d1ecdc",'Jardinage':"#fcf6bd", 'Recette':"#d0f4de", 'Bricolage':"#fff2a0",
@@ -93,7 +95,7 @@ class Choix:
 class Article(models.Model):
     categorie = models.CharField(max_length=30,         
         choices=(Choix.type_annonce + Choix.type_annonce_projets),
-        default='Annonce', verbose_name="categorie")
+        default='Annonce', verbose_name="Dossier")
     titre = models.CharField(max_length=250,)
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
     slug = models.SlugField(max_length=100)

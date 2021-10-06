@@ -40,6 +40,18 @@ L'association CITE ALTRUISTE pourrait mettre en œuvre le développement et l’
 		<p> Notre page facebook <a href="https://www.facebook.com/101265958971267/posts/101409928956870/">https://www.facebook.com/101265958971267/posts/101409928956870/</a>
 		</p>
 <hr>
+					{% if request.user.adherent_citealt %}
+			<p class="textcenter">
+				<object data="{% static 'img/citealt/organigramme_ca2.svg' %}" width="100%"
+    type="image/svg+xml">
+
+<img src="{% static 'img/citealt/organigramme_ca2.png' %}" width="100%"
+    alt="Cite Altruiste" />
+</object>
+			</p>
+		<hr>
+		{% endif %}
+
 		{% if request.user.is_anonymous %}
 			<p class="textcenter">
 				 <a class="btn btn-warning" href="#" disabled> Il faut être connecté pour pouvoir s'inscrire dans ce groupe</a>
@@ -59,6 +71,7 @@ L'association CITE ALTRUISTE pourrait mettre en œuvre le développement et l’
 			</p>
 			{% endif %}
 		{% endif %}
+
 	</div>
 </div>
 {% endblock %}
