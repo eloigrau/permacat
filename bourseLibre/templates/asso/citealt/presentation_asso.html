@@ -41,15 +41,16 @@ L'association CITE ALTRUISTE pourrait mettre en œuvre le développement et l’
 		</p>
 <hr>
 					{% if request.user.adherent_citealt %}
-			<p class="textcenter">
+		<div class="row  justify-content-center">
+	<div class="col textcenter organisation_citealt">
 				<object data="{% static 'img/citealt/organigramme_ca2.svg' %}" width="100%"
     type="image/svg+xml">
 
 <img src="{% static 'img/citealt/organigramme_ca2.png' %}" width="100%"
     alt="Cite Altruiste" />
 </object>
-			</p>
-		<hr>
+	</div>
+	</div>
 		{% endif %}
 
 		{% if request.user.is_anonymous %}

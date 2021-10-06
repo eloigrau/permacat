@@ -9,14 +9,16 @@
 {% block content %}
 {% if request.user.adherent_citealt %}
 <p class="textcenter textepetit">Cliquer sur un cercle pour accéder aux articles du forum concerné</p>
-			<p class="textcenter">
+<div class="row  justify-content-center">
+	<div class="col organisation_citealt textcenter">
 				<object data="{% static 'img/citealt/organigramme_ca2.svg' %}" width="100%"
     type="image/svg+xml">
 
 <img src="{% static 'img/citealt/organigramme_ca2.png' %}" width="100%"
     alt="Cite Altruiste" />
 </object>
-			</p>
+	</div>
+	</div>
 		<hr>
 		{% endif %}
 
