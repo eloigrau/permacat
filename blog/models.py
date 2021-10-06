@@ -55,7 +55,23 @@ class Choix:
         'Jardin':"#fffdcc",
         'Altermarché':"#daffb3",
         'Documentation':'#ddd0a8',
-
+    'orga1':'#00c40c98',
+    'orga2':'#00c40c96',
+    'orga3':'#00c40c94',
+    'orga4':'#00c40c92',
+    'orga5':'#00c40c90',
+    'theme1':'#ffff0078',
+    'theme2':'#ffff0076',
+    'theme3':'#ffff0074',
+    'theme4':'#ffff0072',
+    'theme5':'#ffff0070',
+    'theme6':'#ffff0068',
+    'groupe1':'#ff000038',
+    'groupe2':'#ff000036',
+    'groupe3':'#ff000034',
+    'groupe4':'#ff000032',
+    'groupe5':'#ff000030',
+    'groupe6':'#ff000028',
 
 
     }
