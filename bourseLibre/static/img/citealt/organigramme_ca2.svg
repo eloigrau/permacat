@@ -42,7 +42,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
      inkscape:cx="850.90411"
-     inkscape:cy="1392.3706"
+     inkscape:cy="935.22774"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -59,7 +59,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -733,15 +733,19 @@
     <g
        id="g1107-6"
        transform="matrix(1.0827053,0,0,1.0827053,-219.22497,3.5653085)" />
-    <ellipse
-       style="fill:#ffffff;fill-opacity:0.99646648;stroke:#000000;stroke-width:1.3994776;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="path831-35-8-3-2-4-6-8-7-6"
-       cx="246.77338"
-       cy="50.156544"
-       rx="33.063168"
-       ry="31.713173"
-       inkscape:export-xdpi="100"
-       inkscape:export-ydpi="100" />
+    <a
+       id="a1081"
+       xlink:href="https://www.perma.cat/forum/articles/citealt">
+      <ellipse
+         inkscape:export-ydpi="100"
+         inkscape:export-xdpi="100"
+         ry="31.713173"
+         rx="33.063168"
+         cy="50.156544"
+         cx="246.77338"
+         id="path831-35-8-3-2-4-6-8-7-6"
+         style="fill:#ffffff;fill-opacity:0.99646648;stroke:#000000;stroke-width:1.3994776;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </a>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:13.43643761px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.33591092"
