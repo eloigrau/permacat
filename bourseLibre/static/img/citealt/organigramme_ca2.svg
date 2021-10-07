@@ -40,9 +40,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.7"
-     inkscape:cx="850.90411"
-     inkscape:cy="935.22774"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="825.89054"
+     inkscape:cy="868.12124"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -100,18 +100,18 @@
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:9.88670444px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.24716757"
        x="214.68536"
-       y="-66.28244"
+       y="-64.524841"
        id="text883"
        inkscape:export-xdpi="100"
        inkscape:export-ydpi="100"><tspan
          sodipodi:role="line"
          id="tspan881"
          x="214.68536"
-         y="-66.28244"
+         y="-64.524841"
          style="stroke-width:0.24716757">Organisation</tspan><tspan
          sodipodi:role="line"
          x="214.68536"
-         y="-53.924061"
+         y="-52.166462"
          style="stroke-width:0.24716757"
          id="tspan925">    globale</tspan></text>
     <a
@@ -294,19 +294,19 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:8.8555727px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.22138932"
-       x="319.12375"
-       y="113.99511"
+       x="315.20065"
+       y="113.20734"
        id="text883-6-9"
        inkscape:export-xdpi="100"
        inkscape:export-ydpi="100"><tspan
          sodipodi:role="line"
          id="tspan881-2-1"
-         x="319.12375"
-         y="113.99511"
+         x="315.20065"
+         y="113.20734"
          style="stroke-width:0.22138932">    Cercles </tspan><tspan
          sodipodi:role="line"
-         x="319.12375"
-         y="125.06458"
+         x="315.20065"
+         y="124.2768"
          style="stroke-width:0.22138932"
          id="tspan921">thématiques</tspan></text>
     <a
@@ -457,14 +457,14 @@
            xml:space="preserve"
            style="font-style:normal;font-weight:normal;font-size:3.38502789px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0846257"
            x="112.71294"
-           y="108.24203"
+           y="108.24202"
            id="text947-5-17-1-3-0-8-6"
            inkscape:export-xdpi="100"
            inkscape:export-ydpi="100"><tspan
              sodipodi:role="line"
              id="tspan945-6-59-7-3-4-9-4"
              x="112.71294"
-             y="108.24203"
+             y="108.24202"
              style="stroke-width:0.0846257">Santé</tspan></text>
       </g>
     </a>
@@ -480,19 +480,19 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.0625906px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.25156477"
-       x="137.39963"
-       y="112.30149"
+       x="135.95778"
+       y="113.76125"
        id="text883-6"
        inkscape:export-xdpi="100"
        inkscape:export-ydpi="100"><tspan
          sodipodi:role="line"
          id="tspan881-2"
-         x="137.39963"
-         y="112.30149"
+         x="135.95778"
+         y="113.76125"
          style="stroke-width:0.25156477">Cercles </tspan><tspan
          sodipodi:role="line"
-         x="137.39963"
-         y="124.87973"
+         x="135.95778"
+         y="126.33949"
          style="stroke-width:0.25156477"
          id="tspan923"> locaux</tspan></text>
     <a
@@ -749,19 +749,19 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:13.43643761px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.33591092"
-       x="218.77037"
-       y="42.847347"
+       x="218.88031"
+       y="44.920235"
        id="text819"
        inkscape:export-xdpi="100"
        inkscape:export-ydpi="100"><tspan
          sodipodi:role="line"
          id="tspan817"
-         x="218.77037"
-         y="42.847347"
+         x="218.88031"
+         y="44.920235"
          style="stroke-width:0.33591092">   Cité </tspan><tspan
          sodipodi:role="line"
-         x="218.77037"
-         y="59.642895"
+         x="218.88031"
+         y="61.715782"
          style="stroke-width:0.33591092"
          id="tspan943">Altruiste</tspan></text>
   </g>
