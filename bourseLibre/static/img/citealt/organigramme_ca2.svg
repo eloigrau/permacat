@@ -734,36 +734,39 @@
        id="g1107-6"
        transform="matrix(1.0827053,0,0,1.0827053,-219.22497,3.5653085)" />
     <a
-       id="a1081"
+       id="a4659"
        xlink:href="https://www.perma.cat/forum/articles/citealt"
        target="_blank">
-      <ellipse
-         inkscape:export-ydpi="100"
-         inkscape:export-xdpi="100"
-         ry="31.713173"
-         rx="33.063168"
-         cy="50.156544"
-         cx="246.77338"
-         id="path831-35-8-3-2-4-6-8-7-6"
-         style="fill:#ffffff;fill-opacity:0.99646648;stroke:#000000;stroke-width:1.3994776;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <g
+         id="g4657">
+        <ellipse
+           style="fill:#ffffff;fill-opacity:0.99646648;stroke:#000000;stroke-width:1.3994776;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="path831-35-8-3-2-4-6-8-7-6"
+           cx="246.77338"
+           cy="50.156544"
+           rx="33.063168"
+           ry="31.713173"
+           inkscape:export-xdpi="100"
+           inkscape:export-ydpi="100" />
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-weight:normal;font-size:13.43643761px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.33591092"
+           x="218.88031"
+           y="44.920235"
+           id="text819"
+           inkscape:export-xdpi="100"
+           inkscape:export-ydpi="100"><tspan
+             sodipodi:role="line"
+             id="tspan817"
+             x="218.88031"
+             y="44.920235"
+             style="stroke-width:0.33591092">   Cité </tspan><tspan
+             sodipodi:role="line"
+             x="218.88031"
+             y="61.715782"
+             style="stroke-width:0.33591092"
+             id="tspan943">Altruiste</tspan></text>
+      </g>
     </a>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:13.43643761px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.33591092"
-       x="218.88031"
-       y="44.920235"
-       id="text819"
-       inkscape:export-xdpi="100"
-       inkscape:export-ydpi="100"><tspan
-         sodipodi:role="line"
-         id="tspan817"
-         x="218.88031"
-         y="44.920235"
-         style="stroke-width:0.33591092">   Cité </tspan><tspan
-         sodipodi:role="line"
-         x="218.88031"
-         y="61.715782"
-         style="stroke-width:0.33591092"
-         id="tspan943">Altruiste</tspan></text>
   </g>
 </svg>
