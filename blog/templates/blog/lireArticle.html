@@ -162,17 +162,44 @@
 
   <div class="tab-pane fade" id="album">
         <div class="contenu atelier">
+
+<div class="row justify-content-center">
+<div class="col-sm-12 col-md-8 col-lg-6 textcenter">
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+  <ol class="carousel-indicators">
+	    {% for photo in album.public %}
+            <li data-target="#carouselExampleIndicators" data-slide-to="{{forloop.counter}}" {% if forloop.first %} class="active"{% endif %}></li>
+	    {% endfor %}
+  </ol>
+  <div class="carousel-inner">
+	    {% for photo in album.public %}
+    <div class="carousel-item textcenter {% if forloop.first %} active {% endif %} ">
+	        <a href="{{ photo.get_absolute_url }}">
+	             <img class="d-block w-100 {% if forloop.first %} active {% endif %} " src="{{ photo.get_display_url }}" class="thumbnail" alt="{{ photo.title }}">
+	        </a>
+    </div>
+          {% endfor %}
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Précédent</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Suivant</span>
+  </a>
+</div>
+</div>
+</div>
+<hr>
+<div class="row justify-content-center">
+<div class="col-sm-12 textcenter">
+        {% if album.description %}<p>{{ album.description|safe }}</p>{% endif %}
+
+</div>
+</div>
    <div class="row">
         <div class="col-sm-12 offset-md-1 col-md-10 textcenter">
-            {% for photo in article.album.sample %}
-                <a href="{{ photo.get_absolute_url }}">
-                     <img src="{{ photo.get_articles_url }}" class="thumbnail" alt="{{ photo.title }}">
-                </a>&nbsp;
-            {% endfor %}
-                {% if article.album.photo_count > 5 %}
-                +...
-                {% endif %}
-            <hr>
              <small>
             {%if not article.album %}
                 {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
