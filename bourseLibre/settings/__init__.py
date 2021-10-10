@@ -83,6 +83,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.admindocs',
     'django.contrib.sites',
+    'django.contrib.postgres',
     #'django.contrib.gis',
     'bootstrap','fontawesome','cookielaw_local',
     #'haystack',
