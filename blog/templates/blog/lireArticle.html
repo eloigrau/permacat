@@ -167,12 +167,12 @@
 <div class="col-sm-12 col-md-8 col-lg-6 textcenter">
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
   <ol class="carousel-indicators">
-	    {% for photo in album.public %}
+	    {% for photo in article.album.public %}
             <li data-target="#carouselExampleIndicators" data-slide-to="{{forloop.counter}}" {% if forloop.first %} class="active"{% endif %}></li>
 	    {% endfor %}
   </ol>
   <div class="carousel-inner">
-	    {% for photo in album.public %}
+	    {% for photo in article.album.public %}
     <div class="carousel-item textcenter {% if forloop.first %} active {% endif %} ">
 	        <a href="{{ photo.get_absolute_url }}">
 	             <img class="d-block w-100 {% if forloop.first %} active {% endif %} " src="{{ photo.get_display_url }}" class="thumbnail" alt="{{ photo.title }}">
@@ -194,7 +194,7 @@
 <hr>
 <div class="row justify-content-center">
 <div class="col-sm-12 textcenter">
-        {% if album.description %}<p>{{ album.description|safe }}</p>{% endif %}
+        {% if article.album.description %}<p>{{ article.album.description|safe }}</p>{% endif %}
 
 </div>
 </div>
