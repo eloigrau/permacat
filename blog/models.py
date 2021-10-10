@@ -80,12 +80,15 @@ class Choix:
     }
 
     ordre_tri_articles = {
-                             "date du dernier commentaire":'-date_dernierMessage',
+                             #"date du dernier commentaire":'-date_dernierMessage',
                              "date de création":'-date_creation',
                              "date de la dernière modification":'-date_modification',
                              "date associée à l'article":'start_time',
                              "titre": 'titre' }
-    ordre_tri_projets = {"date de création":'-date_creation', "date du dernier commentaire":'-date_dernierMessage', "Type de projet":'categorie', "statut du projet":"statut", 'auteur':'auteur', 'titre':'titre'}
+    ordre_tri_projets = {"date de création":'-date_creation',
+                         #"date du dernier commentaire":'-date_dernierMessage',
+                         "Type de projet":'categorie', "statut du projet":"statut",
+                         'auteur':'auteur', 'titre':'titre'}
 
     def get_couleur(categorie):
         try:
