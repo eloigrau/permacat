@@ -269,7 +269,7 @@ class PhotoChangeForm(forms.ModelForm):
 class DocumentForm(forms.ModelForm):
     doc = forms.FileField(
         label='Choisir un fichier',
-        help_text='max. 42 megabytes'
+        help_text='max. 20 megabytes'
     )
 
     asso = forms.ModelChoiceField(queryset=Asso.objects.all(), required=True,
