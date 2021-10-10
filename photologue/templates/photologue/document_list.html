@@ -4,6 +4,11 @@
 {% load static %}
 {% load activity_tags %}
 
+{%block header %}
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/infinite.min.js' %}"></script>
+{%endblock%}
+
 {% block title %}Documents{% endblock %}
 
 {% block subtitle %}
