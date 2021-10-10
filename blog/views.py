@@ -289,7 +289,22 @@ class ListeArticles(ListView):
                 qs = qs.filter(estPublic=True)
 
         if "ordreTri" in params:
+            if params['ordreTri'] == "-date_dernierMessage":
+                qs = qs.filter(date_dernierMessage__isnull=False)
+            elif params['ordreTri'] == "-date_modification":
+                qs = qs.filter(date_modification__isnull=False)
             qs = qs.order_by(params['ordreTri'])
+
+            #if params['ordreTri'] == "-date_dernierMessage":
+            #    from django.db.models import Case, When, IntegerField
+            #    qs = qs.annotate(testing=Case(When(date_dernierMessage__isnull=False, then=1), default=0,
+            #                                  output_field=IntegerField())).order_by('testing', '-date_dernierMessage')
+            #elif params['ordreTri'] == "-date_modification":
+            #    from django.db.models import Case, When, IntegerField
+            #    qs = qs.annotate(testing=Case(When(date_modification__isnull=False, then=1), default=0,
+            #                                  output_field=IntegerField())).order_by('testing', '-date_modification')
+            #else:
+            #    qs = qs.order_by(params['ordreTri'])
         else:
             qs = qs.order_by( '-date_creation', '-date_dernierMessage', 'categorie')
 
@@ -392,6 +407,10 @@ class ListeArticles_asso(ListView):
                 qs = qs.filter(estPublic=True)
 
         if "ordreTri" in params:
+            if params['ordreTri'] == "-date_dernierMessage":
+                qs = qs.filter(date_dernierMessage__isnull=False)
+            elif params['ordreTri'] == "-date_modification":
+                qs = qs.filter(date_modification__isnull=False)
             qs = qs.order_by(params['ordreTri'])
         else:
             qs = qs.order_by( '-date_creation', '-date_dernierMessage', 'categorie')
@@ -595,6 +614,10 @@ class ListeProjets(ListView):
                 qs = qs.filter(estPublic=True)
 
         if "ordreTri" in params:
+            if params['ordreTri'] == "-date_dernierMessage":
+                qs = qs.filter(date_dernierMessage__isnull=False)
+            elif params['ordreTri'] == "-date_modification":
+                qs = qs.filter(date_modification__isnull=False)
             qs = qs.order_by(params['ordreTri'])
         else:
             qs = qs.order_by('-date_creation', '-date_dernierMessage',  'categorie', 'auteur')
