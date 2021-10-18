@@ -101,7 +101,7 @@ def contacterParticipantsAtelier(request, slug):
     form = ContactParticipantsForm(request.POST or None, )
     if form.is_valid():
         sujet = "[Permacat] Au sujet de l'atelier Permacat '" + atelier.titre +"'"
-        inscrits = [x[0] for x in InscriptionAtelier.objects.filter(atelier=atelier).values_list('user__email')]
+        inscrits = InscriptionAtelier.objects.filter(atelier=atelier).values_list('user__email')
         referent = Profil.objects.get(username=atelier.referent)
         inscrits.append(referent)
         message_html = form.cleaned_data['msg']

@@ -3,14 +3,20 @@
 {% load widget_tweaks %}
 <div class="row justify-content-sm-center">
 <div class="col-sm-12 col-md-10 col-lg-9 text-center">
-<form method="post">
+<form method="post" id="myForm">
   {% csrf_token %}
   {% include 'form_template2.html' %}
 
 {% if not boutonAnnuler %}
           <input type="button" class="btn btn-secondary"  onclick="window.history.back();"  value="Annuler" />
 {% endif %}
-  <button type="submit" class="btn btn-primary">OK</button>
+  <button id ="btn-validation" type="submit" class="btn btn-primary">OK</button>
 </form>
 </div>
 </div>
+
+<script>
+$('#myForm').one('submit', function() {
+    $(this).find('input[type="submit"]').attr('disabled','disabled').delay(2000).attr("disabled", false);
+});
+</script>

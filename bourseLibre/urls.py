@@ -163,6 +163,7 @@ urlpatterns = [
     url(r'^suivre_conversation/$', views.suivre_conversations, name='suivre_conversations'),
     url(r'^suivre_produits/$', views.suivre_produits, name='suivre_produits'),
     url(r'^sereabonner/$', views.sereabonner, name='sereabonner'),
+    url(r'^sedesabonner/$', views.sedesabonner, name='sedesabonner'),
     path(r'agora/<str:asso>', login_required(views.agora), name='agora'),
     path(r'suivre_agora/<str:asso>', views.suivre_agora, name='suivre_agora'),
     url(r'^activity/', include('actstream.urls')),

@@ -1110,6 +1110,22 @@ def sereabonner(request,):
 
     return redirect('mesSuivis')
 
+@login_required
+def sedesabonner(request,):
+    for suiv in Choix.suivisPossibles:
+        suivi, created = Suivis.objects.get_or_create(nom_suivi=suiv)
+
+        if suivi in following(request.user):
+            actions.unfollow(request.user, suivi, send_action=False)
+
+    for abreviation in Choix.abreviationsAsso + ['public']:
+        if request.user.est_autorise(abreviation):
+            suivi, created = Suivis.objects.get_or_create(nom_suivi="articles_" + abreviation)
+            actions.unfollow(request.user, suivi, send_action=False)
+            suivi, created = Suivis.objects.get_or_create(nom_suivi="agora_" + abreviation)
+            actions.unfollow(request.user, suivi, send_action=False)
+
+    return redirect('mesSuivis')
 
 def inscription_newsletter(request):
     form = InscriptionNewsletterForm(request.POST or None)
