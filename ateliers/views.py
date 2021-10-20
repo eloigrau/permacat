@@ -103,7 +103,7 @@ def contacterParticipantsAtelier(request, slug):
         sujet = "[Permacat] Au sujet de l'atelier Permacat '" + atelier.titre +"'"
         inscrits = list(InscriptionAtelier.objects.filter(atelier=atelier).values_list('user__email'))
         referent = Profil.objects.get(username=atelier.referent)
-        inscrits.append(referent)
+        inscrits.append(referent.user.email)
         message_html = form.cleaned_data['msg']
         try:
             send_mail(sujet, message_html,
