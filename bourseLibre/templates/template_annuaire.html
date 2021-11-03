@@ -1,4 +1,5 @@
 {% load app_filters %}
+{% load avatar_tags %}
 
 {% block header %}
 {% load static %}
@@ -18,6 +19,7 @@
     <table class="table table-condensed tableprofils table-striped sortable">
         <thead class="thead-inverse">
             <tr>
+                <th>Avatar</th>
                 <th>Pseudo</th>
                 <th>Email</th>
                 <th>Code postal</th>
@@ -32,6 +34,7 @@
                 <img src="{{ profil.avatar.get_absolute_url }}" alt="pas d'image" style="width:100px;height:100px" href="{% url 'profil' profil.id %}">
             </td>
             {%endcomment%}
+            <td><a href="{% url 'profil' profil.id %}">{% avatar profil 40 class="img-circle img-responsive" id="user_avatar" %}</a></td>
             <td><a href="{% url 'profil' profil.id %}">{{ profil.username }}</a></td>
             <td><a href="{% url 'profil' profil.id %}">{{ profil.email }}</a></td>
             <td>{%if profil.adresse.code_postal %}{{ profil.adresse.code_postal }}{% else %}-{% endif %}</td>
@@ -54,6 +57,7 @@
     <table class="table table-condensed tableprofils table-striped sortable">
         <thead class="thead-inverse">
             <tr>
+                <th>Avatar</th>
                 <th>Pseudo</th>
                 <th>Description</th>
                 <th>Savoir-faire</th>
@@ -63,6 +67,7 @@
         <tbody>
         {% for profil in profils %}
         <tr>
+             <td><a href="{% url 'profil' profil.id %}">{% avatar profil 40 class="img-circle img-responsive" id="user_avatar" %}</a></td>
             <td><a href="{% url 'profil' profil.id %}">{{ profil.username }}</a></td>
             <td>{{ profil.description|safe }}</td>
             <td>{{ profil.competences|safe }}</td>
