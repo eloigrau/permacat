@@ -480,8 +480,10 @@ NBMAX_ARTICLES = 3
 #PHOTOLOGUE_PATH = MEDIA_ROOT + "photologue/"
 
 
-AVATAR_GRAVATAR_DEFAULT = "retro"
+AVATAR_GRAVATAR_DEFAULT = "identicon"
 AVATAR_AUTO_GENERATE_SIZES = (80, 40)
+AVATAR_MAX_AVATARS_PER_USER = 5
+AVATAR_EXPOSE_USERNAMES = False
 
 #on met ça a la fin pour importer les settings de production sur le serveur
 try:

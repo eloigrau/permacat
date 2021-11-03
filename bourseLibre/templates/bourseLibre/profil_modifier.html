@@ -1,11 +1,18 @@
 {% extends 'base_profil.html' %}
 {% block title %} - Modifier mon profil{% endblock %}
 {% block subtitle %}
-Modifier votre profil (ou <a href="{% url 'change_password' %}">Modifier mon mot de passe</a>)
+<h4>Modifier votre profil</h4>
 {% endblock %}
 
 {% block content %}
-<a href="{% url 'avatar_change' %}">Modifier mon avatar</a>
+<div class="row textcenter">
+<div class="col">
+    <p><a href="{% url 'change_password' %}">Modifier mon mot de passe</a></p>
+    <p><a href="{% url 'avatar_change' %}">Modifier mon avatar</a></p>
+    <p><a href="{% url 'avatar_delete' %}">Supprimer mon avatar</a></p>
+
+</div>
+</div>
  <div class="container textleft">
 {% include 'form_template.html' %}
 
