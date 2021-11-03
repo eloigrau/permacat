@@ -17,7 +17,7 @@
     <div class="row {% if comment.auteur.id == request.user.id %} msg-auteur  {%else%} msg-destinataire{%endif%}">
         <div class="col-sm-3 col-md-3 col-lg-2">
             <p class="infos  textepetit ">
-                {% ifchanged %}<a href="{% url 'profil_nom' comment.auteur_comm %}"> {% avatar comment.auteur_comm 40 class="img-circle img-responsive" id="user_avatar" %} {{comment.auteur_comm}}</a><br>{% endifchanged %}{{ comment.date_creation|date:"d/m/Y, G:i" }}
+                {% ifchanged %}<a href="{% url 'profil_nom' comment.auteur_comm %}"> {% avatar comment.auteur_comm 40 class="img-circle-profil" id="user_avatar" %} {{comment.auteur_comm}}</a><br>{% endifchanged %}{{ comment.date_creation|date:"d/m/Y, G:i" }}
 
                 {% if request.user == comment.auteur_comm or request.user.is_superuser %}
                 <a class="boutonediter" href="{{ comment.get_edit_url  }}" role="button" help_text="éditer"><i class="fa fa-edit"></i></a>
