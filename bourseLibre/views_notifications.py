@@ -59,7 +59,7 @@ def getNotifications(request, nbNotif=15, orderBy="-timestamp"):
     salons = [art for i, art in enumerate(salons) if i == 0 or not (art.description == salons[i-1].description and art.actor == salons[i-1].actor ) ][:nbNotif]
     offres = [art for i, art in enumerate(offres) if i == 0 or not (art.description == offres[i-1].description and art.actor == offres[i-1].actor ) ][:nbNotif]
     albums = [art for i, art in enumerate(albums) if i == 0 or not (art.description == albums[i-1].description and art.actor == offres[i-1].actor ) ][:nbNotif]
-    inscription = Action.objects.filter(Q(verb__startswith='inscript'))
+    inscription = Action.objects.filter(Q(verb__startswith='inscript'))[:nbNotif]
 
     return salons, articles, projets, offres, conversations, fiches, ateliers, inscription, suffrages, albums
 
@@ -182,7 +182,6 @@ def notifications_news_regroup(request):
 
         htmlArticles += " </ul></a></li>"
 
-
     dicoTexte['dicoprojets'] = {}
     for action in projets:
         if dateMin < action.timestamp:
@@ -216,9 +215,14 @@ def notifications_news_regroup(request):
                 action.timesince()) + ")</small></li>"
         htmlProjets += " </ul></a></li>"
 
+    dicoTexte['listinscriptions'] = []
+    for action in inscriptions:
+        if dateMin < action.timestamp:
+            dicoTexte['listinscriptions'].append(action)
+
 
     dicoTexte['listautres'] = []
-    for action in list(chain(inscriptions, suffrages, conversations, salons, offres, ateliers, fiches, albums)):
+    for action in list(chain(suffrages, conversations, salons, offres, ateliers, fiches, albums)):
         if dateMin < action.timestamp:
             dicoTexte['listautres'].append(action)
 

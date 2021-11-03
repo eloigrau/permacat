@@ -203,9 +203,9 @@ class Profil(AbstractUser):
     description = models.TextField(null=True, blank=True)
     competences = models.TextField(null=True, blank=True)
     adresse = models.OneToOneField(Adresse, on_delete=models.CASCADE)
-    avatar = StdImageField(null=True, blank=True, upload_to='avatars/', variations={
-        'large': (640, 480),
-        'thumbnail2': (100, 100, True)})
+    #avatar = StdImageField(null=True, blank=True, upload_to='avatars/', variations={
+    #    'large': (640, 480),
+    #    'thumbnail2': (100, 100, True)})
 
     date_registration = models.DateTimeField(verbose_name="Date de création", editable=False)
     pseudo_june = models.CharField(_('pseudo Monnaie Libre'), blank=True, default=None, null=True, max_length=50)

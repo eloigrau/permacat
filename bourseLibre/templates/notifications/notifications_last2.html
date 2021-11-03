@@ -91,6 +91,18 @@
         </ul>
     </div>
 {% endif %}
+
+{%if  dico.listinscriptions %}
+    <div class="card carte-notif-news notif3 d-md-flex textcenter">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"  style="background-color:#cce6ff">Inscriptions</li>
+      {% for action in dico.listinscriptions %}
+                {% include "notifications/notifications_template4.html" with action=action %}
+      {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
 {%if  dico.listautres %}
     <div class="card carte-notif-news notif3 d-md-flex textcenter">
         <ul class="list-group list-group-flush">

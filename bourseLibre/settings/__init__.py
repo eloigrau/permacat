@@ -108,6 +108,7 @@ INSTALLED_APPS = [
     'hitcount',
     'django_crontab',
     'crispy_forms',
+    'avatar',
     #'formtools',
     #'channels', 'chat',
     #'jet','jet.dashboard', 'django.contrib.admin',

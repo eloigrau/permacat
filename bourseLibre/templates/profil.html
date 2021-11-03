@@ -3,6 +3,7 @@
 {% load leaflet_tags %}
 {% load static %}
 {% load app_filters %}
+{% load avatar_tags %}
 {%endblock%}
 {%block header %}
 {% leaflet_js %}
@@ -73,6 +74,10 @@
       {%endif%}
       <table class="table table-condensed tablepanier table-striped"><tbody>
 
+        <tr>
+            <td style="width:250px">Avatar :</td>
+            <td>{% avatar user %}</td>
+        </tr>
         <tr>
             <td style="width:250px">Pseudo :</td>
             <td>{{ user.username }}</td>

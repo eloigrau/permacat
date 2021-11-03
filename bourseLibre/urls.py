@@ -38,6 +38,7 @@ urlpatterns = [
     path(r'agenda/', include('cal.urls')),
     path(r'carto/', include('carto.urls')),
     url('^', include('django.contrib.auth.urls')),
+    url('avatar/', include('avatar.urls')),
     url(r'^$', views.bienvenue, name='bienvenue'),
     url(r'^bienvenue/$', views.bienvenue, name='bienvenue'),
     url(r'^faq/$', views_base.faq, name='faq'),
