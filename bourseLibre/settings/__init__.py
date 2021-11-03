@@ -479,6 +479,10 @@ GRAPH_MODELS = {
 NBMAX_ARTICLES = 3
 #PHOTOLOGUE_PATH = MEDIA_ROOT + "photologue/"
 
+
+AVATAR_GRAVATAR_DEFAULT = "retro"
+AVATAR_AUTO_GENERATE_SIZES = (80, 40)
+
 #on met ça a la fin pour importer les settings de production sur le serveur
 try:
     from production import *
