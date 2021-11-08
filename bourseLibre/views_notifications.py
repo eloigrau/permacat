@@ -175,8 +175,10 @@ def notifications_news_regroup(request):
                 htmlArticles += "créé par "
             elif action.description.startswith("a modif"):
                 htmlArticles += "modifié par "
+            elif action.description.startswith("a archiv"):
+                htmlArticles += "archivé par "
             else:
-                htmlArticles +=  str(action.actor) + " " + action.description
+                htmlArticles += str(action.actor) + " " + action.description
             htmlArticles += str(action.actor) + "&nbsp;&nbsp;<small> (il y a " + raccourcirTempsStr(
                 action.timesince()) + ")</small></li>"
 

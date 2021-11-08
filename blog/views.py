@@ -125,12 +125,16 @@ class ModifierArticle(UpdateView):
     def form_valid(self, form):
         self.object = form.save()
         self.object.date_modification = now()
-        self.object.save(sendMail=True)
+        self.object.save(sendMail=form.changed_data!=['estArchive'])
+        url = self.object.get_absolute_url()
+        suffix = "_" + self.object.asso.abreviation
         if not self.object.estArchive:
-            url = self.object.get_absolute_url()
-            suffix = "_" + self.object.asso.abreviation
             action.send(self.request.user, verb='article_modifier'+suffix, action_object=self.object, url=url,
                          description="a modifié l'article [%s]: '%s'" %(self.object.asso, self.object.titre))
+        elif form.changed_data==['estArchive']:
+            action.send(self.request.user, verb='article_modifier'+suffix + "-archive", action_object=self.object, url=url,
+                         description="a archivé l'article [%s]: '%s'" %(self.object.asso, self.object.titre))
+
         #envoi_emails_articleouprojet_modifie(self.object, "L'article " +  self.object.titre + "a été modifié", True)
         return HttpResponseRedirect(self.get_success_url())
 
