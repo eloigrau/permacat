@@ -50,30 +50,50 @@ class Calendar(LocaleTextCalendar):
         d = ''
         for event in events_per_day_arti:
             if event.est_autorise(request.user):
+                ajout = ""
+                try:
+                    ajout = "<img src='/static/" + event.get_logo_categorie + "' height ='13px'/> "
+                except:
+                    pass
                 titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
-                d += "<div class='event'><a href='"+event.get_absolute_url() +"'><i class='fa fa-comments iconleft'></i> "+titre+'</a> </div>'
+                d += "<div class='event'><a href='"+event.get_absolute_url() +"'><i class='fa fa-comments iconleft'></i> "+ajout+titre+'</a> </div>'
         for event in events_per_day_arti_jardin:
             if event.est_autorise(request.user):
+                ajout = ""
+                try:
+                    ajout = "<img src='/static/" + event.get_logo_categorie + "' height ='13px'/> "
+                except:
+                    pass
                 titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
-                d += "<div class='event'><a href='"+event.get_absolute_url() +"'><i class='fa fa-pagelines iconleft'></i> "+titre+'</a> </div>'
+                d += "<div class='event'><a href='"+event.get_absolute_url() +"'><i class='fa fa-pagelines iconleft'></i> "+ajout+titre+'</a> </div>'
         for event in events_per_day_proj:
             if event.est_autorise(request.user):
+                ajout = ""
+                try:
+                    ajout = "<img src='/static/" + event.get_logo_categorie + "' height ='13px'/> "
+                except:
+                    pass
                 titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
-                d += "<div class='event'>  <a href='"+event.get_absolute_url() +"'><i class='fa fa-folder-open iconleft' ></i> "+titre+'</a> </div>'
+                d += "<div class='event'>  <a href='"+event.get_absolute_url() +"'><i class='fa fa-folder-open iconleft' ></i> "+ajout+titre+'</a> </div>'
         for event in events_per_day_atel:
             if event.est_autorise(request.user):
+                ajout = ""
+                try:
+                    ajout = "<img src='/static/" + event.get_logo_categorie + "' height ='13px'/> "
+                except:
+                    pass
                 titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
-                d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-wrench iconleft' ></i> "+titre+'</a> </div>'
+                d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-wrench iconleft' ></i> "+ajout+titre+'</a> </div>'
 
         for event in events_per_day_autre:
             if event.est_autorise(request.user):
                 titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
-                d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-comments iconleft' ></i> "+titre+'</a> </div>'
+                d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-comments iconleft' ></i> "+ajout+titre+'</a> </div>'
 
         for event in events_per_day_autre_jardin:
             if event.est_autorise(request.user):
                 titre = event.titre if len(event.titre)<40 else event.titre[:37] + "..."
-                d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-pagelines' ></i> "+titre+'</a> </div>'
+                d += "<div class='event'> <a href='"+event.get_absolute_url() +"'><i class='fa fa-pagelines' ></i> "+ajout+titre+'</a> </div>'
 
         #for event in events_per_day_votes:
          #   if event.estPublic or (not request.user.is_anonymous and request.user.adherent_pc):
