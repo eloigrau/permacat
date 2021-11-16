@@ -4,15 +4,17 @@ from glob import glob
 
 def mvImg():
     rep = "/home/eloi/Images/*"
-    for file in glob(rep):
-        if os.path.isfile(file):
-            print ("fichier", file)
-            info = os.stat(file)
-            print(file, info)
+    for i, f in enumerate(glob(rep)):
+        if i >10 :
+            break
+        if os.path.isfile(f):
+            print ("fichier",)
+            info = os.stat(f)
+            print(f, info)
         else:
-            print ("dossier",  file)
-            for file2 in glob(file):
-                info2 = os.stat(file)
+            print ("dossier",  f)
+            for file2 in glob(f):
+                info2 = os.stat(file2)
                 print(2, file2, info2)
 
 
