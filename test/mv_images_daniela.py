@@ -2,6 +2,10 @@ import os
 import shutil
 from glob import glob
 
+class dossier():
+    def __init__(self, dossier):
+        self.dossier = dossier
+
 def mvImg():
     rep = "/home/eloi/Images/*"
     for i, f in enumerate(glob(rep)):
