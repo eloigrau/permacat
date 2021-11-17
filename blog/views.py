@@ -913,6 +913,14 @@ def voirCarteLieux(request, id_article):
     titre = "Lieux associés à l'article '" + str(article.titre) +"'"
     return render(request, 'blog/carte_lieux.html', {'titre':titre, "lieux":lieux})
 
+@login_required
+def voirLieux(request,):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden("Vous n'avez pas l'autorisation de voir les lieux")
+    titre = "tous les lieux"
+    lieux = AdresseArticle.objects.filter().order_by('titre')
+
+    return render(request, 'blog/carte_lieux.html', {'titre':titre, "lieux":lieux})
 
 
 @login_required
