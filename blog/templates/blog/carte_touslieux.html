@@ -1,0 +1,9 @@
+{% extends 'blog/carte_lieux.html' %}
+
+{% block markers %}
+  var marker = L.marker([lat, lon], {icon: greenIcon}).bindPopup(' <b>{{lieu.get_titre}} {{lieu.adresse.get_adresse_str}}  <a href="{{lieu.article.get_absolute_url}}">{{lieu.article.get_absolute_url}}</a>  </b>');
+
+                  marker.addTo(map);
+{% endblock %}
+
+    

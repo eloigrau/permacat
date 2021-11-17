@@ -1,5 +1,6 @@
 db.sqlite3
 *.sqlite3
+*.idea/
 db_old.db
 venv/
 db.db

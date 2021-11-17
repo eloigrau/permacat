@@ -449,5 +449,5 @@ class AdresseArticle(models.Model):
     @property
     def get_titre(self):
         if not self.titre:
-            return "Sans titre"
+            return ""
         return self.titre

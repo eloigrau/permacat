@@ -920,7 +920,7 @@ def voirLieux(request,):
     titre = "tous les lieux"
     lieux = AdresseArticle.objects.filter().order_by('titre')
 
-    return render(request, 'blog/carte_lieux.html', {'titre':titre, "lieux":lieux})
+    return render(request, 'blog/carte_touslieux.html', {'titre':titre, "lieux":lieux})
 
 
 @login_required
