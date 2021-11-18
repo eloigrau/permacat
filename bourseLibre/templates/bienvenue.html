@@ -116,6 +116,9 @@
 				  </div>
 					<ul class="list-group list-group-flush textcenter">
 
+						{% for ev in evenements_semaine_passes %}
+						<li class="list-group-item" style="background-color:#F2F2F2;"><a href="{{ev.get_absolute_url}}">{{ev.start_time|date:"l d F"}}: {{ev.titre}}</a> </li>
+						{% endfor %}
 						{% for ev in evenements_semaine %}
 						<li class="list-group-item"><a href="{{ev.get_absolute_url}}">{{ev.start_time|date:"l d F"}}: {{ev.titre}}</a> </li>
 						{% endfor %}
@@ -127,7 +130,6 @@
 					<ul class="list-group list-group-flush textcenter">
 						<li class="list-group-item"><a href="{% url 'blog:lireArticle' 'visioconference' %}">Lundi 20h30 : Visioconférence Permacat</a> </li>
 						<li class="list-group-item"><a href="{% url 'blog:lireArticle' 'visioconference' %}">Vendredi 20h30 : Visioconférence Ecovillage </a> </li>
-						<li class="list-group-item">Samedi<a href="https://www.perma.cat/forum/article/marche-de-producteurs-associatif-a-palau-del-vidre"> matin : marché associatif</a> et <a href="https://www.perma.cat/forum/article/programmation-des-ateliers-pour-les-samedi-de-juilletaout">l'après-midi : ateliers </a> </li>
 					</ul>
 				</div>
 					  </div>

@@ -75,20 +75,18 @@ from .filters import ProfilCarteFilter
 def getEvenementsSemaine(request):
     current_week = date.today().isocalendar()[1]
     current_year = date.today().isocalendar()[0]
-    evenements = []
+    evenements, evenements2 = [], []
 
     if not request.user.is_anonymous:
         ev = Evenement.objects.filter(Q(start_time__week=current_week) & Q(start_time__year=current_year)).order_by('start_time')
 
         for nomAsso in Choix_global.abreviationsAsso:
             ev = ev.exclude(article__asso__abreviation=nomAsso)
-        evenements = []
 
         ev_art = Evenement.objects.filter(Q(start_time__week=current_week) & Q(start_time__year=current_year)).order_by('start_time')
         for nomAsso in Choix_global.abreviationsAsso:
             if not getattr(request.user, "adherent_" + nomAsso):
                 ev_art = ev_art.exclude(article__asso__abreviation=nomAsso)
-        evenements.append(ev_art)
 
         ev_2 = Article.objects.filter(Q(start_time__week=current_week) & Q(start_time__year=current_year)).order_by('start_time')
         for nomAsso in Choix_global.abreviationsAsso:
@@ -99,32 +97,35 @@ def getEvenementsSemaine(request):
         ev_3= []
         if request.user.adherent_jp:
             ev_3 = Article_jardin.objects.filter(Q(start_time__week=current_week) & Q(start_time__year=current_year)).order_by('start_time')
-            evenements.append(ev_3)
 
         ev_4 = Projet.objects.filter(Q(start_time__week=current_week) & Q(start_time__year=current_year)).order_by('start_time')
         for nomAsso in Choix_global.abreviationsAsso:
             if not getattr(request.user, "adherent_" + nomAsso):
                 ev_4 = ev_4.exclude(asso__abreviation=nomAsso)
-        evenements.append(ev_4)
 
 
         ev_5 = Atelier.objects.filter(Q(start_time__week=current_week) & Q(start_time__year=current_year)).order_by('start_time')
         for nomAsso in Choix_global.abreviationsAsso:
             if not getattr(request.user, "adherent_" + nomAsso):
                 ev_5 = ev_5.exclude(asso__abreviation=nomAsso)
-
-        evenements.append(ev_5)
         utc = pytz.UTC
         y = []
+        y2 = []
         for ev in list(chain(ev_art, ev_2, ev_3, ev_4, ev_5)):
             try:
-                y.append((ev, date(ev.start_time.year, ev.start_time.month, ev.start_time.day)))
+                if ev.start_time >= date.today():
+                    y.append((ev, date(ev.start_time.year, ev.start_time.month, ev.start_time.day)))
+                else:
+                    y2.append((ev, date(ev.start_time.year, ev.start_time.month, ev.start_time.day)))
+
             except:
                 pass
         eve = sorted(y, key=lambda x:x[1])
+        eve2 = sorted(y2, key=lambda x:x[1])
         evenements = [x for x, y in eve]
+        evenements2 = [x for x, y in eve2]
 
-    return evenements
+    return evenements, evenements2
 
 def bienvenue(request):
     nums = ['01', '02', '03', '04', '07', '10', '11', '13', '15', '17', '20', '21', '23', ]
@@ -134,7 +135,7 @@ def bienvenue(request):
     utc = pytz.UTC
     yesterday = (datetime.now() - timedelta(hours=12)).replace(tzinfo=utc)
     evenements = EvenementAcceuil.objects.filter(date__gt=yesterday).order_by('date')
-    evenements_semaine = getEvenementsSemaine(request)
+    evenements_semaine, evenements2 = getEvenementsSemaine(request)
     if request.user.is_authenticated:
         nbNotif = getNbNewNotifications(request)
         nbExpires = getNbProduits_expires(request)
@@ -169,7 +170,7 @@ def bienvenue(request):
 
     derniers = sorted(set([x for x in itertools.chain(derniers_articles_comm[::-1][:8], derniers_articles_modif[::-1][:8], derniers_articles[:8], )]), key=lambda x:x.date_modification if x.date_modification else x.date_creation)[::-1]
 
-    return render(request, 'bienvenue.html', {'nomImage':nomImage, "nbNotif": nbNotif , "nbExpires":nbExpires, "evenements":evenements, "evenements_semaine":evenements_semaine, "derniers_articles":derniers, 'votes':votes})
+    return render(request, 'bienvenue.html', {'nomImage':nomImage, "nbNotif": nbNotif , "nbExpires":nbExpires, "evenements":evenements, "evenements_semaine":evenements_semaine,"evenements_semaine_passes":evenements2, "derniers_articles":derniers, 'votes':votes})
 
 class MyException(Exception):
     pass
