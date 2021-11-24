@@ -65,12 +65,7 @@
     <p>
         {%if suffrage.start_time%}
           <a href="{% url 'cal:agenda' %} " class="textepetit">
-            {%if suffrage.end_time and suffrage.start_time != suffrage.end_time %}
                 Du {{ suffrage.start_time|date:"d/m/Y"  }} au {{ suffrage.end_time|date:"d/m/Y"  }}
-                {%else%}
-                le {{ suffrage.start_time|date:"d/m/Y"  }}
-
-            {% endif %}
               </a>
         {% endif %}
     </p>
@@ -79,7 +74,7 @@
        <p>
         {%if suffrage.get_statut.0 == 1%}<a href="{% url 'vote:resultatsSuffrage' slug=suffrage.slug %}"> {% endif %}
         <button {%if suffrage.get_statut.0 == 1%} {% else %} disabled{% endif %} class="{%if suffrage.get_statut.0 == 0%}btn-success {% else %}btn btn-warning{% endif %}">
-            {{suffrage.get_statut.1}} - Voir les résultats
+            {{suffrage.get_statut.1}} {%if suffrage.get_statut.0 == 1%}-> Voir les résultats{% endif %}
     </button>
     {%if suffrage.get_statut.0 == 1%}</a>{% endif %}
     </p>
