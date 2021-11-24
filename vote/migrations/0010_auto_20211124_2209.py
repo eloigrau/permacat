@@ -10,11 +10,4 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='reponsequestion_m',
-            name='proposition',
-        ),
-        migrations.DeleteModel(
-            name='Proposition_m',
-        ),
     ]
