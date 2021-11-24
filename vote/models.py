@@ -162,8 +162,8 @@ class Suffrage(SuffrageBase):
 
     @property
     def get_statut(self):
-        if self.start_time < timezone.now().date():
-            if self.end_time > timezone.now().date():
+        if self.start_time <= timezone.now().date():
+            if self.end_time >= timezone.now().date():
                 statut = (0, "Le vote est en cours ")
             else:
                 statut = (1, "Le vote est terminé ")
