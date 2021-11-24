@@ -263,8 +263,8 @@ def voter(request, slug):
 
     if all([f.is_valid() for f in itertools.chain(reponses_b_form, reponses_m_form.values())]) and form.is_valid():
         vote = form.save(suffrage, request.user)
-        for form in itertools.chain(reponses_b_form, reponses_m_form.values()): # meme question
-            form.save(vote=vote, )
+        for form2 in itertools.chain(reponses_b_form, reponses_m_form.values()): # meme question
+            form2.save(vote=vote, )
 
         return redirect(suffrage.get_absolute_url())
 
