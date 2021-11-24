@@ -5,9 +5,8 @@ from .models import CommentaireAtelier, Choix, Atelier, InscriptionAtelier
 from .forms import AtelierForm, CommentaireAtelierForm, AtelierChangeForm, ContactParticipantsForm, CommentaireAtelierChangeForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
-from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
-from django.core.mail import send_mail, BadHeaderError
+from django.core.mail import send_mail, BadHeaderError, send_mass_mail
 from blog.models import Article
 from actstream.models import following
 
@@ -106,19 +105,18 @@ def contacterParticipantsAtelier(request, slug):
         inscrits.append(referent.email)
         message_html = form.cleaned_data['msg']
         try:
-            send_mail(sujet, message_html,
-                      request.user.email, inscrits, fail_silently=False,
-                      html_message=message_html)
+            send_mass_mail([(sujet, message_html, request.user.email, inscrits), ])
 
             if form.cleaned_data['renvoi']:
+                send_mass_mail([(sujet, "Vous avez envoyé aux participants de l'atelier Permacat '" + atelier.titre +"' le message suivant : " +  message_html, request.user.email, [request.user.email, ]), ])
                 send_mail(sujet,
                           "Vous avez envoyé aux participants de l'atelier Permacat '" + atelier.titre +"' le message suivant : " + message_html,
                           request.user.email, [request.user.email, ], fail_silently=False,
                           html_message=message_html)
 
-            return render(request, 'message_envoye.html', {'sujet': sujet, 'msg': message_html,
+            return render(request, 'contact/message_envoye.html', {'sujet': sujet, 'msg': message_html,
                                                            'envoyeur': request.user.username + " (" + request.user.email + ")",
-                                                           "destinataire": "".join(inscrits)})
+                                                           "destinataire(s)": "".join(inscrits)})
         except BadHeaderError:
             return render(request, 'erreur.html', {'msg': 'Invalid header found.'})
 
