@@ -83,7 +83,7 @@ class Choix:
                              "date du dernier commentaire":'-date_dernierMessage',
                              "date de création":'-date_creation',
                              "date de la dernière modification":'-date_modification',
-                             "date associée à l'article":'start_time',
+                             "date associée à l'article":'-start_time',
                              "titre": 'titre' }
     ordre_tri_projets = {"date de création":'-date_creation',
                          #"date du dernier commentaire":'-date_dernierMessage',

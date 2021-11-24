@@ -297,6 +297,8 @@ class ListeArticles(ListView):
                 qs = qs.filter(date_dernierMessage__isnull=False)
             elif params['ordreTri'] == "-date_modification":
                 qs = qs.filter(date_modification__isnull=False)
+            elif params['ordreTri'] == "-start_time":
+                qs = qs.filter(start_time__isnull=False)
             qs = qs.order_by(params['ordreTri'])
 
             #if params['ordreTri'] == "-date_dernierMessage":
@@ -415,6 +417,8 @@ class ListeArticles_asso(ListView):
                 qs = qs.filter(date_dernierMessage__isnull=False)
             elif params['ordreTri'] == "-date_modification":
                 qs = qs.filter(date_modification__isnull=False)
+            elif params['ordreTri'] == "-start_time":
+                qs = qs.filter(start_time__isnull=False)
             qs = qs.order_by(params['ordreTri'])
         else:
             qs = qs.order_by( '-date_creation', '-date_dernierMessage', 'categorie')
