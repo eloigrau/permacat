@@ -320,6 +320,7 @@ class Question_majoritaire(Question_base):
     def get_delete_url(self):
         return reverse("vote:supprimerQuestionM", kwargs={"id_question":self.id, 'slug':self.suffrage.slug})
 
+
 class Proposition_m(models.Model):
     """An Election as Proposition_m as choices."""
     question = models.ForeignKey(Question_majoritaire, on_delete=models.CASCADE)
