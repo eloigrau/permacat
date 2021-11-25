@@ -40,14 +40,16 @@ def getListeMailsAlerte():
             pseudo = ""
         messagetxt = "Bonjour / Bon dia, Voici les dernières nouvelles des pages auxquelles vous êtes abonné.e :\n"
         message = "<p>Bonjour / Bon dia,</p><p>Voici les dernières nouvelles des pages auxquelles vous êtes abonné.e :</p><ul>"
+        liste_messages = []
         for m in messages:
-            message += "<li>" + m + "</li>"
+            liste_messages.append("<li>" + m + "</li>")
             try:
                 r = re.search("htt(.*?)>", m).group(1)[:-1]
                 messagetxt += re.sub('<[^>]+>', '', m) + " : htt" + r + "\n"
             except:
                 messagetxt += re.sub('<[^>]+>', '', m) + "\n"
-
+        liste_messages.sort()
+        message += "".join(liste_messages)
 
         messagetxt += "\nFins Aviat !\n---------------\nPour voir toute l'activité sur le site, consultez les Notifications : https://www.perma.cat/notifications/activite/ \n" + \
                    "Pour vous désinscrire des alertes mails, barrez les cloches sur le site (ou consultez la FAQ : https://www.perma.cat/faq/) "
