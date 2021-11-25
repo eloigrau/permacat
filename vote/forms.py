@@ -223,6 +223,8 @@ class CommentaireSuffrageChangeForm(forms.ModelForm):
 
 
 class VoteForm(forms.ModelForm):
+    commentaire = forms.CharField(required=False, widget=SummernoteWidget(attrs={}))
+
     class Meta:
         model = Vote
         exclude = ['suffrage','auteur']

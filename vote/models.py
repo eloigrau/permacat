@@ -329,7 +329,7 @@ class Question_majoritaire(Question_base):
 
 class Proposition_m(models.Model):
     """An Election as Proposition_m as choices."""
-    question_m = models.ForeignKey(Question_majoritaire, on_delete=models.CASCADE, related_name='question_m_liee')
+    question_m = models.ForeignKey(Question_majoritaire, on_delete=models.CASCADE)
     proposition = models.CharField(max_length=500, verbose_name="Proposition", null=False, blank=False, )
 
     def __str__(self):
