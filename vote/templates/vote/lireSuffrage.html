@@ -117,7 +117,7 @@
 </div>
 <div class="row">
 <div class="col contenusuffrage">
-   {{ suffrage.description }}
+   {{ suffrage.description |safe}}
     <hr>
     {% include 'vote/template_questions.html' %}
     {% if vote %}
