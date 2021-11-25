@@ -452,6 +452,7 @@ class ReponseQuestion_m(models.Model):
     choix = models.IntegerField(
         choices=Choix.vote_majoritaire,
         default=2, verbose_name="Choix du vote :")
+    question_id = models.CharField(max_length=500, verbose_name="qqqqqq", null=True, blank=True, )
 
     def __str__(self):
         return str(self.proposition) + ": " + getStrFromChoix_majoritaire(self.choix)
