@@ -297,16 +297,22 @@ class Resultat_binaire():
 class Question_binaire(Question_base):
     question = models.CharField(max_length=150, verbose_name="Question (oui/non) soumise au vote ?", validators=[MinLengthValidator(1)])
 
+    def __str__(self):
+        return str(self.question)
+
     def get_resultats(self):
         votes = self.reponsequestion_b_set.all()
         return Resultat_binaire(votes)
         #return {'nbOui':nbOui, 'nbNon':nbNon, 'nbNSPP':nbNSPP, 'nbTotal':nbTotal, 'resultat':resultat, 'votes':votes}
 
     def get_delete_url(self):
-        return reverse("vote:supprimerQuestionB", kwargs={"id_question":self.id, 'slug':self.suffrage.slug})
+        return reverse("vote:supprimerQuestionB", kwargs={"id_question": self.id, 'slug': self.suffrage.slug})
 
 class Question_majoritaire(Question_base):
-    question = models.CharField(max_length=150, verbose_name="Question (jugement majoritaire) soumise au vote :",  validators=[MinLengthValidator(1)])
+    question = models.CharField(max_length=150, verbose_name="Question (jugement majoritaire) soumise au vote :", validators=[MinLengthValidator(1)])
+
+    def __str__(self):
+        return str(self.question)
 
     def get_resultats(self):
         """Get the sorted list of all Candidates for this Election."""
