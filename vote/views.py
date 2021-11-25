@@ -252,7 +252,7 @@ def voter(request, slug):
     questions_b, questions_m = suffrage.questions
     propositions_m = suffrage.propositions
 
-    form = VoteForm(request.POST or None)
+    formVote = VoteForm(request.POST or None)
 
     reponses_b_form = [Reponse_binaire_Form(q, request.POST or None, prefix="rb" + str(i)) for i, q in enumerate(questions_b)]
     reponses_m_form = {(p.question, p.id) : Reponse_majoritaire_Form(p, request.POST or None, prefix="rp" + str(p.id)) for p in propositions_m}
@@ -261,14 +261,16 @@ def voter(request, slug):
    #    for p in Proposition_m.objects.filter(question=x):
      #       reponses_m_form += Reponse_majoritaire_Form(x, request.POST or None, prefix="rm_" + str(j) + "_"+ str(p.id))
 
-    if all([f.is_valid() for f in itertools.chain(reponses_b_form, reponses_m_form.values())]) and form.is_valid():
-        vote = form.save(suffrage, request.user)
-        for form2 in itertools.chain(reponses_b_form, reponses_m_form.values()): # meme question
+    if all([f.is_valid() for f in itertools.chain(reponses_b_form, reponses_m_form.values())]) and formVote.is_valid():
+        vote = formVote.save(suffrage, request.user)
+        for form2 in reponses_b_form:
+            form2.save(vote=vote, )
+        for form2 in reponses_m_form.values():
             form2.save(vote=vote, )
 
         return redirect(suffrage.get_absolute_url())
 
-    return render(request, 'vote/voter.html', {'suffrage': suffrage, 'form': form, 'reponses_b_form':reponses_b_form, 'reponses_m_form':reponses_m_form},)
+    return render(request, 'vote/voter.html', {'suffrage': suffrage, 'form': formVote, 'reponses_b_form':reponses_b_form, 'reponses_m_form':reponses_m_form},)
 
 
 

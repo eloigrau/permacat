@@ -25,10 +25,11 @@ sudo certbot --expand --nginx -d perma.cat,www.perma.cat
 #pg_restore -U postgres -h 82.64.236.35 -p 32770 -c -d site data.dump
 pg_dump -h 82.64.236.35 -p 32770 -U postgres -F c -b -v -d -f site permacat.dump
 psql -U postgres -h 82.64.236.35 -p 32770
+sudo -u postgres -i
 ##scp -P 32770 udjango@82.64.236.35:/home/udjango/permacat/permacat.dump ./permacat.dump
 ##rsync -arvz -e 'ssh -p 32770' --progress udjango@82.64.236.35:/home/udjango/permacat/permacat.dump ./permacat.dump
 #scp /home/udjango/permacat/permacat.dump tchenrezi@tchenrezi-N750BU:/home/tchenrezi/
-cp -P 32768 eloi@82.64.236.35:/root/backups/site/pg_dump_site_2021-06-19_02-50-01.backup /home/tchenrezi/
+cp -P 32768 eloi@82.64.236.35:/root/backups/site/pg_dump_site_2021-11-25_02-50-01.backup /home/tchenrezi/
 cp -P 32768 eloi@82.64.236.35:/root/backups/site/pg_dump_site_2021-09-07_02-50-01.backup /home/tchenrezi/backups_site/
 
 cd /home/udjango/permacat
