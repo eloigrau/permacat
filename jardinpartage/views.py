@@ -149,6 +149,12 @@ class ListeArticles(UserPassesTestMixin, ListView):
             qs = qs.filter(categorie=params['categorie'])
 
         if "ordreTri" in params:
+            if params['ordreTri'] == "-date_dernierMessage":
+                qs = qs.filter(date_dernierMessage__isnull=False)
+            elif params['ordreTri'] == "-date_modification":
+                qs = qs.filter(date_modification__isnull=False)
+            elif params['ordreTri'] == "-start_time":
+                qs = qs.filter(start_time__isnull=False)
             qs = qs.order_by(params['ordreTri'])
         else:
             qs = qs.order_by( '-date_dernierMessage', '-date_creation', 'categorie', 'auteur')
