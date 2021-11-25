@@ -179,6 +179,7 @@ class Reponse_majoritaire_Form(forms.ModelForm):
     def __init__(self, proposition, *args, **kwargs):
         super(Reponse_majoritaire_Form, self).__init__(*args, **kwargs)
         self.proposition = proposition
+        self.question = proposition.question_m.question
         self.fields['choix'].label = "Proposition : " + proposition.proposition
 
     def save(self, vote):

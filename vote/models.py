@@ -329,7 +329,7 @@ class Question_majoritaire(Question_base):
 
 class Proposition_m(models.Model):
     """An Election as Proposition_m as choices."""
-    question_m = models.ForeignKey(Question_majoritaire, on_delete=models.CASCADE)
+    question_m = models.ForeignKey(Question_majoritaire, on_delete=models.CASCADE, related_name='question_m_liee')
     proposition = models.CharField(max_length=500, verbose_name="Proposition", null=False, blank=False, )
 
     def __str__(self):
@@ -338,10 +338,10 @@ class Proposition_m(models.Model):
 
     def get_absolute_url(self):
         """Get the candidate's Election URL."""
-        return self.question.get_absolute_url()
+        return self.question_m.get_absolute_url()
 
     def get_delete_url(self):
-        return reverse("vote:supprimerPropositionM", kwargs={"id_question":self.question.id, "id_proposition":self.id, 'slug':self.question.suffrage.slug})
+        return reverse("vote:supprimerPropositionM", kwargs={"id_question":self.question_m.id, "id_proposition":self.id, 'slug':self.question_m.suffrage.slug})
 
     def majority_gauge(self):
         """Compute the majority gauge of this Candidate."""
