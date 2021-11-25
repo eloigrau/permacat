@@ -454,7 +454,7 @@ class ReponseQuestion_m(models.Model):
         return getStrFromChoix_majoritaire(self.choix)
 
     def str_avecquestion(self):
-        return str(self.proposition.question), str(self)
+        return str(self.proposition.question_m), str(self)
 
 class Commentaire(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='auteur_comm_vote')

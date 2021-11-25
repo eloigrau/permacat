@@ -255,7 +255,7 @@ def voter(request, slug):
     formVote = VoteForm(request.POST or None)
 
     reponses_b_form = [Reponse_binaire_Form(q, request.POST or None, prefix="rb" + str(i)) for i, q in enumerate(questions_b)]
-    reponses_m_form = {(p.question, p.id) : Reponse_majoritaire_Form(p, request.POST or None, prefix="rp" + str(p.id)) for p in propositions_m}
+    reponses_m_form = {(p.question_m, p.id): Reponse_majoritaire_Form(p, request.POST or None, prefix="rp" + str(p.id)) for p in propositions_m}
     #reponses_m_form = [Reponse_majoritaire_Form(p, request.POST or None, prefix="rm_" + str(p.id)) for p in [Proposition_m.objects.filter(question=x) for x in questions_m]]
 
    #    for p in Proposition_m.objects.filter(question=x):

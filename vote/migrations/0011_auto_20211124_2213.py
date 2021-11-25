@@ -11,14 +11,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='Proposition_m',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('proposition', models.CharField(max_length=500, verbose_name='Proposition')),
-                ('question', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='vote.Question_majoritaire')),
-            ],
-        ),
         migrations.AddField(
             model_name='reponsequestion_m',
             name='proposition',
