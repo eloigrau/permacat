@@ -448,7 +448,7 @@ class ReponseQuestion_b(models.Model):
 
 class ReponseQuestion_m(models.Model):
     vote = models.ForeignKey(Vote, on_delete=models.CASCADE, related_name='rep_question_m')
-    proposition = models.ForeignKey(Proposition_m, on_delete=models.CASCADE, related_name='propos_question_m')
+    #proposition = models.ForeignKey(Proposition_m, on_delete=models.CASCADE, related_name='propos_question_m')
     choix = models.IntegerField(
         choices=Choix.vote_majoritaire,
         default=2, verbose_name="Choix du vote :")
