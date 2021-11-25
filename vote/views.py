@@ -37,8 +37,8 @@ def ajouterSuffrage(request):
         if suffrage:
             url = suffrage.get_absolute_url()
             suffix = "_" + suffrage.asso.abreviation
-            #action.send(request.user, verb='suffrage_ajout'+suffix, action_object=suffrage, url=url,
-            #            description="a ajouté un suffrage : '%s'" % suffrage.titre)
+            action.send(request.user, verb='suffrage_ajout'+suffix, action_object=suffrage, url=url,
+                        description="a ajouté un suffrage : '%s'" % suffrage.titre)
 
             return render(request, 'vote/ajouterQuestions.html', {'suffrage':suffrage})
 

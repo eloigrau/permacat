@@ -135,7 +135,7 @@ class Suffrage(SuffrageBase):
             suivi, created = Suivis.objects.get_or_create(nom_suivi='suffrages')
             titre = "Nouveau vote"
             message = userProfile.username + " a lancé un nouveau vote ["+ str(self.asso.nom) +"]: '<a href='https://www.perma.cat"+ self.get_absolute_url() + "'>"+ self.titre + "</a>'"
-            #emails = [suiv.email for suiv in followers(suivi) if userProfile != suiv and self.est_autorise(suiv)]
+            emails = [suiv.email for suiv in followers(suivi) if userProfile != suiv and self.est_autorise(suiv)]
 
         retour = super(Suffrage, self).save(*args, **kwargs)
 
@@ -145,8 +145,8 @@ class Suffrage(SuffrageBase):
 
     def get_resultats(self):
         statut = self.get_statut
-        #if statut[0] != 1:
-        #    return statut[1]
+        if statut[0] != 1:
+            return statut[1]
 
         qsb, qsm = self.questions
         res_qb, res_qm = {}, {}
