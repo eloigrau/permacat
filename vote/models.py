@@ -232,7 +232,7 @@ class Suffrage(SuffrageBase):
 
     @property
     def propositions(self):
-        return Proposition_m.objects.filter(question__suffrage=self)
+        return Proposition_m.objects.filter(question_m__suffrage=self)
 
 
 class Question_base(models.Model):
