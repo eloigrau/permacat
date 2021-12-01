@@ -90,6 +90,12 @@ Filtrer la liste des profils
             <label class="checkbox-inline">{% render_field filter.form.adherent_citealt %}</label>
               </div>
               {% endif %}
+              {% if asso.abreviation != "viure" and request.user.adherent_viure %}
+              <div>
+          {{ filter.form.adherent_viure.label_tag }}
+            <label class="checkbox-inline">{% render_field filter.form.adherent_viure %}</label>
+              </div>
+              {% endif %}
               {% if asso.abreviation != "scic"  and request.user.adherent_scic %}
               <div>
           {{ filter.form.adherent_scic.label_tag }}
