@@ -349,6 +349,7 @@ def listeContacts_admin(request):
           {"type":'user_adherent', "profils":Profil.objects.filter(adherent_rtg=True), "titre":"Liste des adhérents RTG: "},
           {"type":'user_adherent', "profils":Profil.objects.filter(adherent_scic=True), "titre":"Liste des adhérents PermAgora: "},
           {"type":'user_adherent', "profils":Profil.objects.filter(adherent_citealt=True), "titre":"Liste des adhérents Cite Altruiste: "},
+          {"type":'user_adherent', "profils":Profil.objects.filter(adherent_viure=True), "titre":"Liste des adhérents Viure: "},
            # {"type":'user_futur_adherent', "profils":Profil.objects.filter(statut_adhesion=0), "titre":"Liste des personnes qui veulent adhérer à Permacat :"}
         ]
     else:
@@ -409,6 +410,8 @@ def presentation_asso(request, asso):
 def organisation_citealt(request):
     return render(request, "asso/citealt/organisation.html")
 
+def organisation_viure(request):
+    return render(request, "asso/viure/organisation.html")
 
 def presentation_groupes(request):
     return render(request, 'asso/presentation_groupes.html')
@@ -1180,6 +1183,26 @@ def inscription_citealt(request):
                     description="s'est inscrit.e dans le groupe Cité Altruiste")
     return redirect('presentation_asso', asso='citealt')
 
+@login_required
+def inscription_viure(request):
+    asso=Asso.objects.get(abreviation='viure')
+    if request.user.adherent_viure:
+        request.user.adherent_viure = False
+        request.user.save()
+        suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_viure')
+        actions.unfollow(request.user, suivi, send_action=False)
+        url = reverse('presentation_asso', kwargs={'asso': 'viure'})
+        action.send(request.user, verb='inscription_viure', target=asso, url=url,
+                    description="s'est retiré du groupe Viure")
+    else:
+        request.user.adherent_viure = True
+        request.user.save()
+        suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_viure')
+        actions.follow(request.user, suivi, send_action=False)
+        url = reverse('presentation_asso', kwargs={'asso': 'viure'})
+        action.send(request.user, verb='inscription_viure', target=asso, url=url,
+                    description="s'est inscrit.e dans le groupe Viure")
+    return redirect('presentation_asso', asso='viure')
 
 @login_required
 def contacter_newsletter(request):

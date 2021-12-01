@@ -102,6 +102,19 @@
         </div>
     </li>
     {% endif %}
+     {% if request.user.adherent_viure %}
+    <li class="nav-item dropdown">
+        <button type="button" class="btn dropdown-toggle btn-primary btn-menu-forum btn-block" data-toggle="collapse" aria-haspopup="true" aria-expanded="false"
+        data-target = "#idDossiers_citealt"> Viure</button>
+        <div class="dropdown-menu textcenter dropdown-menu-forum " aria-labelledby="menuAuteur"  id="idDossiers_viure">
+             <a class=" dropdown-item " href="{% url 'blog:index_asso' asso='viure'%}"><span>Tous les articles Viure</span></a>
+            <div class="dropdown-divider"></div>
+            {% for categorie_id, cat_nom, cat_coul, cat_logo in categorie_list_viure %}
+             <a class=" dropdown-item " style="background:#d0f4de;" href="{% url 'blog:index_asso' asso='viure'%}?categorie={{categorie_id}}"><span>{% if cat_logo %}  <img  src="{% static cat_logo %}" height="16px"/>  {% endif %}{{cat_nom}}</span></a>
+            {% endfor %}
+        </div>
+    </li>
+    {% endif %}
     <li class="nav-item dropdown">
         <a href="{% url 'blog:index' %}">
             <button type="button" class="btn  btn-success btn-menu-forum btn-block" > Tous les articles

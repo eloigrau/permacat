@@ -181,7 +181,7 @@ class ProfilCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm):
         model = Profil
-        fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'adherent_pc', 'adherent_rtg','adherent_fer', 'adherent_scic', 'adherent_citealt','inscrit_newsletter', 'accepter_annuaire',  'accepter_conditions']
+        fields = ['username', 'password1',  'password2', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'adherent_pc', 'adherent_rtg','adherent_fer', 'adherent_scic', 'adherent_citealt', 'adherent_viure', 'inscrit_newsletter', 'accepter_annuaire',  'accepter_conditions']
         exclude = ['slug', ]
 
     def clean(self):
@@ -242,7 +242,7 @@ class ProducteurChangeForm_admin(UserChangeForm):
 
     class Meta:
         model = Profil
-        fields = ['id','username', 'email', 'description', 'competences', 'inscrit_newsletter', 'adherent_pc',  'adherent_rtg', 'adherent_fer',  'adherent_scic', 'adherent_citealt','pseudo_june', 'accepter_annuaire', 'adherent_jp']
+        fields = ['id','username', 'email', 'description', 'competences', 'inscrit_newsletter', 'adherent_pc',  'adherent_rtg', 'adherent_fer',  'adherent_scic', 'adherent_citealt', 'adherent_viure', 'pseudo_june', 'accepter_annuaire', 'adherent_jp']
 
     def __init__(self, *args, **kwargs):
         super(ProducteurChangeForm_admin, self).__init__(*args, **kwargs)

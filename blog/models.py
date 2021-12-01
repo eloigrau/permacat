@@ -29,7 +29,7 @@ class Choix:
         "pc": type_annonce_base,
         "scic": type_annonce_base,
         "rtg": type_annonce_base,
-        "gt": type_annonce_base,
+        "viure": type_annonce_base,
         "citealt": type_annonce_base + type_annonce_citealt_groupes + type_annonce_citealt_orga + type_annonce_citealt_themes,
     }
 

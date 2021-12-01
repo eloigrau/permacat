@@ -197,6 +197,19 @@
    {% endif %}
                         </ul>
                     </li>
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle"  href="test">Viure !</a>
+                        <ul class="dropdown-menu  nav5-dropdown-submenu">
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso'  asso='citealt' %}"><i class='fa fa-asterisk iconleft' ></i> Présentation </a></li>
+                         {% if request.user.adherent_viure %}
+                            <li class="divider" role="separator"></li>
+                          <li> <a class="dropdown-item" href="{% url 'carte'  asso='viure' %}"><i class='fa fa-compass iconleft' ></i>  Carte / Annuaire  </a></li>
+                            <li class="divider" role="separator"></li>
+                            <li> <a class="dropdown-item" href="{% url 'agora' asso='viure'%}"><i class='fa fa-comment iconleft' ></i> Salon de discussion</a></li>
+                            <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='viure'%}"><i class='fa fa-comments iconleft' ></i> Articles du forum</a></li>
+   {% endif %}
+                        </ul>
+                    </li>
                 </ul>
         </li>
         <li class="nav-item dropdown nav8">
@@ -440,6 +453,12 @@
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='citealt' %}"><i class='fa fa-asterisk iconleft ' ></i> Présentation</a></li>
 <li> <a class="dropdown-item" href="https://CiteAltruiste.org" target="_blank"><i class='fa fa-asterisk iconleft' ></i> CiteAltruiste.org </a></li>
 
+                      </ul>
+                    </li>
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle"  href="test">Viure</a>
+                        <ul class="dropdown-menu  nav5-dropdown-submenu">
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='viure' %}"><i class='fa fa-asterisk iconleft ' ></i> Présentation</a></li>
                       </ul>
                     </li>
                 </ul>

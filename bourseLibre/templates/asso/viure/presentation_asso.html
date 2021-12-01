@@ -1,0 +1,53 @@
+{% extends 'base_asso.html' %}
+{% load static %}
+{% block title %} - Accueil{% endblock %}
+{% block subtitle %}
+
+<h2 class = "textcenter rowbienvenue">Viure !</h2>
+
+{% include "asso/presentation_asso_template.html" with adherent=request.user.adherent_viure assos='viure' %}
+
+<h4 class = "textcenter rowbienvenue">Qui sommes nous ?</h4>
+{% endblock %}
+{% block content %}
+<div class="row">
+	<div class="col">
+		<p>La coordination Viure a pour vocation de réunir les acteurs engagés du territoire  pour la préservation des terres agricoles et des espaces naturels des Pyrénées Orientales.</p>
+
+<hr><p>Manifeste : </p>
+<p>Alors que les discours ofﬁciels appellent à stopper l’artiﬁcialisation, nous constatons, au contraire, que celle-ci progresse très rapidement dans notre département (infrastructures, zones commerciales, lotissements …. ) Cette artiﬁcialisation se fait au détriment des terres agricoles et des espaces naturels. Ces espaces sont précieux car ils sont des réservoirs de biodiversité et la
+garantie de nos futures ressources alimentaires. De plus, ces artiﬁcialisations entrainent de nouvelles consommations d’eau alors que cette ressource est dramatiquement en baisse dans notre département.
+Ajoutons que ces artiﬁcialisations contribuent à aggraver le changement climatique à propos duquel la communauté scientiﬁque nous alarme sans cesse.</p>
+<p>Dans l’intérêt des générations à venir et de la planète, l’heure est non seulement à l’arrêt de l’artiﬁcialisation mais aussi, désormais, à la renaturation des écosystèmes car « nos besoins les plus essentiels sont assurés par une Nature en bonne santé ».
+C’est d’ailleurs ce que préconise la loi : « climat et résilience ».</p>
+<p>Face aux multiples destructions déjà réalisées et celles qui sont en projet, les associations signataires ci-dessous s’engagent à se coordonner pour s’y opposer, dorénavant, de manière concertée.</p>
+
+		<p> Pour nous contacter, envoyez un mail à <a href="rconstant82@gmail.com">rconstant82@gmail.com</a>
+		</p>
+<hr>
+					{% if request.user.adherent_viure %}
+		<div class="row  justify-content-center">
+
+	</div>
+		{% endif %}
+
+		{% if request.user.is_anonymous %}
+			<p class="textcenter">
+				 <a class="btn btn-warning" href="#" disabled> Il faut être connecté pour pouvoir s'inscrire dans ce groupe</a>
+			</p>
+		{% else %}
+
+			{% if request.user.adherent_viure %}
+			<p class="textcenter">
+				 <a class="btn btn-warning" href="{% url 'inscription_viure' %}"> Je suis inscrit -> Je me désinscris du groupe en cliquant ici</a>
+			</p>
+			{% else %}
+			<p class="textcenter">
+				 <a class="btn btn-primary" href="{% url 'inscription_viure' %}"> Je ne fais pas partie du groupe -> Je m'inscris en cliquant ici</a>
+			</p>
+			{% endif %}
+		{% endif %}
+
+	</div>
+</div>
+{% endblock %}

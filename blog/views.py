@@ -56,6 +56,11 @@ def accueil(request):
                                                                                                 flat=True).distinct()
     categorie_list_citealt = [(x[0], x[1], Choix.get_couleur(x[0]), Choix.get_logo(x[0])) for x in Choix.type_annonce if x[0] in cat_citealt]
 
+    cat_viure = Article.objects.filter(asso__abreviation="viure").order_by('categorie').values_list('categorie',
+                                                                                                        flat=True).distinct()
+    categorie_list_viure = [(x[0], x[1], Choix.get_couleur(x[0]), Choix.get_logo(x[0])) for x in Choix.type_annonce if
+                              x[0] in cat_viure]
+
     proj = Projet.objects.filter(estArchive=False, statut='accep').order_by('titre')
 
     for nomAsso in Choix_global.abreviationsAsso:
@@ -94,7 +99,7 @@ def accueil(request):
 
     suivis = get_suivis_forum(request)
 
-    return render(request, 'blog/accueil.html', {'categorie_list':categorie_list,'categorie_list_pc':categorie_list_pc,'categorie_list_rtg':categorie_list_rtg,'categorie_list_fer':categorie_list_fer,'categorie_list_gt':categorie_list_gt,'categorie_list_citealt':categorie_list_citealt,'projets_list':projets_list,'ateliers_list':ateliers_list, 'categorie_list_projets':categorie_list_projets,'derniers_articles':derniers, 'suivis':suivis})
+    return render(request, 'blog/accueil.html', {'categorie_list':categorie_list,'categorie_list_pc':categorie_list_pc,'categorie_list_rtg':categorie_list_rtg,'categorie_list_fer':categorie_list_fer,'categorie_list_gt':categorie_list_gt,'categorie_list_citealt':categorie_list_citealt,'categorie_list_viure':categorie_list_viure,'projets_list':projets_list,'ateliers_list':ateliers_list, 'categorie_list_projets':categorie_list_projets,'derniers_articles':derniers, 'suivis':suivis})
 
 
 @login_required
@@ -333,6 +338,10 @@ class ListeArticles(ListView):
                 if nomAsso == 'citealt':
                     context['categorie_list_' + nomAsso] = [(x[0], x[1], Choix.get_couleur(x[0]), Choix.get_logo(x[0])) for x in
                                                             Choix.type_annonce if x[0] in cat]
+                elif nomAsso == 'viure':
+                    context['categorie_list_' + nomAsso] = [
+                        (x[0], x[1], Choix.get_couleur(x[0]), Choix.get_logo(x[0])) for x in
+                        Choix.type_annonce if x[0] in cat]
                 else:
                     context['categorie_list_'+nomAsso] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
 
@@ -398,7 +407,7 @@ class ListeArticles_asso(ListView):
         qs = Article.objects.all()
 
         if asso.abreviation == "public":
-            qs = qs.exclude(Q(asso__abreviation="pc")|Q(asso__abreviation="rtg")|Q(asso__abreviation="fer")|Q(asso__abreviation="gt")|Q(asso__abreviation="scic")|Q(asso__abreviation="citealt"))
+            qs = qs.exclude(Q(asso__abreviation="pc")|Q(asso__abreviation="rtg")|Q(asso__abreviation="fer")|Q(asso__abreviation="gt")|Q(asso__abreviation="scic")|Q(asso__abreviation="citealt")|Q(asso__abreviation="viure"))
         else:
             qs = qs.filter(asso__abreviation=asso.abreviation)
 
@@ -448,6 +457,9 @@ class ListeArticles_asso(ListView):
             if getattr(self.request.user, "adherent_" + nomAsso):
                 cat = Article.objects.filter(asso__abreviation=nomAsso).order_by('categorie').values_list('categorie', flat=True).distinct()
                 if nomAsso == 'citealt':
+                    context['categorie_list_' + nomAsso] = [(x[0], x[1], Choix.get_couleur(x[0]), Choix.get_logo(x[0])) for x in
+                                                            Choix.type_annonce if x[0] in cat]
+                elif nomAsso == 'viure':
                     context['categorie_list_' + nomAsso] = [(x[0], x[1], Choix.get_couleur(x[0]), Choix.get_logo(x[0])) for x in
                                                             Choix.type_annonce if x[0] in cat]
                 else:
