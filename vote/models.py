@@ -336,6 +336,12 @@ class Proposition_m(models.Model):
         """Print the candidate."""
         return str(self.proposition)
 
+    def save(self, question_m=None, *args, **kwargs):
+        ''' On save, update timestamps '''
+        self.question_m = question_m
+        return super(Proposition_m, self).save(*args, **kwargs)
+
+
     def get_absolute_url(self):
         """Get the candidate's Election URL."""
         return self.question_m.get_absolute_url()

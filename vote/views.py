@@ -100,7 +100,7 @@ def ajouterQuestionM(request, slug):
     if form.is_valid() and pm_formset.is_valid():
         question = form.save(suffrage=suffrage)
         for qform in pm_formset:
-            qform.save(question=question)
+            qform.save(question_m=question)
 
         return redirect(question.get_absolute_url())
 

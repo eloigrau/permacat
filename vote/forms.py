@@ -153,10 +153,9 @@ class Proposition_m_Form(forms.ModelForm):
         model = Proposition_m
         fields = ['proposition']
 
-    def save(self, question):
+    def save(self, question_m):
         instance = super(Proposition_m_Form, self).save(commit=False)
-        instance.question = question
-        instance.save()
+        instance.save(question_m)
         return instance
 
 class RequiredFormSet(BaseFormSet):
