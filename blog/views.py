@@ -73,7 +73,7 @@ def accueil(request):
 
     for nomAsso in Choix_global.abreviationsAsso:
         if not getattr(request.user, "adherent_" + nomAsso):
-            ateliers = ateliers.exclude(asso__abreviation = nomAsso)
+            ateliers = ateliers.exclude(asso__abreviation=nomAsso)
 
     ateliers_list = [(x.slug, x.titre, x.get_couleur) for x in ateliers]
     categorie_list_projets = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets ]
