@@ -139,8 +139,8 @@ class Suffrage(SuffrageBase):
 
         retour = super(Suffrage, self).save(*args, **kwargs)
 
-        #if emails:
-        #    action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
+        if emails:
+            action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
         return retour
 
     def get_resultats(self):
