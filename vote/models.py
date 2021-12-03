@@ -321,7 +321,13 @@ class Question_majoritaire(Question_base):
 
     @property
     def propositions(self):
-        return self.proposition_m_set.all()
+        prop = self.proposition_m_set.all()
+        if prop:
+            return prop
+        else:
+            p = Proposition_m(proposition="J'approuve")
+            p.save(question_m=self)
+            return (p, )
 
     def get_delete_url(self):
         return reverse("vote:supprimerQuestionM", kwargs={"id_question":self.id, 'slug':self.suffrage.slug})

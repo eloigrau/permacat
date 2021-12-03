@@ -10,11 +10,14 @@
 <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
   {% csrf_token %}
 
+    <p class="h5">Questions soumises au vote binaire : </p>
     <div id="rb_formset">
     {% for form in reponses_b_form %}
         <div class="row">
         <div class="col-sm-12 col-md-2">
-            Question {{ forloop.counter }} :
+            {% if reponses_b_form|length > 1%}
+            {{ forloop.counter }} :
+    {% endif %}
         </div>
         <div class="col-sm-12 col-md-8">
             {% include 'form_template2.html' %}
@@ -23,6 +26,8 @@
         <hr>
     {% endfor %}
     </div>
+    <hr>
+    <p class="h5">Questions soumises au vote majoritaire : </p>
     <div id="rm_formset">
         {% for q, form in reponses_m_form.items %}
         <div class="row">

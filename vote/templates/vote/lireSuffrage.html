@@ -73,14 +73,29 @@
     {% endif  %}
        <p>
         {%if suffrage.get_statut.0 == 1%}<a href="{% url 'vote:resultatsSuffrage' slug=suffrage.slug %}"> {% endif %}
-        <button {%if suffrage.get_statut.0 == 1%} {% else %} disabled{% endif %} class="{%if suffrage.get_statut.0 == 0%}btn-success {% else %}btn btn-warning{% endif %}">
+        <button {%if suffrage.get_statut.0 == 1%} {% else %} disabled{% endif %} class="btn {%if suffrage.get_statut.0 == 0%}btn-success {% else %} btn-warning{% endif %}">
             {{suffrage.get_statut.1}} {%if suffrage.get_statut.0 == 1%}-> Voir les résultats{% endif %}
     </button>
     {%if suffrage.get_statut.0 == 1%}</a>{% endif %}
     </p>
+
+<div class="row justify-content-center">
+<div class="col-sm-12 textcenter">
+
+    {% if suffrage.get_statut.0 == 0 %}
+        {%if not vote %}
+            <p><a href="{% url 'vote:voter' slug=suffrage.slug %}" class="btn btn-success">Voter</a></p>
+        {% else %}
+            <div class="textcenter"><a href="{% url 'vote:voter' slug=suffrage.slug %}" class="btn btn-success"> Refaire mon vote</a></div></p>
+            {% endif %}
+    {% endif %}
+</div>
+</div>
  </div>
 </div>
     <hr>
+
+
 <div class="row" >
     <div class="col textright" >
         {% if actions %}
@@ -132,18 +147,6 @@
     {% endif %}
     {% endif %}
 
-<div class="row justify-content-center">
-<div class="col-sm-12 textcenter">
-
-    {% if suffrage.get_statut.0 == 0 %}
-        {%if not vote %}
-            <p><a href="{% url 'vote:voter' slug=suffrage.slug %}" class="btn btn-success">Voter</a></p>
-        {% else %}
-            <div class="textcenter"><a href="{% url 'vote:voter' slug=suffrage.slug %}" class="btn btn-success"> Refaire mon vote</a></div></p>
-            {% endif %}
-    {% endif %}
-</div>
-</div>
 </div>
 </div>
 

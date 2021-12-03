@@ -157,13 +157,9 @@ class SupprimerSuffrage(DeleteAccess, DeleteView):
 #    fields = ['user','site_web','description', 'competences', 'adresse', 'avatar', 'inscrit_newsletter']
 
     def get_object(self):
-        return Suffrage.objects.get(slug=self.kwargs['slug'])
-
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
         if self.object.auteur != self.request.user:
-            return redirect(self.success_url)
-        return super().post(request, *args, **kwargs)
+            return redirect(self.object.get_absolute_url)
+        return Suffrage.objects.get(slug=self.kwargs['slug'])
 
 
 @login_required
@@ -178,7 +174,6 @@ def lireSuffrage(request, slug):
         voteCourant = None
 
     questions_b, questions_m = suffrage.questions
-
 
     commentaires = Commentaire.objects.filter(suffrage=suffrage).order_by("date_creation")
     actions = action_object_stream(suffrage)
@@ -256,6 +251,14 @@ def voter(request, slug):
         vote.delete()
 
     questions_b, questions_m = suffrage.questions
+    propositions_m, question_m_sp = [], []
+    for q in questions_m:
+        prop = q.propositions
+        if prop :
+            propositions_m.append(prop)
+        else:
+            question_m_sp.append(q)
+
     propositions_m = suffrage.propositions
 
     formVote = VoteForm(request.POST or None)
@@ -271,8 +274,8 @@ def voter(request, slug):
         vote = formVote.save(suffrage, request.user)
         for form2 in reponses_b_form:
             form2.save(vote=vote, )
-        for form2 in reponses_m_form.values():
-            form2.save(vote=vote, )
+        for form3 in reponses_m_form.values():
+            form3.save(vote=vote, )
 
         return redirect(suffrage.get_absolute_url())
 

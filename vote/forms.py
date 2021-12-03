@@ -166,7 +166,7 @@ class RequiredFormSet(BaseFormSet):
 
 
 Question_binaire_formset = formset_factory(Question_binaire_Form, formset=RequiredFormSet, extra=1, can_delete=False)
-Proposition_m_formset = formset_factory(Proposition_m_Form, formset=RequiredFormSet, extra=1, can_delete=False)
+Proposition_m_formset = formset_factory(Proposition_m_Form, formset=RequiredFormSet, extra=0, can_delete=False)
 Question_majoritaire_formset = formset_factory(Question_majoritaire_Form, extra=0, can_delete=False)
 
 
@@ -179,7 +179,7 @@ class Reponse_majoritaire_Form(forms.ModelForm):
         super(Reponse_majoritaire_Form, self).__init__(*args, **kwargs)
         self.proposition = proposition
         self.question = proposition.question_m.question
-        self.fields['choix'].label = "Proposition : " + proposition.proposition
+        self.fields['choix'].label = "-> " + proposition.proposition
 
     def save(self, vote):
         instance = super(Reponse_majoritaire_Form, self).save(commit=False)
