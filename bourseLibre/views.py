@@ -1295,12 +1295,50 @@ def modifier_message(request, id, type_msg, asso, ):
             if type_msg == 'conversation':
                 return redirect(conversation.get_absolute_url())
             else:
-                return reverse('agora', kwargs={asso:asso.abreviation})
+                return reverse('agora', kwargs={'asso':asso.abreviation})
 
 
 
     return render(request, 'modifierCommentaire.html', {'form': form, })
 
+
+
+class ModifierMessageAgora(UpdateView):
+    model = MessageGeneral
+    form_class = MessageChangeForm
+    template_name = 'modifierCommentaire.html'
+
+    def get_object(self):
+        if self.kwargs['type_msg'] == 'conversation':
+            obj = Message.objects.get(id=self.kwargs['id'])
+            self.conversation = obj.conversation
+        else:
+            self.asso = testIsMembreAsso(self.request, self.kwargs['asso'])
+            if not isinstance(self.asso, Asso):
+                raise PermissionDenied
+            obj = MessageGeneral.objects.get(id=self.kwargs['id'], asso=self.asso)
+        return obj
+
+    def form_valid(self, form):
+        self.object = form.save()
+        if self.object.message and self.object.message !='<br>' and self.object.message !='<p><br></p>':
+            self.object.date_modification = now()
+            self.object.save()
+            return HttpResponseRedirect(self.object.get_absolute_url())
+        else:
+            self.object.delete()
+            if self.kwargs['type_msg'] == 'conversation':
+                return redirect(self.conversation.get_absolute_url())
+            else:
+                return reverse('agora', kwargs={'asso':self.asso.abreviation})
+
+    def form_invalid(self, form):
+        if (form.data['message'] == '' or form.data['message'] == '<br>' or form.data['message'] == '<p><br></p>'):
+            url = self.object.get_absolute_url()
+            self.object.delete()
+            return HttpResponseRedirect(url)
+
+        return super(ModifierMessageAgora, self).form_invalid(form)
 
 @login_required
 @csrf_exempt
