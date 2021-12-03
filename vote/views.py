@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect, reverse
 from django.urls import reverse_lazy
+from django.http import HttpResponseForbidden
 from django.utils.html import strip_tags
 from .models import Suffrage, Commentaire, Choix, Vote, Proposition_m, Question_binaire, Question_majoritaire
 from bourseLibre.constantes import Choix as Choix_global
@@ -37,8 +38,8 @@ def ajouterSuffrage(request):
         if suffrage:
             url = suffrage.get_absolute_url()
             suffix = "_" + suffrage.asso.abreviation
-            action.send(request.user, verb='suffrage_ajout'+suffix, action_object=suffrage, url=url,
-                        description="a ajouté un suffrage : '%s'" % suffrage.titre)
+            #action.send(request.user, verb='suffrage_ajout'+suffix, action_object=suffrage, url=url,
+            #            description="a ajouté un suffrage : '%s'" % suffrage.titre)
 
             return render(request, 'vote/ajouterQuestions.html', {'suffrage':suffrage})
 
@@ -189,8 +190,8 @@ def lireSuffrage(request, slug):
             comment.save()
             url = suffrage.get_absolute_url() + "#idConversation"
             suffix = "_" + suffrage.asso.abreviation
-            action.send(request.user, verb='suffrage_message' + suffix, action_object=suffrage, url=url,
-                        description="a réagi au suffrage: '%s'" % suffrage.question)
+            #action.send(request.user, verb='suffrage_message' + suffix, action_object=suffrage, url=url,
+             #           description="a réagi au suffrage: '%s'" % suffrage.question)
 
         return redirect(request.path)
 
