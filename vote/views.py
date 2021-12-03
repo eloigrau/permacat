@@ -159,6 +159,11 @@ class SupprimerSuffrage(DeleteAccess, DeleteView):
     def get_object(self):
         return Suffrage.objects.get(slug=self.kwargs['slug'])
 
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.auteur != self.request.user:
+            return redirect(self.success_url)
+        return super().post(request, *args, **kwargs)
 
 
 @login_required
