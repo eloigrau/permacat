@@ -29,7 +29,7 @@ from django.http import Http404
 
 from blog.models import Article, Projet, EvenementAcceuil, Evenement
 from ateliers.models import Atelier
-from vote.models import Suffrage, Vote
+#from vote.models import Suffrage, Vote
 from jardinpartage.models import Article as Article_jardin
 
 from django.contrib import messages

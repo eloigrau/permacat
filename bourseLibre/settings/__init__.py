@@ -97,7 +97,7 @@ INSTALLED_APPS = [
     'django_filters',
     'cal',
     'carto',
-    'vote',
+    #'vote',
     'widget_tweaks',
     'leaflet',
     'captcha',
