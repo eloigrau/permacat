@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('bourseLibre', '0060_auto_20211203_2025'),
+        ('bourseLibre', '0059_profil_adherent_viure'),
     ]
 
     operations = [
