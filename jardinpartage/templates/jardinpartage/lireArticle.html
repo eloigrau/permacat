@@ -56,6 +56,9 @@
             </button>
         </a>
             {% endif %}
+            <span class="badge badge-Light">
+                    <button class="btn btn-light btn-sm stretched-link" onclick="copyToClipboard('https://www.perma.cat{{article.get_absolute_url}}')" title="Copier l'adresse de l'article"><i class="fa fa-link" aria-hidden="true"></i></button>
+            </span>
         </p>
     </div>
     <div class="col-md-2">
@@ -95,11 +98,6 @@
             {% if article.estArchive%}
             <span class="badge badge-Light">
                 archivé
-            </span>
-            {%endif%}
-            {% if article.estModifiable%}
-            <span class="badge badge-info">
-                modifiable
             </span>
             {%endif%}
      </div>

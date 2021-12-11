@@ -84,6 +84,9 @@
             </button>
         </a>
             {% endif %}
+                    <button class="btn btn-light btn-sm" onclick="copyToClipboard('https://www.perma.cat{{article.get_absolute_url}}')" title="Copier l'adresse de l'article"><i class="fa fa-link" aria-hidden="true"></i></button>
+
+
         </p>
     </div>
 </div>
@@ -92,17 +95,17 @@
 
 <div class="row">
 <div class="col-sm-12 offset-md-2 col-md-8 textcenter">
-            <span class="badge badge-info">
-                <a href="{% url 'blog:index_asso' asso=article.asso.abreviation %}" >{{ article.asso }}</a>
-            </span> -
-
-                <span class="badge badge-success" style="background-color:{{article.get_couleur}}" ><a href="{% url 'blog:index'  %}?categorie={{article.categorie}}" >{% if article.get_logo_categorie %}  <img  src="{% static article.get_logo_categorie %}" height="16px"/>  {% endif %} {{ article.get_categorie_display }}</a></span>
 
     <div class="row titre_fiche">
         <div class="col textcenter" >
               <h2> {{ article.titre }}</h2>
         </div>
     </div>
+                <span class="badge badge-info">
+                <a href="{% url 'blog:index_asso' asso=article.asso.abreviation %}" >{{ article.asso }}</a>
+            </span> -
+                <span class="badge badge-success" style="background-color:{{article.get_couleur}}" ><a href="{% url 'blog:index'  %}?categorie={{article.categorie}}" >{% if article.get_logo_categorie %}  <img  src="{% static article.get_logo_categorie %}" height="16px"/>  {% endif %} {{ article.get_categorie_display }}</a></span>
+
         {%if article.start_time%}
     <p>
           <a href="{% url 'cal:agenda' %} ">
