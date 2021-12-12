@@ -21,15 +21,15 @@
  <form method="get">
     <div class="well">
       <div class="row">
-        <div class="form-group col-sm-3">
+        <div class="form-group col-sm-4">
             <label >Mots dans le titre :</label>
           {% render_field filter.form.titre class="form-control" %}
         </div>
-        <div class="form-group col-sm-3">
+        <div class="form-group col-sm-4">
           {{ filter.form.auteur.label_tag }}
           {% render_field filter.form.auteur class="form-control" %}
         </div>
-        <div class="form-group col-sm-3">
+        <div class="form-group col-sm-4">
           {{ filter.form.date_creation.label_tag }}
           {% render_field filter.form.date_creation class="form-control" %}
         </div>
