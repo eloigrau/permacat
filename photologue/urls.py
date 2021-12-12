@@ -37,6 +37,7 @@ urlpatterns = [
     url(r'^photo/(?P<slug>[\-\d\w]+)/$', login_required(views.PhotoDetailView.as_view()), name='photo'),
     url(r'^photolist/$', login_required(views.PhotoListView.as_view()), name='photo-list'),
     url(r'^doclist/$', login_required(views.DocListView.as_view()), name='doc-list'),
+    url(r'^filtrer_documents/$', views.filtrer_documents, name='filtrer_documents'),
     url(r'^ajouterPhoto/(?P<albumSlug>[\-\d\w]+)$', views.ajouterPhoto, name='ajouterPhoto'),
     url(r'^ajouterAlbum/$', views.ajouterAlbum, name='ajouterAlbum'),
     url(r'^ajouterDocument/$', views.ajouterDocument, name='ajouterDocument'),

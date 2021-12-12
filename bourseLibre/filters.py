@@ -33,3 +33,4 @@ class ProfilCarteFilter(django_filters.FilterSet):
             "adherent_citealt": ['exact', ],
             "adherent_viure": ['exact', ],
         }
+

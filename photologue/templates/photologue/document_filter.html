@@ -1,0 +1,81 @@
+{% extends 'blog/baseBlog.html' %}
+{% load blog_filters %}
+{% load fontawesome %}
+{% load activity_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block header %}
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/infinite.min.js' %}"></script>
+{% endblock  %}
+
+{% block subtitle %}
+
+<div class="row">
+    <div class="col textcenter">
+       <h3> Rechercher un document </h3>
+    </div>
+</div>
+
+ <form method="get">
+    <div class="well">
+      <div class="row">
+        <div class="form-group col-sm-3">
+            <label >Mots dans le titre :</label>
+          {% render_field filter.form.titre class="form-control" %}
+        </div>
+        <div class="form-group col-sm-3">
+            <label>Mots dans le texte de description :</label>
+          {% render_field filter.form.contenu class="form-control" %}
+        </div>
+        <div class="form-group col-sm-3">
+          {{ filter.form.auteur.label_tag }}
+          {% render_field filter.form.auteur class="form-control" %}
+        </div>
+        <div class="form-group col-sm-3">
+          {{ filter.form.date_creation.label_tag }}
+          {% render_field filter.form.date_creation class="form-control" %}
+        </div>
+
+        <div class="form-group col-sm-12 col-md-12">
+          {{ filter.form.asso.label_tag }}
+          <div>
+            {% for choice in filter.form.asso %}
+              <label class="checkbox-inline">
+                {{ choice.tag }} {{ choice.choice_label }}
+              </label> &nbsp;
+            {% endfor %}
+          </div>
+        </div>
+
+      </div>
+    <div class="row">
+    <div class="col-md-12 textcenter">
+      <button type="submit" class="btn btn-primary">
+        <span class="glyphicon glyphicon-search"></span> Filtrer les articles
+      </button>
+    </div>
+    </div>
+</div>
+  </form>
+{% endblock %}
+<script>
+$(function() {
+  $('input[name="dates"]').daterangepicker({
+    opens: 'left'
+  }, function(start, end, label) {
+    $('#id_start_time_0').val(start)
+    $('#id_start_time_1').val(end)
+  });
+  $('#datePicker').removeAttr('name');
+});
+</script>
+{% block content %}
+
+<hr>
+ <p>Documents correspondants ({{filter.qs|length}})</p>
+
+{% include 'photologue/document_template.html' with object_list=filter.qs %}
+
+{% endblock %}
