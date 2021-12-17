@@ -221,7 +221,7 @@ class Profil(AbstractUser):
     adherent_fer = models.BooleanField(verbose_name="Je suis adhérent de Fermille", default=False)
     #adherent_gt = models.BooleanField(verbose_name="Je suis adhérent de Gardiens de la Terre", default=False)
     adherent_scic = models.BooleanField(verbose_name="Je suis intéressé par le collectif 'PermAgora'", default=False)
-    adherent_citealt = models.BooleanField(verbose_name="Je fais partie de 'la Cité Altruiste", default=False)
+    adherent_citealt = models.BooleanField(verbose_name="Je fais partie de 'la Cité Altruiste'", default=False)
     adherent_viure = models.BooleanField(verbose_name="Je fais partie du collectif 'Viure'", default=False)
     accepter_conditions = models.BooleanField(verbose_name="J'ai lu et j'accepte les conditions d'utilisation du site", default=False, null=False)
     accepter_annuaire = models.BooleanField(verbose_name="J'accepte d'apparaitre dans l'annuaire du site et la carte et rend mon profil visible par tous", default=True)
