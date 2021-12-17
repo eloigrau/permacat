@@ -115,7 +115,6 @@
                           <li class="divider" role="separator"></li>
 
                           <li> <a class="dropdown-item" href="https://1drv.ms/b/s!AgO84waSGnDoiDlHJeeJPxRRNJM_?e=ucgIvC" target="_blank"><i class='fa fa-info-circle iconleft' ></i>  Statuts  </a></li>
-                            <li> <a class="dropdown-item" href="https://onedrive.live.com/?id=root&cid=E8701A9206E3BC03" target="_blank"><i class='fa fa-database iconleft' ></i> OneDrive  </a></li>
                        <li> <a class="dropdown-item" href="{% url 'adhesion_asso' asso='rtg' %}"><i class='fa fa-euro-sign iconleft ' ></i> Cotisation en ligne </a></li>
    {% endif %}
                         </ul>
@@ -199,7 +198,7 @@
                         </ul>
                     </li>
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle"  href="test">Viure !</a>
+                        <a class="dropdown-item dropdown-toggle"  href="test">Viure</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso'  asso='viure' %}"><i class='fa fa-asterisk iconleft' ></i> Présentation </a></li>
                          {% if request.user.adherent_viure %}

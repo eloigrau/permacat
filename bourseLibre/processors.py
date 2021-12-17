@@ -13,7 +13,7 @@ def navbar(request):
         if request.user.is_authenticated:
             qs_projets = Projet.objects.filter(estArchive=False, statut='accep').order_by('categorie','titre')
             qs_projets_prop = Projet.objects.filter(estArchive=False, statut='prop').order_by('categorie','titre')
-            qs_ateliers = Atelier.objects.filter(start_time__gte=now(), estArchive=False).order_by('-start_time')
+            qs_ateliers = Atelier.objects.filter(start_time__gte=now(), estArchive=False).order_by('start_time')
 
             for nomAsso in Choix_global.abreviationsAsso:
                 if not getattr(request.user, "adherent_" + nomAsso):

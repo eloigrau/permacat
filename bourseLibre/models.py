@@ -317,7 +317,7 @@ class Profil(AbstractUser):
             if self.adherent_viure:
                 return "membre actif du Collectif Viure'"
             else:
-                return "Non membre du Collectif Viure !'"
+                return "Non membre du Collectif Viure'"
 
     def estMembre_str(self, nom_asso):
         if nom_asso == "Public" or nom_asso == "public":

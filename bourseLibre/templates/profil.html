@@ -154,6 +154,12 @@
 		<td>{{user.adherent_citealt|translateOuiNon}}</td>
 	    </tr>
     {% endif %}
+    {%if request.user.adherent_viure or request.user == user %}
+        <tr>
+            <td style="width:200px">Inscrit au collectif Viure *: </td>
+            <td>{{user.adherent_viure|translateOuiNon }}
+        </tr>
+    {% endif %}
     {%if request.user.adherent_jp or request.user == user %}
         <tr>
             <td style="width:200px">Inscrit aux jardins partagés : </td>
