@@ -1148,16 +1148,14 @@ def inscription_permagora(request):
         request.user.save()
         suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_scic')
         actions.unfollow(request.user, suivi, send_action=False)
-        url = reverse('presentation_asso', kwargs={'asso': 'scic'})
-        action.send(request.user, verb='inscription_permagora', target=asso, url=url,
+        action.send(request.user, verb='inscription_permagora', target=asso, url=request.user.get_absolute_url(),
                     description="s'est retiré du groupe PermAgora")
     else:
         request.user.adherent_scic = True
         request.user.save()
         suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_scic')
         actions.follow(request.user, suivi, send_action=False)
-        url = reverse('presentation_asso', kwargs={'asso': 'scic'})
-        action.send(request.user, verb='inscription_permagora', target=asso, url=url,
+        action.send(request.user, verb='inscription_permagora', target=asso, url=request.user.get_absolute_url(),
                     description="s'est inscrit.e au groupe PermAgora")
     return redirect('presentation_asso', asso='scic')
 
@@ -1170,16 +1168,14 @@ def inscription_citealt(request):
         request.user.save()
         suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_citealt')
         actions.unfollow(request.user, suivi, send_action=False)
-        url = reverse('presentation_asso', kwargs={'asso': 'citealt'})
-        action.send(request.user, verb='inscription_citealt', target=asso, url=url,
+        action.send(request.user, verb='inscription_citealt', target=asso, url=request.user.get_absolute_url(),
                     description="s'est retiré du groupe Cité Altruiste")
     else:
         request.user.adherent_citealt = True
         request.user.save()
         suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_citealt')
         actions.follow(request.user, suivi, send_action=False)
-        url = reverse('presentation_asso', kwargs={'asso': 'citealt'})
-        action.send(request.user, verb='inscription_citealt', target=asso, url=url,
+        action.send(request.user, verb='inscription_citealt', target=asso, url=request.user.get_absolute_url(),
                     description="s'est inscrit.e dans le groupe Cité Altruiste")
     return redirect('presentation_asso', asso='citealt')
 
@@ -1192,15 +1188,14 @@ def inscription_viure(request):
         suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_viure')
         actions.unfollow(request.user, suivi, send_action=False)
         url = reverse('presentation_asso', kwargs={'asso': 'viure'})
-        action.send(request.user, verb='inscription_viure', target=asso, url=url,
+        action.send(request.user, verb='inscription_viure', target=asso, url=request.user.get_absolute_url(),
                     description="s'est retiré du groupe Viure")
     else:
         request.user.adherent_viure = True
         request.user.save()
         suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_viure')
         actions.follow(request.user, suivi, send_action=False)
-        url = reverse('presentation_asso', kwargs={'asso': 'viure'})
-        action.send(request.user, verb='inscription_viure', target=asso, url=url,
+        action.send(request.user, verb='inscription_viure', target=asso, url=request.user.get_absolute_url(),
                     description="s'est inscrit.e dans le groupe Viure")
     return redirect('presentation_asso', asso='viure')
 
