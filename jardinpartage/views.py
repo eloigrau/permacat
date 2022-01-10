@@ -238,7 +238,8 @@ class ListeArticles_jardin(ListeArticles):
         context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
         context['jardin_list'] = [(x[0], x[1]) for x in Choix.jardins_ptg]
         nom_jardin = [x[1] for x in Choix.jardins_ptg if x[0]==self.kwargs["jardin"]]
-        context['jardin_courant'] = nom_jardin[0]
+        if nom_jardin:
+            context['jardin_courant'] = nom_jardin[0]
         context['typeFiltre'] = "aucun"
         context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="articles")
 

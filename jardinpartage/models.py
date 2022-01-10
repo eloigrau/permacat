@@ -118,6 +118,9 @@ class Article(models.Model):
     def estPublic(self):
         return True
 
+    @property
+    def get_jardin_num(self):
+        return self.jardin#[item[0] for item in Choix.jardins_ptg if item[1] == self.jardin]
 
 class Evenement(models.Model):
     titre_even = models.CharField(verbose_name="Titre de l'événement (si laissé vide, ce sera le titre de l'article)",
