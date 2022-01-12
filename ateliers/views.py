@@ -108,7 +108,7 @@ def contacterParticipantsAtelier(request, slug):
         sujet = "[Permacat] Au sujet de l'atelier Permacat '" + atelier.titre +"' "
         message_html = str(request.user.username) + " ("+ str(request.user.email)+") a écrit le message suivant aux participants : \n"
         message_html += form.cleaned_data['msg']
-        message_html += "\n (ne pas répondre à ce message, utiliser <a href='https://www.perma.cat'"+ atelier.get_absolute_url() +" '>le site perma.cat</a>: )"
+        message_html += "\n (ne pas répondre à ce message, utiliser <a href='https://www.perma.cat"+ atelier.get_absolute_url() +" '>l'atelier sur le site perma.cat</a> :)"
         messagetxt = BeautifulSoup(message_html).get_text()
         send_mass_html_mail([(sujet, messagetxt, message_html, SERVER_EMAIL, inscrits) ], fail_silently=False)
 
