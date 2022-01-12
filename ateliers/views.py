@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail, BadHeaderError, send_mass_mail
 from blog.models import Article
 from actstream.models import following
+from bourseLibre.settings.production import SERVER_EMAIL
 
 from django.utils.timezone import now
 
@@ -108,24 +109,8 @@ def contacterParticipantsAtelier(request, slug):
         message_html = str(request.user.username) + " ("+ str(request.user.email)+") a écrit le message suivant aux participants : \n"
         message_html += form.cleaned_data['msg']
         message_html += "\n (ne pas répondre à ce message, utiliser <a href='https://www.perma.cat'"+ atelier.get_absolute_url() +" '>le site perma.cat</a>: )"
-        message = BeautifulSoup(message_html).get_text()
-        try:
-            #subject, message, html_message, sender, recipient
-            send_mass_html_mail([(sujet, message, message_html, request.user.email, inscrits), ])
-
-            if form.cleaned_data['renvoi']:
-               send_mail(sujet,
-                          "Vous avez envoyé aux participants de l'atelier Permacat '" + atelier.titre +"' le message suivant : " + message_html,
-                          request.user.email, [request.user.email, ], fail_silently=False,
-                          html_message=message_html)
-
-            return render(request, 'contact/message_envoye.html', {'sujet': sujet, 'msg': message_html,
-                                                           'envoyeur': request.user.username + " (" + request.user.email + ")",
-                                                           "destinataire(s)": "".join(inscrits)})
-        except BadHeaderError:
-            return render(request, 'erreur.html', {'msg': 'Invalid header found.'})
-
-        return render(request, 'erreur.html', {'msg': "Désolé, une erreur s'est produite lors de l'envoie du mail..."})
+        messagetxt = BeautifulSoup(message_html).get_text()
+        send_mass_html_mail([(sujet, messagetxt, message_html, SERVER_EMAIL, inscrits) ], fail_silently=False)
 
     return render(request, 'ateliers/contacterParticipantsAtelier.html', {'atelier': atelier,  'form': form,  })
 
