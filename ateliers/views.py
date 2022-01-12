@@ -101,18 +101,18 @@ def annulerInscription(request, slug):
 def contacterParticipantsAtelier(request, slug):
     atelier = get_object_or_404(Atelier, slug=slug)
     form = ContactParticipantsForm(request.POST or None, )
+    inscrits = list(InscriptionAtelier.objects.filter(atelier=atelier).values_list('user__email'))
+    referent = Profil.objects.get(username=atelier.referent)
+    inscrits.append(referent.email)
     if form.is_valid():
         sujet = "[Permacat] Au sujet de l'atelier Permacat '" + atelier.titre +"' "
-        inscrits = list(InscriptionAtelier.objects.filter(atelier=atelier).values_list('user__email'))
-        referent = Profil.objects.get(username=atelier.referent)
-        inscrits.append(referent.email)
         message_html = str(request.user.username) + " ("+ str(request.user.email)+") a écrit le message suivant aux participants : \n"
         message_html += form.cleaned_data['msg']
         message_html += "\n (ne pas répondre à ce message, utiliser <a href='https://www.perma.cat'"+ atelier.get_absolute_url() +" '>le site perma.cat</a>: )"
         messagetxt = BeautifulSoup(message_html).get_text()
         send_mass_html_mail([(sujet, messagetxt, message_html, SERVER_EMAIL, inscrits) ], fail_silently=False)
 
-    return render(request, 'ateliers/contacterParticipantsAtelier.html', {'atelier': atelier,  'form': form,  })
+    return render(request, 'ateliers/contacterParticipantsAtelier.html', {'atelier': atelier,  'form': form,  'inscrits':inscrits})
 
 
 @login_required
