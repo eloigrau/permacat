@@ -133,8 +133,5 @@ class CommentaireAtelierChangeForm(forms.ModelForm):
 
 
 class ContactParticipantsForm(forms.Form):
-
     msg = forms.CharField(label="Message", widget=SummernoteWidget)
-    renvoi = forms.BooleanField(label="recevoir une copie",
-                                     help_text="Cochez si vous souhaitez obtenir une copie du mail envoyé.", required=False
-                                 )
+
