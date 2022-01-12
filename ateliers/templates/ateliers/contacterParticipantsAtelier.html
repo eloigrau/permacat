@@ -3,7 +3,12 @@
 {% block subtitle %}
 <h3 style="text-align:center">Contacter les participants de l'atelier Permacat {{atelier.titre}}
 
-</h3>Vous pouvez, grâce à ce formulaire, envoyer un mail à tous les participants qui se sont inscrits</p>
+</h3>
+<p>Vous pouvez, grâce à ce formulaire, envoyer un mail à tous les participants qui se sont inscrits :</p>
+<p>{% for email in inscrits %}
+          {{email}}
+           {%if not forloop.last%}, {%endif%}
+</p>
      {% endblock %}
 {% block content %}
 
@@ -11,8 +16,6 @@
      {% include 'form_template.html'%}
 
 
-<br>
-{{inscrits}}
 {% endblock %}
 
     

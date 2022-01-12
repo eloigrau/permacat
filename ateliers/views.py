@@ -101,7 +101,7 @@ def annulerInscription(request, slug):
 def contacterParticipantsAtelier(request, slug):
     atelier = get_object_or_404(Atelier, slug=slug)
     form = ContactParticipantsForm(request.POST or None, )
-    inscrits = list(InscriptionAtelier.objects.filter(atelier=atelier).values_list('user__email'))
+    inscrits = [x[0] for x in InscriptionAtelier.objects.filter(atelier=atelier).values_list('user__email')]
     referent = Profil.objects.get(username=atelier.referent)
     inscrits.append(referent.email)
     if form.is_valid():
