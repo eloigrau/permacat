@@ -42,6 +42,11 @@
             <a href="{% url 'mesActions' %}" class="btn btn-success">
               <span class="glyphicon glyphicon-shopping-cart"></span> Mes actions
             </a>
+            {% if request.user.is_superuser %}
+            <a href="https://www.perma.cat/gestion/bourseLibre/profil/{{user.id}}/" class="btn btn-success">
+              <span class="glyphicon glyphicon-shopping-cart"></span> Admin
+            </a>
+            {%endif%}
         {%endif%}
         <a href="{% url 'marche' %}?producteur={{ user.username }}" class="btn btn-success">
                 <span class="glyphicon glyphicon-plus"></span>&nbsp; {%if  user.username != request.user.username %}Ses {%else%}Mes {%endif%}propositions

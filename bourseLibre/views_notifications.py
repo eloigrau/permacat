@@ -141,9 +141,11 @@ def notifications_news_regroup(request):
 
     if "fromdate" in request.GET:
         dateMin = datetime.strptime(request.GET["fromdate"], '%d-%m-%Y').replace(tzinfo=utc)
+        type_notif = "fromdate"
     else:
         date7jours = (datetime.now() - timedelta(days=15)).replace(tzinfo=utc)
         dateMin = request.user.date_notifications if request.user.date_notifications > date7jours else date7jours
+        type_notif = "dateNotif"
 
     for action in articles:
         if dateMin < action.timestamp:
@@ -230,7 +232,7 @@ def notifications_news_regroup(request):
         if dateMin < action.timestamp:
             dicoTexte['listautres'].append(action)
 
-    return render(request, 'notifications/notifications_last2.html', {'dico':dicoTexte, "htmlArticles":htmlArticles, "htmlProjets":htmlProjets, "dateMin":dateMin})
+    return render(request, 'notifications/notifications_last2.html', {'type_notif':type_notif,'dico':dicoTexte, "htmlArticles":htmlArticles, "htmlProjets":htmlProjets, "dateMin":dateMin})
 
 @login_required
 def notifications(request):

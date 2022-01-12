@@ -14,12 +14,14 @@ from django.utils.timezone import now
 
 from bourseLibre.models import Suivis, Profil
 from bourseLibre.views_base import DeleteAccess
+from bourseLibre.views_admin import send_mass_html_mail
 
 from bourseLibre.constantes import Choix as Choix_global
 from actstream import actions, action
 
 from hitcount.models import HitCount
 from hitcount.views import HitCountMixin
+from bs4 import BeautifulSoup
 
 def accueil(request):
     return redirect("ateliers:index_ateliers")
@@ -99,17 +101,20 @@ def contacterParticipantsAtelier(request, slug):
     atelier = get_object_or_404(Atelier, slug=slug)
     form = ContactParticipantsForm(request.POST or None, )
     if form.is_valid():
-        sujet = "[Permacat] Au sujet de l'atelier Permacat '" + atelier.titre +"'"
+        sujet = "[Permacat] Au sujet de l'atelier Permacat '" + atelier.titre +"' "
         inscrits = list(InscriptionAtelier.objects.filter(atelier=atelier).values_list('user__email'))
         referent = Profil.objects.get(username=atelier.referent)
         inscrits.append(referent.email)
-        message_html = form.cleaned_data['msg']
+        message_html = str(request.user.username) + " ("+ str(request.user.email)+") a écrit le message suivant aux participants : \n"
+        message_html += form.cleaned_data['msg']
+        message_html += "\n (ne pas répondre à ce message, utiliser <a href='https://www.perma.cat'"+ atelier.get_absolute_url() +" '>le site perma.cat</a>: )"
+        message = BeautifulSoup(message_html).get_text()
         try:
-            send_mass_mail([(sujet, message_html, request.user.email, inscrits), ])
+            #subject, message, html_message, sender, recipient
+            send_mass_html_mail([(sujet, message, message_html, request.user.email, inscrits), ])
 
             if form.cleaned_data['renvoi']:
-                send_mass_mail([(sujet, "Vous avez envoyé aux participants de l'atelier Permacat '" + atelier.titre +"' le message suivant : " +  message_html, request.user.email, [request.user.email, ]), ])
-                send_mail(sujet,
+               send_mail(sujet,
                           "Vous avez envoyé aux participants de l'atelier Permacat '" + atelier.titre +"' le message suivant : " + message_html,
                           request.user.email, [request.user.email, ], fail_silently=False,
                           html_message=message_html)

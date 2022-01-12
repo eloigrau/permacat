@@ -19,16 +19,18 @@
 </div>
 <hr>
 
+{% if request.user.is_superuser %}
 <div class="row textcenter">
 	<div class="col-sm-12">
-        <a href="{% url 'listeFollowers' %}">
+        <a href="{% url 'listeFollowers' asso='pc' %}">
          <button type="button" class="btn btn-primary">
-                 Liste des suivis
+                 SU : Liste des suivis
             </button>
 		</a>
 	</div>
 </div>
 <hr>
+{% endif %}
 <div class="row textcenter">
 	<div class="col-sm-12">
         <a href="{% url 'telechargements_asso' %}">

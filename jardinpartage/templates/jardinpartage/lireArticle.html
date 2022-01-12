@@ -26,7 +26,7 @@
             {%endif%}
             <a href="{% url 'profil' article.auteur.id %}">
                 <span class="badge badge-Light">
-               rédigé par  {{ article.auteur.username }}
+               rédigé par {{ article.auteur.username }}
                 </span>
             </a>
 
@@ -49,17 +49,16 @@
             </button>
             {% endif %}
         </a>
-             {% if request.user.is_superuser %}
+        {% if request.user.is_superuser %}
         <a href="{% url 'jardinpartage:suiveursArticle' article.slug %}">
             <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Voir abonnés">
                  {% fontawesome_icon 'list' %}
             </button>
         </a>
-            {% endif %}
-            <span class="badge badge-Light">
-                    <button class="btn btn-light btn-sm " onclick="copyToClipboard('https://www.perma.cat{{article.get_absolute_url}}')" title="Copier l'adresse de l'article"><i class="fa fa-link" aria-hidden="true"></i></button>
-            </span>
-        </p>
+        {% endif %}
+        <span class="badge badge-Light">
+                <button class="btn btn-light btn-sm " onclick="copyToClipboard('https://www.perma.cat{{article.get_absolute_url}}')" title="Copier l'adresse de l'article"><i class="fa fa-link" aria-hidden="true"></i></button>
+        </span>
     </div>
     <div class="col-md-2">
         <p>
@@ -78,7 +77,8 @@
             <a href="{% url 'jardinpartage:modifierArticle' slug=article.slug %}">
                <button type="button" class="btn btn-sm btn-warning">
                 <span class="glyphicon glyphicon-plus"></span>&nbsp;Modifier
-               </button></a>
+               </button>
+            </a>
         {%endif%}
 
     </p>
@@ -90,10 +90,11 @@
 {% endblock %}
 {% block content %}
      <div class="textcenter">
-         <a href="{% url 'jardinpartage:index_jardin' jardin=article.get_jardin_num %}"
+         <a href="{% url 'jardinpartage:index_jardin' jardin=article.get_jardin_num %}">
                 <span class="badge badge-success">
                  {{article.get_jardin_display }}
             </span>
+         </a>
      </div>
      <div class="boxitem_droite">
             {% if article.estArchive%}

@@ -363,7 +363,7 @@ def listeFollowers(request, asso):
     if not isinstance(asso, Asso):
         raise PermissionDenied
     listeArticles = []
-    for art in Article.objects.all():
+    for art in Article.objects.filter(asso=asso):
         suiveurs = followers(art)
         if suiveurs:
             listeArticles.append({"titre": art.titre, "url": art.get_absolute_url(), "followers": suiveurs, })
@@ -371,7 +371,7 @@ def listeFollowers(request, asso):
         suiveurs = followers(art)
         if suiveurs:
             listeArticles.append({"titre": art.titre, "url": art.get_absolute_url(), "followers": suiveurs, })
-    for art in Projet.objects.all():
+    for art in Projet.objects.filter(asso=asso):
         suiveurs = followers(art)
         if suiveurs:
             listeArticles.append({"titre": art.titre, "url": art.get_absolute_url(), "followers": suiveurs, })

@@ -61,15 +61,16 @@
 
 {% endblock %}
 {% block content %}
-
-{%if htmlArticles or htmlProjets or dico.listautres or dico.listinscriptions %}
-<p class = "textcenter ">
-    <a href="{% url 'notificationsLues'  %}" class="btn btn-outline-primary">
-        <i class="fa fa-check"> Marquer comme lu</i>
-    </a>
-</p>
-{% else %}
-<p class = "textcenter ">Pas de nouvelle activité </p>
+{%if type_notif == "dateNotif" %}
+    {%if htmlArticles or htmlProjets or dico.listautres or dico.listinscriptions %}
+    <p class = "textcenter ">
+        <a href="{% url 'notificationsLues'  %}" class="btn btn-outline-primary">
+            <i class="fa fa-check"> Marquer comme lu</i>
+        </a>
+    </p>
+    {% else %}
+    <p class = "textcenter ">Pas de nouvelle activité </p>
+    {% endif %}
 {% endif %}
 
 <div class="row justify-content-center">

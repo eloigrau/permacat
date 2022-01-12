@@ -9,6 +9,7 @@ from bourseLibre.settings import LOCALL
 from bourseLibre.models import Asso
 from django.forms import formset_factory, BaseFormSet
 from django.utils.timezone import now
+from datetime import timedelta
 
 class SuffrageForm(forms.ModelForm):
     asso = forms.ModelChoiceField(queryset=Asso.objects.all(), required=True, label="Suffrage public ou réservé aux adhérents de l'asso :",)
@@ -34,7 +35,7 @@ class SuffrageForm(forms.ModelForm):
         cleaned_data = super().clean()
         date_debut = cleaned_data.get("start_time")
         date_expiration = cleaned_data.get("end_time")
-        if date_debut < now().date():
+        if date_debut < now().date() + timedelta(days=1):
             raise forms.ValidationError('Le suffrage ne peut pas démarrer avant demain')
 
         if date_expiration <= date_debut:

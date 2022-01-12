@@ -10,7 +10,7 @@ from actstream import action
 
 
 class Choix():
-    type_atelier = ('0','Permaculture'), ('1',"Bricolage"), ('2','Cuisine'), ('3','Bien-être'),('4',"Musique"), ('5', 'Autre...')
+    type_atelier = ('0','Permaculture'), ('1',"Bricolage"), ('2','Cuisine'), ('3','Bien-être'),('4',"Musique"), ('6', 'Politique'), ('5', 'Autre...')
     couleurs_ateliers = {
         '2':'#4DC490', '1':'#C0EDA0', '3':'#00AA8B', '0':'#FCE79C',
         # '0':"#e0f7de", '1':"#dcc0de",
