@@ -17,11 +17,11 @@
 
 <script>
 $('#btn-validation').click(function() {
-    $(this).attr('disabled',true).delay(10).attr("disabled", false);
+    $(this).attr('disabled',true).delay(2000).attr("disabled", false);
 });
 {% comment %}
 $('#myForm').one('submit', function() {
-    $(this).find('input[type="submit"]').attr('disabled','disabled').delay(10).attr("disabled", false);
+    $(this).find('input[type="submit"]').attr('disabled','disabled').delay(2000).attr("disabled", false);
 });
 {% endcomment %}
 </script>
