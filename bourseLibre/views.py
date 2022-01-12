@@ -94,7 +94,7 @@ def getEvenementsSemaine(request):
                 ev_2 = ev_2.exclude(asso__abreviation=nomAsso)
 
         evenements.append(ev_2)
-        ev_3= []
+        ev_3 = []
         if request.user.adherent_jp:
             ev_3 = Article_jardin.objects.filter(Q(start_time__week=current_week) & Q(start_time__year=current_year)).order_by('start_time')
 
@@ -122,10 +122,30 @@ def getEvenementsSemaine(request):
                 pass
         eve = sorted(y, key=lambda x:x[1])
         eve2 = sorted(y2, key=lambda x:x[1])
-        evenements = [x for x, y in eve]
-        evenements2 = [x for x, y in eve2]
 
-    return evenements, evenements2
+        #evenements = [(x, y.weekday()) for x, y in eve]
+        #evenements2 = [(x, y.weekday()) for x, y in eve2]
+
+        dict_passe = {}
+        dict_futur = {}
+        for ev in list(chain(ev_art, ev_2, ev_3, ev_4, ev_5)):
+            date_ev = ev.start_time
+            if date_ev < date.today():
+                if not date_ev in dict_passe.keys():
+                    dict_passe[date_ev] = []
+                dict_passe[date_ev].append(ev)
+            else:
+                if not date_ev in dict_futur.keys():
+                    dict_futur[date_ev] = []
+                dict_futur[date_ev].append(ev)
+
+    liste_passe = [(date, evs) for date, evs in dict_passe.items()]
+    liste_futur = [(date, evs) for date, evs in dict_futur.items()]
+
+    eve_passe = sorted(liste_passe, key=lambda x:x[0])
+    eve_futur = sorted(liste_futur, key=lambda x:x[0])
+
+    return eve_passe, eve_futur, #dict_passe, dict_futur #evenements, evenements2
 
 def bienvenue(request):
     nums = ['01', '02', '03', '04', '07', '10', '11', '13', '15', '17', '20', '21', '23', ]
@@ -135,7 +155,7 @@ def bienvenue(request):
     utc = pytz.UTC
     yesterday = (datetime.now() - timedelta(hours=12)).replace(tzinfo=utc)
     evenements = EvenementAcceuil.objects.filter(date__gt=yesterday).order_by('date')
-    evenements_semaine, evenements2 = getEvenementsSemaine(request)
+    evenements_passes, evenements_semaine = getEvenementsSemaine(request)
     if request.user.is_authenticated:
         nbNotif = getNbNewNotifications(request)
         nbExpires = getNbProduits_expires(request)
@@ -170,7 +190,7 @@ def bienvenue(request):
 
     derniers = sorted(set([x for x in itertools.chain(derniers_articles_comm[::-1][:8], derniers_articles_modif[::-1][:8], derniers_articles[:8], )]), key=lambda x:x.date_modification if x.date_modification else x.date_creation)[::-1]
 
-    return render(request, 'bienvenue.html', {'nomImage':nomImage, "nbNotif": nbNotif , "nbExpires":nbExpires, "evenements":evenements, "evenements_semaine":evenements_semaine,"evenements_semaine_passes":evenements2, "derniers_articles":derniers, 'votes':votes})
+    return render(request, 'bienvenue.html', {'nomImage':nomImage, "nbNotif": nbNotif, "nbExpires":nbExpires, "evenements":evenements, "evenements_semaine":evenements_semaine,"evenements_semaine_passes":evenements_passes, "derniers_articles":derniers, 'votes':votes})
 
 class MyException(Exception):
     pass

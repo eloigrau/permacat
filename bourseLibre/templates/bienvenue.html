@@ -116,14 +116,28 @@
 				  </div>
 					<ul class="list-group list-group-flush textcenter">
 
-						{% for ev in evenements_semaine_passes %}
-						<li class="list-group-item" style="background-color:#F2F2F2;"><a href="{{ev.get_absolute_url}}">{{ev.start_time|date:"l d F"}}: {{ev.titre}}</a> </li>
+						{% for jour, liste_ev in evenements_semaine_passes %}
+							<li class="list-group-item" style="background-color:#F2F2F2;">
+						 		<div class=''><span  style='font-variant: small-caps ;'>{{jour|date:"l d F"}}</span></div>
+
+							{% for ev in liste_ev %}
+								<p><a href="{{ev.get_absolute_url}}">{{ev.titre}}</a> </p>
+							{% endfor %}
+							</li>
 						{% endfor %}
-						{% for ev in evenements_semaine %}
-						<li class="list-group-item"><a href="{{ev.get_absolute_url}}">{{ev.start_time|date:"l d F"}}: {{ev.titre}}</a> </li>
+
+
+						{% for jour, liste_ev in evenements_semaine %}
+							<li class="list-group-item" ">
+						 		<div class=''><span  style='font-variant: small-caps ;'>{{jour|date:"l d F"}}</span></div>
+							{% for ev in liste_ev %}
+								<p><a href="{{ev.get_absolute_url}}">{{ev.titre}}</a> </p>
+							{% endfor %}
+							</li>
 						{% endfor %}
 					</ul>
 
+					{% comment %}
 				  <div class="card-header  textcenter">
 						<b>Rendez-vous réguliers :</b>
 				  </div>
@@ -131,6 +145,7 @@
 						<li class="list-group-item"><a href="{% url 'blog:lireArticle' 'visioconference' %}">Lundi 20h30 : Visioconférence Permacat</a> </li>
 						<li class="list-group-item"><a href="{% url 'blog:lireArticle' 'visioconference' %}">Vendredi 20h30 : Visioconférence Ecovillage </a> </li>
 					</ul>
+					{% endcomment %}
 				</div>
 					  </div>
 			</div>
