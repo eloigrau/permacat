@@ -8,6 +8,7 @@
 <p>{% for email in inscrits %}
           {{email}}
            {%if not forloop.last%}, {%endif%}
+     {% endfor %}
 </p>
      {% endblock %}
 {% block content %}
