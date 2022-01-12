@@ -120,7 +120,7 @@ urlpatterns = [
     path(r'annuaire/<str:asso>', login_required(views.annuaire), name='annuaire',),
     path(r'cooperateurs/listeContacts/<str:asso>', login_required(views.listeContacts), name='listeContacts',),
     path(r'cooperateurs/listeContacts_admin/', login_required(views.listeContacts_admin), name='listeContacts_admin',),
-    path(r'^cooperateurs/listeFollowers/<str:asso>', login_required(views.listeFollowers), name='listeFollowers',),
+    path(r'cooperateurs/listeFollowers/<str:asso>', login_required(views.listeFollowers), name='listeFollowers',),
     path(r'cooperateurs/carte/<str:asso>', login_required(views.carte), name='carte',),
 
     url(r'^cooperateurs/contacter_newsletter/$', login_required(views.contacter_newsletter), name='contacter_newsletter',),
