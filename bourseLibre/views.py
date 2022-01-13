@@ -75,7 +75,7 @@ from .filters import ProfilCarteFilter
 def getEvenementsSemaine(request):
     current_week = date.today().isocalendar()[1]
     current_year = date.today().isocalendar()[0]
-    eve_passe, eve_futur = [], []
+    eve_passe, eve_futur, evenements,  = [], [], []
 
     if not request.user.is_anonymous:
         ev = Evenement.objects.filter(Q(start_time__week=current_week) & Q(start_time__year=current_year)).order_by('start_time')
