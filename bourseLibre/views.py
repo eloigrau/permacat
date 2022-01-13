@@ -75,7 +75,7 @@ from .filters import ProfilCarteFilter
 def getEvenementsSemaine(request):
     current_week = date.today().isocalendar()[1]
     current_year = date.today().isocalendar()[0]
-    evenements, evenements2 = [], []
+    eve_passe, eve_futur = [], []
 
     if not request.user.is_anonymous:
         ev = Evenement.objects.filter(Q(start_time__week=current_week) & Q(start_time__year=current_year)).order_by('start_time')
@@ -139,11 +139,11 @@ def getEvenementsSemaine(request):
                     dict_futur[date_ev] = []
                 dict_futur[date_ev].append(ev)
 
-    liste_passe = [(date, evs) for date, evs in dict_passe.items()]
-    liste_futur = [(date, evs) for date, evs in dict_futur.items()]
+        liste_passe = [(date, evs) for date, evs in dict_passe.items()]
+        liste_futur = [(date, evs) for date, evs in dict_futur.items()]
 
-    eve_passe = sorted(liste_passe, key=lambda x:x[0])
-    eve_futur = sorted(liste_futur, key=lambda x:x[0])
+        eve_passe = sorted(liste_passe, key=lambda x:x[0])
+        eve_futur = sorted(liste_futur, key=lambda x:x[0])
 
     return eve_passe, eve_futur, #dict_passe, dict_futur #evenements, evenements2
 
