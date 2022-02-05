@@ -155,6 +155,20 @@ class AdresseForm2(forms.ModelForm):
         adresse.save()
         return adresse
 
+class AdresseForm3(forms.ModelForm):
+    latitude = forms.FloatField(label="Latitude", initial="42,2", required=True)
+    longitude = forms.FloatField(label="Longitude", initial="2,2", required=True)
+
+    class Meta:
+        model = Adresse
+        exclude = ('rue', 'commune', 'code_postal', 'pays', 'telephone')
+
+    def save(self, *args, **kwargs):
+        #self.cleaned_data['latitude'] = float(self.cleaned_data['latitude'])
+        adresse = super(AdresseForm3, self).save(commit=False)
+        adresse.save()
+        return adresse
+
 class ProfilCreationForm(UserCreationForm):
     username = forms.CharField(label="Pseudonyme*", help_text="Attention : Pas d'espace, et les majuscules sont importantes...")
     description = forms.CharField(label=None, help_text="Une description de vous même", required=False, widget=forms.Textarea)

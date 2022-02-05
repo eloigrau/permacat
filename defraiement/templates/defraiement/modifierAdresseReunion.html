@@ -1,8 +1,8 @@
-{% extends 'blog/base_blog.html' %}
+{% extends 'base_defraiement.html' %}
 
 {% block subtitle %}
 <div class="row justify-content-center">
-	<div class="col col-md-12 textcenter"><h3>Ajouter un lieu à l'article '{{article.titre}}'</h3>
+	<div class="col col-md-12 textcenter"><h3>Modifier l'adresse de la réunion '{{reunion.titre}}'</h3>
 	</div>
 
 </div>
@@ -17,7 +17,6 @@
 <div class="col-sm-12 col-md-10 col-lg-9 text-center">
 <form method="post">
   {% csrf_token %}
- {% include 'form_template2.html'%}
     <p>Donnez l'adresse :</p>
  {% include 'form_template2.html' with form=form_adresse%}
   <button type="submit" name="adressebtn" class="btn btn-primary">Valider l'adresse</button>

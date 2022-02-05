@@ -1,0 +1,143 @@
+{% extends 'base_defraiement.html' %}
+{% load fontawesome %}
+{% load hitcount_tags %}
+
+{% block subtitle %}
+
+
+ <div class="row rowcentre">
+        <div class="col-sm-12 textcenter">
+            {%if request.user.is_superuser or request.user.username == reunion.referent or request.user == reunion.auteur  %}
+            <div class = "btn-group">
+            <a href="{%if request.user.is_authenticated %}{% url 'defraiement:modifierReunion' slug=reunion.slug %}{% endif %}">
+               <button type="button" class="btn btn-sm btn-warning">
+                 &nbsp;Modifier
+               </button></a>
+            </div>
+            {% endif %}
+            {%if request.user.is_superuser or request.user == reunion.auteur  %}
+				<a href="{%if request.user.is_authenticated %}{% url 'defraiement:supprimerReunion' slug=reunion.slug %}{% endif %}">
+               <button type="button" class="btn btn-sm btn-danger">
+                 &nbsp;Supprimer la reunion
+               </button></a>
+            {% endif %}
+        </div>
+ </div>
+<p class="textcenter">
+    <a href="{% url 'defraiement:reunions' %}">
+        <button type="button" class="btn btn-sm btn-primary">
+        &nbsp;Revenir à la liste des réunions
+        </button>
+    </a>
+</p>
+{% endblock %}
+
+{% block content %}
+    <div class="row contenu reunion">
+    <div class="col justify-content-center">
+
+    <div class="row titre_reunion" style="background-color:{{reunion.reunion.get_couleur}};margin-bottom:5px;">
+        <div class="col textcenter" >
+              <h2> Reunion : {{ reunion.titre }}</h2>
+        </div>
+    </div>
+ 	<div class="row">
+    <div class="col-md-12 textcenter">
+		<p>
+            <span class="badge badge-info">
+                {{ reunion.asso }}</a>
+            </span>
+
+			{% if reunion.article %}
+                <span class="badge badge-info">
+                Article associé : <a href="{{ reunion.article.get_absolute_url}}">{{ reunion.article.titre}}</a>
+                </span>
+            {% endif %}
+		</p>
+        <p class="infos  textepetit">rédigé le {{ reunion.date_creation|date:"DATE_FORMAT" }}, par <a href="{% url 'profil' reunion.auteur.id %}">{{reunion.auteur.username}}</a>, dernière modification le {{ reunion.date_modification|date:"DATE_FORMAT" }}
+
+		</p>
+    </div>
+    </div>
+
+{% if reunion.start_time %}
+ <div class="row rowcentre inscrit_reunion">
+        <div class="col-sm-12 textcenter">
+						le {{ reunion.start_time|date:"l d F Y"}},
+    </div>
+    </div>
+{% endif %}
+
+
+<hr>
+        <p>{{reunion.participants.all}}</p>
+        <p>{{liste_participants}}</p>
+    <div class="row">
+        <div class="col-sm-12 ">
+            <table class="table table-condensed ">
+                <tr>
+                <th>Participant</th>
+                <th>adresse</th>
+                <th>distance</th>
+                </tr>
+            </thead>
+			<tbody>
+
+            {% for part in liste_participants %}
+				<tr>
+					<td class="nomProprieteAtelier">
+                        {{part}}
+					</td>
+					<td class="proprieteAtelier">
+						{{part.0}} ; {{part.1}}
+					</td>
+					<td class="proprieteAtelier">
+						{{part.2}} ; {{part.3}}
+					</td>
+				</tr>
+            {% endfor %}
+			</tbody>
+		</table>
+            <a href="{% url 'defraiement:ajouterParticipantReunion' slug_reunion=reunion.slug %}">
+   <button type="button" class="btn  btn-success ">
+        <i class="fa fa-arrow-right"></i> Ajouter un participant
+   </button>
+</a>
+        </div>
+    </div>
+<hr>
+
+    <div class="row">
+        <div class="col-sm-12 textcenter">
+        {% if not reunion.adresse %}
+        <a href="{% url 'defraiement:modifierReunion' slug=reunion.slug %}">
+           <button type="button" class="btn  btn-success ">
+                <i class="fa fa-arrow-right"></i> Modifier la réunion
+           </button>
+        </a>
+        {% else %}
+                    <p>{{ reunion.adresse.get_adresse_str}}
+             <a href="{% url 'defraiement:modifierAdresseReunion' slug=reunion.slug %}">
+                       <button type="button" class="btn  btn-success ">
+                            <i class="fa fa-arrow-right"></i> Modifier l'adresse
+                       </button>
+                    </a>
+                    </p>
+
+        {% endif %}
+        </div>
+    </div>
+<hr>
+    <div class="row">
+        <div class="col-sm-12 ">
+            <p>{{ reunion.description|safe}}</p>
+        </div>
+    </div>
+<hr>
+
+</div>
+</div>
+<hr>
+
+
+{% endblock %}

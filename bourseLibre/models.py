@@ -66,6 +66,7 @@ class Adresse(models.Model):
         else:
             return "("+str(self.id)+") "+self.code_postal
 
+    @property
     def get_adresse_str(self):
         if self.commune:
             adress = ''
@@ -79,7 +80,7 @@ class Adresse(models.Model):
                 adress += " (" + self.telephone +")"
             return adress
         else:
-            return "lat : " + str(self.latitude) + "; lon : " +  str(self.longitude)
+            return "lat : " + str(self.latitude) + "; lon : " + str(self.longitude)
 
     def __unicode__(self):
         return self.__str__()

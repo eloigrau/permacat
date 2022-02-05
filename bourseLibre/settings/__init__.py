@@ -109,6 +109,7 @@ INSTALLED_APPS = [
     'django_crontab',
     'crispy_forms',
     'avatar',
+    'defraiement',
     #'formtools',
     #'channels', 'chat',
     #'jet','jet.dashboard', 'django.contrib.admin',

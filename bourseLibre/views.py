@@ -737,7 +737,11 @@ class ListeProduit(ListView):
         if "prixmin" in params:
             qs = qs.filter(prix__gtt=params['prixmin'])
         if "monnaie" in params:
-            qs = qs.filter(unite_prix=params['monnaie'])
+            try:
+                nom_monnaie = [item[0] for item in Choix.monnaies if params['monnaie'] in item][0]
+                qs = qs.filter(unite_prix=nom_monnaie)
+            except:
+                pass
         if "gratuit" in params:
             qs = qs.filter(unite_prix='don')
         if "offre" in params:
@@ -768,6 +772,7 @@ class ListeProduit(ListView):
         context = super().get_context_data(**kwargs)
 
         # context['producteur_list'] = Profil.objects.values_list('user__username', flat=True).distinct()
+        context['monnaie_list'] = [x[1] for x in Choix.monnaies]
         context['choixPossibles'] = Choix.choix
         context['ordreTriPossibles'] = Choix.ordreTri
         context['distancePossibles'] = Choix.distances

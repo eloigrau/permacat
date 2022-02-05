@@ -160,6 +160,19 @@
         {%endif%}
 
 
+            {%if monnaie_list %}
+            <li class="nav-item dropdown active">
+                <button class="btn dropdown-toggle  btn-block {% if request.GET.producteur %}btn-primary{%endif%}" type="button" id="menuproducteur" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   {% if request.GET.producteur %} Monnaie: {{request.GET.monnaie}} {%else%}Monnaie{%endif%}
+           </button>
+                <div class="dropdown-menu"  aria-labelledby="menuProducteur"  id="idMonnaie">
+                    {% for monnaie in monnaie_list %}
+                      <a class="dropdown-item" href="?monnaie={{monnaie}}">{{monnaie}}</a>
+                    {% endfor %}
+                </div>
+            </li>
+        {%endif%}
+
         {% if request.user.adherent_pc or request.user.adherent_rtg  or request.user.adherent_fer  or request.user.adherent_scic or request.user.adherent_citealt %}
             <li class="nav-item dropdown active">
              <button type="button" class="btn btn-block {% if request.GET.permacat %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"

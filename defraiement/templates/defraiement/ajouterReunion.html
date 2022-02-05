@@ -1,0 +1,36 @@
+{% extends 'base_defraiement.html' %}
+
+{% block subtitle %}
+<div class="row">
+	<div class="col col-md-12 textcenter"><h3>Ajouter une reunion</h3></div>
+	</div>
+{% endblock %}
+{% block content %}
+
+{% if error_message %}
+<p>
+	<strong>{{ error_message }}</strong>
+</p>
+{% endif %}
+<div class="row">
+	<div class="col-sm-12">
+	<form id="reunionForm" class="form-horizontal" role="form" action="" method="post"
+		enctype="multipart/form-data">
+		{% csrf_token %} <input type="hidden" name="Reunion"
+			value="{{ reunion }}"> {% include 'form_template.html'%}
+	</form>
+	</div>
+</div>
+
+
+<script>
+    $(function() {
+    // Enable on all forms
+    $('form').areYouSure();
+    });
+</script>
+
+ <script>
+    });
+  </script>
+{% endblock %}

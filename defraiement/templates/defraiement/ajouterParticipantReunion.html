@@ -1,8 +1,8 @@
-{% extends 'blog/base_blog.html' %}
+{% extends 'base_defraiement.html' %}
 
 {% block subtitle %}
 <div class="row justify-content-center">
-	<div class="col col-md-12 textcenter"><h3>Ajouter un lieu à l'article '{{article.titre}}'</h3>
+	<div class="col col-md-12 textcenter"><h3>Ajouter un participant de la réunion '{{reunion.titre}}'</h3>
 	</div>
 
 </div>
@@ -17,14 +17,22 @@
 <div class="col-sm-12 col-md-10 col-lg-9 text-center">
 <form method="post">
   {% csrf_token %}
- {% include 'form_template2.html'%}
-    <p>Donnez l'adresse :</p>
+    <h4>Choisissez un participant existant : </h4>
+ {% include 'form_template2.html'  with form=form_choice %}
+  <button type="submit" name="choicebtn" class="btn btn-primary">Valider le participant</button>
+    <h4>Ou bien créez un nouveau participant :</h4>
+</form>
+<form method="post">
+  {% csrf_token %}
+    <p>Nom du participant : </p>
+ {% include 'form_template2.html' with form=form %}
+    <p>a) Soit remplir son adresse : </p>
  {% include 'form_template2.html' with form=form_adresse%}
   <button type="submit" name="adressebtn" class="btn btn-primary">Valider l'adresse</button>
 
     <hr>
   {% csrf_token %}
-    <p>Ou rentrez les coordonnées GPS (latitude, longitude) :</p>
+    <p>b) Soit donnez les coordonnées GPS (latitude, longitude) :</p>
 
  {% include 'form_template2.html' with form=form_adresse2%}
   <button type="submit" name="gpsbtn"  class="btn btn-primary">Valider les coordonnées GPS</button>
