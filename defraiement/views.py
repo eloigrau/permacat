@@ -12,6 +12,59 @@ from .forms import ReunionForm, ReunionChangeForm, ParticipantReunionForm, Adres
 from .models import Reunion, ParticipantReunion, Choix
 from bourseLibre.forms import AdresseForm, AdresseForm3
 
+import csv
+from django.http import HttpResponse
+
+@login_required
+def lireReunion(request, slug):
+    reunion = get_object_or_404(Reunion, slug=slug)
+    if not reunion.est_autorise(request.user):
+        return render(request, 'notMembre.html', {"asso": str(reunion.asso)})
+
+    liste_participants = [(str(x), x.id, x.getDistance(reunion), x.getDistance_route(reunion), x.distance, x.get_url(reunion)) for x in reunion.participants.all()]
+
+    context = {'reunion': reunion, 'liste_participants': liste_participants, }
+
+    return render(request, 'defraiement/lireReunion.html', context,)
+
+
+
+def getRecapitulatif():
+    reunions = Reunion.objects.all()
+    participants = ParticipantReunion.objects.all()
+    entete = ["nom (latitude, longitude)", ] + [r.titre + " (" + str(r.start_time) + "; "+ r.adresse.getLatLon()+")" for r in reunions] + ["total",]
+    lignes = []
+    for p in participants:
+        distances = [p.getDistance_route(r) if p in r.participants.all() else 0 for r in reunions ]
+        part = [p.nom + " (" + p.adresse.getLatLon() + ")", ] + distances + [sum(distances), ]
+        lignes.append(part)
+    distancesTotales = [r.getDistanceTotale for r in reunions]
+    lignes.append(["Total", ]+ distancesTotales + [sum(distancesTotales), ])
+    return entete, lignes
+
+@login_required
+def recapitulatif(request):
+    entete, lignes = getRecapitulatif()
+    return render(request, 'defraiement/recapitulatif.html', {"entete":entete, "lignes":lignes},)
+
+
+def export_recapitulatif(request):
+    # Create the HttpResponse object with the appropriate CSV header.
+    response = HttpResponse(
+        content_type='text/csv',
+        headers={'Content-Disposition': 'attachment; filename="defraiement_reunions.csv"'},
+    )
+
+    entete, lignes = getRecapitulatif()
+
+    writer = csv.writer(response)
+    writer.writerow(entete)
+    for l in lignes:
+        writer.writerow(l)
+
+    return response
+
+
 @login_required
 def ajouterReunion(request):
     form = ReunionForm(request, request.POST or None)
@@ -47,6 +100,22 @@ class ModifierReunion(UpdateView):
         form = super(ModifierReunion, self).get_form(*args, **kwargs)
         form.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all().order_by('nom')) if self.request.user.estMembre_str(x.abreviation)]
         return form
+
+def ajouterAdresseReunion(request, slug):
+    reunion = get_object_or_404(Reunion, slug=slug)
+    form_adresse = AdresseForm(request.POST or None)
+    form_adresse2 = AdresseForm3(request.POST or None)
+
+    if form_adresse.is_valid() or form_adresse2.is_valid():
+        if 'adressebtn' in request.POST:
+            adresse = form_adresse.save()
+        else:
+            adresse = form_adresse2.save()
+        reunion.adresse = adresse
+        reunion.save()
+        return redirect(reunion)
+
+    return render(request, 'defraiement/ajouterAdresseReunionAdresseReunion.html', {'reunion':reunion, 'form_adresse':form_adresse, 'form_adresse2':form_adresse2 })
 
 def modifierAdresseReunion(request, slug):
     reunion = get_object_or_404(Reunion, slug=slug)
@@ -101,21 +170,21 @@ def ajouterParticipantReunion(request, slug_reunion):
 
 
 @login_required
-def ajouterAdresseReunion(request, id_reunion):
-    reunion = Reunion.objects.get(id=id_reunion)
-    form = AdresseReunionForm(request.POST or None)
+def ajouterAdresseReunion(request, slug):
+    reunion = Reunion.objects.get(slug=slug)
     form_adresse = AdresseForm(request.POST or None)
     form_adresse2 = AdresseForm3(request.POST or None)
 
-    if form.is_valid() and (form_adresse.is_valid() or form_adresse2.is_valid()):
+    if (form_adresse.is_valid() or form_adresse2.is_valid()):
         if 'adressebtn' in request.POST:
             adresse = form_adresse.save()
         else:
             adresse = form_adresse2.save()
-        reu = form.save(reunion, adresse)
-        return redirect(reu)
+        reunion.adresse = adresse
+        reunion.save()
+        return redirect(reunion)
 
-    return render(request, 'defraiement/ajouterAdresse.html', {'reunion':reunion, 'form': form, 'form_adresse':form_adresse, 'form_adresse2':form_adresse2 })
+    return render(request, 'defraiement/ajouterAdresseReunion.html', {'reunion':reunion, 'form_adresse':form_adresse, 'form_adresse2':form_adresse2 })
 
 
 class SupprimerParticipantReunion(DeleteView):
@@ -124,20 +193,11 @@ class SupprimerParticipantReunion(DeleteView):
     template_name_suffix = '_supprimer'
 
     def get_object(self):
-        return ParticipantReunion.objects.get(id=self.kwargs['id_participant'])
+        return Reunion.objects.get(slug=self.kwargs['slug_reunion']).participants.get(id=self.kwargs['id_participantReunion'])
 
     def get_success_url(self):
         return Reunion.objects.get(slug=self.kwargs['slug_reunion']).get_absolute_url()
 
-    def delete(self, request, *args, **kwargs):
-        # the Post object
-        self.object = self.get_object()
-        if self.object.reunion.estModifiable or self.object.reunion.auteur == request.user or request.user.is_superuser:
-            success_url = self.get_success_url()
-            self.object.delete()
-            return HttpResponseRedirect(success_url)
-        else:
-            return HttpResponseForbidden("Vous n'avez pas l'autorisation de supprimer")
 
 
 @login_required
@@ -148,20 +208,6 @@ def voirLieux(request,):
     lieux = Reunion.objects.filter().order_by('titre')
 
     return render(request, 'defraiement/carte_touslieux.html', {'titre':titre, "lieux":lieux})
-
-
-@login_required
-def lireReunion(request, slug):
-    reunion = get_object_or_404(Reunion, slug=slug)
-    if not reunion.est_autorise(request.user):
-        return render(request, 'notMembre.html', {"asso": str(reunion.asso)})
-
-    liste_participants = [(x, x.get_adresse_str(), x.getDistance(reunion),x.getDistance_route(reunion)) for x in reunion.participants.all()]
-
-
-    context = {'reunion': reunion, 'liste_participants': liste_participants, }
-
-    return render(request, 'defraiement/lireReunion.html', context,)
 
 
 

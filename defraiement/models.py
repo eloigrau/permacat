@@ -19,15 +19,16 @@ class Choix:
 class ParticipantReunion(models.Model):
     nom = models.CharField(verbose_name="Nom du participant", max_length=120)
     adresse = models.ForeignKey(Adresse, on_delete=models.CASCADE,)
+    distance = models.TextField(blank=True, null=True, verbose_name="Description du contexte")
 
     def __str__(self):
-        return self.nom + "(" + self.get_adresse_str() + ")"
+        return self.nom + " (" + self.get_adresse_str() + ")"
 
     def get_adresse_str(self):
         return self.adresse.get_adresse_str
 
     def getLatLon(self):
-        return str(self.adresse.latitude) + ", " + str(self.adresse.longitude)
+        return self.adresse.getLatLon()
 
     def getDistance(self, reunion):
         try:
@@ -42,30 +43,45 @@ class ParticipantReunion(models.Model):
         except:
             return 0
 
+    def get_url(self, reunion):
+        latlon_1 = str(self.adresse.longitude).replace(',', '.') + "," + str(self.adresse.latitude).replace(',', '.')
+        latlon_2 = str(reunion.adresse.longitude).replace(',', '.') + "," + str(reunion.adresse.latitude).replace(',',
+                                                                                                                  '.')
+        url = "http://router.project-osrm.org/route/v1/driving/" + latlon_1 + ";" + latlon_2 + "?overview=false"
+
+        return url
+
     def getDistance_route(self, reunion):
         import simplejson
         import requests
+
         if not reunion.adresse:
             return "adresse de reunion invalide"
+
+
+        #import openrouteservice
+        #coords = ((8.34234, 48.23424), (8.34423, 48.26424))
+
+        #client = openrouteservice.Client(key=OSM_KEY)  # Specify your personal API key
+        #routes = client.directions(coords)
+
         try:
-            latlon_1 = str(self.adresse.latitude).replace(',', '.') + "," + str(self.adresse.longitude).replace(',', '.')
-            latlon_2 = str(reunion.adresse.latitude).replace(',', '.') + "," + str(reunion.adresse.longitude).replace(',', '.')
-            url = "http://router.project-osrm.org/route/v1/driving/"+latlon_1+";"+latlon_2+"?overview=false"
-            print(url)
-            reponse = requests.get(url)
+            reponse = requests.get(self.get_url(reunion))
             data = simplejson.loads(reponse.text)
             if data["code"] != "Ok":
                 return "erreur de calcul de trajet"
             routes = data["routes"]
-            dist = 100000
+            self.distance = str(routes)
+            self.save()
+            dist = 1000000
             for r in routes[0]:
                 if routes[0]["distance"] < dist:
                     dist = routes[0]["distance"]
-            if dist == 100000:
+            if dist == 1000000:
                 return "erreur de calcul de distance"
         except :
             return str("erreur de calcul de distances")
-        return dist
+        return dist/1000.0
 
 class Reunion(models.Model):
     categorie = models.CharField(max_length=30,
@@ -102,6 +118,12 @@ class Reunion(models.Model):
 
         return getattr(user, "adherent_" + self.asso.abreviation)
 
+    @property
+    def getDistanceTotale(self):
+        dist = 0
+        for p in self.participants.all():
+            dist += p.getDistance_route(self)
+        return dist
 
 # class Atelier(models.Model):
 #     categorie = models.CharField(max_length=30,

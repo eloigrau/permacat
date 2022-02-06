@@ -4,6 +4,13 @@
 
 {% block subtitle %}
 
+<p class="textcenter">
+    <a href="{% url 'defraiement:reunions' %}">
+        <button type="button" class="btn btn-sm btn-primary">
+        &nbsp;Revenir à la liste des réunions
+        </button>
+    </a>
+</p>
 
  <div class="row rowcentre">
         <div class="col-sm-12 textcenter">
@@ -23,13 +30,6 @@
             {% endif %}
         </div>
  </div>
-<p class="textcenter">
-    <a href="{% url 'defraiement:reunions' %}">
-        <button type="button" class="btn btn-sm btn-primary">
-        &nbsp;Revenir à la liste des réunions
-        </button>
-    </a>
-</p>
 {% endblock %}
 
 {% block content %}
@@ -68,51 +68,12 @@
     </div>
 {% endif %}
 
-
-<hr>
-        <p>{{reunion.participants.all}}</p>
-        <p>{{liste_participants}}</p>
-    <div class="row">
-        <div class="col-sm-12 ">
-            <table class="table table-condensed ">
-                <tr>
-                <th>Participant</th>
-                <th>adresse</th>
-                <th>distance</th>
-                </tr>
-            </thead>
-			<tbody>
-
-            {% for part in liste_participants %}
-				<tr>
-					<td class="nomProprieteAtelier">
-                        {{part}}
-					</td>
-					<td class="proprieteAtelier">
-						{{part.0}} ; {{part.1}}
-					</td>
-					<td class="proprieteAtelier">
-						{{part.2}} ; {{part.3}}
-					</td>
-				</tr>
-            {% endfor %}
-			</tbody>
-		</table>
-            <a href="{% url 'defraiement:ajouterParticipantReunion' slug_reunion=reunion.slug %}">
-   <button type="button" class="btn  btn-success ">
-        <i class="fa fa-arrow-right"></i> Ajouter un participant
-   </button>
-</a>
-        </div>
-    </div>
-<hr>
-
-    <div class="row">
+        <div class="row">
         <div class="col-sm-12 textcenter">
         {% if not reunion.adresse %}
-        <a href="{% url 'defraiement:modifierReunion' slug=reunion.slug %}">
+        <a href="{% url 'defraiement:ajouterAdresseReunion' slug=reunion.slug %}">
            <button type="button" class="btn  btn-success ">
-                <i class="fa fa-arrow-right"></i> Modifier la réunion
+                <i class="fa fa-arrow-right"></i> Ajouter l'adresse de la réunion
            </button>
         </a>
         {% else %}
@@ -128,12 +89,49 @@
         </div>
     </div>
 <hr>
+
+
     <div class="row">
         <div class="col-sm-12 ">
             <p>{{ reunion.description|safe}}</p>
         </div>
     </div>
 <hr>
+    <div class="row">
+        <div class="col-sm-12 ">
+            <table class="table table-condensed ">
+                <tr>
+                <th>Participant (conducteur)</th>
+                <th>distance</th>
+                </tr>
+            </thead>
+			<tbody>
+
+            {% for part in liste_participants %}
+				<tr>
+					<td class="nomProprieteAtelier">
+                        {{part.0}}
+                        <a class="btn btn-sm btn-danger textleft" href="{% url 'defraiement:supprimerParticipantReunion' slug_reunion=reunion.slug id_participantReunion=part.1%}"><i class="fa fa-times"></i> </a>
+
+					</td>
+					<td class="textepetit">
+						{{part.3}} km<p>({{part.5}})</p>
+					</td>
+				</tr>
+            {% endfor %}
+			</tbody>
+		</table>
+            <p class="textcenter">
+                <a href="{% url 'defraiement:ajouterParticipantReunion' slug_reunion=reunion.slug %}">
+                <button type="button" class="btn  btn-success ">
+                <i class="fa fa-arrow-right"></i> Ajouter un participant
+                </button>
+                </a>
+            </p>
+        </div>
+    </div>
+<hr>
+
 
 </div>
 </div>

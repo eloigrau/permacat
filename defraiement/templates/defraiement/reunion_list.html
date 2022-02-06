@@ -56,7 +56,7 @@
    <div class="row justify-content-center ">
     <div class="col-sm-12 col-ms-10 col-lg-8 textcenter " >
         <a  href="{% url 'defraiement:lireReunion' slug=reunion.slug %}" class="boutonAtelier" > <div style="background-color:{{reunion.get_couleur}};
-    font-variant: small-caps;" >{{ reunion.titre }}  </div>
+    font-variant: small-caps;" >{{ reunion.titre }}  </div><p class="textepetit"> {{reunion.participants.all | length}} participants, {{reunion.getDistanceTotale}}km</p>
             {% if reunion.start_time %}
         <p class="textepetit">le {{ reunion.start_time|date:"DATE_FORMAT" }}</p>
         {% endif %}</a>
@@ -94,6 +94,13 @@
 
     {% endif %}
 
+<p class="textcenter">
+<a href="{% url 'defraiement:recapitulatif' %}">
+<button type="button" class="btn btn-success" >
+        <i class="fa fa-plus"></i> Récapitulatif
+    </button>
+    </a>&ensp;
+</p>
 <script>
     function toggle_visibility(id) {
        var e = document.getElementById(id);

@@ -27,12 +27,15 @@ urlpatterns = [
     path(r'reunion/<int:id>', views.lireReunion_id, name='lireReunion_id'),
     url(r'^modifierReunion/(?P<slug>[-\w]+)$', login_required(views.ModifierReunion.as_view(), login_url='/auth/login/'), name='modifierReunion'),
     url(r'^modifierAdresseReunion/(?P<slug>[-\w]+)$', views.modifierAdresseReunion, name='modifierAdresseReunion'),
+    url(r'^ajouterAdresseReunion/(?P<slug>[-\w]+)$', views.ajouterAdresseReunion, name='ajouterAdresseReunion'),
     url(r'^supprimerReunion/(?P<slug>[-\w]+)$', login_required(views.SupprimerReunion.as_view(), login_url='/auth/login/'), name='supprimerReunion'),
     url(r'^ajouterReunion/$', login_required(views.ajouterReunion), name='ajouterReunion'),
 
 
     path(r'ajouterParticipantReunion/<str:slug_reunion>', views.ajouterParticipantReunion, name='ajouterParticipantReunion'),
-    url(r'^supprimerParticipantReunion/(?P<slug_reunion>[-\w]+)-(?P<id_participantReunion>[0-9]+)$', login_required(views.SupprimerParticipantReunion.as_view(), login_url='/auth/login/'), name='supprimerParticipantReunion'),
+    path(r'supprimerParticipantReunion/<str:slug_reunion>/<int:id_participantReunion>', login_required(views.SupprimerParticipantReunion.as_view(), login_url='/auth/login/'), name='supprimerParticipantReunion'),
 
+    url(r'recapitulatif/$', views.recapitulatif, name='recapitulatif'),
+    url(r'export_recapitulatif/$', views.export_recapitulatif, name='export_recapitulatif'),
     url(r'voirTousLieux/$', views.voirLieux, name='voirTousLieux'),
 ]

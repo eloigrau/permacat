@@ -80,7 +80,7 @@ class Adresse(models.Model):
                 adress += " (" + self.telephone +")"
             return adress
         else:
-            return "lat : " + str(self.latitude) + "; lon : " + str(self.longitude)
+            return str(self.latitude) + ", " + str(self.longitude)
 
     def __unicode__(self):
         return self.__str__()
@@ -134,6 +134,8 @@ class Adresse(models.Model):
             return LONGITUDE_DEFAUT
         return str(self.longitude).replace(",",".")
 
+    def getLatLon(self):
+        return str(self.latitude) + ", " + str(self.longitude)
 
 class Asso(models.Model):
     nom = models.CharField(max_length=100)

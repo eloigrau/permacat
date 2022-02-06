@@ -1,0 +1,53 @@
+{% extends 'base_defraiement.html' %}
+{% load fontawesome %}
+{% load hitcount_tags %}
+
+{% block subtitle %}
+
+<p class="textcenter">
+    <a href="{% url 'defraiement:reunions' %}">
+        <button type="button" class="btn btn-sm btn-primary">
+        &nbsp;Revenir à la liste des réunions
+        </button>
+    </a>
+</p>
+
+{% endblock %}
+
+{% block content %}
+<h4  class="textcenter">Récapitulatif</h4>
+
+<div class="row contenu reunion">
+<div class="col justify-content-center">
+<table class="table table-condensed tableprofils table-striped">
+        <thead class="thead-inverse">
+            <tr>
+                {% for ll in entete %}
+                <th>{{ll}}</th>
+        {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+    {% for ll in lignes %}
+    <tr>
+        {% for l in ll %}
+        <td>{{l}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+        </tbody>
+</table>
+
+</div>
+</div>
+<hr>
+
+<p class="textcenter">
+    <a href="{% url 'defraiement:export_recapitulatif' %}" target="_blank">
+        <button type="button" class="btn btn-sm btn-primary">
+        &nbsp;Exporter en CSV
+        </button>
+    </a>
+</p>
+
+{% endblock %}

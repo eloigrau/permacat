@@ -79,6 +79,7 @@ class ParticipantReunionForm(forms.ModelForm):
         instance = super(ParticipantReunionForm, self).save(commit=False)
         instance.adresse = adresse
         instance.save()
+        return instance
 
 class AdresseReunionForm(forms.ModelForm):
     class Meta:
