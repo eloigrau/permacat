@@ -325,6 +325,6 @@ def voirPbProfils(request):
         if not bool(BeautifulSoup(profil.description, "html.parser").find()):
             soup = BeautifulSoup(profil.description, 'html5lib')
             fixed_html = soup.prettify(profil.description)
-            pb_profils.append(profil, profil.description, fixed_html, )
+            pb_profils.append(profil, profil.description, fixed_html, BeautifulSoup(profil.description, "html.parser").find())
 
     return render(request, 'admin/voirPbProfils.html', {'pb_profils': pb_profils, 'pb_adresses': pb_adresses})
