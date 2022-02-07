@@ -334,4 +334,16 @@ def voirPbProfils(request):
             except:
                 pb_profils.append([profil, profil.description, "none", "none"])
 
+        if profil.competences and not bool(BeautifulSoup(profil.competences, "html.parser").find()):
+            try:
+                r = requests.post('https://validator.w3.org/nu/',
+                                  data=profil.competences, params={'out': 'json'},
+                                  headers={
+                                      'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.101    Safari/537.36',
+                                      'Content-Type': 'text/html; charset=UTF-8'})
+
+                pb_profils.append([profil, profil.competences, r, ""])
+            except:
+                pb_profils.append([profil, profil.competences, "none", "none"])
+
     return render(request, 'admin/voirPbProfils.html', {'pb_profils': pb_profils, 'pb_adresses': pb_adresses})
