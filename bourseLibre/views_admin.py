@@ -344,12 +344,19 @@ def voirPbProfils(request):
         if add.getDistance(request.user.adresse) > 500:
             add.set_latlon_from_adresse()
             if add.getDistance(request.user.adresse) > 500:
-                pb_adresses.append(add)
+                if add.code_postal == 66000:
+                    add.commune = "Perpignan"
+                    add.save()
+                    add.set_latlon_from_adresse()
+                    if add.getDistance(request.user.adresse) > 500:
+                        pb_adresses.append(add)
 
     profils = Profil.objects.all()
     pb_profils = []
     for profil in profils:
         if not bool(BeautifulSoup(profil.description, "html.parser").find()):
-            pb_profils.append(profil)
+            soup = BeautifulSoup(profil.description, 'html5lib')
+            fixed_html = soup.prettify(soup)
+            pb_profils.append(profil, profil.description, fixed_html, BeautifulSoup(profil.description, "html.parser").find())
 
     return render(request, 'admin/voirPbProfils.html', {'pb_profils': pb_profils, 'pb_adresses': pb_adresses})
