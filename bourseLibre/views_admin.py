@@ -157,28 +157,14 @@ def get_articles_a_archiver():
             liste2.append(article)
     liste3 = []
     for art in liste:
-        eve = Evenement.objects.filter(start_time__lt=date_limite, article=art)
-        for ev in eve:
-            test = False
-            if ev.end_time:
-                if ev.end_time < date_limite:
-                    test = True
-            else:
-                test = True
-        if test:
-            liste3.append(article)
+        eve = Evenement.objects.filter(start_time__lt=date_limite, end_time__lte=date_limite, article=art)
+        if eve:
+            liste3.append(art)
 
     for art in liste2:
-        eve = Evenement_jardin.objects.filter(start_time__lt=date_limite, article=art)
-        for ev in eve:
-            test = False
-            if ev.end_time:
-                if ev.end_time < date_limite:
-                    test = True
-            else:
-                test = True
-        if test:
-            liste3.append(article)
+        eve = Evenement_jardin.objects.filter(start_time__lt=date_limite, end_time__lte=date_limite, article=art)
+        if eve:
+            liste3.append(art)
 
     return liste, liste2, liste3
 
@@ -338,7 +324,7 @@ def voirPbProfils(request):
     for profil in profils:
         if not bool(BeautifulSoup(profil.description, "html.parser").find()):
             soup = BeautifulSoup(profil.description, 'html5lib')
-            fixed_html = soup.prettify(soup)
+            fixed_html = soup.prettify(profil.description)
             pb_profils.append(profil, profil.description, fixed_html, )
 
     return render(request, 'admin/voirPbProfils.html', {'pb_profils': pb_profils, 'pb_adresses': pb_adresses})
