@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from actstream.models import Action, Follow
-from .models import Profil, Conversation, Suivis
+from .models import Profil, Conversation, Suivis, Adresse
 from .settings import LOCALL
 from .settings.production import SERVER_EMAIL, EMAIL_HOST_PASSWORD
 from django.http import HttpResponseForbidden
@@ -8,6 +8,8 @@ from django.core.mail.message import EmailMultiAlternatives
 import re
 from django.core import mail
 from actstream import actions
+from bs4 import BeautifulSoup
+
 
 def getMessage(action):
     message = action.data['message']
@@ -15,6 +17,7 @@ def getMessage(action):
         mess = message.split("a commenté ")
         message = mess[1] + " a été commenté"
     return message
+
 
 def getListeMailsAlerte():
     actions = Action.objects.filter(verb='emails')
@@ -29,7 +32,6 @@ def getListeMailsAlerte():
                 for x in messagesParMails[mail]:
                     if not message in messagesParMails[mail]:
                         messagesParMails[mail].append(message)
-
 
     listeMails = []
     for mail, messages in messagesParMails.items():
@@ -52,13 +54,12 @@ def getListeMailsAlerte():
         message += "".join(liste_messages)
 
         messagetxt += "\nFins Aviat !\n---------------\nPour voir toute l'activité sur le site, consultez les Notifications : https://www.perma.cat/notifications/activite/ \n" + \
-                   "Pour vous désinscrire des alertes mails, barrez les cloches sur le site (ou consultez la FAQ : https://www.perma.cat/faq/) "
+                      "Pour vous désinscrire des alertes mails, barrez les cloches sur le site (ou consultez la FAQ : https://www.perma.cat/faq/) "
         message += "</ul><br><p>Fins Aviat !</p><hr>" + \
                    "<p><small>Pour voir toute l'activité sur le site, consultez les <a href='https://www.perma.cat/notifications/activite/'>Notifications </a> </small>. " + \
                    "<small>Pour vous désinscrire des alertes mails, barrez les cloches sur le site (ou supprimez  <a href='https://www.perma.cat/accounts/mesSuivis/'>vos abonnements</a> ou consultez la <a href='https://www.perma.cat/faq/'>FAQ</a>)</small></p>"
 
-        listeMails.append((titre, messagetxt, message, SERVER_EMAIL, [mail,]))
-
+        listeMails.append((titre, messagetxt, message, SERVER_EMAIL, [mail, ]))
 
     seen = set()
     listeMails_ok = []
@@ -72,15 +73,18 @@ def getListeMailsAlerte():
 
     return listeMails_ok
 
+
 def supprimerActionsEmails():
     actions = Action.objects.filter(verb='emails')
     for action in actions:
         action.delete()
 
+
 def supprimerActionsStartedFollowing():
     actions = Action.objects.filter(verb='started following')
     for action in actions:
         action.delete()
+
 
 def nettoyerActions(request):
     if not request.user.is_superuser:
@@ -91,6 +95,7 @@ def nettoyerActions(request):
             print(action)
         except:
             action.delete()
+
 
 def abonnerAdherentsCiteAlt(request, ):
     if not request.user.is_superuser:
@@ -103,6 +108,7 @@ def abonnerAdherentsCiteAlt(request, ):
 
     return redirect("bienvenue")
 
+
 def nettoyerFollows(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden()
@@ -112,12 +118,13 @@ def nettoyerFollows(request):
             action.delete()
 
         if isinstance(action.follow_object, Conversation):
-            #print("follow supprimé " + action)
+            # print("follow supprimé " + action)
             action.delete()
 
     actions = Action.objects.all()
 
-    return render(request, 'notifications/voirActions.html', {'actions': actions,})
+    return render(request, 'admin/voirActions.html', {'actions': actions, })
+
 
 def nettoyerHistoriqueAdmin(request):
     if not request.user.is_superuser:
@@ -127,7 +134,7 @@ def nettoyerHistoriqueAdmin(request):
     for action in actions:
         action.delete()
 
-    return render(request, 'notifications/voirActions.html', {'actions': actions,})
+    return render(request, 'admin/voirActions.html', {'actions': actions, })
 
 
 def get_articles_a_archiver():
@@ -193,16 +200,18 @@ def get_articles_a_archiver():
 
     return liste, liste2, liste3
 
+
 def voir_articles_a_archiver(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden()
     liste, liste2, liste3 = get_articles_a_archiver()
-    return render(request, 'notifications/voirArchivage.html',{'liste': liste, 'liste2': liste2, 'liste3': liste3})
+    return render(request, 'admin/voirArchivage.html', {'liste': liste, 'liste2': liste2, 'liste3': liste3})
+
 
 def archiverArticles(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden()
-    liste, liste2, liste3 =  get_articles_a_archiver()
+    liste, liste2, liste3 = get_articles_a_archiver()
     for art in liste:
         art.estArchive = True
         art.save()
@@ -211,11 +220,13 @@ def archiverArticles(request):
         art.save()
     return redirect('voir_articles_a_archiver', )
 
+
 def voirEmails(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden()
     listeMails = getListeMailsAlerte()
-    return render(request, 'notifications/voirEmails.html', {'listeMails': listeMails,})
+    return render(request, 'admin/voirEmails.html', {'listeMails': listeMails, })
+
 
 def send_mass_html_mail(datatuple, fail_silently=False, auth_user=None,
                         auth_password=None, connection=None):
@@ -234,7 +245,7 @@ def send_mass_html_mail(datatuple, fail_silently=False, auth_user=None,
         fail_silently=fail_silently,
     )
     messages = [
-        EmailMultiAlternatives(subject, message, sender, to=[sender,],
+        EmailMultiAlternatives(subject, message, sender, to=[sender, ],
                                bcc=recipient,
                                alternatives=[(html_message, 'text/html')],
                                connection=connection)
@@ -252,6 +263,7 @@ def envoyerEmailsRequete(request):
     supprimerActionsStartedFollowing()
     return redirect('voirEmails', )
 
+
 def envoyerEmails():
     print('Récupération des mails')
     listeMails = getListeMailsAlerte()
@@ -260,8 +272,9 @@ def envoyerEmails():
     send_mass_html_mail(listeMails, fail_silently=False)
     print('Suppression des alertes')
     supprimerActionsEmails()
-    #supprimerActionsStartedFollowing()
+    # supprimerActionsStartedFollowing()
     print('Fait')
+
 
 def envoyerEmailstest():
     listeMails = []
@@ -270,7 +283,6 @@ def envoyerEmailstest():
 
 
 def decalerEvenements(request, num):
-
     return HttpResponseForbidden()
     #
     # from blog.models import Article, Projet, Evenement
@@ -320,3 +332,24 @@ def decalerEvenements(request, num):
     #                 print("ok2_" +str(i)+ str(evenement))
 
     return redirect('bienvenue')
+
+
+def voirPbProfils(request):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden()
+
+    adresses = Adresse.objects.all()
+    pb_adresses = []
+    for add in adresses:
+        if add.getDistance(request.user.adresse) > 500:
+            add.set_latlon_from_adresse()
+            if add.getDistance(request.user.adresse) > 500:
+                pb_adresses.append(add)
+
+    profils = Profil.objects.all()
+    pb_profils = []
+    for profil in profils:
+        if not bool(BeautifulSoup(profil.description, "html.parser").find()):
+            pb_profils.append(profil)
+
+    return render(request, 'admin/voirPbProfils.html', {'pb_profils': pb_profils, 'pb_adresses': pb_adresses})

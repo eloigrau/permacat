@@ -70,7 +70,7 @@
 
 <div class="row justify-content-center">
   <div class="col-sm-12 col-md-10">
-      {%if request.user == user %}
+      {%if request.user == user or request.user.is_superuser%}
         <a href="{% url 'profil_modifier' %}">
             <button type="button" class="btn btn-sm btn-warning">
                 <span class="glyphicon glyphicon-plus"></span>&nbsp;Modifier

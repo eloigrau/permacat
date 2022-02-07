@@ -66,6 +66,20 @@ class Adresse(models.Model):
         else:
             return "("+str(self.id)+") "+self.code_postal
 
+
+    def getDistance(self, adresse):
+        try:
+            x1 = float(self.latitude)*DEGTORAD
+            y1 = float(self.longitude)*DEGTORAD
+            x2 = float(adresse.latitude)*DEGTORAD
+            y2 = float(adresse.longitude)*DEGTORAD
+            x = (y2-y1) * math.cos((x1+x2)/2)
+            y = (x2-x1)
+
+            return math.sqrt(x*x + y*y) * 6371
+        except:
+            return 0
+
     @property
     def get_adresse_str(self):
         if self.commune:
@@ -122,7 +136,10 @@ class Adresse(models.Model):
                         self.latitude = float(api_response_dict['results'][0]['geometry']['location']['lat'])
                         self.longitude = float(api_response_dict['results'][0]['geometry']['location']['lng'])
                 except:
-                    pass
+                    self.latitude = LATITUDE_DEFAUT
+                    self.longitude = LONGITUDE_DEFAUT
+
+        self.save()
 
     def get_latitude(self):
         if not self.latitude:
@@ -254,17 +271,7 @@ class Profil(AbstractUser):
         return reverse('profil', kwargs={'user_id':self.id})
 
     def getDistance(self, profil):
-        try:
-            x1 = float(self.adresse.latitude)*DEGTORAD
-            y1 = float(self.adresse.longitude)*DEGTORAD
-            x2 = float(profil.adresse.latitude)*DEGTORAD
-            y2 = float(profil.adresse.longitude)*DEGTORAD
-            x = (y2-y1) * math.cos((x1+x2)/2)
-            y = (x2-x1)
-
-            return math.sqrt(x*x + y*y) * 6371
-        except:
-            return 0
+        return self.adresse.getDistance(profil.adresse)
 
     @property
     def statutMembre_asso(self, asso):

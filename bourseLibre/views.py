@@ -48,14 +48,7 @@ from django.utils.html import strip_tags
 
 from actstream import actions, action
 from actstream.models import Action, Follow, following, followers, actor_stream,  any_stream, user_stream, action_object_stream, model_stream, target_stream
-#from fcm_django.models import FCMDevice
-# from django.http.response import JsonResponse, HttpResponse
-# from django.views.decorators.http import require_GET, require_POST
-# from django.shortcuts import get_object_or_404
-# from django.contrib.auth.models import User
-# from django.views.decorators.csrf import csrf_exempt
-# from webpush import send_user_notification
-# import json
+
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.core.exceptions import ObjectDoesNotExist
 from bourseLibre.settings.production import SERVER_EMAIL
@@ -631,6 +624,12 @@ class profil_modifier_user(UpdateView):
 
     def get_object(self):
         return Profil.objects.get(id=self.request.user.id)
+
+
+    def post(self, request, **kwargs):
+        self.object = self.get_object()
+        self.object.save(recalc=True)
+        return super(profil_modifier_user, self).post(request, **kwargs)
 
 
 class profil_modifier_adresse(UpdateView):
