@@ -323,8 +323,11 @@ def voirPbProfils(request):
     pb_profils = []
     for profil in profils:
         if not bool(BeautifulSoup(profil.description, "html.parser").find()):
-            soup = BeautifulSoup(profil.description, 'html5lib')
-            fixed_html = soup.prettify(profil.description)
-            pb_profils.append(profil, profil.description, fixed_html, BeautifulSoup(profil.description, "html.parser").find())
+            try:
+                soup = BeautifulSoup(profil.description, 'html5lib')
+                fixed_html = soup.prettify(profil.description)
+                pb_profils.append(profil, profil.description, fixed_html, BeautifulSoup(profil.description, "html.parser").find())
+            except:
+                pb_profils.append(profil, profil.description, "none", "none")
 
     return render(request, 'admin/voirPbProfils.html', {'pb_profils': pb_profils, 'pb_adresses': pb_adresses})
