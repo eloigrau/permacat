@@ -225,7 +225,7 @@ def ajouterParticipant(request):
 
         return redirect("defraiement:participants")
 
-    return render(request, 'defraiement/ajouterParticipantReunion.html', {'form': form, 'form_adresse':form_adresse, 'form_adresse2':form_adresse2 })
+    return render(request, 'defraiement/ajouterParticipant.html', {'form': form, 'form_adresse':form_adresse, 'form_adresse2':form_adresse2 })
 
 
 @login_required
