@@ -22,7 +22,6 @@
 <div class="row">
     <div class="col-md-12 textcenter">
         {% if  user.username != request.user.username %}
-
             <a href="{% url 'agora_conversation' user.username %}" class="btn btn-success">
               <span class="glyphicon glyphicons-conversation"></span> Message
             </a>
@@ -42,12 +41,12 @@
             <a href="{% url 'mesActions' %}" class="btn btn-success">
               <span class="glyphicon glyphicon-shopping-cart"></span> Mes actions
             </a>
+        {%endif%}
             {% if request.user.is_superuser %}
             <a href="https://www.perma.cat/gestion/bourseLibre/profil/{{user.id}}/" class="btn btn-success">
               <span class="glyphicon glyphicon-shopping-cart"></span> Admin
             </a>
             {%endif%}
-        {%endif%}
         <a href="{% url 'marche' %}?producteur={{ user.username }}" class="btn btn-success">
                 <span class="glyphicon glyphicon-plus"></span>&nbsp; {%if  user.username != request.user.username %}Ses {%else%}Mes {%endif%}propositions
             </a>
@@ -189,7 +188,7 @@
 <div class="row">
 
   <div class="col-md-6">
-      {%if request.user.id == user.id %}
+      {%if request.user.id == user.id or request.user.is_superuser%}
         <a href="{% url 'profil_modifier_adresse' %}">
             <button type="button" class="btn btn-sm btn-warning">
                 <span class="glyphicon glyphicon-plus"></span>&nbsp;Modifier
