@@ -11,15 +11,16 @@
 
 {% for p in pb_profils %}
       <li class="list-group-item "  style=""  >
-          <a href="https://www.perma.cat/gestion/bourseLibre/profil/{{p.id}}/change/">{{p}}, {{p.description}}</a>
+          <a href="https://www.perma.cat/gestion/bourseLibre/profil/{{p.0.id}}/change/">{{p.0}}, {{p.0.description}}</a>
+                    <p>description : {{p.1}},</p>
+          <p>fixed_html  : {{p.2}},</p>
+          <p>find : {{p.3}},</p>
       </li>
 {%endfor%}
 {% for b in pb_adresses %}
       <li class="list-group-item "  style=""  >
-          <a href="https://www.perma.cat/gestion/bourseLibre/adresse/{{p.id}}/change/">{{b.0}}, {{b.0.get_adresse_str}}</a>
-          <p>description : {{b.1}},</p>
-          <p>fixed_html  : {{b.2}},</p>
-          <p>find : {{b.3}},</p>
+          <a href="https://www.perma.cat/gestion/bourseLibre/adresse/{{p.id}}/change/">{{b.0}}, {{b.get_adresse_str}}</a>
+
       </li>
 {%endfor%}
   </ul>
