@@ -1,14 +1,15 @@
 from bourseLibre.views_base import DeleteAccess
-from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
+from django.shortcuts import render, redirect, reverse, get_object_or_404, HttpResponseRedirect
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.http import HttpResponseForbidden
 from django.urls import reverse_lazy
 from bourseLibre.models import Asso
-
+from bourseLibre.views import testIsMembreAsso
+from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.views.generic import UpdateView, DeleteView
 from django.utils.timezone import now
-from .forms import ReunionForm, ReunionChangeForm, ParticipantReunionForm, AdresseReunionForm, ParticipantReunionChoiceForm
+from .forms import ReunionForm, ReunionChangeForm, ParticipantReunionForm, PrixMaxForm, ParticipantReunionChoiceForm
 from .models import Reunion, ParticipantReunion, Choix
 from bourseLibre.forms import AdresseForm, AdresseForm3
 
@@ -28,25 +29,76 @@ def lireReunion(request, slug):
     return render(request, 'defraiement/lireReunion.html', context,)
 
 
+@login_required
+def lireParticipant(request, id):
+    part = get_object_or_404(ParticipantReunion, id=id)
+    reunions = part.reunion_set.all()
+    context = {"part":part, 'reunions': reunions, }
 
-def getRecapitulatif():
-    reunions = Reunion.objects.all()
+    return render(request, 'defraiement/lireParticipant.html', context,)
+
+def getRecapitulatif_km(request, asso='Public'):
+    asso = testIsMembreAsso(request, asso)
+    if not isinstance(asso, Asso):
+        raise PermissionDenied
+    if asso != 'Public':
+        reunions = Reunion.objects.filter(estArchive=False)
+    else:
+        reunions = Reunion.objects.filter(estArchive=False, asso=asso)
+
     participants = ParticipantReunion.objects.all()
-    entete = ["nom (latitude, longitude)", ] + [r.titre + " (" + str(r.start_time) + "; "+ r.adresse.getLatLon()+")" for r in reunions] + ["total",]
+    entete = ["nom (latitude, longitude)", ] + ["<a href="+r.get_absolute_url()+">" +r.titre+"</a>"  + " (" + str(r.start_time) + "; km)" for r in reunions] + ["total",]
     lignes = []
     for p in participants:
         distances = [p.getDistance_route(r) if p in r.participants.all() else 0 for r in reunions ]
-        part = [p.nom + " (" + p.adresse.getLatLon() + ")", ] + distances + [sum(distances), ]
+        part = [p.nom, ] + distances + [sum(distances), ]
         lignes.append(part)
     distancesTotales = [r.getDistanceTotale for r in reunions]
-    lignes.append(["Total", ]+ distancesTotales + [sum(distancesTotales), ])
+    lignes.append(["Total", ] + distancesTotales + [sum(distancesTotales), ])
+    return entete, lignes
+
+def getRecapitulatif_euros(request, prixMax, tarifKilometrique, asso='Public'):
+    asso = testIsMembreAsso(request, asso)
+    if not isinstance(asso, Asso):
+        raise PermissionDenied
+    if asso != 'Public':
+        reunions = Reunion.objects.filter(estArchive=False)
+    else:
+        reunions = Reunion.objects.filter(estArchive=False, asso=asso)
+
+    participants = ParticipantReunion.objects.all()
+    entete = ["nom (latitude, longitude)", ] + ["<a href="+r.get_absolute_url()+">" +r.titre+"</a>" + " (" + str(r.start_time) +"; euros)" for r in reunions] + ["total",]
+    lignes = []
+
+    distancesTotales = [r.getDistanceTotale for r in reunions]
+    distanceTotale = 2.0 * sum(distancesTotales) * float(tarifKilometrique)
+    if distanceTotale < float(prixMax):
+        coef_distanceTotale = 2.0 * float(tarifKilometrique)
+    else:
+        coef_distanceTotale = float(prixMax) / distanceTotale
+    for p in participants:
+        distances = [int(p.getDistance_route(r) * coef_distanceTotale + 0.5) if p in r.participants.all() else 0 for r in reunions ]
+        part = [p.nom, ] + distances + [sum(distances), ]
+        lignes.append(part)
+    distancesTotales = [int(r.getDistanceTotale * coef_distanceTotale + 0.5) for r in reunions]
+    lignes.append(["Total", ] + distancesTotales + [sum(distancesTotales), ])
+    lignes.append(["prix max : " + prixMax, "bareme kilometrique max :" + tarifKilometrique,
+                   "barème calculé :" + str(round(coef_distanceTotale, 3)), ] + ["" for r in reunions[2:]] + ["", ])
+
     return entete, lignes
 
 @login_required
 def recapitulatif(request):
-    entete, lignes = getRecapitulatif()
-    return render(request, 'defraiement/recapitulatif.html', {"entete":entete, "lignes":lignes},)
+    form = PrixMaxForm(request.POST or None)
+    if form.is_valid():
+        prixMax = form.cleaned_data["prixMax"]
+        tarifKilometrique = form.cleaned_data["tarifKilometrique"]
+        entete, lignes = getRecapitulatif_euros(request, prixMax, tarifKilometrique)
 
+        return render(request, 'defraiement/recapitulatif.html', {"form": form, "entete":entete, "lignes":lignes},)
+
+    entete, lignes = getRecapitulatif_km(request)
+    return render(request, 'defraiement/recapitulatif.html', {"form": form, "entete":entete, "lignes":lignes},)
 
 def export_recapitulatif(request):
     # Create the HttpResponse object with the appropriate CSV header.
@@ -54,14 +106,17 @@ def export_recapitulatif(request):
         content_type='text/csv',
         headers={'Content-Disposition': 'attachment; filename="defraiement_reunions.csv"'},
     )
-
-    entete, lignes = getRecapitulatif()
-
     writer = csv.writer(response)
+
+    entete, lignes = getRecapitulatif_euros(request)
     writer.writerow(entete)
     for l in lignes:
         writer.writerow(l)
-
+    entete, lignes = getRecapitulatif_km(request)
+    writer.writerow(entete)
+    for l in lignes:
+        writer.writerow(l)
+    response['Content-Disposition'] = 'attachment; filename="defraiement_reunions.csv"'
     return response
 
 
@@ -81,6 +136,12 @@ def ajouterReunion(request):
 
     return render(request, 'defraiement/ajouterReunion.html', { "form": form, })
 
+
+# @login_required
+class ModifierParticipant(UpdateView):
+    model = ParticipantReunion
+    template_name_suffix = '_modifier'
+    success_url = reverse_lazy('defraiement:participants')
 
 # @login_required
 class ModifierReunion(UpdateView):
@@ -133,6 +194,14 @@ def modifierAdresseReunion(request, slug):
 
     return render(request, 'defraiement/modifierAdresseReunion.html', {'reunion':reunion, 'form_adresse':form_adresse, 'form_adresse2':form_adresse2 })
 
+class SupprimerParticipant(DeleteAccess, DeleteView):
+    model = ParticipantReunion
+    success_url = reverse_lazy('defraiement:participants')
+    template_name_suffix = '_supprimer'
+
+    def get_object(self):
+        return Reunion.objects.get(id=self.kwargs['id'])
+
 
 class SupprimerReunion(DeleteAccess, DeleteView):
     model = Reunion
@@ -141,6 +210,23 @@ class SupprimerReunion(DeleteAccess, DeleteView):
 
     def get_object(self):
         return Reunion.objects.get(slug=self.kwargs['slug'])
+
+@login_required
+def ajouterParticipant(request):
+    form = ParticipantReunionForm(request.POST or None)
+    form_adresse = AdresseForm(request.POST or None)
+    form_adresse2 = AdresseForm3(request.POST or None)
+    if form.is_valid() and (form_adresse.is_valid() or form_adresse2.is_valid()):
+        if 'adressebtn' in request.POST:
+            adresse = form_adresse.save()
+        else:
+            adresse = form_adresse2.save()
+        form.save(adresse)
+
+        return redirect("defraiement:participants")
+
+    return render(request, 'defraiement/ajouterParticipantReunion.html', {'form': form, 'form_adresse':form_adresse, 'form_adresse2':form_adresse2 })
+
 
 @login_required
 def ajouterParticipantReunion(request, slug_reunion):
@@ -246,6 +332,24 @@ class ListeReunions(ListView):
         if 'ordreTri' in self.request.GET:
             context['typeFiltre'] = "ordreTri"
 
+        return context
+
+class ListeParticipants(ListView):
+    model = ParticipantReunion
+    context_object_name = "participant_list"
+    template_name = "reunions/participant_list.html"
+    paginate_by = 30
+
+    #def get_queryset(self):
+    #    params = dict(self.request.GET.items())
+    #    qs = ParticipantReunion.objects.all()
+
+    #    return qs
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        context['list_archive'] = Reunion.objects.filter(estArchive=True)
         return context
 
 

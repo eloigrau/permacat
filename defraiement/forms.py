@@ -69,6 +69,10 @@ class ParticipantReunionChoiceForm(forms.Form):
     participant = forms.ModelChoiceField(queryset=ParticipantReunion.objects.all(), required=True,
                                   label="Participant déjà créé", )
 
+class PrixMaxForm(forms.Form):
+    prixMax = forms.CharField(required=True, label="Defraiement maximum", )
+    tarifKilometrique = forms.CharField(required=True, label="Tarif kilometrique maximum", )
+
 
 class ParticipantReunionForm(forms.ModelForm):
     class Meta:

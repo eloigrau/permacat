@@ -19,7 +19,8 @@ class Choix:
 class ParticipantReunion(models.Model):
     nom = models.CharField(verbose_name="Nom du participant", max_length=120)
     adresse = models.ForeignKey(Adresse, on_delete=models.CASCADE,)
-    distance = models.TextField(blank=True, null=True, verbose_name="Description du contexte")
+    distance = models.TextField(blank=True, null=True, verbose_name="Distance calculée")
+    contexte_distance = models.TextField(blank=True, null=True, verbose_name="Description du contexte")
 
     def __str__(self):
         return self.nom + " (" + self.get_adresse_str() + ")"
@@ -65,23 +66,33 @@ class ParticipantReunion(models.Model):
         #client = openrouteservice.Client(key=OSM_KEY)  # Specify your personal API key
         #routes = client.directions(coords)
 
-        try:
-            reponse = requests.get(self.get_url(reunion))
-            data = simplejson.loads(reponse.text)
-            if data["code"] != "Ok":
-                return "erreur de calcul de trajet"
-            routes = data["routes"]
-            self.distance = str(routes)
-            self.save()
-            dist = 1000000
-            for r in routes[0]:
-                if routes[0]["distance"] < dist:
-                    dist = routes[0]["distance"]
-            if dist == 1000000:
-                return "erreur de calcul de distance"
-        except :
-            return str("erreur de calcul de distances")
-        return dist/1000.0
+        if self.distance == -1:
+            return self.distance
+        else:
+            try:
+                reponse = requests.get(self.get_url(reunion))
+                data = simplejson.loads(reponse.text)
+                if data["code"] != "Ok":
+                    raise "erreur de calcul de trajet"
+                routes = data["routes"]
+                self.contexte_distance = str(routes)
+                self.save()
+                dist = 1000000
+                for r in routes[0]:
+                    if routes[0]["distance"] < dist:
+                        dist = float(routes[0]["distance"])
+                if dist == 1000000:
+                    raise "erreur de calcul de distance"
+            except :
+                raise "erreur de calcul de distances"
+        self.distance = round(dist/1000.0, 2)
+        return self.distance
+
+    def getDistance_routeTotale(self):
+        dist = 0
+        for r in self.reunion_set.all():
+            dist += float(self.getDistance_route(r))
+        return dist
 
 class Reunion(models.Model):
     categorie = models.CharField(max_length=30,
@@ -123,7 +134,7 @@ class Reunion(models.Model):
         dist = 0
         for p in self.participants.all():
             dist += p.getDistance_route(self)
-        return dist
+        return round(dist, 2)
 
 # class Atelier(models.Model):
 #     categorie = models.CharField(max_length=30,

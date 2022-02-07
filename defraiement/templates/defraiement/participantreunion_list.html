@@ -14,16 +14,11 @@
 <div class="row align-items-center reunion_titre_page_index">
     <div class="col-md-4 offset-md-4 textcenter justify-content-center">
 
-        <a href="{% url 'defraiement:ajouterReunion' %}">
+        <a href="{% url 'defraiement:ajouterParticipant' %}">
         <button type="button" class="btn btn-success" >
-                <i class="fa fa-plus"></i> Ajouter une réunion
+                <i class="fa fa-plus"></i> Ajouter un participant
             </button>
-        </a>&ensp;&ensp;
-        <a href="{% url 'defraiement:participants' %}">
-        <button type="button" class="btn btn-primary" >
-                <i class="fa fa-arrow-right"></i> Voir tous les participants
-            </button>
-        </a>
+        </a>&ensp;
     </div>
     <div class="col-md-4 textcenter">
 
@@ -55,16 +50,15 @@
 {% block content %}
 
 <div class="infinite-container ">
-    {% for reunion in reunion_list %}
+    {% for part in participant_list %}
 
 <div class="infinite-item ">
    <div class="row justify-content-center ">
     <div class="col-sm-12 col-ms-10 col-lg-8 textcenter " >
-        <a  href="{% url 'defraiement:lireReunion' slug=reunion.slug %}" class="boutonAtelier" > <div style="background-color:{{reunion.get_couleur}};
-    font-variant: small-caps;" >{{ reunion.titre }}  </div><p class="textepetit"> {{reunion.participants.all | length}} participants, {{reunion.getDistanceTotale}}km</p>
-            {% if reunion.start_time %}
-        <p class="textepetit">le {{ reunion.start_time|date:"DATE_FORMAT" }}</p>
-        {% endif %}</a>
+        <a  href="{% url 'defraiement:lireParticipant' id=part.id %}" class="boutonAtelier" >
+            <div style="font-variant: small-caps;" >{{ part.nom }}  </div>
+            <p class="textepetit"> {{part.reunion_set.all | length}} reunions, {{part.getDistance_routeTotale}}km</p>
+          </a>
 
     </div>
    </div>
@@ -74,35 +68,10 @@
 </div>
 {%include 'pagination.html' %}
 
-        {% if list_archive %}
-<hr>
-        <div class="textcenter">
-            <button id="btn-archives"  type="button" class="btn btn-lg" onclick="toggle_visibility('archives');" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour afficher les archives">
-                Afficher les archives
-            </button>
-        </div>
-        <hr>
-        <div id="archives" style='display:none;'>
-            {% for reunion in list_archive %}
-   <div class="row justify-content-center ">
-    <div class="col-sm-12 col-ms-10 col-lg-8 textcenter " >
-        <a  href="{% url 'defraiement:lireReunion_id' id=reunion.id %}" class="boutonAtelier" > <div style="background-color:{{reunion.reunion.get_couleur}};
-    font-variant: small-caps;" >{{ reunion.titre }}  </div>
-            {% if reunion.start_time %}
-        <p class="textepetit">le {{ reunion.start_time|date:"DATE_FORMAT" }}</p>
-        {% endif %}</a>
-
-    </div>
-   </div>
-            {% endfor %}
-        </div>
-
-    {% endif %}
-
 <p class="textcenter">
 <a href="{% url 'defraiement:recapitulatif' %}">
 <button type="button" class="btn btn-success" >
-        <i class="fa fa-plus"></i> Récapitulatif
+        <i class="fa fa-arrow-right"></i> Récapitulatif
     </button>
     </a>&ensp;
 </p>

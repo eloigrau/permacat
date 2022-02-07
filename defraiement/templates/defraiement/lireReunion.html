@@ -78,7 +78,7 @@
         </a>
         {% else %}
                     <p>{{ reunion.adresse.get_adresse_str}}
-             <a href="{% url 'defraiement:modifierAdresseReunion' slug=reunion.slug %}">
+                    <a href="{% url 'defraiement:modifierAdresseReunion' slug=reunion.slug %}">
                        <button type="button" class="btn  btn-success ">
                             <i class="fa fa-arrow-right"></i> Modifier l'adresse
                        </button>
@@ -115,7 +115,7 @@
 
 					</td>
 					<td class="textepetit">
-						{{part.3}} km<p>({{part.5}})</p>
+						<a href="{{part.5}}" target='_blank'>{{part.3}} km</a>
 					</td>
 				</tr>
             {% endfor %}

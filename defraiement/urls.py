@@ -23,19 +23,28 @@ app_name = 'defraiement'
 
 urlpatterns = [
     url(r'^reunions/$', login_required(views.ListeReunions.as_view(), login_url='/auth/login/'), name="reunions"),
+    url(r'^participants/$', login_required(views.ListeParticipants.as_view(), login_url='/auth/login/'), name="participants"),
     path(r'reunion/<str:slug>', views.lireReunion, name='lireReunion'),
     path(r'reunion/<int:id>', views.lireReunion_id, name='lireReunion_id'),
-    url(r'^modifierReunion/(?P<slug>[-\w]+)$', login_required(views.ModifierReunion.as_view(), login_url='/auth/login/'), name='modifierReunion'),
-    url(r'^modifierAdresseReunion/(?P<slug>[-\w]+)$', views.modifierAdresseReunion, name='modifierAdresseReunion'),
+     url(r'^modifierAdresseReunion/(?P<slug>[-\w]+)$', views.modifierAdresseReunion, name='modifierAdresseReunion'),
     url(r'^ajouterAdresseReunion/(?P<slug>[-\w]+)$', views.ajouterAdresseReunion, name='ajouterAdresseReunion'),
+    url(r'^modifierReunion/(?P<slug>[-\w]+)$',
+        login_required(views.ModifierReunion.as_view(), login_url='/auth/login/'), name='modifierReunion'),
     url(r'^supprimerReunion/(?P<slug>[-\w]+)$', login_required(views.SupprimerReunion.as_view(), login_url='/auth/login/'), name='supprimerReunion'),
     url(r'^ajouterReunion/$', login_required(views.ajouterReunion), name='ajouterReunion'),
 
+    path(r'participant/<int:id>', views.lireParticipant, name='lireParticipant'),
+    path(r'ajouterParticipant/', views.ajouterParticipant, name='ajouterParticipant'),
+    path(r'^modifierParticipant/<int:id>',
+        login_required(views.ModifierParticipant.as_view(), login_url='/auth/login/'), name='modifierParticipant'),
+    path(r'^supprimerParticipant/<int:id>',
+        login_required(views.SupprimerParticipant.as_view(), login_url='/auth/login/'), name='supprimerParticipant'),
 
     path(r'ajouterParticipantReunion/<str:slug_reunion>', views.ajouterParticipantReunion, name='ajouterParticipantReunion'),
     path(r'supprimerParticipantReunion/<str:slug_reunion>/<int:id_participantReunion>', login_required(views.SupprimerParticipantReunion.as_view(), login_url='/auth/login/'), name='supprimerParticipantReunion'),
 
     url(r'recapitulatif/$', views.recapitulatif, name='recapitulatif'),
     url(r'export_recapitulatif/$', views.export_recapitulatif, name='export_recapitulatif'),
+
     url(r'voirTousLieux/$', views.voirLieux, name='voirTousLieux'),
 ]
