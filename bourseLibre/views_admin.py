@@ -318,15 +318,19 @@ def voirPbProfils(request):
                     add.set_latlon_from_adresse()
                     if add.getDistance(request.user.adresse) > 500:
                         pb_adresses.append(add)
-
+    import requests
     profils = Profil.objects.all()
     pb_profils = []
     for profil in profils:
-        if not bool(BeautifulSoup(profil.description, "html.parser").find()):
+        if profil.description and not bool(BeautifulSoup(profil.description, "html.parser").find()):
             try:
-                soup = BeautifulSoup(profil.description, 'html5lib')
-                fixed_html = soup.prettify(profil.description)
-                pb_profils.append([profil, profil.description, fixed_html, BeautifulSoup(profil.description, "html.parser").find()])
+                r = requests.post('https://validator.w3.org/nu/',
+                                  data=profil.description, params={'out': 'json'},
+                                  headers={
+                                      'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.101    Safari/537.36',
+                                      'Content-Type': 'text/html; charset=UTF-8'})
+
+                pb_profils.append([profil, profil.description, r, ""])
             except:
                 pb_profils.append([profil, profil.description, "none", "none"])
 
