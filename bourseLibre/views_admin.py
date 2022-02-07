@@ -142,7 +142,7 @@ def get_articles_a_archiver():
     from datetime import datetime, timedelta
     import pytz
     utc = pytz.UTC
-    date_limite = datetime.datetime(utc.localize(datetime.today() - timedelta(days=90)))
+    date_limite = datetime(utc.localize(datetime.today() - timedelta(days=90)))
     articles = Article.objects.filter(estArchive=False)
 
     liste = []
@@ -357,6 +357,6 @@ def voirPbProfils(request):
         if not bool(BeautifulSoup(profil.description, "html.parser").find()):
             soup = BeautifulSoup(profil.description, 'html5lib')
             fixed_html = soup.prettify(soup)
-            pb_profils.append(profil, profil.description, fixed_html, str(BeautifulSoup(profil.description, "html.parser").find()))
+            pb_profils.append(profil, profil.description, fixed_html, )
 
     return render(request, 'admin/voirPbProfils.html', {'pb_profils': pb_profils, 'pb_adresses': pb_adresses})
