@@ -139,39 +139,21 @@ def nettoyerHistoriqueAdmin(request):
 
 def get_articles_a_archiver():
     from blog.models import Article, Evenement
-    from datetime import datetime, timedelta
+    from datetime import datetime, timedelta, date
     import pytz
     utc = pytz.UTC
-    date_limite = datetime(utc.localize(datetime.today() - timedelta(days=90)))
-    articles = Article.objects.filter(estArchive=False)
+    date_limite = utc.localize(datetime.today() - timedelta(days=90))
+    articles = Article.objects.filter(estArchive=False, start_time__lte=date_limite, end_time__lte=date_limite)
 
     liste = []
     for article in articles:
-        test = False
         if article.start_time:
-            if article.start_time < date_limite:
-                if article.end_time:
-                    if article.end_time < date_limite:
-                        test = True
-                else:
-                    test = True
-
-        if test:
             liste.append(article)
     liste2 = []
     from jardinpartage.models import Article as Article_jardin, Evenement as Evenement_jardin
-    articles = Article_jardin.objects.filter(estArchive=False)
+    articles = Article_jardin.objects.filter(estArchive=False, start_time__lte=date_limite, end_time__lte=date_limite)
     for article in articles:
-        test = False
         if article.start_time:
-            if article.start_time < date_limite:
-                if article.end_time:
-                    if article.end_time < date_limite:
-                        test = True
-                else:
-                    test = True
-
-        if test:
             liste2.append(article)
     liste3 = []
     for art in liste:
