@@ -35,9 +35,9 @@ urlpatterns = [
 
     path(r'participant/<int:id>', views.lireParticipant, name='lireParticipant'),
     path(r'ajouterParticipant/', views.ajouterParticipant, name='ajouterParticipant'),
-    path(r'^modifierParticipant/<int:id>',
+    path(r'modifierParticipant/<int:id>',
         login_required(views.ModifierParticipant.as_view(), login_url='/auth/login/'), name='modifierParticipant'),
-    path(r'^supprimerParticipant/<int:id>',
+    path(r'supprimerParticipant/<int:id>',
         login_required(views.SupprimerParticipant.as_view(), login_url='/auth/login/'), name='supprimerParticipant'),
 
     path(r'ajouterParticipantReunion/<str:slug_reunion>', views.ajouterParticipantReunion, name='ajouterParticipantReunion'),
