@@ -39,6 +39,12 @@
     <div class="row titre_reunion" style="background-color:{{reunion.reunion.get_couleur}};margin-bottom:5px;">
         <div class="col textcenter" >
               <h2> Reunion : {{ reunion.titre }}</h2>
+{% if reunion.start_time %}
+ <p class="inscrit_reunion textcenter">
+     le {{ reunion.start_time|date:"l d F Y"}},
+
+    </p>
+{% endif %}
         </div>
     </div>
  	<div class="row">
@@ -60,14 +66,7 @@
     </div>
     </div>
 
-{% if reunion.start_time %}
- <div class="row rowcentre inscrit_reunion">
-        <div class="col-sm-12 textcenter">
-						le {{ reunion.start_time|date:"l d F Y"}},
-    </div>
-    </div>
-{% endif %}
-
+<hr>
         <div class="row">
         <div class="col-sm-12 textcenter">
         {% if not reunion.adresse %}
@@ -110,7 +109,7 @@
             {% for part in liste_participants %}
 				<tr>
 					<td class="nomProprieteAtelier">
-                        {{part.0}}
+                        <a href="{{part.get_absolute_url}}">{{part.0}}</a>
                         <a class="btn btn-sm btn-danger textleft" href="{% url 'defraiement:supprimerParticipantReunion' slug_reunion=reunion.slug id_participantReunion=part.1%}"><i class="fa fa-times"></i> </a>
 
 					</td>
