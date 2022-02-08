@@ -123,18 +123,12 @@ def export_recapitulatif(request):
 @login_required
 def ajouterReunion(request):
     form = ReunionForm(request, request.POST or None)
-    form_adresse = AdresseForm(request.POST or None)
-    form_adresse2 = AdresseForm3(request.POST or None)
 
-    if form.is_valid() and (form_adresse.is_valid() or form_adresse2.is_valid()):
-        if 'adressebtn' in request.POST:
-            adresse = form_adresse.save()
-        else:
-            adresse = form_adresse2.save()
-        reu = form.save(request.user, adresse)
-        return redirect(reu)
+    if form.is_valid():
+        reu = form.save(request.user)
+        return redirect(reverse('defraiement:ajouterAdresseReunion', kwargs={"slug": reu.slug}))
 
-    return render(request, 'defraiement/ajouterReunion.html', { "form": form, })
+    return render(request, 'defraiement/ajouterReunion.html', { "form": form,})
 
 
 # @login_required
@@ -221,9 +215,9 @@ def ajouterParticipant(request):
             adresse = form_adresse.save()
         else:
             adresse = form_adresse2.save()
-        form.save(adresse)
+        part = form.save(adresse)
 
-        return redirect("defraiement:participants")
+        return redirect(part.get_absolute_url())
 
     return render(request, 'defraiement/ajouterParticipant.html', {'form': form, 'form_adresse':form_adresse, 'form_adresse2':form_adresse2 })
 

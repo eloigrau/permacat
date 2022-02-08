@@ -26,7 +26,7 @@ class ReunionForm(forms.ModelForm):
                        }),
         }
 
-    def save(self, userProfile, adresse):
+    def save(self, userProfile):
         instance = super(ReunionForm, self).save(commit=False)
 
         max_length = Reunion._meta.get_field('slug').max_length
@@ -40,7 +40,6 @@ class ReunionForm(forms.ModelForm):
             instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
 
         instance.auteur = userProfile
-        instance.adresse = adresse
 
         instance.save()
 
