@@ -25,6 +25,9 @@ class ParticipantReunion(models.Model):
     def __str__(self):
         return self.nom + " (" + self.get_adresse_str() + ")"
 
+    def get_absolute_url(self):
+        return reverse('defraiement:lireParticipant', kwargs={'id': self.id})
+
     def get_adresse_str(self):
         return self.adresse.get_adresse_str
 
@@ -73,7 +76,7 @@ class ParticipantReunion(models.Model):
                 reponse = requests.get(self.get_url(reunion))
                 data = simplejson.loads(reponse.text)
                 if data["code"] != "Ok":
-                    raise "erreur de calcul de trajet"
+                    raise Exception("erreur de calcul de trajet")
                 routes = data["routes"]
                 self.contexte_distance = str(routes)
                 self.save()
@@ -82,9 +85,9 @@ class ParticipantReunion(models.Model):
                     if routes[0]["distance"] < dist:
                         dist = float(routes[0]["distance"])
                 if dist == 1000000:
-                    raise "erreur de calcul de distance"
+                    raise Exception("erreur de calcul de distance")
             except :
-                raise "erreur de calcul de distances"
+                raise Exception("erreur de calcul de distances")
         self.distance = round(dist/1000.0, 2)
         return self.distance
 

@@ -200,7 +200,7 @@ class SupprimerParticipant(DeleteAccess, DeleteView):
     template_name_suffix = '_supprimer'
 
     def get_object(self):
-        return Reunion.objects.get(id=self.kwargs['id'])
+        return ParticipantReunion.objects.get(id=self.kwargs['id'])
 
 
 class SupprimerReunion(DeleteAccess, DeleteView):
@@ -271,6 +271,25 @@ def ajouterAdresseReunion(request, slug):
         return redirect(reunion)
 
     return render(request, 'defraiement/ajouterAdresseReunion.html', {'reunion':reunion, 'form_adresse':form_adresse, 'form_adresse2':form_adresse2 })
+
+
+@login_required
+def modifierParticipantReunion(request, id):
+    part = ParticipantReunion.objects.get(id=id)
+    form = ParticipantReunionForm(request.POST or None)
+    form_adresse = AdresseForm(request.POST or None)
+    form_adresse2 = AdresseForm3(request.POST or None)
+
+    if form.is_valid() and (form_adresse.is_valid() or form_adresse2.is_valid()):
+        if 'adressebtn' in request.POST:
+            adresse = form_adresse.save()
+        else:
+            adresse = form_adresse2.save()
+        participant = form.save(adresse)
+        return redirect(participant.get_absolute_url())
+
+    return render(request, 'defraiement/modifierParticipantReunion.html', {'part':part, 'form':form,'form_adresse':form_adresse, 'form_adresse2':form_adresse2 })
+
 
 
 class SupprimerParticipantReunion(DeleteView):

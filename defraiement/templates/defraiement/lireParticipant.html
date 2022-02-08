@@ -7,7 +7,7 @@
 <p class="textcenter">
     <a href="{% url 'defraiement:participants' %}">
         <button type="button" class="btn btn-sm btn-primary">
-        &nbsp;Revenir à la liste des participants
+        &nbsp; <i class="fa fa-arrow-left"></i> Revenir à la liste des participants
         </button>
     </a>
 </p>
@@ -15,7 +15,7 @@
  <div class="row rowcentre">
         <div class="col-sm-12 textcenter">
             <div class = "btn-group">
-            <a href="{%if request.user.is_authenticated %}{% url 'defraiement:modifierParticipant' id=part.id %}{% endif %}">
+            <a href="{%if request.user.is_authenticated %}{% url 'defraiement:modifierParticipantReunion' id=part.id %}{% endif %}">
                <button type="button" class="btn btn-sm btn-warning">
                  &nbsp;Modifier
                </button></a>

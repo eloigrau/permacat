@@ -27,6 +27,7 @@ urlpatterns = [
     path(r'reunion/<str:slug>', views.lireReunion, name='lireReunion'),
     path(r'reunion/<int:id>', views.lireReunion_id, name='lireReunion_id'),
      url(r'^modifierAdresseReunion/(?P<slug>[-\w]+)$', views.modifierAdresseReunion, name='modifierAdresseReunion'),
+     path(r'modifierParticipantReunion/<int:id>', views.modifierParticipantReunion, name='modifierParticipantReunion'),
     url(r'^ajouterAdresseReunion/(?P<slug>[-\w]+)$', views.ajouterAdresseReunion, name='ajouterAdresseReunion'),
     url(r'^modifierReunion/(?P<slug>[-\w]+)$',
         login_required(views.ModifierReunion.as_view(), login_url='/auth/login/'), name='modifierReunion'),
