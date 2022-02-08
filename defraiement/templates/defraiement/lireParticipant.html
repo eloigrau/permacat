@@ -51,7 +51,7 @@
         <div class="col-sm-12 textcenter">
             <h5>Réunions :</h5>
             {% for r in reunions %}
-                <p><a href="{{r.get_absolute_url}}" >{{r.titre}} </a>
+                <p><a href="{{r.0.get_absolute_url}}" >{{r.0.titre}} : {{r.1}} km</a>
                 </p>
              {% endfor %}
         </div>

@@ -108,8 +108,8 @@
 
             {% for part in liste_participants %}
 				<tr>
-					<td class="nomProprieteAtelier">
-                        <a href="{{part.get_absolute_url}}">{{part.0}}</a>
+					<td class="">
+                        <a href="{{part.0.get_absolute_url}}">{{part.0}}</a>
                         <a class="btn btn-sm btn-danger textleft" href="{% url 'defraiement:supprimerParticipantReunion' slug_reunion=reunion.slug id_participantReunion=part.1%}"><i class="fa fa-times"></i> </a>
 
 					</td>

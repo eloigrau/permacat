@@ -33,7 +33,8 @@ def lireReunion(request, slug):
 def lireParticipant(request, id):
     part = get_object_or_404(ParticipantReunion, id=id)
     reunions = part.reunion_set.all()
-    context = {"part":part, 'reunions': reunions, }
+    reu = [(r, part.getDistance_route(r)) for r in reunions]
+    context = {"part":part, 'reunions': reu, }
 
     return render(request, 'defraiement/lireParticipant.html', context,)
 
