@@ -447,9 +447,9 @@ class AdresseArticle(models.Model):
 
     def __str__(self):
         if self.titre:
-            return str(self.titre) + " : " + str(self.adresse.get_adresse_str())
+            return str(self.titre) + " : " + str(self.adresse.get_adresse_str)
         else:
-            return str(self.adresse.get_adresse_str())
+            return str(self.adresse.get_adresse_str)
 
 
     @property
