@@ -178,10 +178,10 @@
 
             {%if monnaie_list %}
             <li class="nav-item dropdown active">
-                <button class="btn dropdown-toggle  btn-block {% if request.GET.producteur %}btn-primary{%endif%}" type="button" id="menuproducteur" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn dropdown-toggle  btn-block {% if request.GET.monnaie %}btn-primary{%endif%}" type="button" id="menuMonnaie" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                    {% if request.GET.monnaie %} Monnaie: {{request.GET.monnaie}} {%else%}Monnaie{%endif%}
            </button>
-                <div class="dropdown-menu"  aria-labelledby="menuProducteur"  id="idMonnaie">
+                <div class="dropdown-menu"  aria-labelledby="menuMonnaie"  id="idMonnaie">
                     {% for monnaie in monnaie_list %}
                       <a class="dropdown-item" href="?monnaie={{monnaie}}">{{monnaie}}</a>
                     {% endfor %}
