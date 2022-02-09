@@ -22,7 +22,7 @@ def lireReunion(request, slug):
     if not reunion.est_autorise(request.user):
         return render(request, 'notMembre.html', {"asso": str(reunion.asso)})
 
-    liste_participants = [(str(x), x.id, x.getDistance(reunion), x.getDistance_route(reunion), x.distance, x.get_url(reunion)) for x in reunion.participants.all()]
+    liste_participants = [(x, x.getDistance_route(reunion), x.get_url(reunion)) for x in reunion.participants.all()]
 
     context = {'reunion': reunion, 'liste_participants': liste_participants, }
 

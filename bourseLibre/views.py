@@ -910,6 +910,19 @@ def chercher_articles(request):
 
 
 @login_required
+def chercher_produits(request):
+    recherche = str(request.GET.get('id_recherche')).lower()
+    if recherche:
+        produits_list = Produit.objects.filter(Q(nom_produit__lower__icontains=recherche) | Q(description__icontains=recherche)).distinct().select_subclasses()
+        for nomAsso in Choix_global.abreviationsAsso:
+            if not getattr(request.user, "adherent_" + nomAsso):
+                produits_list = produits_list.exclude(asso__abreviation=nomAsso)
+    else:
+        produits_list = []
+
+    return render(request, 'bourseLibre/produit_recherche.html', {'recherche':recherche, 'produits_list':produits_list, })
+
+@login_required
 def lireConversation(request, destinataire):
     conversation = getOrCreateConversation(request.user.username, destinataire)
     messages = Message.objects.filter(conversation=conversation).order_by("date_creation")

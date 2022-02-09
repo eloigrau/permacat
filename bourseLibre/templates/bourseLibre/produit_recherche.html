@@ -1,0 +1,49 @@
+{% extends 'base_altermarche.html' %}
+    {% load static %}
+{% load activity_tags %}
+{% load fontawesome %}
+
+{% block header %}
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/infinite.min.js' %}"></script>
+{% endblock %}
+
+{% block title %} - AlterMarché {% endblock %}
+
+{%block subtitle%}
+<div class="row justify-content-center">
+    <div class="col-md-12 textcenter">
+            <h3>Rechercher sur l'altermarché</h3>
+        {% if recherche %}
+        <p>Résultats de la recherche : "{{recherche}}"</p>
+        {% endif %}
+
+             <div class="row no-gutters justify-content-center">
+                 <form class="form-inline justify-content-center  navbar-form " action="{% url 'chercher_produits' %}" method="get" role = "search">
+                    {% csrf_token %}
+                    <div class="col" style="padding-right:0;">
+                            <input class="form-control border-secondary border-right-0 rounded-0" name="id_recherche" placeholder="Rechercher..." type="text">
+                                </div>
+                    <div class="col-auto" style="padding-left:0;">
+                                <button class="btn btn-outline-secondary border-left-0 rounded-0 rounded-right" type="submit" >{% fontawesome_icon 'search' %}</button>
+                    </div>
+                 </form>
+             </div>
+
+    </div>
+</div>
+
+
+{%endblock subtitle%}
+{% block content %}
+
+<div class="card-deck listOffres infinite-container">
+    {% for produit in produits_list %}
+        {% include "bourseLibre/produit_template3.html" with produit=produit %}
+    {% endfor %}
+</div>
+
+{%include 'pagination.html' %}
+
+
+{% endblock %}

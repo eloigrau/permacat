@@ -76,7 +76,7 @@
            </button>
         </a>
         {% else %}
-                    <p>{{ reunion.adresse.get_adresse_str}}
+                    <p><b>Adresse : </b>{{ reunion.adresse.get_adresse_str}}
                     <a href="{% url 'defraiement:modifierAdresseReunion' slug=reunion.slug %}">
                        <button type="button" class="btn  btn-success ">
                             <i class="fa fa-arrow-right"></i> Modifier l'adresse
@@ -91,8 +91,8 @@
 
 
     <div class="row">
-        <div class="col-sm-12 ">
-            <p>{{ reunion.description|safe}}</p>
+        <div class="col-sm-12 textcenter">
+            <p><b>Description : </b>{{ reunion.description|safe}}</p>
         </div>
     </div>
 <hr>
@@ -110,11 +110,11 @@
 				<tr>
 					<td class="">
                         <a href="{{part.0.get_absolute_url}}">{{part.0}}</a>
-                        <a class="btn btn-sm btn-danger textleft" href="{% url 'defraiement:supprimerParticipantReunion' slug_reunion=reunion.slug id_participantReunion=part.1%}"><i class="fa fa-times"></i> </a>
+                        <a class="btn btn-sm btn-danger textleft" href="{% url 'defraiement:supprimerParticipantReunion' slug_reunion=reunion.slug id_participantReunion=part.0.id%}"><i class="fa fa-times"></i> </a>
 
 					</td>
 					<td class="textepetit">
-						<a href="{{part.5}}" target='_blank'>{{part.3}} km</a>
+						<a href="{{part.2}}" target='_blank'>{{part.1}} km</a>
 					</td>
 				</tr>
             {% endfor %}
