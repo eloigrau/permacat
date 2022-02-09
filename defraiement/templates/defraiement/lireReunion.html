@@ -76,7 +76,7 @@
            </button>
         </a>
         {% else %}
-                    <p><b>Adresse : </b>{{ reunion.adresse.get_adresse_str}}
+            <p><b>Adresse : </b><a href="https://www.google.com/maps/search/?api=1&query={{reunion.adresse.get_adresse_str}}" target="_blank">{{ reunion.adresse.get_adresse_str}}</a>
                     <a href="{% url 'defraiement:modifierAdresseReunion' slug=reunion.slug %}">
                        <button type="button" class="btn  btn-success ">
                             <i class="fa fa-arrow-right"></i> Modifier l'adresse
@@ -114,7 +114,7 @@
 
 					</td>
 					<td class="textepetit">
-						<a href="{{part.2}}" target='_blank'>{{part.1}} km</a>
+						<a href="{{part.2}}" target='_blank'>{{part.1}} km</a> <a href="{{part.3}}" target='_blank'> (voir sur Gmaps)</a>
 					</td>
 				</tr>
             {% endfor %}

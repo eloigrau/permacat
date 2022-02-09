@@ -55,6 +55,13 @@ class ParticipantReunion(models.Model):
 
         return url
 
+    def get_gmaps_url(self, reunion):
+        latlon_1 = str(self.adresse.latitude).replace(',', '.') + "," + str(self.adresse.longitude).replace(',', '.')
+        latlon_2 = str(reunion.adresse.latitude).replace(',', '.') + "," + str(reunion.adresse.longitude).replace(',','.')
+        url = "https://www.google.com/maps/dir/'" + latlon_1 + "'/'" + latlon_2 +"'"
+
+        return url
+
     def getDistance_route(self, reunion):
         import simplejson
         import requests
