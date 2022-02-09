@@ -28,6 +28,13 @@
                 <span class="glyphicon glyphicon-plus"></span>&nbsp;Modifier
                </button></a>
         {%endif%}
+        {%if request.user.is_superuser%}
+            <a href="https://www.perma.cat/gestion/blog/article/{{article.id}}/change/">
+               <button type="button" class="btn btn-sm btn-danger">
+                <span class="glyphicon glyphicon-plus"></span>&nbsp;Admin
+               </button>
+            </a>
+        {%endif%}
 
     </p>
     </div>

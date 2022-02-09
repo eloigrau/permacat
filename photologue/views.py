@@ -286,6 +286,8 @@ def ajouterDocument(request):
         form = DocumentForm(request, request.POST, request.FILES)
         if form.is_valid():
             doc = form.save(request)
+            action.send(request.user, verb='document_nouveau' + "_" + doc.asso.abreviation, action_object=doc, url=doc.get_absolute_url(),
+                        description="a ajouté le document: '%s'" % doc.titre)
 
             # Redirect to the document list after POST
             return HttpResponseRedirect(reverse_lazy("photologue:doc-list"))

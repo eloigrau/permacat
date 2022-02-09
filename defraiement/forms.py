@@ -84,6 +84,10 @@ class ParticipantReunionForm(forms.ModelForm):
         instance.save()
         return instance
 
+    def __init__(self, request, nom, *args, **kwargs):
+        super(ParticipantReunionForm, self).__init__(request, *args, **kwargs)
+        self.fields["nom"].initial = nom
+
 class AdresseReunionForm(forms.ModelForm):
     class Meta:
         model = Reunion

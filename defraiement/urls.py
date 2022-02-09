@@ -27,8 +27,7 @@ urlpatterns = [
     path(r'reunion/<str:slug>', views.lireReunion, name='lireReunion'),
     path(r'reunion/<int:id>', views.lireReunion_id, name='lireReunion_id'),
      url(r'^modifierAdresseReunion/(?P<slug>[-\w]+)$', views.modifierAdresseReunion, name='modifierAdresseReunion'),
-     path(r'modifierParticipantReunion/<int:id>', views.modifierParticipantReunion, name='modifierParticipantReunion'),
-    path(r'ajouterAdresseReunion/<str:slug>', views.ajouterAdresseReunion, name='ajouterAdresseReunion'),
+     path(r'ajouterAdresseReunion/<str:slug>', views.ajouterAdresseReunion, name='ajouterAdresseReunion'),
     url(r'^modifierReunion/(?P<slug>[-\w]+)$',
         login_required(views.ModifierReunion.as_view(), login_url='/auth/login/'), name='modifierReunion'),
     url(r'^supprimerReunion/(?P<slug>[-\w]+)$', login_required(views.SupprimerReunion.as_view(), login_url='/auth/login/'), name='supprimerReunion'),
@@ -38,6 +37,8 @@ urlpatterns = [
     path(r'ajouterParticipant/', views.ajouterParticipant, name='ajouterParticipant'),
     path(r'modifierParticipant/<int:id>',
         login_required(views.ModifierParticipant.as_view(), login_url='/auth/login/'), name='modifierParticipant'),
+    path(r'modifierParticipantReunion/<int:id>', views.modifierParticipantReunion, name='modifierParticipantReunion'),
+
     path(r'supprimerParticipant/<int:id>',
         login_required(views.SupprimerParticipant.as_view(), login_url='/auth/login/'), name='supprimerParticipant'),
 
