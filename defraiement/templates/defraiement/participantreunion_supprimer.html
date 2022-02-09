@@ -4,7 +4,7 @@
 <div class="row ">
 <div class="col-sm-12 textcenter">
 <form action="" method="post">{% csrf_token %}
-    <p>Etes vous sûr.e de vouloir supprimer le participant "{{ participantreunion }}"?</p>
+    <p>Etes vous sûr.e de vouloir supprimer le participant "{{ participantreunion }}" de la réunion "{{reunion}}" ?</p>
     <input type="button"  onclick="window.history.back();"  value="Annuler" />
     <input type="submit" value="Confirmer" />
 </form>

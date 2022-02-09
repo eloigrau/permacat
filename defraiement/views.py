@@ -252,7 +252,7 @@ def ajouterParticipant(request):
 @login_required
 def ajouterParticipantReunion(request, slug_reunion):
     reunion = get_object_or_404(Reunion, slug=slug_reunion)
-    form = ParticipantReunionForm(request.POST or None)
+    form = ParticipantReunionForm(request.POST or None, )
     form_choice = ParticipantReunionChoiceForm(request.POST or None)
     form_adresse = AdresseForm(request.POST or None)
     form_adresse2 = AdresseForm3(request.POST or None)
@@ -307,7 +307,11 @@ class SupprimerParticipantReunion(DeleteView):
     def get_success_url(self):
         return Reunion.objects.get(slug=self.kwargs['slug_reunion']).get_absolute_url()
 
-
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        context['reunion'] = Reunion.objects.get(slug=self.kwargs['slug_reunion'])
+        return context
 
 @login_required
 def voirLieux(request,):
