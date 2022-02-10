@@ -71,14 +71,14 @@
         <div class="col-sm-12 textcenter">
         {% if not reunion.adresse %}
         <a href="{% url 'defraiement:ajouterAdresseReunion' slug=reunion.slug %}">
-           <button type="button" class="btn  btn-success ">
+           <button type="button" class="btn btn-s btn-success ">
                 <i class="fa fa-arrow-right"></i> Ajouter l'adresse de la réunion
            </button>
         </a>
         {% else %}
-            <p><b>Adresse : </b><a href="https://www.google.com/maps/search/?api=1&query={{reunion.adresse.get_adresse_str}}" target="_blank">{{ reunion.adresse.get_adresse_str}}</a>
+            <p><b>Adresse : </b><a href="https://www.google.com/maps/search/?api=1&query={{reunion.adresse.get_adresse_str}}" target="_blank">{{ reunion.adresse.get_adresse_str}} </a>
                     <a href="{% url 'defraiement:modifierAdresseReunion' slug=reunion.slug %}">
-                       <button type="button" class="btn  btn-success ">
+                       <button type="button" class="btn btn-s btn-success ">
                             <i class="fa fa-arrow-right"></i> Modifier l'adresse
                        </button>
                     </a>
@@ -102,6 +102,8 @@
                 <tr>
                 <th>Participant (conducteur)</th>
                 <th>distance</th>
+                <th>GMaps</th>
+                <th>Supprimer</th>
                 </tr>
             </thead>
 			<tbody>
@@ -110,12 +112,17 @@
 				<tr>
 					<td class="">
                         <a href="{{part.0.get_absolute_url}}">{{part.0}}</a>
-                        <a class="btn btn-sm btn-danger textleft" href="{% url 'defraiement:supprimerParticipantReunion' slug_reunion=reunion.slug id_participantReunion=part.0.id%}"><i class="fa fa-times"></i> </a>
 
 					</td>
 					<td class="textepetit">
-						<a href="{{part.2}}" target='_blank'>{{part.1}} km</a> <a href="{{part.3}}" target='_blank'> (voir sur Gmaps)</a>
+						<a href="{{part.2}}" target='_blank'>{{part.1}} km</a>
 					</td>
+                    <td>
+                         <a href="{{part.3}}" target='_blank'> lien </a>
+                    </td>
+                    <td>
+                        <a class="btn btn-sm btn-danger textleft" href="{% url 'defraiement:supprimerParticipantReunion' slug_reunion=reunion.slug id_participantReunion=part.0.id%}"><i class="fa fa-times"></i> </a>
+                    </td>
 				</tr>
             {% endfor %}
 			</tbody>
