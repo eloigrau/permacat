@@ -96,6 +96,7 @@
         </div>
     </div>
 <hr>
+        {% if liste_participants %}
     <div class="row">
         <div class="col-sm-12 ">
             <table class="table table-condensed ">
@@ -108,7 +109,7 @@
             </thead>
 			<tbody>
 
-            {% for part in liste_participants %}
+            {% for part in D %}
 				<tr>
 					<td class="">
                         <a href="{{part.0.get_absolute_url}}">{{part.0}}</a>
@@ -137,6 +138,7 @@
         </div>
     </div>
 <hr>
+        {% endif %}
 
 
 </div>
