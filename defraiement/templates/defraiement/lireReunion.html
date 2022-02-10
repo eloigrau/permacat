@@ -96,9 +96,9 @@
         </div>
     </div>
 <hr>
-        {% if liste_participants %}
     <div class="row">
         <div class="col-sm-12 ">
+        {% if liste_participants %}
             <table class="table table-condensed ">
                 <tr>
                 <th>Participant (conducteur)</th>
@@ -128,6 +128,7 @@
             {% endfor %}
 			</tbody>
 		</table>
+        {% endif %}
             <p class="textcenter">
                 <a href="{% url 'defraiement:ajouterParticipantReunion' slug_reunion=reunion.slug %}">
                 <button type="button" class="btn  btn-success ">
@@ -138,7 +139,6 @@
         </div>
     </div>
 <hr>
-        {% endif %}
 
 
 </div>
