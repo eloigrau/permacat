@@ -422,9 +422,14 @@ class Adhesion_permacat(models.Model):
     user = models.ForeignKey(Profil, on_delete=models.CASCADE)
     date_cotisation = models.DateField(verbose_name="Date de la cotisation", editable=True, auto_now_add=False)
     montant = models.CharField(max_length=50, blank=True, verbose_name="Montant de l'adhesion")
+    moyen = models.CharField(
+        max_length=3,
+        choices=Choix.type_paiement_adhesion,
+        default='0', verbose_name="Moyen de maiement"
+    )
 
     def __str__(self):
-        return self.user.username + " le "+ str(self.date_cotisation) + " " + str(self.montant)
+        return self.user.username + " le "+ str(self.date_cotisation) + " " + str(self.montant) + " " + str(self.moyen)
 
 class Produit(models.Model):  # , BaseProduct):
     user = models.ForeignKey(Profil, on_delete=models.CASCADE,)
