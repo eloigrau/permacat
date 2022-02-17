@@ -280,16 +280,21 @@ def telechargerDocument(request, slug):
     return render(doc.get_absolute_url())
 
 @login_required
-def ajouterDocument(request):
-    # Handle file upload
+def ajouterDocument(request, article_slug=None):
     if request.method == 'POST':
         form = DocumentForm(request, request.POST, request.FILES)
         if form.is_valid():
-            doc = form.save(request)
+            if article_slug and article_slug != 'None':
+                article = Article.objects.get(slug=article_slug)
+            else:
+                article = None
+            doc = form.save(request, article)
             action.send(request.user, verb='document_nouveau' + "_" + doc.asso.abreviation, action_object=doc, url=doc.get_absolute_url(),
                         description="a ajouté le document: '%s'" % doc.titre)
 
             # Redirect to the document list after POST
+            if article:
+                return redirect(article)
             return HttpResponseRedirect(reverse_lazy("photologue:doc-list"))
     else:
         form = DocumentForm(request) # A empty, unbound form

@@ -35,7 +35,7 @@ def ajouterAtelier(request, article_slug=None):
     if article_slug:
         article = Article.objects.get(slug=article_slug)
     else:
-        article=None
+        article = None
     if form.is_valid():
         atelier = form.save(request, article)
         action.send(request.user, verb='atelier_nouveau', action_object=atelier, url=atelier.get_absolute_url(),

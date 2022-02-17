@@ -1,4 +1,5 @@
 
+{% load app_filters %}
     {% if object_list %}
         <div class="infinite-container">
             <div class="grid-container justify-content-center">
@@ -40,6 +41,11 @@
         <p class="card-text bg-light" style="transform: rotate(0);">
                     <a href="{{doc.doc.url}}" class="btn btn-succes stretched-link"><i class="fa fa-download" aria-hidden="true"></i> Télécharger ({{ doc.doc.size|filesizeformat }})</a>
         </p>
+        {% if doc.article %}
+        <p class="card-text bg-light" style="transform: rotate(0);">
+                    <a href="{{doc.article.get_absolute_url}}" class="btn btn-succes stretched-link"><i class="fa fa-comments" aria-hidden="true"></i> Voir l'article lié ({{ doc.article.titre|couperTexte:20}})</a>
+        </p>
+        {% endif %}
                   {% if request.user ==  doc.auteur or request.user.is_superuser %}
         <p class="card-text bg-light" style="transform: rotate(0);">
                   <a href="{{doc.get_delete_url}}" class="btn btn-error stretched-link"><i class="fa fa-times" aria-hidden="true"></i> Supprimer</a>

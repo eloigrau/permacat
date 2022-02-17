@@ -283,7 +283,7 @@ class DocumentForm(forms.ModelForm):
         super(DocumentForm, self).__init__(*args, **kwargs)
         self.fields["asso"].choices = [(x.id, x.nom) for x in Asso.objects.all().order_by("id") if request.user.estMembre_str(x.abreviation)]
 
-    def save(self, request, commit=True):
+    def save(self, request, article, commit=True):
         instance = super(DocumentForm, self).save(commit=False)
         max_length = Photo._meta.get_field('slug').max_length
         instance.slug = orig = slugify(instance.titre)[:max_length]
@@ -296,6 +296,8 @@ class DocumentForm(forms.ModelForm):
             instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
 
         instance.auteur = request.user
+        if article:
+            instance.article = article
 
         if commit:
             instance.save()

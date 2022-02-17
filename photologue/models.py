@@ -20,7 +20,6 @@ from django.db.models.signals import post_save
 from django.template.defaultfilters import slugify
 from django.urls import reverse
 from django.utils.encoding import force_text, smart_str, filepath_to_uri
-from django.utils.safestring import mark_safe
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 from io import BytesIO
@@ -280,7 +279,7 @@ class Album(models.Model):
         return self.photos.all()[:1]
 
 class Document(models.Model):
-    doc = models.FileField( 'Document',
+    doc = models.FileField('Document',
                             max_length=IMAGE_FIELD_MAX_LENGTH,
                             upload_to='documents/%Y/%m/%d', )
 
@@ -296,6 +295,7 @@ class Document(models.Model):
     asso = models.ForeignKey(Asso, on_delete=models.SET_NULL, null=True)
     tags = TaggableManager(verbose_name="Mots clés", help_text="Liste de mots-clés séparés par une virgule", blank=True)
 
+    article = models.ForeignKey('blog.Article', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.titre + " (" + str(self.doc) +")"

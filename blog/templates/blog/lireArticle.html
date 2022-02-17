@@ -157,6 +157,9 @@
         {% if lieux %}
       <a class="nav-item nav-link" href="#lieux" data-toggle="tab">Lieu{{lieux|pluralize:",x"}}</a>
         {% endif %}
+        {% if documents %}
+      <a class="nav-item nav-link" href="#documents" data-toggle="tab">Document{{documents|pluralize:",s"}}</a>
+        {% endif %}
       <a class="nav-item nav-link" href="#historique" data-toggle="tab">Historique</a>
       {% if not article.album or not ateliers or not dates %}<a class="nav-item nav-link" href="#plus" data-toggle="tab">Ajouter...</a>
         {% endif %}
@@ -229,6 +232,27 @@
   </div>
 
 
+  <div class="tab-pane fade" id="documents">
+    <div class="contenu fiche">
+<div class="row justify-content-center">
+<div class="col-sm-12 textcenter">
+        {% for document in documents %}
+        <p>
+            <a href="{{document.doc.url}}" ><i class="fa fa-download" aria-hidden="true"></i> {{ document.titre }} </a>
+            {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
+                <a class="btn btn-sm btn-danger textleft" href="{% url 'photologue:supprimerDocument' slug=document.slug%}"> <i class="fa fa-times"></i> </a>
+            {% endif %}
+        </p>
+        {% endfor%}
+        <p>
+            {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
+                   <a class="btn btn-sm btn-success textleft" href="{% url 'photologue:ajouterDocument' article_slug=article.slug %}" ><i class="fa fa-plus"></i> Ajouter un document</a>
+            {% endif%}
+        </p>
+    </div>
+  </div>
+    </div>
+  </div>
 
   <div class="tab-pane fade " id="ateliers">
         <div class="col-sm-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2 textcenter my-auto">
@@ -308,10 +332,14 @@
         <p>
           <a class="btn btn-sm btn-block btn-success textleft" href="{% url 'blog:ajouterAdresseArticle' id_article=article.id %}" ><i class="fa fa-plus"></i> Ajouter un lieu</a>
         </p>
+
         <p>
             <a class="btn btn-sm btn-block btn-success textleft" href="{% url 'blog:ajouterAlbumArticle' slug=article.slug %}" ><i class="fa fa-plus"></i> Associer à un album photo</a>
         </p>
         {% endif %}
+       <p>
+           <a class="btn btn-sm btn-block btn-success textleft" href="{% url 'photologue:ajouterDocument' article_slug=article.slug %}" ><i class="fa fa-plus"></i> Ajouter un document</a>
+       </p>
         <p>
             <a class="btn btn-sm btn-block  btn-success textleft" href="{% url 'ateliers:ajouterAtelier_article' article_slug=article.slug %}" ><i class="fa fa-plus"></i>  Ajouter un atelier</a>
         </p>

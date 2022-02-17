@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.urls import path
 from django.views.generic import RedirectView
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
@@ -40,7 +41,7 @@ urlpatterns = [
     url(r'^filtrer_documents/$', views.filtrer_documents, name='filtrer_documents'),
     url(r'^ajouterPhoto/(?P<albumSlug>[\-\d\w]+)$', views.ajouterPhoto, name='ajouterPhoto'),
     url(r'^ajouterAlbum/$', views.ajouterAlbum, name='ajouterAlbum'),
-    url(r'^ajouterDocument/$', views.ajouterDocument, name='ajouterDocument'),
+    path(r'ajouterDocument/<str:article_slug>', views.ajouterDocument, name='ajouterDocument'),
 
     url(r'^modifierAlbum/(?P<slug>[\-\d\w]+)$', login_required(views.ModifierAlbum.as_view(), login_url='/auth/login/'), name='modifierAlbum'),
     url(r'^supprimerAlbum/(?P<slug>[\-\d\w]+)$', login_required(views.SupprimerAlbum.as_view(), login_url='/auth/login/'), name='supprimerAlbum'),

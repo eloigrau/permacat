@@ -32,6 +32,7 @@ from datetime import datetime, timedelta
 import pytz
 from django.utils.text import slugify
 from bourseLibre.views_base import DeleteAccess
+from photologue.models import Document
 
 # @login_required
 # def forum(request):
@@ -202,6 +203,7 @@ class SupprimerArticle(DeleteAccess, DeleteView):
 def lireArticle(request, slug):
     article = get_object_or_404(Article, slug=slug)
     ateliers = Atelier.objects.filter(article=article).order_by('-start_time')
+    documents = Document.objects.filter(article=article).order_by('date_creation')
     lieux = AdresseArticle.objects.filter(article=article).order_by('titre')
 
     if not article.est_autorise(request.user):
@@ -226,7 +228,7 @@ def lireArticle(request, slug):
                             discussions}
 
             context = {'article': article, 'form': CommentaireArticleForm(None), 'form_discussion': form_discussion, 'commentaires': commentaires,
-                       'dates': dates, 'actions': actions, 'ateliers': ateliers, 'lieux': lieux, "ancre": discu.slug}
+                       'dates': dates, 'actions': actions, 'ateliers': ateliers, 'lieux': lieux, 'documents':documents, "ancre": discu.slug}
 
     elif form.is_valid() and 'message_discu' in request.POST:
         discu = Discussion.objects.get(article=article, slug=request.POST['message_discu'].replace("#",""))
@@ -257,10 +259,10 @@ def lireArticle(request, slug):
                         description=desc, discussion=discu.titre)
             #envoi_emails_articleouprojet_modifie(article, request.user.username + " a réagit au projet: " +  article.titre, True)
         context = {'article': article, 'form': CommentaireArticleForm(None), 'form_discussion': form_discussion, 'commentaires': commentaires,
-               'dates': dates, 'actions': actions, 'ateliers': ateliers, 'lieux': lieux, "ancre":discu.slug}
+               'dates': dates, 'actions': actions, 'ateliers': ateliers, 'lieux': lieux, 'documents':documents, "ancre":discu.slug}
 
     else:
-        context = {'article': article, 'form': form, 'form_discussion': form_discussion, 'commentaires':commentaires, 'dates':dates, 'actions':actions, 'ateliers':ateliers, 'lieux':lieux}
+        context = {'article': article, 'form': form, 'form_discussion': form_discussion, 'commentaires':commentaires, 'dates':dates, 'actions':actions, 'ateliers':ateliers, 'lieux':lieux, 'documents':documents, }
     return render(request, 'blog/lireArticle.html', context,)
 
 @login_required

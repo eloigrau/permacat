@@ -11,6 +11,7 @@ class BourseLibreConfig(AppConfig):
         from ateliers.models import Atelier, InscriptionAtelier
         from fiches.models import Fiche, Atelier as fiche_at
         from vote.models import Suffrage
+        from photologue.models import Document
         from photologue.models import Album
         registry.register(self.get_model('Profil'))
         registry.register(self.get_model('MessageGeneral'))
@@ -24,6 +25,7 @@ class BourseLibreConfig(AppConfig):
         registry.register(self.get_model('Suivis'))
         registry.register(self.get_model('Adhesion_permacat'))
         registry.register(self.get_model('Asso'))
+        registry.register(Document)
         registry.register(Atelier)
         registry.register(InscriptionAtelier)
         registry.register(Fiche)
