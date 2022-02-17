@@ -267,7 +267,7 @@ class PhotoChangeForm(forms.ModelForm):
 
 
 class DocumentAssocierArticleForm(forms.Form):
-    article = forms.ModelChoiceField(queryset=Article.objects.all().order_by('date_creation'), required=True,
+    article = forms.ModelChoiceField(queryset=Article.objects.all().order_by('titre'), required=True,
                               label="Document public ou réservé aux adhérents de l'asso :", )
 
 class DocumentForm(forms.ModelForm):
