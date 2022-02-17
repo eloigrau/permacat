@@ -16,12 +16,14 @@
 </div>
 
 <script>
-$('#btn-validation').click(function() {
-    $(this).attr('disabled',true).delay(2000).attr("disabled", false);
-});
-{% comment %}
-$('#myForm').one('submit', function() {
-    $(this).find('input[type="submit"]').attr('disabled','disabled').delay(2000).attr("disabled", false);
-});
-{% endcomment %}
+$("btn-validation").click(
+    function() {
+        console.log("clicked...waiting...");
+
+        setTimeout(
+            function() {
+                alert("Called after delay.");
+            },
+            5000);
+    });
 </script>
