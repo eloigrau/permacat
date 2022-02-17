@@ -5,7 +5,7 @@ from django.views.generic import ListView, UpdateView, DeleteView
 from django.shortcuts import get_object_or_404, HttpResponseRedirect
 from .models import Photo, Album, Document
 from django.shortcuts import render, redirect
-from .forms import PhotoForm, AlbumForm, PhotoChangeForm, AlbumChangeForm, DocumentForm
+from .forms import PhotoForm, AlbumForm, PhotoChangeForm, AlbumChangeForm, DocumentForm, DocumentAssocierArticleForm
 from .filters import DocumentFilter
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
@@ -301,6 +301,20 @@ def ajouterDocument(request, article_slug=None):
 
     # Render list page with the documents and the form
     return render(request, 'photologue/document_ajouter.html', { "form": form})
+
+@login_required
+def associerDocumentArticle(request, doc_slug):
+    doc = Document.objects.get(slug=doc_slug)
+    if request.method == 'POST':
+        form = DocumentAssocierArticleForm(request.POST)
+        if form.is_valid():
+            doc.article = form.cleaned_data["article"]
+            doc.save()
+            return HttpResponseRedirect(reverse_lazy("photologue:doc-list"))
+    else:
+        form = DocumentAssocierArticleForm()
+
+    return render(request, 'photologue/document_associerArticle.html', { "form": form, 'doc':doc})
 
 
 @login_required

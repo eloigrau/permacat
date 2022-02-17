@@ -266,6 +266,10 @@ class PhotoChangeForm(forms.ModelForm):
         }
 
 
+class DocumentAssocierArticleForm(forms.Form):
+    article = forms.ModelChoiceField(queryset=Article.objects.all(), required=True,
+                              label="Document public ou réservé aux adhérents de l'asso :", )
+
 class DocumentForm(forms.ModelForm):
     doc = forms.FileField(
         label='Choisir un fichier',

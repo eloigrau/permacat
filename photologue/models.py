@@ -314,13 +314,6 @@ class Document(models.Model):
                 emails = [suiv.email for suiv in followers(suivi) if self.auteur != suiv and self.est_autorise(suiv)]
                 if emails and not LOCALL:
                     creation = True
-        else:
-            if sendMail:
-                titre = "Album créé"
-                message = "L'album ["+ self.asso.nom +"] '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.title + "</a>' a été modifié"
-                emails = [suiv.email for suiv in followers(self) if self.auteur != suiv and self.est_autorise(suiv)]
-                if emails and not LOCALL:
-                    creation = True
 
         retour = super().save(*args, **kwargs)
 
