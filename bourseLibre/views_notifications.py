@@ -255,11 +255,16 @@ def notificationsParDate(request):
 
 @login_required
 def notificationsLues(request, temps=None):
-    if temps:
-        request.user.date_notifications = temps
-    else:
+    try:
+        if temps:
+            request.user.date_notifications = temps
+        else:
+            request.user.date_notifications = now()
+        request.user.save()
+    except:
         request.user.date_notifications = now()
-    request.user.save()
+        request.user.save()
+
     return redirect('notifications_news')
 
 def getInfosJourPrecedent(request, nombreDeJours):
