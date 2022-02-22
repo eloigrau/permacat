@@ -452,8 +452,11 @@ def adhesion_entree(request):
 
 
 def adhesion_asso(request, asso):
-    asso = Asso.objects.get(Q(nom=asso) | Q(abreviation=asso))
-    return render(request, 'asso/'+ asso.abreviation +'/adhesion.html', )
+    asso = get_object_or_404(Asso, Q(nom=asso) | Q(abreviation=asso))
+    if not asso:
+        return render(request, 'asso/pc/adhesion.html', )
+
+    return render(request, 'asso/' + asso.abreviation +'/adhesion.html', )
 
 
 def fairedon_asso(request, asso):
