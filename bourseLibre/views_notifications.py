@@ -232,7 +232,8 @@ def notifications_news_regroup(request):
         if dateMin < action.timestamp:
             dicoTexte['listautres'].append(action)
 
-    return render(request, 'notifications/notifications_last2.html', {'type_notif':type_notif,'dico':dicoTexte, "htmlArticles":htmlArticles, "htmlProjets":htmlProjets, "dateMin":dateMin})
+    maintenant = now()
+    return render(request, 'notifications/notifications_last2.html', {'type_notif':type_notif,'dico':dicoTexte, "htmlArticles":htmlArticles, "htmlProjets":htmlProjets, "dateMin":dateMin, "maintenant":maintenant})
 
 @login_required
 def notifications(request):
@@ -242,9 +243,9 @@ def notifications(request):
 @login_required
 def notifications_news(request):
     actions = getNotificationsParDate(request)
-
-    hit_count = HitCount.objects.all().order_by('-hit__created')[:10]
-    return render(request, 'notifications/notifications_last.html', {'actions':actions})
+    maintenant = now()
+    #hit_count = HitCount.objects.all().order_by('-hit__created')[:10]
+    return render(request, 'notifications/notifications_last.html', {'actions':actions, "maintenant":maintenant})
 
 
 @login_required
@@ -253,8 +254,11 @@ def notificationsParDate(request):
     return render(request, 'notifications/notificationsParDate.html', {'actions': actions, })
 
 @login_required
-def notificationsLues(request):
-    request.user.date_notifications = now()
+def notificationsLues(request, temps=None):
+    if temps:
+        request.user.date_notifications = temps
+    else:
+        request.user.date_notifications = now()
     request.user.save()
     return redirect('notifications_news')
 

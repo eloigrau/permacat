@@ -22,7 +22,7 @@
                 <li><a class="dropdown-item" href="{% url 'agora' asso='public'%}"><i class='fa fa-comment iconleft ' ></i> Salon de discussion du site</a></li>
                  <li class="divider" role="separator"></li>
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle"  href="test" >PermaCat</a>
+                        <a class="dropdown-item dropdown-toggle"  href="#" >PermaCat</a>
                         <ul class="dropdown-menu nav5-dropdown-submenu">
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='pc' %}"> <i class='fa fa-asterisk iconleft ' ></i>Présentation</a></li>
    {% if request.user.adherent_pc %}
@@ -40,7 +40,7 @@
                     {%comment%}
                             <li class="divider" role="separator"></li>
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle"  href="test"><i class='fa fa-folder-open iconleft' ></i> Projets</a>
+                        <a class="dropdown-item dropdown-toggle"  href="#"><i class='fa fa-folder-open iconleft' ></i> Projets</a>
                         <ul class="dropdown-menu nav5-dropdown-subsubmenu">
                             <li><a class="dropdown-item" href="{% url 'blog:index_projets' %}"><i class='fa fa-folder-open iconleft' ></i>  Tous les projets </a></li>
 {% for projet in liste_projets %}
@@ -75,7 +75,7 @@
                         </ul>
                     </li>
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle"  href="test"><i class='fa fa-wrench iconleft' ></i>  Ateliers Collectifs</a>
+                        <a class="dropdown-item dropdown-toggle"  href="#"><i class='fa fa-wrench iconleft' ></i>  Ateliers Collectifs</a>
                         <ul class="dropdown-menu nav5-dropdown-subsubmenu">
                         <li><a class="dropdown-item" href="{% url 'ateliers:acceuil' %}"><i class='fa fa-wrench iconleft' ></i>  Tous les ateliers </a></li>
                         {% for atelier in liste_ateliers %}
@@ -102,7 +102,7 @@
                     </li>
 
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle"  href="test">Ramène Ta Graine</a>
+                        <a class="dropdown-item dropdown-toggle"  href="#">Ramène Ta Graine</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='rtg' %}"><i class='fa fa-asterisk iconleft' ></i> Présentation </a></li>
    {% if request.user.adherent_rtg %}
@@ -122,7 +122,7 @@
                     </li>
 
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle"  href="test">Fermille</a>
+                        <a class="dropdown-item dropdown-toggle"  href="#">Fermille</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='fer' %}"><i class='fa fa-asterisk iconleft' ></i> Présentation</a></li>
    {% if request.user.adherent_fer %}
@@ -137,7 +137,7 @@
                     </li>
    {% comment %}
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle"  href="test">Gardiens de la Terre</a>
+                        <a class="dropdown-item dropdown-toggle"  href="#">Gardiens de la Terre</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso'   asso='gt' %}"><i class='fa fa-asterisk iconleft' ></i> Présentation</a></li>
    {% if request.user.adherent_gt %}
@@ -154,7 +154,7 @@
    {% endcomment %}
                     {%comment%}
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle"  href="test">Jardins Partagés</a>
+                        <a class="dropdown-item dropdown-toggle"  href="#">Jardins Partagés</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
                             <li><a class="dropdown-item" href="{% url 'agora' asso='jp'%}"> <i class='fa fa-asterisk' ></i> Salon de discussion</a></li>
                             <li><a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=1 %}"><i class='fa fa-pagelines' ></i> Jardi Per tots</a></li>
@@ -167,7 +167,7 @@
 
 
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle"  href="test">PermAgora</a>
+                        <a class="dropdown-item dropdown-toggle"  href="#">PermAgora</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso'  asso='scic' %}"><i class='fa fa-asterisk iconleft' ></i> Présentation </a></li>
    {% if request.user.adherent_scic %}
@@ -183,7 +183,7 @@
 
 
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle"  href="test">Cité Altruiste</a>
+                        <a class="dropdown-item dropdown-toggle"  href="#">Cité Altruiste</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso'  asso='citealt' %}"><i class='fa fa-asterisk iconleft' ></i> Présentation </a></li>
                        <li> <a class="dropdown-item" href="https://CiteAltruiste.org" target="_blank"><i class='fa fa-asterisk iconleft' ></i> Forum CiteAltruiste.org </a></li>
@@ -199,7 +199,7 @@
                         </ul>
                     </li>
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle"  href="test">Viure</a>
+                        <a class="dropdown-item dropdown-toggle"  href="#">Viure</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso'  asso='viure' %}"><i class='fa fa-asterisk iconleft' ></i> Présentation </a></li>
                          {% if request.user.adherent_viure %}
@@ -220,18 +220,18 @@
 
             <ul class="dropdown-menu dropdown-menu1 nav8-dropdown" aria-labelledby="navbarDropdownMenuLink">
                 <li class="dropdown-submenu">
-                    <a class="dropdown-item dropdown-toggle"  href="test">Projets</a>
+                    <a class="dropdown-item dropdown-toggle"  href="#">Projets</a>
                     <ul class="dropdown-menu nav8-dropdown-submenu">
                         <li> <a class="dropdown-item" href="{% url 'blog:index_projets' %}"><i class='fa fa-folder-open iconleft' ></i>  Voir tous les projets </a></li>
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle"  href="test">Projets acceptés</a>
+                        <a class="dropdown-item dropdown-toggle"  href="#">Projets acceptés</a>
                         <ul class="dropdown-menu nav8-dropdown-subsubmenu">
 
 
                         {% for projet in liste_projets %}
                          {% if projet.slug == "un-jardin-partage-en-permaculture-accessible-a-tous" or projet.slug == "jardin-de-permacat-a-perpignan" or projet.slug == "jardins-partages-a-perpignan-au-champ-de-mars" %}
                            <li class="dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle"  href="test">{{projet.titre|couperTexte:40}}</a>
+                                <a class="dropdown-item dropdown-toggle"  href="#">{{projet.titre|couperTexte:40}}</a>
                                <ul class="dropdown-menu nav8-dropdown-subsubmenu">
                                    <li> <a class="dropdown-item" href="{% url 'blog:lireProjet' slug=projet.slug %}"><i class='fa fa-folder-open' ></i>  Fiche Projet</a></li>
                                    <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin='1' %}"><i class='fa fa-pagelines' ></i>  Blog du Jardi Per Tots</a></li>
@@ -241,7 +241,7 @@
                          {% elif projet.slug == "jardin-partage-de-palau" %}
 
                            <li class="dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle"  href="test">{{projet.titre|couperTexte:40}}</a>
+                                <a class="dropdown-item dropdown-toggle"  href="#">{{projet.titre|couperTexte:40}}</a>
                                     <ul class="dropdown-menu nav8-dropdown-subsubmenu">
                                    <li> <a class="dropdown-item" href="{% url 'blog:lireProjet' slug=projet.slug %}"><i class='fa fa-folder-open' ></i>  Fiche Projet</a></li>
                                    <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin='2' %}"><i class='fa fa-pagelines' ></i>  Blog du jardin de Palau</a></li>
@@ -251,7 +251,7 @@
                             {% elif projet.slug == "jardins-du-lycee-jean-lurcat" %}
 
                            <li class="dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle"  href="test">{{projet.titre|couperTexte:40}}</a>
+                                <a class="dropdown-item dropdown-toggle"  href="#">{{projet.titre|couperTexte:40}}</a>
                                 <ul class="dropdown-menu nav8-dropdown-subsubmenu">
                                    <li> <a class="dropdown-item" href="{% url 'blog:lireProjet' slug=projet.slug %}" ><i class='fa fa-folder-open' ></i>  Fiche Projet</a></li>
                                    <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin='3' %}"><i class='fa fa-pagelines' ></i>  Blog du jardin de Lurçat</a></li>
@@ -261,7 +261,7 @@
 
                             {% elif projet.slug == "projet-eco-lieu" %}
                            <li class="dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle"  href="test">{{projet.titre|couperTexte:40}}</a>
+                                <a class="dropdown-item dropdown-toggle"  href="#">{{projet.titre|couperTexte:40}}</a>
                                     <ul class="dropdown-menu nav8-dropdown-subsubmenu">
                                    <li> <a class="dropdown-item" href="{% url 'blog:lireProjet' slug=projet.slug %}"><i class='fa fa-folder-open' ></i>  Fiche Projet</a></li>
                                    <li> <a class="dropdown-item" href="{% url 'blog:index' %}?categorie=Ecovillage"><i class='fa fa-comments' ></i>  Articles du forum</a></li>
@@ -277,7 +277,7 @@
                     </li>
 
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle" href="test">Projets Proposés </a>
+                        <a class="dropdown-item dropdown-toggle" href="#">Projets Proposés </a>
                         <ul class="dropdown-menu nav8-dropdown-subsubmenu">
                            {% for projet in liste_projets_prop %}
                             <li><a class=" dropdown-item " style="background:{{projet.get_couleur}};" href="{% url 'blog:lireProjet' slug=projet.slug %}"><span>{{projet.titre|truncatechars:45}}</span></a></li>
@@ -287,7 +287,7 @@
                     </ul>
                 </li>
                 <li class="dropdown-submenu">
-                    <a class="dropdown-item dropdown-toggle"  href="test">Jardins Partagés</a>
+                    <a class="dropdown-item dropdown-toggle"  href="#">Jardins Partagés</a>
                     <ul class="dropdown-menu nav8-dropdown-submenu">
                         <li> <a class="dropdown-item" href="{% url 'jardinpartage:index' %}"><i class='fa fa-folder-open iconleft' ></i>  Blog des jardins Partagés </a></li>
                         <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=1 %}"><i class='fa fa-pagelines' ></i> Jardi Per tots</a></li>
@@ -297,7 +297,7 @@
                     </ul>
                 </li>
                 <li class="dropdown-submenu">
-                    <a class="dropdown-item dropdown-toggle"  href="test">Ateliers </a>
+                    <a class="dropdown-item dropdown-toggle"  href="#">Ateliers </a>
                     <ul class="dropdown-menu nav8-dropdown-submenu">
                         <li><a class="dropdown-item" href="{% url 'ateliers:index_ateliers' %}"><i class='fa fa-folder-open iconleft' ></i>  Tous les ateliers </a></li>
                         {% for atelier in liste_ateliers %}
@@ -306,13 +306,13 @@
                     </ul>
                 </li>
                 <li class="dropdown-submenu">
-                    <a class="dropdown-item dropdown-toggle"  href="test">Suffrages </a>
+                    <a class="dropdown-item dropdown-toggle"  href="#">Suffrages </a>
                     <ul class="dropdown-menu nav8-dropdown-submenu">
                             <li><a class="dropdown-item" href="{% url 'vote:index' %}"><i class="fa fa-bullhorn iconleft"></i>  Liste des suffrages </a></li>
                     </ul>
                 </li>
                 <li class="dropdown-submenu">
-                    <a class="dropdown-item dropdown-toggle"  href="test">Documents </a>
+                    <a class="dropdown-item dropdown-toggle"  href="#">Documents </a>
                     <ul class="dropdown-menu nav8-dropdown-submenu">
                         <li><a class="dropdown-item" href="{% url 'photologue:album-list' %}"> Albums photo</a></li>
                         <li><a class="dropdown-item" href="{% url 'photologue:doc-list' %}"> Autres documents </a></li>
@@ -346,7 +346,7 @@
                 {% load admin_urls %}
 
                 <li class="dropdown-submenu">
-                    <a class="dropdown-item dropdown-toggle"  href="test">Admin </a>
+                    <a class="dropdown-item dropdown-toggle"  href="#">Admin </a>
                     <ul class="dropdown-menu nav5-dropdown-submenu">
                         <li><a class="dropdown-item" href="{% url 'admin:index' %}">Admin</a></li>
                        <li> <a class="dropdown-item" href="{% url 'voirEmails' %}"> voir Emails Alertes</a></li>
@@ -405,7 +405,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu1 nav5-dropdown" aria-labelledby="navbarDropdownMenuLink">
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle"  href="test" >PermaCat</a>
+                        <a class="dropdown-item dropdown-toggle"  href="#" >PermaCat</a>
                         <ul class="dropdown-menu nav5-dropdown-submenu">
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='pc' %}"><i class='fa fa-asterisk iconleft ' ></i>  Présentation</a></li>
 
@@ -419,7 +419,7 @@
                     </li>
 
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle"  href="test">Ramène Ta Graine</a>
+                        <a class="dropdown-item dropdown-toggle"  href="#">Ramène Ta Graine</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='rtg' %}"><i class='fa fa-asterisk iconleft ' ></i> Présentation </a></li>
                        <li> <a class="dropdown-item" href="{% url 'adhesion_asso' asso='rtg' %}"><i class='fa fa-euro-sign iconleft ' ></i> Cotisation en ligne </a></li>
@@ -427,14 +427,14 @@
                     </li>
 
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle"  href="test">Fermille</a>
+                        <a class="dropdown-item dropdown-toggle"  href="#">Fermille</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='fer' %}"><i class='fa fa-asterisk iconleft ' ></i>  Présentation</a></li>
                       </ul>
                     </li>
                     {% comment %}
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle"  href="test">Gardiens de la Terre</a>
+                        <a class="dropdown-item dropdown-toggle"  href="#">Gardiens de la Terre</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='gt' %}"><i class='fa fa-asterisk iconleft ' ></i> Présentation</a></li>
 
@@ -443,14 +443,14 @@
                     {% endcomment %}
 
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle"  href="test">PermAgora</a>
+                        <a class="dropdown-item dropdown-toggle"  href="#">PermAgora</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='scic' %}"><i class='fa fa-asterisk iconleft ' ></i> Présentation</a></li>
 
                       </ul>
                     </li>
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle"  href="test">Cité Altruiste</a>
+                        <a class="dropdown-item dropdown-toggle"  href="#">Cité Altruiste</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='citealt' %}"><i class='fa fa-asterisk iconleft ' ></i> Présentation</a></li>
 <li> <a class="dropdown-item" href="https://CiteAltruiste.org" target="_blank"><i class='fa fa-asterisk iconleft' ></i> CiteAltruiste.org </a></li>
@@ -458,7 +458,7 @@
                       </ul>
                     </li>
                     <li class="dropdown-submenu">
-                        <a class="dropdown-item dropdown-toggle"  href="test">Viure</a>
+                        <a class="dropdown-item dropdown-toggle"  href="#">Viure</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='viure' %}"><i class='fa fa-asterisk iconleft ' ></i> Présentation</a></li>
                       </ul>

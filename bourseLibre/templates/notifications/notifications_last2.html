@@ -64,7 +64,7 @@
 {%if type_notif == "dateNotif" %}
     {%if htmlArticles or htmlProjets or dico.listautres or dico.listinscriptions %}
     <p class = "textcenter ">
-        <a href="{% url 'notificationsLues'  %}" class="btn btn-outline-primary">
+        <a href="{% url 'notificationsLues' temps=maintenant %}" class="btn btn-outline-primary">
             <i class="fa fa-check"> Marquer comme lu</i>
         </a>
     </p>
