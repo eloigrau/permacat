@@ -162,7 +162,7 @@ class Produit_objet_CreationForm(ProduitCreationForm):
 class Produit_listeOffresEtDemandes_CreationForm(ProduitCreationForm):
     class Meta:
         model = Produit_listeOffresEtDemandes
-        fields = ['nom_produit',  'description', 'asso', 'souscategorie',
+        fields = ['nom_produit',  'description', 'asso',
                 'unite_prix', 'prix',  'type_prix', 'date_debut', 'date_expiration', ]
         widgets = {
             'date_debut': forms.DateInput(
