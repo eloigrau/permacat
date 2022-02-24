@@ -22,6 +22,7 @@ class BourseLibreConfig(AppConfig):
         registry.register(self.get_model('Produit_service'))
         registry.register(self.get_model('Produit_objet'))
         registry.register(self.get_model('Produit_aliment'))
+        registry.register(self.get_model('Produit_listeOffresEtDemandes'))
         registry.register(self.get_model('Suivis'))
         registry.register(self.get_model('Adhesion_permacat'))
         registry.register(self.get_model('Asso'))

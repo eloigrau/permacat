@@ -113,17 +113,22 @@
                 </a>
             </li>
             <li class="nav-item dropdown active">
-                <button class="btn dropdown-toggle btn-block {% if categorie_parent == 'aliment' %}btn-primary {%endif%}" type="button" id="menuAliment" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {%if souscategorie and categorie_parent == 'aliment'%}{{souscategorie}}{%else%}Aliment {%endif%}</button>
+                <button class="btn dropdown-toggle btn-block
+                {% if categorie_parent == 'aliment' or categorie_parent == 'vegetal' or categorie_parent == 'service' or categorie_parent == 'objet' or categorie_parent == 'listeOffresEtDemandes' %}btn-primary {%endif%}"
+                        type="button" id="menuAliment" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {% if categorie_parent %} {{categorie_parent}} {% else %}Type d'annonce{% endif %}
+                </button>
                 </button>
                 <div class="dropdown-menu"  aria-labelledby="menuAliment">
-                     <a class="dropdown-item"  href="?categorie=aliment">tous les aliments</a>
+                     <a class="dropdown-item"  href="?categorie=listeOffresEtDemandes">Liste d'offres et demandes</a>
+                     <a class="dropdown-item"  href="?categorie=aliment">Aliments</a>
+                     <a class="dropdown-item"  href="?categorie=vegetal">Végétal</a>
+                     <a class="dropdown-item"  href="?categorie=service">Service</a>
+                     <a class="dropdown-item"  href="?categorie=objet">objet</a>
                     <div class="dropdown-divider"></div>
-                    {% for souscat in choixPossibles.aliment.souscategorie %}
-                     <a class="dropdown-item"  href="?souscategorie={{souscat}}">{{souscat}}</a>
-                    {% endfor %}
                 </div>
             </li>
+                {% comment %}
             <li class="nav-item dropdown active">
                 <button class="btn dropdown-toggle btn-block {% if categorie_parent == 'vegetal' %}btn-primary {%endif%}" type="button" id="menuvegetal" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {%if souscategorie and categorie_parent == 'vegetal'%}{{souscategorie}}{%else%}Végétal {%endif%}</button>
@@ -160,6 +165,7 @@
                     {% endfor %}
                 </div>
             </li>
+                {% endcomment %}
 
 
             {%if producteur_list %}

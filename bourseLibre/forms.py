@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, Asso, Profil, Message, MessageGeneral, Choix, InscriptionNewsletter, Adhesion_permacat
+from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, Asso, Profil, Message, MessageGeneral, Choix, InscriptionNewsletter, Adhesion_permacat, Produit_listeOffresEtDemandes
 from django.db.models import Q
 from django_summernote.widgets import SummernoteWidget
 from blog.forms import SummernoteWidgetWithCustomToolbar
@@ -17,13 +17,21 @@ class ProduitCreationForm(forms.ModelForm):
 
     class Meta:
         model = Produit
-        exclude=('user', )
+        exclude = ('user', )
 
         fields = ['nom_produit', 'description', 'date_debut', 'date_expiration',
                   'stock_initial', 'unite_prix', 'prix',]
         widgets = {
-            'date_debut': forms.DateInput(attrs={'type':"date"}, ),
-            'date_expiration': forms.DateInput(attrs={'type':"date"}),
+            'date_debut': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }, ),
+            'date_expiration': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
             'description': SummernoteWidget(),
         }
 
@@ -58,8 +66,16 @@ class Produit_aliment_CreationForm(ProduitCreationForm):
         model = Produit_aliment
         fields = fieldsCommunsProduits
         widgets = {
-            'date_debut': forms.DateInput(attrs={'type':"date"}, ),
-            'date_expiration': forms.DateInput(attrs={'type':"date"}),
+            'date_debut': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }, ),
+            'date_expiration': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
             'description': SummernoteWidget(),
         }
 
@@ -74,8 +90,16 @@ class Produit_vegetal_CreationForm(ProduitCreationForm):
         model = Produit_vegetal
         fields = fieldsCommunsProduits
         widgets = {
-            'date_debut': forms.DateInput(attrs={'type':"date"}, ),
-            'date_expiration': forms.DateInput(attrs={'type':"date"}),
+            'date_debut': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }, ),
+            'date_expiration': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
             'description': SummernoteWidget(),
         }
 
@@ -94,8 +118,16 @@ class Produit_service_CreationForm(ProduitCreationForm):
         model = Produit_service
         fields = fieldsCommunsProduits
         widgets = {
-            'date_debut': forms.DateInput(attrs={'type':"date"}, ),
-            'date_expiration': forms.DateInput(attrs={'type':"date"}),
+            'date_debut': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }, ),
+            'date_expiration': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
             'description': SummernoteWidget(),
         }
 
@@ -114,8 +146,35 @@ class Produit_objet_CreationForm(ProduitCreationForm):
         model = Produit_objet
         fields = fieldsCommunsProduits
         widgets = {
-            'date_debut': forms.DateInput(attrs={'type':"date"}, ),
-            'date_expiration': forms.DateInput(attrs={'type':"date"}),
+            'date_debut': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
+            'date_expiration': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
+            'description': SummernoteWidget(),
+        }
+
+class Produit_listeOffresEtDemandes_CreationForm(ProduitCreationForm):
+    class Meta:
+        model = Produit_listeOffresEtDemandes
+        fields = ['nom_produit',  'description', 'asso', 'souscategorie',
+                'unite_prix', 'prix',  'type_prix', 'date_debut', 'date_expiration', ]
+        widgets = {
+            'date_debut': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
+            'date_expiration': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
             'description': SummernoteWidget(),
         }
 
@@ -126,6 +185,7 @@ class Produit_objet_modifier_form(Produit_objet_CreationForm, ProduitModifierFor
 class AdresseForm(forms.ModelForm):
     rue = forms.CharField(label="Rue", required=False)
     code_postal = forms.CharField(label="Code postal*", initial="66000", required=False)
+    commune = forms.CharField(label="Commune", initial="Perpignan", required=False)
     telephone = forms.CharField(label="Téléphone", required=False)
     pays = forms.CharField(label="Pays", initial="France",required=False)
     latitude = forms.FloatField(label="Latitude", initial="42", required=False,widget=forms.HiddenInput())

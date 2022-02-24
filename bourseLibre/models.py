@@ -468,7 +468,7 @@ class Produit(models.Model):  # , BaseProduct):
         default='lliure', verbose_name="monnaie"
     )
 
-    CHOIX_CATEGORIE = (('aliment', 'aliment'),('vegetal', 'végétal'), ('service', 'service'), ('objet', 'objet'))
+    CHOIX_CATEGORIE = (('aliment', 'aliment'),('vegetal', 'végétal'), ('service', 'service'), ('objet', 'objet'), ('liste', 'liste des offres et demandes'))
     categorie = models.CharField(max_length=20,
                                  choices=CHOIX_CATEGORIE,
                                  default='aliment')
@@ -609,11 +609,6 @@ class Produit_vegetal(Produit):  # , BaseProduct):
         choices=((cat,cat) for cat in Choix.choix[type]['souscategorie']),
         default=Choix.choix[type]['souscategorie'][0][0]
     )
-    #etat = models.CharField(
-    #   max_length=20,
-    #   choices=Choix.choix[type]['etat'],
-    #   default=Choix.choix[type]['etat'][0][0]
-    #)
     type_prix = models.CharField(
         max_length=20,
         choices=Choix.choix[type]['type_prix'],
@@ -713,6 +708,45 @@ class Produit_objet(Produit):  # , BaseProduct):
 
     def get_souscategorie(self):
         return "objet"
+
+class Produit_listeOffresEtDemandes(Produit):  # , BaseProduct):
+    type = 'listeOffresEtDemandes'
+    couleur = models.CharField(
+        max_length=20,
+        choices=((Choix.couleurs['listeOffresEtDemandes'], Choix.couleurs['listeOffresEtDemandes']),),
+        default=Choix.couleurs['listeOffresEtDemandes']
+    )
+    souscategorie = models.CharField(
+        max_length=20,
+        choices=((cat, cat) for cat in Choix.choix[type]['souscategorie']),
+        default=Choix.choix[type]['souscategorie'][0][0]
+    )
+    #etat = models.CharField(
+    #   max_length=20,
+    #    choices=Choix.choix[type]['etat'],
+    #   default=Choix.choix[type]['etat'][0][0]
+    #)
+    type_prix = models.CharField(
+        max_length=20,
+        choices=Choix.choix[type]['type_prix'],
+        default=Choix.choix[type]['type_prix'][0][0], verbose_name="par"
+    )
+
+    def get_unite_prix(self):
+        if self.unite_prix in Choix.monnaies_nonquantifiables:
+            return self.get_unite_prix_display()
+        else:
+            return self.unite_prix + "/" + self.get_type_prix_display()
+
+    def get_prixEtUnite(self):
+        if self.unite_prix in Choix.monnaies_nonquantifiables:
+            return self.get_unite_prix_display()
+        elif self.get_prix() == 0:
+            return "gratuit"
+        return str(self.get_prix()) + " " + self.get_unite_prix()
+
+    def get_souscategorie(self):
+        return "liste des Offres Et Demandes"
 
 class ItemAlreadyExists(Exception):
     pass

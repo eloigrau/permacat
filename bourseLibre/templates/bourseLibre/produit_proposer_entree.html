@@ -10,6 +10,15 @@
 .col_objets{background-color: {{ couleurs.objet }};}
 </style>
 <div class="row">
+    <div class="col-sm-12 col_cat col_aliment textcenter">
+        <a href="{%url 'produit_proposer' type_produit='listeOffresEtDemandes' %}">
+        <div class="panel panel-primary ">
+                <div class="panel-heading"><h4>Liste d'offres et de demandes</h4></div>
+            </div>
+        </a>
+    </div>
+</div>
+<div class="row">
     <div class="col-sm-6 col_cat col_aliment">
         <a href="{%url 'produit_proposer' type_produit='aliment' %}">
             <div class="panel-group">
