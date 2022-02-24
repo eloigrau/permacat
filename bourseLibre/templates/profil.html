@@ -130,7 +130,7 @@
        {%if request.user.adherent_pc or request.user == user %}
 	    <tr>
 		<td style="width:250px">Adhérent Permacat *:</td>
-		<td>{{user.adherent_pc|translateOuiNon}}</td>
+		<td>{{user.adherent_pc|translateOuiNon}}, cotisation à jour : {% if user.isCotisationAJour_pc %} oui {% else %} non {% endif %}</td>
 	    </tr>
 
     {% endif %}

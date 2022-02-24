@@ -27,6 +27,7 @@ from django.core.mail import send_mail
 from .constantes import Choix, DEGTORAD
 from .settings.production import SERVER_EMAIL
 import simplejson
+from datetime import datetime, timedelta
 
 # from tinymce.models import HTMLField
 #from blog.models import Article
@@ -179,6 +180,9 @@ class Asso(models.Model):
             return False
         return True
 
+    def getProfils_cotisationAJour(self):
+        return [p for p in self.getProfils() if p.isCotisationAJour(self.abreviation)]
+
     def getProfils(self):
         if self.abreviation == "public":
             return Profil.objects.all().order_by("username")
@@ -272,6 +276,20 @@ class Profil(AbstractUser):
 
     def getDistance(self, profil):
         return self.adresse.getDistance(profil.adresse)
+
+    def getAdhesions(self):
+        return Adhesion_permacat.objects.filter(user=self)
+
+    def isCotisationAJour(self, asso_abreviation):
+        if asso_abreviation == "pc":
+            time_threshold = datetime(datetime.now().year - 1, 11, 1)
+            return self.getAdhesions().filter(date_cotisation__gt=time_threshold).count() > 0
+        else:
+            return True
+
+    @property
+    def isCotisationAJour_pc(self):
+        return self.isCotisationAJour("pc")
 
     @property
     def statutMembre_asso(self, asso):

@@ -1,0 +1,36 @@
+{% extends 'base_ateliers.html' %}
+{% block subtitle %}
+<div class="row">
+	<div class="col col-md-10"><h3>Ajouter une adhesion</h3></div>
+	<div class="col col-md-2">
+	</div>
+	</div>
+{% endblock %}
+{% block content %}
+
+
+{% if error_message %}
+<p>
+	<strong>{{ error_message }}</strong>
+</p>
+{% endif %}
+<div class="row">
+	<div class="col-sm-12">
+<form class="form-horizontal" role="form" action="" method="post"
+	enctype="multipart/form-data">
+	{% csrf_token %} <input type="hidden" name="Atelier"
+		value="{{ atelier }}"> {% include 'form_template.html'%}
+</form>
+
+</div>
+    </div>
+
+
+<script>
+    $(function() {
+    // Enable on all forms
+    $('form').areYouSure();
+    });
+</script>
+
+{% endblock %}

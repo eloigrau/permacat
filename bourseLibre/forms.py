@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, Asso, Profil, Message, MessageGeneral, Choix, InscriptionNewsletter
+from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, Asso, Profil, Message, MessageGeneral, Choix, InscriptionNewsletter, Adhesion_permacat
 from django.db.models import Q
 from django_summernote.widgets import SummernoteWidget
 from blog.forms import SummernoteWidgetWithCustomToolbar
@@ -331,7 +331,18 @@ class InscriptionNewsletterForm(forms.ModelForm):
         model = InscriptionNewsletter
         fields = ['email']
 
+class Adhesion_permacatForm(forms.ModelForm):
 
+    class Meta:
+        model = Adhesion_permacat
+        fields = '__all__'
+        widgets = {
+            'date_cotisation': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
+            }
 
 class nouvelleDateForm(forms.Form):
     years = [x for x in range(timezone.now().year - 3, timezone.now().year + 1)]

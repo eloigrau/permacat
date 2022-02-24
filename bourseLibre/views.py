@@ -338,19 +338,18 @@ def listeContacts(request, asso):
     asso = testIsMembreAsso(request, asso)
     if not isinstance(asso, Asso):
         raise PermissionDenied
-    if request.user.is_superuser:
-        listeMails = [
-            {"type":'user_newsletter' ,"profils":Profil.objects.filter(inscrit_newsletter=True), "titre":"Liste des inscrits à la newsletter : "},
-        {"type":'anonym_newsletter' ,"profils":InscriptionNewsletter.objects.all(), "titre":"Liste des inscrits anonymes à la newsletter : "},
-          {"type":'user_adherent', "profils":Profil.objects.filter(adherent_pc=True), "titre":"Liste des adhérents Permacat: "},
-           # {"type":'user_futur_adherent', "profils":Profil.objects.filter(statut_adhesion=0), "titre":"Liste des personnes qui veulent adhérer à Permacat :"}
-        ]
-    else:
-        listeMails = [
-          {"type":'user_adherent' , "profils":Profil.objects.filter(adherent_pc=True), "titre":"Liste des adhérents Permacat: "},
-           # {"type":'user_futur_adherent', "profils":Profil.objects.filter(statut_adhesion=0), "titre":"Liste des personnes qui veulent adhérer à Permacat :"}
-        ]
+    listeMails = []
+    if asso.abreviation == 'pc':
+        listeMails.append({"type":'user_adherent_ajour' , "profils":asso.getProfils_cotisationAJour(), "titre":"Liste des adhérents Permacat: à jour de leur cotisation "})
 
+    if request.user.is_superuser:
+        listeMails.append( {"type":'user_newsletter' ,"profils":Profil.objects.filter(inscrit_newsletter=True), "titre":"Liste des inscrits à la newsletter : "})
+        listeMails.append({"type":'anonym_newsletter' ,"profils":InscriptionNewsletter.objects.all(), "titre":"Liste des inscrits anonymes à la newsletter : "})
+        listeMails.append({"type":'user_adherent', "profils":Profil.objects.filter(adherent_pc=True), "titre":"Liste des adhérents Permacat: "})
+    else:
+        listeMails.append(
+          {"type":'user_adherent' , "profils":Profil.objects.filter(adherent_pc=True), "titre":"Liste des adhérents Permacat: "},
+        )
     return render(request, 'listeContacts.html', {"listeMails":listeMails, "asso":asso })
 
 @login_required

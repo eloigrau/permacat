@@ -85,14 +85,14 @@
                     </li>
                     {% endcomment%}
 
-
-
-                            {% if request.user.adherent_pc %}
+                        {% if request.user.adherent_pc %}
                        <li class="divider" role="separator"></li>
-            <li><a class="dropdown-item" href="{% url 'admin_asso' asso='pc' %}"><i class='fa fa-database' ></i> Administration  </a></li>
-
+                        <li><a class="dropdown-item" href="{% url 'admin_asso' asso='pc' %}"><i class='fa fa-database' ></i> Administration  </a></li>
                         {% endif %}
-                            <li class="divider" role="separator"></li>
+                        {% if request.user.is_superuser %}
+                        <li><a class="dropdown-item" href="{% url 'ajouterAdhesion' abreviationAsso='pc' %}"><i class='fa fa-database' ></i> Ajouter adhésion  </a></li>
+                        {% endif %}
+                        <li class="divider" role="separator"></li>
                        <li> <a class="dropdown-item" href="{% url 'charte' %}"> <i class="fa fa-info-circle iconleft"></i> Charte </a></li>
                        <li> <a class="dropdown-item" href="{% url 'statuts' %}"> <i class="fa fa-info-circle iconleft"></i> Statuts et règlement intérieur </a></li>
                         <li class="divider" role="separator"></li>
