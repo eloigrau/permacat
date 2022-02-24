@@ -63,7 +63,7 @@ class AtelierForm(forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
         super(AtelierForm, self).__init__(*args, **kwargs)
         self.fields['description'].strip = False
-        listeChoix = [(i+1,u) for i, u in enumerate(Profil.objects.all().order_by('username'))]
+        listeChoix = [(u.id,u) for i, u in enumerate(Profil.objects.all().order_by('username'))]
         listeChoix.insert(0, (0, "----------------"))
         self.fields['referent'].choices = listeChoix
         self.fields["asso"].choices = [(x.id, x.nom) for x in Asso.objects.all().order_by("id") if request.user.estMembre_str(x.abreviation)]
@@ -91,7 +91,7 @@ class AtelierChangeForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(AtelierChangeForm, self).__init__(*args, **kwargs)
         self.fields['description'].strip = False
-        listeChoix = [(i+1,u) for i, u in enumerate(Profil.objects.all().order_by('username'))]
+        listeChoix = [(u.id,u) for i, u in enumerate(Profil.objects.all().order_by('username'))]
         listeChoix.insert(0, (0, kwargs["instance"].referent))
         self.fields['referent'].choices = listeChoix
 

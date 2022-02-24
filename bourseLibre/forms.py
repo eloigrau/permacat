@@ -303,7 +303,7 @@ class ChercherConversationForm(forms.Form):
 
     def __init__(self, user, *args, **kwargs):
         super(ChercherConversationForm, self).__init__(*args, **kwargs)
-        self.fields['destinataire'].choices = [(i,u) for i, u in enumerate(Profil.objects.all().order_by('username')) if u != user]
+        self.fields['destinataire'].choices = [(u.id,u) for i, u in enumerate(Profil.objects.all().order_by('username')) if u != user]
 
 class MessageGeneralForm(forms.ModelForm):
     class Meta:
@@ -343,6 +343,10 @@ class Adhesion_permacatForm(forms.ModelForm):
                        'type': 'date'
                        }),
             }
+
+    def __init__(self, *args, **kwargs):
+        super(Adhesion_permacatForm, self).__init__(*args, **kwargs)
+        self.fields['user'].choices = [(u.id, u) for i, u in enumerate(Profil.objects.all().order_by('username')) if u.adherent_pc]
 
 class nouvelleDateForm(forms.Form):
     years = [x for x in range(timezone.now().year - 3, timezone.now().year + 1)]

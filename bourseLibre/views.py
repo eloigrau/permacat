@@ -999,7 +999,7 @@ class ListeConversations(ListView):
 def chercherConversation(request):
     form = ChercherConversationForm(request.user, request.POST or None,)
     if form.is_valid():
-        destinataire = (Profil.objects.all().order_by('username'))[int(form.cleaned_data['destinataire'])]
+        destinataire = Profil.objects.get(id=int(form.cleaned_data['destinataire']))
         return redirect('agora_conversation', destinataire=destinataire)
     else:
         return render(request, 'chercher_conversation.html', {'form': form})

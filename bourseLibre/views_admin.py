@@ -359,7 +359,7 @@ def ajouterAdhesion(request, abreviationAsso):
 
         if form.is_valid():
             form.save()
-            return redirect('listeContacts', {'asso':'pc'})
+            return redirect('listeContacts', 'pc')
 
         return render(request, 'asso/pc/adhesion_ajouter.html', { "form": form,})
 

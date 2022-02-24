@@ -437,9 +437,9 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 
 class Adhesion_permacat(models.Model):
-    user = models.ForeignKey(Profil, on_delete=models.CASCADE)
+    user = models.ForeignKey(Profil, on_delete=models.CASCADE, verbose_name="Utilisateur Permacat")
     date_cotisation = models.DateField(verbose_name="Date de la cotisation", editable=True, auto_now_add=False)
-    montant = models.CharField(max_length=50, blank=True, verbose_name="Montant de l'adhesion")
+    montant = models.CharField(max_length=50, blank=False, verbose_name="Montant de l'adhesion")
     moyen = models.CharField(
         max_length=3,
         choices=Choix.type_paiement_adhesion,
