@@ -531,7 +531,10 @@ class Produit(models.Model):  # , BaseProduct):
             # return prod.get_unite_prix()
 
     def get_prixEtUnite(self):
-        return Produit.objects.get_subclass(id=self.id).get_prixEtUnite()
+        prod_cat = Produit.objects.get_subclass(id=self.id)
+        if isinstance(prod_cat, Produit):
+            return str(self.get_prix()) + " " + self.get_unite_prix()
+        return prod_cat.get_prixEtUnite()
 
     def get_prix(self):
         if self.unite_prix in Choix.monnaies_nonquantifiables:
@@ -719,7 +722,7 @@ class Produit_offresEtDemandes(Produit):  # , BaseProduct):
     souscategorie = models.CharField(
         max_length=20,
         choices=((cat, cat) for cat in Choix.choix[type]['souscategorie']),
-        default=Choix.choix[type]['souscategorie'][0][0]
+        default=Choix.choix[type]['souscategorie'][0]
     )
     #etat = models.CharField(
     #   max_length=20,
@@ -746,7 +749,7 @@ class Produit_offresEtDemandes(Produit):  # , BaseProduct):
         return str(self.get_prix()) + " " + self.get_unite_prix()
 
     def get_souscategorie(self):
-        return "liste des Offres Et Demandes"
+        return "offresEtDemandes"
 
 class ItemAlreadyExists(Exception):
     pass
