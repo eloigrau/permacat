@@ -709,12 +709,12 @@ class Produit_objet(Produit):  # , BaseProduct):
     def get_souscategorie(self):
         return "objet"
 
-class Produit_listeOffresEtDemandes(Produit):  # , BaseProduct):
-    type = 'listeOffresEtDemandes'
+class Produit_offresEtDemandes(Produit):  # , BaseProduct):
+    type = 'offresEtDemandes'
     couleur = models.CharField(
         max_length=20,
-        choices=((Choix.couleurs['listeOffresEtDemandes'], Choix.couleurs['listeOffresEtDemandes']),),
-        default=Choix.couleurs['listeOffresEtDemandes']
+        choices=((Choix.couleurs['offresEtDemandes'], Choix.couleurs['offresEtDemandes']),),
+        default=Choix.couleurs['offresEtDemandes']
     )
     souscategorie = models.CharField(
         max_length=20,

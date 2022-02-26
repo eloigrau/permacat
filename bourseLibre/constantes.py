@@ -5,7 +5,7 @@ DEGTORAD=3.141592654/180
 class Choix():
     #couleurs = {'aliment':'#D8C457','vegetal':'#4CAF47','service':'#BE373A','objet':'#5B4694'}
     #couleurs = {'aliment':'#80B2C0','vegetal':'#A9CB52','service':'#E66562','objet':'#D8AD57'}
-    couleurs = {'aliment':'#e6f2ff','vegetal':'#e6ffe6','service':'#ffe6e6','objet':'#ffffe6', 'listeOffresEtDemandes':'#ccddff'}
+    couleurs = {'aliment':'#e6f2ff','vegetal':'#e6ffe6','service':'#ffe6e6','objet':'#ffffe6', 'offresEtDemandes':'#f2c7f1'}
     typePrixUnite = (('kg', 'kg'), ('100g', '100g'), ('10g', '10g'),('g', 'g'),  ('un', 'unité'), ('li', 'litre'))
 
     choix = {
@@ -29,7 +29,7 @@ class Choix():
         #'etat': (('excellent', 'excellent'), ('bon', 'bon'), ('moyen', 'moyen'), ('mauvais', 'mauvais')),
         'type_prix': typePrixUnite,
     },
-    'listeOffresEtDemandes': {
+    'offresEtDemandes': {
         'souscategorie': ('Liste', ),
         #'etat': (('frais', 'frais'), ('sec', 'sec'), ('conserve', 'conserve')),
         'type_prix': typePrixUnite,

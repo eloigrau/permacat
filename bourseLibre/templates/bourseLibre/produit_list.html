@@ -114,13 +114,13 @@
             </li>
             <li class="nav-item dropdown active">
                 <button class="btn dropdown-toggle btn-block
-                {% if categorie_parent == 'aliment' or categorie_parent == 'vegetal' or categorie_parent == 'service' or categorie_parent == 'objet' or categorie_parent == 'listeOffresEtDemandes' %}btn-primary {%endif%}"
+                {% if categorie_parent == 'aliment' or categorie_parent == 'vegetal' or categorie_parent == 'service' or categorie_parent == 'objet' or categorie_parent == 'offresEtDemandes' %}btn-primary {%endif%}"
                         type="button" id="menuAliment" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {% if categorie_parent %} {{categorie_parent}} {% else %}Type d'annonce{% endif %}
                 </button>
                 </button>
                 <div class="dropdown-menu"  aria-labelledby="menuAliment">
-                     <a class="dropdown-item"  href="?categorie=listeOffresEtDemandes">Liste d'offres et demandes</a>
+                     <a class="dropdown-item"  href="?categorie=offresEtDemandes">Liste d'offres et demandes</a>
                      <a class="dropdown-item"  href="?categorie=aliment">Aliments</a>
                      <a class="dropdown-item"  href="?categorie=vegetal">Végétal</a>
                      <a class="dropdown-item"  href="?categorie=service">Service</a>

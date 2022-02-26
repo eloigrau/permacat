@@ -4,26 +4,28 @@
 <h4>Vous proposez ou demandez un...</h4>
 {% endblock %}
 {% block content %}
-<style>.col_aliment{background-color: {{ couleurs.aliment }};}
+<style>
+.col_liste{background-color: {{ couleurs.offresEtDemandes }};}
+.col_aliment{background-color: {{ couleurs.aliment }};}
 .col_vegetaux{background-color: {{ couleurs.vegetal }};}
 .col_services{background-color: {{ couleurs.service }};}
 .col_objets{background-color: {{ couleurs.objet }};}
 </style>
-<div class="row">
-    <div class="col-sm-12 col_cat col_aliment textcenter">
-        <a href="{%url 'produit_proposer' type_produit='listeOffresEtDemandes' %}">
+<div class="row justify-content-center">
+    <div class="col-sm-12 col_cat col_liste textcenter">
+        <a href="{%url 'produit_proposer' type_produit='offresEtDemandes' %}">
         <div class="panel panel-primary ">
-                <div class="panel-heading"><h4>Liste d'offres et de demandes</h4></div>
+                <div class="panel-heading textcenter"><h4>Liste d'offres et de demandes</h4></div>
             </div>
         </a>
     </div>
 </div>
-<div class="row">
-    <div class="col-sm-6 col_cat col_aliment">
+<div class="row justify-content-center">
+    <div class="col-sm-12 col-md-6 col_cat col_aliment">
         <a href="{%url 'produit_proposer' type_produit='aliment' %}">
             <div class="panel-group">
                 <div class="panel panel-primary ">
-                    <div class="panel-heading"><h4>Aliment</h4></div>
+                    <div class="panel-heading textcenter"><h4>Aliment</h4></div>
                     <div class="panel-body">
                         <ul>
                             <li>légumes</li>
@@ -37,11 +39,11 @@
             </div>
         </a>
     </div>
-    <div class="col-sm-6 col_cat col_vegetaux">
+    <div class="col-sm-12 col-md-6 col_cat col_vegetaux">
         <a href="{%url 'produit_proposer' type_produit='vegetal' %}">
             <div class="panel-group">
                 <div class="panel panel-primary">
-                    <div class="panel-heading"><h4>Végétal</h4></div>
+                    <div class="panel-heading textcenter"><h4>Végétal</h4></div>
                     <div class="panel-body">
                         <ul>
                             <li>plantes</li>
@@ -56,12 +58,12 @@
         </a>
     </div>
     </div>
-<div class="row">
-    <div class="col-sm-6 col_cat col_services">
+<div class="row justify-content-center">
+    <div class="col-sm-12 col-md-6 col_cat col_services">
         <a href="{%url 'produit_proposer' type_produit='service' %}">
             <div class="panel-group">
                 <div class="panel panel-primary">
-                    <div class="panel-heading"><h4>Service</h4></div>
+                    <div class="panel-heading textcenter"><h4>Service</h4></div>
                     <div class="panel-body">
                         <ul>
                             <li>Jardinage</li>
@@ -75,11 +77,11 @@
             </div>
         </a>
     </div>
-    <div class="col-sm-6 col_cat col_objets" style="background-color:">
+    <div class="col-sm-12 col-md-6 col_cat col_objets" style="background-color:">
         <a href="{%url 'produit_proposer' type_produit='objet' %}">
             <div class="panel-group">
                 <div class="panel panel-primary">
-                    <div class="panel-heading"><h4>Objet</h4></div>
+                    <div class="panel-heading textcenter"><h4>Objet</h4></div>
                     <div class="panel-body">
                         <ul>
                             <li>Materiel</li>

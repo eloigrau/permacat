@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, Asso, Profil, Message, MessageGeneral, Choix, InscriptionNewsletter, Adhesion_permacat, Produit_listeOffresEtDemandes
+from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, Asso, Profil, Message, MessageGeneral, Choix, InscriptionNewsletter, Adhesion_permacat, Produit_offresEtDemandes
 from django.db.models import Q
 from django_summernote.widgets import SummernoteWidget
 from blog.forms import SummernoteWidgetWithCustomToolbar
@@ -159,9 +159,9 @@ class Produit_objet_CreationForm(ProduitCreationForm):
             'description': SummernoteWidget(),
         }
 
-class Produit_listeOffresEtDemandes_CreationForm(ProduitCreationForm):
+class Produit_offresEtDemandes_CreationForm(ProduitCreationForm):
     class Meta:
-        model = Produit_listeOffresEtDemandes
+        model = Produit_offresEtDemandes
         fields = ['nom_produit',  'description', 'asso',
                 'unite_prix', 'prix',  'type_prix', 'date_debut', 'date_expiration', ]
         widgets = {

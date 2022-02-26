@@ -570,6 +570,10 @@ border: 1px inset rgba(28,110,164,0.65);
     box-shadow: 0 10px 10px 0px grey;
     text-decoration: none;
 }
+.col_liste{
+   /* border-left: 6px solid #CEECF5;*/
+    color: black;/*#6666ff*/
+}
 .col_aliment{
    /* border-left: 6px solid #CEECF5;*/
     color: black;/*#6666ff*/
@@ -814,6 +818,12 @@ a article_carte:active {
 
 }
 
+@media (max-width: 920px) {
+.col_cat{
+width: 100 %;
+}
+
+}
 @media (min-width: 600px) {
     .grid-container {
         grid-template-columns: 50% 50%;
