@@ -9,7 +9,9 @@ import re
 from django.core import mail
 from actstream import actions
 from bs4 import BeautifulSoup
-from .forms import Adhesion_permacatForm
+from .forms import Adhesion_permacatForm, creerAction_articlenouveauForm
+from actstream import action
+from actstream.models import followers
 
 def getMessage(action):
     message = action.data['message']
@@ -95,6 +97,7 @@ def nettoyerActions(request):
             print(action)
         except:
             action.delete()
+    return redirect("bienvenue")
 
 
 def abonnerAdherentsCiteAlt(request, ):
@@ -226,7 +229,8 @@ def envoyerEmailsRequete(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden()
     listeMails = getListeMailsAlerte()
-    send_mass_html_mail(listeMails, fail_silently=False)
+    if not LOCALL:
+        send_mass_html_mail(listeMails, fail_silently=False)
     supprimerActionsEmails()
     supprimerActionsStartedFollowing()
     return redirect('voirEmails', )
@@ -237,7 +241,8 @@ def envoyerEmails():
     listeMails = getListeMailsAlerte()
 
     print('Envoi des mails' + str(listeMails))
-    send_mass_html_mail(listeMails, fail_silently=False)
+    if not LOCALL:
+        send_mass_html_mail(listeMails, fail_silently=False)
     print('Suppression des alertes')
     supprimerActionsEmails()
     # supprimerActionsStartedFollowing()
@@ -364,3 +369,24 @@ def ajouterAdhesion(request, abreviationAsso):
         return render(request, 'asso/pc/adhesion_ajouter.html', { "form": form,})
 
     return render(request, 'erreur.html', {'msg':"Désolé, il n'est pas encore possible d'adhérer a une autre asso par ce biais, réservé permacat"})
+
+def creerAction_articlenouveau(request):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        form = creerAction_articlenouveauForm(request.POST)
+        if form.is_valid():
+            article = form.cleaned_data["article"]
+            suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_' + str(article.asso.abreviation))
+
+            titre = "Nouvel article"
+            message = "Un article a été posté dans le forum [" + str(
+                article.asso.nom) + "] : '<a href='https://www.perma.cat" + article.get_absolute_url() + "'>" + article.titre + "</a>'"
+            emails = [suiv.email for suiv in followers(suivi) if article.auteur != suiv and article.est_autorise(suiv)]
+            if emails:
+                action.send(article, verb='emails', url=article.get_absolute_url(), titre=titre, message=message, emails=emails)
+            return redirect("bienvenue")
+    else:
+        form = creerAction_articlenouveauForm()
+
+    return render(request, 'admin/creerAction_articlenouveau.html', { "form": form,})

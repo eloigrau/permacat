@@ -6,6 +6,7 @@ from django_summernote.widgets import SummernoteWidget
 from blog.forms import SummernoteWidgetWithCustomToolbar
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+from blog.models import Article
 
 fieldsCommunsProduits = ['souscategorie', 'nom_produit',  'description', 'estUneOffre', 'asso',
                 'unite_prix', 'prix',  'type_prix', 'date_debut', 'date_expiration', ]
@@ -411,3 +412,7 @@ class Adhesion_permacatForm(forms.ModelForm):
 class nouvelleDateForm(forms.Form):
     years = [x for x in range(timezone.now().year - 3, timezone.now().year + 1)]
     date = forms.DateTimeField(initial=timezone.now(), widget=forms.SelectDateWidget(years=years))
+
+class creerAction_articlenouveauForm(forms.Form):
+    article = forms.ModelChoiceField(queryset=Article.objects.all().order_by('titre'), required=True,
+                              label="Article", )
