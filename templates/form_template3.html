@@ -104,32 +104,13 @@
 {% if boutonAnnuler %}
           <input type="button" class="btn btn-secondary"  onclick="window.history.back();"  value="Annuler" />
 {% endif %}
-<div id="btn-ok">
-<button id="btn-validation" onclick="JavaScript: hideContent();" type="submit" class="btn btn-primary">OK</button>
-</div>
-
+      <button id="btn-validation" type="submit" class="btn btn-primary">OK</button>
       </span>
 
 
 <script>
-  function hideContent() {
-    document.getElementById("btn-validation").disabled = true;
-    document.getElementById('btn-ok').style.display = 'none';
-  }
-
-  function showContent() {
-    document.getElementById("btn-validation").disabled = false;
-    document.getElementById('btn-ok').style.display = 'block';
-  }
-$("btn-validation").click(
-    function() {
-        console.log("clicked...waiting...");
-
-        setTimeout(
-            function() {
-                alert("Called after delay.");
-            },
-            5000);
-    });
+$('#btn-validation').click(function() {
+    $(this).attr('disabled',true).delay(2000).attr("disabled", false);
+});
 </script>
 
