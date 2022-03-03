@@ -229,8 +229,7 @@ def envoyerEmailsRequete(request):
     if not request.user.is_superuser:
         return HttpResponseForbidden()
     listeMails = getListeMailsAlerte()
-    if not LOCALL:
-        send_mass_html_mail(listeMails, fail_silently=False)
+    send_mass_html_mail(listeMails, fail_silently=False)
     supprimerActionsEmails()
     supprimerActionsStartedFollowing()
     return redirect('voirEmails', )
@@ -241,8 +240,7 @@ def envoyerEmails():
     listeMails = getListeMailsAlerte()
 
     print('Envoi des mails' + str(listeMails))
-    if not LOCALL:
-        send_mass_html_mail(listeMails, fail_silently=False)
+    send_mass_html_mail(listeMails, fail_silently=False)
     print('Suppression des alertes')
     supprimerActionsEmails()
     # supprimerActionsStartedFollowing()
