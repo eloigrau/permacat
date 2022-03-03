@@ -69,8 +69,8 @@ class ParticipantReunionChoiceForm(forms.Form):
                                   label="Participant déjà créé", )
 
 class PrixMaxForm(forms.Form):
-    prixMax = forms.CharField(required=True, label="Defraiement maximum", )
-    tarifKilometrique = forms.CharField(required=True, label="Tarif kilometrique maximum", )
+    prixMax = forms.CharField(required=True, label="Defraiement maximum",initial="1000" )
+    tarifKilometrique = forms.CharField(required=True, label="Tarif kilometrique maximum", initial="0.5")
 
 
 class ParticipantReunionForm(forms.ModelForm):

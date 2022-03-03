@@ -92,9 +92,9 @@ class ParticipantReunion(models.Model):
                     if routes[0]["distance"] < dist:
                         dist = float(routes[0]["distance"])
                 if dist == 1000000:
-                    raise Exception("erreur de calcul de distance")
+                    return 0
             except :
-                raise Exception("erreur de calcul de distances")
+                return 0
         self.distance = round(dist/1000.0, 2)
         return self.distance
 
