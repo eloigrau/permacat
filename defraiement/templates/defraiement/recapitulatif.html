@@ -27,6 +27,7 @@
 	</form>
 </div></div>
 <hr>
+{% if unite == euros %}
 <p class="textcenter">
     <a href="{% url 'defraiement:recapitulatif' %}" >
         <button type="button" class="btn btn-sm btn-primary">
@@ -34,8 +35,9 @@
         </button>
     </a>
 </p>
-
 <hr>
+{% endif %}
+
 <div class="row contenu reunion">
 <div class="col justify-content-center">
 <table class="table table-condensed tableprofils table-striped">

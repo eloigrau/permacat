@@ -96,10 +96,10 @@ def recapitulatif(request):
         tarifKilometrique = form.cleaned_data["tarifKilometrique"]
         entete, lignes = getRecapitulatif_euros(request, prixMax, tarifKilometrique)
 
-        return render(request, 'defraiement/recapitulatif.html', {"form": form, "entete":entete, "lignes":lignes},)
+        return render(request, 'defraiement/recapitulatif.html', {"form": form, "entete":entete, "lignes":lignes, "unite":"euros"}, )
 
     entete, lignes = getRecapitulatif_km(request)
-    return render(request, 'defraiement/recapitulatif.html', {"form": form, "entete":entete, "lignes":lignes},)
+    return render(request, 'defraiement/recapitulatif.html', {"form": form, "entete":entete, "lignes":lignes, "unite":"km"},)
 
 def export_recapitulatif(request):
     # Create the HttpResponse object with the appropriate CSV header.
