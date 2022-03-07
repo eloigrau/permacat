@@ -112,8 +112,8 @@ class Choix:
         except:
             return ""
 
-    def get_logo_nomgroupe(cls):
-        return 'img/logos/nom_jpt.png'
+    def get_logo_nomgroupe(abreviation):
+        return 'img/logos/nom_'+abreviation+'.png'
 
     def get_type_annonce_asso(asso):
         try:

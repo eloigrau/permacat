@@ -55,7 +55,7 @@ class Choix():
             return ""
 
     def get_logo_nomgroupe(abreviation):
-        return 'img/logos/nom_'+abreviation+'.png'
+        return 'img/logos/nom_jpt.png'
 
 class Article(models.Model):
     categorie = models.CharField(max_length=30,         
