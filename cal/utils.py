@@ -106,12 +106,11 @@ class Calendar(LocaleTextCalendar):
         else:
             style = "style='background-color:#e6ffe6;' class='day'"
 
-        #ajoutPlus = "<a href='ajouterEvenement/?date="+ str(day) + "/" +str(self.month) +"/"+str(self.year) +"'><i class='fa fa-plus'></i></a>"
-        #d += ajoutPlus
+
         if day != 0:
             ajout=""
-            if weekday == 0:
-                ajout= "<div class='event'>  <a href='/forum/article/visioconference'> <i class='fa fa-comments' ></i> Visioconférence</a> </div>"
+            #if weekday == 0:
+            #    ajout= "<div class='event'>  <a href='/forum/article/visioconference'> <i class='fa fa-comments' ></i> Visioconférence</a> </div>"
 
             if aujourdhui == 1:
                 return "<td "+style+"><span class=' badge badge-success joursemaine'>"+self.getJourFrançais(weekday) + " " + str(day)+ "</span><span class='datecourante'>"+str(day)+'</span>'+ajout + str(d)+'</td>'
