@@ -48,6 +48,15 @@ class Choix():
         except:
             return Choix.couleurs_annonces["Autre"]
 
+    def get_logo(categorie):
+        try:
+            return Choix.type_annonce_citealt_groupes_logo[categorie]
+        except:
+            return ""
+
+    def get_logo_nomgroupe(abreviation):
+        return 'img/logos/nom_'+abreviation+'.png'
+
 class Article(models.Model):
     categorie = models.CharField(max_length=30,         
         choices=(Choix.type_annonce),
@@ -122,6 +131,21 @@ class Article(models.Model):
     def get_jardin_num(self):
         return self.jardin#[item[0] for item in Choix.jardins_ptg if item[1] == self.jardin]
 
+    @property
+    def get_logo_categorie(self):
+        return Choix.get_logo(self.categorie)
+
+    @property
+    def get_logo_nomgroupe(self):
+        return Choix.get_logo_nomgroupe(self.asso.abreviation)
+
+    @property
+    def get_logo_nomgroupe_html(self):
+        return self.get_logo_nomgroupe_html_taille()
+
+    def get_logo_nomgroupe_html_taille(self, taille=30):
+        return "<img src='/static/" + self.get_logo_nomgroupe + "' height ='"+str(taille)+"px'/>"
+
 class Evenement(models.Model):
     titre_even = models.CharField(verbose_name="Titre de l'événement (si laissé vide, ce sera le titre de l'article)",
                              max_length=100, null=True, blank=True, default="")
@@ -149,6 +173,14 @@ class Evenement(models.Model):
 
     def est_autorise(self, user):
         return self.article.est_autorise(user)
+
+    @property
+    def get_logo_categorie(self):
+        return self.article.get_logo_categorie
+
+    @property
+    def get_logo_nomgroupe(self):
+        return self.article.get_logo_nomgroupe
 
 class Commentaire(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name='auteur_comm_jardin')
