@@ -25,11 +25,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35"
-     inkscape:cx="406.71003"
-     inkscape:cy="512.93576"
+     inkscape:zoom="2.8"
+     inkscape:cx="775.05507"
+     inkscape:cy="902.2791"
      inkscape:document-units="mm"
-     inkscape:current-layer="g1918-0"
+     inkscape:current-layer="g2047"
      showgrid="false"
      inkscape:window-width="1366"
      inkscape:window-height="685"
@@ -246,19 +246,23 @@
            cx="59.074436"
            cy="120.55625"
            rx="13.015517"
-           ry="9.2737436" />
+           ry="9.2737436"
+           inkscape:export-xdpi="60"
+           inkscape:export-ydpi="60" />
         <text
            xml:space="preserve"
-           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:10.81249428px;line-height:1.25;font-family:aakar;-inkscape-font-specification:'aakar, Medium';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.38379443;stroke-miterlimit:4;stroke-dasharray:none"
-           x="48.866283"
-           y="131.61703"
+           style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:7.08420229px;line-height:1.25;font-family:aakar;-inkscape-font-specification:'aakar, Medium';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.90664369;stroke-miterlimit:4;stroke-dasharray:none"
+           x="44.997608"
+           y="129.63597"
            id="text1774-1-6-6-0"
-           transform="scale(1.0622313,0.94141454)"><tspan
+           transform="scale(1.0622313,0.94141454)"
+           inkscape:export-xdpi="60"
+           inkscape:export-ydpi="60"><tspan
              sodipodi:role="line"
-             x="48.866283"
-             y="131.61703"
-             style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:10.81249428px;font-family:aakar;-inkscape-font-specification:'aakar, Medium';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:1.38379443;stroke-miterlimit:4;stroke-dasharray:none"
-             id="tspan1818-0-9">PA</tspan></text>
+             x="44.997608"
+             y="129.63597"
+             style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:7.08420229px;font-family:aakar;-inkscape-font-specification:'aakar, Medium';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.90664369;stroke-miterlimit:4;stroke-dasharray:none"
+             id="tspan1818-0-9">PAgora</tspan></text>
       </g>
       <g
          transform="translate(33.639873,-1.8898791)"
@@ -278,19 +282,23 @@
              cy="120.55625"
              cx="59.074436"
              id="path1770-3-9-8-3-5"
-             style="opacity:1;fill:#90ff70;fill-opacity:1;stroke:#004c00;stroke-width:0.80000001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+             style="opacity:1;fill:#90ff70;fill-opacity:1;stroke:#004c00;stroke-width:0.80000001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             inkscape:export-xdpi="60"
+             inkscape:export-ydpi="60" />
           <text
              transform="scale(1.0622313,0.94141454)"
              id="text1774-1-6-6-0-4"
-             y="131.52695"
-             x="46.622478"
-             style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:10.81249428px;line-height:1.25;font-family:aakar;-inkscape-font-specification:'aakar, Medium';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.38379443;stroke-miterlimit:4;stroke-dasharray:none"
-             xml:space="preserve"><tspan
+             y="130.67538"
+             x="44.653652"
+             style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:8.01064777px;line-height:1.25;font-family:aakar;-inkscape-font-specification:'aakar, Medium';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.02521122;stroke-miterlimit:4;stroke-dasharray:none"
+             xml:space="preserve"
+             inkscape:export-xdpi="60"
+             inkscape:export-ydpi="60"><tspan
                id="tspan1818-0-9-0"
-               style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:10.81249428px;font-family:aakar;-inkscape-font-specification:'aakar, Medium';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:1.38379443;stroke-miterlimit:4;stroke-dasharray:none"
-               y="131.52695"
-               x="46.622478"
-               sodipodi:role="line">JPtg</tspan></text>
+               style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:8.01064777px;font-family:aakar;-inkscape-font-specification:'aakar, Medium';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:1.02521122;stroke-miterlimit:4;stroke-dasharray:none"
+               y="130.67538"
+               x="44.653652"
+               sodipodi:role="line">Jardins</tspan></text>
         </g>
       </g>
     </g>

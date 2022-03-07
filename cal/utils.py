@@ -49,10 +49,13 @@ class Calendar(LocaleTextCalendar):
 
         def getAjout(event):
             ajout = ""
-            if event.get_logo_categorie:
-                ajout = "<img src='/static/" + event.get_logo_categorie + "' height ='13px'/> "
-            if event.get_logo_nomgroupe:
-                ajout += "<img src='/static/" + event.get_logo_nomgroupe + "' height ='13px'/> "
+            try:
+                if event.get_logo_categorie:
+                    ajout = "<img src='/static/" + event.get_logo_categorie + "' height ='13px'/> "
+                if event.get_logo_nomgroupe:
+                    ajout += "<img src='/static/" + event.get_logo_nomgroupe + "' height ='13px'/> "
+            except:
+                pass
             return ajout
 
         d = ''
