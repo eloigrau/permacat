@@ -150,7 +150,8 @@ def notifications_news_regroup(request):
     for action in articles:
         if dateMin < action.timestamp:
             try:
-                clef = "["+action.action_object.asso.nom+"] " + action.action_object.titre
+                #clef = "["+action.action_object.asso.nom+"] " + action.action_object.titre
+                clef = action.action_object.get_logo_nomgroupe_html_taille(18) + " " + action.action_object.titre
             except:
                 clef = action.action_object.titre
             if not clef in dicoTexte['dicoarticles']:

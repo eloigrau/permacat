@@ -96,6 +96,10 @@ class Choix:
                          "Type de projet":'categorie', "statut du projet":"statut",
                          'auteur':'auteur', 'titre':'titre'}
 
+    groupes_logo_nom = {'public': 'img/logos/nom_public.png', 'pc': 'img/logos/nom_public.png',
+                        'public': 'img/logos/nom_public.png', 'public': 'img/logos/nom_public.png',
+                        'public': 'img/logos/nom_public.png', 'public': 'img/logos/nom_public.png', }
+
     def get_couleur(categorie):
         try:
             return Choix.couleurs_annonces[categorie]
@@ -106,7 +110,10 @@ class Choix:
         try:
             return Choix.type_annonce_citealt_groupes_logo[categorie]
         except:
-            return None
+            return ""
+
+    def get_logo_nomgroupe(abreviation):
+        return 'img/logos/nom_'+abreviation+'.png'
 
     def get_type_annonce_asso(asso):
         try:
@@ -193,6 +200,17 @@ class Article(models.Model):
     def get_logo_categorie(self):
         return Choix.get_logo(self.categorie)
 
+    @property
+    def get_logo_nomgroupe(self):
+        return Choix.get_logo_nomgroupe(self.asso.abreviation)
+
+    @property
+    def get_logo_nomgroupe_html(self):
+        return self.get_logo_nomgroupe_html_taille()
+
+    def get_logo_nomgroupe_html_taille(self, taille=30):
+        return "<img src='/static/" + self.get_logo_nomgroupe + "' height ='"+str(taille)+"px'/>"
+
     def est_autorise(self, user):
         if self.asso.abreviation == "public":
             return True
@@ -240,6 +258,14 @@ class Evenement(models.Model):
 
     def est_autorise(self, user):
         return self.article.est_autorise(user)
+
+    @property
+    def get_logo_categorie(self):
+        return self.article.get_logo_categorie
+
+    @property
+    def get_logo_nomgroupe(self):
+        return self.article.get_logo_nomgroupe
 
 class Discussion(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
