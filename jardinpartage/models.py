@@ -137,7 +137,7 @@ class Article(models.Model):
 
     @property
     def get_logo_nomgroupe(self):
-        return Choix.get_logo_nomgroupe(self.asso.abreviation)
+        return Choix.get_logo_nomgroupe(self.jardin)
 
     @property
     def get_logo_nomgroupe_html(self):
