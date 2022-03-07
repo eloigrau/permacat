@@ -208,7 +208,7 @@ class Article(models.Model):
     def get_logo_nomgroupe_html(self):
         return self.get_logo_nomgroupe_html_taille()
 
-    def get_logo_nomgroupe_html_taille(self, taille=30):
+    def get_logo_nomgroupe_html_taille(self, taille=25):
         return "<img src='/static/" + self.get_logo_nomgroupe + "' height ='"+str(taille)+"px'/>"
 
     def est_autorise(self, user):
