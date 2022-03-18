@@ -376,12 +376,12 @@
             </ul>
         </li>
 
+        <li class="nav-item nav4 5to4"><a class="nav-link" href="{% url 'notifications_news' %}">{% fontawesome_icon 'bell' %} ({{ notification_count }})  Notifications</a></li>
+
         <li class="nav-item nav2"><a class="nav-link" href="{% url 'blog:acceuil' %}">{% fontawesome_icon 'comments' %} Forum</a></li>
         <li class="nav-item nav3 4to3"><a class="nav-link" href="{% url 'cal:agenda' %}">{% fontawesome_icon 'calendar' %}  Agenda</a></li>
 
         <li class="nav-item nav1"><a class="nav-link" href="{% url 'marche' %}"> {% fontawesome_icon 'shopping-basket' %} Altermarché</a></li>
-
-        <li class="nav-item nav4 5to4"><a class="nav-link" href="{% url 'notifications_news' %}">{% fontawesome_icon 'bell' %} ({{ notification_count }})  Notifications</a></li>
 
         <li class="nav-item dropdown nav7">
            <a data-toggle="dropdown" class="nav-link dropdown-toggle  navbar-menu" href="{% url 'profil_courant' %}" aria-haspopup="true" aria-expanded="false"  >
