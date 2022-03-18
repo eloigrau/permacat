@@ -13,6 +13,62 @@
 
 {% if user.is_authenticated %}
     <ul class="nav navbar-nav  d-flex justify-content-between  w-100">
+
+        <li class="nav-item dropdown nav6">
+            <a class="nav-link dropdown-toggle navbar-menu "  href="{% url 'presentation_site' %}" id="navbarAbout2" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" >
+             {% fontawesome_icon 'globe' %} Site
+            </a>
+            <ul class="dropdown-menu dropdown-menu1 nav6-dropdown" aria-labelledby="navbarAbout2" id="dropdoownSite">
+                <li> <a class="dropdown-item" href="{% url 'carte'  asso='public' %}"><i class='fa fa-compass' ></i>  Carte / Annuaire </a></li>
+                <li class="divider" role="separator"></li>
+               <li> <a class="dropdown-item" href="{% url 'presentation_site_pkoi' %}"> Pourquoi utiliser le site ? </a></li>
+               <li> <a class="dropdown-item" href="{% url 'presentation_site_conseils' %}"> Conseils d'utilisation </a></li>
+               <li> <a class="dropdown-item" href="{% url 'faq' %}"> FAQ </a></li>
+               <li> <a class="dropdown-item" href="{% url 'cgu' %}"> CGU </a></li>
+               <li> <a class="dropdown-item" href="{% url 'liens' %}"> Liens </a></li>
+               <li> <a class="dropdown-item" href="{% url 'contact_admins' %}"> Contacter admins </a></li>
+                <li class="divider" role="separator"></li>
+                {% if request.user.is_superuser %}
+                {% load admin_urls %}
+
+                <li class="dropdown-submenu">
+                    <a class="dropdown-item dropdown-toggle"  href="#">Admin </a>
+                    <ul class="dropdown-menu nav5-dropdown-submenu">
+                        <li><a class="dropdown-item" href="{% url 'admin:index' %}">Admin</a></li>
+                       <li> <a class="dropdown-item" href="{% url 'voirEmails' %}"> voir Emails Alertes</a></li>
+                       <li> <a class="dropdown-item" href="https://www.perma.cat/gestion/bourseLibre/profil/?o=-4.2"> Utilisateurs </a></li>
+                               <li> <a class="dropdown-item" href="https://www.perma.cat/gestion/hitcount/hit/"> Hits </a></li>
+                               <li> <a class="dropdown-item" href="{% url 'blog:voirTousLieux' %}"> Lieux </a></li>
+
+                        <li><a class="dropdown-item" href="{% url 'voir_articles_a_archiver' %}">Archiver articles</a></li>
+
+                       <li> <a class="dropdown-item" href="{% url 'nettoyerActions' %}"> nettoyerActions</a></li>
+                       <li> <a class="dropdown-item" href="{% url 'voirPbProfils' %}"> voirPbProfils</a></li>
+                       <li> <a class="dropdown-item" href="{% url 'nettoyerFollows' %}"> nettoyerFollows</a></li>
+                       <li> <a class="dropdown-item" href="{% url 'creerAction_articlenouveau' %}"> creerAction_articlenouveau</a></li>
+                       <li> <a class="dropdown-item" href="{% url 'abonnerAdherentsCiteAlt' %}"> abonnerAdherentsCiteAlt</a></li>
+                       <li> <a class="dropdown-item" href="{% url 'listeContacts_admin' %}"> listeMails</a></li>
+                       <li> <a class="dropdown-item" href="{% url 'nettoyerHistoriqueAdmin' %}"> nettoyerHistoriqueAdmin</a></li>
+                    </ul>
+                </li>
+                {%endif%}
+
+                <li class="divider" role="separator"></li>
+               <li> <a class="dropdown-item" href="{% url 'adhesion_entree' %}"> Faire un don</a></li>
+
+         <li class="nav-item">
+             <form class="form-inline my-2 my-lg-0 justify-content-center form-group navbar-form " action="{% url 'chercher' %}" method="get" role = "search">
+        {% csrf_token %}
+           <span class="input-group-append">
+               <input class="form-control fmr-sm-2" name="id_recherche" type="text" placeholder="Rechercher sur le site...">
+    <button class="btn navbar-btn btn-light my-2 my-sm-0" type="submit" data-toggle="tooltip" data-placement="bottom" title="Rechercher sur le site...">{% fontawesome_icon 'search' %}</button>
+            </span>
+             </input>
+        </form>
+         </li>
+
+            </ul>
+        </li>
         <li class="nav-item dropdown nav5 3to5">
                 <a class="nav-link dropdown-toggle navbar-menu "  href="{% url 'presentation_groupes' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {% fontawesome_icon 'link' %} Groupes
@@ -31,7 +87,7 @@
                             <li class="divider" role="separator"></li>
                      <li> <a class="dropdown-item" href="{% url 'agora' asso='pc'%}"><i class='fa fa-comment iconleft ' ></i>  Salon de discussion</a></li>
 
-                         <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='pc'%}"><i class='fa fa-comments iconleft ' ></i> Articles du forum</a></li>
+                         <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='pc'%}#ref-dossiers"><i class='fa fa-comments iconleft ' ></i> Articles du forum</a></li>
     {% endif %}
 
                             <li><a class="dropdown-item" href="{% url 'fiches:acceuil' %}"><i class="fa fa-book iconleft"></i>  Kit PermaEcole </a></li>
@@ -79,7 +135,7 @@
                         <ul class="dropdown-menu nav5-dropdown-subsubmenu">
                         <li><a class="dropdown-item" href="{% url 'ateliers:acceuil' %}"><i class='fa fa-wrench iconleft' ></i>  Tous les ateliers </a></li>
                         {% for atelier in liste_ateliers %}
-                           <li><a class="dropdown-item" href="{{ atelier.get_absolute_url }}"><i class='fa fa-comments' ></i> {{atelier.titre|couperTexte:30}} {% if atelier.start_time %} ({{ atelier.start_time|date:"d/m" }})  {% endif %} </a></li>
+                           <li><a class="dropdown-item" href="{{ atelier.get_absolute_url }}"><i class='fa fa-comments' ></i> {{atelier.titre|couperTexte:22}} {% if atelier.start_time %} ({{ atelier.start_time|date:"d/m" }})  {% endif %} </a></li>
                         {% endfor %}
                         </ul>
                     </li>
@@ -110,7 +166,7 @@
                             <li> <a class="dropdown-item" href="{% url 'carte'  asso='rtg' %}"><i class='fa fa-compass iconleft' ></i>  Carte / Annuaire </a></li>
                             <li class="divider" role="separator"></li>
                             <li> <a class="dropdown-item" href="{% url 'agora' asso='rtg'%}"><i class='fa fa-comment iconleft' ></i> Salon de discussion</a></li>
-                            <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='rtg'%}"><i class='fa fa-comments iconleft' ></i> Articles du forum</a></li>
+                            <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='rtg'%}#ref-dossiers"><i class='fa fa-comments iconleft' ></i> Articles du forum</a></li>
                             <li><a class="dropdown-item" href="{% url 'blog:lireArticle' slug='dossiersactions-en-cours'%}"><i class='fa fa-comments iconleft' ></i> Dossiers en cours </a></li>
                             <li><a class="dropdown-item" href="{% url 'defraiement:reunions' %}"><i class='fa fa-comments iconleft' ></i> Defraiement </a></li>
                           <li class="divider" role="separator"></li>
@@ -130,7 +186,7 @@
                           <li> <a class="dropdown-item" href="{% url 'carte'  asso='fer' %}"><i class='fa fa-compass iconleft' ></i>  Carte / Annuaire </a></li>
                         <li class="divider" role="separator"></li>
                             <li> <a class="dropdown-item" href="{% url 'agora' asso='fer'%}"><i class='fa fa-comment iconleft' ></i> Salon de discussion</a></li>
-                            <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='fer'%}"><i class='fa fa-comments iconleft' ></i> Articles </a></li>
+                            <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='fer'%}#ref-dossiers"><i class='fa fa-comments iconleft' ></i> Articles </a></li>
 
    {% endif %}
                       </ul>
@@ -145,7 +201,7 @@
                           <li> <a class="dropdown-item" href="{% url 'carte'  asso='gt' %}"><i class='fa fa-compass iconleft' ></i>  Carte / Annuaire  </a></li>
                             <li class="divider" role="separator"></li>
                             <li> <a class="dropdown-item" href="{% url 'agora' asso='fer'%}"><i class='fa fa-commnent iconleft' ></i> Salon de discussion</a></li>
-                            <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='gt'%}"><i class='fa fa-comments iconleft' ></i> Articles </a></li>
+                            <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='gt'%}#ref-dossiers"><i class='fa fa-comments iconleft' ></i> Articles </a></li>
 
    {% endif %}
                       </ul>
@@ -175,7 +231,7 @@
                           <li> <a class="dropdown-item" href="{% url 'carte'  asso='scic' %}"><i class='fa fa-compass iconleft' ></i>  Carte / Annuaire  </a></li>
                             <li class="divider" role="separator"></li>
                             <li> <a class="dropdown-item" href="{% url 'agora' asso='scic'%}"><i class='fa fa-comment iconleft' ></i> Salon de discussion</a></li>
-                            <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='scic'%}"><i class='fa fa-comments iconleft' ></i> Articles du forum</a></li>
+                            <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='scic'%}#ref-dossiers"><i class='fa fa-comments iconleft' ></i> Articles du forum</a></li>
 
    {% endif %}
                         </ul>
@@ -193,7 +249,7 @@
                           <li> <a class="dropdown-item" href="{% url 'organisation_citealt' %}"><i class='fa fa-sitemap iconleft' ></i>  Organisation  </a></li>
                             <li class="divider" role="separator"></li>
                             <li> <a class="dropdown-item" href="{% url 'agora' asso='citealt'%}"><i class='fa fa-comment iconleft' ></i> Salon de discussion</a></li>
-                            <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='citealt'%}"><i class='fa fa-comments iconleft' ></i> Articles du forum</a></li>
+                            <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='citealt'%}#ref-dossiers"><i class='fa fa-comments iconleft' ></i> Articles du forum</a></li>
    {% endif %}
                         </ul>
                     </li>
@@ -206,7 +262,7 @@
                           <li> <a class="dropdown-item" href="{% url 'carte'  asso='viure' %}"><i class='fa fa-compass iconleft' ></i>  Carte / Annuaire  </a></li>
                             <li class="divider" role="separator"></li>
                             <li> <a class="dropdown-item" href="{% url 'agora' asso='viure'%}"><i class='fa fa-comment iconleft' ></i> Salon de discussion</a></li>
-                            <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='viure'%}"><i class='fa fa-comments iconleft' ></i> Articles du forum</a></li>
+                            <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='viure'%}#ref-dossiers"><i class='fa fa-comments iconleft' ></i> Articles du forum</a></li>
    {% endif %}
                         </ul>
                     </li>
@@ -323,68 +379,13 @@
         <li class="nav-item nav2"><a class="nav-link" href="{% url 'blog:acceuil' %}">{% fontawesome_icon 'comments' %} Forum</a></li>
         <li class="nav-item nav3 4to3"><a class="nav-link" href="{% url 'cal:agenda' %}">{% fontawesome_icon 'calendar' %}  Agenda</a></li>
 
-        <li class="nav-item nav4 5to4"><a class="nav-link" href="{% url 'notifications_news' %}">{% fontawesome_icon 'bell' %} ({{ notification_count }})  Notifications</a></li>
-
         <li class="nav-item nav1"><a class="nav-link" href="{% url 'marche' %}"> {% fontawesome_icon 'shopping-basket' %} Altermarché</a></li>
 
-        <li class="nav-item dropdown nav6">
-            <a class="nav-link dropdown-toggle navbar-menu "  href="{% url 'presentation_site' %}" id="navbarAbout2" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false" >
-             {% fontawesome_icon 'globe' %} Site
-            </a>
-            <ul class="dropdown-menu dropdown-menu1 nav6-dropdown" aria-labelledby="navbarAbout2" id="dropdoownSite">
-                <li> <a class="dropdown-item" href="{% url 'carte'  asso='public' %}"><i class='fa fa-compass' ></i>  Carte / Annuaire </a></li>
-                <li class="divider" role="separator"></li>
-               <li> <a class="dropdown-item" href="{% url 'presentation_site_pkoi' %}"> Pourquoi utiliser le site ? </a></li>
-               <li> <a class="dropdown-item" href="{% url 'presentation_site_conseils' %}"> Conseils d'utilisation </a></li>
-               <li> <a class="dropdown-item" href="{% url 'faq' %}"> FAQ </a></li>
-               <li> <a class="dropdown-item" href="{% url 'cgu' %}"> CGU </a></li>
-               <li> <a class="dropdown-item" href="{% url 'liens' %}"> Liens </a></li>
-               <li> <a class="dropdown-item" href="{% url 'contact_admins' %}"> Contacter admins </a></li>
-                <li class="divider" role="separator"></li>
-                {% if request.user.is_superuser %}
-                {% load admin_urls %}
+        <li class="nav-item nav4 5to4"><a class="nav-link" href="{% url 'notifications_news' %}">{% fontawesome_icon 'bell' %} ({{ notification_count }})  Notifications</a></li>
 
-                <li class="dropdown-submenu">
-                    <a class="dropdown-item dropdown-toggle"  href="#">Admin </a>
-                    <ul class="dropdown-menu nav5-dropdown-submenu">
-                        <li><a class="dropdown-item" href="{% url 'admin:index' %}">Admin</a></li>
-                       <li> <a class="dropdown-item" href="{% url 'voirEmails' %}"> voir Emails Alertes</a></li>
-                       <li> <a class="dropdown-item" href="https://www.perma.cat/gestion/bourseLibre/profil/?o=-4.2"> Utilisateurs </a></li>
-                               <li> <a class="dropdown-item" href="https://www.perma.cat/gestion/hitcount/hit/"> Hits </a></li>
-                               <li> <a class="dropdown-item" href="{% url 'blog:voirTousLieux' %}"> Lieux </a></li>
-
-                        <li><a class="dropdown-item" href="{% url 'voir_articles_a_archiver' %}">Archiver articles</a></li>
-
-                       <li> <a class="dropdown-item" href="{% url 'nettoyerActions' %}"> nettoyerActions</a></li>
-                       <li> <a class="dropdown-item" href="{% url 'voirPbProfils' %}"> voirPbProfils</a></li>
-                       <li> <a class="dropdown-item" href="{% url 'nettoyerFollows' %}"> nettoyerFollows</a></li>
-                       <li> <a class="dropdown-item" href="{% url 'creerAction_articlenouveau' %}"> creerAction_articlenouveau</a></li>
-                       <li> <a class="dropdown-item" href="{% url 'abonnerAdherentsCiteAlt' %}"> abonnerAdherentsCiteAlt</a></li>
-                       <li> <a class="dropdown-item" href="{% url 'listeContacts_admin' %}"> listeMails</a></li>
-                       <li> <a class="dropdown-item" href="{% url 'nettoyerHistoriqueAdmin' %}"> nettoyerHistoriqueAdmin</a></li>
-                    </ul>
-                </li>
-                {%endif%}
-
-                <li class="divider" role="separator"></li>
-               <li> <a class="dropdown-item" href="{% url 'adhesion_entree' %}"> Faire un don</a></li>
-
-         <li class="nav-item">
-             <form class="form-inline my-2 my-lg-0 justify-content-center form-group navbar-form " action="{% url 'chercher' %}" method="get" role = "search">
-        {% csrf_token %}
-           <span class="input-group-append">
-               <input class="form-control fmr-sm-2" name="id_recherche" type="text" placeholder="Rechercher sur le site...">
-    <button class="btn navbar-btn btn-light my-2 my-sm-0" type="submit" data-toggle="tooltip" data-placement="bottom" title="Rechercher sur le site...">{% fontawesome_icon 'search' %}</button>
-            </span>
-             </input>
-        </form>
-         </li>
-
-            </ul>
-        </li>
         <li class="nav-item dropdown nav7">
            <a data-toggle="dropdown" class="nav-link dropdown-toggle  navbar-menu" href="{% url 'profil_courant' %}" aria-haspopup="true" aria-expanded="false"  >
-              {% fontawesome_icon 'user' %} Profil: {{request.user}} </a>
+              {% fontawesome_icon 'user' %} Profil: {{request.user|truncatechars:8}} </a>
             <ul class="dropdown-menu dropdown-menu1 nav7-dropdown" aria-labelledby="navbarDropdownMenuLink">
                <li> <a class="dropdown-item" href="{% url 'profil_courant' %}">Mon profil</a></li>
                 <li class="divider" role="separator"></li>
@@ -399,6 +400,20 @@
 {% else %}
 
     <ul class="nav navbar-nav mr-auto navbar-left">
+
+        <li class="nav-item dropdown nav2">
+            <a class="nav-link dropdown-toggle navbar-menu" href="{% url 'profil_courant' %}" id="navbarAbout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Le site
+            </a>
+            <ul class="dropdown-menu dropdown-menu1  nav2-dropdown" aria-labelledby="navbarAbout">
+                <li> <a class="dropdown-item" href="{% url 'presentation_site_pkoi' %}"><i class='fa fa-info-circle iconleft ' ></i> Pourquoi utiliser le site ? </a></li>
+               <li> <a class="dropdown-item" href="{% url 'contact_admins' %}"><i class='fa fa-envelope iconleft ' ></i> Nous contacter</a></li>
+                    <li class="divider" role="separator"></li>
+               <li> <a class="dropdown-item" href="{% url 'cgu' %}"><i class='fa fa-info-circle iconleft ' ></i> CGU </a></li>
+                    <li class="divider" role="separator"></li>
+               <li> <a class="dropdown-item" href="{% url 'adhesion_entree' %}"><i class='fa fa-euro-sign iconleft ' ></i> Faire un don</a></li>
+            </ul>
+        </li>
         <li class="nav-item dropdown nav5 3to5">
                 <a class="nav-link dropdown-toggle navbar-menu "  href="{% url 'presentation_groupes' %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {% fontawesome_icon 'link' %} Les Groupes
@@ -467,19 +482,6 @@
         </li>
 
 
-        <li class="nav-item dropdown nav2">
-            <a class="nav-link dropdown-toggle navbar-menu" href="{% url 'profil_courant' %}" id="navbarAbout" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Le site
-            </a>
-            <ul class="dropdown-menu dropdown-menu1  nav2-dropdown" aria-labelledby="navbarAbout">
-                <li> <a class="dropdown-item" href="{% url 'presentation_site_pkoi' %}"><i class='fa fa-info-circle iconleft ' ></i> Pourquoi utiliser le site ? </a></li>
-               <li> <a class="dropdown-item" href="{% url 'contact_admins' %}"><i class='fa fa-envelope iconleft ' ></i> Nous contacter</a></li>
-                    <li class="divider" role="separator"></li>
-               <li> <a class="dropdown-item" href="{% url 'cgu' %}"><i class='fa fa-info-circle iconleft ' ></i> CGU </a></li>
-                    <li class="divider" role="separator"></li>
-               <li> <a class="dropdown-item" href="{% url 'adhesion_entree' %}"><i class='fa fa-euro-sign iconleft ' ></i> Faire un don</a></li>
-            </ul>
-        </li>
     </ul>
 
     <ul class="nav navbar-nav ">

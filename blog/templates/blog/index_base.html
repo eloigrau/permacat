@@ -124,13 +124,73 @@
 </div>
 </div>
 
+<div id="ref-groupes"></div>
+<div class="row">
+<div class="col-sm-12">
+   <h5> Groupe </h5>
+<div class="container">
+<nav class="navbar  navbar-expand-lg navbar-light bg-light justify-content-center">
 
+        <div class="justify-content-center " id="navbarGroupes" >
+            <ul class="nav navbar-nav justify-content-center ">
+
+{% for asso_nom, asso_id in asso_list %}
+    <li class="nav-item  ">
+          <a  href="{% url 'blog:index_asso' asso=asso_id%}#ref-dossiers">
+              <button type="button" class="btn btn-primary btn-menu-forum btn-block " >
+                  <span>{{asso_nom}}</span>
+           </button>
+        </a>
+    </li>
+{% endfor %}
+
+    <li class="nav-item dropdown">
+        <a href="{% url 'blog:index' %}">
+            <button type="button" class="btn  btn-success btn-menu-forum btn-block" > Tous les articles
+            </button>
+        </a>
+    </li>
+    </ul>
+
+</div>
+</nav>
+</div>
+</div>
+</div>
+<div id="ref-dossiers"></div>
 <div class="row ">
     <div class="col-sm-12 " style="margin-bottom:20px;">
-        <h5>Choisir un groupe / dossier :</h5>
-{% include 'blog/navbar_forum.html' %}
+        <h5>Dossier :</h5>
+<div class="container">
+<nav class="navbar  navbar-expand-lg navbar-light bg-light justify-content-center">
+
+        <div class="justify-content-center " id="navbarProduit" >
+            <ul class="nav navbar-nav justify-content-center ">
+
+{% for categorie_id, cat_nom, cat_coul in categorie_list %}
+    <li class="nav-item  ">
+          <a style="background:{{cat_coul}};"  href="{% url 'blog:index_asso' asso=asso_courante_abreviation%}?categorie={{categorie_id}}#ref-titre">
+              <button type="button" class="btn btn-primary btn-block" >
+                  <span>{{cat_nom}}</span>
+           </button>
+        </a>
+    </li>
+{% endfor %}
+
+    <li class="nav-item dropdown">
+       <a href="{% url 'blog:index_asso' asso=asso_courante_abreviation%}#ref-titre">
+            <button type="button" class="btn  btn-success btn-menu-forum btn-block" > Tous
+            </button>
+        </a>
+    </li>
+    </ul>
+
+</div>
+</nav>
+</div>
     </div>
 </div>
+<div id="ref-titre"></div>
 <div class="row ">
     <div class="col-sm-12 my-auto">
         {% include 'blog/navbar_forum_tri.html' %}

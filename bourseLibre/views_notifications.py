@@ -163,10 +163,7 @@ def notifications_news_regroup(request):
     for titre_article, actions in dicoTexte['dicoarticles'].items():
         htmlArticles += "<li class='list-group-item'><a href='" + actions[0].data['url'] + "'>"
         htmlArticles += " <div class=''><span  style='font-variant: small-caps ;'>"
-        if "(Jardins Partagés)" in actions[0].description:
-            htmlArticles += "[Jardins Partagés] &nbsp;"+ titre_article +"</span>"
-        else:
-            htmlArticles += titre_article+"</span>"
+        htmlArticles += titre_article+"</span>"
         htmlArticles +=" </div><ul style='list-style-type:none'>"
 
         for action in actions :

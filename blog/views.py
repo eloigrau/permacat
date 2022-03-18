@@ -42,42 +42,42 @@ from photologue.models import Document
 
 @login_required
 def accueil(request):
-    cat = Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
-    categorie_list = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_asso["public"] if x[0] in cat]
-    cat_pc = Article.objects.filter(asso__abreviation="pc").order_by('categorie').values_list('categorie', flat=True).distinct()
-    categorie_list_pc = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_pc]
-    cat_rtg = Article.objects.filter(asso__abreviation="rtg").order_by('categorie').values_list('categorie', flat=True).distinct()
-    categorie_list_rtg = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_rtg]
-    cat_fer = Article.objects.filter(asso__abreviation="fer").order_by('categorie').values_list('categorie', flat=True).distinct()
-    categorie_list_fer = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_fer]
-    cat_gt = Article.objects.filter(asso__abreviation="gt").order_by('categorie').values_list('categorie',
-                                                                                                flat=True).distinct()
-    categorie_list_gt = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_gt]
-    cat_citealt = Article.objects.filter(asso__abreviation="citealt").order_by('categorie').values_list('categorie',
-                                                                                                flat=True).distinct()
-    categorie_list_citealt = [(x[0], x[1], Choix.get_couleur(x[0]), Choix.get_logo(x[0])) for x in Choix.type_annonce if x[0] in cat_citealt]
+    # cat = Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
+    # categorie_list = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_asso["public"] if x[0] in cat]
+    # cat_pc = Article.objects.filter(asso__abreviation="pc").order_by('categorie').values_list('categorie', flat=True).distinct()
+    # categorie_list_pc = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_pc]
+    # cat_rtg = Article.objects.filter(asso__abreviation="rtg").order_by('categorie').values_list('categorie', flat=True).distinct()
+    # categorie_list_rtg = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_rtg]
+    # cat_fer = Article.objects.filter(asso__abreviation="fer").order_by('categorie').values_list('categorie', flat=True).distinct()
+    # categorie_list_fer = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_fer]
+    # cat_gt = Article.objects.filter(asso__abreviation="gt").order_by('categorie').values_list('categorie',
+    #                                                                                             flat=True).distinct()
+    # categorie_list_gt = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_gt]
+    #cat_citealt = Article.objects.filter(asso__abreviation="citealt").order_by('categorie').values_list('categorie',
+    #                                                                                            flat=True).distinct()
+    #categorie_list_citealt = [(x[0], x[1], Choix.get_couleur(x[0]), Choix.get_logo(x[0])) for x in Choix.type_annonce if x[0] in cat_citealt]
 
-    cat_viure = Article.objects.filter(asso__abreviation="viure").order_by('categorie').values_list('categorie',
-                                                                                                        flat=True).distinct()
-    categorie_list_viure = [(x[0], x[1], Choix.get_couleur(x[0]), Choix.get_logo(x[0])) for x in Choix.type_annonce if
-                              x[0] in cat_viure]
+    #cat_viure = Article.objects.filter(asso__abreviation="viure").order_by('categorie').values_list('categorie',
+    #                                                                                                    flat=True).distinct()
+    #categorie_list_viure = [(x[0], x[1], Choix.get_couleur(x[0]), Choix.get_logo(x[0])) for x in Choix.type_annonce if
+   #                           x[0] in cat_viure]
 
-    proj = Projet.objects.filter(estArchive=False, statut='accep').order_by('titre')
+    #proj = Projet.objects.filter(estArchive=False, statut='accep').order_by('titre')
 
-    for nomAsso in Choix_global.abreviationsAsso:
-        if not getattr(request.user, "adherent_" + nomAsso):
-            proj = proj.exclude(asso__abreviation=nomAsso)
+    #for nomAsso in Choix_global.abreviationsAsso:
+   #     if not getattr(request.user, "adherent_" + nomAsso):
+    #        proj = proj.exclude(asso__abreviation=nomAsso)
 
-    projets_list = [(x.slug, x.titre, x.get_couleur) for x in proj]
+    #projets_list = [(x.slug, x.titre, x.get_couleur) for x in proj]
 
-    ateliers = Atelier.objects.filter(start_time__gte=now())
+    #ateliers = Atelier.objects.filter(start_time__gte=now())
 
-    for nomAsso in Choix_global.abreviationsAsso:
-        if not getattr(request.user, "adherent_" + nomAsso):
-            ateliers = ateliers.exclude(asso__abreviation=nomAsso)
+    #for nomAsso in Choix_global.abreviationsAsso:
+    #    if not getattr(request.user, "adherent_" + nomAsso):
+    #        ateliers = ateliers.exclude(asso__abreviation=nomAsso)
 
-    ateliers_list = [(x.slug, x.titre, x.get_couleur) for x in ateliers]
-    categorie_list_projets = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets ]
+    #ateliers_list = [(x.slug, x.titre, x.get_couleur) for x in ateliers]
+    #categorie_list_projets = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets ]
 
     derniers_articles = Article.objects.filter(estArchive=False).order_by('-id')
     for nomAsso in Choix_global.abreviationsAsso:
@@ -98,9 +98,11 @@ def accueil(request):
 
     derniers = sorted(set([x for x in itertools.chain(derniers_articles_comm[::-1][:8], derniers_articles_modif[::-1][:8], derniers_articles[:8], )]), key=lambda x:x.date_modification if x.date_modification else x.date_creation)[::-1]
 
-    suivis = get_suivis_forum(request)
+    asso_list = [(x.nom, x.abreviation) for x in Asso.objects.all()] # ['public'] + [asso for asso in Choix_global.abreviationsAsso if self.request.user.est_autorise(asso)] + ['projets']
 
-    return render(request, 'blog/accueil.html', {'categorie_list':categorie_list,'categorie_list_pc':categorie_list_pc,'categorie_list_rtg':categorie_list_rtg,'categorie_list_fer':categorie_list_fer,'categorie_list_gt':categorie_list_gt,'categorie_list_citealt':categorie_list_citealt,'categorie_list_viure':categorie_list_viure,'projets_list':projets_list,'ateliers_list':ateliers_list, 'categorie_list_projets':categorie_list_projets,'derniers_articles':derniers, 'suivis':suivis})
+    suivis = get_suivis_forum(request)
+#'categorie_list':categorie_list,'categorie_list_pc':categorie_list_pc,'categorie_list_rtg':categorie_list_rtg,'categorie_list_fer':categorie_list_fer,'categorie_list_gt':categorie_list_gt,'categorie_list_citealt':categorie_list_citealt,'categorie_list_viure':categorie_list_viure,'projets_list':projets_list,'ateliers_list':ateliers_list, 'categorie_list_projets':categorie_list_projets,
+    return render(request, 'blog/accueil.html', {'asso_list':asso_list,'derniers_articles':derniers, 'suivis':suivis})
 
 
 @login_required
@@ -331,30 +333,35 @@ class ListeArticles(ListView):
         context['list_archive'] = Article.objects.filter(estArchive=True)
         # context['producteur_list'] = Profil.objects.values_list('username', flat=True).distinct()
         #context['auteur_list'] = Article.objects.order_by('auteur').values_list('auteur__username', flat=True).distinct()
-        cat = Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
-        context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_asso["public"] if x[0] in cat]
 
-        for nomAsso in Choix_global.abreviationsAsso:
-            if getattr(self.request.user, "adherent_" + nomAsso):
-                cat = Article.objects.filter(asso__abreviation=nomAsso).order_by('categorie').values_list('categorie', flat=True).distinct()
-                if nomAsso == 'citealt':
-                    context['categorie_list_' + nomAsso] = [(x[0], x[1], Choix.get_couleur(x[0]), Choix.get_logo(x[0])) for x in
-                                                            Choix.type_annonce if x[0] in cat]
-                elif nomAsso == 'viure':
-                    context['categorie_list_' + nomAsso] = [
-                        (x[0], x[1], Choix.get_couleur(x[0]), Choix.get_logo(x[0])) for x in
-                        Choix.type_annonce if x[0] in cat]
-                else:
-                    context['categorie_list_'+nomAsso] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
+        #
+        # cat = Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
+        # context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_asso["public"] if x[0] in cat]
+        #
+        # for nomAsso in Choix_global.abreviationsAsso:
+        #     if getattr(self.request.user, "adherent_" + nomAsso):
+        #         cat = Article.objects.filter(asso__abreviation=nomAsso).order_by('categorie').values_list('categorie', flat=True).distinct()
+        #         if nomAsso == 'citealt':
+        #             context['categorie_list_' + nomAsso] = [(x[0], x[1], Choix.get_couleur(x[0]), Choix.get_logo(x[0])) for x in
+        #                                                     Choix.type_annonce if x[0] in cat]
+        #         elif nomAsso == 'viure':
+        #             context['categorie_list_' + nomAsso] = [
+        #                 (x[0], x[1], Choix.get_couleur(x[0]), Choix.get_logo(x[0])) for x in
+        #                 Choix.type_annonce if x[0] in cat]
+        #         else:
+        #             context['categorie_list_'+nomAsso] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
+        #
+        # proj = Projet.objects.filter(estArchive=False)
+        # for nomAsso in Choix_global.abreviationsAsso:
+        #     if not getattr(self.request.user, "adherent_" + nomAsso):
+        #         proj = proj.exclude(asso__abreviation=nomAsso)
+        # cat = proj.order_by('categorie').values_list('categorie', flat=True).distinct()
+       # context['categorie_list_projets'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets]
 
-        proj = Projet.objects.filter(estArchive=False)
-        for nomAsso in Choix_global.abreviationsAsso:
-            if not getattr(self.request.user, "adherent_" + nomAsso):
-                proj = proj.exclude(asso__abreviation=nomAsso)
-        cat = proj.order_by('categorie').values_list('categorie', flat=True).distinct()
-        context['categorie_list_projets'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets]
+       # context['projets_list'] = [(x.slug, x.titre, x.get_couleur) for x in proj]
 
-        context['projets_list'] = [(x.slug, x.titre, x.get_couleur) for x in proj]
+        assos = Asso.objects.all()
+        context['assos'] = [(x.nom, x.abreviation) for x in assos]#['public'] + [asso for asso in Choix_global.abreviationsAsso if self.request.user.est_autorise(asso)] + ['projets']
 
         context['typeFiltre'] = "aucun"
 
@@ -377,8 +384,7 @@ class ListeArticles(ListView):
                     except:
                         context['categorie_courante'] = "Catégorie inconnue : " + self.request.GET['categorie']
 
-        assos= Asso.objects.all()
-        context['asso_list'] = [(x.nom, x.abreviation) for x in assos]
+
         if 'permacat' in self.request.GET:
             context['typeFiltre'] = "permacat"
         if 'archives' in self.request.GET:
@@ -387,7 +393,7 @@ class ListeArticles(ListView):
             try:
                 context['ordre_triage'] = list(Choix.ordre_tri_articles.keys())[list(Choix.ordre_tri_articles.values()).index(self.request.GET['ordreTri'])]
             except:
-                context['ordre_triage'] =self.request.GET['ordreTri']
+                context['ordre_triage'] = self.request.GET['ordreTri']
         else:
             context['ordre_triage'] = "date de création"
         return context
@@ -405,11 +411,13 @@ class ListeArticles_asso(ListView):
         asso = testIsMembreAsso(self.request, nom_asso)
         if not isinstance(asso, Asso):
             raise PermissionDenied
-
+        self.asso = asso
         qs = Article.objects.all()
 
         if asso.abreviation == "public":
             qs = qs.exclude(Q(asso__abreviation="pc")|Q(asso__abreviation="rtg")|Q(asso__abreviation="fer")|Q(asso__abreviation="gt")|Q(asso__abreviation="scic")|Q(asso__abreviation="citealt")|Q(asso__abreviation="viure"))
+        elif asso.abreviation == "projets":
+            pass
         else:
             qs = qs.filter(asso__abreviation=asso.abreviation)
 
@@ -417,11 +425,6 @@ class ListeArticles_asso(ListView):
             qs = qs.filter(auteur__username=params['auteur'])
         if "categorie" in params:
             qs = qs.filter(categorie=params['categorie'])
-        if "permacat" in params  and self.request.user.adherent_pc:
-            if params['permacat'] == "True":
-                qs = qs.filter(estPublic=False)
-            else:
-                qs = qs.filter(estPublic=True)
 
         if "ordreTri" in params:
             if params['ordreTri'] == "-date_dernierMessage":
@@ -442,30 +445,25 @@ class ListeArticles_asso(ListView):
         context = super().get_context_data(**kwargs)
 
         context['list_archive'] = self.qs.filter(estArchive=True)
-        # context['producteur_list'] = Profil.objects.values_list('username', flat=True).distinct()
-        context['auteur_list'] = Article.objects.all().order_by('auteur').values_list('auteur__username', flat=True).distinct()
-        cat= Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
-        context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_asso["public"] if x[0] in cat]
-        context['categorie_list_projets'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets]
 
+
+        qs = Article.objects.all()
+
+        if self.asso.abreviation == "public":
+            qs = qs.exclude(Q(asso__abreviation="pc")|Q(asso__abreviation="rtg")|Q(asso__abreviation="fer")|Q(asso__abreviation="gt")|Q(asso__abreviation="scic")|Q(asso__abreviation="citealt")|Q(asso__abreviation="viure"))
+        elif self.asso.abreviation == "projets":
+            pass
+        else:
+            qs = qs.filter(asso__abreviation=self.asso.abreviation)
+        cat = qs.order_by('categorie').values_list('categorie', flat=True).distinct()
+        context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_asso[self.kwargs['asso']] if
+                                     x[0] in cat]
         if self.kwargs['asso']:
             assos= Asso.objects.all()
             nom_asso = self.kwargs['asso']
             asso = testIsMembreAsso(self.request, nom_asso)
             if not isinstance(asso, Asso):
                 raise PermissionDenied
-
-        for nomAsso in Choix_global.abreviationsAsso:
-            if getattr(self.request.user, "adherent_" + nomAsso):
-                cat = Article.objects.filter(asso__abreviation=nomAsso).order_by('categorie').values_list('categorie', flat=True).distinct()
-                if nomAsso == 'citealt':
-                    context['categorie_list_' + nomAsso] = [(x[0], x[1], Choix.get_couleur(x[0]), Choix.get_logo(x[0])) for x in
-                                                            Choix.type_annonce if x[0] in cat]
-                elif nomAsso == 'viure':
-                    context['categorie_list_' + nomAsso] = [(x[0], x[1], Choix.get_couleur(x[0]), Choix.get_logo(x[0])) for x in
-                                                            Choix.type_annonce if x[0] in cat]
-                else:
-                    context['categorie_list_'+nomAsso] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
 
         proj = Projet.objects.filter(estArchive=False)
         for nomAsso in Choix_global.abreviationsAsso:
@@ -483,11 +481,11 @@ class ListeArticles_asso(ListView):
         #     ateliers = ateliers.exclude(asso__abreviation="rtg")
         # context['ateliers_list'] = [(x.slug, x.titre, x.get_couleur) for x in ateliers]
 
-        context['asso_list'] = [(x.nom, x.abreviation) for x in assos]
+        context['asso_list'] = [(x.nom, x.abreviation) for x in Asso.objects.all()]
         context['asso_courante'] = asso
+        context['asso_courante_abreviation'] = asso.abreviation
         context['typeFiltre'] = "aucun"
         context['suivis'] = get_suivis_forum(self.request)
-
 
         context['ordreTriPossibles'] = Choix.ordre_tri_articles
 

@@ -293,7 +293,7 @@ class Profil(AbstractUser):
 
     @property
     def statutMembre_asso(self, asso):
-        if asso == "permacat":
+        if asso == "permacat" or "pc":
             return self.adherent_pc
         elif asso == "rtg":
             return self.adherent_rtg
