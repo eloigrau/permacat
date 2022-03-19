@@ -362,7 +362,6 @@ class ListeArticles(ListView):
 
         context['asso_list'] = [(x.nom, x.abreviation) for x in Asso.objects.all().exclude(abreviation="jp") if self.request.user.est_autorise(x.abreviation)]
         context['typeFiltre'] = "aucun"
-
         context['suivis'] = get_suivis_forum(self.request)
         context['ordreTriPossibles'] = Choix.ordre_tri_articles
 
