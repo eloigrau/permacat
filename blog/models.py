@@ -36,6 +36,7 @@ class Choix:
         "public": type_annonce_base + type_annonce_projets,
         "pc": type_annonce_base,
         "scic": type_annonce_base,
+        "fer": type_annonce_base,
         "rtg": type_annonce_base,
         "viure": type_annonce_viure,
         "citealt": type_annonce_base + type_annonce_citealt,
