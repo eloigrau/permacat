@@ -119,6 +119,7 @@ def ajouterArticle(request):
         suffix = "_" + article.asso.abreviation
         action.send(request.user, verb='article_nouveau'+suffix, action_object=article, url=url,
                     description="a ajouté un article : '%s'" % article.titre)
+        suivre_article(request, article.slug)
         return redirect(article.get_absolute_url())
 
     return render(request, 'blog/ajouterPost.html', { "form": form, })
@@ -460,7 +461,6 @@ class ListeArticles_asso(ListView):
         context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_asso[self.kwargs['asso']] if
                                      x[0] in cat]
         if self.kwargs['asso']:
-            assos= Asso.objects.all()
             nom_asso = self.kwargs['asso']
             asso = testIsMembreAsso(self.request, nom_asso)
             if not isinstance(asso, Asso):
