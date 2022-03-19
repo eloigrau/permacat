@@ -161,7 +161,7 @@ def notifications_news_regroup(request):
 
     htmlArticles = ""
     for titre_article, actions in dicoTexte['dicoarticles'].items():
-        htmlArticles += "<li class='list-group-item'><a href='" + actions[0].data['url'] + "'>"
+        htmlArticles += "<li class='list-group-item'><a href='" + actions[0].data['url'] + "#ref-titre'>"
         htmlArticles += " <div class=''><span  style='font-variant: small-caps ;'>"
         htmlArticles += titre_article+"</span>"
         htmlArticles +=" </div><ul style='list-style-type:none'>"

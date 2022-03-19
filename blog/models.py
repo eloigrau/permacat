@@ -7,6 +7,8 @@ from actstream.models import followers
 from taggit.managers import TaggableManager
 from photologue.models import Album
 from django.utils.text import slugify
+from jardinpartage.models import Choix as Choix_jpt
+
 import uuid
 
 class Choix:
@@ -36,7 +38,8 @@ class Choix:
         "scic": type_annonce_base,
         "rtg": type_annonce_base,
         "viure": type_annonce_viure,
-        "citealt": type_annonce_base + type_annonce_citealt
+        "citealt": type_annonce_base + type_annonce_citealt,
+        "jp": Choix_jpt.jardins_ptg,
     }
 
     type_annonce = type_annonce_base + type_annonce_citealt + type_annonce_viure + type_annonce_projets
@@ -136,6 +139,7 @@ class Article(models.Model):
     date_modification = models.DateTimeField(verbose_name="Date de modification", auto_now=False, null=True, )
     estPublic = models.BooleanField(default=False, verbose_name='Public ou réservé aux membres permacat')
     estModifiable = models.BooleanField(default=False, verbose_name="Modifiable par les autres")
+    estEpingle = models.BooleanField(default=False, verbose_name="Article épinglé")
 
     asso = models.ForeignKey(Asso, on_delete=models.SET_NULL, null=True)
 

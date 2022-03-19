@@ -27,7 +27,7 @@
     <div class="col-md-12 textcenter">
 
         <div class="row justify-content-center">
-            <div class="col-md-4">
+            <div class="col-md-6 col-lg-4">
              <div class="row no-gutters justify-content-center">
                  <form class="form-inline justify-content-center  navbar-form " action="{% url 'chercher_articles' %}" method="get" role = "search">
                     {% csrf_token %}
@@ -48,7 +48,7 @@
     </a>&ensp;</div>
              </div>
 
-            <div class="col-md-4 justify-content-center">
+            <div class="col-md-6 col-lg-4 justify-content-center">
             <a href="{% url 'blog:ajouterNouvelArticle' %}">
                 <button type="button" class="btn  btn-success" >
                     <i class="fa fa-plus"></i>&nbsp; Ajouter un article
@@ -56,7 +56,7 @@
             </a>&ensp;
             </div>
 
-            <div class="col-md-4 justify-content-center">
+            <div class="col-md-6 col-lg-4 justify-content-center">
 
                 <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#help" title="En savoir plus...">
                  {% fontawesome_icon 'question-circle' %}
@@ -124,82 +124,40 @@
 </div>
 </div>
 
-<div id="ref-groupes"></div>
-<div class="row">
-<div class="col-sm-12">
-   <h5> Groupe </h5>
-<div class="container">
-<nav class="navbar  navbar-expand-lg navbar-light bg-light justify-content-center">
-
-        <div class="justify-content-center " id="navbarGroupes" >
-            <ul class="nav navbar-nav justify-content-center ">
-
-{% for asso_nom, asso_id in asso_list %}
-    <li class="nav-item  ">
-          <a  href="{% url 'blog:index_asso' asso=asso_id%}#ref-dossiers">
-              <button type="button" class="btn btn-primary btn-menu-forum btn-block " >
-                  <span>{{asso_nom}}</span>
-           </button>
-        </a>
-    </li>
-{% endfor %}
-
-    <li class="nav-item dropdown">
-        <a href="{% url 'blog:index' %}">
-            <button type="button" class="btn  btn-success btn-menu-forum btn-block" > Tous les articles
-            </button>
-        </a>
-    </li>
-    </ul>
-
-</div>
-</nav>
-</div>
-</div>
-</div>
-<div id="ref-dossiers"></div>
-<div class="row ">
-    <div class="col-sm-12 " style="margin-bottom:20px;">
-        <h5>Dossier :</h5>
-<div class="container">
-<nav class="navbar  navbar-expand-lg navbar-light bg-light justify-content-center">
-
-        <div class="justify-content-center " id="navbarProduit" >
-            <ul class="nav navbar-nav justify-content-center ">
-
-{% for categorie_id, cat_nom, cat_coul in categorie_list %}
-    <li class="nav-item  ">
-          <a style="background:{{cat_coul}};"  href="{% url 'blog:index_asso' asso=asso_courante_abreviation%}?categorie={{categorie_id}}#ref-titre">
-              <button type="button" class="btn btn-primary btn-block" >
-                  <span>{{cat_nom}}</span>
-           </button>
-        </a>
-    </li>
-{% endfor %}
-
-    <li class="nav-item dropdown">
-       <a href="{% url 'blog:index_asso' asso=asso_courante_abreviation%}#ref-titre">
-            <button type="button" class="btn  btn-success btn-menu-forum btn-block" > Tous
-            </button>
-        </a>
-    </li>
-    </ul>
-
-</div>
-</nav>
-</div>
-    </div>
-</div>
-<div id="ref-titre"></div>
-<div class="row ">
-    <div class="col-sm-12 my-auto">
-        {% include 'blog/navbar_forum_tri.html' %}
-    </div>
-</div>
-
-
 {%endblock%}
 {% block content %}
+<div class="container">
+<div class="row justify-content-center" id="ref-titre">
+<nav class="navbar  navbar-expand-sm navbar-light bg-light justify-content-center">
+        <div class="navbar-header">
+             <button class="btn btn-primary navbar-toggler dropdown-toggle" type="button" data-toggle="collapse" data-target="#navbarGroupes" aria-controls="navbarProduitContent" aria-expanded="false" aria-label="Toggle navigation">
+               {% if asso_courante %} Groupe : {{asso_courante}} {% else %} Choisir un groupe {% endif %} </button>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarGroupes">
+            <ul class="nav navbar-nav justify-content-center ">
+            <li class="nav-item ">
+                <button type="button" class="btn disabled btn-menu-forum btn-block" > Groupe : </button>
+            </li>
+            {% for asso_nom, asso_id in asso_list %}
+                <li class="nav-item  ">
+                      <a  href="{% url 'blog:index_asso' asso=asso_id%}#ref-titre">
+                          <button type="button" class="btn btn-menu-forum btn-block {%if asso_courante_abreviation == asso_id %} btn-danger{% else %} btn-primary{% endif %}" >
+                              <span>{{asso_nom}}</span>
+                       </button>
+                    </a>
+                </li>
+            {% endfor %}
+
+            </ul>
+
+</div>
+</nav>
+</div>
+</div>
+
+
+
+<div class="row justify-content-center" >
 
 
         {% if request.GET.categorie %}
@@ -260,23 +218,68 @@
         </div>
         </div>
         {%endif%}
+</div>
 
-        <div class="infinite-container">
+{% if categorie_list %}
+<div class="container">
+<div class="row justify-content-center" >
+<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-center">
+        <div class="navbar-header">
+             <button class="btn btn-primary navbar-toggler dropdown-toggle" type="button" data-toggle="collapse" data-target="#navbarDossier" aria-controls="navbarProduitContent" aria-expanded="false" aria-label="Toggle navigation">
+               {% if dossier_courant %} Dossier : {{categorie_courante}} {% else %} Choisir un dossier {% endif %} </button>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarDossier">
+            <ul class="nav navbar-nav justify-content-center ">
+
+            <li class="nav-item ">
+                <button type="button" class="btn btn disabled  btn-menu-forum btn-block" > Dossier : </button>
+            </li>
+{% for categorie_id, cat_nom, cat_coul in categorie_list %}
+    <li class="nav-item  ">
+          <a style="background:{{cat_coul}};"  href="{% url 'blog:index_asso' asso=asso_courante_abreviation%}?categorie={{categorie_id}}#ref-titre">
+              <button type="button" class="btn  btn-block {%if dossier_courant == categorie_id %} btn-danger{% else %} btn-primary{% endif %}" >
+                  <span>{{cat_nom}}</span>
+           </button>
+        </a>
+    </li>
+{% endfor %}
+    </ul>
+
+</div>
+</nav>
+</div>
+</div>
+{%endif%}
+
+{%if list_epingles%}
+    <div class="row justify-content-center" >
+        <div class="col-sm-12 textcenter">
+            <p><h4>Articles épinglés</h4></p>
+        </div>
+    </div>
+    <div class="row justify-content-center" >
+        <div class="col-sm-12">
+     {% include "blog/articles_template_tableau.html" with article_list=list_epingles %}
+        </div>
+    </div>
+    <hr>
+{%endif%}
+
+{% if article_list %}
+<div class="row ">
+    <div class="col-sm-12 my-auto">
+        {% include 'blog/navbar_forum_tri.html' %}
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-sm-12">
+    <div class="infinite-container">
  {% include "blog/articles_template_tableau.html" with article_list=article_list %}
-        </div>
+    </div>
 {%include 'pagination.html' %}
-{% comment %}
-        <div class="infinite-container">
-            <div class="grid-container justify-content-center ">
-                {% for article in article_list %}
-                <div class="infinite-item my-auto mx-auto mx-auto">
-                {% include "blog/article_template2.html" with article=article %}
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-{% endcomment %}
+    </div></div>
 
+        {% endif %}
         {% if list_archive %}
         <div class="textcenter">
             <button id="btn-archives"  type="button" class="btn btn-lg" onclick="toggle_visibility('archives');" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour afficher les archives">

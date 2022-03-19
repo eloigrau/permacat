@@ -103,36 +103,36 @@
 </div>
 
         <hr>
-<div class="row">
-<div class="col-sm-12">
-   <h5> Choisir un groupe : </h5>
 <div class="container">
+<div class="row justify-content-center">
 <nav class="navbar  navbar-expand-lg navbar-light bg-light justify-content-center">
-
-        <div class="justify-content-center " id="navbarProduit" >
+        <div class="navbar-header">
+             <button class="btn navbar-toggler btn-primary" type="button" data-toggle="collapse" data-target="#navbarProduit" aria-controls="navbarProduitContent" aria-expanded="false" aria-label="Toggle navigation">
+               Choisir un groupe</button>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarProduit">
             <ul class="nav navbar-nav justify-content-center ">
 
-{% for asso_nom, asso_id in asso_list %}
-    <li class="nav-item  ">
-          <a  href="{% url 'blog:index_asso' asso=asso_id%}#ref-dossiers">
-              <button type="button" class="btn btn-primary btn-menu-forum " >
-                  <span>{{asso_nom}}</span>
-           </button>
-        </a>
-    </li>
-{% endfor %}
+        {% for asso_nom, asso_id in asso_list %}
+            <li class="nav-item  ">
+                  <a  href="{% url 'blog:index_asso' asso=asso_id%}#ref-titre">
+                      <button type="button" class="btn btn-primary btn-menu-forum btn-block" >
+                          <span>{{asso_nom}}</span>
+                   </button>
+                </a>
+            </li>
+        {% endfor %}
 
-    <li class="nav-item dropdown">
-        <a href="{% url 'blog:index' %}">
-            <button type="button" class="btn  btn-success btn-menu-forum btn-block" > Tous
-            </button>
-        </a>
-    </li>
-    </ul>
+            <li class="nav-item dropdown">
+                <a href="{% url 'blog:index' %}">
+                    <button type="button" class="btn  btn-success btn-menu-forum btn-block" > Tous
+                    </button>
+                </a>
+            </li>
+            </ul>
 
-</div>
+        </div>
 </nav>
-</div>
 </div>
 </div>
 

@@ -11,7 +11,7 @@
 
 {% for asso, asso_nom in assos %}
     <li class="nav-item  ">
-          <a class=" dropdown-item " href="{% url 'blog:index_asso' asso=asso%}#ref-dossiers">
+          <a class=" dropdown-item " href="{% url 'blog:index_asso' asso=asso%}#ref-titre">
               <button type="button" class="btn dropdown-toggle btn-primary btn-menu-forum btn-block " >
                   <span>{{asso_nom}}</span>
            </button>

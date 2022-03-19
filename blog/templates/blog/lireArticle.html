@@ -7,7 +7,7 @@
 
 {% block subtitle %}
 
-<div class="container-fluid">
+<div class="container-fluid" id="ref-titre">
 <div class="row">
     <div class="col-sm-12 textcenter">
         <p>
@@ -103,7 +103,7 @@
 <div class="row">
 <div class="col-sm-12 offset-md-2 col-md-8 textcenter">
             <span >
-                <a href="{% url 'blog:index_asso' asso=article.asso.abreviation %}#ref-dossiers" >{{ article.get_logo_nomgroupe_html|safe }}</a>
+                <a href="{% url 'blog:index_asso' asso=article.asso.abreviation %}#ref-titre" >{{ article.get_logo_nomgroupe_html|safe }}</a>
             </span> -
 
                 <span class="badge badge-success" style="background-color:{{article.get_couleur}}" ><a href="{% url 'blog:index'  %}?categorie={{article.categorie}}" >{% if article.get_logo_categorie %}  <img  src="{% static article.get_logo_categorie %}" height="16px"/>  {% endif %} {{ article.get_categorie_display }}</a></span>

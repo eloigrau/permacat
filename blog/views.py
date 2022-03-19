@@ -360,9 +360,7 @@ class ListeArticles(ListView):
 
        # context['projets_list'] = [(x.slug, x.titre, x.get_couleur) for x in proj]
 
-        assos = Asso.objects.all()
-        context['assos'] = [(x.nom, x.abreviation) for x in assos]#['public'] + [asso for asso in Choix_global.abreviationsAsso if self.request.user.est_autorise(asso)] + ['projets']
-
+        context['asso_list'] = [(x.nom, x.abreviation) for x in Asso.objects.all().exclude(abreviation="jp") if self.request.user.est_autorise(x.abreviation)]
         context['typeFiltre'] = "aucun"
 
         context['suivis'] = get_suivis_forum(self.request)
@@ -421,10 +419,12 @@ class ListeArticles_asso(ListView):
         else:
             qs = qs.filter(asso__abreviation=asso.abreviation)
 
+        self.categorie = None
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])
         if "categorie" in params:
             qs = qs.filter(categorie=params['categorie'])
+            self.categorie = params['categorie']
 
         if "ordreTri" in params:
             if params['ordreTri'] == "-date_dernierMessage":
@@ -438,13 +438,14 @@ class ListeArticles_asso(ListView):
             qs = qs.order_by( '-date_creation', '-date_dernierMessage', 'categorie')
 
         self.qs = qs
-        return qs.filter(estArchive=False)
+        return qs.filter(estArchive=False, estEpingle=False)
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
 
         context['list_archive'] = self.qs.filter(estArchive=True)
+        context['list_epingles'] = self.qs.filter(estEpingle=True)
 
 
         qs = Article.objects.all()
@@ -481,8 +482,9 @@ class ListeArticles_asso(ListView):
         #     ateliers = ateliers.exclude(asso__abreviation="rtg")
         # context['ateliers_list'] = [(x.slug, x.titre, x.get_couleur) for x in ateliers]
 
-        context['asso_list'] = [(x.nom, x.abreviation) for x in Asso.objects.all()]
+        context['asso_list'] = [(x.nom, x.abreviation) for x in Asso.objects.all().exclude(asso__abreviation="jp") if self.request.user.est_autorise(nomAsso)]
         context['asso_courante'] = asso
+        context['dossier_courant'] =  self.categorie
         context['asso_courante_abreviation'] = asso.abreviation
         context['typeFiltre'] = "aucun"
         context['suivis'] = get_suivis_forum(self.request)
