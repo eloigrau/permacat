@@ -482,7 +482,7 @@ class ListeArticles_asso(ListView):
         #     ateliers = ateliers.exclude(asso__abreviation="rtg")
         # context['ateliers_list'] = [(x.slug, x.titre, x.get_couleur) for x in ateliers]
 
-        context['asso_list'] = [(x.nom, x.abreviation) for x in Asso.objects.all().exclude(asso__abreviation="jp") if self.request.user.est_autorise(x.abreviation)]
+        context['asso_list'] = [(x.nom, x.abreviation) for x in Asso.objects.all().exclude(abreviation="jp") if self.request.user.est_autorise(x.abreviation)]
         context['asso_courante'] = asso
         context['dossier_courant'] =  self.categorie
         context['asso_courante_abreviation'] = asso.abreviation
