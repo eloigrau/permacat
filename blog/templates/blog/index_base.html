@@ -144,7 +144,7 @@
             {% for asso_nom, asso_id in asso_list %}
                 <li class="nav-item  ">
                       <a  href="{% url 'blog:index_asso' asso=asso_id%}#ref-titre">
-                          <button type="button" class="btn btn-menu-forum btn-block {%if asso_courante_abreviation == asso_id %} btn-warning{% else %}btn-info{% endif %}" >
+                          <button type="button" class="btn  btn-block {%if asso_courante_abreviation == asso_id %} btn-warning{% else %}btn-info{% endif %}" >
                               <h6>{{asso_nom}}</h6>
                        </button>
                     </a>
