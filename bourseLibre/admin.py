@@ -43,6 +43,8 @@ class ProduitAdmin(admin.ModelAdmin):
     list_display = ('nom_produit', 'categorie', 'estUneOffre', 'asso', 'unite_prix')
 class Adhesion_permacatAdmin(admin.ModelAdmin):
     list_display = ('user', 'date_cotisation', 'montant')
+class AssoAdmin(admin.ModelAdmin):
+    readonly_fields = ('id',)
 
 admin.site.register(Article, ArticleAdmin)
 admin.site.register(Art_jardin, Article_jardinAdmin)
@@ -53,7 +55,7 @@ admin.site.register(Projet, ProjetAdmin)
 admin.site.register(Profil, CustomUserAdmin)
 
 admin.site.register(Adresse)
-admin.site.register(Asso)
+admin.site.register(Asso, AssoAdmin)
 admin.site.register(Produit, ProduitAdmin)
 admin.site.register(Panier)
 admin.site.register(Item)
