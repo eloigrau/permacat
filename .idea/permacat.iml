@@ -9,7 +9,7 @@
       <excludeFolder url="file://$MODULE_DIR$/bourseLibre/static_files/range_filter" />
       <excludeFolder url="file://$MODULE_DIR$/bourseLibre/media" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.8 (venv3.8)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.8 (permacat_server)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
