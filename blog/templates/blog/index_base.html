@@ -144,8 +144,8 @@
             {% for asso_nom, asso_id in asso_list %}
                 <li class="nav-item  ">
                       <a  href="{% url 'blog:index_asso' asso=asso_id%}#ref-titre">
-                          <button type="button" class="btn btn-menu-forum btn-block {%if asso_courante_abreviation == asso_id %} btn-danger{% else %} btn-primary{% endif %}" >
-                              <span>{{asso_nom}}</span>
+                          <button type="button" class="btn btn-menu-forum btn-block {%if asso_courante_abreviation == asso_id %} btn-warning{% else %}btn-info{% endif %}" >
+                              <h6>{{asso_nom}}</h6>
                        </button>
                     </a>
                 </li>
@@ -165,14 +165,14 @@
         <ul class="navbar-nav ">
         <li class="nav-item dropdown">
             <a class="nav-item btn-block" href="#" id="menuDossier" data-toggle="dropdown">
-                <button class="btn  {% if dossier_courant %}btn-danger{% else %}btn-info {% endif %} dropdown-toggle">
+                <button class="btn  {% if dossier_courant %}btn-warning{% else %}btn-info {% endif %} dropdown-toggle">
                     <h6> {% if dossier_courant %} Dossier : {{categorie_courante}} {% else %} Choisir un dossier {% endif %}</h6></button>
                 </button>
             </a>
             <div class="dropdown-menu"  aria-labelledby="menuDossier"  id="idmenuDossier">
             {% for categorie_id, cat_nom, cat_coul in categorie_list %}
                        <a class="dropdown-item"  href="{% url 'blog:index_asso' asso=asso_courante_abreviation%}?categorie={{categorie_id}}#ref-titre">
-                         {{cat_nom}}
+                           {{cat_nom}}
                     </a>
             {% endfor %}
             </div>

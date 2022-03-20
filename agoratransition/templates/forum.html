@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load app_filters %}
+
+{% block sidebar %}
+    <li><a href="{% url 'organisation' %}">Informations</a></li>
+    <li><a class="active" href="{% url 'forum' %}">Forum</a></li>
+    <li><a href="{% url 'benevoles' %}">Bénévoles</a></li>
+    <li><a href="{% url 'exposants' %}">Exposants</a></li>
+    <li><a href="{% url 'contact' %}">Contact</a></li>
+{%endblock%}
+
+{% block content %}
+
+<div id="services" class="section lb">
+    <div class="container-fluid">
+        <div class="section-title row text-center">
+            <div class="col-md-8 col-md-offset-2">
+            <small>Pour mieux s'organiser</small>
+            <h3>Forum du festival</h3>
+            <hr class="grd1">
+            <p class="lead">On peut échanger des infos ici</p>
+            </div>
+        </div><!-- end title -->
+    </div>
+</div>
+
+
+<div class="section">
+      <div class="container">
+        <div class="section row">
+                <div class="col-md-10 col-md-offset-1 col-sm-12">
+                <div class="contenu conversation" id="idConversation">
+                {% for mess in messages_echanges %}
+                    {% ifchanged %}
+                    <div class="row msg-date">
+                        <div class="col-sm-12">
+                            <p class="infos  text-center">{{ mess.date_creation|date:"l d F" }}</p>
+                        </div>
+                    </div>
+                    {% endifchanged %}
+                    <div class="row {% ifequal mess.auteur.id request.user.id %} msg-auteur  {%else%} msg-destinataire{%endifequal%} ">
+                        <div class="col-sm-4 col-md-3 col-lg-2">
+                            <p class="infos  textepetit ">
+                                {% ifchanged %}<a href="{% url 'profil' mess.auteur.id %}"> {{mess.auteur}}</a>, {% endifchanged %} {{ mess.date_creation|date:"G:i" }}:
+                            {% if request.user == mess.auteur  or request.user.is_superuser%}
+                                <a class="boutonediter" href="{{ mess.get_edit_url  }}" role="button" alt="éditer le message"><i class="fa fa-edit"></i></a>
+                          
+                            {% endif %}
+                            </p>
+                        </div>
+                        <div class=" col-sm-8 col-md-9 col-lg-10 message ">
+                                <p>{{ mess.message|safe }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+    <script>
+    var messageBody = document.querySelector('#idConversation');
+    messageBody.scrollTop = idConversation.scrollHeight - idConversation.clientHeight;
+</script>
+<hr>
+
+<div class="row justify-content-center">
+    <div class="col-sm-12 ">
+    <form method="post">
+      {% csrf_token %}
+      {% include 'form_template2.html' %}
+
+      <button type="submit" class="btn btn-primary">{% if nomBouton %}{{nomBouton}}{% else %}Envoyer le message{% endif %}</button>
+    </form>
+    </div>
+</div>
+
+</div>
+</div>
+</div>
+
+        <hr class="hr1">
+
+
+{% endblock %}

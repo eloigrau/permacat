@@ -26,7 +26,7 @@ from django.urls import reverse_lazy
 from django.contrib import admin
 from .settings import MEDIA_ROOT
 
-admin.sites.site_header ="Admin "
+admin.sites.site_header ="Admin"
 admin.sites.site_title ="Admin Permacat"
 
 urlpatterns = [
@@ -83,6 +83,7 @@ urlpatterns = [
     url(r'^merci/$', views.merci, name='merci'),
     url(r'^forum/', include('blog.urls', namespace='bourseLibre.blog')),
     url(r'^jardins/', include('jardinpartage.urls', namespace='bourseLibre.jardinpartage')),
+    #url(r'^agora/', include('agoratransition.urls', namespace='bourseLibre.agoratransition')),
     url(r'^vote/', include('vote.urls', namespace='bourseLibre.vote')),
     url(r'^kit/', include('fiches.urls', namespace='bourseLibre.fiches')),
     url(r'^ateliers/', include('ateliers.urls', namespace='bourseLibre.ateliers')),

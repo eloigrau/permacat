@@ -225,6 +225,19 @@ class Asso(models.Model):
     def get_absolute_url(self):
         return reverse_lazy('presentation_asso', asso=self.abreviation)
 
+
+    @property
+    def get_logo_nomgroupe(self):
+        from blog.models import Choix as Choix_asso
+        return Choix_asso.get_logo_nomgroupe(self.abreviation)
+
+    @property
+    def get_logo_nomgroupe_html(self):
+        return self.get_logo_nomgroupe_html_taille()
+
+    def get_logo_nomgroupe_html_taille(self, taille=25):
+        return "<img src='/static/" + self.get_logo_nomgroupe + "' height ='"+str(taille)+"px'/>"
+
 class Profil(AbstractUser):
     username_validator = ASCIIUsernameValidator()
     site_web = models.URLField(null=True, blank=True)

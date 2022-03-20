@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="section">
+      <div class="container">
+
+        <div class="row" data-aos="fade-up" data-aos-delay="500">
+          <div class="col-md-10" data-aos="fade-up" data-aos-delay="500">
+    <ul class="list-group">
+{%for lien in liens%}
+        <li class="list-group-item" ><a href="{{lien}}" rel="external" target="_blank">{{lien}}</a></li>
+{%endfor%}
+</ul>
+
+        </div>
+        </div>
+          <p>Design du site par : <a href="https://html.design/">html design</a>, adapté par Eloi Grau</p>
+    </div>
+    </div>
+<div class="row">
+<div class="col">
+</div>
+</div>
+ {% endblock %}

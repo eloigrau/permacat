@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load app_filters %}
+{% block title %}Modifier le commentaire{% endblock %}
+
+{% block sidebar %}
+    <li><a href="{% url 'organisation' %}">Informations</a></li>
+    <li><a class="active" href="{% url 'forum' %}">Forum</a></li>
+    <li><a href="{% url 'benevoles' %}">Bénévoles</a></li>
+    <li><a href="{% url 'exposants' %}">Exposants</a></li>
+    <li><a href="{% url 'contact' %}">Contact</a></li>
+{%endblock%}
+
+{% block content %}
+
+<div id="services" class="section lb">
+    <div class="container-fluid">
+        <div class="section-title row text-center">
+            <div class="col-md-8 col-md-offset-2">
+            <h3>Modifier un message du forum</h3>
+            <hr class="grd1">
+            </div>
+        </div><!-- end title -->
+    </div>
+</div>
+
+
+<div class="section">
+      <div class="container">
+
+
+     {% include 'form_template.html'%}
+      </div></div>
+
+{% endblock %}
+
+    

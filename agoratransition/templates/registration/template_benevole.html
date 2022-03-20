@@ -1,0 +1,81 @@
+<table class="table table-condensed" style="border-top:none;">
+		{% if not nomuser or i.user == request.get.user %}
+		<thead>
+			 <th colspan="2">
+				{% if i.statut_benevole == '4'%}Inscription ANNULEE en tant que bénévole
+					<a href="{{i.get_undocancel_url}}">
+						<button type="button" class="btn btn-sm btn-warning">
+							&nbsp;Rétablir
+						</button>
+					</a>
+				{%else%}Inscription en tant que bénévole
+				<a href="{{i.get_update_url}}">
+					<button type="button" class="btn btn-sm btn-warning">
+						&nbsp;Modifier
+					</button>
+				</a>
+
+				<a href="{{i.get_cancel_url}}">
+					<button type="button" class="btn btn-sm btn-danger">
+						&nbsp;Annuler
+					</button>
+				</a>
+				{%endif%}
+			 </th>
+		</thead>
+		{% endif %}
+		<tbody  class="textleft">
+		{% if nomuser %}
+			<tr>
+				<td colspan="2" class="textcenter">Bénévole : <a href="{% url 'profil_nom' nomuser %}">{{nomuser}} ({{emailuser}})</a>
+				</td>
+			</tr>
+		{% endif %}
+			<tr>
+				<td class="nomProprieteProduit">
+					Statut :
+				</td>
+				<td class="proprieteProduit">
+					{{i.get_statut_benevole_display}}
+				</td>
+			</tr>
+			<tr>
+				<td class="nomProprieteProduit">
+					Date d'inscription :
+				</td>
+				<td class="proprieteProduit">
+					{{i.date_inscription|date:"DATE_FORMAT"}}
+				</td>
+			</tr>
+			<tr>
+				<td class="nomProprieteProduit">
+					Domaine préférentiel
+				</td>
+				<td class="proprieteProduit">
+					{{i.get_domaine_benevole_display}}
+				</td>
+			</tr>
+
+			<tr>
+				<td class="nomProprieteProduit">
+					Disponibilité :
+				</td>
+				<td class="proprieteProduit">
+					{% if i.jour_mer %}mercredi, {% endif%}
+					{% if i.jour_jeu %}jeudi, {% endif%}
+					{% if i.jour_ven %}vendredi, {% endif%}
+					{% if i.jour_sam %}samedi, {% endif%}
+					{% if i.jour_dim %}dimanche, {% endif%}
+					{% if i.jour_lun %}lundi, {% endif%}
+				</td>
+			</tr>
+			<tr>
+				<td class="nomProprieteProduit">
+Informations complémentaires
+				</td>
+				<td class="proprieteProduit">
+{{i.description|safe}}
+				</td>
+			</tr>
+		</tbody>
+	</table>

@@ -1,0 +1,31 @@
+{% extends 'base_sanscommentaire.html' %}
+{% load widget_tweaks %}
+
+{% block title %}S'enregistrer{% endblock %}
+
+{% block content %}
+
+<div class="section wb">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2 text-center">
+                            <div class="message-box">
+                                <h4>Créez votre compte</h4>
+                                <h2>Renseignez les informations suivantes pour vous inscrire </h2>
+                                <p>Déjà inscrit ? <a href="{%url 'login' %}">connectez-vous</a></p>
+                                <p>(les champs avec (*) sont obligatoires)</p>
+                                <form role="form" action="" method="post" enctype="multipart/form-data">
+                              {% csrf_token %}
+                                    {%include 'form_template2.html' with form=form_profil%}
+
+                              <button type="submit" class="btn btn-success">S'enregistrer</button>
+                            </form>
+                            </div><!-- end messagebox -->
+                        </div><!-- end col -->
+                    </div><!-- end row -->
+
+
+        <hr class="hr1">
+
+    {% endblock %}
+

@@ -1,0 +1,142 @@
+<table class="table table-condensed textleft">
+			<thead>
+				 <th colspan="2" class="textcenter">
+
+
+			{% if i.user == request.user %}
+				{% if i.statut_exposant == '4'%}Inscription ANNULEE
+				<a href="{{i.get_undocancel_url}}">
+					<button type="button" class="btn btn-sm btn-warning">
+						&nbsp;Rétablir
+					</button>
+				</a>
+				{%else%}Inscription en cours
+				<a href="{{ i.get_update_url }}" type="button" class="btn btn-sm btn-warning">
+						&nbsp;Modifier
+				</a>
+
+				<a href="{{i.get_cancel_url}}">
+					<button type="button" class="btn btn-sm btn-danger">
+						&nbsp;Annuler
+					</button>
+				</a>
+				 {% endif%}
+			 {% endif%}
+                 </th>
+			</thead>
+			<tbody  class="textleft">
+			{% if nomuser %}
+				<tr>
+					<td colspan="2" class="textcenter">
+						Stand demandé par <a href="{% url 'profil_nom' nomuser %}">{{nomuser}} ({{emailuser}})</a>
+					</td>
+				</tr>
+			{% endif %}
+				<tr>
+					<td class="nomProprieteProduit">
+						Statut :
+					</td>
+					<td class="proprieteProduit">
+						{{i.get_statut_exposant_display}}
+					</td>
+				</tr>
+				<tr>
+					<td class="nomProprieteProduit">
+						Date d'inscription :
+					</td>
+					<td class="proprieteProduit">
+						{{i.date_inscription|date:"DATE_FORMAT"}}
+					</td>
+				</tr>
+				<tr>
+					<td class="nomProprieteProduit">
+                        Nom de la structure
+					</td>
+					<td class="proprieteProduit">
+                        {{i.nom_structure}}
+					</td>
+				</tr>
+				<tr>
+					<td class="nomProprieteProduit">
+                        Type de la structure
+					</td>
+					<td class="proprieteProduit">
+                        {{i.get_type_exposant_display}}
+					</td>
+				</tr>
+				<tr>
+					<td class="nomProprieteProduit">
+                        Domaine du stand
+					</td>
+					<td class="proprieteProduit">
+{{i.get_domaine_exposant_display}}
+					</td>
+				</tr>
+				<tr>
+					<td class="nomProprieteProduit">
+                        Journées de présence
+					</td>
+					<td class="proprieteProduit">
+                        {{i.get_jours_festival_display}}
+					</td>
+				</tr>
+				<tr>
+					<td class="nomProprieteProduit">
+Téléphone (joignable pendant le festival)
+					</td>
+					<td class="proprieteProduit">
+{{i.telephone}}
+					</td>
+				</tr>
+				<tr>
+					<td class="nomProprieteProduit">
+Description du stand
+					</td>
+					<td class="proprieteProduit">
+{{i.description|safe}}
+					</td>
+				</tr>
+				<tr>
+					<td class="nomProprieteProduit">
+Nombre de tables nécessaires
+					</td>
+					<td class="proprieteProduit">
+{{i.get_nombre_tables_display}}
+					</td>
+				</tr>
+				<tr>
+					<td class="nomProprieteProduit">
+Plaque minéralogique pour l'accès du matériel du stand au festival
+					</td>
+					<td class="proprieteProduit">
+{{i.plaque}}
+					</td>
+				</tr>
+
+				<tr>
+					<td class="nomProprieteProduit">
+Participe à la tombola
+                    </td>
+					<td class="proprieteProduit">
+{% if i.is_tombola %}
+oui
+{% else %}
+						non
+{% endif %}
+					</td>
+				</tr>
+
+{% if i.is_tombola %}
+				<tr>
+					<td class="nomProprieteProduit">
+Lot(s) pour la tombola
+                    </td>
+					<td class="proprieteProduit">
+{{i.lot_tombola|safe}}
+					</td>
+				</tr>
+{% endif %}
+
+
+			</tbody>
+		</table>

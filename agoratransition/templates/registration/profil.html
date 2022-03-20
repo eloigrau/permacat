@@ -1,0 +1,131 @@
+{% extends 'base_sanscommentaire.html' %}
+{% load static %}
+{% block title %}Profil de {{ user.username }} {% endblock %}
+
+{% block content %}
+
+<div id="titre" class="section lb">
+    <div class="container-fluid">
+        <div class="section-title row text-center">
+            <div class="col-md-8 col-md-offset-2">
+            <small></small>
+            <h3>{% if user == request.user %}Mon profil
+{% else %}
+                Profil de {{ user.username }}
+{% endif %}</h3>
+            <hr class="grd1">
+            </div>
+        </div><!-- end title -->
+    </div>
+</div>
+
+<div class="site-section">
+      <div class="container">
+<div class="row justify-content-center">
+  <div class="col-sm-12 col-md-10 col-md-offset-1">
+      {%if request.user == user %}
+        <a href="{% url 'profil_modifier' %}"  type="button" class="btn btn-sm btn-warning">
+                <span class="glyphicon glyphicon-plus"></span>&nbsp;Modifier
+        </a>
+      {%endif%}
+      <table class="table table-condensed tablepanier table-striped">
+          <tbody>
+
+        <tr>
+            <td style="width:250px">Pseudo :</td>
+            <td>{{ user.username }}</td>
+        </tr>
+
+        {%if user.accepter_annuaire  or request.user == user %}
+              {% if user.get_full_name %}
+                <tr>
+                    <td style="width:250px">Nom :</td>
+                    <td>{{ user.get_full_name }}</td>
+                </tr>
+              {% endif %}
+              {% if user.adresse.telephone %}
+                <tr>
+                    <td style="width:250px">Telephone *:</td>
+                    <td>{{ user.adresse.telephone }}</td>
+                </tr>
+              {% endif %}
+            <tr>
+                <td style="width:250px">Email :</td>
+                <td>{{ user.email }}</td>
+            </tr>
+
+              {% if user.description %}
+                    <tr>
+                        <td style="width:250px">Description :</td>
+                        <td>{{ user.description|safe }}</td>
+                    </tr>
+              {% endif %}
+        {%if user.commune %}
+            <tr>
+                <td style="width:250px">Commune :</td>
+                <td>{{ user.commune }}</td>
+            </tr>
+            {% endif %}
+            {%if user.code_postal %}
+            <tr>
+                <td style="width:250px">Code postal :</td>
+                <td>{{ user.code_postal }}</td>
+            </tr>
+            {% endif %}
+                <tr>
+                    <td style="width:250px">Statut  :</td>
+                    <td>{{ user.get_statut_adhesion_display }}</td>
+                </tr>
+            <tr>
+                <td style="width:250px">Inscrit newsletter : </td>
+                <td>{{ user.inscrit_newsletter_str }}</td>
+            </tr>
+
+        {% endif %}
+            <tr>
+                <td style="width:250px">Inscrit en tant que bénévole : </td>
+                <td>{%if user.is_benevole %} oui {%else%} non {%endif%}</td>
+            </tr>
+            <tr>
+                <td style="width:250px">Inscrit en tant qu'exposant : </td>
+                <td>{%if user.is_exposant %} oui {%else%} non{%endif%}</td>
+            </tr>
+      </tbody>
+      </table>
+
+      </div>
+</div>
+
+      {%if request.user == user %}
+<div class="site-section">
+      <div class="container">
+<div class="row justify-content-center">
+  <div class="col-sm-12 col-md-10 col-md-offset-1">
+        <hr class="hr1">
+<div class="row justify-content-center">
+  <div class="col-sm-12 col-md-10 textcenter">
+      <p> {% if user.is_benevole %} Vous êtes inscrit en tant que bénévole {%else%} Vous n'êtes pas <a href="{% url 'inscription_benevole' %}">inscrit en tant que bénévole</a>{%endif%}
+     </p>
+{% for i in inscriptions_benevole %}
+      {% include "registration/template_benevole.html" %}
+  {% endfor%}
+        <hr class="hr1">
+    {% with n=user.nbstands %}
+      <p> {% if n %} Vous avez demandé {{ n }} stand{{n|pluralize}} {%else%} Vous n'avez pas <a href="{% url 'inscription_exposant' %}">demandé de stand{%endif%} </a> </p>
+      {%endwith%}
+        {% for i in inscriptions_exposants %}
+            {% include "registration/template_exposant.html" %}
+        {% endfor%}
+        <hr class="hr1">
+            <a href="{% url 'logout' %}" class="btn btn-light btn-radius btn-brd grd1 effect-1 butn">Se déconnecter</a>
+    </div>
+</div>
+    </div>
+</div>
+      {%endif%}
+
+        <hr class="hr1">
+
+{% endblock %}
+
+    

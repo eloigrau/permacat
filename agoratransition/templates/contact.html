@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+
+{% block content %}
+<!-- Page Content -->
+<div id="page-content-wrapper">
+
+    <div id="contact" class="section wb">
+        <div class="container-fluid">
+            <div class="section-title row text-center">
+                <div class="col-md-8 col-md-offset-2">
+                <small></small>
+                <h3>Contact</h3>
+                <hr class="grd1">
+                    {% if msg %}
+                <p class="lead">{{msg}}</p>
+                    {% else%}
+                <p class="lead">Pour toute question/suggestion/remarque/insulte, veuillez remplir le formulaire suivant</p>
+                    {% endif%}
+                </div>
+            </div><!-- end title -->
+
+        {% include 'form_template.html' with nomBouton="envoyer" %}
+
+        </div><!-- end container -->
+    </div><!-- end section -->
+
+</div>
+
+{% endblock %}

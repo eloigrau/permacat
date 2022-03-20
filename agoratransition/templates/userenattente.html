@@ -1,0 +1,24 @@
+{% extends 'base_sanscommentaire.html' %}
+{% block navbar%}
+{% endblock %}
+{% block content %}
+
+    <div class="site-section">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-sm-12 text-center" data-aos="fade-up" data-aos-delay="100">
+              <h2 class="textcenter">Merci pour votre intérêt. Votre compte a été créé !   </h2>
+            </div>
+          </div>
+        <div class="row mb-5">
+          <div class="col-sm-12 text-center" data-aos="fade-up" data-aos-delay="100">
+              <p class="textcenter">Vous pouvez maintenant vous connecter et vous inscrire en tant que <a href="{% url 'inscription_benevole' %}">bénévole</a> et/ou <a href="{% url 'inscription_exposant' %}">exposant</a> au festival   </p>
+          </div>
+        </div>
+        </div>
+
+      </div>
+
+        <hr class="hr1">
+
+{% endblock %}

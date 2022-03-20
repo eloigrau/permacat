@@ -117,7 +117,7 @@ def liens(request):
         'http://soudaqui.cat/wordpress/',
         ],
             "medias" : [
-        #'https://permaculturelne.herokuapp.com',
+        #'https://agoratransition.herokuapp.com',
         'http://www.le-message.org/',
         'https://reporterre.net/',
         'https://la-bas.org/',

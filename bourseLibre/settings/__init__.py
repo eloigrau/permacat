@@ -110,6 +110,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'avatar',
     'defraiement',
+    #'agoratransition',
     #'formtools',
     #'channels', 'chat',
     #'jet','jet.dashboard', 'django.contrib.admin',

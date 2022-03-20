@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load cookielaw_tags %}
+{% load i18n %}
+{% load fontawesome %}
+{%block header %}
+ <script src="{% static 'js/cookielaw.js'%}" type="text/javascript"></script>
+{%endblock%}
+
+
+{% block content %}
+            <div id="home" class="parallax first-section" data-stellar-background-ratio="0.4" style="background-image:url('images/foret.jpg');">
+                <div class="container-fluid">
+                    <div class="row">
+						<div id="full-width" class="owl-carousel owl-theme">
+							<div class="text-center item">
+								<div class="col-md-8 col-md-offset-2 col-sm-12">
+									<div class="big-tagline text-center">
+										<h2><strong>FestiGraines</strong> <br>La journée dédiée aux graines en pays Catalan (Elne)</h2>
+										<p class="lead">le samedi 15 octobre 2022</p>
+									</div>
+								</div>
+							</div>
+							<div class="text-center item">
+								<div class="col-md-8 col-md-offset-2 col-sm-12">
+									<div class="big-tagline text-center">
+										<h2><strong>Devenez bénévole</strong><br></h2>
+										<p class="lead">rejoignez l'équipe de Ramene Ta Graine pour nous aider à faire un super festival</p>
+										<a href="{% url 'inscription_benevole' %}" class="btn btn-light btn-radius btn-brd grd1 effect-1 butn">Je veux être bénévole</a>
+									</div>
+								</div>
+							</div>
+							<div class="text-center item">
+								<div class="col-md-8 col-md-offset-2 col-sm-12">
+									<div class="big-tagline text-center">
+										<h2><strong>Devenez exposant</strong><br></h2>
+										<p class="lead">réservez votre stand en ligne pour une meilleure organisation</p>
+										<a href="{% url 'inscription_exposant' %}" class="btn btn-light btn-radius btn-brd grd1 effect-1 butn">Je m'inscris en tant qu'exposant</a>
+									</div>
+								</div>
+							</div>
+						</div>
+                    </div><!-- end row -->
+                </div><!-- end container -->
+            </div><!-- end section -->
+
+
+{% endblock %}
+
+
+{%block place_cookielaw %}
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2 text-center">
+    {% cookielaw_banner %}
+    </div>
+</div>
+		
+{%endblock %}
+
