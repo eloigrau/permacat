@@ -98,7 +98,8 @@ def accueil(request):
 
     derniers = sorted(set([x for x in itertools.chain(derniers_articles_comm[::-1][:8], derniers_articles_modif[::-1][:8], derniers_articles[:8], )]), key=lambda x:x.date_modification if x.date_modification else x.date_creation)[::-1]
 
-    asso_list = [(x.nom, x.abreviation) for x in Asso.objects.all()] # ['public'] + [asso for asso in Choix_global.abreviationsAsso if self.request.user.est_autorise(asso)] + ['projets']
+
+    asso_list = [(x.nom, x.abreviation) for x in Asso.objects.all().exclude(abreviation="jp").order_by("id") if request.user.est_autorise(x.abreviation)] # ['public'] + [asso for asso in Choix_global.abreviationsAsso if self.request.user.est_autorise(asso)] + ['projets']
 
     suivis = get_suivis_forum(request)
 #'categorie_list':categorie_list,'categorie_list_pc':categorie_list_pc,'categorie_list_rtg':categorie_list_rtg,'categorie_list_fer':categorie_list_fer,'categorie_list_gt':categorie_list_gt,'categorie_list_citealt':categorie_list_citealt,'categorie_list_viure':categorie_list_viure,'projets_list':projets_list,'ateliers_list':ateliers_list, 'categorie_list_projets':categorie_list_projets,
