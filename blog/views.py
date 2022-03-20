@@ -358,7 +358,6 @@ class ListeArticles(ListView):
         #         proj = proj.exclude(asso__abreviation=nomAsso)
         # cat = proj.order_by('categorie').values_list('categorie', flat=True).distinct()
        # context['categorie_list_projets'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets]
-
        # context['projets_list'] = [(x.slug, x.titre, x.get_couleur) for x in proj]
 
         context['asso_list'] = [(x.nom, x.abreviation) for x in Asso.objects.all().exclude(abreviation="jp") if self.request.user.est_autorise(x.abreviation)]
