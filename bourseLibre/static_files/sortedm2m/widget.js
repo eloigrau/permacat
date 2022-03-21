@@ -19,18 +19,31 @@ if (typeof jQuery === 'undefined') {
                 var label, labelFor;
                 var currentElement = ul;
 
-                while (!label || !label.length) {
+                // Look for a <label> that is a sibling of an
+                // ancestor, if there is one, extract the for
+                // attribute as name variable
+                while (currentElement[0].tagName != "BODY") {
                     currentElement = currentElement.parent();
                     label = currentElement.siblings('label');
+                    if(label) {
+                        labelFor = label.attr('for');
+                        if (!labelFor) {
+                            break;
+                        }
+                        id = labelFor.match(/^(.*)_\d+$/)[1];
+                        name = id.replace(/^id_/, '');
+                        // we found the label, and a name!
+                        break;
+                    }
                 }
 
-                labelFor = label.attr('for');
-                if (!labelFor) { return; }
-                id = labelFor.match(/^(.*)_\d+$/)[1];
-                name = id.replace(/^id_/, '');
+            }
+            if (name) {
+                ul.before('<input type="hidden" id="' + id + '" name="' + name + '" />');
+            } else {
+                ul.before('<input type="hidden" id="' + id + '" />');
             }
 
-            ul.before('<input type="hidden" id="' + id + '" name="' + name + '" />');
             var recalculate_value = function () {
                 var values = [];
                 ul.find(':checked').each(function () {
@@ -92,6 +105,13 @@ if (typeof jQuery === 'undefined') {
             text = text.replace(/&quot;/g, '"');
             text = text.replace(/&#39;/g, "'");
             text = text.replace(/&amp;/g, '&');
+            return text;
+        }
+
+        function windowname_to_id(text) {
+            // django32 has removed windowname_to_id function.
+            text = text.replace(/__dot__/g, '.');
+            text = text.replace(/__dash__/g, '-');
             return text;
         }
 

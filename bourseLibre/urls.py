@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^photolog/', include('photologue.urls', namespace='photologue')),
     #url(r'^chat/', include('chat.urls')),
     path(r'agenda/', include('cal.urls')),
+    path(r'agoratransition/', include('agoratransition.urls', namespace='agoratransition')),
     path(r'defraiement/', include(('defraiement.urls', 'defraiement'), namespace='defraiement')),
     path(r'carto/', include('carto.urls')),
     url('^', include('django.contrib.auth.urls')),
