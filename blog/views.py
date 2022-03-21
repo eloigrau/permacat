@@ -155,6 +155,21 @@ class ModifierArticle(UpdateView):
 
         return form
 
+def archiverArticleAdmin(request, slug):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden()
+
+    article = get_object_or_404(Article, slug=slug)
+    article.estArchive = True
+    article.save(sendMail=False)
+    url = article.get_absolute_url()
+    suffix = "_" + article.asso.abreviation
+    action.send(request.user, verb='article_modifier_archiver' + suffix, action_object=article, url=url,
+                description="a archivé l'article")
+
+    return redirect('blog:acceuil')
+
+
 # @login_required
 class ArticleAddAlbum(UpdateView):
     model = Article

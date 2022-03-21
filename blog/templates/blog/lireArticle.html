@@ -34,6 +34,11 @@
                 <span class="glyphicon glyphicon-plus"></span>&nbsp;Admin
                </button>
             </a>
+            <a href="{% url 'blog:archiverArticleAdmin' slug=article.slug %}">
+               <button type="button" class="btn btn-sm btn-danger">
+                <span class="glyphicon glyphicon-plus"></span>&nbsp;Archiver (Admin)
+               </button>
+            </a>
         {%endif%}
 
     </p>
