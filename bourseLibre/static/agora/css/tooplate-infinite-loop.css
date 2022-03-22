@@ -193,15 +193,18 @@ blockquote {
 
 .tm-hero-text-container-inner {
   margin-top: -90px;
+  background-color: white;
+  color: #37A;
 }
 
 .tm-hero-title {
   font-size: 3.5rem;
-  text-shadow: 2px 2px 2px #333;
+  text-shadow: 2px 2px 2px #17374f;
 }
 
 .tm-hero-subtitle {
-  text-shadow: 2px 2px 2px #333;
+  font-size: 2rem;
+  text-shadow: 2px 2px 2px #17374f;
 }
 
 .tm-intro-next {
