@@ -146,7 +146,7 @@ blockquote {
 
 #infinite {
 	background-color: #222;
-  background-image: url(../img/image823.png);
+  background-image: url(../img/image823_.jpg);
   background-repeat: no-repeat;
   height: 100vh;
   min-height: 375px;
@@ -193,8 +193,7 @@ blockquote {
 
 .tm-hero-text-container-inner {
   margin-top: -90px;
-  background-color: white;
-  color: #37A;
+  background-color: rgba(255, 255, 255, .7);
 }
 
 .tm-hero-title {
@@ -271,7 +270,7 @@ blockquote {
 /* Testimonials */
 #testimonials {
   color: white;
-  background-image: url(../img/infinite-loop-02.jpg);
+  background-image: url(../img/foret_.jpg);
   background-size: cover;
   background-repeat: no-repeat;
   background-size: 100%;
@@ -280,7 +279,7 @@ blockquote {
 
 @media (max-width: 991px) {
   #testimonials {
-    background-image: url(../img/infinite-loop-02-mobile.jpg);
+    background-image: url(../img/foret_mobile.jpg);
   }
 }
 

@@ -10,5 +10,6 @@ def resizeImgesDossier(dossier):
         os.system(cmd)
 
 dossier = "/home/tchenrezi/Téléchargements/img3/"
+dossier = "/home/tchenrezi/PycharmProjects/permacat_server/bourseLibre/static/agora/img/b/"
 
 resizeImgesDossier(dossier)
