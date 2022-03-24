@@ -141,7 +141,7 @@ class ModifierArticle(UpdateView):
         if not self.object.estArchive:
             action.send(self.request.user, verb='article_modifier'+suffix, action_object=self.object, url=url,
                          description="a modifié l'article [%s]: '%s'" %(self.object.asso, self.object.titre))
-        elif form.changed_data==['estArchive']:
+        elif form.changed_data == ['estArchive']:
             action.send(self.request.user, verb='article_modifier'+suffix + "-archive", action_object=self.object, url=url,
                          description="a archivé l'article [%s]: '%s'" %(self.object.asso, self.object.titre))
 

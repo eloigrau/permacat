@@ -1063,6 +1063,11 @@ class Message(models.Model):
         return self.conversation.get_absolute_url()
 
 
+    def save(self, *args, **kwargs):
+        super(Message, self).save(*args, **kwargs)
+        self.conversation.date_dernierMessage = now()
+        self.conversation.save()
+
 
 class MessageGeneral(models.Model):
     message = models.TextField(null=False, blank=False)
