@@ -4,8 +4,8 @@ from django.core.validators import RegexValidator
 
 # Create your models here.
 class Choix():
-    typeInscription = ("0","Particulier"), ('1','Association'), ('2','Institution'), ('3', 'Entreprise'),  ('4', "autre"),
-    statut_exposant = (('0', 'Inscription déposée'), ('1', 'Inscription incomplète ou en cours de validation'), ('5', 'Inscription valide mais en attente du cheque de caution'), ('2', 'Inscription validée'), ('3', 'Inscription refusée'), ('4', 'Inscription annulée'),)
+    type_inscription = ("0","Particulier"), ('1','Association'), ('2','Institution'), ('3', 'Entreprise'),  ('4', "autre"),
+    statut_inscription = (('0', 'Inscription déposée'), ('1', 'Inscription incomplète ou en cours de validation'), ('5', 'Inscription valide mais en attente du cheque de caution'), ('2', 'Inscription validée'), ('3', 'Inscription refusée'), ('4', 'Inscription annulée'),)
 
 class InscriptionExposant(models.Model):
     nom = models.CharField(max_length=250, null=False, blank=True, verbose_name="Nom Prénom / Raison sociale*")
@@ -16,13 +16,13 @@ class InscriptionExposant(models.Model):
                                  validators=[phone_regex, ], max_length=10,
                                  blank=True)  # validators should be a list
 
-    type_inscription = models.CharField(max_length=10,
-                                     choices=(Choix.typeInscription),
+    type_inscription = models.CharField(max_length=3,
+                                     choices=(Choix.type_inscription),
                                      default='0', verbose_name="Type de structure")
     date_inscription = models.DateTimeField(verbose_name="Date d'inscrition", editable=False, auto_now_add=True)
 
-    statut_exposant = models.CharField(max_length=10,
-                                       choices=(Choix.statut_exposant),
+    statut_exposant = models.CharField(max_length=3,
+                                       choices=(Choix.statut_inscription),
                                        default='0', verbose_name="Statut")
     commentaire = models.TextField(null=False, blank=True, verbose_name="Commentaire / message à passer")
 
@@ -31,8 +31,8 @@ class InscriptionExposant(models.Model):
         return self.__str()
 
     def __str__(self):
-        return "(" + str(self.id) + ") " + str(self.user) + " " + str(self.date_inscription) + " " + str(
-            self.statut_exposant) + " " + str(self.description)
+        return "(" + str(self.id) + ") " + str(self.nom) + " " + str(self.date_inscription) + " " + str(
+            self.statut_exposant) + " " + str(self.commentaire)
 
 
 
