@@ -35,7 +35,7 @@ class InscriptionExposant(models.Model):
 
 
 class Proposition(models.Model):
-    nom = models.CharField(max_length=250, null=False, blank=False, verbose_name="Nom de la structure*")
+    nom = models.CharField(max_length=250, null=False, blank=False, verbose_name="Nom Prénom / Raison sociale*")
     email = models.EmailField(blank=False, max_length=254, verbose_name='Email*',)
     telephone = models.CharField(verbose_name="Numéro de téléphone", max_length=10,
                                  blank=True)  # validatErs should be a list
