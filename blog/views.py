@@ -116,7 +116,7 @@ def ajouterArticle(request):
 
     if form.is_valid():
         article = form.save(request.user)
-        url = article.get_absolute_url()
+        url = article.get_absolute_url() + "#ref-titre"
         suffix = "_" + article.asso.abreviation
         action.send(request.user, verb='article_nouveau'+suffix, action_object=article, url=url,
                     description="a ajouté un article : '%s'" % article.titre)
