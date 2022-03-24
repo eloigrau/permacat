@@ -9,12 +9,12 @@ def accueil(request):
     form_proposition = PropositionForm(request.POST or None)
     form_inscription = InscriptionForm(request.POST or None)
     if form_contact.is_valid():
-        ins = form_contact.save()
-        return redirect(request.path)
+        form_contact.save()
+        form_contact = ContactForm(request.POST or None)
     if form_proposition.is_valid():
-        ins = form_proposition.save()
-        return redirect(request.path)
+        form_proposition.save()
+        form_proposition = PropositionForm(request.POST or None)
     if form_inscription.is_valid():
-        ins = form_inscription.save()
-        return redirect(request.path)
+        form_inscription.save()
+        form_inscription = InscriptionForm(request.POST or None)
     return render(request, 'agoratransition/index.html', {"form_contact": form_contact, "form_proposition": form_proposition, "form_inscription": form_inscription, })
