@@ -1,4 +1,5 @@
-{% load static%}
+{% load static %}
+{% load cookielaw_tags %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -78,6 +79,7 @@ https://www.tooplate.com/view/2117-infinite-loop
       </div>      
     </section>
 
+	{% cookielaw_banner %}
     <section id="presentation" class="tm-section-pad-top">
 
       <div class="container">
@@ -324,7 +326,7 @@ https://www.tooplate.com/view/2117-infinite-loop
                     <div class="tm-intro-text-container">
                         <h2 class="tm-text-primary mb-4">L'après midi</h2>
                         <p class="mb-4 tm-intro-text">
-                         <i class="fa fa-arrow-right"></i> Pratiquer un outil de la gouvernance partagée afin de proposer des solutions pour notre territoire</p>
+                         <i class="fa fa-arrow-right"></i> Pratiquer un outil de la gouvernance partagée afin de proposer et mettre en place des solutions pour notre territoire</p>
                         <ul> <li> 14h30 - 16h30 : Café del centre del món (tables rondes, inspiré du <a href="https://www.afci.asso.fr/wp-content/uploads/2014/09/guide_world_cafe.pdf">"world café"</a> )
                             </li>
                         <li> 16h30 - 17h : Plan d'action : qui fait quoi dans les prochaines semaines ?</li>
@@ -442,28 +444,71 @@ https://www.tooplate.com/view/2117-infinite-loop
         		<div class="col-lg-2">
                     <i class="fas fa-3x fa-user-plus text-center tm-icon"></i>
                 </div>
-                <div class="col-lg-10">
+                <div class="col-lg-10 text-center">
                     <div class="tm-intro-text-container">
-                        <h2 class="tm-text-primary mb-4">Inscription pour participer à l'événement</h2>
-                        <p class="mb-4 tm-intro-text">
-    Bientôt disponible
-                       </p>
+                 <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#inscriptionform" title="S'inscrire">
+                  <h2 class="tm-text-primary mb-4">Je m'inscris pour participer à l'événement</h2>
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="inscriptionform" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog textaide" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                          <div class="row justify-content-center">
+                           <h5 > Formulaire d'inscription</h5>
+                          </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body textleft">
+                        <form method="post" id="form_inscription">
+                            {% csrf_token %}
+                            {% include 'form_template2.html' with form=form_inscription %}
+                          <button type="submit" name="proposbtn" class="btn btn-primary">Valider l'inscription</button>
+                        </form>
+                       </div>
                     </div>
+                  </div>
                 </div>
             </div>
+
+                    </div>
+                </div>
             <div class="row tm-content-box"><!-- second row -->
         		<div class="col-lg-2">
                     <i class="fas fa-3x fa-check text-center tm-icon"></i>
                 </div>
-                <div class="col-lg-10">
+                <div class="col-lg-10 text-center">
                     <div class="tm-intro-text-container">
-                        <h2 class="tm-text-primary mb-4">Propositions pour l'organisation des tables rondes</h2>
-                        <p class="mb-4 tm-intro-text">
-    Bientôt disponible
-                       </p>
+                <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#propositionform" title="Faire une proposition">
+                        <h2 class="tm-text-primary mb-4">Je fais une proposition pour l'organisation des tables rondes</h2>
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="propositionform" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog textaide" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                          <div class="row justify-content-center">
+                           <h5 > Formulaire de proposition</h5>
+                          </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body textleft">
+                        <form method="post" id="form_proposition">
+                            {% csrf_token %}
+                            {% include 'form_template2.html' with form=form_proposition %}
+                          <button type="submit" name="proposbtn" class="btn btn-primary">Valider la proposition</button>
+                        </form>
+                      </div>
                     </div>
+                  </div>
                 </div>
             </div>
+                    </div>
+        </div>
         </div>
 
     </section>
@@ -471,7 +516,7 @@ https://www.tooplate.com/view/2117-infinite-loop
     <section id="contact" class="tm-section-pad-top tm-parallax-2">
     
       <div class="container tm-container-contact">
-        
+
         <div class="row">
             
             <div class="text-center col-12">
@@ -480,22 +525,44 @@ https://www.tooplate.com/view/2117-infinite-loop
                     Vous pouvez nous rejoindre dans l'organisation de la journée sur le Forum <a href="https://www.Perma.cat">Perma.Cat</a>. Sinon, Merci de remplir le formulaire suivant pour nous contacter.
                 </p><br>
             </div>
-            
-            <div class="col-sm-12 col-md-6">
-              <form action="" method="get">
-                <input id="name" name="name" type="text" placeholder="Nom" class="tm-input" required />
-                <input id="email" name="email" type="email" placeholder="Email" class="tm-input" required />
-                <textarea id="message" name="message" rows="8" placeholder="Message" class="tm-input" required></textarea>
-                <button type="submit" class="btn tm-btn-submit">Envoyer</button>
-              </form>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 col-md-6  text-center">
+                <button type="button" class="btn btn-light " data-toggle="modal" data-target="#contactForm" title="En savoir plus...">
+                    <h2 class="tm-text-primary mb-4">Nous contacter</h2>
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="contactForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog textaide" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                          <div class="row justify-content-center">
+                           <h5 > Formulaire de contact</h5>
+                          </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body textleft">
+                        <form method="post" id="form_contact">
+                            {% csrf_token %}
+                            {% include 'form_template2.html' with form=form_contact %}
+                          <button type="submit" name="proposbtn" class="btn btn-primary">Envoyer le message</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
             </div>
-            
-            <div class="col-sm-12 col-md-6">
+
+
+            <div class="col-sm-12 col-md-6  ">
                 
                 <div class="contact-item">
-                  <a rel="nofollow" href="mailto:permagora@gmail.com" class="item-link">
+                  <a rel="nofollow" href="mailto:permagora66@gmail.com" class="item-link">
                       <i class="far fa-2x fa-envelope mr-4"></i>
-                      <span class="mb-0">permagora@gmail.com</span>
+                      <span class="mb-0">permagora66@gmail.com</span>
                   </a>              
                 </div>
                 
@@ -505,16 +572,10 @@ https://www.tooplate.com/view/2117-infinite-loop
                       <span class="mb-0">06.18.95.16.70</span>
                   </a>              
                 </div>
-                
-                <div class="contact-item">&nbsp;</div>
-            
-            </div>
-            
-            
-        </div><!-- row ending -->
-        
-      </div>
 
+            </div>
+        </div><!-- row ending -->
+      </div>
       	<footer class="text-center small tm-footer">
           <p class="mb-0">
           Copyright &copy; 2022 PermAgora
@@ -650,7 +711,7 @@ https://www.tooplate.com/view/2117-infinite-loop
           prevArrow: false,
           nextArrow: false,
           infinite: false,
-          slidesToShow: 2,
+          slidesToShow: 3,
           slidesToScroll: 1,
           speed: 300,
           responsive: [

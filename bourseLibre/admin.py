@@ -4,6 +4,7 @@ from blog.models import Article, Projet, Commentaire, Discussion, CommentairePro
 from jardinpartage.models import Article as Art_jardin, Commentaire as Comm_jardin
 from fiches.models import Fiche, Atelier as atelier_fiche, CommentaireFiche
 from ateliers.models import Atelier, CommentaireAtelier, InscriptionAtelier
+from agoratransition.models import InscriptionExposant, Proposition, Message_agora
 from django.contrib.admin.models import LogEntry
 
 
@@ -79,3 +80,6 @@ admin.site.register(Atelier)
 admin.site.register(CommentaireAtelier)
 admin.site.register(InscriptionAtelier)
 
+admin.site.register(InscriptionExposant)
+admin.site.register(Proposition)
+admin.site.register(Message_agora)
