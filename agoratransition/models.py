@@ -9,7 +9,7 @@ class Choix():
 
 class InscriptionExposant(models.Model):
     nom = models.CharField(max_length=250, null=False, blank=True, verbose_name="Nom Prénom / Raison sociale*")
-    email = models.EmailField(blank=False, max_length=254, verbose_name='Email*', default="test@perma.cat")
+    email = models.EmailField(blank=False, max_length=254, verbose_name='Email*',)
 
     phone_regex = RegexValidator(regex=r'^\d{9,10}$', message="Le numéro de téléphone doit contenir 10 chiffres")
     telephone = models.CharField(verbose_name="Numéro de téléphone",
@@ -38,13 +38,13 @@ class InscriptionExposant(models.Model):
 
 class Proposition(models.Model):
     nom = models.CharField(max_length=250, null=False, blank=False, verbose_name="Nom de la structure*")
-    email = models.EmailField(blank=False, max_length=254, verbose_name='Email*', default="test@perma.cat")
+    email = models.EmailField(blank=False, max_length=254, verbose_name='Email*',)
     phone_regex = RegexValidator(regex=r'^\d{9,10}$', message="Le numéro de téléphone doit contenir 10 chiffres")
     telephone = models.CharField(verbose_name="Numéro de téléphone",
                                  validators=[phone_regex, ], max_length=10,
                                  blank=True)  # validatErs should be a list
 
-    proposition = models.TextField(null=False, blank=False, verbose_name="Proposition de question / table ronde*")
+    proposition = models.TextField(null=False, blank=False, verbose_name="Proposition de question / table ronde*",)
 
     animeParProposant = models.BooleanField(default=False, verbose_name="Je suis pret.e à animer une table ronde à ce sujet")
 
