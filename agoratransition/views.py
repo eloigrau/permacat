@@ -3,7 +3,6 @@ from django.contrib.auth.decorators import login_required
 from .forms import InscriptionForm, ContactForm, PropositionForm
 
 # Create your views here.
-@login_required
 def accueil(request):
     form_contact = ContactForm(request.POST or None)
     form_proposition = PropositionForm(request.POST or None)
