@@ -525,6 +525,7 @@ figure.effect-honey:hover h2 i {
   padding-top: 100px;
 }
 
+
 .contact-item {
   margin-left: 20px;
   margin-bottom: 50px;
@@ -567,6 +568,19 @@ figure.effect-honey:hover h2 i {
 .tm-btn-submit:hover {
 	color: #fff;
 	background-color: #38B;
+}
+
+
+#inscription {
+  color: white;
+  background-color: #e6e6ff;
+  /*background-image: url(../img/forest_i.jpg);*/
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 980px;
+  position: relative;
+  padding-bottom: 50px;
+  padding-top: 100px;
 }
 
 ::placeholder {
