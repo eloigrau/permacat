@@ -26,11 +26,11 @@
 
                  <a href="{% url 'ateliers:suivre_ateliers' %}">
                 {% if request.user|is_following:suivis %}
-                <button type="button" class="btn btn-sm btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné : Cliquez pour arreter de recevoir un mail à chaque nouvel atelier">
+                <button type="button" class="btn btn-sm btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné : Cliquez ici pour arreter de recevoir un mail à chaque nouvel atelier">
                      {% fontawesome_icon 'bell' %}
                 </button>
                 {% else %}
-                <button type="button" class="btn btn-sm btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné : Cliquez pour recevoir un mail à chaque nouvel atelier">
+                <button type="button" class="btn btn-sm btn-light" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné : Cliquez ici pour recevoir un mail à chaque nouvel atelier">
                      {% fontawesome_icon 'bell-slash' %}
                 </button>
                 {% endif %}

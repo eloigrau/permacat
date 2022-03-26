@@ -39,11 +39,11 @@ C’est d’ailleurs ce que préconise la loi : « climat et résilience ».</p>
 
 			{% if request.user.adherent_viure %}
 			<p class="textcenter">
-				 <a class="btn btn-warning" href="{% url 'inscription_viure' %}"> Je suis inscrit -> Je me désinscris du groupe en cliquant ici</a>
+				 <a class="btn btn-warning" href="{% url 'inscription_viure' %}"> Vous êtes inscrit.e -> Cliquer ici pour se désinscrire</a>
 			</p>
 			{% else %}
 			<p class="textcenter">
-				 <a class="btn btn-primary" href="{% url 'inscription_viure' %}"> Je ne fais pas partie du groupe -> Je m'inscris en cliquant ici</a>
+				 <a class="btn btn-primary" href="{% url 'inscription_viure' %}"> Vous ne faites pas partie du groupe -> Cliquer ici pour s'inscrire</a>
 			</p>
 			{% endif %}
 		{% endif %}

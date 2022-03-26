@@ -86,7 +86,7 @@
         <div class="col-sm-12 textcenter">
             {%if request.user.is_authenticated %}
                  {% if user_inscrit %}
-                    <p>Vous êtes inscrit à cet atelier
+                    <p>Tu es inscrit.e à cet atelier
                     <a href="{% url 'ateliers:annulerInscription' slug=atelier.slug %}">
                        <button type="button" class="btn btn-warning btn-sm">
                             Se désinscrire
