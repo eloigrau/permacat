@@ -13,7 +13,7 @@ from .forms import Produit_aliment_CreationForm, Produit_vegetal_CreationForm, P
     Produit_service_CreationForm, ContactForm, AdresseForm, ProfilCreationForm, MessageForm, MessageGeneralForm, \
     ProducteurChangeForm, Produit_aliment_modifier_form, Produit_service_modifier_form, \
     Produit_objet_modifier_form, Produit_vegetal_modifier_form, ChercherConversationForm, InscriptionNewsletterForm, \
-    MessageChangeForm, ContactMailForm, Produit_offresEtDemandes_CreationForm
+    MessageChangeForm, ContactMailForm, Produit_offresEtDemandes_CreationForm, Produit_offresEtDemandes_modifier_form
 from .models import Profil, Produit, Adresse, Choix, Panier, Item, Asso, get_categorie_from_subcat, Conversation, Message, \
     MessageGeneral, getOrCreateConversation, Suivis, InscriptionNewsletter
 from django.contrib.auth.decorators import login_required
@@ -265,6 +265,8 @@ class ProduitModifier(UpdateView):
             return Produit_service_modifier_form
         elif self.object.categorie == 'objet':
             return Produit_objet_modifier_form
+        elif self.object.categorie == 'offresEtDemandes':
+            return Produit_offresEtDemandes_modifier_form
         else:
             raise Exception('Type de produit inconnu (aliment, vegetal, service ou  objet)')
 

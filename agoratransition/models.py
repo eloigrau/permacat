@@ -42,7 +42,7 @@ class Proposition(models.Model):
 
     proposition = models.TextField(null=False, blank=False, verbose_name="Proposition de question / table ronde*",)
 
-    animeParProposant = models.BooleanField(default=False, verbose_name="Je suis pret.e à animer une table ronde à ce sujet")
+    animeParProposant = models.BooleanField(default=False, null=True, verbose_name="Je suis pret.e à animer une table ronde à ce sujet")
 
     date_inscription = models.DateTimeField(verbose_name="Date d'inscrition", editable=False, auto_now_add=True)
 

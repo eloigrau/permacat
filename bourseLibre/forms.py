@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, Asso, Profil, Message, MessageGeneral, Choix, InscriptionNewsletter, Adhesion_permacat, Produit_offresEtDemandes
+from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, \
+    Asso, Profil, Message, MessageGeneral, Choix, InscriptionNewsletter, Adhesion_permacat, \
+    Produit_offresEtDemandes
 from django.db.models import Q
 from django_summernote.widgets import SummernoteWidget
 from blog.forms import SummernoteWidgetWithCustomToolbar
@@ -14,7 +16,7 @@ fieldsCommunsProduits = ['souscategorie', 'nom_produit',  'description', 'estUne
 
 class ProduitCreationForm(forms.ModelForm):
     estUneOffre = forms.ChoiceField(choices=((1, "Offre"), (0, "Demande")), label='', required=True)
-    asso = forms.ModelChoiceField(queryset=Asso.objects.all(), required=True, label="Offre publique ou réservée aux adhérents de l'asso :",)
+    asso = forms.ModelChoiceField(queryset=Asso.objects.all(), required=True, label="Annonce publique ou réservée aux adhérents de l'asso :",)
 
     class Meta:
         model = Produit
@@ -180,6 +182,26 @@ class Produit_offresEtDemandes_CreationForm(ProduitCreationForm):
         }
 
 class Produit_objet_modifier_form(Produit_objet_CreationForm, ProduitModifierForm):
+    pass
+
+class Produit_offresEtDemandes_modifier_form(ProduitModifierForm):
+    class Meta:
+        model = Produit_offresEtDemandes
+        fields = [ 'nom_produit',  'description', 'asso',
+                'unite_prix', 'prix',  'type_prix', 'date_debut', 'date_expiration', ]
+        widgets = {
+            'date_debut': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
+            'date_expiration': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
+            'description': SummernoteWidget(),
+        }
     pass
 
 
