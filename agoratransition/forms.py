@@ -4,11 +4,11 @@ from.models import InscriptionExposant, Proposition, Message_agora
 from django_summernote.widgets import SummernoteWidget
 
 class InscriptionForm(forms.ModelForm):
-    procedure_lue = forms.BooleanField(label="J'ai lu et compris la procédure d'inscription (en bas de la page)", required=True)
+    #procedure_lue = forms.BooleanField(label="J'ai lu et compris la procédure d'inscription (en bas de la page)", required=True)
 
     class Meta:
         model = InscriptionExposant
-        fields = ['nom', 'email', 'type_inscription', 'telephone', 'commentaire', 'procedure_lue' ]
+        fields = ['nom', 'email', 'type_inscription', 'telephone', 'commentaire' ]
         widgets = {
             #'commentaire': SummernoteWidget(),
         }
