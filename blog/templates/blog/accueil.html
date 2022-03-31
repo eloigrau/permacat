@@ -14,12 +14,12 @@
          <form class="form-inline justify-content-center  navbar-form " action="{% url 'chercher_articles' %}" method="get" role = "search">
             {% csrf_token %}
              <div class="btn-group btn-block">
-                <div class="col-sm-9" style="padding-right:0;">
-                <input class="form-control border-secondary border-right-0 rounded-0" name="id_recherche" placeholder="rechercher dans le forum..." type="text">
-                </div>
-                <div class="col-auto" style="padding-left:0;">
-                    <button class="btn btn-outline-secondary border-left-0 rounded-0 rounded-right" type="submit" >{% fontawesome_icon 'search' %}</button>
-                </div>
+                <div class="col" style="padding-right:0;">
+                    <input class="form-control " name="id_recherche" placeholder="Recherche rapide..." type="text">
+                        </div>
+            <div class="col-auto" style="padding-left:0;">
+                        <button class="btn btn-outline " type="submit" >{% fontawesome_icon 'search' %}</button>
+            </div>
              </div>
          </form>
      </div>
