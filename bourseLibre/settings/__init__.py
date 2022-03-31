@@ -111,6 +111,7 @@ INSTALLED_APPS = [
     'avatar',
     'defraiement',
     'agoratransition',
+    'acme_challenge',
     #'formtools',
     #'channels', 'chat',
     #'jet','jet.dashboard', 'django.contrib.admin',

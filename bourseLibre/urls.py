@@ -34,6 +34,7 @@ urlpatterns = [
     url(r'^summernote/', include('django_summernote.urls')),
     url(r'^captcha/', include('bourseLibre.captcha_local.urls')),
     url(r'^photolog/', include('photologue.urls', namespace='photologue')),
+    url(r'^.well-known/acme-challenge/', include('acme_challenge.urls')),
     #url(r'^chat/', include('chat.urls')),
     path(r'agenda/', include('cal.urls')),
     path(r'agoratransition/', include('agoratransition.urls', namespace='agoratransition')),
