@@ -48,8 +48,7 @@ class Adresse(models.Model):
     latitude = models.FloatField(blank=True, null=True, default=LATITUDE_DEFAUT)
     longitude = models.FloatField(blank=True, null=True, default=LONGITUDE_DEFAUT)
     pays = models.CharField(max_length=12, blank=True, null=True, default="France")
-    phone_regex = RegexValidator(regex=r'^\d{9,10}$', message="Le numero de telephone doit contenir 10 chiffres")
-    telephone = models.CharField(validators=[phone_regex,], max_length=10, blank=True)  # validators should be a list
+    telephone = models.CharField(max_length=15, blank=True)
 
 
     def save(self, recalc=False, *args, **kwargs):

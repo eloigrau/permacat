@@ -71,6 +71,11 @@ Filtrer la liste des profils
 <form method="get">
     <div class="well">
       <div class="row">
+        <div class="form-group col-sm-12">
+            <label>Rechercher :</label>
+          {% render_field filter.form.compet_descrip class="form-control" %}
+        </div>
+          <br>
           <div class="form-group col-sm-12">
               {% if asso.abreviation != "pc" and request.user.adherent_pc%}
               <div>
@@ -104,10 +109,6 @@ Filtrer la liste des profils
               {% endif %}
             </div>
       </div>
-        <div class="form-group col-sm-12">
-            <label>Rechercher :</label>
-          {% render_field filter.form.compet_descrip class="form-control" %}
-        </div>
 
     <div class="row">
     <div class="col-md-12 textcenter">
