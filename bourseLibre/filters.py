@@ -21,7 +21,14 @@ class ProfilCarteFilter(django_filters.FilterSet):
     def get_adherent_asso(self, queryset, field_name, value):
         return queryset.filter(**{field_name: value})
     def get_competencedesritpion_filter(self, queryset, field_name, value):
-        return queryset.filter(Q(email__icontains=value)|Q(username__icontains=value)|Q(adresse__commune__icontains=value)|Q(adresse__code_postal__icontains=value)|Q(description__icontains=value)|Q(competences__icontains=value)|Q(first_name__icontains=value)|Q(last_name__icontains=value))
+        return queryset.filter(Q(email__icontains=value)|
+                               Q(username__icontains=value)|
+                               Q(adresse__commune__icontains=value)|
+                               Q(adresse__code_postal__icontains=value)|
+                               Q(description__icontains=value)|
+                               Q(competences__icontains=value)|
+                               Q(first_name__icontains=value)|
+                               Q(last_name__icontains=value))
 
     class Meta:
         model = Profil
