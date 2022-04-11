@@ -268,7 +268,7 @@ blockquote {
 }
 
 /* Testimonials */
-#testimonials {
+#poles {
   color: white;
   background-image: url(../img/foret_.jpg);
   background-size: cover;
@@ -278,7 +278,7 @@ blockquote {
 }
 
 @media (max-width: 991px) {
-  #testimonials {
+  #poles {
     background-image: url(../img/foret_mobile.jpg);
   }
 }

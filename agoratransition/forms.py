@@ -25,7 +25,7 @@ class InscriptionForm(forms.ModelForm):
     def save(self,):
         instance = super(InscriptionForm, self).save()
         envoyeur = self.cleaned_data["nom"] + ' (' +self.cleaned_data["email"]  + ')'
-        sujet = self.cleaned_data['[AT] Nouvelle inscription']
+        sujet = '[AT] Nouvelle inscription'
         message_html = envoyeur + " s'est inscrit. Type : " + self.cleaned_data['type_inscription'] + ', tel:' + self.cleaned_data['telephone'] + ', commentaire : ' + self.cleaned_data['commentaire']
         send_mail(sujet, message_html,  SERVER_EMAIL, LIST_EMAIL_SUIVI, fail_silently=False, html_message=message_html)
 
@@ -49,7 +49,7 @@ class PropositionForm(forms.ModelForm):
     def save(self,):
         instance = super(PropositionForm, self).save()
         envoyeur = self.cleaned_data["nom"] + ' (' +self.cleaned_data["email"]  + ')'
-        sujet = self.cleaned_data['[AT] Nouvelle proposition']
+        sujet = '[AT] Nouvelle proposition'
         message_html = envoyeur + " a envoyé la proposition suivante : " + self.cleaned_data['proposition']
         send_mail(sujet, message_html,  SERVER_EMAIL, LIST_EMAIL_SUIVI, fail_silently=False, html_message=message_html)
 
@@ -68,7 +68,7 @@ class ContactForm(forms.ModelForm):
     def save(self,):
         instance = super(ContactForm, self).save()
         envoyeur = self.cleaned_data["nom"] + ' (' +self.cleaned_data["email"] + ')'
-        sujet = self.cleaned_data['[AT] Nouveau message']
+        sujet = '[AT] Nouveau message'
         message_html = envoyeur + " a envoyé un message " + self.cleaned_data['msg']
         send_mail(sujet, message_html,  SERVER_EMAIL, LIST_EMAIL_SUIVI, fail_silently=False, html_message=message_html)
 
