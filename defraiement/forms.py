@@ -98,3 +98,4 @@ class AdresseReunionForm(forms.ModelForm):
         instance = super(ParticipantReunionForm, self).save(commit=False)
         instance.adresse = adresse
         instance.save()
+        return instance

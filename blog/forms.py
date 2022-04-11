@@ -313,6 +313,7 @@ class EvenementForm(forms.ModelForm):
         instance = super(EvenementForm, self).save(commit=False)
         instance.auteur = request.user
         instance.save()
+        return instance
 
 class EvenementArticleForm(forms.ModelForm):
     class Meta:
@@ -349,3 +350,4 @@ class AdresseArticleForm(forms.ModelForm):
         instance.article = article
         instance.adresse = adresse
         instance.save()
+        return instance
