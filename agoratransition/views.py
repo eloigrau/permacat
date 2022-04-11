@@ -8,6 +8,7 @@ def accueil(request):
     form_proposition = PropositionForm(request.POST or None)
     form_inscription = InscriptionForm(request.POST or None)
     msg = None
+    msg2 = None
     if form_contact.is_valid():
         form_contact.save()
         msg2 = "Merci ! votre message a bien été envoyé"
