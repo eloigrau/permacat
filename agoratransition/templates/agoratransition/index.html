@@ -453,7 +453,9 @@ https://www.tooplate.com/view/2117-infinite-loop
 
         {% if msg %}
             <div class="row tm-content-box"><!-- second row -->
-            <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+        		<div class="col-sm-12 text-center">
+                    <p >{{ msg }}</p>
+                </div>
             </div>
         {% endif %}
             <div class="row tm-content-box"><!-- second row -->
@@ -548,9 +550,11 @@ https://www.tooplate.com/view/2117-infinite-loop
                     <h2 class="tm-text-primary mb-4">Nous contacter</h2>
                 </button>
 
-        {% if msg %}
+        {% if msg2 %}
             <div class="row tm-content-box"><!-- second row -->
-            <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+        		<div class="col-sm-12 text-center">
+                    <p >{{ msg2 }}</p>
+                </div>
             </div>
         {% endif %}
                 <!-- Modal -->
