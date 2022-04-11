@@ -22,7 +22,6 @@ class InscriptionForm(forms.ModelForm):
         if message:
            self.fields['commentaire'].initial = message
 
-
     def save(self,):
         instance = super(InscriptionForm, self).save()
         envoyeur = self.cleaned_data["nom"] + ' (' +self.cleaned_data["email"]  + ')'
