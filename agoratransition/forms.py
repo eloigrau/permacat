@@ -47,7 +47,7 @@ class PropositionForm(forms.ModelForm):
 
 
     def save(self,):
-        instance = super(InscriptionForm, self).save()
+        instance = super(PropositionForm, self).save()
         envoyeur = self.cleaned_data["nom"] + ' (' +self.cleaned_data["email"]  + ')'
         sujet = self.cleaned_data['[AT] Nouvelle proposition']
         message_html = envoyeur + " a envoyé la proposition suivante : " + self.cleaned_data['proposition']
@@ -66,7 +66,7 @@ class ContactForm(forms.ModelForm):
         }
 
     def save(self,):
-        instance = super(InscriptionForm, self).save()
+        instance = super(ContactForm, self).save()
         envoyeur = self.cleaned_data["nom"] + ' (' +self.cleaned_data["email"] + ')'
         sujet = self.cleaned_data['[AT] Nouveau message']
         message_html = envoyeur + " a envoyé un message " + self.cleaned_data['msg']
