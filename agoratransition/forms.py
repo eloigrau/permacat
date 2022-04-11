@@ -5,7 +5,7 @@ from bourseLibre.settings.production import SERVER_EMAIL
 
 from django_summernote.widgets import SummernoteWidget
 
-LIST_EMAIL_SUIVI = ['eloi.grau@gmail.com']
+LIST_EMAIL_SUIVI = ['eloi.grau@gmail.com', "catherinevinas@laposte.net", "oanaestirac@gmail.com"]
 
 class InscriptionForm(forms.ModelForm):
     #procedure_lue = forms.BooleanField(label="J'ai lu et compris la procédure d'inscription (en bas de la page)", required=True)

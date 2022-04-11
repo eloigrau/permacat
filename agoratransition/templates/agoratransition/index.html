@@ -70,7 +70,7 @@ https://www.tooplate.com/view/2117-infinite-loop
           </div>        
         </div>
       </nav>
-      
+
       <div class="text-center tm-hero-text-container">
         <div class="tm-hero-text-container-inner">
             <h2 class="tm-hero-title text-white">Agora de la Transition</h2>
@@ -451,6 +451,11 @@ https://www.tooplate.com/view/2117-infinite-loop
 
             </div><!-- first row -->
 
+        {% if msg %}
+            <div class="row tm-content-box"><!-- second row -->
+            <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            </div>
+        {% endif %}
             <div class="row tm-content-box"><!-- second row -->
         		<div class="col-lg-2">
                     <i class="fas fa-3x fa-user-plus text-center tm-icon"></i>
@@ -542,6 +547,12 @@ https://www.tooplate.com/view/2117-infinite-loop
                 <button type="button" class="btn btn-light " data-toggle="modal" data-target="#contactForm" title="En savoir plus...">
                     <h2 class="tm-text-primary mb-4">Nous contacter</h2>
                 </button>
+
+        {% if msg %}
+            <div class="row tm-content-box"><!-- second row -->
+            <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            </div>
+        {% endif %}
                 <!-- Modal -->
                 <div class="modal fade" id="contactForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog textaide" role="document">
