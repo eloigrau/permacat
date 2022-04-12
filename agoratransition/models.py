@@ -49,7 +49,7 @@ class Proposition(models.Model):
     date_inscription = models.DateTimeField(verbose_name="Date d'inscrition", editable=False, auto_now_add=True)
 
     class Meta:
-        unique_together = (('nom', 'email',), )
+        unique_together = (('proposition', 'email',), )
 
 
     def __unicode__(self):

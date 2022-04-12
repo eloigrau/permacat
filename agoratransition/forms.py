@@ -25,7 +25,7 @@ class InscriptionForm(forms.ModelForm):
         instance = super(InscriptionForm, self).save()
         if not LOCALL:
             envoyeur = self.cleaned_data["nom"] + ' (' + self.cleaned_data["email"] + ')'
-            sujet = '[AT] Nouvelle inscription'
+            sujet = '[AgoraTransition] Nouvelle inscription'
             message_html = envoyeur + " s'est inscrit.e Type : " + self.cleaned_data['type_inscription'] + ', tel:' + self.cleaned_data['telephone'] + ', commentaire : ' + self.cleaned_data['commentaire']
             send_mail(sujet, message_html,  SERVER_EMAIL, LIST_EMAIL_SUIVI, fail_silently=False, html_message=message_html)
 
@@ -68,7 +68,7 @@ class PropositionForm(forms.ModelForm):
         instance = super(PropositionForm, self).save()
         if not LOCALL:
             envoyeur = self.cleaned_data["nom"] + ' (' + self.cleaned_data["email"] + ')'
-            sujet = '[AT] Nouvelle proposition'
+            sujet = '[AgoraTransition] Nouvelle proposition'
             message_html = envoyeur + " a envoyé la proposition suivante : " + self.cleaned_data['proposition']
             send_mail(sujet, message_html,  SERVER_EMAIL, LIST_EMAIL_SUIVI, fail_silently=False, html_message=message_html)
 
@@ -87,7 +87,7 @@ class ContactForm(forms.ModelForm):
         instance = super(ContactForm, self).save()
         if not LOCALL:
             envoyeur = self.cleaned_data["nom"] + ' (' + self.cleaned_data["email"] + ')'
-            sujet = '[AT] Nouveau message'
+            sujet = '[AgoraTransition] Nouveau message'
             message_html = envoyeur + " a envoyé un message " + self.cleaned_data['msg']
             send_mail(sujet, message_html,  SERVER_EMAIL, LIST_EMAIL_SUIVI, fail_silently=False, html_message=message_html)
 
