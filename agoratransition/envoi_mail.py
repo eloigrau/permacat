@@ -15,5 +15,7 @@ def envoyerMailPermAgora(sujet, message, destinataires):
             password=my_password,
             use_tls=my_use_tls
     ) as connection:
-        EmailMessage(sujet, message, my_username + '@gmail.com', destinataires,
-                     connection=connection).send()
+        email = EmailMessage(sujet, message, my_username + '@gmail.com', destinataires,
+                     connection=connection)
+        email.content_subtype = "html"
+        email.send()
