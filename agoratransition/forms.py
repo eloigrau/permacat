@@ -2,6 +2,7 @@ from django import forms
 from.models import InscriptionExposant, Proposition, Message_agora
 from django.core.mail import send_mail
 from bourseLibre.settings.production import SERVER_EMAIL, LOCALL
+from envoi_mail import envoyerMailPermAgora
 #from django_summernote.widgets import SummernoteWidget
 
 LIST_EMAIL_SUIVI = ['eloi.grau@gmail.com', "permagora66@gmail.com", ]
@@ -47,7 +48,8 @@ class InscriptionForm(forms.ModelForm):
 <div>&nbsp;</div>\
 <div>Cathy (06.62.64.31.59), Eloi et Anna </div>\
 <div>Mail : permagora66@gmail.com</div>"
-            send_mail(sujet, message_html,  SERVER_EMAIL, [self.cleaned_data["email"], ], fail_silently=False, html_message=message_html)
+            envoyerMailPermAgora(sujet, message_html,  SERVER_EMAIL, [self.cleaned_data["email"], ])
+            #send_mail(sujet, message_html,  SERVER_EMAIL, [self.cleaned_data["email"], ], fail_silently=False, html_message=message_html)
 
         return instance
 
