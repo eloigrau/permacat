@@ -24,6 +24,8 @@ class InscriptionExposant(models.Model):
                                        default='0', verbose_name="Statut")
     commentaire = models.TextField(null=False, blank=True, verbose_name="Commentaire / message à passer")
 
+    class Meta:
+        unique_together = (('nom', 'email',), )
 
     def __unicode__(self):
         return self.__str()
@@ -46,6 +48,8 @@ class Proposition(models.Model):
 
     date_inscription = models.DateTimeField(verbose_name="Date d'inscrition", editable=False, auto_now_add=True)
 
+    class Meta:
+        unique_together = (('nom', 'email',), )
 
 
     def __unicode__(self):
@@ -58,4 +62,5 @@ class Proposition(models.Model):
 class Message_agora(models.Model):
     email = models.EmailField(verbose_name="Email")
     nom = models.CharField(max_length=250, verbose_name="Nom prénom / Raison sociale",)
-    msg = models.TextField( verbose_name="Message", )
+    msg = models.TextField(verbose_name="Message", )
+

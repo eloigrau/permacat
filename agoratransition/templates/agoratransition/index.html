@@ -454,7 +454,7 @@ https://www.tooplate.com/view/2117-infinite-loop
         {% if msg %}
             <div class="row tm-content-box"><!-- second row -->
         		<div class="col-sm-12 text-center">
-                    <p >{{ msg }}</p>
+                    <p style="background:black;">{{ msg }}</p>
                 </div>
             </div>
         {% endif %}
@@ -483,7 +483,7 @@ https://www.tooplate.com/view/2117-infinite-loop
                         <form method="post" id="form_inscription">
                             {% csrf_token %}
                             {% include 'form_template2.html' with form=form_inscription %}
-                          <button type="submit" name="proposbtn" class="btn btn-primary">Valider l'inscription</button>
+                          <button type="submit" name="inscriptionbtn" class="btn btn-primary">Valider l'inscription</button>
                         </form>
                        </div>
                     </div>
@@ -546,14 +546,14 @@ https://www.tooplate.com/view/2117-infinite-loop
 
         <div class="row">
             <div class="col-sm-12 col-md-6  text-center">
-                <button type="button" class="btn btn-light " data-toggle="modal" data-target="#contactForm" title="En savoir plus...">
+                <button type="button" class="btn btn-light " data-toggle="modal" data-target="#contactForm" title="Contacter...">
                     <h2 class="tm-text-primary mb-4">Nous contacter</h2>
                 </button>
 
         {% if msg2 %}
             <div class="row tm-content-box"><!-- second row -->
         		<div class="col-sm-12 text-center">
-                    <p >{{ msg2 }}</p>
+                    <p style="background:black;">{{ msg2 }}</p>
                 </div>
             </div>
         {% endif %}
@@ -573,7 +573,7 @@ https://www.tooplate.com/view/2117-infinite-loop
                         <form method="post" id="form_contact">
                             {% csrf_token %}
                             {% include 'form_template2.html' with form=form_contact %}
-                          <button type="submit" name="proposbtn" class="btn btn-primary">Envoyer le message</button>
+                          <button type="submit" name="contactbtn" class="btn btn-primary">Envoyer le message</button>
                         </form>
                       </div>
                     </div>
@@ -614,6 +614,13 @@ https://www.tooplate.com/view/2117-infinite-loop
     <script src="{% static 'agora/js/easing.min.js' %}"></script>
     <script src="{% static 'agora/js/jquery.singlePageNav.min.js' %}"></script>
     <script src="{% static 'agora/js/bootstrap.min.js' %}"></script>
+{% if anchor %}
+<script type='text/javascript'>
+$(document).ready(function(){
+    window.location = '#{{ anchor }}'
+});
+</script>
+{% endif %}
     <script>
 
       function getOffSet(){

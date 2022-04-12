@@ -1,18 +1,17 @@
 from django import forms
 from.models import InscriptionExposant, Proposition, Message_agora
 from django.core.mail import send_mail
-from bourseLibre.settings.production import SERVER_EMAIL
+from bourseLibre.settings.production import SERVER_EMAIL, LOCALL
+#from django_summernote.widgets import SummernoteWidget
 
-from django_summernote.widgets import SummernoteWidget
-
-LIST_EMAIL_SUIVI = ['eloi.grau@gmail.com', "catherinevinas@laposte.net", "oanaestirac@gmail.com"]
+LIST_EMAIL_SUIVI = ['eloi.grau@gmail.com', "permagora66@gmail.com", ]#"catherinevinas@laposte.net", "oanaestirac@gmail.com"]
 
 class InscriptionForm(forms.ModelForm):
     #procedure_lue = forms.BooleanField(label="J'ai lu et compris la procédure d'inscription (en bas de la page)", required=True)
 
     class Meta:
         model = InscriptionExposant
-        fields = ['nom', 'email', 'type_inscription', 'telephone', 'commentaire' ]
+        fields = ['nom', 'email', 'type_inscription', 'telephone', 'commentaire']
         widgets = {
             #'commentaire': SummernoteWidget(),
         }
@@ -24,13 +23,33 @@ class InscriptionForm(forms.ModelForm):
 
     def save(self,):
         instance = super(InscriptionForm, self).save()
-        envoyeur = self.cleaned_data["nom"] + ' (' +self.cleaned_data["email"]  + ')'
-        sujet = '[AT] Nouvelle inscription'
-        message_html = envoyeur + " s'est inscrit. Type : " + self.cleaned_data['type_inscription'] + ', tel:' + self.cleaned_data['telephone'] + ', commentaire : ' + self.cleaned_data['commentaire']
-        send_mail(sujet, message_html,  SERVER_EMAIL, LIST_EMAIL_SUIVI, fail_silently=False, html_message=message_html)
+        if not LOCALL:
+            envoyeur = self.cleaned_data["nom"] + ' (' + self.cleaned_data["email"] + ')'
+            sujet = '[AT] Nouvelle inscription'
+            message_html = envoyeur + " s'est inscrit.e Type : " + self.cleaned_data['type_inscription'] + ', tel:' + self.cleaned_data['telephone'] + ', commentaire : ' + self.cleaned_data['commentaire']
+            send_mail(sujet, message_html,  SERVER_EMAIL, LIST_EMAIL_SUIVI, fail_silently=False, html_message=message_html)
+
+            sujet = '[AgoraTransition] inscription'
+            message_html = " <div> \
+<p>Bonjour,</p>\
+</div>\
+<div>Merci pour votre inscription &agrave; la <a href='https://www.perma.cat/agoratransition/'>Journ&eacute;e de la Transition !</a></div>\
+<div>&nbsp;</div>\
+<div>Nous souhaitons laisser la possibilit&eacute; d'une coop&eacute;ration pour l'organisation de cette journ&eacute;e.</div>\
+<ul>\
+<li>Pour le 'speed dating des engag&eacute;s' que l'on fera le matin, nous proposons aux structures de pr&eacute;parer une pr&eacute;sentation de quelques minutes (pas plus de 5 mn) pour faciliter les &eacute;changes le jour m&ecirc;me. Nous mettrons &agrave; disposition des tables pour disposer vos informations (flyers, affiches, etc).</li>\
+<li>Pour les tables rondes de l'apr&egrave;s midi, vous pouvez nous envoyer vos suggestions pour les questions que nous aborderons, jusqu'au 24 avril. Un sondage regroupant toutes les propositions suivra afin de d&eacute;terminer les th&egrave;mes d&eacute;finitifs des tables rondes.</li>\
+</ul>\
+<div>&nbsp;</div>\
+<div>Pour toute information compl&eacute;mentaire, nous nous tenons &agrave; votre disposition.</div>\
+<div>&nbsp;</div>\
+<div>Fins aviat !</div>\
+<div>&nbsp;</div>\
+<div>Cathy : 06.62.64.31.59</div>\
+<div>Mail : permagora66@gmail.com</div>"
+            send_mail(sujet, message_html,  SERVER_EMAIL, [self.cleaned_data["email"], ], fail_silently=False, html_message=message_html)
 
         return instance
-
 
 class PropositionForm(forms.ModelForm):
     class Meta:
@@ -45,16 +64,15 @@ class PropositionForm(forms.ModelForm):
         if message:
            self.fields['description'].initial = message
 
-
     def save(self,):
         instance = super(PropositionForm, self).save()
-        envoyeur = self.cleaned_data["nom"] + ' (' +self.cleaned_data["email"]  + ')'
-        sujet = '[AT] Nouvelle proposition'
-        message_html = envoyeur + " a envoyé la proposition suivante : " + self.cleaned_data['proposition']
-        send_mail(sujet, message_html,  SERVER_EMAIL, LIST_EMAIL_SUIVI, fail_silently=False, html_message=message_html)
+        if not LOCALL:
+            envoyeur = self.cleaned_data["nom"] + ' (' + self.cleaned_data["email"] + ')'
+            sujet = '[AT] Nouvelle proposition'
+            message_html = envoyeur + " a envoyé la proposition suivante : " + self.cleaned_data['proposition']
+            send_mail(sujet, message_html,  SERVER_EMAIL, LIST_EMAIL_SUIVI, fail_silently=False, html_message=message_html)
 
         return instance
-
 
 class ContactForm(forms.ModelForm):
 
@@ -62,17 +80,19 @@ class ContactForm(forms.ModelForm):
         model = Message_agora
         fields = ['nom', "email", "msg"]
         widgets = {
-         #   'msg': SummernoteWidget(),
+            # 'msg': SummernoteWidget(),
         }
 
     def save(self,):
         instance = super(ContactForm, self).save()
-        envoyeur = self.cleaned_data["nom"] + ' (' +self.cleaned_data["email"] + ')'
-        sujet = '[AT] Nouveau message'
-        message_html = envoyeur + " a envoyé un message " + self.cleaned_data['msg']
-        send_mail(sujet, message_html,  SERVER_EMAIL, LIST_EMAIL_SUIVI, fail_silently=False, html_message=message_html)
+        if not LOCALL:
+            envoyeur = self.cleaned_data["nom"] + ' (' + self.cleaned_data["email"] + ')'
+            sujet = '[AT] Nouveau message'
+            message_html = envoyeur + " a envoyé un message " + self.cleaned_data['msg']
+            send_mail(sujet, message_html,  SERVER_EMAIL, LIST_EMAIL_SUIVI, fail_silently=False, html_message=message_html)
 
         return instance
+
     #email = forms.EmailField(label="Email")
     #nom = forms.CharField(max_length=250, label="Nom prénom / Raison sociale",)
     #msg = forms.CharField(label="Message", widget=SummernoteWidget)
