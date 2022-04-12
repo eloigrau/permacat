@@ -48,7 +48,7 @@ class InscriptionForm(forms.ModelForm):
 <div>&nbsp;</div>\
 <div>Cathy (06.62.64.31.59), Eloi et Anna </div>\
 <div>Mail : permagora66@gmail.com</div>"
-            envoyerMailPermAgora(sujet, message_html,  SERVER_EMAIL, [self.cleaned_data["email"], ])
+            envoyerMailPermAgora(sujet, message_html, [self.cleaned_data["email"], ])
             #send_mail(sujet, message_html,  SERVER_EMAIL, [self.cleaned_data["email"], ], fail_silently=False, html_message=message_html)
 
         return instance
