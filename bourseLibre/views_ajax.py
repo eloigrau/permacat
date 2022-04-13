@@ -12,6 +12,7 @@ class AnnoncesViewSet(viewsets.ModelViewSet):
     """
     queryset = Produit.objects.select_subclasses().order_by('-date_creation')
     serializer_class = ProduitSerializer
+    http_method_names = ['get',]
     #permission_classes = [permissions.IsAuthenticated]
 
 
