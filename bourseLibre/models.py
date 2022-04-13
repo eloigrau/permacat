@@ -527,6 +527,10 @@ class Produit(models.Model):  # , BaseProduct):
         return retour
 
 
+    @property
+    def absolute_url(self):
+        return self.get_absolute_url()
+
     def get_absolute_url(self):
         return reverse('produit_detail', kwargs={'produit_id':self.id})
 

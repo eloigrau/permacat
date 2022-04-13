@@ -10,7 +10,7 @@ class AnnoncesViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
-    queryset = qs = Produit.objects.select_subclasses().order_by('-date_creation')
+    queryset = Produit.objects.select_subclasses().order_by('-date_creation')
     serializer_class = ProduitSerializer
     #permission_classes = [permissions.IsAuthenticated]
 
