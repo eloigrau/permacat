@@ -25,12 +25,8 @@ class AnnoncesViewSet(viewsets.ModelViewSet):
 
 
 def ajax_annonces(request):
-    try:
-        qs = Produit.objects.filter(asso="Public").select_subclasses()[:10]
-        cle = request.GET.get('cle')
-        if not cle == "thomas":
-            return render(request, 'ajax/annonces_list.html', {})
-        return render(request, 'ajax/annonces_list.html', {"qs":qs})
-    except:
-        pass#return render(request, 'blog/ajax/categories_dropdown_list_options.html', {'categories': Choix.get_type_annonce_asso("defaut")})
-
+    cle = request.GET.get('cle')
+    if not cle == "thomas":
+        return render(request, 'ajax/annonces_list.html', {})
+    qs = Produit.objects.filter(asso__abreviation="public").select_subclasses()
+    return render(request, 'ajax/annonces_list.html', {"qs":qs})
