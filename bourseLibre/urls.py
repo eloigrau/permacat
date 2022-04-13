@@ -194,7 +194,7 @@ urlpatterns = [
     url(r'^admin/abonnerAdherentsCiteAlt/$', views_admin.abonnerAdherentsCiteAlt,  name="abonnerAdherentsCiteAlt"),
     url(r'^admin/creerAction_articlenouveau/$', views_admin.creerAction_articlenouveau,  name="creerAction_articlenouveau"),
 
-    #path('ajax/annonces/', views_ajax.ajax_annonces, name='ajax_categories'),
+    path('ajax/annonces/', views_ajax.ajax_annonces, name='ajax_categories'),
 ]
 
 urlpatterns += [
