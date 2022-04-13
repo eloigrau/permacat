@@ -68,10 +68,12 @@ urlpatterns = [
     url(r'transfereArticlesJardin/$', views.changerArticles_jardin, name='transfereArticlesJardin'),
     url(r'ajouterEvenementArticle/(?P<id_article>[0-9]+)$', views.ajouterEvenementArticle, name='ajouterEvenementArticle'),
     url(r'^supprimerEvenementArticle/(?P<slug_article>[-\w]+)-(?P<id_evenementArticle>[0-9]+)$', login_required(views.SupprimerEvenementArticle.as_view(), login_url='/auth/login/'), name='supprimerEvenementArticle'),
-     url(r'ajouterAdresseArticle/(?P<id_article>[0-9]+)$', views.ajouterAdresseArticle, name='ajouterAdresseArticle'),
+    url(r'ajouterAdresseArticle/(?P<id_article>[0-9]+)$', views.ajouterAdresseArticle, name='ajouterAdresseArticle'),
     url(r'^supprimerAdresseArticle/(?P<slug_article>[-\w]+)/(?P<id_adresse>[0-9]+)$', login_required(views.SupprimerAdresseArticle.as_view(), login_url='/auth/login/'), name='supprimerAdresseArticle'),
     url(r'voirCarteLieux/(?P<id_article>[0-9]+)$', views.voirCarteLieux, name='voirCarteLieux'),
 
-    path('ajax/load-categories/', views.ajax_categories, name='ajax_categories')    ,
+    path('ajax/load-categories/', views.ajax_categories, name='ajax_categories'),
     url(r'voirTousLieux/$', views.voirLieux, name='voirTousLieux'),
+
+
 ]

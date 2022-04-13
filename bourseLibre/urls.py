@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.urls import path
-from . import views, views_base, views_notifications, views_admin
+from . import views, views_base, views_notifications, views_admin, views_ajax
 from django.views.generic import TemplateView
 
 # On import les vues de Django, avec un nom spécifique
@@ -193,9 +193,20 @@ urlpatterns = [
     path(r'admin/decalerEvenements/<int:num>', views_admin.decalerEvenements,  name="decalerEvenements"),
     url(r'^admin/abonnerAdherentsCiteAlt/$', views_admin.abonnerAdherentsCiteAlt,  name="abonnerAdherentsCiteAlt"),
     url(r'^admin/creerAction_articlenouveau/$', views_admin.creerAction_articlenouveau,  name="creerAction_articlenouveau"),
+
+    path('ajax/annonces/', views_ajax.ajax_annonces, name='ajax_categories'),
 ]
+
 urlpatterns += [
     url(r'^robots\.txt$', TemplateView.as_view(template_name="bourseLibre/robots.txt", content_type='text/plain')),
+]
+
+from rest_framework import routers
+router = routers.DefaultRouter()
+router.register(r'annonces', views_ajax.AnnoncesViewSet)
+urlpatterns += [
+    path('api/', include(router.urls)),
+    path('api_annonces/', include('rest_framework.urls', namespace='rest_framework')),
 ]
 
 from django.conf import settings

@@ -112,6 +112,7 @@ INSTALLED_APPS = [
     'defraiement',
     'agoratransition',
     'acme_challenge',
+    'rest_framework',
     #'formtools',
     #'channels', 'chat',
     #'jet','jet.dashboard', 'django.contrib.admin',
