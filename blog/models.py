@@ -30,7 +30,7 @@ class Choix:
     type_annonce_citealt = type_annonce_citealt_orga + type_annonce_citealt_themes + type_annonce_citealt_groupes
 
     type_annonce_projets = ('Altermarché', 'Altermarché'),  ('Ecovillage', 'Ecovillage'), \
-                   ('Jardin', 'Jardins partagés'), ('ChantPossible', 'Ecolieu Chant des possibles'), ('BD_Fred', 'Les BD de Frédéric') #('KitPerma', 'Kit Perma Ecole'),
+                   ('Jardin', 'Jardins partagés'), ('ChantPossible', 'Ecolieu Chant des possibles'), ('BD_Fred', 'Les BD de Frédéric') , ('bzzz', 'Projet Bzzzz') #('KitPerma', 'Kit Perma Ecole'),
 
     type_annonce_public = type_annonce_base + type_annonce_projets + (('professionel','Activité Pro'), )
     type_annonce_asso = {

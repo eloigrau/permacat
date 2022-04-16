@@ -124,6 +124,7 @@
            <li> <a class="dropdown-item" href="{% url 'blog:index' %}?categorie=Ecovillage">Articles du forum</a></li>
            <li> <a class="dropdown-item" href="'{% url blog:index' %}?categorie=Jardin"> Articles des jardins partagés sur le forum</a></li>
         </ul>
+
 {%endif  %}
 
    </li>
@@ -293,6 +294,14 @@
                                    <li> <a class="dropdown-item" href="{% url 'blog:lireProjet' slug=projet.slug %}"><i class='fa fa-folder-open' ></i>  Fiche Projet</a></li>
                                    <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin='1' %}"><i class='fa fa-pagelines' ></i>  Blog du Jardi Per Tots</a></li>
                                    <li> <a class="dropdown-item" href="{% url 'blog:index' %}?categorie=Jardin"><i class='fa fa-comments' ></i>  Articles des jardins partagés sur le forum</a></li>
+                                </ul>
+                            </li>
+                        {%  elif projet.slug == "projet-bzzzz-2022" %}
+                           <li class="dropdown-submenu">
+                                <a class="dropdown-item dropdown-toggle"  href="#">{{projet.titre|couperTexte:40}}</a>
+                               <ul class="dropdown-menu nav8-dropdown-subsubmenu">
+                                   <li> <a class="dropdown-item" href="{% url 'blog:lireProjet' slug=projet.slug %}"><i class='fa fa-folder-open' ></i>  Fiche Projet</a></li>
+                                   <li> <a class="dropdown-item" href="{% url 'blog:index' %}?categorie=bzzz"><i class='fa fa-comments' ></i>  Articles </a></li>
                                 </ul>
                             </li>
                          {% elif projet.slug == "jardin-partage-de-palau" %}

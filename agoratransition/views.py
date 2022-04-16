@@ -17,7 +17,11 @@ def accueil(request):
             form_inscription.save()
             msg = "Votre inscription a bien été envoyée, merci ! Vous allez recevoir un mail de confimation."
         elif form_inscription.errors:
-            msg = "Une erreur s'est produite lors de votre inscription, veuillez réessayer ou  nous contacter"
+            if [x for x in form_inscription.errors.items()][0][1][0]  == "Un object Inscription exposant avec ces champs Nom Prénom / Raison sociale* et Email* existe déjà.":
+                msg = "Vous êtes bien enregistré"
+            else:
+                msg = "Une erreur s'est produite lors de votre inscription, veuillez réessayer ou  nous contacter"
+
 
     if request.method == 'POST' and 'contactbtn' in request.POST:
         anchor = "contact"
