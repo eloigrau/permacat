@@ -8,6 +8,12 @@
       <excludeFolder url="file://$MODULE_DIR$/bourseLibre/static_files/jet.dashboard" />
       <excludeFolder url="file://$MODULE_DIR$/bourseLibre/static_files/range_filter" />
       <excludeFolder url="file://$MODULE_DIR$/bourseLibre/media" />
+      <excludeFolder url="file://$MODULE_DIR$/bourseLibre/static_files/agora" />
+      <excludeFolder url="file://$MODULE_DIR$/bourseLibre/static_files/img/banniere" />
+      <excludeFolder url="file://$MODULE_DIR$/bourseLibre/static_files/img/cercles" />
+      <excludeFolder url="file://$MODULE_DIR$/bourseLibre/static_files/img/citealt" />
+      <excludeFolder url="file://$MODULE_DIR$/bourseLibre/static_files/img/logos" />
+      <excludeFolder url="file://$MODULE_DIR$/bourseLibre/static/agora/img/orig" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.8 (venv2)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
