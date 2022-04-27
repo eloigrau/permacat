@@ -195,7 +195,7 @@
             </li>
         {%endif%}
 
-        {% if request.user.adherent_pc or request.user.adherent_rtg  or request.user.adherent_fer  or request.user.adherent_scic or request.user.adherent_citealt %}
+        {% if request.user.adherent_pc or request.user.adherent_rtg  or request.user.adherent_fer  or request.user.adherent_scic or request.user.adherent_citealt or request.user.adherent_bzz2022 %}
             <li class="nav-item dropdown active">
              <button type="button" class="btn btn-block {% if request.GET.permacat %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                data-target = "#idPermacat">
@@ -216,6 +216,9 @@
         {%endif%}
         {% if request.user.adherent_citealt %}
                       <a class="dropdown-item" href="?citealt=True">Cité Altruiste</a>
+        {%endif%}
+        {% if request.user.adherent_bzz2022 %}
+                      <a class="dropdown-item" href="?citealt=True">Projet Bzzz</a>
         {%endif%}
                       <a class="dropdown-item" href="?permacat=False">Public</a>
                 </div>

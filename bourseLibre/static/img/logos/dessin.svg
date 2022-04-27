@@ -25,9 +25,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.70710678"
-     inkscape:cx="387.60323"
-     inkscape:cy="845.79397"
+     inkscape:zoom="0.5"
+     inkscape:cx="481.6509"
+     inkscape:cy="808.23531"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -44,7 +44,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -540,5 +540,37 @@
          style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:8.01064777px;font-family:aakar;-inkscape-font-specification:'aakar, Medium';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:1.02521122;stroke-miterlimit:4;stroke-dasharray:none"
          d="m 66.237029,128.21899 h -0.117344 q -0.117343,-0.55542 -0.367676,-0.78229 -0.195573,-0.17992 -0.500666,-0.17992 -0.289447,0 -0.445905,0.16428 -0.148635,0.15646 -0.148635,0.34421 0,0.19557 0.08605,0.32856 0.09387,0.13299 0.250333,0.22686 l 0.844873,0.50067 q 0.336384,0.20339 0.469374,0.36767 0.187749,0.22687 0.187749,0.55543 0,0.4772 -0.375499,0.75882 -0.328562,0.25033 -0.758821,0.25033 -0.18775,0 -0.500665,-0.0704 -0.312916,-0.0704 -0.406791,-0.0704 -0.109521,0 -0.172104,0.0939 h -0.101698 v -1.22038 h 0.125167 q 0.10952,0.49285 0.250333,0.70406 0.258155,0.39115 0.758821,0.39115 0.242509,0 0.414613,-0.11734 0.219041,-0.14864 0.219041,-0.45373 0,-0.35203 -0.40679,-0.5789 l -0.453728,-0.25815 q -0.571072,-0.32074 -0.743176,-0.57107 -0.172103,-0.25816 -0.172103,-0.57108 0,-0.37549 0.258155,-0.64147 0.305093,-0.31292 0.83705,-0.31292 0.172104,0 0.352031,0.0548 0.179926,0.0469 0.367676,0.1017 0.07041,0 0.132989,-0.0861 h 0.08605 z" />
     </g>
+    <rect
+       style="opacity:1;fill:#f0ff32;fill-opacity:1;stroke:#004d00;stroke-width:0.78562415;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect2049-47-3"
+       width="28.356539"
+       height="11.838847"
+       x="239.72017"
+       y="75.745415"
+       rx="7.2036595"
+       ry="4.6747236"
+       inkscape:export-xdpi="60"
+       inkscape:export-ydpi="60" />
+    <g
+       id="text1774-1-6-6-0-4-6-6"
+       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:8.01064777px;line-height:1.25;font-family:aakar;-inkscape-font-specification:'aakar, Medium';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.02521122;stroke-miterlimit:4;stroke-dasharray:none"
+       transform="matrix(1.0622313,0,0,0.94141454,196.22064,-38.895315)"
+       aria-label="Jardins"
+       inkscape:export-xdpi="60"
+       inkscape:export-ydpi="60" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:7.68955421px;line-height:1.25;font-family:aakar;-inkscape-font-specification:'aakar, Medium';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.19223696"
+       x="231.5519"
+       y="89.232536"
+       id="text1774-1-6-3-4-0"
+       transform="scale(1.0622313,0.94141454)"
+       inkscape:export-xdpi="60"
+       inkscape:export-ydpi="60"><tspan
+         sodipodi:role="line"
+         x="231.5519"
+         y="89.232536"
+         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:7.68955421px;font-family:aakar;-inkscape-font-specification:'aakar, Medium';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.19223696"
+         id="tspan1028">Bzzz</tspan></text>
   </g>
 </svg>

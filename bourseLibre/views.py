@@ -367,6 +367,7 @@ def listeContacts_admin(request):
           {"type":'user_adherent', "profils":Profil.objects.filter(adherent_scic=True), "titre":"Liste des adhérents PermAgora: "},
           {"type":'user_adherent', "profils":Profil.objects.filter(adherent_citealt=True), "titre":"Liste des adhérents Cite Altruiste: "},
           {"type":'user_adherent', "profils":Profil.objects.filter(adherent_viure=True), "titre":"Liste des adhérents Viure: "},
+          {"type":'user_adherent', "profils":Profil.objects.filter(adherent_bzz2022=True), "titre":"Liste des adhérents Bzzz: "},
            # {"type":'user_futur_adherent', "profils":Profil.objects.filter(statut_adhesion=0), "titre":"Liste des personnes qui veulent adhérer à Permacat :"}
         ]
     else:
@@ -1242,6 +1243,26 @@ def inscription_viure(request):
         action.send(request.user, verb='inscription_viure', target=asso, url=request.user.get_absolute_url(),
                     description="s'est inscrit.e dans le groupe Viure")
     return redirect('presentation_asso', asso='viure')
+
+@login_required
+def inscription_bzz2022(request):
+    asso = Asso.objects.get(abreviation='bzz2022')
+    if request.user.adherent_bzz2022:
+        request.user.adherent_bzz2022 = False
+        request.user.save()
+        suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_bzz2022')
+        actions.unfollow(request.user, suivi, send_action=False)
+        url = reverse('presentation_asso', kwargs={'asso': 'bzz2022'})
+        action.send(request.user, verb='inscription_bzz2022', target=asso, url=request.user.get_absolute_url(),
+                    description="s'est retiré du groupe Bzzz")
+    else:
+        request.user.adherent_bzz2022 = True
+        request.user.save()
+        suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_bzz2022')
+        actions.follow(request.user, suivi, send_action=False)
+        action.send(request.user, verb='inscription_bzz2022', target=asso, url=request.user.get_absolute_url(),
+                    description="s'est inscrit.e dans le groupe Bzzz")
+    return redirect('presentation_asso', asso='bzz2022')
 
 @login_required
 def contacter_newsletter(request):

@@ -269,6 +269,19 @@
    {% endif %}
                         </ul>
                     </li>
+                    <li class="dropdown-submenu">
+                        <a class="dropdown-item dropdown-toggle"  href="#">Projet Bzzz</a>
+                        <ul class="dropdown-menu  nav5-dropdown-submenu">
+                       <li> <a class="dropdown-item" href="{% url 'presentation_asso'  asso='bzz2022' %}"><i class='fa fa-asterisk iconleft' ></i> Présentation </a></li>
+                         {% if request.user.adherent_viure %}
+                            <li class="divider" role="separator"></li>
+                          <li> <a class="dropdown-item" href="{% url 'carte'  asso='bzz2022' %}"><i class='fa fa-compass iconleft' ></i>  Carte / Annuaire  </a></li>
+                            <li class="divider" role="separator"></li>
+                            <li> <a class="dropdown-item" href="{% url 'agora' asso='bzz2022'%}"><i class='fa fa-comment iconleft' ></i> Salon de discussion</a></li>
+                            <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='bzz2022'%}#ref-titre"><i class='fa fa-comments iconleft' ></i> Articles du forum</a></li>
+   {% endif %}
+                        </ul>
+                    </li>
                 </ul>
         </li>
         <li class="nav-item dropdown nav8">
@@ -479,8 +492,6 @@
                         <a class="dropdown-item dropdown-toggle"  href="#">Cité Altruiste</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
                        <li> <a class="dropdown-item" href="{% url 'presentation_asso' asso='citealt' %}"><i class='fa fa-asterisk iconleft ' ></i> Présentation</a></li>
-<li> <a class="dropdown-item" href="https://CiteAltruiste.org" target="_blank"><i class='fa fa-asterisk iconleft' ></i> CiteAltruiste.org </a></li>
-
                       </ul>
                     </li>
                     <li class="dropdown-submenu">

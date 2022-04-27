@@ -67,6 +67,7 @@ urlpatterns = [
     path(r'groupes/presentation/', views.presentation_groupes, name='presentation_groupes'),
     path(r'permagora/inscription/', views.inscription_permagora, name='inscription_permagora'),
     path(r'citealtruiste/inscription/', views.inscription_citealt, name='inscription_citealt'),
+    path(r'projetBzzz/inscription/', views.inscription_bzz2022, name='inscription_bzz2022'),
     path(r'viure/inscription/', views.inscription_viure, name='inscription_viure'),
     url(r'^site/presentation/$', views_base.presentation_site, name='presentation_site'),
     url(r'^site/pourquoi/$', views_base.presentation_site_pkoi, name='presentation_site_pkoi'),

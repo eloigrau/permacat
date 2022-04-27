@@ -31,7 +31,7 @@ class Choix:
 
     type_annonce_projets = ('Altermarché', 'Altermarché'),  ('Ecovillage', 'Ecovillage'), \
                    ('Jardin', 'Jardins partagés'), ('ChantPossible', 'Ecolieu Chant des possibles'), ('BD_Fred', 'Les BD de Frédéric') , ('bzzz', 'Projet Bzzzz') #('KitPerma', 'Kit Perma Ecole'),
-
+    type_annonce_bzz2022 =   ('AgendaBzz', 'AgendaBzz'),  ('Documentation', 'Documentation'),
     type_annonce_public = type_annonce_base + type_annonce_projets + (('professionel','Activité Pro'), )
     type_annonce_asso = {
         "public": type_annonce_public,
@@ -41,10 +41,11 @@ class Choix:
         "rtg": type_annonce_base,
         "viure": type_annonce_viure,
         "citealt": type_annonce_base + type_annonce_citealt,
+        "bzz2022": type_annonce_bzz2022,
         "jp": Choix_jpt.jardins_ptg,
     }
 
-    type_annonce = type_annonce_public + type_annonce_citealt + type_annonce_viure
+    type_annonce = type_annonce_public + type_annonce_citealt + type_annonce_viure + type_annonce_bzz2022
     couleurs_annonces = {
        # 'Annonce':"#e0f7de", 'Administratif':"#dcc0de", 'Agenda':"#d4d1de", 'Entraide':"#cebacf",
        # 'Chantier':"#d1ecdc",'Jardinage':"#fcf6bd", 'Recette':"#d0f4de", 'Bricolage':"#fff2a0",

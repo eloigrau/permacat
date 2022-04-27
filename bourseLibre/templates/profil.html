@@ -164,6 +164,12 @@
             <td>{{user.adherent_viure|translateOuiNon }}
         </tr>
     {% endif %}
+    {%if request.user.adherent_bzz2022 or request.user == user %}
+        <tr>
+            <td style="width:200px">Inscrit au collectif Bzzz *: </td>
+            <td>{{user.adherent_bzz2022|translateOuiNon }}
+        </tr>
+    {% endif %}
     {%if request.user.adherent_jp or request.user == user %}
         <tr>
             <td style="width:200px">Inscrit aux jardins partagés : </td>
