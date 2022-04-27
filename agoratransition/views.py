@@ -40,3 +40,11 @@ def accueil(request):
             msg = "Une erreur s'est produite lors de l'envoi de la proposition"
 
     return render(request, 'agoratransition/index.html', {"msg":msg, "msg2":msg2, "form_contact": form_contact, "form_proposition": form_proposition, "form_inscription": form_inscription, "anchor":anchor })
+
+@login_required
+def listeInscription(request, ):
+    listeMails = []
+    if request.user.is_superuser:
+      listeMails.append({"type":'inscrits', "profils":InscriptionNewsletter.objects.all(), "titre":"Liste des inscrits : "})
+
+    return render(request, 'listeContacts.html', {"listeMails":listeMails, "asso":"" })

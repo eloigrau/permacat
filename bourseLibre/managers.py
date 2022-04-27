@@ -8,7 +8,7 @@ class MyActionManager(ActionManager):
         if time is None:
             time = datetime.now()
 
-        return obj.actor_actions.filter(verb = verb, timestamp__lte = time)
+        return obj.actor_actions.filter(verb=verb, timestamp__lte = time)
 
 
     @stream
@@ -16,4 +16,4 @@ class MyActionManager(ActionManager):
         if time is None:
             time = datetime.now()
 
-        return obj.actor_actions.filter(verb = verb, timestamp__lte = time)
+        return obj.actor_actions.filter(verb=verb, timestamp__lte = time)

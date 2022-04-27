@@ -65,7 +65,15 @@ https://www.tooplate.com/view/2117-infinite-loop
               </li>
               <li class="nav-item">
                   <a class="nav-link tm-nav-link" href="#contact">Contact</a>
-              </li>                    
+              </li>
+    {% if request.user.is_superuser %}
+              <li class="nav-item">
+                  <a class="nav-link tm-nav-link" href="https://www.perma.cat/gestion/agoratransition/">admin</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link tm-nav-link" href="{% url 'listeInscription' %}">listeInscription</a>
+              </li>
+    {% endif %}
             </ul>
           </div>        
         </div>
