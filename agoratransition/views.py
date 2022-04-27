@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import InscriptionForm, ContactForm, PropositionForm
+from .models import InscriptionExposant
 
 # Create your views here.
 def accueil(request):
@@ -45,6 +46,6 @@ def accueil(request):
 def listeInscription(request, ):
     listeMails = []
     if request.user.is_superuser:
-      listeMails.append({"type":'inscrits', "profils":InscriptionNewsletter.objects.all(), "titre":"Liste des inscrits : "})
+      listeMails.append({"type":'inscrits', "profils":InscriptionExposant.objects.all(), "titre":"Liste des inscrits : "})
 
     return render(request, 'listeContacts.html', {"listeMails":listeMails, "asso":"" })
