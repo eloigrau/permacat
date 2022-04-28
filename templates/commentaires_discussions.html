@@ -111,5 +111,10 @@ $("#btn-validation-discu").click(
       $(this).html(
         `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ...`
       );
+
+      setTimeout(function () {
+          $(this).prop("disabled", false);
+          $(this).html( `OK` );
+      }, 6000);
     });
 </script>
