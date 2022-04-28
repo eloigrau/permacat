@@ -18,12 +18,11 @@
 <script>
 $("btn-validation").click(
     function() {
-        console.log("clicked...waiting...");
-
-        setTimeout(
-            function() {
-                alert("Called after delay.");
-            },
-            5000);
+    // disable button
+      $(this).prop("disabled", true);
+      // add spinner to button
+      $(this).html(
+        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+      );
     });
 </script>
