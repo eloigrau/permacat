@@ -41,7 +41,10 @@
       {% csrf_token %}
       <div class="col-sm-12 textcenter">
         <div class="btn-group">
-    {% include 'form_template3.html' with form=form_discussion %}
+    {% include 'form_template2.html' with form=form_discussion %}
+            <span class="input-group-btn">
+      <button id="btn-validation-discu" type="submit" class="btn btn-primary">OK</button>
+      </span>
 
           </div>
           </div>
