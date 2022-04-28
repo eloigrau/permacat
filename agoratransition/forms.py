@@ -36,8 +36,7 @@ class InscriptionForm(forms.ModelForm):
 </div>\
 <div>Merci pour votre inscription &agrave; la <a href='https://www.perma.cat/agoratransition/'>Journ&eacute;e de la Transition !</a></div>\
 <div>&nbsp;</div>\
-<div>Nous souhaitons laisser la possibilit&eacute; d'une coop&eacute;ration pour l'organisation de cette journ&eacute;e.</div>\
-<div>Merci de répondre au  <a href='https://framaforms.org/tables-rondes-de-la-premiere-agora-de-la-transition-du-8-mai-2022-1650658357'>questionnaire suivant</a></div>\
+<div>Nous souhaitons laisser la possibilit&eacute; d'une coop&eacute;ration pour l'organisation de cette journ&eacute;e. Pour cela, merci de répondre au  <a href='https://framaforms.org/tables-rondes-de-la-premiere-agora-de-la-transition-du-8-mai-2022-1650658357'>questionnaire suivant</a></div>\
 <div>&nbsp;</div>\
 <div>Pour toute information compl&eacute;mentaire, nous nous tenons &agrave; votre disposition.</div>\
 <div>&nbsp;</div>\
