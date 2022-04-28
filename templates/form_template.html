@@ -10,13 +10,13 @@
 {% if not boutonAnnuler %}
           <input type="button" class="btn btn-secondary"  onclick="window.history.back();"  value="Annuler" />
 {% endif %}
-  <button id ="btn-validation" type="submit" class="btn btn-primary">OK</button>
+  <button id ="btn-valider" type="submit" class="btn btn-primary">OK</button>
 </form>
 </div>
 </div>
 
 <script>
-$("#btn-validation").click(
+$("#btn-valider").click(
     function() {
     // disable button
       $(this).prop("disabled", true);
