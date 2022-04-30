@@ -113,26 +113,15 @@
 
 $(document).ready(function() {
     $('#myForm').one('submit', function() {
-        $(this).find('input[type="submit"]').attr('disabled', 'disabled');
-         $(this).html(
-        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`
-      );
-    });
-{% comment %}
-     $(this).prop("disabled", true);
-{% endcomment %}
+        var btn = $("#btn-validation");
+        btn.prop("disabled", true);
+        btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
 
-      // add spinner to button
-      $(this).html(
-        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`
-      );
-      setTimeout(function () {
-{% comment %}
-     $(this).prop("disabled", false);
-{% endcomment %}
-          $(this).html( `OK` );
-      }, 3000);
+        setTimeout(function () {
+             btn.removeAttr("disabled")
+             btn.html( `OK` );
+          }, 4000);
     });
-}
+});
 </script>
 

@@ -11,16 +11,25 @@
           <input type="button" class="btn btn-secondary"  onclick="window.history.back();"  value="Annuler" />
 {% endif %}
   <button id ="btn-valider" type="submit" class="btn btn-primary">OK</button>
+
+
+
 </form>
 </div>
 </div>
 
 
 <script>
-
 $(document).ready(function() {
     $('#myForm').one('submit', function() {
-        $(this).find('input[type="submit"]').attr('disabled', 'disabled');
+        var btn = $("#btn-valider");
+        btn.prop("disabled", true);
+        btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+
+        setTimeout(function () {
+             btn.removeAttr("disabled")
+             btn.html( `OK` );
+          }, 4000);
     });
-}
+});
 </script>
