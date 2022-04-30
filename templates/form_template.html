@@ -19,14 +19,18 @@
 $("#btn-valider").click(
     function() {
     // disable button
-      $(this).prop("disabled", true);
+{% comment %}
+     $(this).prop("disabled", true);
+{% endcomment %}
       // add spinner to button
       $(this).html(
         `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`
       );
 
       setTimeout(function () {
-          $(this).prop("disabled", false);
+{% comment %}
+     $(this).prop("disabled", false);
+{% endcomment %}
           $(this).html( `OK` );
       }, 6000);
     });
