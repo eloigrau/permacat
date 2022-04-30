@@ -110,10 +110,11 @@
 
 
 <script>
-$("#btn-validation").click(
-    function() {
-    // disable button
 
+$(document).ready(function() {
+    $('#myForm').one('submit', function() {
+        $(this).find('input[type="submit"]').attr('disabled', 'disabled');
+    });
 {% comment %}
      $(this).prop("disabled", true);
 {% endcomment %}
@@ -129,5 +130,6 @@ $("#btn-validation").click(
           $(this).html( `OK` );
       }, 3000);
     });
+}
 </script>
 
