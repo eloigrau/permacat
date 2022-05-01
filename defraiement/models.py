@@ -76,25 +76,22 @@ class ParticipantReunion(models.Model):
         #client = openrouteservice.Client(key=OSM_KEY)  # Specify your personal API key
         #routes = client.directions(coords)
 
-        if self.distance == -1:
-            return self.distance
-        else:
-            try:
-                reponse = requests.get(self.get_url(reunion))
-                data = simplejson.loads(reponse.text)
-                if data["code"] != "Ok":
-                    raise Exception("erreur de calcul de trajet")
-                routes = data["routes"]
-                self.contexte_distance = str(routes)
-                self.save()
-                dist = 1000000
-                for r in routes[0]:
-                    if routes[0]["distance"] < dist:
-                        dist = float(routes[0]["distance"])
-                if dist == 1000000:
-                    return 0
-            except :
+        try:
+            reponse = requests.get(self.get_url(reunion))
+            data = simplejson.loads(reponse.text)
+            if data["code"] != "Ok":
+                raise Exception("erreur de calcul de trajet")
+            routes = data["routes"]
+            self.contexte_distance = str(routes)
+            self.save()
+            dist = 1000000
+            for r in routes[0]:
+                if routes[0]["distance"] < dist:
+                    dist = float(routes[0]["distance"])
+            if dist == 1000000:
                 return 0
+        except :
+            return 0
         self.distance = round(dist/1000.0, 2)
         return self.distance
 
@@ -143,7 +140,10 @@ class Reunion(models.Model):
     def getDistanceTotale(self):
         dist = 0
         for p in self.participants.all():
-            dist += p.getDistance_route(self)
+            try:
+                dist += p.getDistance_route(self)
+            except:
+                return -1
         return round(dist, 2)
 
 # class Atelier(models.Model):
