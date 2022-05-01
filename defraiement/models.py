@@ -163,7 +163,7 @@ class Distance_ParticipantReunion(models.Model):
             dist = -1
         self.distance = str(round(dist/1000.0, 2))
         self.save(calculerDistance=False)
-        return dist
+        return self.distance
 
 
 # class Atelier(models.Model):
