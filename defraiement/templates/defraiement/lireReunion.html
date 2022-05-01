@@ -39,12 +39,15 @@
     <div class="row titre_reunion" style="background-color:{{reunion.reunion.get_couleur}};margin-bottom:5px;">
         <div class="col textcenter" >
               <h2> Reunion : {{ reunion.titre }}</h2>
+
 {% if reunion.start_time %}
  <p class="inscrit_reunion textcenter">
-     le {{ reunion.start_time|date:"l d F Y"}},
+     {{ reunion.get_categorie_display }}
+{% if reunion.start_time %}
+     , le {{ reunion.start_time|date:"l d F Y"}},
+{% endif %}
 
     </p>
-{% endif %}
         </div>
     </div>
  	<div class="row">
