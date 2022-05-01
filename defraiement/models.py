@@ -132,10 +132,10 @@ class Distance_ParticipantReunion(models.Model):
     class Meta:
         unique_together = (('reunion', 'participant',), )
 
-    def save(self, calculerDistance=True, *args, **kwargs):
+    def save(self, calculerDistance=False, *args, **kwargs):
         ''' On save, update timestamps '''
         retour = super(Distance_ParticipantReunion, self).save(*args, **kwargs)
-        if calculerDistance:
+        if calculerDistance or not self.distance:
             self.distance = self.calculerDistance()
         return retour
 
