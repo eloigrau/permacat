@@ -17,11 +17,13 @@
 <div class="col-sm-12 col-md-10 col-lg-9 text-center">
 <form method="post">
   {% csrf_token %}
+    {% comment %}
     <p>Donnez l'adresse :</p>
  {% include 'form_template2.html' with form=form_adresse%}
   <button type="submit" name="adressebtn" class="btn btn-primary">Valider l'adresse</button>
 
     <hr>
+    {% endcomment %}
   {% csrf_token %}
     <p>Ou rentrez les coordonnées GPS (latitude, longitude) :</p>
 

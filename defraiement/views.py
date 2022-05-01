@@ -136,14 +136,14 @@ def ajouterReunion(request):
 def modifierParticipantReunion(request, id):
     part = ParticipantReunion.objects.get(id=id)
     form = ParticipantReunionForm(request.POST or None, part.nom)
-    form_adresse = AdresseForm(request.POST or None, instance=part.adresse)
+    #form_adresse = AdresseForm(request.POST or None, instance=part.adresse)
     form_adresse2 = AdresseForm3(request.POST or None, instance=part.adresse)
 
-    if form.is_valid() and (form_adresse.is_valid() or form_adresse2.is_valid()):
-        if 'adressebtn' in request.POST:
-            adresse = form_adresse.save()
-        else:
-            adresse = form_adresse2.save()
+    if form.is_valid() and form_adresse2.is_valid():#or form_adresse.is_valid()
+        #if 'adressebtn' in request.POST:
+        #    adresse = form_adresse.save()
+        #else:
+        adresse = form_adresse2.save()
         part.nom = form.cleaned_data['nom']
         part.adresse = adresse
         part.save()
@@ -185,14 +185,14 @@ class ModifierReunion(UpdateView):
 
 def ajouterAdresseReunion(request, slug):
     reunion = get_object_or_404(Reunion, slug=slug)
-    form_adresse = AdresseForm(request.POST or None)
+    #form_adresse = AdresseForm(request.POST or None)
     form_adresse2 = AdresseForm3(request.POST or None)
 
-    if form_adresse.is_valid() or form_adresse2.is_valid():
-        if 'adressebtn' in request.POST:
-            adresse = form_adresse.save()
-        else:
-            adresse = form_adresse2.save()
+    if form_adresse2.is_valid():#form_adresse.is_valid() or
+        # if 'adressebtn' in request.POST:
+        #     adresse = form_adresse.save()
+        # else:
+        adresse = form_adresse2.save()
         reunion.adresse = adresse
         reunion.save()
         return redirect(reunion)
@@ -201,19 +201,19 @@ def ajouterAdresseReunion(request, slug):
 
 def modifierAdresseReunion(request, slug):
     reunion = get_object_or_404(Reunion, slug=slug)
-    form_adresse = AdresseForm(request.POST or None, instance=reunion)
-    form_adresse2 = AdresseForm3(request.POST or None, instance=reunion)
+    #form_adresse = AdresseForm(request.POST or None, instance=reunion)
+    form_adresse2 = AdresseForm3(request.POST or None)
 
-    if form_adresse.is_valid() or form_adresse2.is_valid():
-        if 'adressebtn' in request.POST:
-            adresse = form_adresse.save()
-        else:
-            adresse = form_adresse2.save()
+    if form_adresse2.is_valid():#form_adresse.is_valid() or
+        # if 'adressebtn' in request.POST:
+        #     adresse = form_adresse.save()
+        # else:
+        adresse = form_adresse2.save()
         reunion.adresse = adresse
         reunion.save()
         return redirect(reunion)
 
-    return render(request, 'defraiement/modifierAdresseReunion.html', {'reunion':reunion, 'form_adresse':form_adresse, 'form_adresse2':form_adresse2 })
+    return render(request, 'defraiement/modifierAdresseReunion.html', {'reunion':reunion, 'form_adresse2':form_adresse2 }) # 'form_adresse':form_adresse,
 
 class SupprimerParticipant(DeleteAccess, DeleteView):
     model = ParticipantReunion
@@ -235,18 +235,18 @@ class SupprimerReunion(DeleteAccess, DeleteView):
 @login_required
 def ajouterParticipant(request):
     form = ParticipantReunionForm(request.POST or None, )
-    form_adresse = AdresseForm(request.POST or None)
+    #form_adresse = AdresseForm(request.POST or None)
     form_adresse2 = AdresseForm3(request.POST or None)
-    if form.is_valid() and (form_adresse.is_valid() or form_adresse2.is_valid()):
-        if 'adressebtn' in request.POST:
-            adresse = form_adresse.save()
-        else:
-            adresse = form_adresse2.save()
+    if form.is_valid() and form_adresse2.is_valid(): #(form_adresse.is_valid() or
+        # if 'adressebtn' in request.POST:
+        #     adresse = form_adresse.save()
+        # else:
+        adresse = form_adresse2.save()
         part = form.save(adresse)
 
         return redirect(part.get_absolute_url())
 
-    return render(request, 'defraiement/ajouterParticipant.html', {'form': form, 'form_adresse':form_adresse, 'form_adresse2':form_adresse2 })
+    return render(request, 'defraiement/ajouterParticipant.html', {'form': form,'form_adresse2':form_adresse2 }) # 'form_adresse':form_adresse,
 
 
 @login_required
@@ -254,44 +254,44 @@ def ajouterParticipantReunion(request, slug_reunion):
     reunion = get_object_or_404(Reunion, slug=slug_reunion)
     form = ParticipantReunionForm(request.POST or None, )
     form_choice = ParticipantReunionChoiceForm(request.POST or None)
-    form_adresse = AdresseForm(request.POST or None)
+    #form_adresse = AdresseForm(request.POST or None)
     form_adresse2 = AdresseForm3(request.POST or None)
 
-    if form_choice.is_valid() or form.is_valid() and (form_adresse.is_valid() or form_adresse2.is_valid()):
+    if form_choice.is_valid() or form.is_valid() and form_adresse2.is_valid():#(form_adresse.is_valid() or form_adresse2.is_valid()):
         if form_choice.is_valid():
             if form_choice.cleaned_data and form_choice.cleaned_data["participant"]:
                 reunion.participants.add(form_choice.cleaned_data["participant"])
                 reunion.save()
                 return redirect(reunion)
-        if 'adressebtn' in request.POST:
-            adresse = form_adresse.save()
-        else:
-            adresse = form_adresse2.save()
+        # if 'adressebtn' in request.POST:
+        #     adresse = form_adresse.save()
+        # else:
+        adresse = form_adresse2.save()
         participant = form.save(adresse)
 
         reunion.participants.add(participant)
         reunion.save()
         return redirect(reunion)
 
-    return render(request, 'defraiement/ajouterParticipantReunion.html', {'reunion':reunion, 'form': form, 'form_choice':form_choice, 'form_adresse':form_adresse, 'form_adresse2':form_adresse2 })
+    return render(request, 'defraiement/ajouterParticipantReunion.html', {'reunion':reunion, 'form': form, 'form_choice':form_choice,  'form_adresse2':form_adresse2 }) ##'form_adresse':form_adresse,
 
 
 @login_required
 def ajouterAdresseReunion(request, slug):
     reunion = Reunion.objects.get(slug=slug)
-    form_adresse = AdresseForm(request.POST or None)
+    #form_adresse = AdresseForm(request.POST or None)
     form_adresse2 = AdresseForm3(request.POST or None)
 
-    if (form_adresse.is_valid() or form_adresse2.is_valid()):
-        if 'adressebtn' in request.POST:
-            adresse = form_adresse.save()
-        else:
-            adresse = form_adresse2.save()
+    if form_adresse2.is_valid(): #form_adresse.is_valid() or
+        # if 'adressebtn' in request.POST:
+        #     adresse = form_adresse.save()
+        # else:
+        adresse = form_adresse2.save()
         reunion.adresse = adresse
         reunion.save()
         return redirect(reunion)
 
-    return render(request, 'defraiement/ajouterAdresseReunion.html', {'reunion':reunion, 'form_adresse':form_adresse, 'form_adresse2':form_adresse2 })
+    return render(request, 'defraiement/ajouterAdresseReunion.html', {'reunion':reunion, 'form_adresse2':form_adresse2 }) #'form_adresse':form_adresse,
 
 
 

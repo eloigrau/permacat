@@ -8,6 +8,7 @@ import uuid
 from bourseLibre.models import Profil, Suivis, Asso
 import math
 from bourseLibre.constantes import DEGTORAD
+import requests
 
 # Create your models here.
 class Choix:
@@ -20,7 +21,6 @@ class ParticipantReunion(models.Model):
     nom = models.CharField(verbose_name="Nom du participant", max_length=120)
     adresse = models.ForeignKey(Adresse, on_delete=models.CASCADE,)
     distance = models.TextField(blank=True, null=True, verbose_name="Distance calculée")
-    contexte_distance = models.TextField(blank=True, null=True, verbose_name="Description du contexte")
 
     def __str__(self):
         return self.nom + " (" + self.get_adresse_str() + ")"
@@ -62,44 +62,20 @@ class ParticipantReunion(models.Model):
 
         return url
 
-    def getDistance_route(self, reunion):
-        import simplejson
-        import requests
+    def getDistance_route(self, reunion, recalculer=False):
+        distanceObject, created = Distance_ParticipantReunion.objects.get_or_create(reunion=reunion, participant=self)
+        if not recalculer:
+            return float(distanceObject.getDistance())
+        else:
+            return float(distanceObject.calculerDistance())
 
-        if not reunion.adresse:
-            return "adresse de reunion invalide"
-
-
-        #import openrouteservice
-        #coords = ((8.34234, 48.23424), (8.34423, 48.26424))
-
-        #client = openrouteservice.Client(key=OSM_KEY)  # Specify your personal API key
-        #routes = client.directions(coords)
-
-        try:
-            reponse = requests.get(self.get_url(reunion))
-            data = simplejson.loads(reponse.text)
-            if data["code"] != "Ok":
-                raise Exception("erreur de calcul de trajet")
-            routes = data["routes"]
-            self.contexte_distance = str(routes)
-            self.save()
-            dist = 1000000
-            for r in routes[0]:
-                if routes[0]["distance"] < dist:
-                    dist = float(routes[0]["distance"])
-            if dist == 1000000:
-                return 0
-        except :
-            return 0
-        self.distance = round(dist/1000.0, 2)
-        return self.distance
 
     def getDistance_routeTotale(self):
         dist = 0
         for r in self.reunion_set.all():
             dist += float(self.getDistance_route(r))
         return dist
+
 
 class Reunion(models.Model):
     categorie = models.CharField(max_length=30,
@@ -145,6 +121,50 @@ class Reunion(models.Model):
             except:
                 return -1
         return round(dist, 2)
+
+
+class Distance_ParticipantReunion(models.Model):
+    reunion = models.ForeignKey(Reunion, on_delete=models.CASCADE, null=True, blank=True, )
+    participant = models.ForeignKey(ParticipantReunion, on_delete=models.CASCADE, null=True, blank=True, )
+    distance = models.TextField(blank=True, null=True, verbose_name="Distance calculée")
+    contexte_distance = models.TextField(blank=True, null=True, verbose_name="Description du contexte")
+
+    class Meta:
+        unique_together = (('reunion', 'participant',), )
+
+    def save(self, calculerDistance=True, *args, **kwargs):
+        ''' On save, update timestamps '''
+        retour = super(Distance_ParticipantReunion, self).save(*args, **kwargs)
+        if calculerDistance:
+            self.distance = self.calculerDistance()
+        return retour
+
+    def getDistance(self):
+        if self.distance:
+            return self.distance
+        else:
+            return self.calculerDistance()
+
+    def calculerDistance(self):
+        try:
+            reponse = requests.get(self.participant.get_url(self.reunion))
+            data = simplejson.loads(reponse.text)
+            if data["code"] != "Ok":
+                raise Exception("erreur de calcul de trajet")
+            routes = data["routes"]
+            self.contexte_distance = str(routes)
+            dist = 100000000
+            for r in routes:
+                if r["distance"] < dist:
+                    dist = float(r["distance"])
+            if dist == 100000000:
+                dist = -1
+        except:
+            dist = -1
+        self.distance = str(dist)
+        self.save(calculerDistance=False)
+        return dist
+
 
 # class Atelier(models.Model):
 #     categorie = models.CharField(max_length=30,

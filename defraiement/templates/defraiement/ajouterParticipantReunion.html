@@ -26,13 +26,15 @@
   {% csrf_token %}
     <p>Nom du participant : </p>
  {% include 'form_template2.html' with form=form %}
+    {% comment %}
     <p>a) Soit remplir son adresse : </p>
  {% include 'form_template2.html' with form=form_adresse%}
   <button type="submit" name="adressebtn" class="btn btn-primary">Valider l'adresse</button>
 
     <hr>
   {% csrf_token %}
-    <p>b) Soit donnez les coordonnées GPS (latitude, longitude) :</p>
+    {% endcomment %}
+    <p>Donnez les coordonnées GPS (latitude, longitude) :</p>
 
  {% include 'form_template2.html' with form=form_adresse2%}
   <button type="submit" name="gpsbtn"  class="btn btn-primary">Valider les coordonnées GPS</button>
