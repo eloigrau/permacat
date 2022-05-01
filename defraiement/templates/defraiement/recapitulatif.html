@@ -53,7 +53,7 @@
     {% for ll in lignes %}
     <tr>
         {% for l in ll %}
-        <td>{{l}}</td>
+        <td>{{l|safe}}</td>
         {% endfor %}
     </tr>
     {% endfor %}
