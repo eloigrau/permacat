@@ -55,7 +55,7 @@ def getRecapitulatif_km(request, asso='Public'):
         part = ["<a href=" + p.get_absolute_url() + ">" +p.nom+"</a>", ] + distances + [round(sum(distances), 2) , ]
         lignes.append(part)
     distancesTotales = [round(r.getDistanceTotale*2, 2) for r in reunions]
-    lignes.append(["Total", ] + distancesTotales + [sum(distancesTotales), ])
+    lignes.append(["Total", ] + distancesTotales + [round(sum(distancesTotales), 2), ])
     return entete, lignes
 
 def getRecapitulatif_euros(request, prixMax, tarifKilometrique, asso='Public'):
