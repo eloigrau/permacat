@@ -154,9 +154,9 @@ class Distance_ParticipantReunion(models.Model):
             routes = data["routes"]
             self.contexte_distance = str(routes)
             dist = 100000000
-            for r in routes:
-                if r["distance"] < dist:
-                    dist = float(r["distance"])
+            for r in routes[0]:
+                if routes[0]["distance"] < dist:
+                    dist = float(routes[0]["distance"])
             if dist == 100000000:
                 dist = -1
         except:
