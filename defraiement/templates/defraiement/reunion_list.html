@@ -65,8 +65,10 @@
 <div class="infinite-item ">
    <div class="row justify-content-center ">
     <div class="col-sm-12 col-ms-10 col-lg-8 textcenter " >
-        <a  href="{% url 'defraiement:lireReunion' slug=reunion.slug %}" class="boutonAtelier" > <div style="background-color:{{reunion.get_couleur}};
-    font-variant: small-caps;" >{{ reunion.titre }}  </div>
+        <a  href="{% url 'defraiement:lireReunion' slug=reunion.slug %}" class="boutonAtelier" >
+            <div></div>
+            <div style="background-color:{{reunion.get_couleur}};
+    font-variant: small-caps;" > ({{ reunion.get_categorie_display }}) {{ reunion.titre }}  </div>
             {% if reunion.start_time %}
         <p class="textepetit">le {{ reunion.start_time|date:"DATE_FORMAT" }}</p>
         {% endif %}
