@@ -173,9 +173,7 @@ class ModifierReunion(UpdateView):
     def form_valid(self, form):
         self.object = form.save()
         self.object.date_modification = now()
-        self.object.save(sendMail=form.changed_data != ['estArchive'])
-
-        #envoi_emails_reunionouprojet_modifie(self.object, "L'reunion " +  self.object.titre + "a été modifié", True)
+        self.object.save()
         return HttpResponseRedirect(self.get_success_url())
 
     def get_form(self,*args, **kwargs):
