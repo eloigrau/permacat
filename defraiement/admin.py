@@ -5,4 +5,6 @@ from .models import Reunion, ParticipantReunion, Distance_ParticipantReunion
 
 admin.site.register(ParticipantReunion)
 admin.site.register(Reunion)
-admin.site.register(Distance_ParticipantReunion)
+class Distance_ParticipantReunion_admin(admin.ModelAdmin):
+    list_display = ('reunion', 'participant', 'distance')
+admin.site.register(Distance_ParticipantReunion, Distance_ParticipantReunion_admin)
