@@ -48,13 +48,13 @@ def getRecapitulatif_km(request, asso='Public'):
         reunions = Reunion.objects.filter(estArchive=False, asso=asso).order_by('start_time')
 
     participants = ParticipantReunion.objects.all()
-    entete = ["nom (km parcourus)", ] + ["<a href="+r.get_absolute_url()+">" +r.titre+"</a>"  + " (" + str(r.start_time) + ")" for r in reunions] + ["total",]
+    entete = ["nom", ] + ["<a href="+r.get_absolute_url()+">" +r.titre+"</a>"  + " (" + str(r.start_time) + ")" for r in reunions] + ["km parcourus",]
     lignes = []
     for p in participants:
-        distances = [p.getDistance_route(r)*2 if p in r.participants.all() else 0 for r in reunions ]
+        distances = [round(p.getDistance_route(r)*2, 2) if p in r.participants.all() else 0 for r in reunions ]
         part = [p.nom, ] + distances + [sum(distances), ]
         lignes.append(part)
-    distancesTotales = [r.getDistanceTotale*2 for r in reunions]
+    distancesTotales = [round(r.getDistanceTotale*2, 2) for r in reunions]
     lignes.append(["Total", ] + distancesTotales + [sum(distancesTotales), ])
     return entete, lignes
 
@@ -68,7 +68,7 @@ def getRecapitulatif_euros(request, prixMax, tarifKilometrique, asso='Public'):
         reunions = Reunion.objects.filter(estArchive=False, asso=asso).order_by('start_time')
 
     participants = ParticipantReunion.objects.all()
-    entete = ["nom (euros)", ] + ["<a href="+r.get_absolute_url()+">" +r.titre+"</a>" + " (" + str(r.start_time) +")" for r in reunions] + ["total",]
+    entete = ["nom", ] + ["<a href="+r.get_absolute_url()+">" +r.titre+"</a>" + " (" + str(r.start_time) +")" for r in reunions] + ["total Euros",]
     lignes = []
 
     distancesTotales = [r.getDistanceTotale for r in reunions]
