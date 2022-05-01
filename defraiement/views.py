@@ -43,9 +43,9 @@ def getRecapitulatif_km(request, asso='Public'):
     if not isinstance(asso, Asso):
         raise PermissionDenied
     if asso != 'Public':
-        reunions = Reunion.objects.filter(estArchive=False).sort_by('start_time')
+        reunions = Reunion.objects.filter(estArchive=False).order_by('start_time')
     else:
-        reunions = Reunion.objects.filter(estArchive=False, asso=asso).sort_by('start_time')
+        reunions = Reunion.objects.filter(estArchive=False, asso=asso).order_by('start_time')
 
     participants = ParticipantReunion.objects.all()
     entete = ["nom (km parcourus)", ] + ["<a href="+r.get_absolute_url()+">" +r.titre+"</a>"  + " (" + str(r.start_time) + ")" for r in reunions] + ["total",]
@@ -63,9 +63,9 @@ def getRecapitulatif_euros(request, prixMax, tarifKilometrique, asso='Public'):
     if not isinstance(asso, Asso):
         raise PermissionDenied
     if asso != 'Public':
-        reunions = Reunion.objects.filter(estArchive=False).sort_by('start_time')
+        reunions = Reunion.objects.filter(estArchive=False).order_by('start_time')
     else:
-        reunions = Reunion.objects.filter(estArchive=False, asso=asso).sort_by('start_time')
+        reunions = Reunion.objects.filter(estArchive=False, asso=asso).order_by('start_time')
 
     participants = ParticipantReunion.objects.all()
     entete = ["nom (euros)", ] + ["<a href="+r.get_absolute_url()+">" +r.titre+"</a>" + " (" + str(r.start_time) +")" for r in reunions] + ["total",]
