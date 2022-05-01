@@ -51,10 +51,10 @@ def getRecapitulatif_km(request, asso='Public'):
     entete = ["nom (latitude, longitude)", ] + ["<a href="+r.get_absolute_url()+">" +r.titre+"</a>"  + " (" + str(r.start_time) + "; km)" for r in reunions] + ["total",]
     lignes = []
     for p in participants:
-        distances = [p.getDistance_route(r) if p in r.participants.all() else 0 for r in reunions ]
+        distances = [p.getDistance_route(r)*2 if p in r.participants.all() else 0 for r in reunions ]
         part = [p.nom, ] + distances + [sum(distances), ]
         lignes.append(part)
-    distancesTotales = [r.getDistanceTotale for r in reunions]
+    distancesTotales = [r.getDistanceTotale*2 for r in reunions]
     lignes.append(["Total", ] + distancesTotales + [sum(distancesTotales), ])
     return entete, lignes
 
