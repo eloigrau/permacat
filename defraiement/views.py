@@ -52,7 +52,7 @@ def getRecapitulatif_km(request, asso='Public'):
     lignes = []
     for p in participants:
         distances = [round(p.getDistance_route(r)*2, 2) if p in r.participants.all() else 0 for r in reunions ]
-        part = [p.nom, ] + distances + [sum(distances), ]
+        part = [p.nom, ] + distances + [round(sum(distances), 2) , ]
         lignes.append(part)
     distancesTotales = [round(r.getDistanceTotale*2, 2) for r in reunions]
     lignes.append(["Total", ] + distancesTotales + [sum(distancesTotales), ])
