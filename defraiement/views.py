@@ -33,7 +33,7 @@ def lireReunion(request, slug):
 def recalculerDistanceReunion(request, slug_reunion):
     reunion = get_object_or_404(Reunion, slug=slug_reunion)
     reunion.recalculerDistance()
-    return reverse('defraiement:lireReunion', kwargs={"slug": slug_reunion})
+    return redirect(reverse('defraiement:lireReunion', kwargs={"slug": slug_reunion}))
 
 
 @login_required
