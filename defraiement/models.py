@@ -122,6 +122,10 @@ class Reunion(models.Model):
                 return -1
         return round(dist, 2)
 
+    def recalculerDistance(self):
+        for p in self.participants.all():
+            p.getDistance_route(self, recalculer=True)
+
 
 class Distance_ParticipantReunion(models.Model):
     reunion = models.ForeignKey(Reunion, on_delete=models.CASCADE, null=True, blank=True, )
