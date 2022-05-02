@@ -294,6 +294,7 @@ def ajouterAdresseReunion(request, slug):
 
 
 
+
 class SupprimerParticipantReunion(DeleteView):
     model = ParticipantReunion
     success_url = reverse_lazy('defraiement:reunions')
@@ -301,6 +302,12 @@ class SupprimerParticipantReunion(DeleteView):
 
     def get_object(self):
         return Reunion.objects.get(slug=self.kwargs['slug_reunion']).participants.get(id=self.kwargs['id_participantReunion'])
+
+    def delete(self, request, *args, **kwargs):
+        parti = self.get_object()
+        Reunion.objects.get(slug=self.kwargs['slug_reunion']).participants.remove(parti)
+        return self.get_success_url()
+
 
     def get_success_url(self):
         return Reunion.objects.get(slug=self.kwargs['slug_reunion']).get_absolute_url()
