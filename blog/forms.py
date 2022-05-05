@@ -108,6 +108,7 @@ class ArticleForm(forms.ModelForm):
             # Truncate the original slug dynamically. Minus 1 for the hyphen.
             instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
 
+        instance.titre = instance.titre.title()
         instance.auteur = userProfile
 
         instance.save()
