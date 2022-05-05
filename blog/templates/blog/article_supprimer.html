@@ -3,12 +3,28 @@
 {% block subtitle %}
 <div class="row ">
 <div class="col-sm-12 textcenter">
-<form action="" method="post">{% csrf_token %}
+<form id="myForm" action="" method="post">{% csrf_token %}
     <p>Etes vous sûr.e de vouloir supprimer l'article de "{{ article.titre }}"?</p>
     <input type="button"  onclick="window.history.back();"  value="Annuler" />
-    <input type="submit" value="Confirmer" />
+    <input id="btn-valider" type="submit" value="Confirmer" />
 </form>
 </div>
 </div>
+
+
+<script>
+$(document).ready(function() {
+    $('#myForm').one('submit', function() {
+        var btn = $("#btn-valider");
+        btn.prop("disabled", true);
+        btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+
+        setTimeout(function () {
+             btn.removeAttr("disabled")
+             btn.html( `veuillez patientez...` );
+          }, 8000);
+    });
+});
+</script>
 
 {% endblock %}

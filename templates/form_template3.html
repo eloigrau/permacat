@@ -104,22 +104,21 @@
 {% if boutonAnnuler %}
           <input type="button" class="btn btn-secondary"  onclick="window.history.back();"  value="Annuler" />
 {% endif %}
-      <button id="btn-validation" type="submit" class="btn btn-primary">OK</button>
+      <button id="btn-valider" type="submit" class="btn btn-primary">OK</button>
       </span>
 
 
 
 <script>
-
 $(document).ready(function() {
     $('#myForm').one('submit', function() {
-        var btn = $("#btn-validation");
+        var btn = $("#btn-valider");
         btn.prop("disabled", true);
         btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
 
         setTimeout(function () {
              btn.removeAttr("disabled")
-             btn.html( `OK` );
+             btn.html( `veuillez patientez...` );
           }, 8000);
     });
 });

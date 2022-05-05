@@ -4,10 +4,10 @@
 
 <div class="row ">
 <div class="col-sm-12 textcenter">
-<form action="" method="post">{% csrf_token %}
+<form  id="myForm"  action="" method="post">{% csrf_token %}
     <p>Etes vous sûr.e de vouloir supprimer l'offre de "{{ produit }}"?</p>
     <input type="button"  onclick="window.history.back();"  value="Annuler" />
-    <input type="submit" value="Confirmer" />
+    <input type="submit" id="btn-valider" value="Confirmer" />
 </form>
 </div>
 </div>

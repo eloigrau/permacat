@@ -15,12 +15,12 @@
 {% endif %}
 <div class="row justify-content-sm-center">
 <div class="col-sm-12 col-md-10 col-lg-9 text-center">
-<form method="post">
+<form id="myForm" method="post">
   {% csrf_token %}
  {% include 'form_template2.html'%}
     <p>Donnez l'adresse :</p>
  {% include 'form_template2.html' with form=form_adresse%}
-  <button type="submit" name="adressebtn" class="btn btn-primary">Valider l'adresse</button>
+  <button id="btn-valider" type="submit" name="adressebtn" class="btn btn-primary">Valider l'adresse</button>
 
     <hr>
   {% csrf_token %}
