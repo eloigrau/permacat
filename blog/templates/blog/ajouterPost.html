@@ -44,5 +44,19 @@
       });
 
     });
+
+
+$(document).ready(function() {
+    $('#articleForm').one('submit', function() {
+        var btn = $("#btn-valider");
+        btn.prop("disabled", true);
+        btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+
+        setTimeout(function () {
+             btn.removeAttr("disabled")
+             btn.html( `OK` );
+          }, 8000);
+    });
+});
   </script>
 {% endblock %}

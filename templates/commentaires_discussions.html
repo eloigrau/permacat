@@ -59,7 +59,7 @@
 {% if commentaires %}
 <h5>Poster un message :</h5>
 {%endif%}
-<form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+<form id="myForm" class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {% include 'form_template3.html' %}
     <input type="hidden" name="message_discu" value="discussion-generale">

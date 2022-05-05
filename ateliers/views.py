@@ -81,10 +81,11 @@ class SupprimerAtelier(DeleteAccess, DeleteView):
 @login_required
 def inscriptionAtelier(request, slug):
     atelier = get_object_or_404(Atelier, slug=slug)
-    inscript = InscriptionAtelier(user=request.user, atelier=atelier)
-    inscript.save()
-    action.send(request.user, verb='atelier_inscription', action_object=atelier, url=atelier.get_absolute_url(),
-                 description="s'est inscrit.e à l'atelier: '%s'" % atelier.titre)
+    if not InscriptionAtelier.obects.filter(user=request.user, atelier=atelier):
+        inscript = InscriptionAtelier(user=request.user, atelier=atelier)
+        inscript.save()
+        action.send(request.user, verb='atelier_inscription', action_object=atelier, url=atelier.get_absolute_url(),
+                     description="s'est inscrit.e à l'atelier: '%s'" % atelier.titre)
     #messages.info(request, 'Vous êtes bien inscrit.e à cet atelier !')
     return redirect(atelier.get_absolute_url())
 
