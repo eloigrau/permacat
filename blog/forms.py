@@ -149,6 +149,9 @@ class ArticleChangeForm(forms.ModelForm):
                        }),
         }
 
+    def save(self, sendMail=True, commit=True):
+        return super(ArticleChangeForm, self).save(commit=commit)
+
 class ArticleAddAlbum(forms.ModelForm):
     album = forms.ModelChoiceField(queryset=Album.objects.all(), required=True,
                               label="Si l'album existe déjà sur le site, choisissez l'album photo à associer ci-dessous", )
