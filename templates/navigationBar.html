@@ -19,8 +19,6 @@
              {% fontawesome_icon 'globe' %} Site
             </a>
             <ul class="dropdown-menu dropdown-menu1 nav6-dropdown" aria-labelledby="navbarAbout2" id="dropdoownSite">
-                <li> <a class="dropdown-item" href="{% url 'carte'  asso='public' %}"><i class='fa fa-compass' ></i>  Carte / Annuaire </a></li>
-                <li class="divider" role="separator"></li>
                <li> <a class="dropdown-item" href="{% url 'presentation_site_pkoi' %}"> Pourquoi utiliser le site ? </a></li>
                <li> <a class="dropdown-item" href="{% url 'presentation_site_conseils' %}"> Conseils d'utilisation </a></li>
                <li> <a class="dropdown-item" href="{% url 'faq' %}"> FAQ </a></li>
@@ -75,8 +73,12 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu1 nav5-dropdown" aria-labelledby="navbarDropdownMenuLink">
 
-                <li><a class="dropdown-item" href="{% url 'agora' asso='public'%}"><i class='fa fa-comment iconleft ' ></i> Salon de discussion du site</a></li>
-                 <li class="divider" role="separator"></li>
+                {% comment %}
+                    <li><a class="dropdown-item" href="{% url 'agora' asso='public'%}"><i class='fa fa-comment iconleft ' ></i> Salon de discussion du site</a></li>                <li> <a class="dropdown-item" href="{% url 'carte'  asso='public' %}"><i class='fa fa-compass' ></i>  Carte / Annuaire </a></li>
+                {% endcomment %}
+                    <li> <a class="dropdown-item" href="{% url 'carte'  asso='public' %}"><i class='fa fa-compass' ></i>  Carte / Annuaire </a></li>
+
+                    <li class="divider" role="separator"></li>
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle"  href="#" >PermaCat</a>
                         <ul class="dropdown-menu nav5-dropdown-submenu">
@@ -392,10 +394,20 @@
                     </ul>
                 </li>
                 <li class="dropdown-submenu">
-                    <a class="dropdown-item dropdown-toggle"  href="#">Documents </a>
+                    <a class="dropdown-item dropdown-toggle"  href="#">Fichiers </a>
                     <ul class="dropdown-menu nav8-dropdown-submenu">
                         <li><a class="dropdown-item" href="{% url 'photologue:album-list' %}"> Albums photo</a></li>
-                        <li><a class="dropdown-item" href="{% url 'photologue:doc-list' %}"> Autres documents </a></li>
+                        <li><a class="dropdown-item" href="{% url 'photologue:doc-list' %}"> Documents </a></li>
+                    </ul>
+                </li>
+                <li class="dropdown-submenu">
+                    <a class="dropdown-item dropdown-toggle"  href="#">Outils externes</a>
+                    <ul class="dropdown-menu nav8-dropdown-submenu">
+                        <li> <a class="dropdown-item" href="https://framatalk.org/permacat" target="_blank"><i class='fa fa-arrow-right iconleft' ></i>  Visioconférence </a></li>
+                        <li> <a class="dropdown-item" href="https://semestriel.framapad.org/p/permacat_{% random_name 5 %}" target="_blank"><i class='fa fa-arrow-right iconleft' ></i>  Framapad </a></li>
+                        <li> <a class="dropdown-item" href="https://framadate.org/create_poll.php?type=date&lang=fr" target="_blank"><i class='fa fa-arrow-right iconleft' ></i>  Framadate </a></li>
+                        <li> <a class="dropdown-item" href="https://framaforms.org/node/add/form1" target="_blank"><i class='fa fa-arrow-right iconleft' ></i>  Framaforms </a></li>
+                        <li> <a class="dropdown-item" href="https://www.balotilo.org/" target="_blank"><i class='fa fa-arrow-right iconleft' ></i>  Balotilo </a></li>
                     </ul>
                 </li>
             </ul>

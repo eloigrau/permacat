@@ -4,6 +4,8 @@ from django.utils.safestring import mark_safe
 from django.utils.text import slugify
 from bourseLibre.constantes import Choix
 from bourseLibre.models import Asso
+import random
+import string
 
 register = template.Library()
 
@@ -133,3 +135,8 @@ def distance(user1, user2):
 @register.filter
 def get_item_dict(dictionary, key):
     return dictionary.get(key)
+
+@register.simple_tag
+def random_name(longueur=10):
+    letters = string.ascii_lowercase
+    return ''.join(random.choice(letters) for i in range(longueur))
