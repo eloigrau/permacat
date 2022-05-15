@@ -466,6 +466,51 @@ https://www.tooplate.com/view/2117-infinite-loop
                 </div>
             </div>
         {% endif %}
+            <div class="row tm-content-box justify-content-center"><!-- second row -->
+                <div class="col-lg-10 ">
+                    <div class="tm-intro-text-container">>
+                  <h2 class="tm-text-primary mb-4">L'évenement s'est bien déroulé le 8 mai 2022. Merci à tous et à toutes !</h2>
+                     <h3>Nous travaillons actuellement à sa restitution et à la suite !</h3>
+                </button>
+                    </div>
+                </div>
+            </div>
+          <div class="row tm-content-box"><!-- second row -->
+        		<div class="col-lg-2">
+                    <i class="fas fa-3x fa-user-plus text-center tm-icon"></i>
+                </div>
+                <div class="col-lg-10 ">
+                    <div class="tm-intro-text-container">
+                 <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#inscriptionform" title="S'inscrire">
+                  <h2 class="tm-text-primary mb-4"><i class="fas fa-arrow-right"></i> Inscrivez-vous ici pour être tenu au courant de la suite</h2>
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="inscriptionform1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog textaide" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                          <div class="row justify-content-center">
+                           <h5 > Formulaire d'inscription</h5>
+                          </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body textleft">
+                        <form method="post" id="form_inscription1">
+                            {% csrf_token %}
+                            {% include 'form_template2.html' with form=form_inscription %}
+                          <button type="submit" name="inscriptionbtn" class="btn btn-primary">Valider l'inscription</button>
+                        </form>
+                       </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+                    </div>
+            </div>
+        {% comment %}
             <div class="row tm-content-box"><!-- second row -->
         		<div class="col-lg-2">
                     <i class="fas fa-3x fa-user-plus text-center tm-icon"></i>
@@ -500,8 +545,8 @@ https://www.tooplate.com/view/2117-infinite-loop
             </div>
 
                     </div>
-                </div>
-            <div class="row tm-content-box"><!-- second row -->
+            </div>
+            <div class="row tm-content-box"><!-- 3 row -->
         		<div class="col-lg-2">
                     <i class="fas fa-3x fa-check text-center tm-icon"></i>
                 </div>
@@ -536,7 +581,7 @@ https://www.tooplate.com/view/2117-infinite-loop
                     </div>
         </div>
 
-          <div class="row tm-content-box"><!-- second row -->
+          <div class="row tm-content-box"><!-- 4 row -->
         		<div class="col-lg-2">
                     <i class="fas fa-3x fa-check text-center tm-icon"></i>
                 </div>
@@ -550,7 +595,7 @@ https://www.tooplate.com/view/2117-infinite-loop
                     </div>
                 </div>
         </div>
-          <div class="row tm-content-box"><!-- second row -->
+          <div class="row tm-content-box"><!-- 5 row -->
         		<div class="col-lg-2">
                     <i class="fas fa-3x fa-check text-center tm-icon"></i>
                 </div>
@@ -564,6 +609,8 @@ https://www.tooplate.com/view/2117-infinite-loop
                     </div>
                 </div>
         </div>
+
+        {% endcomment %}
         </div>
 
     </section>
