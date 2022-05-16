@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import InscriptionForm, ContactForm, PropositionForm
 from .models import InscriptionExposant
+from bourseLibre.serializers import InscriptionAgoraSerializer
+from rest_framework import viewsets
+from rest_framework import permissions
 
 # Create your views here.
 def accueil(request):
@@ -49,3 +52,13 @@ def listeInscription(request, ):
       listeMails.append({"type":'inscrits', "profils":InscriptionExposant.objects.all(), "titre":"Liste des inscrits : "})
 
     return render(request, 'listeContacts.html', {"listeMails":listeMails, "asso":"" })
+
+
+class InscriptionsViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    serializer_class = InscriptionAgoraSerializer
+    http_method_names = ['get',]
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = InscriptionExposant.objects.all().order_by('nom')
