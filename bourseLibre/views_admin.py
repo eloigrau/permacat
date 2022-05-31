@@ -228,7 +228,7 @@ def send_mass_html_mail(datatuple, fail_silently=False, auth_user=None,
                                bcc=recipient,
                                alternatives=[(html_message, 'text/html')],
                                connection=connection)
-        for subject, message, html_message, sender, recipient in datatuple
+        for subject, message, html_message, sender, recipient in data
     ]
     return connection.send_messages(messages)
 
