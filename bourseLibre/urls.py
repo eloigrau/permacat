@@ -188,6 +188,7 @@ urlpatterns = [
     url(r'^admin/nettoyerFollows/$', views_admin.nettoyerFollows,  name="nettoyerFollows"),
     url(r'^admin/nettoyerHistoriqueAdmin/$', views_admin.nettoyerHistoriqueAdmin,  name="nettoyerHistoriqueAdmin"),
     url(r'^admin/envoyerEmailsRequete/$', views_admin.envoyerEmailsRequete,  name="envoyerEmailsRequete"),
+    url(r'^admin/envoyerEmailsTest/$', views_admin.envoyerEmailsTest,  name="envoyerEmailsTest"),
     url(r'^admin/voir_articles_a_archiver/$', views_admin.voir_articles_a_archiver,  name="voir_articles_a_archiver"),
     url(r'^admin/archiverArticles/$', views_admin.archiverArticles,  name="archiverArticles"),
     url(r'^admin/voirPbProfils/$', views_admin.voirPbProfils,  name="voirPbProfils"),

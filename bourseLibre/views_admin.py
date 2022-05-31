@@ -210,6 +210,14 @@ def send_mass_html_mail(datatuple, fail_silently=False, auth_user=None,
     If auth_user is None, use the EMAIL_HOST_USER setting.
     If auth_password is None, use the EMAIL_HOST_PASSWORD setting.
     """
+    data = []
+    for subject, message, html_message, sender, recipient in datatuple:
+        if len(recipient) > 100:
+            for i in range(0, len(recipient), 99):
+                data.append([subject, message, html_message, sender, recipient[i:i + 99]])
+        else:
+            data.append([subject, message, html_message, sender, recipient])
+
     connection = mail.get_connection(
         username=SERVER_EMAIL,
         password=EMAIL_HOST_PASSWORD,
@@ -234,6 +242,12 @@ def envoyerEmailsRequete(request):
     supprimerActionsStartedFollowing()
     return redirect('voirEmails', )
 
+def envoyerEmailsTest(request):
+    listeMails = []
+    for i in range(2):
+        listeMails.append(("titre", "messagetxt", "message_" + str(i), SERVER_EMAIL, [j for j in range(205)]))
+
+    send_mass_html_mail(listeMails, fail_silently=False)
 
 def envoyerEmails():
     print('Récupération des mails')
