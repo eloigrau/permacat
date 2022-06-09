@@ -6,6 +6,7 @@ dj-database-url==0.5.0
 Django==2.2.27
 django-activity-stream==0.7.0
 django-acme-challenge==1.2
+django-anymail==8.6
 django-avatar==5.0.0
 django-bootstrap==0.2.4
 django-bower==5.2.0

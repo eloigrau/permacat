@@ -133,7 +133,7 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
      'sortedm2m',
     'photologue',
-
+    'anymail',
     #'wiki.apps.WikiConfig',
    # 'wiki.plugins.attachments.apps.AttachmentsConfig',
     #'wiki.plugins.notifications.apps.NotificationsConfig',
