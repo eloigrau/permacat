@@ -55,9 +55,7 @@
 </head>
 
 
-{%block bodyEntete%}
-<body>
-{%endblock%}
+<body style="background-color:black;">
     <a name="top"></a>
 <div class="container-fluid">
 	<div class="row rowprincipal">
@@ -70,7 +68,7 @@
 
         <div class="panel bodycontenucomplet">
             <div class="panel-heading">
-                <div class="panel-title soustitre" id="top_soustitre">
+                <div class="panel-title soustitre" id="top_soustitre" {%block bodyEntete%}{%endblock%}>
                     <div class="row justify-content-sm-center">
                     <div class="col-sm-12 col-md-12 col-lg-12  textcenter">
 
