@@ -48,7 +48,21 @@ font : normal;
 * html .clearfix { height: 1%; }
 .clearfix { display: block; }
 
-
+.navbarMenu{
+		position: fixed;
+	    top: 0;
+	    right: 0;
+	    left: 0;
+	    width: 100%;
+	    z-index: 1030;
+    text-align:center;
+}
+.scrolled-down{
+    transform:translateY(-100%); transition: all 0.3s ease-in-out;
+}
+.scrolled-up{
+    transform:translateY(0); transition: all 0.3s ease-in-out;
+}
  .btn-faq{
  white-space: normal !important;
  color:black;
@@ -159,9 +173,6 @@ section.p3 {
     }
 .navbar-brand {
     font-family: 'Satisfy', cursive;
-}
-.navbarMenu{
-    text-align:center;
 }
 .btn-static {
   cursor: default;
@@ -482,7 +493,7 @@ border: 1px inset rgba(28,110,164,0.65);
     margin-bottom: 30px;
     margin-left: 10px;
     margin-right: 10px;
-    background: white;
+    background-image:linear-gradient(40deg, #ffc34d, white);
 }
 
 .bodycontenu{
@@ -499,7 +510,7 @@ border: 1px inset rgba(28,110,164,0.65);
     min-width:200px;
     margin-top:20px;
     margin-bottom:20px;
-    background-color: rgba(255, 255, 255, .8);
+    background-color: rgba(255, 255, 255, .7);
     /*border: 0.5px solid #053200;*/
     }
 }
@@ -1235,6 +1246,7 @@ table.greenTable tfoot .links a{
     text-transform: none;
     border: 5px double #D9D9D9;
     border-radius: 25px;
+    background-color: azure;
 }
 
 .titre_fiche_index{

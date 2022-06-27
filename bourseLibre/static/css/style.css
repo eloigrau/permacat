@@ -48,7 +48,21 @@ font : normal;
 * html .clearfix { height: 1%; }
 .clearfix { display: block; }
 
-
+.navbarMenu{
+		position: fixed;
+	    top: 0;
+	    right: 0;
+	    left: 0;
+	    width: 100%;
+	    z-index: 1030;
+    text-align:center;
+}
+.scrolled-down{
+    transform:translateY(-100%); transition: all 0.3s ease-in-out;
+}
+.scrolled-up{
+    transform:translateY(0); transition: all 0.3s ease-in-out;
+}
  .btn-faq{
  white-space: normal !important;
  color:black;
@@ -159,9 +173,6 @@ section.p3 {
     }
 .navbar-brand {
     font-family: 'Satisfy', cursive;
-}
-.navbarMenu{
-    text-align:center;
 }
 .btn-static {
   cursor: default;
