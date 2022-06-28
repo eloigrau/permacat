@@ -63,8 +63,6 @@
             {% block navbar%}
             {% include 'navigationBar.html' %}
             {% endblock%}
-            {%block banniere %}
-            {% endblock%}
 
         <div class="panel bodycontenucomplet">
             <div class="panel-heading">
@@ -83,10 +81,18 @@
                             {% endif %}
                             {% endblock %}
                         </div>
-                            {% block subtitle %}{% endblock %}
+
+            {%block banniere %}
+            {% endblock%}
                         </div>
                     </div>
                 </div>
+                <div class="panel-body panelsoustitre ">
+                <div class="row justify-content-sm-center">
+                    <div class="col-sm-12 col-md-12 col-lg-12  textcenter">
+                            {% block subtitle %}{% endblock %}
+                </div></div>
+                <div class="panel-body bodycontenu ">
                 <div class="panel-body bodycontenu ">
                     {% block content %}{% endblock %}
                 </div>
