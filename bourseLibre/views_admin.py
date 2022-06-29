@@ -210,13 +210,13 @@ def send_mass_html_mail(datatuple, fail_silently=False, auth_user=None,
     If auth_user is None, use the EMAIL_HOST_USER setting.
     If auth_password is None, use the EMAIL_HOST_PASSWORD setting.
     """
-    import re
-    EMAIL_REGEX = re.compile(r"[^@]+@[^@]+\.[^@]+")
+    #import re
+    #EMAIL_REGEX = re.compile(r"[^@]+@[^@]+\.[^@]+")
     data = []
     for subject, message, html_message, sender, recipient in datatuple:
         if len(recipient) > 98:
             for i in range(0, len(recipient), 90):
-                data.append([subject, message, html_message, sender, recipient[i:i + 90])
+                data.append([subject, message, html_message, sender, recipient[i:i + 90]])
         else:
             data.append([subject, message, html_message, sender, recipient])
 
