@@ -226,7 +226,7 @@ def send_mass_html_mail(datatuple, fail_silently=False, auth_user=None,
         fail_silently=fail_silently,
     )
     messages = [
-        EmailMultiAlternatives(subject, message, sender, to=["", ],
+        EmailMultiAlternatives(subject, message, sender, to=[SERVER_EMAIL, ],
                                bcc=recipient,
                                alternatives=[(html_message, 'text/html')],
                                connection=connection)
