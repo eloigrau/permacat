@@ -996,7 +996,7 @@ class ListeConversations(ListView):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
 
-        context['conversations'] = Conversation.objects.filter(Q(profil2__id=self.request.user.id) | Q(profil1__id=self.request.user.id)).order_by('-date_dernierMessage')
+        context['conversations'] = Conversation.objects.filter(Q(date_dernierMessage__isnull=False) & (Q(profil2__id=self.request.user.id) | Q(profil1__id=self.request.user.id))).order_by('-date_dernierMessage')
         context['suivis'], created = Suivis.objects.get_or_create(nom_suivi="conversations")
 
         return context
