@@ -1,4 +1,4 @@
-<div class="col-md-3 col-lg-3 offre justify-content-between hoverable flex-item" style="background-color:{{ produit.couleur }}; border:{%if produit.estUneOffre == True %} grey {%else%}white{%endif%}  solid">
+<div class="col-md-3 col-lg-3 offre justify-content-between hoverable flex-item" style="background-color:{{ produit.couleur }}; border:{%if produit.estUneOffre == True %} green {%else%}blueviolet{%endif%}  solid;">
     <div class="row extratest align-items-start">
         <div class="col-sm-12">
         <a href="{% url 'produit_detail' produit.id %}" >

@@ -1,9 +1,9 @@
 <div class="col-md-3 col-lg-3 offre justify-content-between hoverable flex-item" >
 <a href="{% url 'produit_detail' produit.id %}">
-<div class="card text-center offre" style="background-color:{{ produit.couleur }}; border-color:{%if produit.estUneOffre == True %} grey {%else%}white{%endif%}">
+<div class="card text-center offre" style="background-color:{{ produit.couleur }}; border-color:{%if produit.estUneOffre == True %} green {%else%}blueviolet{%endif%};">
 
     <div class="card-header">
-        <span class="badge float-right {% if produit.estUneOffre%}badge-warning{%else%} badge-danger {%endif%} ">
+        <span class="badge float-right {% if produit.estUneOffre%}badge-warning{%else%} badge-info {%endif%} ">
             {% if produit.estUneOffre%}Offre ({{produit.souscategorie}} par {{produit.user.username}}) {%else%} Demande ({{produit.souscategorie}} par {{produit.user.username}}){%endif%}
         </span>
     </div>
