@@ -214,7 +214,7 @@ def send_mass_html_mail(datatuple, fail_silently=False, auth_user=None,
     #EMAIL_REGEX = re.compile(r"[^@]+@[^@]+\.[^@]+")
     data = []
     for subject, message, html_message, sender, recipient in datatuple:
-        if len(recipient) > 98:
+        if len(recipient) > 90:
             for i in range(0, len(recipient), 90):
                 data.append([subject, message, html_message, sender, recipient[i:i + 90]])
         else:
