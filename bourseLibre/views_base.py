@@ -123,7 +123,6 @@ def liens(request):
         'https://la-bas.org/',
         'https://lvsl.fr/',
         'https://www.les-crises.fr/',
-        'https://la-bas.org/',
         ]
     }
     return render(request, 'liens.html', {'liens':liens})
