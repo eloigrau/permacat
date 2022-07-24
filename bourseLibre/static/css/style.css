@@ -499,12 +499,9 @@ border: 1px inset rgba(28,110,164,0.65);
 }
 
 .soustitre{
-    padding: 2px;
+    padding: 5px;
     border-radius: 0.8em;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 10px;
-    margin-right: 10px;
+    margin: 5px;
     background-color:#fefee0;
 }
 
@@ -1085,7 +1082,7 @@ ul.errorlist{
 }
 
 .soustitre{
-    padding: 0.1px;
+    padding: 0.5px;
 }
 
 .article{

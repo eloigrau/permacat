@@ -6,7 +6,6 @@ from .forms import AtelierForm, CommentaireAtelierForm, AtelierChangeForm, Conta
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.views.decorators.csrf import csrf_exempt
-from django.core.mail import send_mail, BadHeaderError, send_mass_mail
 from blog.models import Article
 from actstream.models import following
 from bourseLibre.settings.production import SERVER_EMAIL
@@ -20,6 +19,7 @@ from bourseLibre.views_admin import send_mass_html_mail
 
 from bourseLibre.constantes import Choix as Choix_global
 from actstream import actions, action
+from actstream.models import Action as Actstream_action
 
 from hitcount.models import HitCount
 from hitcount.views import HitCountMixin
