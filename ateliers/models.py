@@ -57,7 +57,7 @@ class Atelier(models.Model):
     start_time = models.DateField(verbose_name="Date prévue (affichage dans l'agenda)", help_text="(jj/mm/an)", default=timezone.now, blank=True, null=True)
     heure_atelier = models.TimeField(verbose_name="Heure de début", help_text="Horaire de départ (hh:mm)", default="17:00", blank=True, null=True)
     heure_atelier_fin = models.TimeField(verbose_name="Heure de fin ", help_text="Horaire de fin (hh:mm)",
-                                    default="02:00", blank=True, null=True)
+                                    default="19:00", blank=True, null=True)
 
     date_creation = models.DateTimeField(verbose_name="Date de parution", default=timezone.now)
     date_modification = models.DateTimeField(verbose_name="Date de modification", default=timezone.now)

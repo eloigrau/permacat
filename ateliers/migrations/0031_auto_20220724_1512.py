@@ -7,7 +7,7 @@ import datetime as dt
 def combine_names(apps, schema_editor):
     ateliers = apps.get_model('ateliers', 'Atelier')
     for art in ateliers.objects.all():
-        if art.duree_prevue:
+        if art.duree_prevue and art.start_time:
             delta = dt.timedelta(hours=art.duree_prevue.hour, minutes=art.duree_prevue.minute)
             art.heure_atelier_fin = dt.datetime.combine(art.start_time, art.heure_atelier) + delta
         else:
