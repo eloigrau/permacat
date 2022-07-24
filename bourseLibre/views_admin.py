@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect
+# -*- coding: utf-8 -*-
+from django.shortcuts import render, redirect, get_object_or_404
 from actstream.models import Action, Follow
 from .models import Profil, Conversation, Suivis, Adresse
 from .settings import LOCALL
@@ -404,3 +405,4 @@ def creerAction_articlenouveau(request):
         form = creerAction_articlenouveauForm()
 
     return render(request, 'admin/creerAction_articlenouveau.html', { "form": form,})
+

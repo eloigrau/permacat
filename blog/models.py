@@ -8,6 +8,7 @@ from taggit.managers import TaggableManager
 from photologue.models import Album
 from django.utils.text import slugify
 from jardinpartage.models import Choix as Choix_jpt
+from datetime import datetime, timedelta
 
 import uuid
 
@@ -181,11 +182,13 @@ class Article(models.Model):
                 emails = [suiv.email for suiv in followers(suivi) if self.auteur != suiv and self.est_autorise(suiv)]
         else:
             if sendMail:
-                titre = "Article actualisé"
-                message = "L'article [" + str(self.asso.nom) + "] '<a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.titre + "</a>' a été modifié"
-                emails = [suiv.email for suiv in followers(self) if self.est_autorise(suiv)]
-            if saveModif:
-                self.date_modification = timezone.now()
+                temps_depuiscreation = timezone.now() - self.date_creation
+                if temps_depuiscreation > timedelta(minutes=10):
+                    titre = "Article actualisé"
+                    message = "L'article [" + str(self.asso.nom) + "] '<a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.titre + "</a>' a été modifié"
+                    emails = [suiv.email for suiv in followers(self) if self.est_autorise(suiv)]
+                if saveModif:
+                    self.date_modification = timezone.now()
 
         retour = super(Article, self).save(*args, **kwargs)
         if creation:

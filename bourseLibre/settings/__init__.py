@@ -472,7 +472,7 @@ BOWER_INSTALLED_APPS = (
 #]
 
 CRONJOBS = [
-    ('0 22 * * 0,3,5', 'bourseLibre.views_admin.envoyerEmails', [], {}, ' --settings=bourseLibre.settings.production >> /home/udjango/cron-envoimails-Logs.log 2>&1')
+    ('0 22 * * 0,2,4,6', 'bourseLibre.views_admin.envoyerEmails', [], {}, ' --settings=bourseLibre.settings.production >> /home/udjango/cron-envoimails-Logs.log 2>&1')
 ]
 
 GRAPH_MODELS = {
@@ -480,7 +480,7 @@ GRAPH_MODELS = {
   'group_models': True,
 }
 
-NBMAX_ARTICLES = 3
+NBMAX_ARTICLES = 5
 #PHOTOLOGUE_PATH = MEDIA_ROOT + "photologue/"
 
 

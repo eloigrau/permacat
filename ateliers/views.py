@@ -10,6 +10,7 @@ from django.core.mail import send_mail, BadHeaderError, send_mass_mail
 from blog.models import Article
 from actstream.models import following
 from bourseLibre.settings.production import SERVER_EMAIL
+from datetime import timedelta
 
 from django.utils.timezone import now
 
@@ -57,8 +58,9 @@ class ModifierAtelier(UpdateView):
         self.object = form.save()
         self.object.date_modification = now()
         self.object.save()
-        action.send(self.request.user, verb='atelier_modifier', action_object=self.object, url=self.object.get_absolute_url(),
-                     description="a modifié l'atelier: '%s'" % self.object.titre)
+        if self.object.date_modification - self.object.date_creation > timedelta(minutes=10):
+            action.send(self.request.user, verb='atelier_modifier', action_object=self.object, url=self.object.get_absolute_url(),
+                         description="a modifié l'atelier: '%s'" % self.object.titre)
         return HttpResponseRedirect(self.object.get_absolute_url())
 
     def save(self):
