@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='atelier',
             name='heure_atelier_fin',
-            field=models.TimeField(blank=True, default='02:00', help_text='Horaire de fin (hh:mm)', null=True, verbose_name='Heure de fin '),
+            field=models.TimeField(blank=True, default='19:00', help_text='Horaire de fin (hh:mm)', null=True, verbose_name='Heure de fin '),
         ),
         migrations.AlterField(
             model_name='atelier',
