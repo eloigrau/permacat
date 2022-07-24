@@ -38,22 +38,14 @@
                         </button>
                       </div>
                       <div class="modal-body textleft">
-            <p>L'agenda permet de visualiser les différents événements annoncés sur le site sur un calendrier</p>
-            <p>Pour ajouter un événement, vous pouvez soit cliquer sur le bouton "ajouter un evenement", soit créer un article et lui associer une date, soit ajouter une date à un article existant (accessible depuis l'article en question)</p>
-            '           </div>
+            <p>L'agenda permet de visualiser les différents événements annoncés sur le site (dans les articles, le jardin, les ateliers, etc) sur un calendrier</p>
+            <p>Pour ajouter un événement, vous pouvez soit créer un article et lui associer une ou plusieurs dates, soit créer un atelier et y indiquer la date, etc...</p>
+                      </div>
                     </div>
                   </div>
                 </div>
         </div>
     </div>
-<div class="row justify-content-center">
-        <a class="btn btn-success " href="{% url 'blog:ajouterEvenement' %}">
-        <button type="button" class="btn btn-success">
-            <i class="fa fa-plus"></i>&nbsp;Ajouter un évenement
-        </button>
-        </a>
-
-</div>
 {% endblock %}
 
 {% block content %}

@@ -8,6 +8,7 @@ from blog.forms import SummernoteWidgetWithCustomToolbar
 from bourseLibre.models import Asso
 from django.utils.timezone import now
 from django.shortcuts import redirect
+import re
 
 class AtelierForm(forms.ModelForm):
     referent = forms.ChoiceField(label='Référent atelier')
@@ -16,7 +17,7 @@ class AtelierForm(forms.ModelForm):
 
     class Meta:
         model = Atelier
-        fields = ['titre', 'asso', 'statut', 'categorie', 'referent', 'description', 'materiel', 'start_time','heure_atelier','duree_prevue', 'tarif_par_personne']
+        fields = ['titre', 'asso', 'statut', 'categorie', 'referent', 'description', 'materiel', 'start_time','heure_atelier','heure_atelier_fin', 'tarif_par_personne']
         widgets = {
             'description': SummernoteWidget(),
             'materiel': SummernoteWidget(),
@@ -37,6 +38,10 @@ class AtelierForm(forms.ModelForm):
         except:
             instance.referent = dict(self.fields['referent'].choices)[referent]
             pass
+
+
+        if len(re.findall(r"[A-Z]", instance.titre)) > 7:
+            instance.titre = instance.titre.title()
 
         if article:
             instance.article = article
@@ -73,7 +78,7 @@ class AtelierChangeForm(forms.ModelForm):
 
     class Meta:
         model = Atelier
-        fields = [ 'titre', 'statut', 'asso', 'categorie', 'article', 'referent', 'description', 'materiel','start_time',  'heure_atelier', 'duree_prevue', 'tarif_par_personne', 'estArchive' ]
+        fields = [ 'titre', 'statut', 'asso', 'categorie', 'article', 'referent', 'description', 'materiel','start_time',  'heure_atelier', 'heure_atelier_fin', 'tarif_par_personne', 'estArchive' ]
         widgets = {
             'description': SummernoteWidget(),
             'materiel': SummernoteWidget(),

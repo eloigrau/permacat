@@ -55,14 +55,15 @@ class Atelier(models.Model):
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE, null=True)
 #    projet = models.OneToOneField(Projet)
     start_time = models.DateField(verbose_name="Date prévue (affichage dans l'agenda)", help_text="(jj/mm/an)", default=timezone.now, blank=True, null=True)
-    heure_atelier = models.TimeField(verbose_name="Heure prévue", help_text="Horaire de départ (hh:mm)", default="17:00", blank=True, null=True)
+    heure_atelier = models.TimeField(verbose_name="Heure de début", help_text="Horaire de départ (hh:mm)", default="17:00", blank=True, null=True)
+    heure_atelier_fin = models.TimeField(verbose_name="Heure de fin ", help_text="Horaire de fin (hh:mm)",
+                                    default="02:00", blank=True, null=True)
 
     date_creation = models.DateTimeField(verbose_name="Date de parution", default=timezone.now)
     date_modification = models.DateTimeField(verbose_name="Date de modification", default=timezone.now)
 
     date_dernierMessage = models.DateTimeField(verbose_name="Date du dernier message", auto_now=False, blank=True, null=True)
     dernierMessage = models.CharField(max_length=100, default=None, blank=True, null=True, help_text="Heure prévue (hh:mm)")
-    duree_prevue = models.TimeField(verbose_name="Durée prévue", help_text="Durée de l'atelier estimée", default="02:00", blank=True, null=True)
     tarif_par_personne = models.CharField(max_length=100, default='gratuit', help_text="Tarif de l'atelier par personne", verbose_name="Tarif de l'atelier par personne", )
     asso = models.ForeignKey(Asso, on_delete=models.SET_NULL, null=True)
     article = models.ForeignKey(Article, on_delete=models.CASCADE, null=True, blank=True)
@@ -125,10 +126,8 @@ class Atelier(models.Model):
 
     @property
     def heure_fin_atelier(self,):
-        if self.start_time and self.duree_prevue:
-            delta = dt.timedelta(hours=self.duree_prevue.hour, minutes=self.duree_prevue.minute)
-
-            return dt.datetime.combine(self.start_time, self.heure_atelier) + delta
+        if self.start_time and self.heure_atelier_fin:
+            return self.heure_atelier_fin
         else:
             return None
 

@@ -13,6 +13,7 @@ from django.contrib.staticfiles.templatetags.staticfiles import static
 from photologue.models import Album
 from .models import Choix
 from django.core.exceptions import ValidationError
+import re
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -108,7 +109,8 @@ class ArticleForm(forms.ModelForm):
             # Truncate the original slug dynamically. Minus 1 for the hyphen.
             instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
 
-        instance.titre = instance.titre.title()
+        if len(re.findall(r"[A-Z]", instance.titre)) > 7:
+            instance.titre = instance.titre.title()
         instance.auteur = userProfile
 
         instance.save()
