@@ -620,9 +620,11 @@ border: 1px inset rgba(28,110,164,0.65);
 
 .tablepanier{
     background-color:#87ceeb;
+    color:black;
 }
 .tableprofils{
     background-color: #ffffcc;
+    color:black;
 }
 .tablevotes{
     background-color: #ffffcc;
