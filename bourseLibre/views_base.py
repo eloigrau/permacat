@@ -121,6 +121,9 @@ def liens(request):
         'http://www.le-message.org/',
         'https://reporterre.net/',
         'https://la-bas.org/',
+        'https://lvsl.fr/',
+        'https://www.les-crises.fr/',
+        'https://la-bas.org/',
         ]
     }
     return render(request, 'liens.html', {'liens':liens})
