@@ -38,6 +38,7 @@ urlpatterns = [
     #url(r'^chat/', include('chat.urls')),
     path(r'agenda/', include('cal.urls')),
     path(r'agoratransition/', include('agoratransition.urls', namespace='agoratransition')),
+    path(r'permagora/', include('permagora.urls', namespace='permagora')),
     path(r'defraiement/', include(('defraiement.urls', 'defraiement'), namespace='defraiement')),
     path(r'carto/', include('carto.urls')),
     url('^', include('django.contrib.auth.urls')),

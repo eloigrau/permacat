@@ -1,0 +1,32 @@
+{% extends 'permagora/base_sanscommentaire.html' %}
+{% load widget_tweaks %}
+
+{% block title %}S'enregistrer{% endblock %}
+
+{% block content %}
+
+<div class="site-section">
+      <div class="container">
+        <div class="row mb-5 justify-content-center">
+          <div class="col-lg-12 ">
+    <div class="row justify-content-sm-center">
+        <h4>Soutenez-vous cette initiative ?</h4>
+    </div>
+    <div class="row justify-content-sm-center">
+        <div class="col-sm-12 col-md-10 col-lg-8 ">
+            <form role="form" action="" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+                {%include 'form_template2.html' with form=form_signer%}
+
+          <button type="submit" class="btn btn-success">Je confirme, je signe</button>
+        </form>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+
+
+    {% endblock %}
+

@@ -1,0 +1,30 @@
+{% extends 'permagora/base.html' %}
+{% block title %}Modifier mon profil{% endblock %}
+
+{% block content %}
+
+<div class="site-section">
+      <div class="container">
+
+        <div class="row mb-5 justify-content-center">
+          <div class="col-lg-10 mb-5">
+            <div class="site-section-heading" data-aos="fade-up">
+              <h2 class="text-center">Modifier mes coordonnées</h2>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12" data-aos="fade-up" data-aos-delay="500">
+             <p class="text-center">(ou <a href="{% url 'change_password' %}">Modifier mon mot de passe</a>)</p>
+{% include 'form_template.html' %}
+
+        </div>
+      </div>
+
+<hr>
+<a href="{%url 'permagora:profil_supprimer' %}" class="btn btn-danger btn-lg btn-block" type="button">
+			Supprimer mon profil et se désinscrire (irréversible)</a>
+{% endblock %}
+
+    </div>
+    </div>

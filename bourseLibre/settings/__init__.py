@@ -113,6 +113,7 @@ INSTALLED_APPS = [
     'agoratransition',
     'acme_challenge',
     'rest_framework',
+    'permagora',
     #'formtools',
     #'channels', 'chat',
     #'jet','jet.dashboard', 'django.contrib.admin',

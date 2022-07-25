@@ -1,0 +1,142 @@
+{% extends 'permagora/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load fontawesome %}
+{%block header %}
+ <script src="{% static 'permagora/js/cookielaw.js'%}" type="text/javascript"></script>
+{%endblock%}
+
+{% block content %}
+    <div class="site-section site-hero">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-10">
+            <span class="d-block mb-3 caption" data-aos="fade-up" data-aos-delay="100">Pour préserver durablement notre territoire</span>
+            <h1 class="d-block mb-4" data-aos="fade-up" data-aos-delay="200">La Charte Ecologique 2020</h1>
+            <span class="d-block mb-5 caption" data-aos="fade-up" data-aos-delay="300">Du Pays Catalan</span>
+                </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <div class="site-section">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="site-section-heading">
+              <h2>Pourquoi ?</h2>
+            </div>
+          </div>
+          <div class="col-lg-5 mt-5 pl-lg-5" data-aos="fade-up" data-aos-delay="200">
+            <p>Parce que notre avenir est menacé par le changement climatique, la pollution, la perte de l'agriculture, l'aculturation, la fin des ressources fossiles, les catastrophes naturelles, etc...</p>
+<a href="{% url 'permagora:introduction' %}" class="btn-custom" data-aos="fade-up" data-aos-delay="400"><span>Comprendre notre démarche</span></a>
+
+                </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="site-section">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="site-section-heading">
+              <h2>Est-on à peu près d'accord sur le constat ?</h2>
+            </div>
+          </div>
+          <div class="col-lg-5 mt-5 pl-lg-5" data-aos="fade-up" data-aos-delay="200">
+            <p>Les experts et scientifiques sont assez clairs, mais venez vous informer, et discutons-en ensemble...</p>
+             <a href="{% url 'permagora:risques' %}" class="btn-custom" data-aos="fade-up" data-aos-delay="400"><span>S'informer et débattre...</span></a>
+  </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="site-section">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="site-section-heading">
+              <h2>Que faire ?</h2>
+            </div>
+          </div>
+          <div class="col-lg-5 mt-5 pl-lg-5" data-aos="fade-up" data-aos-delay="200">
+              <p>Faisons une liste de préconisations, d'engagements et d'actes qui répondent aux enjeux et aux problématiques soulevées</p>
+            <a href="{% url 'permagora:preconisations' %}" class="btn-custom" data-aos="fade-up" data-aos-delay="400"><span>Lire les préconisations</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="site-section">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="site-section-heading">
+              <h2>Et après ?</h2>
+            </div>
+          </div>
+          <div class="col-lg-5 mt-5 pl-lg-5" data-aos="fade-up" data-aos-delay="200">
+            <p>A partir des préconisations, on établit une charte que nous soumettrons à nos (futurs) élus locaux afin qu'ils s'engagent réellement dans la transition écologique et démocratique</p>
+
+<a href="{% url 'permagora:charte' %}" class="btn-custom" data-aos="fade-up" data-aos-delay="400"><span>Lire et Signer la charte</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-section">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-lg-12 text-center">
+        </div>
+        </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-section">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-lg-4 ">
+            <div class="site-section-heading" data-aos="fade-up">
+              <h2>Partenaires</h2>
+            </div>
+          </div>
+          <div class="col-lg-6 mt-5 pl-lg-5" data-aos="fade-up" data-aos-delay="100">
+            <p>Toute participation est bienvenue ! Rejoignez-nous et ajoutez votre logo ici !</p>
+          </div>
+        </div>
+        <div class="row mb-5">
+          <div class="col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="200">
+            <img src="{% static 'permagora/images/logo_1.png' %}" alt="Image" class="img-fluid">
+          </div>
+        </div>
+
+        <div class="row" data-aos="fade-up" data-aos-delay="200">
+          <div class="col-12 text-center pt-5">
+              {% if request.user.is_authenticated %}
+            <button type="button" class="btn btn-lg btn-success" disabled data-aos="fade-up" data-aos-delay="400">
+                Vous êtes déjà membre du collectif
+            </button>
+
+              {%else%}
+            <a href="{% url 'permagora:senregistrer' %}" class="btn-custom" data-aos="fade-up" data-aos-delay="400"><span>Je vous rejoins !</span></a>
+              {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% load cookielaw_tags %}
+    {% cookielaw_banner %}
+
+{% endblock %}
+
+

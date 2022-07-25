@@ -1,0 +1,253 @@
+{% load static %}
+{% load staticfiles %}
+{% load i18n %}
+{% load l10n %}
+{% load fontawesome %}
+{% load permagora_filters %}
+{%block header_document %}
+{%endblock%}
+{% spaceless %}
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <title>PermAgoraCatalane</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'permagora/fonts/icomoon/style.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'permagora/css/bootstrap.min.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'permagora/css/magnific-popup.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'permagora/css/owl.theme.default.min.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'permagora/css/bootstrap-datepicker.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'permagora/fonts/flaticon/font/flaticon.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'permagora/css/aos.css'%}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'permagora/css/style.css' %}"/>
+    <script src="{% static 'permagora/js/cookielaw.js'%}" type="text/javascript"></script>
+    {% fontawesome_stylesheet %}
+
+      <link rel="apple-touch-icon" sizes="180x180" href="{% static 'permagora/apple-touch-icon.png' %}">
+<link rel="icon" type="image/png" sizes="32x32" href="{% static 'permagora/favicon-32x32.png' %}">
+<link rel="icon" type="image/png" sizes="16x16" href="{% static 'permagora/favicon-16x16.png' %}">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#000000">
+  </head>
+  <body>
+
+<a name="top"></a>
+
+  <div class="site-wrap">
+    <div class="site-mobile-menu">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close mt-3">
+          <span class="icon-close2 js-menu-toggle"></span>
+        </div>
+      </div>
+      <div class="site-mobile-menu-body"></div>
+    </div>
+    <header class="site-navbar py-3" role="banner">
+      <div class="container-fluid">
+        <div class="row align-items-center">
+          <div class="col-11 col-xl-2">
+            <h1 class="mb-0"><a href="{% url 'permagora:bienvenue' %}" class="text-white h2 mb-0">Perm<span class="text-success">Agora</span> </a></h1>
+          </div>
+          <div class="col-12 col-md-10 d-none d-xl-block">
+            <nav class="site-navigation position-relative text-right" role="navigation">
+              <ul class="site-menu js-clone-nav mx-auto d-none d-lg-block">
+                <li class="active"><a href="{% url 'permagora:bienvenue' %}">Accueil</a></li>
+                    <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">La démarche</a>
+              <div class="dropdown-menu" aria-labelledby="dropdown10">
+                <a class="dropdown-item" href="{% url 'permagora:introduction'%}">Introduction</a>
+                <a class="dropdown-item" href="{% url 'permagora:risques'%}">Constat/Risques</a>
+                <a class="dropdown-item" href="{% url 'permagora:preconisations'%}">Préconisations</a>
+              </div>
+            </li>
+            <li class="nav-item dropdown disabled ">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Le site</a>
+              <div class="dropdown-menu disabled " aria-labelledby="dropdown10">
+                <a class="dropdown-item" href="{% url 'permagora:faq' %}">FAQ</a>
+                <a class="dropdown-item" href="{% url 'permagora:cgu' %}">CGU</a>
+                {% if request.user.is_superuser %}
+                <a class="dropdown-item" href="{% url 'permagora:statistiques' %}">Statistiques</a>
+                {% endif %}
+                <a class="dropdown-item" href="{% url 'permagora:contact' %}">Nous contacter</a>
+                <a class="dropdown-item" href="{% url 'permagora:fairedon' %}">Faire un don</a>
+              </div>
+            </li>
+                <li class="cta"><a href="{% url 'permagora:charte' %}">La charte</a></li>
+                <li class="nav-item dropdown">
+           <a data-toggle="dropdown" class="nav-link dropdown-toggle " href="{% url 'permagora:profil_courant' %}" aria-haspopup="true" aria-expanded="false"  >
+              {% fontawesome_icon 'user' %}  </a>
+            <ul class="dropdown-menu textcenter" aria-labelledby="navbarDropdownMenuLink">
+              {% if user.is_authenticated %}
+               <li> <a class="nav-link dropdown-item" href="{% url 'permagora:profil_courant' %}">Mon profil</a></li>
+                <li> <span class="nav-link divider" role="separator"></span></li>
+               <li> <a class="nav-link dropdown-item" href="{% url 'permagora:logout' %}">Déconnexion</a></li>
+              {%else%}
+               <li> <a class="nav-link dropdown-item" href="{% url 'permagora:login' %}">Me connecter</a></li>
+              {%endif%}
+            </ul>
+        </li>
+         {% if request.user.is_superuser %}
+        {% load admin_urls %}
+        <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">admin</a></li>
+        {% endif %}
+              </ul>
+            </nav>
+          </div>
+          <div class="d-inline-block d-xl-none ml-md-0 mr-auto py-3" style="position: relative; top: 3px;"><a href="#" class="site-menu-toggle js-menu-toggle text-white"><span class="icon-menu h3"></span></a></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+
+ <div class="site-section">
+      <div class="container">
+        <div class="row mb-5  align-items-center">
+          <div class="col-lg-10 ">
+ {% block subtitle %}
+  {% endblock %}
+            </div>
+          </div>
+        </div>
+        </div>
+        </div>
+
+ {% block content %}
+  {% endblock %}
+
+        <div class="row">
+          <div class="col-md-12 text-center">
+  <a href="#top">  <h3>{% fontawesome_icon 'arrow-circle-up' %} </h3>  </a></a>
+          </div></div>
+
+ {% block messages %}
+  <hr>
+ <div class="site-section">
+  <div class="container">
+        <div class="row mb-5">
+          <div class="col-md-12">
+
+<div class="row text-center">
+    <h4>Commentaires</h4>
+</div>
+<div class="row text-center">
+    <p><small>Une remarque ? une suggestion ? Vous n'êtes pas d'accord ? N'hésitez pas à donner votre avis ci-dessous...</small></p>
+</div>
+
+<div class="site-comment commentaires" id="idConversation">
+{% for comment in commentaires %}
+    <div class="row {% if comment.auteur.id == request.user.id %} msg-auteur  {%else%} msg-destinataire{%endif%}">
+
+        <div class="col-sm-4 col-md-4 col-lg-3">
+           <p class="infos  textepetit">({{ comment.date_creation|date:"d/m/Y G:i" }}){% ifchanged %}, {{comment.auteur}}{% endifchanged %}</p>
+        </div>
+        <div class=" col-sm-8 col-md-8 col-lg-9 message ">
+                <div class="col">{{ comment.message|safe|url}}</div>
+        </div>
+    </div>
+{% endfor %}
+</div>
+    <script>
+    var messageBody = document.querySelector('#idConversation');
+    messageBody.scrollTop = idConversation.scrollHeight - idConversation.clientHeight;
+</script>
+
+<hr>
+
+{% if request.user.is_authenticated %}
+<div>
+    <input type="hidden" name="Nouveau Message" value="{{ message }}">
+<div>
+<form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="Nouveau Message" value="{{ message_defaut }}">
+    {% include 'form_template3.html' %}
+</form>
+</div>
+{% else %}
+    <p>(Vous devez vous <a href="{% url 'permagora:login'%}">authentifier</a> pour laisser un commentaire, merci !)</p>
+{% endif %}
+    <script>
+    getElementById("id_commentaire_iframe").height = "150px"
+</script>
+          </div>
+        </div>
+      </div>
+</div>
+  </div>
+
+  {% endblock %}
+
+
+    <footer class="site-footer text-center ">
+        <small>
+  {% block compteur %}
+  {% endblock %}
+         {% if request.user.is_superuser %}
+          {%endif%}
+            <script>document.write(new Date().getFullYear());</script>
+        </small>
+    </footer>
+{% comment %}
+    <footer class="site-footer">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-md-4">
+            <h2 class="footer-heading text-uppercase mb-4">A Propos</h2>
+            <p>Charte Ecologique citoyenne pour la transition du Pays Catalan</p>
+          </div>
+          <div class="col-md-3 ml-auto">
+            <h2 class="footer-heading text-uppercase mb-4">Navigation rapide</h2>
+            <ul class="list-unstyled">
+              <li><a href="{% url 'contact' %}">Nous contacter</a></li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <h2 class="footer-heading text-uppercase mb-4">Connect with Us</h2>
+            <p>
+              <a href="#" class="p-2 pl-0"><span class="icon-facebook"></span></a>
+              <a href="#" class="p-2"><span class="icon-twitter"></span></a>
+              <a href="#" class="p-2"><span class="icon-youtube"></span></a>
+              <a href="#" class="p-2"><span class="icon-instagram"></span></a>
+            </p>
+          </div>
+        </div>
+        <div class="row">
+
+            <div class="col-md-12 text-center">
+              <div class="border-top pt-5">
+              <p>
+              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+              Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved |  template made with <i class="icon-heart text-primary" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >Colorlib</a>
+              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+{% endcomment %}
+
+  <script src="{% static 'permagora/js/jquery-3.3.1.min.js'%}"></script>
+  <script src="{% static 'permagora/js/jquery-migrate-3.0.1.min.js'%}"></script>
+  <script src="{% static 'permagora/js/popper.min.js'%}"></script>
+  <script src="{% static 'permagora/js/bootstrap.min.js'%}"></script>
+  <script src="{% static 'permagora/js/owl.carousel.min.js'%}"></script>
+  <script src="{% static 'permagora/js/jquery.stellar.min.js'%}"></script>
+  <script src="{% static 'permagora/js/jquery.countdown.min.js'%}"></script>
+  <script src="{% static 'permagora/js/jquery.magnific-popup.min.js'%}"></script>
+  <script src="{% static 'permagora/js/bootstrap-datepicker.min.js'%}"></script>
+  <script src="{% static 'permagora/js/aos.js'%}"></script>
+
+  <script src="{% static 'permagora/js/main.js'%}"></script>
+
+  </body>
+</html>
+{% endspaceless %}

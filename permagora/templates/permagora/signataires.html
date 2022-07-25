@@ -1,0 +1,49 @@
+{% extends 'permagora/base.html' %}
+{% block content %}
+
+<div class="site-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center ">
+            <div class="site-section-heading" data-aos="fade-up" data-aos-delay="100">
+              <h2>Signataires</h2>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-5 justify-content-center">
+            <div class="col-md-12 text-center" data-aos="fade-up" data-aos-delay="600">
+                Au total, {{nb_total}} personnes se sont inscrites dont {{nb_total_signe}} ont déjà signé la charte</span></div>
+      </div>
+          {% if not request.user.a_signe %}
+        <div class="row  mb-5 justify-content-center">
+            <div class="col-md-12 text-center" data-aos="fade-up" data-aos-delay="600">
+                <a href="{%url 'permagora:signer'%}"><button type="button" class="btn btn-lg btn-warning" >
+                 je n'ai pas encore signé la charte
+  </button></a>
+            </div>
+      </div>
+          {% else%}
+        <div class="row  mb-5 justify-content-center">
+            <div class="col-md-12 text-center" data-aos="fade-up" data-aos-delay="600">
+                <a href="#"><button type="button" class="btn btn-lg btn-warning" >
+                 Vous avez signé la charte, merci !
+  </button></a>
+            </div>
+      </div>
+          {% endif%}
+        <div class="row">
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="400">Signataires ayant accepté d'apparaître ici : </div>
+
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="500">
+            {%for signataire in signataires %}
+              <p><a href="{% url 'profil_nom' signataire %}">{{signataire}}</a></p>
+            {% endfor %}
+
+          </div>
+        </div>
+    </div>
+    </div>
+
+{% endblock %}
+
+

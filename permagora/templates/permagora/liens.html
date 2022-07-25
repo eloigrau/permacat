@@ -1,0 +1,29 @@
+{% extends 'permagora/base.html' %}
+
+{% block content %}
+<div class="site-section">
+      <div class="container">
+
+        <div class="row mb-5 justify-content-center">
+          <div class="col-lg-10 mb-5">
+            <div class="site-section-heading" data-aos="fade-up">
+                <h4 class="text-center">Voici quelques liens intéressants à nos yeux </h4>
+            </div>
+          </div>
+        </div>
+        <div class="row" data-aos="fade-up" data-aos-delay="500">
+          <div class="col-md-10" data-aos="fade-up" data-aos-delay="500">
+    <ul class="list-group">
+{%for lien in liens%}
+        <li class="list-group-item" ><a href="{{lien}}" rel="external" target="_blank">{{lien}}</a></li>
+{%endfor%}
+</ul>
+        </div>
+        </div>
+    </div>
+    </div>
+<div class="row">
+<div class="col">
+</div>
+</div>
+ {% endblock %}

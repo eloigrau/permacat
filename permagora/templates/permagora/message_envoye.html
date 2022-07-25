@@ -1,0 +1,37 @@
+{% extends 'permagora/base_sanscommentaire.html' %}
+
+
+ {% block content %}
+<div class="site-section">
+      <div class="container">
+
+        <div class="row mb-5 justify-content-center">
+          <div class="col-lg-10 mb-5">
+            <div class="site-section-heading" data-aos="fade-up">
+                <h2 class="text-center">L'email a bien été envoyé </h4>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class="row" data-aos="fade-up" data-aos-delay="500">
+          <div class="col-md-7" data-aos="fade-up" data-aos-delay="500">
+             <div class="row">
+<div class="col-sm-12">
+<p>De : {{ envoyeur }}</p>
+<p>à : {{ destinataire }}</p>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+    <p>Sujet : </p>
+    <p>{{ sujet }}</p>
+<p>Message : </p
+><p>{{ msg }}</p>
+</div>
+</div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+{% endblock %}

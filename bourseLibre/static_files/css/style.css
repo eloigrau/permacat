@@ -3,6 +3,8 @@ body {
     background: #f2f2f2;
     margin: auto;
     width: 99%;
+    background-color:#2B2A33;
+    padding-top: 5px;"
     /*padding: 10px;*/
     /*padding-top: 55px;*/
     /*font-family: Georgia, serif;*/
@@ -155,7 +157,7 @@ section.p3 {
 
 .rowprincipal{
     margin-bottom: 30px;
-    margin-top: 4em;
+    margin-top: 2em;
 }
 
 .colprincipal{
@@ -209,7 +211,7 @@ background-image:linear-gradient(40deg, white, white);
 border: 1px inset rgba(28,110,164,0.65);
    border-radius: 0.4em;
    line-height: 2.4em;
-    margin-bottom:45px;
+    margin-bottom:25px;
 }
 .dropdown-menu {
     margin: 0rem 0 0;
@@ -474,6 +476,16 @@ border: 1px inset rgba(28,110,164,0.65);
         width: 100%;
     }
 }
+.panelsoustitre{
+    padding: 2px;
+    border-radius: 0.8em;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color:#fefee2;
+}
+
 
 .contenu{
     /*margin-top: 2em;*/
@@ -487,13 +499,10 @@ border: 1px inset rgba(28,110,164,0.65);
 }
 
 .soustitre{
-    padding: 2px;
-    border-radius: 0.4em;
-    margin-top: 5px;
-    margin-bottom: 30px;
-    margin-left: 10px;
-    margin-right: 10px;
-    background-image:linear-gradient(40deg, #ffc34d, white);
+    padding: 12px;
+    border-radius: 0.8em;
+    margin: 5px;
+    background-color:#fefee0;
 }
 
 .bodycontenu{
@@ -510,7 +519,7 @@ border: 1px inset rgba(28,110,164,0.65);
     min-width:200px;
     margin-top:20px;
     margin-bottom:20px;
-    background-color: rgba(255, 255, 255, .7);
+    /*background-color: rgba(255, 255, 255, .7);*/
     /*border: 0.5px solid #053200;*/
     }
 }
@@ -611,9 +620,11 @@ border: 1px inset rgba(28,110,164,0.65);
 
 .tablepanier{
     background-color:#87ceeb;
+    color:black;
 }
 .tableprofils{
     background-color: #ffffcc;
+    color:black;
 }
 .tablevotes{
     background-color: #ffffcc;
@@ -1073,7 +1084,7 @@ ul.errorlist{
 }
 
 .soustitre{
-    padding: 0.1px;
+    padding: 0.5px;
 }
 
 .article{
