@@ -47,7 +47,7 @@ class Domaine_charte(models.Model):
 class Proposition_charte(models.Model):
     domaine = models.ForeignKey(Domaine_charte, on_delete=models.CASCADE)
     titre = models.TextField(null=False, blank=False)
-    resources = models.TextField(null=True, blank=True, verbose_name="Ressources associées (articles, vidéos, ...)")
+    ressources = models.TextField(null=True, blank=True, verbose_name="Ressources associées (articles, vidéos, ...)")
     contexte = models.TextField(null=True, blank=True, verbose_name="Matériel/outils nécessaires")
     besoins = models.TextField(null=True, blank=True, verbose_name="Besoins pour mettre en place les solutions")
     ideal = models.TextField(null=True, blank=True, verbose_name="Ce qu'il faudrait faire idéalement")
