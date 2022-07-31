@@ -403,6 +403,10 @@ class Profil(AbstractUser):
     def inscrit_newsletter_str(self):
        return "oui" if self.inscrit_newsletter else "non"
 
+    @property
+    def a_signe_permagora(self):
+        from permagora.models import Signataire
+        return Signataire.objects.filter(auteur=self).exists()
 
 def envoyerMailBienvenue(user):
     titre = "[Permacat] Inscription sur le site"

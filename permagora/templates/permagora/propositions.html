@@ -1,0 +1,100 @@
+{% extends 'permagora/base.html' %}
+{% load fontawesome %}
+{% block content %}
+
+ <div class="site-section">
+      <div class="container">
+        <div class="row mb-5  align-items-center">
+          <div class="col-sm-12 ">
+            <div class="site-section-heading" data-aos="fade-up" data-aos-delay="50">
+              <h2 class="text-center">Les propositions de PermAgora par pôle thématique :</h2>
+            </div>
+          </div>
+        </div>
+        </div>
+        </div>
+<div class="site-section ">
+      <div class="container">
+        <div class="row mb-5">
+            <h5>Nous proposons de répondre aux questions suivantes par des plans d'action pratiques. Chaque question est ajoutée au fur et à mesure de nos visioconférences du lundi 19h.</h5>
+        </div>
+        <div class="row mb-5 justify-content-center">
+    <p>Vous pouvez <a href="{% url 'permagora:ajouterProposition' %}">ajouter un plan d'action concernant une problématique</a> </p>
+        </div>
+    </div>
+</div>
+
+{% for domaine in dico_charte %}
+<div class="site-section justify-content-center">
+      <div class="container">
+        <div class="row mb-5 justify-content-center">
+          <div class="col-sm-12 mb-5">
+            <div class="site-section-heading" data-aos="fade-up">
+              <h3 class="text-center" id="{{domaine.0.slug}}">{{ forloop.counter }}) {{domaine.0|safe}}</h3>
+            </div>
+          </div>
+        </div>
+
+{% comment %}
+        <div class="row justify-content-center">
+          <div class="col-sm-12" data-aos="fade-up" data-aos-delay="200">
+           <table border="0">
+{% for point in domaine.1 %}
+    <th id="{{point.slug}}"> {{ forloop.counter }}. <a href="{{point.permagora:get_absolute_url}}" > {{point|safe}}</a></th>
+    <th width="15%">
+      <a href="{% url 'permagora:ajouterVote_plus' point.slug %}?next={%url 'permagora:propositions'%}#{{domaine.0.slug}}"> {% fontawesome_icon 'thumbs-up' %} {{point.compteur_plus}}</a> &nbsp
+      <a href="{% url 'permagora:ajouterVote_moins' point.slug %}?next={%url 'permagora:propositions'%}#{{domaine.0.slug}}" >{% fontawesome_icon 'thumbs-down' %} {{point.compteur_moins}} </a> &nbsp
+    </th>
+  </tr>
+{% endfor%}
+</table>
+          </div></div>
+
+{% endcomment %}
+        <div class="row justify-content-center">
+          <div class="col-sm-12 col-lg-10" data-aos="fade-up" data-aos-delay="200">
+              <ul>
+{% for point in domaine.1 %}
+
+                  <p><a id="{{point.slug}}">                  </a>{{ forloop.counter }}.   <a href="{{point.get_absolute_url}}" > {{point|safe}}</a></p>
+                      <p class="text-right">
+      <a href="{% url 'permagora:ajouterVote_plus' point.slug %}?next={%url 'permagora:propositions'%}#{{domaine.0.slug}}"> {% fontawesome_icon 'thumbs-up' %} {{point.compteur_plus}}</a> &nbsp
+      <a href="{% url 'permagora:ajouterVote_moins' point.slug %}?next={%url 'permagora:propositions'%}#{{domaine.0.slug}}" >{% fontawesome_icon 'thumbs-down' %} {{point.compteur_moins}} </a> &nbsp
+                      </p>
+              {%endfor%}
+              </ul>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+              {%endfor%}
+
+    <div class="site-section">
+      <div class="container">
+
+        <div class="row" data-aos="fade-up" data-aos-delay="500">
+          <div class="col-12 text-center pt-5">
+              {%if user.is_authenticated and user.a_signe_permagora %}
+            <button type="button" class="btn btn-lg btn-success" disabled data-aos="fade-up" data-aos-delay="200">
+                je suis solidaire et je fais partie du collectif
+            </button>
+              {%else%}
+             <a href="{% url 'permagora:signer' %}" class="btn-custom" data-aos="fade-up" data-aos-delay="200"><span>Je soutiens la démarche,
+              {%if not user.is_authenticated %}je m'identifie et{%endif%} je m'inscris dans le collectif !</span></a>
+              {%endif%}
+         </div>
+        </div>
+      </div>
+    </div>
+
+<hr>
+{% endblock %}
+
+
+  {% block compteur %}
+          <!-- Start of CuterCounter Code -->
+<a href="https://www.cutercounter.com/" target="_blank"><img src="https://www.cutercounter.com/hits.php?id=gruqpkkd&nd=6&style=11" border="0" alt="free counter"></a> |
+<!-- End of CuterCounter Code -->
+  {% endblock %}
+

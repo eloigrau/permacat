@@ -12,13 +12,13 @@
         </div>
         <div class="row mb-5 justify-content-center">
             <div class="col-md-12 text-center" data-aos="fade-up" data-aos-delay="600">
-                Au total, {{nb_total}} personnes se sont inscrites dont {{nb_total_signe}} ont déjà signé la charte</span></div>
+                Au total, {{nb_total_signe}} personnes ont déjà apporté leur soutien</span></div>
       </div>
-          {% if not request.user.a_signe %}
+          {% if not request.user.a_signe_permagora %}
         <div class="row  mb-5 justify-content-center">
             <div class="col-md-12 text-center" data-aos="fade-up" data-aos-delay="600">
                 <a href="{%url 'permagora:signer'%}"><button type="button" class="btn btn-lg btn-warning" >
-                 je n'ai pas encore signé la charte
+                 je n'ai pas encore signé les propositions
   </button></a>
             </div>
       </div>
@@ -26,7 +26,7 @@
         <div class="row  mb-5 justify-content-center">
             <div class="col-md-12 text-center" data-aos="fade-up" data-aos-delay="600">
                 <a href="#"><button type="button" class="btn btn-lg btn-warning" >
-                 Vous avez signé la charte, merci !
+                 Vous avez signé les propositions, merci !
   </button></a>
             </div>
       </div>
@@ -36,7 +36,7 @@
 
             <div class="col-md-6" data-aos="fade-up" data-aos-delay="500">
             {%for signataire in signataires %}
-              <p><a href="{% url 'profil_nom' signataire %}">{{signataire}}</a></p>
+              <p><a href="{% url 'profil_nom' signataire.auteur %}">{{signataire}}</a></p>
             {% endfor %}
 
           </div>

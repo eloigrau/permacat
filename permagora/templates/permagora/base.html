@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <title>PermAgoraCatalane</title>
+    <title>PermAgora Catalane</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -25,6 +25,8 @@
 
     <link rel="stylesheet" type="text/css" href="{% static 'permagora/css/style.css' %}"/>
     <script src="{% static 'permagora/js/cookielaw.js'%}" type="text/javascript"></script>
+
+
     {% fontawesome_stylesheet %}
 
       <link rel="apple-touch-icon" sizes="180x180" href="{% static 'permagora/apple-touch-icon.png' %}">
@@ -57,8 +59,10 @@
           <div class="col-12 col-md-10 d-none d-xl-block">
             <nav class="site-navigation position-relative text-right" role="navigation">
               <ul class="site-menu js-clone-nav mx-auto d-none d-lg-block">
-                <li class="active"><a href="{% url 'permagora:bienvenue' %}">Accueil</a></li>
-                    <li class="nav-item dropdown">
+                <li ><a href="{% url 'permagora:bienvenue' %}">Accueil</a></li>
+
+                <li class="cta"><a href="{% url 'permagora:propositions' %}">Le plan d'action</a></li>
+          <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">La démarche</a>
               <div class="dropdown-menu" aria-labelledby="dropdown10">
                 <a class="dropdown-item" href="{% url 'permagora:introduction'%}">Introduction</a>
@@ -66,19 +70,27 @@
                 <a class="dropdown-item" href="{% url 'permagora:preconisations'%}">Préconisations</a>
               </div>
             </li>
+            <li class="nav-item dropdown ">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdownpermagora" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Le collectif</a>
+              <div class="dropdown-menu disabled " aria-labelledby="dropdown10">
+                <a class="dropdown-item" href="{% url 'permagora:presentationPermagora' %}">Qui sommes-nous ?</a>
+                <a class="dropdown-item" href="{% url 'permagora:organisationPermagora' %}">Notre organisation</a>
+              </div>
+            </li>
+
             <li class="nav-item dropdown disabled ">
               <a class="nav-link dropdown-toggle" href="#" id="dropdown2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Le site</a>
               <div class="dropdown-menu disabled " aria-labelledby="dropdown10">
                 <a class="dropdown-item" href="{% url 'permagora:faq' %}">FAQ</a>
+              <a class="dropdown-item" href="{% url 'permagora:signataires' %}">Signataires</a>
                 <a class="dropdown-item" href="{% url 'permagora:cgu' %}">CGU</a>
                 {% if request.user.is_superuser %}
                 <a class="dropdown-item" href="{% url 'permagora:statistiques' %}">Statistiques</a>
                 {% endif %}
                 <a class="dropdown-item" href="{% url 'permagora:contact' %}">Nous contacter</a>
-                <a class="dropdown-item" href="{% url 'permagora:fairedon' %}">Faire un don</a>
+                <a class="dropdown-item" href="{% url 'bienvenue' %}">Retour perma.cat</a>
               </div>
             </li>
-                <li class="cta"><a href="{% url 'permagora:charte' %}">La charte</a></li>
                 <li class="nav-item dropdown">
            <a data-toggle="dropdown" class="nav-link dropdown-toggle " href="{% url 'permagora:profil_courant' %}" aria-haspopup="true" aria-expanded="false"  >
               {% fontawesome_icon 'user' %}  </a>
@@ -94,7 +106,7 @@
         </li>
          {% if request.user.is_superuser %}
         {% load admin_urls %}
-        <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">admin</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}permagora/">admin</a></li>
         {% endif %}
               </ul>
             </nav>
@@ -137,7 +149,7 @@
     <h4>Commentaires</h4>
 </div>
 <div class="row text-center">
-    <p><small>Une remarque ? une suggestion ? Vous n'êtes pas d'accord ? N'hésitez pas à donner votre avis ci-dessous...</small></p>
+    <p><small>Une remarque ? une suggestion ? Vous n'êtes pas d'accord ? Vous voulez enrichir le texte ? N'hésitez pas à donner votre avis ci-dessous...</small></p>
 </div>
 
 <div class="site-comment commentaires" id="idConversation">
@@ -145,7 +157,7 @@
     <div class="row {% if comment.auteur.id == request.user.id %} msg-auteur  {%else%} msg-destinataire{%endif%}">
 
         <div class="col-sm-4 col-md-4 col-lg-3">
-           <p class="infos  textepetit">({{ comment.date_creation|date:"d/m/Y G:i" }}){% ifchanged %}, {{comment.auteur}}{% endifchanged %}</p>
+           <p class="infos  textepetit">{{ comment.date_creation|date:"d/m/Y G:i" }}{% ifchanged %}, {{comment.auteur}}{% endifchanged %}</p>
         </div>
         <div class=" col-sm-8 col-md-8 col-lg-9 message ">
                 <div class="col">{{ comment.message|safe|url}}</div>
@@ -173,9 +185,6 @@
 {% else %}
     <p>(Vous devez vous <a href="{% url 'permagora:login'%}">authentifier</a> pour laisser un commentaire, merci !)</p>
 {% endif %}
-    <script>
-    getElementById("id_commentaire_iframe").height = "150px"
-</script>
           </div>
         </div>
       </div>
@@ -200,7 +209,7 @@
         <div class="row mb-5">
           <div class="col-md-4">
             <h2 class="footer-heading text-uppercase mb-4">A Propos</h2>
-            <p>Charte Ecologique citoyenne pour la transition du Pays Catalan</p>
+            <p>La plateforme en ligne de PermAgora</p>
           </div>
           <div class="col-md-3 ml-auto">
             <h2 class="footer-heading text-uppercase mb-4">Navigation rapide</h2>
@@ -235,19 +244,18 @@
 
 {% endcomment %}
 
-  <script src="{% static 'permagora/js/jquery-3.3.1.min.js'%}"></script>
-  <script src="{% static 'permagora/js/jquery-migrate-3.0.1.min.js'%}"></script>
-  <script src="{% static 'permagora/js/popper.min.js'%}"></script>
-  <script src="{% static 'permagora/js/bootstrap.min.js'%}"></script>
-  <script src="{% static 'permagora/js/owl.carousel.min.js'%}"></script>
-  <script src="{% static 'permagora/js/jquery.stellar.min.js'%}"></script>
-  <script src="{% static 'permagora/js/jquery.countdown.min.js'%}"></script>
-  <script src="{% static 'permagora/js/jquery.magnific-popup.min.js'%}"></script>
-  <script src="{% static 'permagora/js/bootstrap-datepicker.min.js'%}"></script>
-  <script src="{% static 'permagora/js/aos.js'%}"></script>
+  <script src="{% static 'permagora/js/jquery-3.3.1.min.js'%}" type="text/javascript"></script>
+  <script src="{% static 'permagora/js/jquery-migrate-3.0.1.min.js'%}" type="text/javascript"></script>
+  <script src="{% static 'permagora/js/popper.min.js'%}" type="text/javascript"></script>
+  <script src="{% static 'permagora/js/bootstrap.min.js'%}" type="text/javascript"></script>
+  <script src="{% static 'permagora/js/owl.carousel.min.js'%}" type="text/javascript"></script>
+  <script src="{% static 'permagora/js/jquery.stellar.min.js'%}" type="text/javascript"></script>
+  <script src="{% static 'permagora/js/jquery.countdown.min.js'%}" type="text/javascript"></script>
+  <script src="{% static 'permagora/js/jquery.magnific-popup.min.js'%}" type="text/javascript"></script>
+  <script src="{% static 'permagora/js/bootstrap-datepicker.min.js'%}" type="text/javascript"></script>
+  <script src="{% static 'permagora/js/aos.js'%}" type="text/javascript"></script>
 
-  <script src="{% static 'permagora/js/main.js'%}"></script>
-
+  <script src="{% static 'permagora/js/main.js'%}" type="text/javascript"></script>
   </body>
 </html>
 {% endspaceless %}

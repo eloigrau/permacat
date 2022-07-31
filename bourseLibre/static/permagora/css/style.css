@@ -623,13 +623,13 @@ h1, h2, h3, h4, h5,
 .site-hero {
   margin-bottom: 8rem; }
   .site-hero, .site-hero .row {
-    min-height: 300px;
+    min-height: 350px;
     height: calc(80vh - 95px); }
   .site-hero.inner, .site-hero.inner .row {
-    min-height: 300px;
+    min-height: 350px;
     height: calc(50vh - 95px); }
   .site-hero h1 {
-    font-size: 2rem;
+    font-size: 1.6rem;
     background: -webkit-gradient(linear, left top, right top, from(#ff0000), color-stop(70%, #ffff00));
     background: -webkit-linear-gradient(left, #ff0000, #ffff00 70%);
     background: -o-linear-gradient(left, #ff0000, #ffff00 70%);
@@ -638,12 +638,12 @@ h1, h2, h3, h4, h5,
     -webkit-text-fill-color: transparent; }
     @media (min-width: 992px) {
       .site-hero h1 {
-        font-size: 6rem; } }
+        font-size: 2.2rem; } }
   .site-hero .caption {
     color: #fff; }
     @media (min-width: 768px) {
       .site-hero .caption {
-        font-size: 1.7rem; } }
+        font-size: 1.4rem; } }
 
 .btn-custom {
   text-transform: uppercase;
@@ -713,7 +713,7 @@ h1, h2, h3, h4, h5,
   border: 2px solid #ffff00;
   padding: 30px; }
   .pricing h2 {
-    font-size: 26px;
+    font-size: 24px;
     color: #fff;
     margin-bottom: 30px; }
   .pricing .amount {
@@ -723,7 +723,7 @@ h1, h2, h3, h4, h5,
       top: -30px;
       font-size: 18px; }
     .pricing .amount .number {
-      font-size: 3rem; }
+      font-size: 2.5rem; }
   .pricing ul li {
     margin-bottom: 10px; }
 

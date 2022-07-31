@@ -11,19 +11,19 @@
           </div>
         </div>
         </div>
-        </div>
+</div>
  <div class="site-section">
       <div class="container">
         <div class="row mb-5">
           <div class="col-12" data-aos="fade-up" data-aos-delay="300">
-            <img src="images/hero_1.jpg" alt="Image" class="img-fluid">
+            {% comment %}<img src="images/hero_1.jpg" alt="Image" class="img-fluid">{% endcomment %}
           </div>
         </div>
         <div class="row">
 {% for pb in dico_risques %}
           <div class="col-md-4" data-aos="fade-up" data-aos-delay="200"><span class="text-primary">{{pb.0}}</span></div>
           <div class="col-md-7" data-aos="fade-up" data-aos-delay="300">
-              </p>{{pb.1|safe}}<p>
+              <p>{{pb.1|safe}}</p>
           </div>
               {%endfor%}
         </div>

@@ -31,13 +31,13 @@
 {% if user == request.user %}
 <div class="row justify-content-center">
   <div class="col-sm-12 col-md-10 mb-5 text-center">
-          {%if request.user.a_signe %}
+          {%if request.user.a_signe_permagora %}
             <button type="button" class="btn btn-lg btn-success" disabled>
-                j'ai signé et j'approuve la charte
+                j'ai signé et j'approuve les propositions
             </button>
           {%else%}
             <a href="{%url 'permagora:signer'%}"><button type="button" class="btn btn-lg btn-warning" >
-                 je n'approuve pas la charte et je n'ai pas encore signé
+                 je n'approuve pas les propositions et je n'ai pas encore signé
   </button></a>
           {%endif%}
   </div>
@@ -45,13 +45,13 @@
 {% else %}
 <div class="row justify-content-center">
   <div class="col-sm-12 col-md-10 mb-5 text-center">
-          {%if user.a_signe %}
+          {%if user.a_signe_permagora %}
             <button type="button" class="btn btn-lg btn-success" disabled>
-                a signé et approuve la charte
+                a signé et approuve les propositions
             </button>
           {%else%}
             <a href="#"><button type="button" class="btn btn-lg btn-warning" >
-                n'a pas encore signé la charte
+                n'a pas encore signé les propositions
   </button></a>
           {%endif%}
   </div>

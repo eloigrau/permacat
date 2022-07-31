@@ -1,0 +1,150 @@
+{% extends 'permagora/base_sanscommentaire.html' %}
+{% load fontawesome %}
+{% load permagora_filters %}
+{% block content %}
+
+
+ <div class="site-section">
+      <div class="container">
+        <div class="row mb-5  align-items-center">
+          <div class="col-sm-12 ">
+            <div class="site-section-heading" data-aos="fade-up" data-aos-delay="50">
+              <h4 class="text-center">{{proposition.pole}} </h4>
+              <h2 class="text-center">{{proposition.titre|safe}}</h2>
+              <p class="text-center">
+                  <a href="{% url 'permagora:ajouterVote_plus' proposition.slug %}?next={{request.path}}"> {% fontawesome_icon 'thumbs-up' %} {{proposition.compteur_plus}}</a> &nbsp
+      <a href="{% url 'permagora:ajouterVote_moins' proposition.slug %}?next={{request.path}}" >{% fontawesome_icon 'thumbs-down' %} {{proposition.compteur_moins}} </a> &nbsp
+              </p>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+<div class="site-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12" data-aos="fade-up" data-aos-delay="200">
+              <span class="text-primary">Ressources (ressources en ligne pour éclairer le débat)</span>
+          </div>
+          </div>
+        <div class="row">
+            <div class="col-md-10 offset-md-2" data-aos="fade-up" data-aos-delay="220">
+              <p>{{proposition.ressources|safe}}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12" data-aos="fade-up" data-aos-delay="200">
+              <span class="text-primary">Contexte et enjeux locaux</span></div>
+          </div>
+        <div class="row">
+            <div class="col-md-10 offset-md-2" data-aos="fade-up" data-aos-delay="220">
+              <p>{{proposition.contexte|safe}}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12" data-aos="fade-up" data-aos-delay="200">
+              <span class="text-primary">Besoins (ce qu'il est nécessaire de mettre en oeuvre a minima)</span></div>
+          </div>
+        <div class="row">
+            <div class="col-md-10 offset-md-2" data-aos="fade-up" data-aos-delay="220">
+              <p>{{proposition.besoins|safe}}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12" data-aos="fade-up" data-aos-delay="200">
+              <span class="text-primary">Ideal (ce qu'il conviendrait de faire idéalement) </span></div>
+          </div>
+        <div class="row">
+            <div class="col-md-10 offset-md-2" data-aos="fade-up" data-aos-delay="220">
+              <p>{{proposition.ideal|safe}}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12" data-aos="fade-up" data-aos-delay="200">
+              <span class="text-primary">Existant (associations, structures, projets qui sont déjà là) </span>
+          </div>
+          </div>
+        <div class="row">
+            <div class="col-md-10 offset-md-2" data-aos="fade-up" data-aos-delay="220">
+              <p>{{proposition.existant|safe}}</p>
+          </div>
+      </div>
+        <div class="row">
+          <div class="col-md-12" data-aos="fade-up" data-aos-delay="200">
+              <span class="text-primary">Actions (prochaines actions envisagées) </span></div>
+        </div>
+        <div class="row">
+            <div class="col-md-10 offset-md-2" data-aos="fade-up" data-aos-delay="220">
+            <p>{{proposition.actions|safe}}</p>
+          </div>
+      </div>
+        </div>
+      </div>
+
+
+<div class="site-section">
+      <div class="container">
+        <div class="row mb-5 justify-content-center">
+            <a href="{%url 'permagora:propositions'%}" class="btn-custom" data-aos="fade-up" data-aos-delay="100"><span>Revenir à la liste des propositions</span></a>
+        </div>
+    </div>
+</div>
+
+<div class="site-section">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-sm-12 ">
+
+<div class="site-comment commentaires" id="idConversation1">
+              <h4 class="text-center">Commentaires : </h4>
+{% for comment in commentaires %}
+    <div class="row {% if comment.auteur.id == request.user.id %} msg-auteur  {%else%} msg-destinataire{%endif%}">
+
+        <div class="col-sm-4 col-md-4 col-lg-3">
+           <p class="infos  textepetit">{{ comment.date_creation|date:"d/m/Y G:i" }}{% ifchanged %}, {{comment.auteur}}{% endifchanged %}</p>
+        </div>
+        <div class=" col-sm-8 col-md-8 col-lg-9 message ">
+                <div class="col">{{ comment.message|safe|url}}</div>
+        </div>
+    </div>
+{% endfor %}
+</div>
+    <script>
+    var messageBody = document.querySelector('#idConversation');
+    messageBody.scrollTop = idConversation1.scrollHeight - idConversation.clientHeight;
+</script>
+
+<hr>
+
+{% if request.user.is_authenticated %}
+<div>
+    <input type="hidden" name="Nouveau Message" value="{{ message }}">
+<div>
+<form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="Nouveau Message" value="{{ message_defaut }}">
+    {% include 'form_template3.html' %}
+</form>
+</div>
+{% else %}
+    <p>(Vous devez vous <a href="{% url 'login'%}">authentifier</a> pour laisser un commentaire, merci !)</p>
+{% endif %}
+
+      </div>
+        </div>
+        </div>
+        </div>
+      </div>
+
+
+ <div class="site-section">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-lg-12 text-center">
+            <a href="{%url 'permagora:propositions'%}#{{proposition.domaine.slug}}" class="btn-custom" ><span>revenir aux propositions </span></a>
+          </div>
+        </div>
+      </div>
+ </div>
+
+{% endblock %}

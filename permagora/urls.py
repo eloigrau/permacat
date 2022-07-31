@@ -39,7 +39,7 @@ urlpatterns = [
     url(r'^contact/$', views.contact, name='contact', ),
     url(r'^signer/$', views.signer, name='signer', ),
     url(r'^statistiques/$', views.statistiques, name='statistiques', ),
-    #url(r'^signataires/$', views.signataires, name='signataires', ),
+    url(r'^signataires/$', views.signataires, name='signataires', ),
 
     url(r'^accounts/profil/(?P<user_id>[0-9]+)/$', login_required(views.profil), name='profil', ),
     url(r'^accounts/profil/(?P<user_username>[-\w.]+)/$', login_required(views.profil_nom), name='profil_nom', ),
@@ -47,18 +47,23 @@ urlpatterns = [
 
     url(r'^merci/$', views.merci, name='merci'),
     path('auth/', include('django.contrib.auth.urls')),
-    url(r'^charte/$', views.charte, name='charte', ),
+    url(r'^propositions/$', views.propositions, name='propositions', ),
+    url(r'^organisationPermagora/$', views.organisationPermagora, name='organisationPermagora', ),
+    url(r'^presentationPermagora/$', views.presentationPermagora, name='presentationPermagora', ),
     url(r'^cgu/$', views.cgu, name='cgu', ),
     url(r'^liens/$', views.liens, name='liens', ),
     url(r'^fairedon/$', views.fairedon, name='fairedon', ),
     url(r'^contact_admins/$', views.contact_admins, name='contact_admins',),
 
-    url(r'^ajouterPointsCharte/$', views.ajouterPointsCharte, name='ajouterPointsCharte', ),
-    url(r'^voirPropositionCharte/(?P<slug>[-\w]+)$', views.voirPropositionCharte, name='voirPropositionCharte', ),
+    url(r'^ajouterPoleCharte/$', views.ajouterPoleCharte, name='ajouterPoleCharte', ),
+    url(r'^voirProposition/(?P<slug>[-\w]+)$', views.voirProposition, name='voirProposition', ),
     url(r'^ajouterVote_plus/(?P<slug>[-\w]+)$', views.ajouterVote_plus, name='ajouterVote_plus', ),
     url(r'^ajouterVote_moins/(?P<slug>[-\w]+)$', views.ajouterVote_moins, name='ajouterVote_moins', ),
+    path(r'ajouterProposition/', views.ajouterProposition, name='ajouterProposition'),
 
-]
+    url(r'^modifierPropositionCharte/(?P<slug>[-\w]+)$',
+        login_required(views.ModifierPropositionCharte.as_view(), login_url='/auth/login/'), name='modifierPropositionCharte'),
+    ]
 urlpatterns += [
     url(r'^robots\.txt$', TemplateView.as_view(template_name="permagora/robots.txt", content_type='text/plain')),
 ]

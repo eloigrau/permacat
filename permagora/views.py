@@ -1,16 +1,15 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.db.models import CharField
 from django.db.models.functions import Lower
-from django.views.decorators.debug import sensitive_variables
-from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group, User
 from django.core.mail import mail_admins, send_mail, BadHeaderError
-from .forms import ProfilCreationForm, ContactForm, SignerForm, MessageForm,CommentaireForm
-from .models import Profil, Message_permagora, Domaine_charte, Proposition_charte, Commentaire_charte, Vote
+from .forms import ContactForm, SignerForm, MessageForm, CommentaireForm, PropositionCharteCreationForm, PropositionCharteChangeForm
+from .models import Profil, Message_permagora, PoleCharte, PropositionCharte, Commentaire_charte, Vote, Signataire
+from datetime import datetime, timedelta
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.db.models import F
 from django.http import HttpResponse
@@ -65,7 +64,6 @@ def faq(request):
 def statuts(request):
     return render(request, 'permagora/statuts.html')
 
-@sensitive_variables('password')
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
@@ -104,7 +102,7 @@ def contact(request):
             return render(request, 'permagora/erreur.html', {'msg':"Désolé, une ereur s'est produite"})
     else:
         form = ContactForm()
-    return render(request, 'contact.html', {'form': form, "isContactProfil":False})
+    return render(request, 'permagora/contact.html', {'form': form, "isContactProfil":False})
 
 
 def contact_admins(request):
@@ -140,6 +138,12 @@ def fairedon(request):
 def statistiques(request):
     nb_inscrits = Profil.objects.all().count()
     return render(request, 'permagora/statistiques.html', {"nb_inscrits":nb_inscrits})
+
+@login_required
+def signataires(request):
+    signataires = Signataire.objects.all()
+    nb_total_signe = signataires.count()
+    return render(request, 'permagora/signataires.html', {"signataires":signataires, "nb_total_signe":nb_total_signe})
 
 
 def liens(request):
@@ -291,7 +295,7 @@ dico_charte =[
   ),)
 ]
 
-def charte(request):
+def propositions(request):
     commentaires = Message_permagora.objects.filter(type_article="3").order_by("date_creation")
     form = MessageForm(request.POST or None)
     if form.is_valid():
@@ -302,10 +306,15 @@ def charte(request):
         comment.type_article="3"
         comment.save()
         return redirect(request.path)
-    dico_charte = ((domaine, (prop for prop in Proposition_charte.objects.filter(domaine=domaine).order_by("id"))) for domaine in Domaine_charte.objects.all())
-    return render(request, 'permagora/charte.html', {"dico_charte":dico_charte, 'form': form, 'commentaires': commentaires})
+    dico_charte = ((pole, (prop for prop in PropositionCharte.objects.filter(pole=pole).order_by("id"))) for pole in PoleCharte.objects.all())
+    return render(request, 'permagora/propositions.html', {"dico_charte":dico_charte, 'form': form, 'commentaires': commentaires})
 
 
+def organisationPermagora(request, ):
+    return render(request, 'permagora/organisationPermagora.html', {})
+
+def presentationPermagora(request, ):
+    return render(request, 'permagora/presentationPermagora.html', {})
 
 @login_required
 def profil_courant(request, ):
@@ -334,23 +343,21 @@ def profil_nom(request, user_username):
 def signer(request):
     form_signer = SignerForm(request.POST or None)
     if form_signer.is_valid():
-        profil_courant = Profil.objects.get(username=request.user.username)
-        profil_courant.a_signe = True
-        profil_courant.save()
+        signataire = Signataire.objects.get_or_create(auteur=request.user)
         return render(request, 'permagora/merci.html')
 
     return render(request, 'permagora/signer.html', {"form_signer": form_signer, })
 
 
-def ajouterPointsCharte(request):
+def ajouterPoleCharte(request):
     for domaine in dico_charte:
-        domaine_obj, created = Domaine_charte.objects.get_or_create(titre=domaine[0])
+        domaine_obj, created = PoleCharte.objects.get_or_create(titre=domaine[0])
         for message in domaine[1]:
-            proposition, created = Proposition_charte.objects.get_or_create(titre=message, domaine=domaine_obj)
+            proposition, created = PropositionCharte.objects.get_or_create(titre=message, domaine=domaine_obj)
     return render(request, 'permagora/merci.html')
 
-def voirPropositionCharte(request, slug):
-    proposition = Proposition_charte.objects.get(slug=slug)
+def voirProposition(request, slug):
+    proposition = PropositionCharte.objects.get(slug=slug)
     commentaires = Commentaire_charte.objects.filter(proposition=proposition)
     if request.user.is_authenticated:
         vote, created = Vote.objects.get_or_create(auteur=request.user, proposition=proposition)
@@ -365,12 +372,12 @@ def voirPropositionCharte(request, slug):
         comment.proposition = proposition
         comment.save()
         return redirect(request.path)
-    return render(request, 'permagora/voir_pointcharte.html', {'form': form, 'proposition':proposition, 'commentaires':commentaires, 'vote':vote})
+    return render(request, 'permagora/voirProposition.html', {'form': form, 'proposition':proposition, 'commentaires':commentaires, 'vote':vote})
 
 def ajouterVote_plus(request, slug):
     if not request.user.is_authenticated:
         return redirect('login')
-    proposition = Proposition_charte.objects.get(slug=slug)
+    proposition = PropositionCharte.objects.get(slug=slug)
     vote, created = Vote.objects.get_or_create(auteur=request.user, proposition=proposition)
     if vote.type_vote == "0" :
         vote.type_vote = "1"
@@ -390,7 +397,7 @@ def ajouterVote_plus(request, slug):
 def ajouterVote_moins(request, slug):
     if not request.user.is_authenticated:
         return redirect('login')
-    proposition = Proposition_charte.objects.get(slug=slug)
+    proposition = PropositionCharte.objects.get(slug=slug)
     vote, created = Vote.objects.get_or_create(auteur=request.user, proposition=proposition)
     if vote.type_vote == "0":
         vote.type_vote = "2"
@@ -405,3 +412,51 @@ def ajouterVote_moins(request, slug):
     proposition.save()
     vote.save()
     return redirect(request.GET['next'])
+
+
+@login_required
+def ajouterProposition(request):
+    form = PropositionCharteCreationForm(request, request.POST or None)
+    time_threshold = datetime.now() - timedelta(hours=24)
+    props = PropositionCharte.objects.filter(auteur=request.user, date_creation__gt=time_threshold)
+    NBMAX_ARTICLES = 20
+    if not request.user.is_superuser and len(props) > NBMAX_ARTICLES:
+        return render(request, 'erreur2.html', {"msg": "Vous avez déjà posté %s propositions depuis 24h, veuillez patienter un peu avant de poster un nouvel article, merci !"% NBMAX_ARTICLES})
+
+    if form.is_valid():
+        prop = form.save(request.user)
+        #url = article.get_absolute_url() + "#ref-titre"
+        #suffix = "_" + article.asso.abreviation
+        #action.send(request.user, verb='article_nouveau'+suffix, action_object=article, url=url,
+        #           description="a ajouté un article : '%s'" % article.titre)
+        return redirect(prop.get_absolute_url())
+
+    return render(request, 'permagora/ajouterProposition.html', { "form": form, })
+
+
+# @login_required
+class ModifierPropositionCharte(UpdateView):
+    model = PropositionCharte
+    form_class = PropositionCharteChangeForm
+    template_name_suffix = '_modifier'
+
+    def form_valid(self, form):
+        self.object = form.save(sendMail=False, commit=False, )
+        # self.object.date_modification = now()
+        # self.object.save(sendMail=form.changed_data!=['estArchive'])
+        # url = self.object.get_absolute_url()
+        # suffix = "_" + self.object.asso.abreviation
+        # if not self.object.estArchive:
+        #     if self.object.date_modification - self.object.date_creation > timedelta(minutes=10):
+        #         action.send(self.request.user, verb='article_modifier'+suffix, action_object=self.object, url=url,
+        #                      description="a modifié l'article [%s]: '%s'" %(self.object.asso, self.object.titre))
+        # elif form.changed_data == ['estArchive']:
+        #     action.send(self.request.user, verb='article_modifier'+suffix + "-archive", action_object=self.object, url=url,
+        #                  description="a archivé l'article [%s]: '%s'" %(self.object.asso, self.object.titre))
+
+        #envoi_emails_articleouprojet_modifie(self.object, "L'article " +  self.object.titre + "a été modifié", True)
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_form(self,*args, **kwargs):
+        form = super(ModifierPropositionCharte, self).get_form(*args, **kwargs)
+        return form
