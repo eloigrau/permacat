@@ -15,6 +15,7 @@
                   <a href="{% url 'permagora:ajouterVote_plus' proposition.slug %}?next={{request.path}}"> {% fontawesome_icon 'thumbs-up' %} {{proposition.compteur_plus}}</a> &nbsp
       <a href="{% url 'permagora:ajouterVote_moins' proposition.slug %}?next={{request.path}}" >{% fontawesome_icon 'thumbs-down' %} {{proposition.compteur_moins}} </a> &nbsp
               </p>
+              <p class="text-center"><a href="https://semestriel.framapad.org/p/permacgora_doc_{{proposition.slug}}">Document de travail</a> </p>
             </div>
           </div>
         </div>
