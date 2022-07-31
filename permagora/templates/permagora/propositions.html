@@ -75,13 +75,13 @@
 
         <div class="row" data-aos="fade-up" data-aos-delay="500">
           <div class="col-12 text-center pt-5">
-              {%if user.is_authenticated and user.a_signe_permagora %}
+              {%if request.user.is_authenticated and request.user.a_signe_permagora %}
             <button type="button" class="btn btn-lg btn-success" disabled data-aos="fade-up" data-aos-delay="200">
-                je suis solidaire et je fais partie du collectif
+                je suis solidaire et je fais partie du soutien au collectif
             </button>
               {%else%}
              <a href="{% url 'permagora:signer' %}" class="btn-custom" data-aos="fade-up" data-aos-delay="200"><span>Je soutiens la démarche,
-              {%if not user.is_authenticated %}je m'identifie et{%endif%} je m'inscris dans le collectif !</span></a>
+              {%if not request.user.is_authenticated %}je m'identifie et{%endif%} je m'inscris dans le collectif si je n'y suis psa déjà !</span></a>
               {%endif%}
          </div>
         </div>
@@ -93,8 +93,5 @@
 
 
   {% block compteur %}
-          <!-- Start of CuterCounter Code -->
-<a href="https://www.cutercounter.com/" target="_blank"><img src="https://www.cutercounter.com/hits.php?id=gruqpkkd&nd=6&style=11" border="0" alt="free counter"></a> |
-<!-- End of CuterCounter Code -->
   {% endblock %}
 
