@@ -1,4 +1,5 @@
 {% extends 'permagora/base.html' %}
+{% load static %}
 {% block content %}
 
  <div class="site-section">
@@ -15,12 +16,6 @@
 
 <div class="site-section">
       <div class="container">
-        <div class="row mb-5">
-          <div class="col-12" data-aos="fade-up" data-aos-delay="300">
-
-            <!--<img src="images/hero_1.jpg" alt="Image" class="img-fluid">-->
-          </div>
-        </div>
         <div class="row">
           <div class="col-md-4" data-aos="fade-up" data-aos-delay="200"><span class="text-primary">Qui sommes nous ?</span></div>
           <div class="col-md-6" data-aos="fade-up" data-aos-delay="250">
@@ -33,8 +28,15 @@
           <div class="col-md-4" data-aos="fade-up" data-aos-delay="200"><span class="text-primary">Fonctionnement</span></div>
           <div class="col-md-6" data-aos="fade-up" data-aos-delay="250">
               <p>Nous pratiquons la gouvernance partagée en nous basant sur le <a href="https://www.perma.cat/media/documents/2021/08/03/constitution_1_0_finale.pdf" target="_blank">modèle Z</a></p>
-              <p>Nous nous rencontrons tous les lundi en <a href="https://framatalk.org/permacat">visioconférence</a> (et/ou en présentiel) de 16h30 à 18h pour le cercle d'ancrage et de 19h à 20h pour les groupes thématiques</p>
+              <p>Nous nous rencontrons tous les lundi en <a href="https://framatalk.org/permacat">visioconférence</a> (et/ou en présentiel) de 16h30 à 18h pour le cercle d'ancrage et de 19h à 20h pour les groupes thématiques </p>
          </div>
+        </div>
+        <div class="row mb-5">
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200"><span class="text-primary">Pôles thématiques</span></div>
+
+          <div class="col-md-8" data-aos="fade-up" data-aos-delay="300">
+           <img src="{% static 'permagora/images/permagora.png' %}" alt="Poles PermAgora" class="img-fluid">
+          </div>
         </div>
         <div class="row">
           <div class="col-md-4" data-aos="fade-up" data-aos-delay="200"><span class="text-primary">Communication</span></div>
