@@ -21,6 +21,9 @@
         <div class="row mb-5 justify-content-center">
     <p>Vous pouvez <a href="{% url 'permagora:ajouterProposition' %}">ajouter un plan d'action concernant une problématique</a> </p>
         </div>
+        <div class="row mb-5 justify-content-center">
+    <p><a href="https://www.perma.cat/media/documents/2022/05/16/SondageTablesRondes.pdf" target="_blank">voir la liste des questions établies par sondage</a> </p>
+        </div>
     </div>
 </div>
 
@@ -77,11 +80,11 @@
           <div class="col-12 text-center pt-5">
               {%if request.user.is_authenticated and request.user.a_signe_permagora %}
             <button type="button" class="btn btn-lg btn-success" disabled data-aos="fade-up" data-aos-delay="200">
-                je suis solidaire et je fais partie du soutien au collectif
+                je soutiens !
             </button>
               {%else%}
              <a href="{% url 'permagora:signer' %}" class="btn-custom" data-aos="fade-up" data-aos-delay="200"><span>Je soutiens la démarche,
-              {%if not request.user.is_authenticated %}je m'identifie et{%endif%} je m'inscris dans le collectif si je n'y suis psa déjà !</span></a>
+              {%if not request.user.is_authenticated %}je m'identifie et{%endif%} je soutiens si ce n'est déjà fait !</span></a>
               {%endif%}
          </div>
         </div>
