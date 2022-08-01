@@ -32,9 +32,9 @@
 <div class="row justify-content-center">
   <div class="col-sm-12 col-md-10 mb-5 text-center">
           {%if request.user.a_signe_permagora %}
-            <p><button type="button" class="btn btn-lg btn-success" disabled>
+            <p><a href="{%url 'permagora:signataires'%}"><button type="button" class="btn btn-lg btn-success" disabled>
                 j'ai déclaré mon soutien
-            </button></p>
+            </button></a> </p>
       <p>
       <a href="{% url 'permagora:designer' %}" class="btn btn-danger" type="button" >Annuler le soutien</a></p>
           {%else%}

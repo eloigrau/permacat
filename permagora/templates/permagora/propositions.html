@@ -83,8 +83,8 @@
                 je soutiens !
             </button>
               {%else%}
-             <a href="{% url 'permagora:signer' %}" class="btn-custom" data-aos="fade-up" data-aos-delay="200"><span>Je soutiens la démarche,
-              {%if not request.user.is_authenticated %}je m'identifie et{%endif%} je soutiens si ce n'est déjà fait !</span></a>
+             <a href="{% url 'permagora:signer' %}" class="btn-custom" data-aos="fade-up" data-aos-delay="200"><span>Soutenir ici la démarche,
+              {%if not request.user.is_authenticated %}après m'être identifié{%endif%}!</span></a>
               {%endif%}
          </div>
         </div>
