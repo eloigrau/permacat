@@ -51,8 +51,8 @@
       <a href="{% url 'permagora:ajouterVote_moins' point.slug %}?next={%url 'permagora:propositions'%}#{{domaine.0.slug}}" >{% fontawesome_icon 'thumbs-down' %} {{point.compteur_moins}} </a> &nbsp
     </th>
   </tr>
-{% endif%}
 {% endfor%}
+{% endif %}
 </table>
           </div></div>
 
@@ -74,6 +74,7 @@
         </div>
       </div>
     </div>
+{% endif %}
               {%endfor%}
 
     <div class="site-section">
