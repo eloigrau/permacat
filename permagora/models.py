@@ -71,6 +71,9 @@ class PropositionCharte(models.Model):
     def get_absolute_url(self):
         return reverse('permagora:voirProposition', kwargs={'slug':self.slug})
 
+    @property
+    def doc_travail_url(self):
+        return "https://semestriel.framapad.org/p/permacgora_doc_" + self.slug[:10].replace("-","_")
 
 class Commentaire_charte(models.Model):
     proposition = models.ForeignKey(PropositionCharte, on_delete=models.CASCADE)
