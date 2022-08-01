@@ -98,8 +98,8 @@ class CommentaireForm(forms.ModelForm):
 
 
 class SignerForm(forms.Form):
-    accepter = forms.BooleanField(label="Je soutiens les propositions de PermAgora et je m'engage avec le collectif", required=True
-                                 )
+    accepter = forms.BooleanField(label="Je soutiens les propositions de PermAgora et je m'engage avec le collectif", required=True)
+    apparait_visible = forms.BooleanField(label="J'accepte que mon nom apparaisse sur la liste des soutiens", required=False)
 
 
 

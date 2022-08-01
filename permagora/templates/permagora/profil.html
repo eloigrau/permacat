@@ -32,12 +32,14 @@
 <div class="row justify-content-center">
   <div class="col-sm-12 col-md-10 mb-5 text-center">
           {%if request.user.a_signe_permagora %}
-            <button type="button" class="btn btn-lg btn-success" disabled>
-                j'ai signé et j'approuve les propositions
-            </button>
+            <p><button type="button" class="btn btn-lg btn-success" disabled>
+                j'ai déclaré mon soutien
+            </button></p>
+      <p>
+      <a href="{% url 'permagora:designer' %}" class="btn btn-danger" type="button" >Annuler le soutien</a></p>
           {%else%}
             <a href="{%url 'permagora:signer'%}"><button type="button" class="btn btn-lg btn-warning" >
-                 je n'approuve pas les propositions et je n'ai pas encore signé
+                 je n'ai pas encore apporté mon soutien
   </button></a>
           {%endif%}
   </div>

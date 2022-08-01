@@ -12,7 +12,7 @@ LONGITUDE_DEFAUT = '2.8954'
 
 class Choix():
     type_message = ('0','Commentaire'), ("1","Coquille"), ('2','Réflexion')
-    type_article = ('0','intro'), ("1","constat"), ('2','preconisations'), ('3','charte'), ('4','liens'), ('5','accueil')
+    type_article = ('0','intro'), ("1","constat"), ('2','preconisations'), ('3','charte'), ('4','liens'), ('5','accueil'), ('6','preambule'),
 
 
 class Message_permagora(models.Model):
@@ -99,6 +99,7 @@ class Vote(models.Model):
 class Signataire(models.Model):
     auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
     date_creation = models.DateTimeField(auto_now_add=True)
+    apparait_visible = models.BooleanField(verbose_name="J'accepte d'apparaitre sur la liste des soutiens", default=False)
 
     def __str__(self):
-        return str(self.auteur.username) + " (le " + str(self.date_creation) + ")"
+        return str(self.auteur.username) + " (le " + str(self.date_creation.strftime("%d/%m/%y")) + ")"

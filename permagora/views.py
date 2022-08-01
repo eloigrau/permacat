@@ -143,7 +143,8 @@ def statistiques(request):
 def signataires(request):
     signataires = Signataire.objects.all()
     nb_total_signe = signataires.count()
-    return render(request, 'permagora/signataires.html', {"signataires":signataires, "nb_total_signe":nb_total_signe})
+    signataires_visibles = signataires.filter(apparait_visible=True)
+    return render(request, 'permagora/signataires.html', {"signataires":signataires_visibles, "nb_total_signe":nb_total_signe})
 
 
 def liens(request):
@@ -167,6 +168,18 @@ def liens(request):
     return render(request, 'permagora/liens.html', {'liens':liens, 'form': form, 'commentaires': commentaires})
 
 
+def preambule(request):
+    commentaires = Message_permagora.objects.filter(type_article="6").order_by("date_creation")
+    form = MessageForm(request.POST or None)
+    if form.is_valid():
+        if not request.user.is_authenticated:
+            return redirect('login')
+        comment = form.save(commit=False)
+        comment.auteur = request.user
+        comment.type_article = "6"
+        comment.save()
+        return redirect(request.path)
+    return render(request, '0_preambule.html', {'form': form, 'commentaires': commentaires}, )
 
 def introduction(request):
     commentaires = Message_permagora.objects.filter(type_article="0").order_by("date_creation")
@@ -343,10 +356,19 @@ def profil_nom(request, user_username):
 def signer(request):
     form_signer = SignerForm(request.POST or None)
     if form_signer.is_valid():
-        signataire = Signataire.objects.get_or_create(auteur=request.user)
+        signataire, cree = Signataire.objects.get_or_create(auteur=request.user)
+        signataire.apparait_visible = form_signer.cleaned_data['apparait_visible']
+        signataire.save()
         return render(request, 'permagora/merci.html')
 
     return render(request, 'permagora/signer.html', {"form_signer": form_signer, })
+
+@login_required
+def designer(request):
+    signataire = Signataire.objects.filter(auteur=request.user)
+    signataire.delete()
+    return redirect("permagora:profil_courant")
+
 
 
 def ajouterPoleCharte(request):

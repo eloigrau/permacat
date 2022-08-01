@@ -34,10 +34,12 @@ urlpatterns = [
     url(r'^$', views.bienvenue, name='bienvenue'),
     url(r'^risques/$', views.risques, name='risques'),
     url(r'^introduction/$', views.introduction, name='introduction'),
+    url(r'^preambule/$', views.preambule, name='preambule'),
     url(r'^preconisations/$', views.preconisations, name='preconisations'),
     url(r'^faq/$', views.faq, name='faq'),
     url(r'^contact/$', views.contact, name='contact', ),
     url(r'^signer/$', views.signer, name='signer', ),
+    url(r'^designer/$', views.designer, name='designer', ),
     url(r'^statistiques/$', views.statistiques, name='statistiques', ),
     url(r'^signataires/$', views.signataires, name='signataires', ),
 

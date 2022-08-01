@@ -1,0 +1,43 @@
+{% extends 'permagora/base.html' %}
+{% block content %}
+
+ <div class="site-section">
+      <div class="container">
+        <div class="row mb-5  align-items-center">
+          <div class="col-lg-12 ">
+            <div class="site-section-heading" data-aos="fade-up" data-aos-delay="50">
+              <h2 class="text-center">Préambule</h2>
+            </div>
+          </div>
+        </div>
+        </div>
+</div>
+ <div class="site-section">
+      <div class="container">
+          {% comment %}
+        <div class="row mb-5">
+          <div class="col-12" data-aos="fade-up" data-aos-delay="300">
+           <img src="images/hero_1.jpg" alt="Image" class="img-fluid">
+          </div>
+        </div>
+          {% endcomment %}
+        <div class="row" data-aos="fade-up" data-aos-delay="50" >
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="500"><span class="text-primary">Bienvenue sur la plateforme PermAgora</span></div>
+            <p class="col-md-6" data-aos="fade-up" data-aos-delay="500">
+            <p>Ce site développé par nos soins est une plateforme collaborative qui a pour but de permettre de clarifier les enjeux actuels sur notre territoire, afin de créer les liens, les synergies nécessaires au bon niveau de réponse de chaque partie du problème (agriculture, énergie, éducation, etc.). </p>
+
+            <p>La partie "démarche" du site explicite les enjeux, à travers les 3 parties suivantes : introduction, risques, et préconisations. Sur cette base nous proposons une liste de plans d'actions construite grâce à un travail collectif de long terme </p>
+            <p> Vous pouvez participer à la réflection en nous faisant part de vos commentaires, ou bien en participant à nos visioconférences du lundi, ou bien directement sur les documents partagés indiqués sur chque proposition
+                </p>
+        </p>
+
+  <div class="container">
+        <div class="row mb-5">
+          <div class="col-lg-12 text-center">
+            <a href="{%url 'permagora:introduction'%}" class="btn-custom" data-aos="fade-up" data-aos-delay="100"><span>Introduction </span></a>
+          </div>
+        </div>
+ </div>
+{% endblock %}
+
+
