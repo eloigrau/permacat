@@ -28,6 +28,7 @@
 </div>
 
 {% for domaine in dico_charte %}
+{% if domaine.1 %}
 <div class="site-section justify-content-center">
       <div class="container">
         <div class="row mb-5 justify-content-center">
@@ -50,6 +51,7 @@
       <a href="{% url 'permagora:ajouterVote_moins' point.slug %}?next={%url 'permagora:propositions'%}#{{domaine.0.slug}}" >{% fontawesome_icon 'thumbs-down' %} {{point.compteur_moins}} </a> &nbsp
     </th>
   </tr>
+{% endif%}
 {% endfor%}
 </table>
           </div></div>
