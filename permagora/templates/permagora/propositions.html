@@ -79,9 +79,9 @@
         <div class="row" data-aos="fade-up" data-aos-delay="500">
           <div class="col-12 text-center pt-5">
               {%if request.user.is_authenticated and request.user.a_signe_permagora %}
-            <button type="button" class="btn btn-lg btn-success" disabled data-aos="fade-up" data-aos-delay="200">
+           <a href="{% url 'permagora:signataires' %}"><button type="button" class="btn btn-lg btn-success" disabled data-aos="fade-up" data-aos-delay="200">
                 je soutiens !
-            </button>
+            </button></a>
               {%else%}
              <a href="{% url 'permagora:signer' %}" class="btn-custom" data-aos="fade-up" data-aos-delay="200"><span>Soutenir ici la démarche,
               {%if not request.user.is_authenticated %}après m'être identifié{%endif%}!</span></a>
