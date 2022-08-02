@@ -63,8 +63,8 @@ urlpatterns = [
     url(r'^ajouterVote_moins/(?P<slug>[-\w]+)$', views.ajouterVote_moins, name='ajouterVote_moins', ),
     path(r'ajouterProposition/', views.ajouterProposition, name='ajouterProposition'),
 
-    url(r'^modifierPropositionCharte/(?P<slug>[-\w]+)$',
-        login_required(views.ModifierPropositionCharte.as_view(), login_url='/auth/login/'), name='modifierPropositionCharte'),
+    url(r'^modifierProposition/(?P<slug>[-\w]+)$',
+        login_required(views.ModifierProposition.as_view(), login_url='/auth/login/'), name='modifierProposition'),
     ]
 urlpatterns += [
     url(r'^robots\.txt$', TemplateView.as_view(template_name="permagora/robots.txt", content_type='text/plain')),

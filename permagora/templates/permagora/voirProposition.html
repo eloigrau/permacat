@@ -15,7 +15,10 @@
                   <a href="{% url 'permagora:ajouterVote_plus' proposition.slug %}?next={{request.path}}"> {% fontawesome_icon 'thumbs-up' %} {{proposition.compteur_plus}}</a> &nbsp
       <a href="{% url 'permagora:ajouterVote_moins' proposition.slug %}?next={{request.path}}" >{% fontawesome_icon 'thumbs-down' %} {{proposition.compteur_moins}} </a> &nbsp
               </p>
+                {% if request.user.is_authenticated %}
+              <p class="text-center"><a href="{% url 'permagora:modifierProposition' slug=proposition.slug %}">Modifier</a> </p>
               <p class="text-center"><a href="{{proposition.doc_travail_url}}">Document de travail</a> </p>
+                {% endif %}
             </div>
           </div>
         </div>

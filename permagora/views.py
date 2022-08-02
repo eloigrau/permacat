@@ -458,7 +458,7 @@ def ajouterProposition(request):
 
 
 # @login_required
-class ModifierPropositionCharte(UpdateView):
+class ModifierProposition(UpdateView):
     model = PropositionCharte
     form_class = PropositionCharteChangeForm
     template_name_suffix = '_modifier'
@@ -481,5 +481,5 @@ class ModifierPropositionCharte(UpdateView):
         return HttpResponseRedirect(self.get_success_url())
 
     def get_form(self,*args, **kwargs):
-        form = super(ModifierPropositionCharte, self).get_form(*args, **kwargs)
+        form = super(ModifierProposition, self).get_form(*args, **kwargs)
         return form
