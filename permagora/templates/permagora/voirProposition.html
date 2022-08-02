@@ -131,7 +131,7 @@
 </form>
 </div>
 {% else %}
-    <p>(Vous devez vous <a href="{% url 'login'%}">authentifier</a> pour laisser un commentaire, merci !)</p>
+    <p>(Vous devez vous <a href="{% url 'login'%}?next={%url 'permagora:bienvenue'%}">authentifier</a> pour laisser un commentaire, merci !)</p>
 {% endif %}
 
       </div>

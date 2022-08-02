@@ -121,7 +121,6 @@
         </div>
         <div class="row mb-5">
           <div class="col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="200">
-            <img src="{% static 'permagora/images/logo_1.png' %}" alt="Image" class="img-fluid">
             <img src="{% static 'android-chrome-256x256.png' %}" alt="Image" class="img-fluid">
           </div>
         </div>
@@ -134,7 +133,7 @@
             </button>
 
               {%else%}
-            <a href="{% url 'permagora:senregistrer' %}" class="btn-custom" data-aos="fade-up" data-aos-delay="400"><span>Je vous rejoins !</span></a>
+            <a href="{% url 'senregistrer' %}?next={%url 'permagora:bienvenue'%}" class="btn-custom" data-aos="fade-up" data-aos-delay="400"><span>Je vous rejoins !</span></a>
               {% endif %}
           </div>
         </div>
