@@ -464,7 +464,7 @@ class ModifierProposition(UpdateView):
     template_name_suffix = '_modifier'
 
     def form_valid(self, form):
-        self.object = form.save(sendMail=False, commit=False, )
+        self.object = form.save(sendMail=False, commit=True, )
         # self.object.date_modification = now()
         # self.object.save(sendMail=form.changed_data!=['estArchive'])
         # url = self.object.get_absolute_url()
