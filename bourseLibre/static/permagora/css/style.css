@@ -4,7 +4,8 @@ body {
   color: #cfcfd1;
   font-weight: 300;
   font-size: 1rem;
-  background: #2B2A33;
+/*  background: #2B2A33;*/
+  background: #004e64;
   font-family: "Roboto Mono", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; }
 
 ::-moz-selection {
@@ -18,7 +19,10 @@ body {
 a {
   -webkit-transition: .3s all ease;
   -o-transition: .3s all ease;
-  transition: .3s all ease; }
+  transition: .3s all ease;
+    text-decoration: underline;
+
+    }
   a:hover {
     text-decoration: underline; }
 
@@ -800,3 +804,7 @@ h1, h2, h3, h4, h5,
   width: 40px;
   height: 40px;
   line-height: 40px; }
+
+.titrePolePermagora{
+color: #F48C06;
+}
