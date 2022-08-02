@@ -3,14 +3,14 @@
 {% load static %}
 
 {% block subtitle %}
-<h4 class = "textcenter rowbienvenue">{% trans "Administration et fichiers de l'association" %} {{asso.nom}}</h4>
+<h4 class = "textcenter rowbienvenue">{% trans "Administration et fichiers de l'association" %}</h4>
 
 {% endblock %}
 {% block content %}
 
 <div class="row textcenter">
 	<div class="col-sm-12">
-        <a href="{% url 'listeContacts' asso=asso.abreviation %}">
+        <a href="{% url 'listeContacts' asso='scic' %}">
          <button type="button" class="btn btn-primary">
                  Liste des emails
             </button>
@@ -22,7 +22,7 @@
 {% if request.user.is_superuser %}
 <div class="row textcenter">
 	<div class="col-sm-12">
-        <a href="{% url 'listeFollowers' asso=asso.abreviation %}">
+        <a href="{% url 'listeFollowers' asso='scic' %}">
          <button type="button" class="btn btn-primary">
                  SU : Liste des suivis
             </button>
@@ -33,7 +33,7 @@
 {% endif %}
 <div class="row textcenter">
 	<div class="col-sm-12">
-        <a href="{% url 'telechargements_asso' asso=asso.abreviation%}">
+        <a href="{% url 'telechargements_permagora' %}">
          <button type="button" class="btn btn-primary">
                  Fichiers à télécharger
             </button>

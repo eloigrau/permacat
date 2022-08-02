@@ -435,20 +435,31 @@ def presentation_groupes(request):
     return render(request, 'asso/presentation_groupes.html')
 
 @login_required
-def telechargements_asso(request):
-    if not request.user.adherent_pc:
-        return render(request, "notPermacat.html")
-
-    fichiers = [{'titre' : 'Contrat credit mutuel', 'url': static('doc/contrat_credit_mutuel.pdf'),},
-                {'titre' : 'Procès verbal de constitution', 'url': static('doc/PV_constitution.pdf'),},
-                {'titre' : "Recepissé de création de l'asso", 'url': static('doc/recepisse_creation.pdf'),},
-                {'titre' : "Publication au journal officiel", 'url': static('doc/JOAFE_PDF_Unitaire_20190012_01238.pdf'),},
-                {'titre' : 'Statuts déposés', 'url': static('doc/statuts.pdf'),},
-                {'titre' : 'RIB', 'url': static('doc/rib.pdf'),},
-                {'titre' : 'CR AGO 2021', 'url': static('doc/CR/2021_AGO-Compte_rendu.pdf'),},
-                {'titre' : 'CR Réunion écovillage 16/04/2021', 'url': static('doc/CR/CR16AVRIL21_ecovillage.docx'),},
+def telechargements_asso(request, asso):
+    asso=testIsMembreAsso(request, asso)
+    if not isinstance(asso, Asso):
+        raise PermissionDenied
+    fichiers=[]
+    if asso.abreviation == "pc":
+        fichiers = [{'titre' : 'Contrat credit mutuel', 'url': static('doc/contrat_credit_mutuel.pdf'),},
+                    {'titre' : 'Procès verbal de constitution', 'url': static('doc/PV_constitution.pdf'),},
+                    {'titre' : "Recepissé de création de l'asso", 'url': static('doc/recepisse_creation.pdf'),},
+                    {'titre' : "Publication au journal officiel", 'url': static('doc/JOAFE_PDF_Unitaire_20190012_01238.pdf'),},
+                    {'titre' : 'Statuts déposés', 'url': static('doc/statuts.pdf'),},
+                    {'titre' : 'RIB', 'url': static('doc/rib.pdf'),},
+                    {'titre' : 'CR AGO 2021', 'url': static('doc/CR/2021_AGO-Compte_rendu.pdf'),},
+                    {'titre' : 'CR Réunion écovillage 16/04/2021', 'url': static('doc/CR/CR16AVRIL21_ecovillage.docx'),},
+                    ]
+    elif asso.abreviation == "scic":
+        fichiers = [
+                {'titre' : 'Fiche Projet', 'url': static('permagora/docs_admin/Fiche_Projet.pdf'),},
+                {'titre' : 'Statuts-Ri-Charte', 'url': static('permagora/docs_admin/Statuts-Ri-Charte-PermAgora_final.pdf'),},
+                {'titre' : 'Statuts signés', 'url': static('permagora/docs_admin/statuts_PermAgora_signes.pdf'),},
+                {'titre' : 'PV création', 'url': static('permagora/docs_admin/PV_creation_permagora.pdf'),},
+                {'titre' : 'Publication journal officiel', 'url': 'https://www.journal-officiel.gouv.fr/pages/associations-detail-annonce/?q.id=id:202200171115',},
                 ]
-    return render(request, 'asso/fichiers.html', {'fichiers':fichiers})
+
+    return render(request, 'asso/fichiers.html', {'fichiers':fichiers, "asso":asso})
 
 
 def adhesion_entree(request):

@@ -237,6 +237,7 @@
       {% if request.user.adherent_scic %}
                             <li class="divider" role="separator"></li>
                           <li> <a class="dropdown-item" href="{% url 'carte'  asso='scic' %}"><i class='fa fa-compass iconleft' ></i>  Carte / Annuaire  </a></li>
+                        <li><a class="dropdown-item" href="{% url 'admin_asso' asso='scic' %}"><i class='fa fa-database' ></i> Administration  </a></li>
                         <li class="divider" role="separator"></li>
                             <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='scic'%}#ref-titre"><i class='fa fa-comments iconleft' ></i> Articles du forum</a></li>
                      <li> <a class="dropdown-item" href="https://semestriel.framapad.org/p/permagora_doctravail" target="_blank"><i class='fa fa-file iconleft' ></i>  Document de travail </a></li>
