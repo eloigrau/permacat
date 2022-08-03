@@ -105,9 +105,11 @@
         {% for re in res%}
           <tr>
             <td class="tg-0lax">{{forloop.counter}}</td>
-            {% for nom, total, pourcent in re.2 %}
-                 <td class="tg-baqh">{{pourcent}}% ({{total}})</td>
-            {%endfor%}
+              {% if re.2 %}
+                {% for nom, total, pourcent in re.2 %}
+                     <td class="tg-baqh">{{pourcent}}% ({{total}})</td>
+                {%endfor%}
+              {%endif%}
 
             <td class="tg-baqh">{{re.4}} </td>
             <td class="tg-baqh">{{re.1}} </td>

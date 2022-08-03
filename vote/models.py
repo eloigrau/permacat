@@ -376,7 +376,7 @@ class Proposition_m(models.Model):
         """Compute the majority gauge of this Candidate."""
         count = self.reponsequestion_m_set.count()
         if not count:
-            return [(mention, 0) for x, mention in Choix.vote_majoritaire[1:]]
+            return [(mention, 0, 0) for x, mention in Choix.vote_majoritaire[1:]]
         pourcentages = []
         for num_mention, mention in Choix.vote_majoritaire[1:]:
             compte = self.reponsequestion_m_set.filter(choix=num_mention).count()
@@ -460,7 +460,7 @@ class ReponseQuestion_b(models.Model):
 
 class ReponseQuestion_m(models.Model):
     vote = models.ForeignKey(Vote, on_delete=models.CASCADE, related_name='rep_question_m')
-    proposition = models.ForeignKey(Proposition_m, on_delete=models.CASCADE, related_name='propos_question_m', default=None, null=True)
+    proposition = models.ForeignKey(Proposition_m, on_delete=models.CASCADE, default=None, null=True)
     choix = models.IntegerField(
         choices=Choix.vote_majoritaire,
         default=2, verbose_name="Choix du vote :")
