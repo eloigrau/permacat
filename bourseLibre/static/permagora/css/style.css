@@ -237,11 +237,15 @@ h1, h2, h3, h4, h5,
 
 @media (max-width: 991.98px) {
   .img-md-fluid {
-    max-width: 100%; } }
-
-@media (max-width: 991.98px) {
+    max-width: 100%; }
   .display-1, .display-3 {
-    font-size: 3rem; } }
+    font-size: 3rem; }
+
+.rowNoMargin{
+    margin-right: 0px;
+    margin-left: 0px;
+}
+    }
 
 .play-single-big {
   width: 90px;
