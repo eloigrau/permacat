@@ -61,7 +61,7 @@ python-dateutil==2.7.5
 python-utils==2.3.0
 pytz==2018.7
 PyYAML==5.4
-requests==2.20.1
+requests==2.23.0
 simplejson==3.16.0
 six==1.11.0
 sorl-thumbnail==12.5.0
