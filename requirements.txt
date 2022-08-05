@@ -1,4 +1,4 @@
-helloasso-apiv5==1.0.0
+
 Babel==2.9.1
 bleach==3.3.0
 certifi==2018.10.15
