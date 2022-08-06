@@ -18,19 +18,19 @@ class MyApi(HaApiV5):
         super(MyApi, self).__init__(*args, **kwargs)
         self.organization = OrganizationApi(self)
 
-api_permacat = MyApi(
+
+
+def initAPI(request):
+    api_permacat = MyApi(
         api_base='api.helloasso.com',
         client_id=ID_PCAT["client_id"],
         client_secret=ID_PCAT["client_secret"],
         timeout=60,
-)
-
-def initAPI_old(request):
-    x = api_permacat.authorization.generate_authorize_request(redirect_url="http://127.0.0.1:8000/HA/api/success")
-    y = api_permacat.organization.get_by_slug(pcat_slug)
-    print(y)
-
-def initAPI(request):
+    )
+    def initAPI_old(request):
+        x = api_permacat.authorization.generate_authorize_request(redirect_url="http://127.0.0.1:8000/HA/api/success")
+        y = api_permacat.organization.get_by_slug(pcat_slug)
+        print(y)
     def getrefreshToken():
         url = "https://api.helloasso.com/oauth2/token"
         headers = {"Content-Type":"application/x-www-form-urlencoded"}
