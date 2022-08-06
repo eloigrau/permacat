@@ -2,7 +2,7 @@ from helloasso_api import HaApiV5
 import requests
 import simplejson
 
-from pcat_infos import ID_PCAT
+from .pcat_infos import ID_PCAT
 
 pcat_slug = "permaculture-catalane"
 
