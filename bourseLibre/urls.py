@@ -17,7 +17,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.urls import path
 from . import views, views_base, views_notifications, views_admin, views_ajax
-#from .helloasso import apiHA_pcat
+from .helloasso import apiHA_pcat
 from django.views.generic import TemplateView
 
 # On import les vues de Django, avec un nom spécifique
@@ -199,7 +199,7 @@ urlpatterns = [
     url(r'^admin/creerAction_articlenouveau/$', views_admin.creerAction_articlenouveau,  name="creerAction_articlenouveau"),
 
     path('ajax/annonces/', views_ajax.ajax_annonces, name='ajax_categories'),
-   # path('HA/api/', apiHA_pcat.initAPI, name='apiha_pcat'),
+    path('HA/api/', apiHA_pcat.initAPI, name='apiha_pcat'),
 ]
 
 urlpatterns += [
