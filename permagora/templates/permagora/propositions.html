@@ -16,7 +16,10 @@
 <div class="site-section ">
       <div class="container">
         <div class="row mb-5">
+
+          <div class="col-sm-12 mb-5">
             <h5>Nous proposons de répondre aux questions suivantes par des plans d'action pratiques. Chaque question est ajoutée au fur et à mesure de nos visioconférences du lundi 19h.</h5>
+          </div>
         </div>
         <div class="row mb-5 justify-content-center">
     <p><a href="https://www.perma.cat/media/documents/2022/05/16/SondageTablesRondes.pdf" target="_blank">voir la liste des questions établies par sondage</a> </p>
@@ -35,8 +38,8 @@
 {% if domaine.1 %}
 <div class="site-section justify-content-center">
       <div class="container">
-        <div class="row mb-5 justify-content-center">
-          <div class="col-sm-12 mb-5">
+        <div class="row justify-content-center">
+          <div class="col-sm-12">
             <div class="site-section-heading" data-aos="fade-up">
               <h3 class="text-center titrePolePermagora" id="{{domaine.0.slug}}" >{{ forloop.counter }}/ {{domaine.0|safe}}</h3>
                 {% if domaine.0.description %}<p style="text-align:center;">{{domaine.0.description|safe}}</p> {% endif %}
@@ -61,7 +64,7 @@
           </div></div>
 
 {% endcomment %}
-        <div class="row justify-content-center">
+        <div class="row justify-content-center mb-5">
           <div class="col-sm-12 col-lg-10" data-aos="fade-up" data-aos-delay="200">
               <ul>
 {% for point in domaine.1 %}
