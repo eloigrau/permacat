@@ -22,7 +22,11 @@
     <p><a href="https://www.perma.cat/media/documents/2022/05/16/SondageTablesRondes.pdf" target="_blank">voir la liste des questions établies par sondage</a> </p>
         </div>
         <div class="row mb-5 justify-content-center">
-    <p>Vous pouvez <a href="{% url 'permagora:ajouterProposition' %}">ajouter un plan d'action concernant une problématique particulière</a> </p>
+            {%if request.user.is_authenticated %}
+                <p>Vous pouvez <a href="{% url 'permagora:ajouterProposition' %}">ajouter un plan d'action </a> </p>
+        {% else %}
+                   <p>Vous pouvez <a href="{% url 'permagora:ajouterProposition' %}">ajouter un plan d'action</a> après vous être <a href="https://www.perma.cat/presentation/scic/"> inscrit.e sur le groupe PermAgora</a> du site perma.cat </p>
+        {% endif %}
         </div>
     </div>
 </div>
@@ -63,10 +67,11 @@
 {% for point in domaine.1 %}
 
                   <p><a id="{{point.slug}}">                  </a>{{ forloop.counter }}.   <a href="{{point.get_absolute_url}}" > {{point|safe}}</a></p>
-                      <p class="text-right">
+                      {% comment %}<p class="text-right">
       <a href="{% url 'permagora:ajouterVote_plus' point.slug %}?next={%url 'permagora:propositions'%}#{{domaine.0.slug}}"> {% fontawesome_icon 'thumbs-up' %} {{point.compteur_plus}}</a> &nbsp
       <a href="{% url 'permagora:ajouterVote_moins' point.slug %}?next={%url 'permagora:propositions'%}#{{domaine.0.slug}}" >{% fontawesome_icon 'thumbs-down' %} {{point.compteur_moins}} </a> &nbsp
                       </p>
+                  {% endcomment %}
               {%endfor%}
               </ul>
           </div>
@@ -76,7 +81,7 @@
     </div>
 {% endif %}
               {%endfor%}
-
+{% comment %}
     <div class="site-section">
       <div class="container">
         <div class="row" data-aos="fade-up" data-aos-delay="500">
@@ -93,7 +98,7 @@
         </div>
       </div>
     </div>
-
+{% endcomment %}
 <hr>
 {% endblock %}
 

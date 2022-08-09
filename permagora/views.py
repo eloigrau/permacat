@@ -326,10 +326,29 @@ def propositions(request):
 
 
 def organisationPermagora(request, ):
-    return render(request, 'permagora/organisationPermagora.html', {})
+    commentaires = Message_permagora.objects.filter(type_article="7").order_by("date_creation")
+    form = MessageForm(request.POST or None)
+    if form.is_valid():
+        if not request.user.is_authenticated:
+            return redirect('login')
+        comment = form.save(commit=False)
+        comment.auteur = request.user
+        comment.type_article="7"
+        comment.save()
+    return render(request, 'permagora/organisationPermagora.html', {'form': form, 'commentaires': commentaires})
 
 def presentationPermagora(request, ):
-    return render(request, 'permagora/presentationPermagora.html', {})
+    commentaires = Message_permagora.objects.filter(type_article="6").order_by("date_creation")
+    form = MessageForm(request.POST or None)
+    if form.is_valid():
+        if not request.user.is_authenticated:
+            return redirect('login')
+        comment = form.save(commit=False)
+        comment.auteur = request.user
+        comment.type_article="6"
+        comment.save()
+
+    return render(request, 'permagora/presentationPermagora.html', {'form': form, 'commentaires': commentaires})
 
 @login_required
 def profil_courant(request, ):

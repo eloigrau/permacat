@@ -528,7 +528,8 @@
 	}
 
 .leaflet-oldie .leaflet-popup-content-wrapper {
-	zoom: 1;
+
+    transform:scale(1);
 	}
 .leaflet-oldie .leaflet-popup-tip {
 	width: 24px;

@@ -12,7 +12,7 @@ LONGITUDE_DEFAUT = '2.8954'
 
 class Choix():
     type_message = ('0','Commentaire'), ("1","Coquille"), ('2','Réflexion')
-    type_article = ('0','intro'), ("1","constat"), ('2','preconisations'), ('3','charte'), ('4','liens'), ('5','accueil'), ('6','preambule'),
+    type_article = ('0','intro'), ("1","constat"), ('2','preconisations'), ('3','charte'), ('4','liens'), ('5','accueil'), ('6','présentation'), ('7','organisation'),
 
 
 class Message_permagora(models.Model):
