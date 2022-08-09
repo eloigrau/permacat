@@ -33,7 +33,7 @@ C’est d’ailleurs ce que préconise la loi : « climat et résilience ».</p>
 
 		{% if request.user.is_anonymous %}
 			<p class="textcenter">
-				 <a class="btn btn-warning" href="#" disabled> Il faut être connecté pour pouvoir s'inscrire dans ce groupe</a>
+				 <a class="btn btn-warning" href="{% url 'login'%}" disabled> Il faut être connecté pour pouvoir s'inscrire dans ce groupe</a>
 			</p>
 		{% else %}
 

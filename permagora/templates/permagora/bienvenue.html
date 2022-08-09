@@ -135,7 +135,7 @@
               mais vous n'êtes pas (encore ?) inscrit.e <a href="{% url 'presentation_asso' asso='scic' %}">dans le groupe PermAgora</a>.
                   {% endif %}
               {% else %}
-            <a href="{% url 'senregistrer' %}?next={%url 'permagora:bienvenue'%}" class="btn-custom" data-aos="fade-up" data-aos-delay="400"><span>Je participe !</span></a>
+            <a href="{% url 'login' %}?next={%url 'permagora:bienvenue'%}" class="btn-custom" data-aos="fade-up" data-aos-delay="400"><span>Je participe !</span></a>
               {% endif %}
           </div>
         </div>

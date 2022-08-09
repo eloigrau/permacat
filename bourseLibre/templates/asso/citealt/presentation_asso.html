@@ -55,7 +55,7 @@ L'association CITE ALTRUISTE pourrait mettre en œuvre le développement et l’
 
 		{% if request.user.is_anonymous %}
 			<p class="textcenter">
-				 <a class="btn btn-warning" href="#" disabled> Il faut être connecté pour pouvoir s'inscrire dans ce groupe</a>
+				 <a class="btn btn-warning" href="{% url 'login'%}" disabled> Il faut être connecté pour pouvoir s'inscrire dans ce groupe</a>
 			</p>
 		{% else %}
 
