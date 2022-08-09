@@ -121,19 +121,21 @@
         </div>
         <div class="row mb-5 justify-content-center">
           <div class="col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="200">
-            <img src="{% static 'android-chrome-256x256.png' %}" alt="Image" class="img-fluid">
+            <img src="{% static 'android-chrome-256x256.png' %}" alt="Image" class="img-fluid" style="width:50%;">
           </div>
         </div>
 
         <div class="row" data-aos="fade-up" data-aos-delay="200">
           <div class="col-12 text-center pt-5">
               {% if request.user.is_authenticated %}
-            <button type="button" class="btn btn-lg btn-success" disabled data-aos="fade-up" data-aos-delay="400">
-                Vous êtes déjà membre du collectif
-            </button>
-
-              {%else%}
-            <a href="{% url 'senregistrer' %}?next={%url 'permagora:bienvenue'%}" class="btn-custom" data-aos="fade-up" data-aos-delay="400"><span>Je vous rejoins !</span></a>
+              vous êtes connecté à Perma.Cat
+                  {% if request.user.adherent_scic %}
+                  et vous êtes inscrit.e dans le groupe PermAgora. Super ! Vous pouvez participer à la réflexion en ajoutant ou modifiant les <a href="{% url 'permagora:propositions' %}"> plans d'action</a>
+                  {% else %}
+              mais vous n'êtes pas (encore ?) inscrit.e <a href="{% url 'presentation_asso' asso='scic' %}">dans le groupe PermAgora</a>.
+                  {% endif %}
+              {% else %}
+            <a href="{% url 'senregistrer' %}?next={%url 'permagora:bienvenue'%}" class="btn-custom" data-aos="fade-up" data-aos-delay="400"><span>Je participe !</span></a>
               {% endif %}
           </div>
         </div>
