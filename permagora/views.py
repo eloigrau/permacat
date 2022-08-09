@@ -51,6 +51,9 @@ def bienvenue(request):
 
     return render(request, 'permagora/bienvenue.html', { 'form': form, 'commentaires': commentaires})
 
+def planSite(request):
+    listeProp = PropositionCharte.objects.all()
+    return render(request, 'permagora/planSite.html', { 'listeProp': listeProp,})
 
 def presentation_site(request):
     return render(request, 'presentation_site.html')
@@ -389,7 +392,6 @@ def designer(request):
     signataire = Signataire.objects.filter(auteur=request.user)
     signataire.delete()
     return redirect("permagora:profil_courant")
-
 
 
 def ajouterPoleCharte(request):

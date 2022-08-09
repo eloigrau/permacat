@@ -1,0 +1,66 @@
+{% extends 'permagora/base.html' %}
+{% block content %}
+
+ <div class="site-section">
+      <div class="container">
+        <div class="row mb-5  align-items-center justify-content-center">
+          <div class="col-sm-12 col-md-8 ">
+            <div class="site-section-heading" data-aos="fade-up" data-aos-delay="100">
+              <h2 class="text-center">Plan de la plateforme</h2>
+            </div>
+          </div>
+        </div>
+        </div>
+</div>
+<div class="site-section">
+      <div class="container">
+        <div class="row mb-5 justify-content-center">
+          <div class="cul-sm-12 col-md-8">
+              <ul>
+                  <li>Accueil</li>
+                  <li><a href="{% url 'permagora:propositions' %}">Les plans d'actions </a> :
+                      <ul>
+                       {% for prop in listeProp %}
+                          <li><a href="{{prop.get_absulute_url }}">{{prop.titre}}</a></li>
+                      {% endfor %}
+                      </ul>
+                  </li>
+                  <li>La Démarche :
+                      <ul>
+                          <li><a href="{% url 'permagora:introduction' %}">Préambule et introduction</a> </li>
+                          <li><a href="{% url 'permagora:risques' %}">Le constat et les risques du territoire</a> </li>
+                          <li><a href="{% url 'permagora:preconisations' %}">Les préconisations générales de l'association</a> </li>
+                      </ul>
+                  </li>
+                  <li>Le collectif :
+                      <ul>
+                <li><a class="" href="{% url 'permagora:presentationPermagora' %}">Présentation</a></li>
+                <li><a class="" href="{% url 'permagora:organisationPermagora' %}">Organisation</a></li>
+                      </ul>
+                  </li>
+                  <li>Le site
+                      <ul>
+                <li><a class="" href="{% url 'permagora:faq' %}">FAQ</a></li>
+                <li><a class="" href="{% url 'permagora:cgu' %}">CGU</a></li>
+                      </ul>
+                  </li>
+              </ul>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+<div class="site-section">
+  <div class="container">
+        <div class="row mb-5">
+          <div class="cul-lg-12 text-center">
+            <a href="{%url 'permagora:organisationPermagora'%}" class="btn-custom" data-aos="fade-up" data-aos-delay="100"><span>Notre organisation </span></a>
+          </div>
+        </div>
+ </div>
+ </div>
+{% endblock %}
+
+

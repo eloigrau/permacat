@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'^summernote/', include('django_summernote.urls')),
     url(r'^captcha/', include('captcha.urls')),
     url(r'^$', views.bienvenue, name='bienvenue'),
+    url(r'^planSite/$', views.planSite, name='planSite'),
     url(r'^risques/$', views.risques, name='risques'),
     url(r'^introduction/$', views.introduction, name='introduction'),
     url(r'^preambule/$', views.preambule, name='preambule'),

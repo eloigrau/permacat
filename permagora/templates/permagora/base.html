@@ -83,6 +83,7 @@
             <li class="nav-item dropdown disabled ">
               <a class="nav-link dropdown-toggle" href="#" id="dropdown2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Le site</a>
               <div class="dropdown-menu disabled " aria-labelledby="dropdown10">
+                <a class="dropdown-item" href="{% url 'permagora:planSite' %}">Plan du Site</a>
                 <a class="dropdown-item" href="{% url 'permagora:faq' %}">FAQ</a>
                 <a class="dropdown-item" href="{% url 'permagora:cgu' %}">CGU</a>
                 {% if request.user.is_superuser %}
@@ -196,6 +197,10 @@
 
 
     <footer class="site-footer text-center ">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12">
+            <h2 class="footer-heading mb-4"><a href="{% url 'permagora:planSite' %}">Plan du site</a></h2>
         <small>
   {% block compteur %}
   {% endblock %}
@@ -203,6 +208,8 @@
           {%endif%}
             <script>document.write(new Date().getFullYear());</script>
         </small>
+          </div>
+        </div></div>
     </footer>
 {% comment %}
     <footer class="site-footer">
@@ -230,7 +237,7 @@
         </div>
         <div class="row">
 
-            <div class="col-md-12 text-center">
+            <div class="col-sm-12 text-center">
               <div class="border-top pt-5">
               <p>
               <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
