@@ -17,7 +17,7 @@
         <div class="row mb-5 justify-content-center">
           <div class="cul-sm-12 col-md-8">
               <ul>
-                  <li>Accueil</li>
+                  <li><a href="{% url 'permagora:bienvenue' %}">Accueil</a></li>
                   <li><a href="{% url 'permagora:propositions' %}">Les plans d'actions </a> :
                       <ul>
                        {% for prop in listeProp %}
@@ -25,7 +25,7 @@
                       {% endfor %}
                       </ul>
                   </li>
-                  <li>La Démarche :
+                  <li>La démarche :
                       <ul>
                           <li><a href="{% url 'permagora:introduction' %}">Préambule et introduction</a> </li>
                           <li><a href="{% url 'permagora:risques' %}">Le constat et les risques du territoire</a> </li>
