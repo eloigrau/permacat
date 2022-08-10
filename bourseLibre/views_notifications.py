@@ -263,7 +263,6 @@ def notificationsLues(request, temps=None):
     except:
         request.user.date_notifications = now()
 
-    request.user.afficherNbNotifications = True
     request.user.save()
 
     return redirect('notifications_news')
