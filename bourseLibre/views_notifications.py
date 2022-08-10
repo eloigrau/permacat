@@ -118,7 +118,10 @@ def getNbNewNotifications_test2(request):
 
 @login_required
 def getNbNewNotifications(request):
-    actions = getNotificationsParDate(request, dateMinimum=request.user.date_notifications)
+    if request.user.afficherNbNotifications:
+        actions = getNotificationsParDate(request, dateMinimum=request.user.date_notifications)
+    else:
+        actions = []
 
     return len(actions)
 
@@ -257,10 +260,11 @@ def notificationsLues(request, temps=None):
             request.user.date_notifications = temps
         else:
             request.user.date_notifications = now()
-        request.user.save()
     except:
         request.user.date_notifications = now()
-        request.user.save()
+
+    request.user.afficherNbNotifications = True
+    request.user.save()
 
     return redirect('notifications_news')
 

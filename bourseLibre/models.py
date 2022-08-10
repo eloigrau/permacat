@@ -269,6 +269,8 @@ class Profil(AbstractUser):
     adherent_jp = models.BooleanField(verbose_name="Je suis intéressé.e par les jardins partagés", default=False)
 
     date_notifications = models.DateTimeField(verbose_name="Date de validation des notifications",default=now)
+    afficherNbNotifications = models.BooleanField(verbose_name="Affichage du nombre de notifications dans le menu", default=False)
+
 
     def __str__(self):
         return self.username

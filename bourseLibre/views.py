@@ -638,7 +638,7 @@ class profil_modifier_user(UpdateView):
     model = Profil
     form_class = ProducteurChangeForm
     template_name_suffix = '_modifier'
-    fields = ['username', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'accepter_annuaire', 'inscrit_newsletter']
+    fields = ['username', 'first_name', 'last_name', 'email', 'site_web', 'description', 'competences', 'pseudo_june', 'accepter_annuaire', 'inscrit_newsletter', 'afficherNbNotifications']
 
     def get_object(self):
         return Profil.objects.get(id=self.request.user.id)
