@@ -74,7 +74,7 @@ class ParticipantReunion(models.Model):
         dist = 0
         for r in self.reunion_set.all():
             dist += float(self.getDistance_route(r))
-        return dist
+        return round(dist, 1)
 
 
 class Reunion(models.Model):
