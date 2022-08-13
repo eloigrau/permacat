@@ -50,9 +50,9 @@ def getRecapitulatif_km(request, asso='Public'):
     if not isinstance(asso, Asso):
         raise PermissionDenied
     if asso != 'Public':
-        reunions = Reunion.objects.filter(estArchive=False).order_by('categorie', 'start_time')
+        reunions = Reunion.objects.filter(estArchive=False).order_by('start_time','categorie', )
     else:
-        reunions = Reunion.objects.filter(estArchive=False, asso=asso).order_by('categorie', 'start_time')
+        reunions = Reunion.objects.filter(estArchive=False, asso=asso).order_by('start_time','categorie',)
 
     participants = ParticipantReunion.objects.all()
     entete = ["nom", ] + ["<a href="+r.get_absolute_url()+">" +r.titre+"</a>"  + " (" + str(r.start_time) + ")" for r in reunions] + ["km parcourus",]
