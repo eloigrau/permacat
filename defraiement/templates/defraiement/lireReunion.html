@@ -105,7 +105,9 @@
                 <tr>
                 <th>Participant (conducteur)</th>
                 <th>distance</th>
-                <th>GMaps</th>
+
+        {% if reuest.user.is_superuser %}<th>GMaps</th>
+        {% endif %}
                 <th>Supprimer</th>
                 </tr>
             </thead>
@@ -120,9 +122,13 @@
 					<td class="textepetit">
 						<a href="{{part.2}}" target='_blank'>{{part.1}} km</a>
 					</td>
+
+        {% if reuest.user.is_superuser %}
                     <td>
                          <a href="{{part.3}}" target='_blank'> lien </a>
                     </td>
+
+        {% endif %}
                     <td>
                         <a class="btn btn-sm btn-danger textleft" href="{% url 'defraiement:supprimerParticipantReunion' slug_reunion=reunion.slug id_participantReunion=part.0.id%}"><i class="fa fa-times"></i> </a>
                     </td>

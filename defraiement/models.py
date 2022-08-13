@@ -23,7 +23,7 @@ class ParticipantReunion(models.Model):
     distance = models.TextField(blank=True, null=True, verbose_name="Distance calculée")
 
     def __str__(self):
-        return self.nom + " (" + self.get_adresse_str() + ")"
+        return self.nom
 
     def get_absolute_url(self):
         return reverse('defraiement:lireParticipant', kwargs={'id': self.id})

@@ -37,6 +37,7 @@
               <h2> {{ part.nom }}</h2>
         </div>
     </div>
+        {% if reuest.user.is_superuser %}
  	<div class="row">
     <div class="col-md-12 textcenter">
         <p>
@@ -44,6 +45,7 @@
 		</p>
     </div>
     </div>
+        {% endif %}
 <hr>
 
 

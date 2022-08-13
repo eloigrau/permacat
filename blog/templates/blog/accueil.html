@@ -121,7 +121,7 @@
         {% for asso_nom, asso_id in asso_list %}
             <li class="nav-item  ">
                   <a  href="{% url 'blog:index_asso' asso=asso_id%}#ref-titre">
-                      <button type="button" class="btn {% if asso_id == 'public' %}btn-secondary {% else %}btn-info {% endif %}btn-menu-forum btn-block" >
+                      <button type="button" class="btn btn-info btn-menu-forum btn-block" >
                           <h6>{{asso_nom}}</h6>
                    </button>
                 </a>
