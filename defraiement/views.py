@@ -379,11 +379,9 @@ class ListeParticipants(ListView):
     template_name = "reunions/participant_list.html"
     paginate_by = 30
 
-    #def get_queryset(self):
-    #    params = dict(self.request.GET.items())
-    #    qs = ParticipantReunion.objects.all()
-
-    #    return qs
+    def get_queryset(self):
+        qs = ParticipantReunion.objects.all().order_by("nom")
+        return qs
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
