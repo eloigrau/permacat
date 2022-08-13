@@ -106,7 +106,7 @@
                 <th>Participant (conducteur)</th>
                 <th>distance</th>
 
-        {% if reuest.user.is_superuser %}<th>GMaps</th>
+        {% if request.user.is_superuser %}<th>GMaps</th>
         {% endif %}
                 <th>Supprimer</th>
                 </tr>
@@ -123,7 +123,7 @@
 						<a href="{{part.2}}" target='_blank'>{{part.1}} km</a>
 					</td>
 
-        {% if reuest.user.is_superuser %}
+        {% if request.user.is_superuser %}
                     <td>
                          <a href="{{part.3}}" target='_blank'> lien </a>
                     </td>
