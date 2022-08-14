@@ -143,20 +143,20 @@ def ajouterReunion(request):
 def modifierParticipantReunion(request, id):
     part = ParticipantReunion.objects.get(id=id)
     form = ParticipantReunionForm(request.POST or None, part.nom)
-    #form_adresse = AdresseForm(request.POST or None, instance=part.adresse)
-    form_adresse2 = AdresseForm3(request.POST or None, instance=part.adresse)
+    form_adresse = AdresseForm(request.POST or None, instance=part.adresse)
+    #form_adresse2 = AdresseForm3(request.POST or None, instance=part.adresse)
 
-    if form.is_valid() and form_adresse2.is_valid():#or form_adresse.is_valid()
+    if form.is_valid() and form_adresse.is_valid():#or form_adresse.is_valid()
         #if 'adressebtn' in request.POST:
         #    adresse = form_adresse.save()
         #else:
-        adresse = form_adresse2.save()
+        adresse = form_adresse.save()
         part.nom = form.cleaned_data['nom']
         part.adresse = adresse
         part.save()
         return redirect(part.get_absolute_url())
 
-    return render(request, 'defraiement/modifierParticipantReunion.html', {'part':part, 'form':form,'form_adresse':form_adresse, 'form_adresse2':form_adresse2 })
+    return render(request, 'defraiement/modifierParticipantReunion.html', {'part':part, 'form':form,'form_adresse':form_adresse})
 
 # @login_required
 class ModifierParticipant(UpdateView):
