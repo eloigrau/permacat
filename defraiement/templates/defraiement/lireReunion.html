@@ -120,7 +120,7 @@
 
 					</td>
 					<td class="textepetit">
-						<a href="{{part.2}}" target='_blank'>{{part.1}} km</a>
+						 {% if request.user.is_superuser %}<a href="{{part.2}}" target='_blank'>{% endif%}{{part.1}} km{% if request.user.is_superuser %}</a>{% endif%}
 					</td>
 
         {% if request.user.is_superuser %}
