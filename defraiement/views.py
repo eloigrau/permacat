@@ -266,7 +266,7 @@ def ajouterParticipantReunion(request, slug_reunion):
     #form_adresse = AdresseForm(request.POST or None)
     form_adresse2 = AdresseForm3(request.POST or None)
 
-    if form_choice.is_valid() or form.is_valid() and form_adresse2.is_valid():#(form_adresse.is_valid() or form_adresse2.is_valid()):
+    if form_choice.is_valid() or (form.is_valid() and form_adresse2.is_valid()):#(form_adresse.is_valid() or form_adresse2.is_valid()):
         if form_choice.is_valid():
             if form_choice.cleaned_data and form_choice.cleaned_data["participant"]:
                 reunion.participants.add(form_choice.cleaned_data["participant"])

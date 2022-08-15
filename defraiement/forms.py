@@ -65,7 +65,7 @@ class ReunionChangeForm(forms.ModelForm):
         }
 
 class ParticipantReunionChoiceForm(forms.Form):
-    participant = forms.ModelChoiceField(queryset=ParticipantReunion.objects.all(), required=True,
+    participant = forms.ModelChoiceField(queryset=ParticipantReunion.objects.all().order_by('nom'), required=True,
                                   label="Participant déjà créé", )
 
 class PrixMaxForm(forms.Form):
