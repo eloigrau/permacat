@@ -66,6 +66,16 @@ font : normal;
 .scrolled-up{
     transform:translateY(0); transition: all 0.3s ease-in-out;
 }
+
+@media screen and (max-width: 800px) {
+    .scrolled-down{
+        transform:None;
+    }
+    .scrolled-up{
+        transform:None;
+    }
+}
+
  .btn-faq{
  white-space: normal !important;
  color:black;

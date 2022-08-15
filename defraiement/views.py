@@ -100,9 +100,9 @@ def recapitulatif(request, asso, type_reunion="999"):
         tarifKilometrique = form.cleaned_data["tariasso_abreviationfKilometrique"]
         entete, lignes = getRecapitulatif_euros(request, reunions, prixMax, tarifKilometrique)
 
-        return render(request, 'defraiement/recapitulatif.html', {"form": form, "entete":entete, "lignes":lignes, "unite":"euros", "asso_list":asso_list, "type_list":type_list, "asso_courante":asso, "type_courant":type_reunion}, )
+        return render(request, 'defraiement/recapitulatif.html', {"form": form, "entete":entete, "lignes":lignes, "unite":"euros", "asso_list":asso_list, "type_list":type_list, "asso_courante":asso.abreviation, "type_courant":type_reunion}, )
 
-    return render(request, 'defraiement/recapitulatif.html', {"form": form, "entete":entete, "lignes":lignes, "unite":"km", "asso_list":asso_list, "type_list":type_list, "asso_courante":asso, "type_courant":type_reunion},)
+    return render(request, 'defraiement/recapitulatif.html', {"form": form, "entete":entete, "lignes":lignes, "unite":"km", "asso_list":asso_list, "type_list":type_list, "asso_courante":asso.abreviation, "type_courant":type_reunion},)
 
 def export_recapitulatif(request, asso, type_reunion="999"):
     asso = testIsMembreAsso(request, asso)

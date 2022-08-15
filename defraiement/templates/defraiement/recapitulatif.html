@@ -34,12 +34,20 @@
             </ul>
         </div>
     {% endcomment %}
+<div class="row justify-content-center">
         <div class="collapse navbar-collapse" id="navbarType">
             <ul class="nav navbar-nav justify-content-center ">
+                <li class="nav-item  ">
+                      <a  href="{% url 'defraiement:recapitulatif' asso=asso_courante type_reunion='999' %}">
+                          <button type="button" class="btn  btn-block {%if type_courant == '999' %} btn-warning{% else %}btn-info{% endif %}" >
+                              <h6>Tout</h6>
+                       </button>
+                    </a>
+                </li>
             {% for type_id, type_nom  in type_list %}
                 <li class="nav-item  ">
                       <a  href="{% url 'defraiement:recapitulatif' asso=asso_courante type_reunion=type_id %}">
-                          <button type="button" class="btn  btn-block btn-info" >
+                          <button type="button" class="btn  btn-block {%if type_courant == type_id %} btn-warning{% else %}btn-info{% endif %}" >
                               <h6>{{type_nom}}</h6>
                        </button>
                     </a>
@@ -48,6 +56,7 @@
             </ul>
         </div>
 </nav>
+</div>
 <div class="row contenu reunion">
 <div class="col justify-content-center">
 <table class="table table-condensed tableprofils table-striped sortable">
