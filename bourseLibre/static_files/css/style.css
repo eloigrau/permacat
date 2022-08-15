@@ -4,7 +4,8 @@ body {
     margin: auto;
     width: 99%;
     background-color:#2B2A33;
-    padding-top: 5px;"
+    padding-top: 5px;
+    color:black;
     /*padding: 10px;*/
     /*padding-top: 55px;*/
     /*font-family: Georgia, serif;*/
@@ -65,6 +66,17 @@ font : normal;
 .scrolled-up{
     transform:translateY(0); transition: all 0.3s ease-in-out;
 }
+
+@media screen and (max-width: 600px) {
+    .scrolled-down{
+        transform:None;
+    }
+    .scrolled-up{
+        transform:None;
+    }
+}
+
+
  .btn-faq{
  white-space: normal !important;
  color:black;

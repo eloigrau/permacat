@@ -5,7 +5,7 @@ from bourseLibre.models import Profil
 from django.template.defaultfilters import slugify
 from django.utils import timezone
 
-DEGTORAD=3.141592654/180
+DEGTORAD = 3.141592654/180
 
 LATITUDE_DEFAUT = '42.6976'
 LONGITUDE_DEFAUT = '2.8954'
@@ -55,7 +55,7 @@ class PropositionCharte(models.Model):
     contexte = models.TextField(null=True, blank=True, verbose_name="Contexte de la problématique (enjeux locaux)")
     besoins = models.TextField(null=True, blank=True, verbose_name="Besoins et limites pour la mise en place des solutions")
     ideal = models.TextField(null=True, blank=True, verbose_name="Ce qu'il faudrait faire idéalement")
-    existant = models.TextField(null=True, blank=True, verbose_name="Existant (ce qu'il se fait déjà sur le territoir : association, projet, ...)")
+    existant = models.TextField(null=True, blank=True, verbose_name="Existant (ce qui se fait déjà sur le territoire : association, projet, ...)")
     actions = models.TextField(null=True, blank=True, verbose_name="Actions effectuées ou envisagées à court terme")
 
     compteur_plus = models.IntegerField(default=0)
