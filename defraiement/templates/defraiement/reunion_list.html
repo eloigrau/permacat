@@ -68,7 +68,7 @@
         <a  href="{% url 'defraiement:lireReunion' slug=reunion.slug %}" class="boutonAtelier" >
             <div></div>
             <div style="background-color:{{reunion.get_couleur}};
-    font-variant: small-caps;" > ({{reunion.get_logo_nomgroupe_html|safe}} - {{ reunion.get_categorie_display }}) {{ reunion.titre }}  </div>
+    font-variant: small-caps;" > {{reunion.get_logo_nomgroupe_html|safe}} - {{ reunion.get_categorie_display }} - {{ reunion.titre }}  </div>
             {% if reunion.start_time %}
         <p class="textepetit">le {{ reunion.start_time|date:"DATE_FORMAT" }}</p>
         {% endif %}

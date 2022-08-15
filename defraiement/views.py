@@ -97,7 +97,7 @@ def recapitulatif(request, asso, type_reunion="999"):
     form = PrixMaxForm(request.POST or None)
     if form.is_valid():
         prixMax = form.cleaned_data["prixMax"]
-        tarifKilometrique = form.cleaned_data["tariasso_abreviationfKilometrique"]
+        tarifKilometrique = form.cleaned_data["tarifKilometrique"]
         entete, lignes = getRecapitulatif_euros(request, reunions, prixMax, tarifKilometrique)
 
         return render(request, 'defraiement/recapitulatif.html', {"form": form, "entete":entete, "lignes":lignes, "unite":"euros", "asso_list":asso_list, "type_list":type_list, "asso_courante":asso.abreviation, "type_courant":type_reunion}, )

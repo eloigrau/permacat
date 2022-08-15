@@ -132,9 +132,9 @@ class Reunion(models.Model):
 
     @property
     def get_logo_nomgroupe_html(self):
-        return self.get_logo_nomgroupe_html_taille(25)
+        return self.get_logo_nomgroupe_html_taille(20)
 
-    def get_logo_nomgroupe_html_taille(self, taille=25):
+    def get_logo_nomgroupe_html_taille(self, taille=20):
         return "<img src='/static/" + self.get_logo_nomgroupe + "' height ='"+str(taille)+"px'/>"
 
 class Distance_ParticipantReunion(models.Model):
