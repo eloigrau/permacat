@@ -80,27 +80,39 @@ def getRecapitulatif_euros(request, reunions, prixMax, tarifKilometrique):
     return entete, lignes
 
 @login_required
-def recapitulatif(request, asso, type_reunion=999):
+def recapitulatif(request, asso, type_reunion="999"):
     asso = testIsMembreAsso(request, asso)
     if not isinstance(asso, Asso):
         raise PermissionDenied
-    if type_reunion != 999:
+    if type_reunion != "999":
         reunions = Reunion.objects.filter(estArchive=False, asso=asso, categorie=type_reunion).order_by('start_time','categorie',)
-    else :
+    else:
         reunions = Reunion.objects.filter(estArchive=False, asso=asso, ).order_by('start_time','categorie',)
+
+    entete, lignes = getRecapitulatif_km(request, reunions)
+    asso_list = [(x.nom, x.abreviation) for x in Asso.objects.all().exclude(abreviation="jp").order_by("id")
+                            if request.user.est_autorise(x.abreviation)]
+    type_list = Choix.type_reunion
 
     form = PrixMaxForm(request.POST or None)
     if form.is_valid():
         prixMax = form.cleaned_data["prixMax"]
-        tarifKilometrique = form.cleaned_data["tarifKilometrique"]
+        tarifKilometrique = form.cleaned_data["tariasso_abreviationfKilometrique"]
         entete, lignes = getRecapitulatif_euros(request, reunions, prixMax, tarifKilometrique)
 
-        return render(request, 'defraiement/recapitulatif.html', {"form": form, "entete":entete, "lignes":lignes, "unite":"euros"}, )
+        return render(request, 'defraiement/recapitulatif.html', {"form": form, "entete":entete, "lignes":lignes, "unite":"euros", "asso_list":asso_list, "type_list":type_list, "asso_courante":asso, "type_courant":type_reunion}, )
 
-    entete, lignes = getRecapitulatif_km(request, reunions)
-    return render(request, 'defraiement/recapitulatif.html', {"form": form, "entete":entete, "lignes":lignes, "unite":"km"},)
+    return render(request, 'defraiement/recapitulatif.html', {"form": form, "entete":entete, "lignes":lignes, "unite":"km", "asso_list":asso_list, "type_list":type_list, "asso_courante":asso, "type_courant":type_reunion},)
 
-def export_recapitulatif(request):
+def export_recapitulatif(request, asso, type_reunion="999"):
+    asso = testIsMembreAsso(request, asso)
+    if not isinstance(asso, Asso):
+        raise PermissionDenied
+    if type_reunion != "999":
+        reunions = Reunion.objects.filter(estArchive=False, asso=asso, categorie=type_reunion).order_by('start_time','categorie',)
+    else :
+        reunions = Reunion.objects.filter(estArchive=False, asso=asso, ).order_by('start_time','categorie',)
+
     # Create the HttpResponse object with the appropriate CSV header.
     response = HttpResponse(
         content_type='text/csv',
@@ -108,11 +120,11 @@ def export_recapitulatif(request):
     )
     writer = csv.writer(response)
 
-    entete, lignes = getRecapitulatif_euros(request)
+    entete, lignes = getRecapitulatif_euros(request, reunions)
     writer.writerow(entete)
     for l in lignes:
         writer.writerow(l)
-    entete, lignes = getRecapitulatif_km(request)
+    entete, lignes = getRecapitulatif_km(request, reunions)
     writer.writerow(entete)
     for l in lignes:
         writer.writerow(l)
