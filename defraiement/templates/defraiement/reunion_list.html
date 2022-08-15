@@ -68,7 +68,7 @@
         <a  href="{% url 'defraiement:lireReunion' slug=reunion.slug %}" class="boutonAtelier" >
             <div></div>
             <div style="background-color:{{reunion.get_couleur}};
-    font-variant: small-caps;" > ({{ reunion.get_categorie_display }}) {{ reunion.titre }}  </div>
+    font-variant: small-caps;" > ({{reunion.get_logo_nomgroupe_html}} - {{ reunion.get_categorie_display }}) {{ reunion.titre }}  </div>
             {% if reunion.start_time %}
         <p class="textepetit">le {{ reunion.start_time|date:"DATE_FORMAT" }}</p>
         {% endif %}
@@ -97,7 +97,7 @@
    <div class="row justify-content-center ">
     <div class="col-sm-12 col-ms-10 col-lg-8 textcenter " >
         <a  href="{% url 'defraiement:lireReunion_id' id=reunion.id %}" class="boutonAtelier" > <div style="background-color:{{reunion.reunion.get_couleur}};
-    font-variant: small-caps;" >{{ reunion.titre }}  </div>
+    font-variant: small-caps;" >{{reunion.get_logo_nomgroupe_html}} {{ reunion.titre }}  </div>
             {% if reunion.start_time %}
         <p class="textepetit">le {{ reunion.start_time|date:"DATE_FORMAT" }}</p>
         {% endif %}</a>

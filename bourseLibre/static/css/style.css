@@ -67,7 +67,7 @@ font : normal;
     transform:translateY(0); transition: all 0.3s ease-in-out;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 600px) {
     .scrolled-down{
         transform:None;
     }

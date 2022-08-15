@@ -9,6 +9,7 @@ from bourseLibre.models import Profil, Suivis, Asso
 import math
 from bourseLibre.constantes import DEGTORAD
 import requests
+from blog.models import Choix as Choix_global
 
 # Create your models here.
 class Choix:
@@ -125,6 +126,16 @@ class Reunion(models.Model):
         for p in self.participants.all():
             p.getDistance_route(self, recalculer=True)
 
+    @property
+    def get_logo_nomgroupe(self):
+        return Choix_global.get_logo_nomgroupe(self.asso.abreviation)
+
+    @property
+    def get_logo_nomgroupe_html(self):
+        return self.get_logo_nomgroupe_html_taille(25)
+
+    def get_logo_nomgroupe_html_taille(self, taille=25):
+        return "<img src='/static/" + self.get_logo_nomgroupe + "' height ='"+str(taille)+"px'/>"
 
 class Distance_ParticipantReunion(models.Model):
     reunion = models.ForeignKey(Reunion, on_delete=models.CASCADE, null=True, blank=True, )
