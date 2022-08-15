@@ -77,7 +77,7 @@
 {%include 'pagination.html' %}
 
 <p class="textcenter">
-<a href="{% url 'defraiement:recapitulatif' %}">
+<a href="{% url 'defraiement:recapitulatif'  asso='request.get.asso' type_reunion='None' %}">
 <button type="button" class="btn btn-success" >
         <i class="fa fa-arrow-right"></i> Récapitulatif
     </button>

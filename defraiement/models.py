@@ -13,7 +13,6 @@ import requests
 # Create your models here.
 class Choix:
     statut_projet = ('prop','Proposition de projet'), ("AGO","Fiche projet soumise à l'AGO"), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
-
     type_reunion = ('0',"Réunion équipe"), ('1','Troc de Graine'), ('2','Atelier'), ('3','Rencontre'), ('4','Réunion FestiGraines'), ('5','Autre')
 
 

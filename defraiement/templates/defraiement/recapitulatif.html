@@ -29,7 +29,7 @@
 <hr>
 {% if unite == euros %}
 <p class="textcenter">
-    <a href="{% url 'defraiement:recapitulatif' %}" >
+    <a href="{% url 'defraiement:recapitulatif' asso='request.get.asso' type_reunion='None' %}" >
         <button type="button" class="btn btn-sm btn-primary">
          Kilométrages
         </button>

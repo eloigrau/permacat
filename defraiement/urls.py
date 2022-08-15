@@ -46,8 +46,8 @@ urlpatterns = [
     path(r'ajouterParticipantReunion/<str:slug_reunion>', views.ajouterParticipantReunion, name='ajouterParticipantReunion'),
     path(r'supprimerParticipantReunion/<str:slug_reunion>/<int:id_participantReunion>', login_required(views.SupprimerParticipantReunion.as_view(), login_url='/auth/login/'), name='supprimerParticipantReunion'),
 
-    url(r'recapitulatif/$', views.recapitulatif, name='recapitulatif'),
-    url(r'export_recapitulatif/$', views.export_recapitulatif, name='export_recapitulatif'),
+    path(r'recapitulatif/<str:asso>/<int:type_reunion>/', views.recapitulatif, name='recapitulatif'),
+    path(r'export_recapitulatif/<str:asso>/<int:type_reunion>/', views.export_recapitulatif, name='export_recapitulatif'),
 
     url(r'voirTousLieux/$', views.voirLieux, name='voirTousLieux'),
 ]

@@ -12,7 +12,7 @@ from django.utils.timezone import now
 from .forms import ReunionForm, ReunionChangeForm, ParticipantReunionForm, PrixMaxForm, ParticipantReunionChoiceForm
 from .models import Reunion, ParticipantReunion, Choix
 from bourseLibre.forms import AdresseForm, AdresseForm3
-
+import itertools
 import csv
 from django.http import HttpResponse
 
@@ -45,15 +45,7 @@ def lireParticipant(request, id):
 
     return render(request, 'defraiement/lireParticipant.html', context,)
 
-def getRecapitulatif_km(request, asso='Public'):
-    asso = testIsMembreAsso(request, asso)
-    if not isinstance(asso, Asso):
-        raise PermissionDenied
-    if asso != 'Public':
-        reunions = Reunion.objects.filter(estArchive=False).order_by('start_time','categorie', )
-    else:
-        reunions = Reunion.objects.filter(estArchive=False, asso=asso).order_by('start_time','categorie',)
-
+def getRecapitulatif_km(request, reunions):
     participants = ParticipantReunion.objects.all()
     entete = ["nom", ] + ["<a href="+r.get_absolute_url()+">" +r.titre+"</a>"  + " (" + str(r.start_time) + ")" for r in reunions] + ["km parcourus",]
     lignes = []
@@ -65,15 +57,7 @@ def getRecapitulatif_km(request, asso='Public'):
     lignes.append(["Total", ] + distancesTotales + [round(sum(distancesTotales), 2), ])
     return entete, lignes
 
-def getRecapitulatif_euros(request, prixMax, tarifKilometrique, asso='Public'):
-    asso = testIsMembreAsso(request, asso)
-    if not isinstance(asso, Asso):
-        raise PermissionDenied
-    if asso != 'Public':
-        reunions = Reunion.objects.filter(estArchive=False).order_by('start_time', 'categorie', )
-    else:
-        reunions = Reunion.objects.filter(estArchive=False, asso=asso).order_by( 'start_time', 'categorie',)
-
+def getRecapitulatif_euros(request, reunions, prixMax, tarifKilometrique):
     participants = ParticipantReunion.objects.all()
     entete = ["nom", ] + ["<a href="+r.get_absolute_url()+">" +r.titre+"</a>" + " (" + str(r.start_time) +")" for r in reunions] + ["total Euros",]
     lignes = []
@@ -96,16 +80,24 @@ def getRecapitulatif_euros(request, prixMax, tarifKilometrique, asso='Public'):
     return entete, lignes
 
 @login_required
-def recapitulatif(request):
+def recapitulatif(request, asso, type_reunion=999):
+    asso = testIsMembreAsso(request, asso)
+    if not isinstance(asso, Asso):
+        raise PermissionDenied
+    if type_reunion != 999:
+        reunions = Reunion.objects.filter(estArchive=False, asso=asso, categorie=type_reunion).order_by('start_time','categorie',)
+    else :
+        reunions = Reunion.objects.filter(estArchive=False, asso=asso, ).order_by('start_time','categorie',)
+
     form = PrixMaxForm(request.POST or None)
     if form.is_valid():
         prixMax = form.cleaned_data["prixMax"]
         tarifKilometrique = form.cleaned_data["tarifKilometrique"]
-        entete, lignes = getRecapitulatif_euros(request, prixMax, tarifKilometrique)
+        entete, lignes = getRecapitulatif_euros(request, reunions, prixMax, tarifKilometrique)
 
         return render(request, 'defraiement/recapitulatif.html', {"form": form, "entete":entete, "lignes":lignes, "unite":"euros"}, )
 
-    entete, lignes = getRecapitulatif_km(request)
+    entete, lignes = getRecapitulatif_km(request, reunions)
     return render(request, 'defraiement/recapitulatif.html', {"form": form, "entete":entete, "lignes":lignes, "unite":"km"},)
 
 def export_recapitulatif(request):
