@@ -317,7 +317,7 @@ class SupprimerParticipantReunion(DeleteView):
     def delete(self, request, *args, **kwargs):
         parti = self.get_object()
         Reunion.objects.get(slug=self.kwargs['slug_reunion']).participants.remove(parti)
-        return self.get_success_url()
+        return redirect(self.get_success_url())
 
 
     def get_success_url(self):
