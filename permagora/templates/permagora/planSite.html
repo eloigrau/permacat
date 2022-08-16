@@ -21,7 +21,7 @@
                   <li><a href="{% url 'permagora:propositions' %}">Les plans d'actions </a> :
                       <ul>
                        {% for prop in listeProp %}
-                          <li><a href="{{prop.get_absulute_url }}">{{prop.titre}}</a></li>
+                          <li><a href="{{prop.get_absplute_url }}">{{prop.titre}}</a></li>
                       {% endfor %}
                       </ul>
                   </li>
@@ -40,8 +40,9 @@
                   </li>
                   <li>Le site
                       <ul>
-                <li><a class="" href="{% url 'permagora:faq' %}">FAQ</a></li>
-                <li><a class="" href="{% url 'permagora:cgu' %}">CGU</a></li>
+                <li><a class="" href="{% url 'permagora:voirNotifications' %}">Notifications</a></li>
+                <li><a class="" href="{% url 'permagora:faq' %}">Foire Aux Questions</a></li>
+                <li><a class="" href="{% url 'permagora:cgu' %}">Conditions Générales d'Utilisation</a></li>
                       </ul>
                   </li>
               </ul>
