@@ -206,6 +206,13 @@ urlpatterns += [
     url(r'^robots\.txt$', TemplateView.as_view(template_name="bourseLibre/robots.txt", content_type='text/plain')),
 ]
 
+from django.views.generic.base import RedirectView
+urlpatterns += [
+    url(r'^favicon\.ico$', RedirectView.as_view(url='/static/favicon.ico', permanent=True)),
+    url(r'^favicon\.ico$', RedirectView.as_view(url='/static/favicon.ico', permanent=True)),
+    url(r'^browserconfig\.xml$', RedirectView.as_view(url='/static/browserconfig.xml', permanent=True)),
+    url(r'^android-chrome-256x256\.png$', RedirectView.as_view(url='/static/android-chrome-256x256.png', permanent=True)),
+]
 from rest_framework import routers
 router = routers.DefaultRouter()
 router.register(r'annonces', views_ajax.AnnoncesViewSet)
