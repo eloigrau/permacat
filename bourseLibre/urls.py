@@ -208,8 +208,8 @@ urlpatterns += [
 
 from django.views.generic.base import RedirectView
 urlpatterns += [
-    url(r'^favicon\.ico$', RedirectView.as_view(url='/favicon.ico', permanent=True)),
-    url(r'^browserconfig\.xml$', RedirectView.as_view(url='/browserconfig.xml', permanent=True)),
+    url(r'^favicon\.ico$', RedirectView.as_view(url='favicon.ico', permanent=True)),
+    url(r'^browserconfig\.xml$', RedirectView.as_view(url='browserconfig.xml', permanent=True)),
     url(r'^android-chrome-256x256\.png$', RedirectView.as_view(url='/android-chrome-256x256.png', permanent=True)),
 ]
 from rest_framework import routers

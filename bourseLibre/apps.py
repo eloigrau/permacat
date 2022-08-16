@@ -13,6 +13,7 @@ class BourseLibreConfig(AppConfig):
         from vote.models import Suffrage
         from photologue.models import Document
         from photologue.models import Album
+        from permagora.models import Commentaire_charte, PropositionCharte, Message_permagora
         registry.register(self.get_model('Profil'))
         registry.register(self.get_model('MessageGeneral'))
         registry.register(self.get_model('Produit'))
@@ -38,3 +39,6 @@ class BourseLibreConfig(AppConfig):
         registry.register(Group)
         registry.register(Suffrage)
         registry.register(Album)
+        registry.register(Commentaire_charte)
+        registry.register(PropositionCharte)
+        registry.register(Message_permagora)

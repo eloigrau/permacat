@@ -63,6 +63,7 @@ urlpatterns = [
     url(r'^ajouterVote_plus/(?P<slug>[-\w]+)$', views.ajouterVote_plus, name='ajouterVote_plus', ),
     url(r'^ajouterVote_moins/(?P<slug>[-\w]+)$', views.ajouterVote_moins, name='ajouterVote_moins', ),
     path(r'ajouterProposition/', views.ajouterProposition, name='ajouterProposition'),
+    path(r'voirNotifications/', views.voirNotifications, name='voirNotifications'),
 
     url(r'^modifierProposition/(?P<slug>[-\w]+)$',
         login_required(views.ModifierProposition.as_view(), login_url='/auth/login/'), name='modifierProposition'),

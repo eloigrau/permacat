@@ -33,6 +33,26 @@ class Message_permagora(models.Model):
     def __str__(self):
         return "(" + str(self.id) + ") " + str(self.auteur) + " " + str(self.date_creation)
 
+    def get_absolute_url(self): #('0','intro'), ("1","constat"), ('2','preconisations'), ('3','charte'), ('4','liens'), ('5','accueil'), ('6','présentation'), ('7','organisation'),
+        if self.type_article == '0':
+            return reverse('permagora:introduction')
+        elif self.type_article == '1':
+            return reverse('permagora:risques')
+        elif self.type_article == '2':
+            return reverse('permagora:preconisations')
+        elif self.type_article == '3':
+            return reverse('permagora:propositions')
+        elif self.type_article == '4':
+            return reverse('permagora:liens')
+        elif self.type_article == '5':
+            return reverse('permagora:bienvenue')
+        elif self.type_article == '6':
+            return reverse('permagora:presentationPermagora')
+        elif self.type_article == '7':
+            return reverse('permagora:organisationPermagora')
+        else:
+            return reverse('permagora:bienvenue')
+
 
 class PoleCharte(models.Model):
     titre = models.TextField(null=False, blank=False)

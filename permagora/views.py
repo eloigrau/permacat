@@ -13,6 +13,10 @@ from datetime import datetime, timedelta
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.db.models import F
 from django.http import HttpResponse
+from actstream import action
+from actstream.models import Action
+from django.db.models import Q
+from pytz import UTC as utc
 
 CharField.register_lookup(Lower, "lower")
 
@@ -47,6 +51,9 @@ def bienvenue(request):
         comment.auteur = request.user
         comment.type_article="5"
         comment.save()
+
+        action.send(request.user, verb='permagora_commentaire', action_object=comment, url=comment.get_absolute_url() + "#idConversation",
+                     description="a commenté la page de bienvenue de l'Agora")
         return redirect(request.path)
 
     return render(request, 'permagora/bienvenue.html', { 'form': form, 'commentaires': commentaires})
@@ -166,6 +173,8 @@ def liens(request):
         comment.auteur = request.user
         comment.type_article="4"
         comment.save()
+        action.send(request.user, verb='permagora_commentaire', action_object=comment, url=comment.get_absolute_url() + "#idConversation",
+                     description="a commenté la page de liens de l'Agora")
         return redirect(request.path)
 
     return render(request, 'permagora/liens.html', {'liens':liens, 'form': form, 'commentaires': commentaires})
@@ -181,6 +190,8 @@ def preambule(request):
         comment.auteur = request.user
         comment.type_article = "6"
         comment.save()
+        action.send(request.user, verb='permagora_commentaire', action_object=comment, url=comment.get_absolute_url() + "#idConversation",
+                     description="a commenté la page de préambule de l'Agora")
         return redirect(request.path)
     return render(request, '0_preambule.html', {'form': form, 'commentaires': commentaires}, )
 
@@ -194,6 +205,8 @@ def introduction(request):
         comment.auteur = request.user
         comment.type_article="0"
         comment.save()
+        action.send(request.user, verb='permagora_commentaire', action_object=comment, url=comment.get_absolute_url() + "#idConversation",
+                     description="a commenté la page d'introduction de l'Agora")
         return redirect(request.path)
 
     return render(request, '1_introduction.html', {'form': form, 'commentaires': commentaires}, )
@@ -220,6 +233,8 @@ def risques(request):
         comment.auteur = request.user
         comment.type_article = "1"
         comment.save()
+        action.send(request.user, verb='permagora_commentaire', action_object=comment, url=comment.get_absolute_url() + "#idConversation",
+                     description="a commenté la page du constat de l'Agora")
         return redirect(request.path)
 
     return render(request, '2_risques.html', {"dico_risques":dico_risques, 'form': form, 'commentaires': commentaires})
@@ -249,6 +264,8 @@ def preconisations(request):
         comment.auteur = request.user
         comment.type_article = "2"
         comment.save()
+        action.send(request.user, verb='permagora_commentaire', action_object=comment, url=comment.get_absolute_url() + "#idConversation",
+                     description="a commenté la page des préconisations de l'Agora")
         return redirect(request.path)
 
     return render(request, '3_preconisations.html', {"dico_risques":dico_risques, 'form': form, 'commentaires': commentaires})
@@ -323,6 +340,8 @@ def propositions(request):
         comment.auteur = request.user
         comment.type_article="3"
         comment.save()
+        action.send(request.user, verb='permagora_commentaire', action_object=comment, url=comment.get_absolute_url() + "#idConversation",
+                     description="a commenté la page des propositions de l'Agora")
         return redirect(request.path)
     dico_charte = ((pole, (prop for prop in PropositionCharte.objects.filter(pole=pole).order_by("id"))) for pole in PoleCharte.objects.all() if PropositionCharte.objects.filter(pole=pole))
     return render(request, 'permagora/propositions.html', {"dico_charte":dico_charte, 'form': form, 'commentaires': commentaires})
@@ -336,8 +355,10 @@ def organisationPermagora(request, ):
             return redirect('login')
         comment = form.save(commit=False)
         comment.auteur = request.user
-        comment.type_article="7"
+        comment.type_article = "7"
         comment.save()
+        action.send(request.user, verb='permagora_commentaire', action_object=comment, url=comment.get_absolute_url() + "#idConversation",
+                     description="a commenté la page de l'organisation de l'Agora")
     return render(request, 'permagora/organisationPermagora.html', {'form': form, 'commentaires': commentaires})
 
 def presentationPermagora(request, ):
@@ -350,6 +371,8 @@ def presentationPermagora(request, ):
         comment.auteur = request.user
         comment.type_article="6"
         comment.save()
+        action.send(request.user, verb='permagora_commentaire', action_object=comment, url=comment.get_absolute_url() + "#idConversation",
+                     description="a commenté la page de la présentation de PermAgora")
 
     return render(request, 'permagora/presentationPermagora.html', {'form': form, 'commentaires': commentaires})
 
@@ -416,6 +439,8 @@ def voirProposition(request, slug):
         comment.auteur = request.user
         comment.proposition = proposition
         comment.save()
+        action.send(request.user, verb='permagora_commentaire', action_object=proposition, url=proposition.get_absolute_url(),
+                     description="a commenté la page de la proposition %s " % proposition.titre)
         return redirect(request.path)
     return render(request, 'permagora/voirProposition.html', {'form': form, 'proposition':proposition, 'commentaires':commentaires, 'vote':vote})
 
@@ -474,12 +499,13 @@ def ajouterProposition(request):
         #suffix = "_" + article.asso.abreviation
         #action.send(request.user, verb='article_nouveau'+suffix, action_object=article, url=url,
         #           description="a ajouté un article : '%s'" % article.titre)
+        action.send(request.user, verb='permagora_ajoutProposition', action_object=prop, url=prop.get_absolute_url(),
+                     description="a ajouté  la proposition %s " % prop.titre)
         return redirect(prop.get_absolute_url())
 
     return render(request, 'permagora/ajouterProposition.html', { "form": form, })
 
 
-# @login_required
 class ModifierProposition(UpdateView):
     model = PropositionCharte
     form_class = PropositionCharteChangeForm
@@ -505,3 +531,11 @@ class ModifierProposition(UpdateView):
     def get_form(self,*args, **kwargs):
         form = super(ModifierProposition, self).get_form(*args, **kwargs)
         return form
+
+
+@login_required
+def voirNotifications(request, ):
+    dateMin = (datetime.now() - timedelta(days=100)).replace(tzinfo=utc)
+    actions = Action.objects.filter(Q(timestamp__gt=dateMin) & Q(verb__startswith='permagora_')).order_by("-timestamp")
+    return render(request, 'permagora/voirNotifications.html', { "actions": actions, })
+
