@@ -7,15 +7,15 @@ Created on 25 mai 2017
 import itertools
 
 from django.shortcuts import HttpResponseRedirect, render, redirect, get_object_or_404#, render, redirect, render_to_response,
-from django.http import HttpResponseForbidden
 from django.core.exceptions import PermissionDenied
 from .forms import Produit_aliment_CreationForm, Produit_vegetal_CreationForm, Produit_objet_CreationForm, \
     Produit_service_CreationForm, ContactForm, AdresseForm, ProfilCreationForm, MessageForm, MessageGeneralForm, \
     ProducteurChangeForm, Produit_aliment_modifier_form, Produit_service_modifier_form, \
-    Produit_objet_modifier_form, Produit_vegetal_modifier_form, ChercherConversationForm, InscriptionNewsletterForm, \
-    MessageChangeForm, ContactMailForm, Produit_offresEtDemandes_CreationForm, Produit_offresEtDemandes_modifier_form
+    Produit_objet_modifier_form, Produit_vegetal_modifier_form, ChercherConversationForm, InviterDansSalonForm, \
+    MessageChangeForm, ContactMailForm, Produit_offresEtDemandes_CreationForm, Produit_offresEtDemandes_modifier_form, \
+    SalonForm, Message_salonForm
 from .models import Profil, Produit, Adresse, Choix, Panier, Item, Asso, get_categorie_from_subcat, Conversation, Message, \
-    MessageGeneral, getOrCreateConversation, Suivis, InscriptionNewsletter
+    MessageGeneral, getOrCreateConversation, Suivis, InscriptionNewsletter, Salon, InscritSalon, Message_salon, InvitationDansSalon
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
@@ -149,41 +149,36 @@ def bienvenue(request):
     yesterday = (datetime.now() - timedelta(hours=12)).replace(tzinfo=utc)
     evenements = EvenementAcceuil.objects.filter(date__gt=yesterday).order_by('date')
     evenements_passes, evenements_semaine = getEvenementsSemaine(request)
+    derniers = []
+    votes = []
+    invit_salons = 0
+
     if request.user.is_authenticated:
         nbNotif = getNbNewNotifications(request)
         nbExpires = getNbProduits_expires(request)
 
-    if not request.user.is_anonymous:
         suffrages = Suffrage.objects.filter(start_time__lte=datetime.now(), end_time__gte=datetime.now())
-        votes = []
+        invit_salons = InvitationDansSalon.objects.filter(profil_invite=request.user).order_by("-date_creation").count()
         for vote in suffrages:
             if vote.est_autorise(request.user):
                 votes.append([vote, len(Vote.objects.filter(suffrage=vote, auteur=request.user))])
 
-        derniers_articles = Article.objects.filter(estArchive=False).order_by('-id')
-        for nomAsso in Choix_global.abreviationsAsso:
-            if not getattr(request.user, "adherent_" + nomAsso):
-                derniers_articles = derniers_articles.exclude(asso__abreviation=nomAsso)
+        QObject = request.user.getQObjectsAssoArticles()
+        dateMin = (datetime.now() - timedelta(days=30)).replace(tzinfo=pytz.UTC)
+        derniers_articles = Article.objects.filter(
+            Q(date_creation__gt=dateMin) & Q(estArchive=False) & QObject).order_by('-id')
+        derniers_articles_comm = Article.objects.filter(
+            Q(date_modification__gt=dateMin) & Q(estArchive=False) & Q(dernierMessage__isnull=False) & QObject).order_by('date_dernierMessage')
+        derniers_articles_modif = Article.objects.filter(
+            Q(date_modification__gt=dateMin) & Q(estArchive=False) & Q(date_modification__isnull=False) & ~Q(
+                date_modification=F("date_creation")) & QObject).order_by('date_modification')
 
-        derniers_articles_comm = Article.objects.filter(estArchive=False, dernierMessage__isnull=False).order_by(
-            'date_dernierMessage')
+        derniers = sorted(set([x for x in
+                               itertools.chain(derniers_articles_comm[::-1][:8], derniers_articles_modif[::-1][:8],
+                                               derniers_articles[:8], )]),
+                          key=lambda x: x.date_modification if x.date_modification else x.date_creation)[::-1]
 
-        for nomAsso in Choix_global.abreviationsAsso:
-            if not getattr(request.user, "adherent_" + nomAsso):
-                derniers_articles_comm = derniers_articles_comm.exclude(asso__abreviation=nomAsso)
-
-        derniers_articles_modif = Article.objects.filter(Q(estArchive=False) & Q(date_modification__isnull=False) & ~Q(
-            date_modification=F("date_creation"))).order_by('date_modification')
-
-        for nomAsso in Choix_global.abreviationsAsso:
-            if not getattr(request.user, "adherent_" + nomAsso):
-                derniers_articles_modif = derniers_articles_modif.exclude(asso__abreviation=nomAsso)
-    else:
-        derniers_articles, derniers_articles_comm, derniers_articles_modif, votes = [], [], [], []
-
-    derniers = sorted(set([x for x in itertools.chain(derniers_articles_comm[::-1][:8], derniers_articles_modif[::-1][:8], derniers_articles[:8], )]), key=lambda x:x.date_modification if x.date_modification else x.date_creation)[::-1]
-
-    return render(request, 'bienvenue.html', {'nomImage':nomImage, "nbNotif": nbNotif, "nbExpires":nbExpires, "evenements":evenements, "evenements_semaine":evenements_semaine,"evenements_semaine_passes":evenements_passes, "derniers_articles":derniers, 'votes':votes})
+    return render(request, 'bienvenue.html', {'nomImage':nomImage, "nbNotif": nbNotif, "nbExpires":nbExpires, "evenements":evenements, "evenements_semaine":evenements_semaine,"evenements_semaine_passes":evenements_passes, "derniers_articles":derniers, 'votes':votes, 'invit_salons':invit_salons})
 
 class MyException(Exception):
     pass
@@ -904,25 +899,23 @@ def chercher(request):
 @login_required
 def chercher_articles(request):
     recherche = str(request.GET.get('id_recherche')).lower()
+    articles_list = []
+    commentaires_list = []
+    articles_jardin_list = []
+    commentaires_jardin_list = []
     if recherche:
         from blog.models import Commentaire
         from taggit.models import Tag
-        from jardinpartage.models import Article as ArticleJardin, Commentaire as CommJardin
+        #from jardinpartage.models import Article as ArticleJardin, Commentaire as CommJardin
         tags = Tag.objects.filter(slug__lower__icontains=recherche).values_list('name', flat=True)
         articles_list = Article.objects.filter(Q(tags__name__in=tags) |Q(titre__lower__icontains=recherche) | Q(contenu__icontains=recherche)  ).distinct()
-        articles_jardin_list = ArticleJardin.objects.filter(Q(titre__lower__icontains=recherche) | Q(contenu__icontains=recherche), ).distinct()
-        commentaires_list = Commentaire.objects.filter(Q(commentaire__icontains=recherche) ).distinct()
-        commentaires_jardin_list = CommJardin.objects.filter(Q(commentaire__icontains=recherche) ).distinct()
-        for nomAsso in Choix_global.abreviationsAsso:
-            if not getattr(request.user, "adherent_" + nomAsso):
-                articles_list = articles_list.exclude(asso__abreviation=nomAsso)
-                commentaires_list = commentaires_list.exclude(article__asso__abreviation=nomAsso)
-    else:
-        articles_list = []
-        commentaires_list = []
-        articles_jardin_list = []
-        commentaires_jardin_list = []
-
+        #articles_jardin_list = ArticleJardin.objects.filter(Q(titre__lower__icontains=recherche) | Q(contenu__icontains=recherche), ).distinct()
+        #commentaires_list = Commentaire.objects.filter(Q(commentaire__icontains=recherche) ).distinct()
+        #commentaires_jardin_list = CommJardin.objects.filter(Q(commentaire__icontains=recherche) ).distinct()
+        # for nomAsso in Choix_global.abreviationsAsso:
+        #     if not getattr(request.user, "adherent_" + nomAsso):
+        #         articles_list = articles_list.exclude(asso__abreviation=nomAsso)
+        #         commentaires_list = commentaires_list.exclude(article__asso__abreviation=nomAsso)
 
     return render(request, 'chercherForum.html', {'recherche':recherche, 'articles_list':articles_list, 'articles_jardin_list':articles_jardin_list, 'commentaires_jardin_list':commentaires_jardin_list,'commentaires_list': commentaires_list})
 
@@ -1050,7 +1043,6 @@ def prochaines_rencontres(request):
 
 @login_required
 def mesSuivis(request):
-
     follows = Follow.objects.filter(user=request.user)
     follows_base, follows_agora, follows_autres, follows_forum = [], [], [], []
     for action in follows:
@@ -1059,6 +1051,9 @@ def mesSuivis(request):
         elif 'articles' in str(action.follow_object) and not str(action.follow_object) == "articles_jardin":
             follows_forum.append(action)
         elif 'agora' in str(action.follow_object):
+            #follows_agora.append(action)
+            pass
+        elif 'salon' in str(action.follow_object) and not 'salon_accueil' in str(action.follow_object):
             follows_agora.append(action)
         elif str(action.follow_object) in Choix.suivisPossibles:
             follows_base.append(action)
@@ -1099,254 +1094,140 @@ def agora(request, asso):
         message.save()
         group, created = Group.objects.get_or_create(name='tous')
         url = reverse('agora', kwargs={'asso':asso.abreviation})
-        action.send(request.user, verb='envoi_salon_'+str(asso.abreviation), action_object=message, target=group, url=url, description="a envoyé un message dans le salon " + str(asso.nom))
+        action.send(request.user, verb='envoi_salon_'+str(asso.abreviation), action_object=message, target=group, url=url, description="a envoyé un message dans le salon '%s'"%str(asso.nom))
 
         return redirect(request.path)
     return render(request, 'agora.html', {'form': form, 'messages_echanges': messages, 'asso':asso, 'suivis':suivis})
 
-# class ServiceWorkerView(View):
-#     def get(self, request, *args, **kwargs):
-#         return render(request, 'fcmtest/firebase-messaging-sw.js', content_type="application/x-javascript")
-#
-# @require_POST
-# @csrf_exempt
-# def send_push(request):
-#     try:
-#         body = request.body
-#         data = json.loads(body)
-#
-#         if 'head' not in data or 'body' not in data or 'id' not in data:
-#             return JsonResponse(status=400, data={"message": "Invalid data format"})
-#
-#         user_id = data['id']
-#         user = get_object_or_404(User, pk=user_id)
-#         payload = {'head': data['head'], 'body': data['body']}
-#         send_user_notification(user=user, payload=payload, ttl=1000)
-#
-#         return JsonResponse(status=200, data={"message": "Web push successful"})
-#     except TypeError:
-#         return JsonResponse(status=500, data={"message": "An error occurred"})
 
+def testIsMembreSalon(request, slug):
+    salon = get_object_or_404(Salon, slug=slug)
+    if not salon.est_autorise(request.user) and not request.user.is_superuser:
+        return render(request, 'notMembre.html', {'asso':salon.titre } )
+    return salon
 
 @login_required
-@csrf_exempt
-def suivre_conversations(request, actor_only=True):
-    """
-    """
-    suivi, created = Suivis.objects.get_or_create(nom_suivi = 'conversations')
+def salon_accueil(request):
+    salons_su = []
+    if request.user.is_superuser:
+        salons_su = Salon.objects.all().order_by("-date_creation")
 
-    if suivi in following(request.user):
-        actions.unfollow(request.user, suivi, send_action=False)
-    else:
-        actions.follow(request.user, suivi, actor_only=actor_only, send_action=False)
-    return redirect('conversations')
+    salons_prives = [s.salon for s in InscritSalon.objects.filter(profil=request.user, salon__estPublic=False).order_by("-date_creation")]
+    salons_publics = Salon.objects.filter(estPublic=True).order_by("-date_creation")
+    suivis, created = Suivis.objects.get_or_create(nom_suivi="salon_accueil")
+    invit = InvitationDansSalon.objects.filter(profil_invite=request.user).order_by("-date_creation")
 
-@login_required
-@csrf_exempt
-def suivre_produits(request, actor_only=True):
-    suivi, created = Suivis.objects.get_or_create(nom_suivi = 'produits')
-
-    if suivi in following(request.user):
-        actions.unfollow(request.user, suivi, send_action=False)
-    else:
-        actions.follow(request.user, suivi, actor_only=actor_only, send_action=False)
-    return redirect('marche')
-
+    return render(request, 'salon/accueilSalons.html', {'salons_prives':salons_prives, "salons_publics":salons_publics, "salons_su":salons_su, "invit":invit, "suivis":suivis})
 
 @login_required
-def sereabonner(request,):
-    for suiv in Choix.suivisPossibles:
-        suivi, created = Suivis.objects.get_or_create(nom_suivi=suiv)
+def salon(request, slug):
+    invit = InvitationDansSalon.objects.filter(salon__slug=slug, profil_invite=request.user)
+    if invit:
+        return redirect(reverse('invitationDansSalon', kwargs={'slug_salon': slug}))
 
-        if not suivi in following(request.user):
-            actions.follow(request.user, suivi, send_action=False)
-
-    for abreviation in Choix.abreviationsAsso + ['public']:
-        if request.user.est_autorise(abreviation):
-            suivi, created = Suivis.objects.get_or_create(nom_suivi="articles_" + abreviation)
-            actions.follow(request.user, suivi, send_action=False)
-            suivi, created = Suivis.objects.get_or_create(nom_suivi="agora_" + abreviation)
-            actions.follow(request.user, suivi, send_action=False)
-
-    return redirect('mesSuivis')
-
-@login_required
-def sedesabonner(request,):
-    for suiv in Choix.suivisPossibles:
-        suivi, created = Suivis.objects.get_or_create(nom_suivi=suiv)
-
-        if suivi in following(request.user):
-            actions.unfollow(request.user, suivi, send_action=False)
-
-    for abreviation in Choix.abreviationsAsso + ['public']:
-        if request.user.est_autorise(abreviation):
-            suivi, created = Suivis.objects.get_or_create(nom_suivi="articles_" + abreviation)
-            actions.unfollow(request.user, suivi, send_action=False)
-            suivi, created = Suivis.objects.get_or_create(nom_suivi="agora_" + abreviation)
-            actions.unfollow(request.user, suivi, send_action=False)
-
-    return redirect('mesSuivis')
-
-def inscription_newsletter(request):
-    form = InscriptionNewsletterForm(request.POST or None)
+    salon = testIsMembreSalon(request, slug)
+    if not isinstance(salon, Salon):
+        raise PermissionDenied
+    suivis, created = Suivis.objects.get_or_create(nom_suivi="salon_" + str(salon.slug))
+    inscrits = salon.getInscrits()
+    invites = salon.getInvites()
+    messages = Message_salon.objects.filter(salon=salon).order_by("date_creation")
+    form = Message_salonForm(request.POST or None)
     if form.is_valid():
-        inscription = form.save(commit=False)
-        inscription.save()
-        return render(request, 'merci.html', {'msg' :"Vous êtes inscrits à la newsletter"})
-    return render(request, 'registration/inscription_newsletter.html', {'form':form})
+        message = form.save(commit=False)
+        message.auteur = request.user
+        message.salon = salon
+        message.save()
+        group, created = Group.objects.get_or_create(name='salon_' + salon.slug)
+        url = reverse('salon', kwargs={'slug':salon.slug})
+        action.send(request.user, verb='envoi_salon_'+str(salon.slug),
+                    action_object=message, target=group, url=url,
+                    description="a envoyé un message dans le salon '" + str(salon.titre) + "' (>"+" ".join([str(x) for x in inscrits])+")")
+
+        return redirect(request.path)
+    return render(request, 'salon/salon.html', {'form': form, 'messages_echanges': messages, 'salon':salon, 'suivis':suivis, "inscrits":inscrits, "invites":invites})
+
+@login_required
+def creerSalon(request):
+    form = SalonForm(request.POST or None)
+    if form.is_valid():
+        salon = form.save(request)
+        group, created = Group.objects.get_or_create(name='salon_' + salon.slug)
+        request.user.groups.add(group)
+        message = Message_salon.objects.create(
+            salon = salon,
+            message = request.user.username + " a créé le salon",
+            auteur = get_object_or_404(Profil, username="bot_permacat"),
+            date_creation=now()).save()
+
+        if salon.estPublic:
+            url = reverse('salon', kwargs={'slug':salon.slug})
+            action.send(request.user, verb='creation_salon_public_'+str(salon.slug), action_object=salon, target=group, url=url, description="a créé un nouveau salon public: " + str(salon.titre))
+
+        return redirect(salon.get_absolute_url())
+    return render(request, 'salon/creerSalon.html', {'form': form})
+
+@login_required
+def invitationDansSalon(request, slug_salon):
+    salon = get_object_or_404(Salon, slug=slug_salon)
+    invit = InvitationDansSalon.objects.filter(salon=salon, profil_invite=request.user)
+    if request.POST:
+        if "annuler" not in request.POST:
+            message = Message_salon.objects.create(
+                salon=salon,
+                message="%s a accepté l'invitation. Bienvenue !"%request.user,
+                auteur=get_object_or_404(Profil, username="bot_permacat"),
+                date_creation=now()).save()
+            inscription = InscritSalon(salon=salon, profil=request.user)
+            group, created = Group.objects.get_or_create(name='salon_' + salon.slug)
+            request.user.groups.add(group)
+            inscription.save()
+        else:
+            message = Message_salon.objects.create(
+                salon=salon,
+                message="%s a décliné l'invitation."%invit.profil_invite,
+                auteur=get_object_or_404(Profil, username="bot_permacat"),
+                date_creation=now()).save()
+        for i in invit:
+            stream = action_object_stream(i)
+            for j in stream:
+                j.delete()
+            i.delete()
+        return redirect(salon.get_absolute_url())
+
+    return render(request, 'salon/invitationSalon.html', {'salon': salon, "invit": invit})
 
 
 @login_required
-def inscription_permagora(request):
-    asso=Asso.objects.get(abreviation='scic')
-    if request.user.adherent_scic:
-        request.user.adherent_scic = False
-        request.user.save()
-        suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_scic')
-        actions.unfollow(request.user, suivi, send_action=False)
-        action.send(request.user, verb='inscription_permagora', target=asso, url=request.user.get_absolute_url(),
-                    description="s'est retiré du groupe PermAgora")
-    else:
-        request.user.adherent_scic = True
-        request.user.save()
-        suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_scic')
-        actions.follow(request.user, suivi, send_action=False)
-        action.send(request.user, verb='inscription_permagora', target=asso, url=request.user.get_absolute_url(),
-                    description="s'est inscrit.e au groupe PermAgora")
-    return redirect('presentation_asso', asso='scic')
-
+def inviterDansSalon(request, slug_salon):
+    salon = testIsMembreSalon(request, slug_salon)
+    form = InviterDansSalonForm(salon, request.POST or None)
+    if form.is_valid():
+        invite = get_object_or_404(Profil, id=int(form.cleaned_data['profil_invite']))
+        if not InvitationDansSalon.objects.filter(salon=salon, profil_invite=invite, profil_invitant=request.user).count():
+            invitation = InvitationDansSalon(salon=salon, profil_invite=invite, profil_invitant=request.user)
+            invitation.save()
+            message = Message_salon.objects.create(
+                salon=salon,
+                message="%s a invité %s."%(invitation.profil_invitant, invitation.profil_invite),
+                auteur=get_object_or_404(Profil, username="bot_permacat"),
+                date_creation=now()).save()
+        return redirect(salon.get_absolute_url())
+    return render(request, 'salon/inviterDansSalon.html', {'form': form, 'salon':salon})
 
 @login_required
-def inscription_citealt(request):
-    asso=Asso.objects.get(abreviation='citealt')
-    if request.user.adherent_citealt:
-        request.user.adherent_citealt = False
-        request.user.save()
-        suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_citealt')
-        actions.unfollow(request.user, suivi, send_action=False)
-        action.send(request.user, verb='inscription_citealt', target=asso, url=request.user.get_absolute_url(),
-                    description="s'est retiré du groupe Cité Altruiste")
-    else:
-        request.user.adherent_citealt = True
-        request.user.save()
-        suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_citealt')
-        actions.follow(request.user, suivi, send_action=False)
-        action.send(request.user, verb='inscription_citealt', target=asso, url=request.user.get_absolute_url(),
-                    description="s'est inscrit.e dans le groupe Cité Altruiste")
-    return redirect('presentation_asso', asso='citealt')
-
-@login_required
-def inscription_viure(request):
-    asso=Asso.objects.get(abreviation='viure')
-    if request.user.adherent_viure:
-        request.user.adherent_viure = False
-        request.user.save()
-        suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_viure')
-        actions.unfollow(request.user, suivi, send_action=False)
-        url = reverse('presentation_asso', kwargs={'asso': 'viure'})
-        action.send(request.user, verb='inscription_viure', target=asso, url=request.user.get_absolute_url(),
-                    description="s'est retiré du groupe Viure")
-    else:
-        request.user.adherent_viure = True
-        request.user.save()
-        suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_viure')
-        actions.follow(request.user, suivi, send_action=False)
-        action.send(request.user, verb='inscription_viure', target=asso, url=request.user.get_absolute_url(),
-                    description="s'est inscrit.e dans le groupe Viure")
-    return redirect('presentation_asso', asso='viure')
-
-@login_required
-def inscription_bzz2022(request):
-    asso = Asso.objects.get(abreviation='bzz2022')
-    if request.user.adherent_bzz2022:
-        request.user.adherent_bzz2022 = False
-        request.user.save()
-        suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_bzz2022')
-        actions.unfollow(request.user, suivi, send_action=False)
-        url = reverse('presentation_asso', kwargs={'asso': 'bzz2022'})
-        action.send(request.user, verb='inscription_bzz2022', target=asso, url=request.user.get_absolute_url(),
-                    description="s'est retiré du groupe Bzzz")
-    else:
-        request.user.adherent_bzz2022 = True
-        request.user.save()
-        suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_bzz2022')
-        actions.follow(request.user, suivi, send_action=False)
-        action.send(request.user, verb='inscription_bzz2022', target=asso, url=request.user.get_absolute_url(),
-                    description="s'est inscrit.e dans le groupe Bzzz")
-    return redirect('presentation_asso', asso='bzz2022')
-
-@login_required
-def contacter_newsletter(request):
-    if not request.user.adherent_pc:
-        return render(request, "notPermacat.html")
-
-    if request.method == 'POST':
-        form = ContactForm(request.POST or None, )
-        if form.is_valid():
-            sujet = "[permacat] Newsletter - " +  form.cleaned_data['sujet']
-            message = form.cleaned_data['msg']
-            emails = [profil.email for profil in Profil.objects.filter(inscrit_newsletter=True)] + [profil.email for
-                                                                                                    profil in
-                                                                                                    InscriptionNewsletter.objects.all()]
-            if emails and not LOCALL:
-                try:
-                    send_mass_mail([(sujet, message, SERVER_EMAIL, emails), ])
-                except:
-                    sujet = "[permacat admin] Erreur lors de l'envoi du mail"
-                    message_txt = message + '\n'.join(emails)
-
-                    try:
-                        mail_admins(sujet, message_txt)
-                    except:
-                        print("erreur de la fonction contacterNewsletter (views.py)")
-                        pass
-            return render(request, 'contact/message_envoye.html', {'sujet': form.cleaned_data['sujet'], 'msg': message,
-                                                           'envoyeur': request.user.username + " (" + request.user.email + ")",
-                                                           "destinataires": emails})
-    else:
-        form = ContactForm()
-    return render(request, 'contact/contact_newsletter.html', {'form': form, })
-
-
-
-@login_required
-def contacter_adherents(request):
-    if not request.user.adherent_pc:
-        return render(request, "notPermacat.html")
-
-    if request.method == 'POST':
-        form = ContactForm(request.POST or None, )
-        if form.is_valid():
-            sujet = "[permacat] Newsletter - " +  form.cleaned_data['sujet']
-            message = form.cleaned_data['msg']
-            emails = [profil.email for profil in Profil.objects.filter(adherent_pc=True)]
-
-            if emails and not LOCALL:
-                try:
-                    send_mass_mail([(sujet, message, SERVER_EMAIL, emails), ])
-                except:
-                    sujet = "[permacat admin] Erreur lors de l'envoi du mail"
-                    message_txt = message + '\n'.join(emails)
-
-                    try:
-                        mail_admins(sujet, message_txt)
-                    except:
-                        print("erreur de la fonction contacterAdherents (views.py)")
-                        pass
-            return render(request, 'contact/message_envoye.html', {'sujet': form.cleaned_data['sujet'], 'msg': message,
-                                                           'envoyeur': request.user.username + " (" + request.user.email + ")",
-                                                           "destinataires": emails})
-    else:
-        form = ContactForm()
-    return render(request, 'contact/contact_adherents.html', {'form': form, })
-
-
+def sortirDuSalon(request, slug_salon):
+    salon = testIsMembreSalon(request, slug_salon)
+    inscription = InscritSalon.objects.filter(salon=salon, profil=request.user)
+    inscription.delete()
+    return redirect("salon_accueil")
 
 @login_required
 def modifier_message(request, id, type_msg, asso, ):
     if type_msg == 'conversation':
         obj = Message.objects.get(id=id)
-        conversation = obj.conversation
+    elif type_msg == 'salon':
+        obj = Message_salon.objects.get(id=id)
     else:
         asso = testIsMembreAsso(request, asso)
         if not isinstance(asso, Asso):
@@ -1363,10 +1244,7 @@ def modifier_message(request, id, type_msg, asso, ):
             return redirect(object.get_absolute_url())
         else:
             object.delete()
-            if type_msg == 'conversation':
-                return redirect(conversation.get_absolute_url())
-            else:
-                return reverse('agora', kwargs={'asso':asso.abreviation})
+            return redirect(obj.get_absolute_url())
 
 
 
@@ -1382,7 +1260,10 @@ class ModifierMessageAgora(UpdateView):
     def get_object(self):
         if self.kwargs['type_msg'] == 'conversation':
             obj = Message.objects.get(id=self.kwargs['id'])
-            self.conversation = obj.conversation
+            self.redirect_url = obj.conversation.get_absolute_url()
+        elif self.kwargs['type_msg'] == 'salon':
+            obj = Message_salon.objects.get(id=self.kwargs['id'])
+            self.redirect_url = obj.salon.get_absolute_url()
         else:
             self.asso = testIsMembreAsso(self.request, self.kwargs['asso'])
             if not isinstance(self.asso, Asso):
@@ -1398,8 +1279,8 @@ class ModifierMessageAgora(UpdateView):
             return HttpResponseRedirect(self.object.get_absolute_url())
         else:
             self.object.delete()
-            if self.kwargs['type_msg'] == 'conversation':
-                return redirect(self.conversation.get_absolute_url())
+            if self.kwargs['type_msg'] == 'conversation' or self.kwargs['type_msg'] == 'salon':
+                return redirect(self.redirect_url)
             else:
                 return reverse('agora', kwargs={'asso':self.asso.abreviation})
 
@@ -1411,20 +1292,6 @@ class ModifierMessageAgora(UpdateView):
 
         return super(ModifierMessageAgora, self).form_invalid(form)
 
-@login_required
-@csrf_exempt
-def suivre_agora(request, asso, actor_only=True):
-    asso = testIsMembreAsso(request, asso)
-    if not isinstance(asso, Asso):
-        raise PermissionDenied
-
-    suivi, created = Suivis.objects.get_or_create(nom_suivi='agora_' + str(asso.abreviation))
-
-    if suivi in following(request.user):
-        actions.unfollow(request.user, suivi)
-    else:
-        actions.follow(request.user, suivi, actor_only=actor_only)
-    return redirect('agora', asso=asso.abreviation)
 
 
 @login_required

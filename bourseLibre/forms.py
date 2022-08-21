@@ -1,9 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, \
-    Asso, Profil, Message, MessageGeneral, Choix, InscriptionNewsletter, Adhesion_permacat, \
-    Produit_offresEtDemandes
-from django.db.models import Q
+    Asso, Profil, Message, MessageGeneral, Message_salon, InscriptionNewsletter, Adhesion_permacat, \
+    Produit_offresEtDemandes, Salon, InscritSalon
 from django_summernote.widgets import SummernoteWidget
 from blog.forms import SummernoteWidgetWithCustomToolbar
 from django.utils import timezone
@@ -380,8 +379,6 @@ class MessageForm(forms.ModelForm):
            self.fields['message'].initial = message
 
 
-
-
 class ChercherConversationForm(forms.Form):
     destinataire = forms.ChoiceField(label='destinataire')
 
@@ -398,6 +395,23 @@ class MessageGeneralForm(forms.ModelForm):
             'message': SummernoteWidgetWithCustomToolbar(),
         }
 
+
+class Message_salonForm(forms.ModelForm):
+    class Meta:
+        model = Message_salon
+        exclude = ['auteur', 'salon']
+        widgets = {
+            'message': SummernoteWidget(),
+        }
+
+class Message_salonChangeForm(forms.ModelForm):
+
+    class Meta:
+        model = Message_salon
+        exclude = ['auteur', 'salon']
+        widgets = {
+            'message': SummernoteWidget(),
+        }
 
 class MessageChangeForm(forms.ModelForm):
 
@@ -439,3 +453,25 @@ class nouvelleDateForm(forms.Form):
 class creerAction_articlenouveauForm(forms.Form):
     article = forms.ModelChoiceField(queryset=Article.objects.all().order_by('titre'), required=True,
                               label="Article", )
+
+
+class SalonForm(forms.ModelForm):
+
+    class Meta:
+        model = Salon
+        fields = ['titre', 'estPublic' ]
+
+    def save(self, request):
+        instance = super(SalonForm, self).save(commit=False)
+        instance.auteur = request.user.username
+        instance.save()
+        inscrit = InscritSalon(salon=instance, profil=request.user)
+        inscrit.save()
+        return instance
+
+class InviterDansSalonForm(forms.Form):
+    profil_invite = forms.ChoiceField(label='Invité :')
+
+    def __init__(self, salon, *args, **kwargs):
+        super(InviterDansSalonForm, self).__init__(*args, **kwargs)
+        self.fields['profil_invite'].choices = [(u.id,u) for i, u in enumerate(Profil.objects.all().order_by('username')) if salon.estPublic or not salon.est_autorise(u)]

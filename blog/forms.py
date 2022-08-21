@@ -1,17 +1,14 @@
 from django import forms
-
-from django.http import HttpResponseRedirect
-from formtools.preview import FormPreview
-from .models import Article, Commentaire, Projet, CommentaireProjet, Evenement, AdresseArticle, Discussion
+from bourseLibre.models import Salon, InscritSalon
+from .models import Article, Commentaire, Projet, CommentaireProjet, Evenement, AdresseArticle, Discussion, Choix
 from django.utils.text import slugify
 import itertools
 from django_summernote.widgets import SummernoteWidget
 from django.urls import reverse
 from bourseLibre.settings import SUMMERNOTE_CONFIG as summernote_config
-from bourseLibre.models import Asso
+from bourseLibre.models import Asso, Choix as choix_globaux
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from photologue.models import Album
-from .models import Choix
 from django.core.exceptions import ValidationError
 import re
 
@@ -74,12 +71,15 @@ class SummernoteWidgetWithCustomToolbar(SummernoteWidget):
         return summernote_settings
 
 class ArticleForm(forms.ModelForm):
-    asso = forms.ModelChoiceField(queryset=Asso.objects.all().order_by("id"), required=True,
+    asso = forms.ModelChoiceField(queryset=Asso.objects.all().exclude(abreviation="jp").order_by("id"), required=True,
                               label="Article public ou réservé aux membres du groupe :", )
+
+    partagesAsso = forms.ModelMultipleChoiceField(label='Partager avec :', required=False, queryset=Asso.objects.exclude(abreviation="jpt").order_by("id"),
+                                             widget=forms.CheckboxSelectMultiple(attrs={'class': 'cbox_asso', }) )
 
     class Meta:
         model = Article
-        fields = ['asso', 'categorie', 'titre', 'contenu', 'start_time', 'estModifiable', 'estEpingle','tags']
+        fields = ['asso', 'partagesAsso', 'categorie', 'titre', 'contenu', 'start_time', 'estModifiable', 'estEpingle','tags']
         widgets = {
             'contenu': SummernoteWidget(),
               'start_time':  forms.DateInput(
@@ -92,11 +92,9 @@ class ArticleForm(forms.ModelForm):
                 attrs={'class': 'form-control',
                        'type': 'date'
                        }),
-
-           # 'bar': SummernoteInplaceWidget(),
         }
 
-    def save(self, userProfile, sendMail=True):
+    def save(self, userProfile, sendMail=True, forcerCreationMails=False):
         instance = super(ArticleForm, self).save(commit=False)
 
         max_length = Article._meta.get_field('slug').max_length
@@ -109,18 +107,17 @@ class ArticleForm(forms.ModelForm):
             # Truncate the original slug dynamically. Minus 1 for the hyphen.
             instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
 
-        if len(re.findall(r"[A-Z]", instance.titre)) > 7:
+        if len(re.findall(r"[A-Z]", instance.titre)) > 8:
             instance.titre = instance.titre.title()
+
         instance.auteur = userProfile
-
-        instance.save()
-
+        instance.save(sendMail=sendMail, forcerCreationMails=forcerCreationMails)
         return instance
 
     def __init__(self, request, *args, **kwargs):
         super(ArticleForm, self).__init__(*args, **kwargs)
-        self.fields["asso"].choices = [('', '(Choisir un groupe)'), ] + [(x.id, x.nom) for x in Asso.objects.all().order_by("id") if request.user.estMembre_str(x.abreviation)]
-        self.fields["categorie"].choices = [('', '(Choisir un groupe)'), ] #+ list(Choix.get_type_annonce_asso(""))
+        self.fields["asso"].choices = [('', '(Choisir un groupe)'), ] + [(x.id, x.nom) for x in Asso.objects.all().exclude(abreviation="jp").order_by("id") if request.user.estMembre_str(x.abreviation)]
+        self.fields["categorie"].choices = [('', "(Choisir d'abord un groupe ci-dessus)"), ] #+ list(Choix.get_type_annonce_asso(""))
 
         if 'asso' in self.data:
             try:
@@ -132,11 +129,15 @@ class ArticleForm(forms.ModelForm):
         elif self.instance.pk:
             self.fields["categorie"].choices = Choix.get_type_annonce_asso("")
 
+
+
 class ArticleChangeForm(forms.ModelForm):
+    partagesAsso = forms.ModelMultipleChoiceField(label='Partager avec :', required=False, queryset=Asso.objects.exclude(abreviation="jpt").order_by("id"),
+                                             widget=forms.CheckboxSelectMultiple(attrs={'class': 'cbox_asso', }) )
 
     class Meta:
         model = Article
-        fields = ['asso', 'categorie', 'titre', 'contenu', 'album', 'start_time', 'tags', 'estModifiable', 'estArchive', 'estEpingle',]
+        fields = ['asso', 'partagesAsso', 'categorie', 'titre', 'contenu', 'album', 'start_time', 'tags', 'estModifiable', 'estArchive', 'estEpingle']
         widgets = {
             'contenu': SummernoteWidget(),
             'start_time': forms.DateInput(
@@ -144,7 +145,7 @@ class ArticleChangeForm(forms.ModelForm):
                 attrs={'class': 'form-control',
                        'type': 'date'
                        }),
-              'end_time': forms.DateInput(
+            'end_time': forms.DateInput(
                 format=('%Y-%m-%d'),
                 attrs={'class': 'form-control',
                        'type': 'date'
@@ -152,7 +153,13 @@ class ArticleChangeForm(forms.ModelForm):
         }
 
     def save(self, sendMail=True, commit=True):
-        return super(ArticleChangeForm, self).save(commit=commit)
+        instance = super(ArticleChangeForm, self).save(commit=commit)
+        for asso in Asso.objects.exclude(abreviation="jpt"):
+            if asso in self.cleaned_data["partagesAsso"]:
+                instance.partagesAsso.add(asso)
+            elif instance.partagesAsso.filter(abreviation=asso.abreviation).exists():
+                instance.partagesAsso.remove(asso)
+        return instance
 
 class ArticleAddAlbum(forms.ModelForm):
     album = forms.ModelChoiceField(queryset=Album.objects.all(), required=True,
@@ -233,7 +240,7 @@ class ProjetForm(forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
         super(ProjetForm, self).__init__(*args, **kwargs)
         self.fields['contenu'].strip = False
-        self.fields["asso"].choices = [(x.id, x.nom) for x in Asso.objects.all().order_by("id") if request.user.estMembre_str(x.abreviation)]
+        self.fields["asso"].choices = [(x.id, x.nom) for x in Asso.objects.all().exclude(abreviation="jp").order_by("id") if request.user.estMembre_str(x.abreviation)]
 
     def save(self, userProfile, sendMail=True):
         instance = super(ProjetForm, self).save(commit=False)
@@ -338,12 +345,26 @@ class EvenementArticleForm(forms.ModelForm):
                        }),
         }
 
-    def save(self, request, id_article):
+    def save(self, request, slug_article):
         instance = super(EvenementArticleForm, self).save(commit=False)
-        article = Article.objects.get(id=id_article)
+        article = Article.objects.get(slug=slug_article)
         instance.article = article
         instance.auteur = request.user
         instance.save()
+        return instance
+
+class SalonArticleForm(forms.ModelForm):
+    class Meta:
+        model = Salon
+        fields = ['titre', 'estPublic' ]
+
+    def save(self, request, slug_article):
+        instance = super(SalonArticleForm, self).save(commit=False)
+        article = Article.objects.get(slug=slug_article)
+        instance.article = article
+        instance.save()
+        inscrit = InscritSalon(salon=instance, profil=request.user)
+        inscrit.save()
         return instance
 
 class AdresseArticleForm(forms.ModelForm):

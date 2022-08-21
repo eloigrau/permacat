@@ -2,7 +2,7 @@ from django import forms
 from bourseLibre.models import Asso, Profil
 from .models import Article
 import django_filters
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 
 class ArticleFilter(django_filters.FilterSet):
     asso = django_filters.ModelMultipleChoiceFilter(field_name='asso', queryset=Asso.objects.all().exclude(abreviation="jp"),

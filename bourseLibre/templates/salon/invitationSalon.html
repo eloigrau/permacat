@@ -1,0 +1,44 @@
+{% extends 'base_asso.html' %}
+{% load fontawesome %}
+{% load blog_filters %}
+{% load activity_tags %}
+{%block message%}{%endblock%}
+{%block title%}- Salons de discussion{%endblock%}
+{% block subtitle %}
+<div class="row">
+    <div class="col-md-4 ">
+         <a href="{% url 'salon_accueil' %}">
+            <button type="button" class="btn  btn-success" >
+               {% fontawesome_icon 'home' %}
+            </button>
+         </a>
+    </div>
+    <div class="col-md-4 ">
+        <h3>Vous avez été invité dans le salon "{{salon.titre}}"</h3>
+    </div>
+</div>
+{% endblock %}
+{% block content %}
+
+<div class="row justify-content-center">
+	<div class="col-sm-12 textcenter">
+        <form method="POST" action="">{% csrf_token %}
+            <input type="submit" class="btn btn-success" value="Accepter l'invitation" />
+            <input type="submit" onclick="clicked();" name="annuler" class="btn btn-danger"  value="Refuser l'invitation" />
+        </form>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function clicked() {
+       if (confirm('Etes vous sûr.e de vouloir refuser l'invitation (vous ne pourrez plus y accéder à moins que quelqu'un vous re-invite')) {
+            const btn = document.querySelector('#boutonSortir');
+           btn.submit();
+       } else {
+           return false;
+       }
+    }
+</script>
+{% endblock %}
+

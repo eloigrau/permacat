@@ -10,7 +10,7 @@ import string
 register = template.Library()
 
 class Constantes:
-    typesAvecEntete = ['Select', " NumberInput", "DateInput","DateTimeInputWidget", "SummernoteWidget" ]#'Textarea',
+    typesAvecEntete = ['Select', " NumberInput", "DateInput","DateTimeInputWidget", "SummernoteWidget", "CheckboxSelectMultiple" ]#'Textarea',
     width = 10
     dicoMois = {"January".center(width): "Janvier".center(width), "February".center(width): "Février".center(width),
                 "March".center(width): "Mars".center(width), "April".center(width): "Avril".center(width),
@@ -95,9 +95,13 @@ def filtrerSuivis(nomSuivis):
 @register.filter(is_safe=True)
 def filtrerSuivisAgora(nomSuivis):
     try:
-        nomAsso = str(nomSuivis).split("_",1)[1]
-        asso = Asso.objects.get(abreviation=nomAsso)
-        return "Salon de discussion " + asso.nom
+        if "agora" in str(nomSuivis):
+            nomAsso = str(nomSuivis).split("_",1)[1]
+            asso = Asso.objects.get(abreviation=nomAsso)
+            return "Agora " + asso.nom
+        else:
+            nomSalon = str(nomSuivis).split("_",1)
+            return "Salon " + nomSalon[1]
     except:
         return str(nomSuivis)
 
@@ -110,6 +114,11 @@ def filtrerSuivisForum(nomSuivis):
         return "Articles " + asso.nom
     except:
         return str(nomSuivis)
+
+@register.filter(is_safe=True)
+def filtrerNotifSalon(nomSuivis):
+    #return nomSuivis
+    return str(nomSuivis).split(" (>")[0]
 
 @register.filter(is_safe=True)
 def distance(user1, user2):

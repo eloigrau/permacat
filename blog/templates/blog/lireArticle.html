@@ -109,11 +109,14 @@
 <div class="col-sm-12 offset-md-2 col-md-8 textcenter">
             <span >
                 <a href="{% url 'blog:index_asso' asso=article.asso.abreviation %}#ref-titre" >{{ article.get_logo_nomgroupe_html|safe }}</a>
-            </span> -
+            </span>
+    {% if article.partagesAsso %} <span>{% for p in article.get_logo_nomgroupespartages_html %}{{ p|safe }}{% endfor %}</span> </td>{% endif %}
+            -
 
             <span class="badge badge-success" style="background-color:{{article.get_couleur}}" ><a href="{% url 'blog:index'  %}?categorie={{article.categorie}}" >{% if article.get_logo_categorie %}  <img  src="{% static article.get_logo_categorie %}" height="16px"/>  {% endif %} {{ article.get_categorie_display }}</a>
-            </span> -
+            </span>
             {% if article.estEpingle%}
+                -
             <span class="fa fa-thumb-tack"> </span>
             {%endif%}
     <div class="row titre_fiche">
@@ -155,6 +158,9 @@
         {% if article.album %}
       <a class="nav-item nav-link" href="#album" data-toggle="tab">Album photo</a>
         {% endif %}
+        {% if salons %}
+      <a class="nav-item nav-link" href="#salons" data-toggle="tab">Salons</a>
+        {% endif %}
         {% if ateliers %}
       <a class="nav-item nav-link" href="#ateliers" data-toggle="tab">Ateliers</a>
         {% endif %}
@@ -167,9 +173,9 @@
         {% if documents %}
       <a class="nav-item nav-link" href="#documents" data-toggle="tab">Document{{documents|pluralize:",s"}}</a>
         {% endif %}
-      <a class="nav-item nav-link" href="#historique" data-toggle="tab">Historique</a>
-      {% if not article.album or not ateliers or not dates %}<a class="nav-item nav-link" href="#plus" data-toggle="tab">Ajouter...</a>
-        {% endif %}
+      <a class="nav-item nav-link" href="#historique" data-toggle="tab">Infos</a>
+      <a class="nav-item nav-link" href="#plus" data-toggle="tab">Ajouter...</a>
+
     </nav>
 
 
@@ -294,7 +300,7 @@
               {%endfor%}
             {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
             <hr>
-              <p><a class="btn btn-sm btn-success textleft" href="{% url 'blog:ajouterEvenementArticle' id_article=article.id %}" ><i class="fa fa-plus"></i> Ajouter un événement sur l'agenda</a></p>
+              <p><a class="btn btn-sm btn-success textleft" href="{% url 'blog:ajouterEvenementArticle' slug_article=article.slug %}" ><i class="fa fa-plus"></i> Ajouter un événement sur l'agenda</a></p>
             {% endif %}
       </div>
     </div>
@@ -305,8 +311,9 @@
               {%for lieu in lieux %}
                 <p> {{lieu}}
             {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
-                    <a class="btn btn-sm btn-danger textleft" href="{% url 'blog:supprimerAdresseArticle' slug_article=article.slug  id_adresse=lieu.id %}" ><i class="fa fa-times"></i> </a></p>
+                    <a class="btn btn-sm btn-danger textleft" href="{% url 'blog:supprimerAdresseArticle' slug_article=article.slug  id_adresse=lieu.id %}" ><i class="fa fa-times"></i> </a>
             {% endif %}
+                    </p>
               {%endfor%}
              <p><a class="btn btn-sm btn-primary textleft" href="{% url 'blog:voirCarteLieux' id_article=article.id %}" ><i class="fa fa-compass"></i> Voir sur une carte</a></p>
 
@@ -317,10 +324,27 @@
       </div>
     </div>
 </div>
+<div class="tab-pane fade " id="salons">
+        <div class="col-sm-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2 textcenter">
+        <div class="contenu discussion_fiche">
+              {%for salon in salons %}
+            <p><a href="{{salon.get_absolute_url}}"> <i class="fa fa-arrow-right"></i> {{salon.titre}}</a></p>
+              {%endfor%}
+            {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
+            <hr>
+              <p><a class="btn btn-sm btn-success textleft" href="{% url 'blog:ajouterSalonArticle' slug_article=article.slug %}" ><i class="fa fa-plus"></i> Ajouter un salon de discussion</a></p>
+            {% endif %}
+      </div>
+    </div>
+</div>
 
   <div class="tab-pane " id="historique">
         <div class="col-sm-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2 textcenter">
         <div class="contenu discussion_fiche">
+            {% if article.get_partagesAsso %}
+            <p> Article {{article.get_logo_nomgroupe_html|safe}}, partagé avec :
+                {{article.get_partagesAssoLogo|safe}}
+            </p>{%endif%}
           {%for action in actions %}
                 {% include "notifications/notifications_template3.html" with action=action%}
           {%endfor%}
@@ -333,22 +357,27 @@
         <div class="col-sm-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2 textcenter">
         <div class="contenu discussion_fiche">
         <p>
-          <a class="btn btn-sm btn-block btn-success textleft" href="{% url 'blog:ajouterEvenementArticle' id_article=article.id %}" ><i class="fa fa-plus"></i> Ajouter un événement sur l'agenda</a>
+          <a class="btn btn-sm btn-block btn-info textleft" href="{% url 'blog:ajouterEvenementArticle' slug_article=article.slug %}" ><i class="fa fa-plus"></i> Ajouter un événement sur l'agenda</a>
         </p>
         {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
         <p>
-          <a class="btn btn-sm btn-block btn-success textleft" href="{% url 'blog:ajouterAdresseArticle' id_article=article.id %}" ><i class="fa fa-plus"></i> Ajouter un lieu</a>
-        </p>
-
-        <p>
-            <a class="btn btn-sm btn-block btn-success textleft" href="{% url 'blog:ajouterAlbumArticle' slug=article.slug %}" ><i class="fa fa-plus"></i> Associer à un album photo</a>
+            <a class="btn btn-sm btn-block btn-info textleft" href="{% url 'blog:ajouterAlbumArticle' slug=article.slug %}" ><i class="fa fa-plus"></i> Associer à un album photo</a>
         </p>
         {% endif %}
+        <p>
+          <a class="btn btn-sm btn-block btn-info textleft" href="{% url 'blog:ajouterAdresseArticle' id_article=article.id %}" ><i class="fa fa-plus"></i> Ajouter un lieu</a>
+        </p>
+        <p>
+          <a class="btn btn-sm btn-block btn-info textleft" href="{% url 'blog:ajouterSalonArticle' slug_article=article.slug%}" ><i class="fa fa-plus"></i> Ajouter un Salon de discussion</a>
+        </p>
        <p>
-           <a class="btn btn-sm btn-block btn-success textleft" href="{% url 'photologue:ajouterDocument' article_slug=article.slug %}" ><i class="fa fa-plus"></i> Ajouter un document</a>
+           <a class="btn btn-sm btn-block btn-info textleft" href="{% url 'photologue:ajouterDocument' article_slug=article.slug %}" ><i class="fa fa-plus"></i> Ajouter un document</a>
        </p>
         <p>
-            <a class="btn btn-sm btn-block  btn-success textleft" href="{% url 'ateliers:ajouterAtelier_article' article_slug=article.slug %}" ><i class="fa fa-plus"></i>  Ajouter un atelier</a>
+            <a class="btn btn-sm btn-block  btn-info textleft" href="{% url 'ateliers:ajouterAtelier_article' article_slug=article.slug %}" ><i class="fa fa-plus"></i>  Ajouter un atelier</a>
+        </p>
+        <p>
+            <a class="btn btn-sm btn-block  btn-info textleft" href="https://www.togetzer.com/index.php?view=evenement&creer_evenement=1" target="_blank"><i class="fa fa-plus"></i>  Covoiturage</a>
         </p>
 
           </div>

@@ -1,0 +1,146 @@
+{% extends 'base_asso.html' %}
+{% load fontawesome %}
+{% load blog_filters %}
+{% load activity_tags %}
+{%block message%}{%endblock%}
+{%block title%}- Salon de discussion {{asso}}{%endblock%}
+{% block subtitle %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="row justify-content-center">
+            <div class="col-md-4 ">
+                 <a href="{% url 'salon_accueil' %}">
+                    <button type="button" class="btn  btn-success" >
+                       {% fontawesome_icon 'home' %}
+                    </button>
+                    </a>
+            </div>
+            <div class="col-md-4 ">
+                {% if salon.estPublic %}
+        <div class="row justify-content-center">
+            <div class="col-md-12 ">
+                <button type="button" class="btn btn-info btn-sm">
+                    Salon de discussion Public
+                </button>
+            </div>
+        </div>
+
+         {%else%}
+        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#inscrits" title="Liste des inscrits">
+            <i class="fa fa-user-plus"></i> Salon de discussion Privé
+        </button>
+       <div class="modal fade" id="inscrits" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog textaide" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                  <div class="row justify-content-center">
+                   <h5 > Liste des membres du salon</h5>
+                  </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+                <div class="modal-body textleft">
+                    <ul>
+                    {% for i in inscrits %}
+                        <li><a href="{{i.get_absolute_url}}">{{i}}</a></li>
+                    {% endfor %}
+                    </ul>
+                      <p class="textright">
+                            <a href="{% url 'inviterDansSalon' slug_salon=salon.slug %}">
+                                <button type="button" class="btn btn-success" > <i class="fa fa-plus"></i>  inviter...
+                                </button>
+                            </a>
+                            <a href="{% url 'sortirDuSalon' slug_salon=salon.slug %}">
+                                <button type="button" class="btn btn-danger"  onclick="clicked();" id="boutonSortir" > <i class="fa fa-minus"></i>  sortir du salon...
+                                </button>
+                            </a>
+                      </p>
+                </div>
+                <div class="modal-body textleft">
+                  <h6> Invités :  </h6>
+                    <ul>
+                    {% for i in invites %}
+                        <li><a href="{{i.get_absolute_url}}">{{i}}</a></li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </div>
+          </div>
+        </div>
+         {%endif%}
+            </div>
+            <div class="col-md-4 ">
+            <a href="{% url 'suivre_salon' slug_salon=salon.slug%}">
+                {% if request.user|is_following:suivis %}
+                <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous êtes abonné :Cliquez pour arreter de recevoir un mail à chaque nouvel article">
+                     {% fontawesome_icon 'bell' %}
+                </button>
+                {% else %}
+                <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Vous n'êtes pas abonné :Cliquez pour recevoir un mail à chaque nouvel article">
+                     {% fontawesome_icon 'bell-slash' %}
+                </button>
+                {% endif %}
+            </a>
+                <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#help" title="En savoir plus...">
+                 {% fontawesome_icon 'question-circle' %}
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="help" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog textaide" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                          <div class="row justify-content-center">
+                           <h5 > Qu'est ce qu'un salon de discussion ?</h5>
+                          </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                        <div class="modal-body textleft">
+                          <p>Le salon de discussion est un espace où on peut discuter en petit groupe pour s'exprimer librement, un peu comme un groupe "whatsapp" ou "telegram"...</p>
+                            <p>Chaque "Salon" est indépendant. Il est soit ouvert à toustes (public) soit sur invitation (privé), c'est à dire qu'un salon "privé" n'est accessible et visible que par les membres du salon (sur invitation d'un des membres), tandis que les salons "publics" peuvent etre consultés et commentés par tous les inscrits.</p>
+                            <p>Il est possible de rattacher un salon de discussion à un article du forum : pour cela il fut "ajouter un salon" depuis la page de l'article (sous le titre).</p>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center ">
+            <div class="col-sm-12 col-md-10 col-lg-8 titre_salon">
+                <h4> {{salon.titre}}</h4>
+            </div>
+        </div>
+    </div>
+</div>
+{% if salon.article%}
+<div class="row">
+    <div class="col-md-12">
+        <a href="{{salon.article.get_absolute_url }}">
+            <button type="button" class="btn btn-secondary btn-sm ">
+            Article associé : {{salon.article.titre}}
+        </button>
+        </a>
+    </div>
+</div>
+{%endif%}
+
+{% endblock %}
+{% block content %}
+
+{% include 'salon.html'%}
+
+<script type="text/javascript">
+    function clicked() {
+       if (confirm("Etes vous sûr.e de vouloir quitter ce salon (vous ne pourrez plus y accéder à moins que quelqu'un vous re-invite")) {
+            const btn = document.querySelector('#boutonSortir');
+           btn.submit();
+       } else {
+           return false;
+       }
+    }
+</script>
+{% endblock %}
+

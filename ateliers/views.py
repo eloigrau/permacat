@@ -153,6 +153,8 @@ def lireAtelier(request, atelier):
         comment.save()
         action.send(request.user, verb='atelier_message', action_object=atelier, url=atelier.get_absolute_url(),
                     description="a réagi à l'atelier: '%s'" % atelier.titre)
+        action.send(request.user, verb='emails', action_object=atelier, url=atelier.get_absolute_url(),
+                    description="a réagi à l'atelier: '%s'" % atelier.titre)
 
         return redirect(request.path)
 

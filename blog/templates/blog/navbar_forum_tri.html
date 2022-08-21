@@ -5,7 +5,7 @@
 <div class="row justify-content-center">
     <nav class="navbar navbar-expand-md navbar-light">
 					<ul class="navbar-nav ">
-    {% if article_list or article_list_archives%}
+    {% if article_list or article_list_archives or article_epingles or article_partages%}
         <li class="nav-item dropdown">
             <a class="nav-item btn-block" href="#" id="menuOrdreTri" data-toggle="dropdown">
                 <button class="btn btn-light dropdown-toggle">
@@ -20,7 +20,7 @@
             </li>
 
     {% else %}
-        <p>Il n'y a pas d'articles dans ce dossier</p>
+        <p>Il n'y a pas d'article dans ce dossier</p>
     {% endif %}
 </ul>
     </nav>

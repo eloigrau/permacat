@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from .models import  Adresse, Produit, Panier, Item, Adhesion_permacat, Asso, MessageGeneral, Conversation, InscriptionNewsletter
+from .models import  Adresse, Produit, Panier, Item, Adhesion_permacat, Asso, MessageGeneral, Conversation, InscriptionNewsletter, InvitationDansSalon, InscritSalon
 from blog.models import Article, Projet, Commentaire, Discussion, CommentaireProjet, Evenement, EvenementAcceuil, AdresseArticle
 from jardinpartage.models import Article as Art_jardin, Commentaire as Comm_jardin
 from fiches.models import Fiche, Atelier as atelier_fiche, CommentaireFiche
@@ -12,7 +12,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 from .forms import ProfilCreationForm, ProducteurChangeForm_admin
-from .models import Profil
+from .models import Profil, Salon
 from django.utils.translation import gettext_lazy as _
 
 
@@ -35,7 +35,7 @@ class CustomUserAdmin(UserAdmin):
 
 
 class ArticleAdmin(admin.ModelAdmin):
-        list_display = ('titre', 'asso', 'categorie', 'estArchive', )
+        list_display = ('titre', 'asso', 'categorie', 'estArchive', 'get_partagesAssotxt' )
 class Article_jardinAdmin(admin.ModelAdmin):
         list_display = ('titre', 'jardin', 'categorie', 'estArchive', )
 class ProjetAdmin(admin.ModelAdmin):
@@ -83,3 +83,7 @@ admin.site.register(InscriptionAtelier)
 admin.site.register(InscriptionExposant)
 admin.site.register(Proposition)
 admin.site.register(Message_agora)
+
+admin.site.register(Salon)
+admin.site.register(InscritSalon)
+admin.site.register(InvitationDansSalon)

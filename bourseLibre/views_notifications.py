@@ -15,7 +15,7 @@ from hitcount.models import HitCount, Hit
 def getNotifications(request, nbNotif=15, orderBy="-timestamp"):
     tampon = nbNotif * 5
     dateMin = (datetime.now() - timedelta(days=30)).replace(tzinfo=utc)
-    salons = Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb='envoi_salon') | Q(verb='envoi_salon_Public')|Q(verb='envoi_salon_public'))).order_by(orderBy)
+    salons = Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb='envoi_salon') | Q(verb='envoi_salon_Public')|Q(verb__startswith='creation_salon_public')|Q(verb='envoi_salon_public'))).order_by(orderBy)
     articles = Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb='article_nouveau') | Q(verb='article_nouveau_Public') | Q(verb='article_message') | Q(verb='article_message_Public') |Q(verb='article_nouveau_public') | Q(verb='article_message_public') | Q(verb='article_modifier_Public')| Q(verb='article_modifier_public')| Q(verb='article_modifier'))).order_by(orderBy)
     projets = Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb='projet_nouveau') | Q(verb='projet_nouveau_Public') | Q(verb='projet_message')|Q(verb='projet_message_Public')| Q(verb='projet_nouveau_public') | Q(verb='projet_message_public') |Q(verb='projet_modifier') |  Q(verb='projet_modifier_Public'))).order_by(orderBy)
     offres = Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb='ajout_offre')|  Q(verb='ajout_offre_public'))).order_by(orderBy)
@@ -31,6 +31,9 @@ def getNotifications(request, nbNotif=15, orderBy="-timestamp"):
             offres = offres | Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb__startswith='ajout_offre') & Q(verb__icontains=nomAsso)))
             albums = albums | Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb__startswith='album_nouveau') & Q(verb__icontains=nomAsso)))
             documents = documents | Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb__startswith='document_nouveau') & Q(verb__icontains=nomAsso)))
+
+    salons = salons | Action.objects.filter(Q(timestamp__gt=dateMin) & Q(verb__startswith="envoi_salon") & Q(description__contains=request.user.username))
+    salons = salons | Action.objects.filter(Q(timestamp__gt=dateMin) & Q(verb__startswith="invitation_salon") & Q(description__contains=request.user.username))
 
     salons = salons.distinct().order_by(orderBy)[:tampon]
     articles = articles.distinct().order_by(orderBy)[:tampon]
@@ -63,7 +66,7 @@ def getNotifications(request, nbNotif=15, orderBy="-timestamp"):
 def getNotificationsParDate(request, dateMinimum=None, orderBy="-timestamp"):
     if dateMinimum:
         dateMin = dateMinimum if dateMinimum.date() > datetime.now().date() - timedelta(
-            days=365) else datetime.now().date() - timedelta(days=90)
+            days=180) else datetime.now().date() - timedelta(days=90)
     else:
         dateMin = (datetime.now() - timedelta(days=60)).replace(tzinfo=utc)
 
@@ -75,6 +78,8 @@ def getNotificationsParDate(request, dateMinimum=None, orderBy="-timestamp"):
             Q(verb__startswith='fiche')|Q(verb__startswith='atelier')|
             Q(verb__startswith='documents_nouveau')|Q(verb__startswith='album_nouveau')|
             Q(verb__startswith='envoi_salon_prive', description="a envoyé un message privé à " + request.user.username)|
+            Q(verb__startswith="envoi_salon", data__contains=request.user.username)|
+            Q(verb__startswith="invitation_salon", description__contains=request.user.username)|
             Q(verb__startswith='inscription'))) | any_stream(request.user).filter(Q(timestamp__gt=dateMin) & Q(verb='envoi_salon_prive', ))
     if request.user.adherent_pc:
         actions = actions | Action.objects.filter(Q(timestamp__gt=dateMin) & (Q(verb__icontains='Permacat') | Q(verb__icontains='permacat')| Q(verb__icontains='pc')))
@@ -94,7 +99,6 @@ def getNotificationsParDate(request, dateMinimum=None, orderBy="-timestamp"):
     actions = actions.order_by(orderBy).distinct()
 
     actions = [art for i, art in enumerate(actions[:200]) if i == 0 or not (art.description == actions[i-1].description and art.actor == actions[i-1].actor ) ]
-
 
     return actions
 

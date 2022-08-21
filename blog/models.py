@@ -1,7 +1,7 @@
 from django.db import models
 from bourseLibre.models import Profil, Suivis, Asso, Adresse
 from django.urls import reverse
-from django.utils import timezone
+from django.utils import timezone, html
 from actstream import action
 from actstream.models import followers
 from taggit.managers import TaggableManager
@@ -9,6 +9,7 @@ from photologue.models import Album
 from django.utils.text import slugify
 from jardinpartage.models import Choix as Choix_jpt
 from datetime import datetime, timedelta
+
 
 import uuid
 
@@ -103,9 +104,7 @@ class Choix:
                          "Type de projet":'categorie', "statut du projet":"statut",
                          'auteur':'auteur', 'titre':'titre'}
 
-    groupes_logo_nom = {'public': 'img/logos/nom_public.png', 'pc': 'img/logos/nom_public.png',
-                        'public': 'img/logos/nom_public.png', 'public': 'img/logos/nom_public.png',
-                        'public': 'img/logos/nom_public.png', 'public': 'img/logos/nom_public.png', }
+    groupes_logo_nom = {'public': 'img/logos/nom_public.png', 'pc': 'img/logos/nom_public.png',}
 
     def get_couleur(categorie):
         try:
@@ -122,14 +121,14 @@ class Choix:
     def get_logo_nomgroupe(abreviation):
         return 'img/logos/nom_'+abreviation+'.png'
 
+    def get_logo_nomgroupe_html(abreviation, taille=25):
+        return "<img src='/static/" + Choix.get_logo_nomgroupe(abreviation) + "' height ='"+str(taille)+"px'/>"
+
     def get_type_annonce_asso(asso):
         try:
             return Choix.type_annonce_asso[asso]
         except:
             return Choix.type_annonce
-
-    #def get_liste_typeAnnonces():
-    #    return [x[1] for x in Choix.type_annonce]
 
 class Article(models.Model):
     categorie = models.CharField(max_length=30,         
@@ -158,6 +157,8 @@ class Article(models.Model):
 
     album = models.ForeignKey(Album, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Album photo associé",  )
 
+    partagesAsso = models.ManyToManyField(Asso, related_name="asso_partages", verbose_name="Partagé avec :", blank=True)
+
     class Meta:
         ordering = ('-date_creation', )
         
@@ -167,35 +168,45 @@ class Article(models.Model):
     def get_absolute_url(self):
         return reverse('blog:lireArticle', kwargs={'slug':self.slug})
 
-    def save(self, sendMail=True, saveModif=True, *args, **kwargs):
-        ''' On save, update timestamps '''
+
+    def sendMailArticle_newormodif(self, creation, forcerCreationMails):
         emails = []
+        if creation or forcerCreationMails:
+            suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_' + str(self.asso.abreviation))
+            titre = "Nouvel article"
+            message = "Un article a été posté dans le forum [" + str(
+                self.asso.nom) + "] : '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.titre + "</a>'"
+            emails = [suiv.email for suiv in followers(suivi) if self.auteur != suiv and self.est_autorise(suiv)]
+        else:
+            temps_depuiscreation = timezone.now() - self.date_creation
+            if temps_depuiscreation > timedelta(minutes=10):
+                titre = "Article actualisé"
+                message = "L'article [" + str(
+                    self.asso.nom) + "] '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.titre + "</a>' a été modifié"
+                emails = [suiv.email for suiv in followers(self) if self.est_autorise(suiv)]
+
+        if emails:
+            action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
+
+    def save(self, sendMail=True, saveModif=True, forcerCreationMails=False, *args, **kwargs):
+        ''' On save, update timestamps '''
         sendMail = sendMail and getattr(self, "sendMail", True)
         creation = False
         if not self.id:
             creation = True
             self.date_creation = timezone.now()
-            if sendMail:
-                suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_' + str(self.asso.abreviation))
-                titre = "Nouvel article"
-                message = "Un article a été posté dans le forum [" + str(self.asso.nom) + "] : '<a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.titre + "</a>'"
-                emails = [suiv.email for suiv in followers(suivi) if self.auteur != suiv and self.est_autorise(suiv)]
         else:
-            if sendMail:
-                temps_depuiscreation = timezone.now() - self.date_creation
-                if temps_depuiscreation > timedelta(minutes=10):
-                    titre = "Article actualisé"
-                    message = "L'article [" + str(self.asso.nom) + "] '<a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.titre + "</a>' a été modifié"
-                    emails = [suiv.email for suiv in followers(self) if self.est_autorise(suiv)]
-                if saveModif:
-                    self.date_modification = timezone.now()
+            if saveModif:
+                self.date_modification = timezone.now()
 
         retour = super(Article, self).save(*args, **kwargs)
+
         if creation:
             discussion, created = Discussion.objects.get_or_create(article=self, titre="Discussion Générale")
 
-        if emails:
-            action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
+        if sendMail:
+            self.sendMailArticle_newormodif(creation, forcerCreationMails)
+
         return retour
 
     @property
@@ -205,6 +216,20 @@ class Article(models.Model):
         except:
             return Choix.couleurs_annonces["Autre"]
 
+    @property
+    def get_partagesAsso(self):
+        x = self.partagesAsso.filter(abreviation='public')
+        if x:
+            return x
+        return self.partagesAsso.exclude(abreviation=self.asso.abreviation)
+
+    @property
+    def get_partagesAssotxt(self):
+        return "\n".join([str(p) for p in self.get_partagesAsso])#"\n".join(
+
+    @property
+    def get_partagesAssoLogo(self):
+        return html.format_html("{}", html.mark_safe(" ".join([Choix.get_logo_nomgroupe_html(p.abreviation, taille=20) for p in self.get_partagesAsso])))
 
     @property
     def get_logo_categorie(self):
@@ -219,13 +244,25 @@ class Article(models.Model):
         return self.get_logo_nomgroupe_html_taille(25)
 
     def get_logo_nomgroupe_html_taille(self, taille=25):
-        return "<img src='/static/" + self.get_logo_nomgroupe + "' height ='"+str(taille)+"px'/>"
+        return Choix.get_logo_nomgroupe_html(self.asso.abreviation, taille)#"<img src='/static/" + self.get_logo_nomgroupe + "' height ='"+str(taille)+"px'/>"
+
+    @property
+    def get_logo_nomgroupespartages_html(self):
+        return self.get_logo_nomgroupes_partages_html_taille(15)
+
+    def get_logo_nomgroupes_partages_html_taille(self, taille=15):
+        return [Choix.get_logo_nomgroupe_html(asso.abreviation, taille) for asso in self.get_partagesAsso]#"<img src='/static/" + self.get_logo_nomgroupe + "' height ='"+str(taille)+"px'/>"
 
     def est_autorise(self, user):
-        if self.asso.abreviation == "public":
+        if self.asso.abreviation == "public" or self.partagesAsso.filter(abreviation="public"):
             return True
-
-        return getattr(user, "adherent_" + self.asso.abreviation)
+        adhesion = getattr(user, "adherent_" + self.asso.abreviation)
+        if adhesion :
+            return adhesion
+        for asso in self.get_partagesAsso:
+            if getattr(user, "adherent_" + asso.abreviation):
+                return True
+        return False
 
     def getLieux(self):
         return AdresseArticle.objects.filter(article=self)
@@ -237,6 +274,7 @@ class Article(models.Model):
             return self.date_dernierMessage
         else:
             return derniere_date
+
 
 class Evenement(models.Model):
     titre_even = models.CharField(verbose_name="Titre de l'événement (si laissé vide, ce sera le titre de l'article)",

@@ -359,12 +359,12 @@ def ajouterEvenement(request, date=None):
 
 @login_required
 @user_passes_test(is_inscrit, login_url='/jardins/accepter_participation')
-def ajouterEvenementArticle(request, id_article):
+def ajouterEvenementArticle(request, slug_article):
     form = EvenementArticleForm(request.POST or None)
 
     if form.is_valid():
-        form.save(id_article)
-        return lireArticle_id(request, id_article)
+        form.save(slug_article)
+        return lireArticle_id(request, slug_article)
 
     return render(request, 'jardinpartage/ajouterEvenement.html', {'form': form, })
 

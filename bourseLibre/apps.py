@@ -16,6 +16,7 @@ class BourseLibreConfig(AppConfig):
         from permagora.models import Commentaire_charte, PropositionCharte, Message_permagora
         registry.register(self.get_model('Profil'))
         registry.register(self.get_model('MessageGeneral'))
+        registry.register(self.get_model('Message_salon'))
         registry.register(self.get_model('Produit'))
         registry.register(self.get_model('Conversation'))
         registry.register(self.get_model('Produit'))
@@ -27,6 +28,8 @@ class BourseLibreConfig(AppConfig):
         registry.register(self.get_model('Suivis'))
         registry.register(self.get_model('Adhesion_permacat'))
         registry.register(self.get_model('Asso'))
+        registry.register(self.get_model('Salon'))
+        registry.register(self.get_model('InvitationDansSalon'))
         registry.register(Document)
         registry.register(Atelier)
         registry.register(InscriptionAtelier)

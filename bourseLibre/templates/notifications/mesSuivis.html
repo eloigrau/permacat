@@ -15,7 +15,7 @@
             {% for action in follows_base %}
                 {% if action %}
                 <tr>
-                    <td> {{action.follow_object|filtrerSuivis}} </td>
+                    <td> {{action.follow_object|filtrerSuivis}}</td>
                    <td>  <a href="{% url 'supprimerAction' actionid=action.id %}" class="btn btn-danger" type="button"> supprimer</a> </td>
                 </tr>
                 {%endif%}
@@ -23,6 +23,8 @@
         </table>
     </div>
 </div>
+
+
         {% if follows_forum %}
         <hr>
     <div class="col-sm-12 textcenter">
@@ -32,7 +34,7 @@
             {% for action in follows_forum %}
                 {% if action %}
                 <tr>
-                    <td> {{action.follow_object|filtrerSuivisForum}} </td>
+                    <td> <a href="{% url 'blog:index' %}"> {{action.follow_object|filtrerSuivisForum}}</a> </td>
                    <td>  <a href="{% url 'supprimerAction' actionid=action.id %}" class="btn btn-danger" type="button"> supprimer</a> </td>
                 </tr>
                 {%endif%}
@@ -40,25 +42,6 @@
         </table>
     </div>
         {% endif %}
-        {% if follows_agora %}
-        <hr>
-    <div class="col-sm-12 textcenter">
-        <h5>Abonnements aux Salons de discussions </h5>
-        <p>Vous recevez des nouvelles par mail pour les Salons de discussions suivants :</p>
-        <table class="table2 table table-condensed tableprofils table-striped sortable">
-            {% for action in follows_agora %}
-                {% if action %}
-                <tr>
-                    <td> {{action.follow_object|filtrerSuivisAgora}} </td>
-                   <td>  <a href="{% url 'supprimerAction' actionid=action.id %}" class="btn btn-danger" type="button"> supprimer</a> </td>
-                </tr>
-                {%endif%}
-            {%endfor%}
-        </table>
-    </div>
-        {% endif %}
-
-<hr>
 
 <div class="row justify-content-center">
     <div class="col-sm-12 textcenter">
@@ -66,7 +49,25 @@
    <a href="{% url 'sedesabonner' %}" class="btn btn-danger" type="button"> Se désabonner au forum/altermarché/conversations/projets/suffrages </a>
     </div>
 </div>
+
 <hr>
+{% if follows_agora %}
+    <div class="col-sm-12 textcenter">
+        <h5>Abonnements aux Salons de discussions </h5>
+        <p>Vous recevez des nouvelles par mail pour les Salons de discussions suivants :</p>
+        <table class="table2 table table-condensed tableprofils table-striped sortable">
+            {% for action in follows_agora %}
+                {% if action %}
+                <tr>
+                    <td> <a href="{% url 'salon_accueil' %}"> {{action.follow_object|filtrerSuivisAgora}} </a></td>
+                   <td>  <a href="{% url 'supprimerAction' actionid=action.id %}" class="btn btn-danger" type="button"> supprimer</a> </td>
+                </tr>
+                {%endif%}
+            {%endfor%}
+        </table>
+    </div>
+        {% endif %}
+
         {% if follows_autres %}
         <hr>
     <div class="col-sm-12 textcenter">
@@ -76,13 +77,18 @@
             {% for action in follows_autres %}
                 {% if action %}
                 <tr>
-                    <td> {{action.follow_object}} </td>
+                    <td> {%if action.url%}<a href="{{action.url}}">{%endif%}{{action.follow_object}} {%if action.url%}</a>{%endif%}</td>
                    <td>  <a href="{% url 'supprimerAction' actionid=action.id %}" class="btn btn-danger" type="button"> supprimer</a> </td>
                 </tr>
                 {%endif%}
             {%endfor%}
         </table>
     </div>
+<div class="row justify-content-center">
+    <div class="col-sm-12 textcenter">
+       <a href="{% url 'sedesabonner_particuliers' %}" class="btn btn-danger" type="button"> Se désabonner de tous les abonnements particuliers </a>
+    </div>
+</div>
         {% endif %}
 
 

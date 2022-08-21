@@ -1,5 +1,10 @@
 {% extends 'permagora/base.html' %}
 {% load fontawesome %}
+
+
+    {%block header %}
+    <script src="https://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+    {%endblock%}
 {% block content %}
 
  <div class="site-section">
@@ -41,8 +46,9 @@
         <div class="row justify-content-center">
           <div class="col-sm-12">
             <div class="site-section-heading" data-aos="fade-up">
-              <h3 class="text-center titrePolePermagora" id="{{domaine.0.slug}}" >{{ forloop.counter }}/ {{domaine.0|safe}}</h3>
-                {% if domaine.0.description %}<p style="text-align:center;">{{domaine.0.description|safe}}</p> {% endif %}
+              <h3 class="text-center titrePolePermagora" id="{{domaine.0.slug}}" onclick="toggle_visibility('{{domaine.0.slug}}_description');">{{ forloop.counter }}/ {{domaine.0|safe}}</h3>
+                {% if domaine.0.description %}<p style="text-align:center; display:none;" id="{{domaine.0.slug}}_description">{{domaine.0.description|safe}}</p> {% endif %}
+            </div>
             </div>
           </div>
         </div>
@@ -102,7 +108,17 @@
       </div>
     </div>
 {% endcomment %}
-<hr>
+
+<script>
+function toggle_visibility(id) {
+   var e = document.getElementById(id);
+   if(e.style.display == 'inherit'){
+      e.style.display = 'none';
+  } else{
+      e.style.display = 'inherit';
+  }
+}
+</script>
 {% endblock %}
 
 

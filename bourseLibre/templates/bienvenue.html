@@ -55,6 +55,14 @@ style="background-image:linear-gradient(40deg, white, #f2f2f2);"
 					  </div>
 					</div>
 				{%endif%}
+				{% if invit_salons %}
+					<div class="row" >
+					  <div class="col-sm-12 textcenter" style ="color:#0f7407;">
+						 <p> <a href="{% url 'salon_accueil' %}">Vous avez {{invit_salons}} invitations dans un salon de discussion </a></b></p>
+
+					  </div>
+					</div>
+				{%endif%}
 				{% if nbExpires %}
 					<hr>
 					<div class="row" >

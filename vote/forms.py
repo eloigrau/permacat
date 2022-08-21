@@ -12,7 +12,7 @@ from django.utils.timezone import now
 from datetime import timedelta
 
 class SuffrageForm(forms.ModelForm):
-    asso = forms.ModelChoiceField(queryset=Asso.objects.all(), required=True, label="Suffrage public ou réservé aux adhérents de l'asso :",)
+    asso = forms.ModelChoiceField(queryset=Asso.objects.all().exclude(abreviation="jp").all(), required=True, label="Suffrage public ou réservé aux adhérents de l'asso :",)
 
     class Meta:
         model = Suffrage

@@ -9,6 +9,14 @@
         </div>
     </div>
     {% endifchanged %}
+
+            {%if mess.auteur.username == 'bot_permacat' %}
+    <div class="row ">
+        <div class="col-sm-12 message_bot">
+                    <p>{{ mess.message|safe }}</p>
+        </div>
+    </div>
+    {% else %}
     <div class="row {% ifequal mess.auteur.id request.user.id %} msg-auteur  {%else%} msg-destinataire{%endifequal%} ">
         <div class="col-sm-2 col-md-3 col-lg-2">
             <p class="infos  textepetit ">
@@ -19,26 +27,25 @@
                 {% endif %}
             </p>
         </div>
-        <div class=" col-sm-8 col-md-9 col-lg-10 message ">
-                <p>{{ mess.message|safe }}</p>
-        </div>
+
+            <div class=" col-sm-8 col-md-9 col-lg-10 message  ">
+                    <p>{{ mess.message|safe }}</p>
+            </div>
     </div>
+    {% endif %}
 {% endfor %}
 </div>
-    <script>
+<script>
     var messageBody = document.querySelector('#idConversation');
     messageBody.scrollTop = idConversation.scrollHeight - idConversation.clientHeight;
 </script>
 <hr>
 <h5>Commencer la discussion :</h5>
-
-<div>
-    <input type="hidden" name="Nouveau Message" value="{{ message }}">
-
-<div>
-<form  id="myForm" class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type="hidden" name="Nouveau Message" value="{{ message_defaut }}">
-    {% include 'form_template3.html' with boutonAnnuler=False %}
-</form>
+<div class="row-sm-12">
+    <form  id="myForm" class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="Nouveau Message" value="{{ message_defaut }}">
+        {% include 'form_template3.html' with boutonAnnuler=False %}
+    </form>
+</div>
 

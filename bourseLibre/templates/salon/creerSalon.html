@@ -1,0 +1,38 @@
+{% extends 'base_asso.html' %}
+{% load fontawesome %}
+{% load blog_filters %}
+{% load activity_tags %}
+{%block message%}{%endblock%}
+{%block title%}- Salons de discussion{%endblock%}
+{% block subtitle %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="row justify-content-center textcenter">
+             <a href="{% url 'salon_accueil' %}">
+            <button type="button" class="btn  btn-success" >
+              {% fontawesome_icon 'home' %}
+            </button>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block content %}
+
+<div class="row">
+	<div class="col-sm-12 textcenter">
+                <h3>Créer un Salon de discussion</h3>
+            </div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+        <form id="myForm"  class="form-horizontal" role="form" action="" method="post"
+            enctype="multipart/form-data">
+            {% csrf_token %} <input type="hidden" name="Atelier"
+                value="{{ salon }}"> {% include 'form_template.html'%}
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+

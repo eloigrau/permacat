@@ -1,6 +1,6 @@
 from . import *
 
-
+LOCALL = True
 SECRET_KEY = '-~aO;| F;rE[??/w^zcumh(9'
 SECRET_KEY_DB = '-~aO;| F;rE[??/w^zcumh(9'
 GAPI_KEY = 'zzz'

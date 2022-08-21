@@ -44,6 +44,7 @@ urlpatterns = [
         name='modifierCommentaireArticle'),
 
     url(r'ajouterEvenement/$', views.ajouterEvenement, name='ajouterEvenement'),
-    url(r'ajouterEvenementArticle/(?P<id_article>[0-9]+)$', views.ajouterEvenementArticle, name='ajouterEvenementArticle'),
+    path(r'ajouterEvenementArticle/<str:slug_article>', views.ajouterEvenementArticle, name='ajouterEvenementArticle'),
+    path(r'ajouterSalonArticle/<str:slug_article>', views.ajouterEvenementArticle, name='ajouterEvenementArticle'),
 
 ]

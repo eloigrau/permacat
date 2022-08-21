@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.urls import path
-from . import views, views_base, views_notifications, views_admin, views_ajax
+from . import views, views_base, views_notifications, views_admin, views_ajax, views_inscriptions
 from .helloasso import apiHA_pcat
 from django.views.generic import TemplateView
 
@@ -67,10 +67,10 @@ urlpatterns = [
     path(r'presentation/<str:asso>/', views.presentation_asso, name='presentation_asso'),
     path(r'presentation/citealtruiste/organisation', views.organisation_citealt, name='organisation_citealt'),
     path(r'groupes/presentation/', views.presentation_groupes, name='presentation_groupes'),
-    path(r'permagora/inscription/', views.inscription_permagora, name='inscription_permagora'),
-    path(r'citealtruiste/inscription/', views.inscription_citealt, name='inscription_citealt'),
-    path(r'projetBzzz/inscription/', views.inscription_bzz2022, name='inscription_bzz2022'),
-    path(r'viure/inscription/', views.inscription_viure, name='inscription_viure'),
+    path(r'permagora/inscription/', views_inscriptions.inscription_permagora, name='inscription_permagora'),
+    path(r'citealtruiste/inscription/', views_inscriptions.inscription_citealt, name='inscription_citealt'),
+    path(r'projetBzzz/inscription/', views_inscriptions.inscription_bzz2022, name='inscription_bzz2022'),
+    path(r'viure/inscription/', views_inscriptions.inscription_viure, name='inscription_viure'),
     url(r'^site/presentation/$', views_base.presentation_site, name='presentation_site'),
     url(r'^site/pourquoi/$', views_base.presentation_site_pkoi, name='presentation_site_pkoi'),
     url(r'^site/conseils/$', views_base.presentation_site_conseils, name='presentation_site_conseils'),
@@ -132,8 +132,8 @@ urlpatterns = [
     path(r'cooperateurs/listeFollowers/<str:asso>', login_required(views.listeFollowers), name='listeFollowers',),
     path(r'cooperateurs/carte/<str:asso>', login_required(views.carte), name='carte',),
 
-    url(r'^cooperateurs/contacter_newsletter/$', login_required(views.contacter_newsletter), name='contacter_newsletter',),
-    url(r'^cooperateurs/contacter_adherents/$', login_required(views.contacter_adherents), name='contacter_adherents',),
+    url(r'^cooperateurs/contacter_newsletter/$', login_required(views_inscriptions.contacter_newsletter), name='contacter_newsletter',),
+    url(r'^cooperateurs/contacter_adherents/$', login_required(views_inscriptions.contacter_adherents), name='contacter_adherents',),
 
     url(r'^marche/proposer/(?P<type_produit>[-A-Za-z]+)/$', login_required(views.produit_proposer), name='produit_proposer', ),
     url(r'^marche/proposer/', login_required(views.proposerProduit_entree), name='produit_proposer_entree',),
@@ -171,19 +171,27 @@ urlpatterns = [
     url(r'^conversations/(?P<destinataire1>[\w.@+-]+)/(?P<destinataire2>[\w.@+-]+)$', login_required(views.lireConversation_2noms), name='lireConversation_2noms'),
     url(r'^conversations/$', login_required(views.ListeConversations.as_view()), name='conversations'),
     url(r'^conversations/chercher/$', login_required(views.chercherConversation), name='chercher_conversation'),
-    url(r'^suivre_conversation/$', views.suivre_conversations, name='suivre_conversations'),
-    url(r'^suivre_produits/$', views.suivre_produits, name='suivre_produits'),
-    url(r'^sereabonner/$', views.sereabonner, name='sereabonner'),
-    url(r'^sedesabonner/$', views.sedesabonner, name='sedesabonner'),
+    url(r'^suivre_conversation/$', views_inscriptions.suivre_conversations, name='suivre_conversations'),
+    url(r'^suivre_produits/$', views_inscriptions.suivre_produits, name='suivre_produits'),
+    url(r'^sereabonner/$', views_inscriptions.sereabonner, name='sereabonner'),
+    url(r'^sedesabonner/$', views_inscriptions.sedesabonner, name='sedesabonner'),
+    url(r'^sedesabonner_particuliers/$', views_inscriptions.sedesabonner_particuliers, name='sedesabonner_particuliers'),
     path(r'agora/<str:asso>', login_required(views.agora), name='agora'),
-    path(r'suivre_agora/<str:asso>', views.suivre_agora, name='suivre_agora'),
+    path(r'suivre_agora/<str:asso>', views_inscriptions.suivre_agora, name='suivre_agora'),
+    path(r'salon/accueil', login_required(views.salon_accueil), name='salon_accueil'),
+    path(r'salon/d/<str:slug>', login_required(views.salon), name='salon'),
+    path(r'creerSalon/', login_required(views.creerSalon), name='creerSalon'),
+    path(r'suivre_salon/<str:slug_salon>', views_inscriptions.suivre_salon, name='suivre_salon'),
+    path(r'inviterDansSalon/<str:slug_salon>', views.inviterDansSalon, name='inviterDansSalon'),
+    path(r'invitationDansSalon/<str:slug_salon>', views.invitationDansSalon, name='invitationDansSalon'),
+    path(r'sortirDuSalon/<str:slug_salon>', views.sortirDuSalon, name='sortirDuSalon'),
     url(r'^activity/', include('actstream.urls')),
 
 #    path(r'wiki_ecovillage_notifications/', include('django_nyt.urls')),
 #    path(r'wiki_ecovillage/', include('wiki.urls')),
 
 
-    url(r'^inscription_newsletter/$', views.inscription_newsletter, name='inscription_newsletter', ),
+    url(r'^inscription_newsletter/$', views_inscriptions.inscription_newsletter, name='inscription_newsletter', ),
     path(r'admin/modifier_message/<int:id>/<str:type_msg>/<str:asso>',  login_required(views.ModifierMessageAgora.as_view()), name='modifierMessage'),
     url(r'^admin/voirEmails/$', views_admin.voirEmails,  name="voirEmails"),
     url(r'^admin/nettoyerActions/$', views_admin.nettoyerActions,  name="nettoyerActions"),

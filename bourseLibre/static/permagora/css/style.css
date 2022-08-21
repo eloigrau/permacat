@@ -810,6 +810,20 @@ h1, h2, h3, h4, h5,
   line-height: 40px; }
 
 .titrePolePermagora{
+	box-shadow: 3px 4px 0px 0px #DC2F02;
+	background-color:black;
+	border-radius:5px;
+	cursor:pointer;
+	font-size:17px;
+	font-weight:bold;
+	padding:12px 44px;
     color: #DC2F02;
-    background-color:black;
+    width:100%;
+    margin-bottom: 15px;
 }
+
+.titrePolePermagora:hover{
+    color: white;
+}
+
+

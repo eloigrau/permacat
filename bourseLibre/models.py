@@ -2,7 +2,7 @@
 import decimal
 import math
 import os
-from urllib import parse
+import itertools
 from datetime import date
 
 import django_filters
@@ -12,7 +12,6 @@ from actstream.models import following, followers
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import ASCIIUsernameValidator
 from django.core.validators import MinValueValidator
-from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models import Q
 from django.db.models.signals import post_save
@@ -22,15 +21,11 @@ from django.urls import reverse, reverse_lazy
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 from model_utils.managers import InheritanceManager
-from stdimage import StdImageField
 from django.core.mail import send_mail
 from .constantes import Choix, DEGTORAD
 from .settings.production import SERVER_EMAIL
 import simplejson
-from datetime import datetime, timedelta
-
-# from tinymce.models import HTMLField
-#from blog.models import Article
+from datetime import datetime
 
 def get_categorie_from_subcat(subcat):
     for type_produit, dico in Choix.choix.items():
@@ -395,6 +390,15 @@ class Profil(AbstractUser):
         else:
             return False
 
+    def getQObjectsAssoArticles(self):
+        q_objects = Q()
+        for asso in self.getListeAbreviationsAssos():
+            q_objects |= Q(asso__abreviation=asso) | Q(partagesAsso__abreviation=asso)
+        return q_objects
+
+    def getListeAbreviationsAssos(self):
+        return [a for a in Choix.abreviationsAsso if self.est_autorise(a)]
+
     def est_autorise(self, abreviation_asso):
         if abreviation_asso == "public":
             return True
@@ -460,6 +464,8 @@ def create_user_profile(sender, instance, created, **kwargs):
                     suivi, created = Suivis.objects.get_or_create(nom_suivi="articles_"+abreviation)
                     actions.follow(instance, suivi, actor_only=True, send_action=False)
                     suivi, created = Suivis.objects.get_or_create(nom_suivi="agora_"+abreviation)
+                    actions.follow(instance, suivi, actor_only=True, send_action=False)
+                    suivi, created = Suivis.objects.get_or_create(nom_suivi="salon_accueil")
                     actions.follow(instance, suivi, actor_only=True, send_action=False)
         action.send(instance, verb='inscription', url=instance.get_absolute_url(),
                     description="s'est inscrit.e sur le site")
@@ -539,10 +545,13 @@ class Produit(models.Model):  # , BaseProduct):
         retour = super(Produit, self).save(*args, **kwargs)
 
         if emails:
-            if self.estUneOffre:
-                message = "Nouvelle petite annonce (offre) : ["+ self.asso.nom +"] <a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.nom_produit + "</a>"
+            if self.categorie=='liste':
+                message = "Nouvelle liste d'offres et demandes : [" + self.asso.nom + "] <a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.nom_produit + "</a>"
             else:
-                message = "Nouvelle petite annonce (demande) : ["+ self.asso.nom +"] <a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.nom_produit + "</a>"
+                if self.estUneOffre:
+                    message = "Nouvelle petite annonce (offre) : ["+ self.asso.nom +"] <a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.nom_produit + "</a>"
+                else:
+                    message = "Nouvelle petite annonce (demande) : ["+ self.asso.nom +"] <a href='https://www.perma.cat" + self.get_absolute_url() +"'>" + self.nom_produit + "</a>"
             action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
         return retour
 
@@ -1053,8 +1062,6 @@ class Conversation(models.Model):
         super(Conversation, self).save(*args, **kwargs)
 
 
-
-
 def getOrCreateConversation(nom1, nom2):
     try:
         convers = Conversation.objects.get(slug=get_slug_from_names(nom1, nom2))
@@ -1065,6 +1072,111 @@ def getOrCreateConversation(nom1, nom2):
 
     return convers
 
+
+class Salon(models.Model):
+    titre = models.CharField(max_length=250)
+    auteur = models.CharField(max_length=100)
+    slug = models.CharField(max_length=100)
+    date_creation = models.DateTimeField(auto_now_add=True, auto_now=False, verbose_name="Date de parution")
+    date_dernierMessage = models.DateTimeField(verbose_name="Date de Modification", auto_now=False, blank=True, null=True)
+    dernierMessage = models.CharField(max_length=100, default=None, blank=True, null=True)
+    membres = models.ManyToManyField(Profil, through='InscritSalon')
+    estPublic = models.BooleanField(verbose_name="Salon public ou privé (public si coché)", default=False)
+    article = models.ForeignKey("blog.Article", on_delete=models.CASCADE,
+                                help_text="L'evenement doit etre associé à un article existant (sinon créez un article avec une date)", blank=True, null=True)
+
+    class Meta:
+        ordering = ('-date_dernierMessage',)
+
+    def __str__(self):
+        return "Salon '" + self.titre + "'"
+
+    def get_absolute_url(self):
+        return reverse('salon', kwargs={'slug': self.slug})
+
+    def save(self, *args, **kwargs):
+        max_length = 99
+        if not self.id:
+            self.slug = orig = slugify(self.titre)[:max_length]
+
+            for x in itertools.count(1):
+                if not Salon.objects.filter(slug=self.slug).exists():
+                    break
+
+                # Truncate the original slug dynamically. Minus 1 for the hyphen.
+                self.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
+
+            self.date_creation = now()
+
+        super(Salon, self).save(*args, **kwargs)
+
+
+    def est_autorise(self, user):
+        return self.estPublic or user in self.membres.all()
+
+    def getInscrits(self):
+        return [u.profil for u in InscritSalon.objects.filter(salon=self)]
+
+    def getInvites(self):
+        return [u.profil_invite for u in InvitationDansSalon.objects.filter(salon=self)]
+
+class InscritSalon(models.Model):
+    salon = models.ForeignKey(Salon, on_delete=models.CASCADE)
+    profil = models.ForeignKey(Profil, on_delete=models.CASCADE)
+    date_creation = models.DateTimeField(verbose_name="Date de création", editable=False, auto_now_add=True)
+
+class InvitationDansSalon(models.Model):
+    salon = models.ForeignKey(Salon, on_delete=models.CASCADE)
+    profil_invitant = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name="invitant")
+    profil_invite = models.ForeignKey(Profil, on_delete=models.CASCADE, related_name="invite")
+    date_creation = models.DateTimeField(verbose_name="Date de création", editable=False, auto_now_add=True)
+
+    def __str__(self):
+        return " "
+    @property
+    def texte(self):
+        return "%s a invité %s dans le salon %s" %(self.profil_invitant, self.profil_invite, self.salon.titre)
+
+    class Meta:
+        unique_together = (('profil_invitant', 'profil_invite', 'salon'), )
+
+
+    def save(self, *args, **kwargs):
+        super(InvitationDansSalon, self).save(*args, **kwargs)
+        emails = [self.profil_invite.email, ]
+        message = "Vous avez été invité.e au salon de discussion : <a href='https://www.perma.cat/'%s'>'%s'</a>" % (self.salon.get_absolute_url(), self.salon.titre)
+        action.send(self, verb='emails', url=self.salon.get_absolute_url(), titre=self.salon.titre, message=message, emails=emails)
+
+        message = "Vous avez été invité.e au salon de discussion : <a href='https://www.perma.cat/'%s'>'%s'</a>" % (self.salon.get_absolute_url(), self.salon.titre)
+        action.send(self, verb='invitation_salon', url=self.salon.get_absolute_url(), titre=self.salon.titre, message=message, description="%s a été invité dans le salon %s : " %(self.profil_invite, self.salon.titre, ))
+
+    def get_absolute_url(self):
+        return self.salon.get_absolute_url()
+
+
+class Message_salon(models.Model):
+    salon = models.ForeignKey(Salon, on_delete=models.CASCADE)
+    message = models.TextField(null=False, blank=False)
+    auteur = models.ForeignKey(Profil, on_delete=models.CASCADE)
+    date_creation = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.__str()
+
+    def __str__(self):
+        return "(" + str(self.id) + ") " + str(self.auteur) + " " + str(self.date_creation)
+
+    @property
+    def get_edit_url(self):
+        return reverse('modifierMessage',  kwargs={'id':self.id, 'type_msg':'salon', 'asso':'None'})
+
+    def get_absolute_url(self):
+        return self.salon.get_absolute_url()
+
+    def save(self, *args, **kwargs):
+        super(Message_salon, self).save(*args, **kwargs)
+        self.salon.date_dernierMessage = now()
+        self.salon.save()
 
 class Message(models.Model):
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)

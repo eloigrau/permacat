@@ -2,7 +2,7 @@ from .models import Produit
 
 from django.shortcuts import render
 from rest_framework import viewsets
-from rest_framework import permissions
+#from rest_framework import permissions
 from .serializers import ProduitSerializer
 
 
@@ -12,7 +12,6 @@ class AnnoncesViewSet(viewsets.ModelViewSet):
     """
     serializer_class = ProduitSerializer
     http_method_names = ['get',]
-    #permission_classes = [permissions.IsAuthenticated]
     queryset = Produit.objects.select_subclasses().order_by('-date_creation')
 
     def get_queryset(self):

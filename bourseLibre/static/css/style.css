@@ -60,11 +60,18 @@ font : normal;
 	    z-index: 1030;
     text-align:center;
 }
+
 .scrolled-down{
     transform:translateY(-100%); transition: all 0.3s ease-in-out;
 }
 .scrolled-up{
     transform:translateY(0); transition: all 0.3s ease-in-out;
+}
+
+.fixed-top-2{
+    margin-top: 56px;
+    padding-top: 56px;
+    text-align:center;
 }
 
 @media screen and (max-width: 600px) {
@@ -495,7 +502,7 @@ border: 1px inset rgba(28,110,164,0.65);
     margin-bottom: 10px;
     margin-left: 10px;
     margin-right: 10px;
-    background-color:#fefee2;
+    background-color:white;
 }
 
 
@@ -579,6 +586,31 @@ border: 1px inset rgba(28,110,164,0.65);
 .dernierMessage{
     background-color:grey;
 }
+
+.msg-destinataire{
+    /*indent:30px;*/
+    background-color:#e6e6ff ;
+    border-radius: 15px;
+    }
+
+.msg-auteur {
+    border-radius: 15px;
+    background-color:#ccccff;
+    }
+
+.message_bot{
+    text-align:right;
+    border-radius: 15px;
+    background-color:GhostWhite ;
+    color:grey;
+    font-style: italic;
+}
+
+.msg-date {
+    background-color:#e6e6e6 ;
+    border-radius: 15px;
+
+    }
 /*fin blog*/
 
 .col_cat{
@@ -1146,23 +1178,12 @@ ul.errorlist{
 }
 
 
-.msg-destinataire{
-    /*indent:30px;*/
-    background-color:GhostWhite ;
-    }
-
-
-.msg-auteur {
-    background-color:#e6e6ff ;
-    }
 
 .msg-agora {
     background-color:GhostWhite ;
+
     }
 
-.msg-date {
-    background-color:#e6e6e6 ;
-    }
 .carte-notif{
    min-width:35%;
     margin: 20px;
@@ -1443,6 +1464,37 @@ display:       inline-block;
   right: 0;
 }
 
+.boutonSalon {
+	box-shadow: 0px 1px 3px 0px #91b8b3;
+	border-radius:5px;
+	border:1px solid #566963;
+	display:inline-block;
+	cursor:pointer;
+	color:#616161;
+	font-weight:bold;
+	padding:11px 23px;
+	width: 100%;
+	background-color: #e0ebea;
+}
+.boutonSalon_invitation {
+	box-shadow: 0px 1px 3px 0px #91b8b3;
+	border-radius:5px;
+	border:1px solid #566963;
+	display:inline-block;
+	cursor:pointer;
+	color:#616161;
+	font-weight:bold;
+	padding:11px 23px;
+	width: 100%;
+	background-color: #ffff99;
+}
+.boutonSalon:hover {
+	background-color:transparent;
+}
+.boutonSalon:active {
+	position:relative;
+	top:1px;
+}
 
 
 /* As RGBa codes */
@@ -1969,3 +2021,25 @@ padding-bottom:10px;
  .evenement_ajd{
  border: thick double #32a1ce ;
  }
+
+.cache{
+    visibility: hidden;
+}
+.cbox_asso > li{
+    list-style-type: none;
+    display: inline;
+    margin-right: 10px;
+}
+
+.titre_salon{
+    padding: 12px;
+    margin: 12px;
+    font-size: 22px;
+    font-weight: 700;
+    text-decoration: none;
+    font-style: normal;
+    font-variant: small-caps;
+    text-transform: none;
+    border: 5px double #D9D9D9;
+    border-radius: 25px;
+}

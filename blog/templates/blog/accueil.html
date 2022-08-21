@@ -118,7 +118,7 @@
         <div class="collapse navbar-collapse" id="navbarProduit">
             <ul class="nav navbar-nav justify-content-center ">
 
-        {% for asso_nom, asso_id in asso_list %}
+        {% for asso_id , asso_nom in asso_list %}
             <li class="nav-item  ">
                   <a  href="{% url 'blog:index_asso' asso=asso_id%}#ref-titre">
                       <button type="button" class="btn btn-info btn-menu-forum btn-block" >

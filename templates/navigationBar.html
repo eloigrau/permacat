@@ -3,7 +3,7 @@
 {% load app_filters %}
 {% block navBar %}
 
-<nav class="navbar navbar-light bs-dark navbar-expand-xl navbarMenu dropdown-toggle1" id="navbar">
+<nav class="navbar navbar-light bs-dark navbar-expand-xl navbarMenu" id="navbar">
     <div class="container-fluid">
         <button class="navbar-toggler navbar-btn" type="button" data-toggle="collapse" data-target="#navbarsActuel" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -432,6 +432,8 @@
                <li> <a class="dropdown-item" href="{% url 'profil_courant' %}">Mon profil</a></li>
                 <li class="divider" role="separator"></li>
                  <li><a class="dropdown-item" href="{% url 'conversations' %}"> Conversations privées</a></li>
+                <li class="divider" role="separator"></li>
+                 <li><a class="dropdown-item" href="{% url 'salon_accueil' %}"> Salons </a></li>
                 <li class="divider" role="separator"></li>
                  <li><a class="dropdown-item" href="{% url 'mesSuivis' %}"> Abonnements </a></li>
                 <li class="divider" role="separator"></li>

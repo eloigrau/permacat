@@ -22,7 +22,6 @@
     </div>
 {% endblock  %}
 {%block subtitle%}
-
 <div class="row">
     <div class="col-md-12 textcenter">
 
@@ -132,7 +131,7 @@
         </div>
         <div class="collapse navbar-collapse" id="navbarGroupes">
             <ul class="nav navbar-nav justify-content-center ">
-            {% for asso_nom, asso_id in asso_list %}
+            {% for  asso_id, asso_nom in asso_list %}
                 <li class="nav-item  ">
                       <a  href="{% url 'blog:index_asso' asso=asso_id%}#ref-titre">
                           <button type="button" class="btn  btn-block {%if asso_courante_abreviation == asso_id %} btn-warning{% else %}btn-info{% endif %}" >
@@ -234,29 +233,77 @@
         </div>
         {%endif%}
 </div>
-{%if list_epingles%}
-    <div class="row justify-content-center" >
+
+<div class="row justify-content-center" >
+<nav class="navbar navbar-expand-sm sticky-top navbar-light bg-light">
+        <div class="navbar-header">
+             <button class="btn btn-primary btn-groupe navbar-toggler dropdown-toggle" type="button" data-toggle="collapse" data-target="#navbarArticles" aria-controls="navbarProduitContent" aria-expanded="false" aria-label="Toggle navigation">
+                </button>
+        </div>
+        <div class="collapse navbar-collapse " id="navbarArticles">
+            <ul class="nav navbar-nav justify-content-center ">
+{%if articles_epingles%}
+                <li class="nav-item  ">
+                      <a  href="#articles_epingles">
+                          <button type="button" class="btn  btn-block btn-light btn-sm" >
+                              <p>Articles épinglés</p>
+                       </button>
+                    </a>
+                </li>
+{%endif%}
+{% if article_list %}
+                <li class="nav-item  ">
+                      <a  href="#article_list">
+                          <button type="button" class="btn  btn-block btn-light btn-sm" >
+                              <p>Articles généraux</p>
+                       </button>
+                    </a>
+                </li>
+{%endif%}
+{% if articles_partages %}
+                <li class="nav-item  ">
+                      <a  href="#articles_partages">
+                          <button type="button" class="btn  btn-block btn-light btn-sm" >
+                              <p>Articles partagés</p>
+                       </button>
+                    </a>
+                </li>
+{%endif%}
+{% if articles_archives %}
+                <li class="nav-item  ">
+                      <a  href="#articles_archives">
+                          <button type="button" class="btn  btn-block btn-light btn-sm" >
+                              <p>Articles archivés</p>
+                       </button>
+                    </a>
+                </li>
+{%endif%}
+            </ul>
+
+</div>
+</nav>
+</div>
+{%if articles_epingles%}
+    <div class="row justify-content-center" id="articles_epingles">
         <div class="col-sm-12 textcenter">
-            <p><h4>Articles épinglés</h4></p>
+            <p><h4>Articles épinglés :</h4></p>
         </div>
     </div>
     <div class="row justify-content-center" >
         <div class="col-sm-12">
-     {% include "blog/articles_template_tableau.html" with article_list=list_epingles %}
+     {% include "blog/articles_template_tableau.html" with article_list=articles_epingles %}
         </div>
     </div>
     <hr>
 {%endif%}
 
 {% if article_list %}
-
-{% if list_epingles %}
-    <div class="row justify-content-center" >
+    <div class="row justify-content-center" id="article_list">
         <div class="col-sm-12 textcenter">
-            <p><h4>Autres articles :</h4></p>
+            <p><h4>Articles généraux :</h4></p>
         </div>
     </div>
-{% endif %}
+
 <div class="row ">
     <div class="col-sm-12 my-auto">
         {% include 'blog/navbar_forum_tri.html' %}
@@ -271,9 +318,28 @@
 {%include 'pagination.html' %}
 </div>
 
-        {% endif %}
-        {% if list_archive %}
-        <div class="textcenter">
+    {% endif %}
+
+
+{% if articles_partages %}
+<hr>
+    <div class="row justify-content-center" id="articles_partages">
+        <div class="col-sm-12 textcenter">
+            <p><h4>Articles partagés :</h4></p>
+        </div>
+    </div>
+<div class="row justify-content-center">
+    <div class="col-sm-12">
+    <div class="infinite-container">
+ {% include "blog/articles_template_tableau.html" with article_list=articles_partages %}
+    </div>
+    </div>
+{%include 'pagination.html' %}
+</div>
+
+{% endif %}
+        {% if articles_archives %}
+        <div class="textcenter" id="articles_archives">
             <button id="btn-archives"  type="button" class="btn btn-lg" onclick="toggle_visibility('archives');" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour afficher les archives">
                 Afficher les archives
             </button>
@@ -281,10 +347,10 @@
         <hr>
 
         <div  id="archives" style='display:none;'>
-             {% include "blog/articles_template_tableau.html" with article_list=list_archive %}
+             {% include "blog/articles_template_tableau.html" with article_list=articles_archives %}
 {% comment %}
             <div class="grid-container justify-content-center ">
-                {% for article in list_archive %}
+                {% for article in articles__archive %}
                 <div class="infinite-item my-auto mx-auto mx-auto">
                 {% include "blog/article_template2.html" with article=article %}
                 </div>
@@ -293,6 +359,7 @@
 {% endcomment %}
         </div>
     {% endif %}
+
 
 <script>
     function toggle_visibility(id) {
@@ -308,4 +375,5 @@
       }
    }
 </script>
+
 {% endblock %}

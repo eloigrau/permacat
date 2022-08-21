@@ -6,7 +6,7 @@ from django.utils.html import strip_tags
 from .models import Article, Commentaire, Discussion, Projet, CommentaireProjet, Choix, Evenement,Asso, AdresseArticle
 from .forms import ArticleForm, ArticleAddAlbum, CommentaireArticleForm, CommentaireArticleChangeForm, ArticleChangeForm, ProjetForm, \
     ProjetChangeForm, CommentProjetForm, CommentaireProjetChangeForm, EvenementForm, EvenementArticleForm, AdresseArticleForm,\
-    DiscussionForm
+    DiscussionForm, SalonArticleForm
 from .filters import ArticleFilter
 from.utils import get_suivis_forum
 from django.contrib.auth.decorators import login_required
@@ -14,7 +14,7 @@ from django.views.generic import ListView, UpdateView, DeleteView
 from actstream import actions, action
 from actstream.models import followers, following, action_object_stream
 from django.utils.timezone import now
-from bourseLibre.models import Suivis
+from bourseLibre.models import Suivis, Salon
 from bourseLibre.settings import NBMAX_ARTICLES
 from bourseLibre.forms import AdresseForm, AdresseForm2
 from bourseLibre.constantes import Choix as Choix_global
@@ -42,65 +42,17 @@ from photologue.models import Document
 
 @login_required
 def accueil(request):
-    # cat = Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
-    # categorie_list = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_asso["public"] if x[0] in cat]
-    # cat_pc = Article.objects.filter(asso__abreviation="pc").order_by('categorie').values_list('categorie', flat=True).distinct()
-    # categorie_list_pc = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_pc]
-    # cat_rtg = Article.objects.filter(asso__abreviation="rtg").order_by('categorie').values_list('categorie', flat=True).distinct()
-    # categorie_list_rtg = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_rtg]
-    # cat_fer = Article.objects.filter(asso__abreviation="fer").order_by('categorie').values_list('categorie', flat=True).distinct()
-    # categorie_list_fer = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_fer]
-    # cat_gt = Article.objects.filter(asso__abreviation="gt").order_by('categorie').values_list('categorie',
-    #                                                                                             flat=True).distinct()
-    # categorie_list_gt = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat_gt]
-    #cat_citealt = Article.objects.filter(asso__abreviation="citealt").order_by('categorie').values_list('categorie',
-    #                                                                                            flat=True).distinct()
-    #categorie_list_citealt = [(x[0], x[1], Choix.get_couleur(x[0]), Choix.get_logo(x[0])) for x in Choix.type_annonce if x[0] in cat_citealt]
+    assos = request.user.getListeAbreviationsAssos()
+    dateMin = (datetime.now() - timedelta(days=30)).replace(tzinfo=pytz.UTC)
 
-    #cat_viure = Article.objects.filter(asso__abreviation="viure").order_by('categorie').values_list('categorie',
-    #                                                                                                    flat=True).distinct()
-    #categorie_list_viure = [(x[0], x[1], Choix.get_couleur(x[0]), Choix.get_logo(x[0])) for x in Choix.type_annonce if
-   #                           x[0] in cat_viure]
-
-    #proj = Projet.objects.filter(estArchive=False, statut='accep').order_by('titre')
-
-    #for nomAsso in Choix_global.abreviationsAsso:
-   #     if not getattr(request.user, "adherent_" + nomAsso):
-    #        proj = proj.exclude(asso__abreviation=nomAsso)
-
-    #projets_list = [(x.slug, x.titre, x.get_couleur) for x in proj]
-
-    #ateliers = Atelier.objects.filter(start_time__gte=now())
-
-    #for nomAsso in Choix_global.abreviationsAsso:
-    #    if not getattr(request.user, "adherent_" + nomAsso):
-    #        ateliers = ateliers.exclude(asso__abreviation=nomAsso)
-
-    #ateliers_list = [(x.slug, x.titre, x.get_couleur) for x in ateliers]
-    #categorie_list_projets = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets ]
-
-    derniers_articles = Article.objects.filter(estArchive=False).order_by('-id')
-    for nomAsso in Choix_global.abreviationsAsso:
-        if not getattr(request.user, "adherent_" + nomAsso):
-            derniers_articles = derniers_articles.exclude(asso__abreviation=nomAsso)
-
-    derniers_articles_comm = Article.objects.filter(estArchive=False, dernierMessage__isnull=False).order_by('date_dernierMessage')
-
-    for nomAsso in Choix_global.abreviationsAsso:
-        if not getattr(request.user, "adherent_" + nomAsso):
-            derniers_articles_comm = derniers_articles_comm.exclude(asso__abreviation=nomAsso)
-
-    derniers_articles_modif = Article.objects.filter(Q(estArchive=False) & Q(date_modification__isnull=False) & ~Q(date_modification=F("date_creation"))).order_by('date_modification')
-
-    for nomAsso in Choix_global.abreviationsAsso:
-        if not getattr(request.user, "adherent_" + nomAsso):
-            derniers_articles_modif = derniers_articles_modif.exclude(asso__abreviation=nomAsso)
+    derniers_articles = [x for x in Article.objects.filter(Q(date_creation__gt=dateMin) & Q(estArchive=False) & Q(asso__abreviation__in=assos)).order_by('-id') if x.est_autorise(request.user)]
+    derniers_articles_comm = [x for x in Article.objects.filter(Q(date_modification__gt=dateMin) &Q(estArchive=False, dernierMessage__isnull=False) & Q(asso__abreviation__in=assos)).order_by('date_dernierMessage') if x.est_autorise(request.user)]
+    derniers_articles_modif = [x for x in Article.objects.filter(Q(date_modification__gt=dateMin) &Q(estArchive=False) & Q(date_modification__isnull=False) & ~Q(date_modification=F("date_creation")) & Q(asso__abreviation__in=assos)).order_by('date_modification') if x.est_autorise(request.user)]
 
     derniers = sorted(set([x for x in itertools.chain(derniers_articles_comm[::-1][:8], derniers_articles_modif[::-1][:8], derniers_articles[:8], )]), key=lambda x:x.date_modification if x.date_modification else x.date_creation)[::-1]
 
-
-    asso_list = [(x.nom, x.abreviation) for x in Asso.objects.all().exclude(abreviation="jp").order_by("id") if request.user.est_autorise(x.abreviation)] # ['public'] + [asso for asso in Choix_global.abreviationsAsso if self.request.user.est_autorise(asso)] + ['projets']
-
+    #asso_list = [(x.nom, x.abreviation) for x in Asso.objects.all().exclude(abreviation="jp").order_by("id") if request.user.est_autorise(x.abreviation)] # ['public'] + [asso for asso in Choix_global.abreviationsAsso if self.request.user.est_autorise(asso)] + ['projets']
+    asso_list = Choix_global.abreviationsNomsAssoEtPublic
     suivis = get_suivis_forum(request)
 #'categorie_list':categorie_list,'categorie_list_pc':categorie_list_pc,'categorie_list_rtg':categorie_list_rtg,'categorie_list_fer':categorie_list_fer,'categorie_list_gt':categorie_list_gt,'categorie_list_citealt':categorie_list_citealt,'categorie_list_viure':categorie_list_viure,'projets_list':projets_list,'ateliers_list':ateliers_list, 'categorie_list_projets':categorie_list_projets,
     return render(request, 'blog/accueil.html', {'asso_list':asso_list,'derniers_articles':derniers, 'suivis':suivis})
@@ -115,7 +67,10 @@ def ajouterArticle(request):
         return render(request, 'erreur2.html', {"msg": "Vous avez déjà posté %s articles depuis 24h, veuillez patienter un peu avant de poster un nouvel article, merci !"% NBMAX_ARTICLES})
 
     if form.is_valid():
-        article = form.save(request.user)
+        article = form.save(request.user, sendMail=False)
+        for asso in form.cleaned_data["partagesAsso"]:
+            article.partagesAsso.add(asso)
+        article.save(sendMail=True, forcerCreationMails=True)
         url = article.get_absolute_url() + "#ref-titre"
         suffix = "_" + article.asso.abreviation
         action.send(request.user, verb='article_nouveau'+suffix, action_object=article, url=url,
@@ -123,7 +78,7 @@ def ajouterArticle(request):
         suivre_article(request, article.slug)
         return redirect(article.get_absolute_url())
 
-    return render(request, 'blog/ajouterPost.html', { "form": form, })
+    return render(request, 'blog/ajouterArticle.html', { "form": form, })
 
 
 # @login_required
@@ -225,6 +180,8 @@ def lireArticle(request, slug):
     ateliers = Atelier.objects.filter(article=article).order_by('-start_time')
     documents = Document.objects.filter(article=article).order_by('date_creation')
     lieux = AdresseArticle.objects.filter(article=article).order_by('titre')
+    salons = Salon.objects.filter(article=article).order_by('titre')
+    salons = [s for s in salons if s.est_autorise(request.user)]
 
     if not article.est_autorise(request.user):
         return render(request, 'notMembre.html', {"asso": str(article.asso)})
@@ -248,7 +205,7 @@ def lireArticle(request, slug):
                             discussions}
 
             context = {'article': article, 'form': CommentaireArticleForm(None), 'form_discussion': form_discussion, 'commentaires': commentaires,
-                       'dates': dates, 'actions': actions, 'ateliers': ateliers, 'lieux': lieux, 'documents':documents, "ancre": discu.slug}
+                       'dates': dates, 'actions': actions, 'ateliers': ateliers, 'lieux': lieux, 'documents':documents, "salons":salons, "ancre": discu.slug}
 
     elif form.is_valid() and 'message_discu' in request.POST:
         discu = Discussion.objects.get(article=article, slug=request.POST['message_discu'].replace("#",""))
@@ -279,10 +236,10 @@ def lireArticle(request, slug):
                         description=desc, discussion=discu.titre)
             #envoi_emails_articleouprojet_modifie(article, request.user.username + " a réagit au projet: " +  article.titre, True)
         context = {'article': article, 'form': CommentaireArticleForm(None), 'form_discussion': form_discussion, 'commentaires': commentaires,
-               'dates': dates, 'actions': actions, 'ateliers': ateliers, 'lieux': lieux, 'documents':documents, "ancre":discu.slug}
+               'dates': dates, 'actions': actions, 'ateliers': ateliers, 'lieux': lieux, 'documents':documents, "salons":salons, "ancre":discu.slug}
 
     else:
-        context = {'article': article, 'form': form, 'form_discussion': form_discussion, 'commentaires':commentaires, 'dates':dates, 'actions':actions, 'ateliers':ateliers, 'lieux':lieux, 'documents':documents, }
+        context = {'article': article, 'form': form, 'form_discussion': form_discussion, 'commentaires':commentaires, 'dates':dates, 'actions':actions, 'ateliers':ateliers, 'lieux':lieux, 'documents':documents, "salons":salons, }
     return render(request, 'blog/lireArticle.html', context,)
 
 @login_required
@@ -298,86 +255,41 @@ class ListeArticles(ListView):
     paginate_by = 50
 
     def get_queryset(self):
-        params = dict(self.request.GET.items())
+        self.params = dict(self.request.GET.items())
+        self.q_objects = self.request.user.getQObjectsAssoArticles()
+        qs = Article.objects.filter(self.q_objects).distinct()
 
-        qs = Article.objects.filter(estArchive=False)
+        if "auteur" in self.params:
+            qs = qs.filter(auteur__username=self.params['auteur'])
+        if "categorie" in self.params:
+            qs = qs.filter(categorie=self.params['categorie'])
 
-        if not self.request.user.is_authenticated:
-            qs = qs.filter(asso__nom="public")
-        else:
-            for nomAsso in Choix_global.abreviationsAsso:
-                if not getattr(self.request.user, "adherent_" + nomAsso):
-                    qs = qs.exclude(asso__abreviation=nomAsso)
-
-        if "auteur" in params:
-            qs = qs.filter(auteur__username=params['auteur'])
-        if "categorie" in params:
-            qs = qs.filter(categorie=params['categorie'])
-        if "permacat" in params and self.request.user.adherent_pc:
-            if params['permacat'] == "True":
-                qs = qs.filter(asso_abreviation="pc")
-            else:
-                qs = qs.filter(estPublic=True)
-
-        if "ordreTri" in params:
-            if params['ordreTri'] == "-date_dernierMessage":
+        if "ordreTri" in self.params:
+            if self.params['ordreTri'] == "-date_dernierMessage":
                 qs = qs.filter(date_dernierMessage__isnull=False)
-            elif params['ordreTri'] == "-date_modification":
+            elif self.params['ordreTri'] == "-date_modification":
                 qs = qs.filter(date_modification__isnull=False)
-            elif params['ordreTri'] == "-start_time":
+            elif self.params['ordreTri'] == "-start_time":
                 qs = qs.filter(start_time__isnull=False)
-            qs = qs.order_by(params['ordreTri'])
-
-            #if params['ordreTri'] == "-date_dernierMessage":
-            #    from django.db.models import Case, When, IntegerField
-            #    qs = qs.annotate(testing=Case(When(date_dernierMessage__isnull=False, then=1), default=0,
-            #                                  output_field=IntegerField())).order_by('testing', '-date_dernierMessage')
-            #elif params['ordreTri'] == "-date_modification":
-            #    from django.db.models import Case, When, IntegerField
-            #    qs = qs.annotate(testing=Case(When(date_modification__isnull=False, then=1), default=0,
-            #                                  output_field=IntegerField())).order_by('testing', '-date_modification')
-            #else:
-            #    qs = qs.order_by(params['ordreTri'])
+            if self.params['ordreTri'] == "titre":
+                qs = qs.extra(select={'lower_name':'lower(titre)'}).order_by('lower_name')
+            else:
+                qs = qs.order_by(self.params['ordreTri'])
         else:
             qs = qs.order_by( '-date_creation', '-date_dernierMessage', 'categorie')
 
         self.qs = qs
-        return qs
+        return qs.filter(estArchive=False, estEpingle=False)
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
 
-        context['list_archive'] = Article.objects.filter(estArchive=True)
-        # context['producteur_list'] = Profil.objects.values_list('username', flat=True).distinct()
-        #context['auteur_list'] = Article.objects.order_by('auteur').values_list('auteur__username', flat=True).distinct()
+        context['articles_epingles'] = self.qs.filter(Q(estArchive=False, estEpingle=True)).distinct()#.order_by(F('date_modification').desc(nulls_last=True), '-date_creation')
+        context['articles_partages'] = []#self.qs.filter(Q(estArchive=False, partagesAsso__isnull=False))#.distinct().order_by(F('date_modification').desc(nulls_last=True), '-date_creation')
+        context['articles_archives'] = self.qs.filter(Q(estArchive=True)).distinct()#.order_by(F('date_modification').desc(nulls_last=True), '-date_creation')
 
-        #
-        # cat = Article.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
-        # context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_asso["public"] if x[0] in cat]
-        #
-        # for nomAsso in Choix_global.abreviationsAsso:
-        #     if getattr(self.request.user, "adherent_" + nomAsso):
-        #         cat = Article.objects.filter(asso__abreviation=nomAsso).order_by('categorie').values_list('categorie', flat=True).distinct()
-        #         if nomAsso == 'citealt':
-        #             context['categorie_list_' + nomAsso] = [(x[0], x[1], Choix.get_couleur(x[0]), Choix.get_logo(x[0])) for x in
-        #                                                     Choix.type_annonce if x[0] in cat]
-        #         elif nomAsso == 'viure':
-        #             context['categorie_list_' + nomAsso] = [
-        #                 (x[0], x[1], Choix.get_couleur(x[0]), Choix.get_logo(x[0])) for x in
-        #                 Choix.type_annonce if x[0] in cat]
-        #         else:
-        #             context['categorie_list_'+nomAsso] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce if x[0] in cat]
-        #
-        # proj = Projet.objects.filter(estArchive=False)
-        # for nomAsso in Choix_global.abreviationsAsso:
-        #     if not getattr(self.request.user, "adherent_" + nomAsso):
-        #         proj = proj.exclude(asso__abreviation=nomAsso)
-        # cat = proj.order_by('categorie').values_list('categorie', flat=True).distinct()
-       # context['categorie_list_projets'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_projets]
-       # context['projets_list'] = [(x.slug, x.titre, x.get_couleur) for x in proj]
-
-        context['asso_list'] = [(x.nom, x.abreviation) for x in Asso.objects.all().exclude(abreviation="jp").order_by("id") if self.request.user.est_autorise(x.abreviation)]
+        context['asso_list'] = Choix_global.abreviationsNomsAssoEtPublic#[(x.nom, x.abreviation) for x in Asso.objects.all().exclude(abreviation="jp").order_by("id") if self.request.user.est_autorise(x.abreviation)]
         context['typeFiltre'] = "aucun"
         context['suivis'] = get_suivis_forum(self.request)
         context['ordreTriPossibles'] = Choix.ordre_tri_articles
@@ -398,9 +310,6 @@ class ListeArticles(ListView):
                     except:
                         context['categorie_courante'] = "Catégorie inconnue : " + self.request.GET['categorie']
 
-
-        if 'permacat' in self.request.GET:
-            context['typeFiltre'] = "permacat"
         if 'archives' in self.request.GET:
             context['typeFiltre'] = "archives"
         if 'ordreTri' in self.request.GET:
@@ -421,21 +330,10 @@ class ListeArticles_asso(ListView):
 
     def get_queryset(self):
         params = dict(self.request.GET.items())
-        nom_asso = self.kwargs['asso']
-        asso = testIsMembreAsso(self.request, nom_asso)
-        if not isinstance(asso, Asso):
-            raise PermissionDenied
-        self.asso = asso
-        qs = Article.objects.all()
-
-        if asso.abreviation == "public":
-            qs = qs.exclude(Q(asso__abreviation="pc")|Q(asso__abreviation="rtg")|Q(asso__abreviation="fer")|Q(asso__abreviation="gt")|Q(asso__abreviation="scic")|Q(asso__abreviation="citealt")|Q(asso__abreviation="viure")|Q(asso__abreviation="bzz2022"))
-        elif asso.abreviation == "projets":
-            pass
-        else:
-            qs = qs.filter(asso__abreviation=asso.abreviation)
-
+        self.asso = Asso.objects.get(abreviation=self.kwargs['asso'])
+        qs = Article.objects.filter(Q(asso__abreviation=self.asso.abreviation) | Q(partagesAsso__abreviation=self.asso.abreviation) | Q(partagesAsso__abreviation="public")).distinct()
         self.categorie = None
+
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])
         if "categorie" in params:
@@ -449,37 +347,33 @@ class ListeArticles_asso(ListView):
                 qs = qs.filter(date_modification__isnull=False)
             elif params['ordreTri'] == "-start_time":
                 qs = qs.filter(start_time__isnull=False)
-            qs = qs.order_by(params['ordreTri'])
+            if params['ordreTri'] == "titre":
+                qs = qs.extra(select={'lower_name':'lower(titre)'}).order_by('lower_name')
+            else:
+                qs = qs.order_by(params['ordreTri'])
         else:
-            qs = qs.order_by( '-date_creation', '-date_dernierMessage', 'categorie')
+            qs = qs.order_by( '-date_modification', '-date_creation',  'categorie')
 
         self.qs = qs
-        return qs.filter(estArchive=False, estEpingle=False)
+        return [x for x in qs.filter(asso=self.asso, estArchive=False, estEpingle=False) if x.est_autorise(self.request.user)]
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
 
-        context['list_archive'] = self.qs.filter(estArchive=True)
-        context['list_epingles'] = self.qs.filter(estEpingle=True)
+        context['articles_archives'] = self.qs.filter(estArchive=True)
+        context['articles_epingles'] = self.qs.filter(estEpingle=True, estArchive=False, asso=self.asso)
+        context['articles_partages'] = [x for x in self.qs.filter(~Q(asso=self.asso)) if x.est_autorise(self.request.user)]
 
-
-        qs = Article.objects.all()
-
-        if self.asso.abreviation == "public":
-            qs = qs.exclude(Q(asso__abreviation="pc")|Q(asso__abreviation="rtg")|Q(asso__abreviation="fer")|Q(asso__abreviation="gt")|Q(asso__abreviation="scic")|Q(asso__abreviation="citealt")|Q(asso__abreviation="viure")|Q(asso__abreviation="bzz2022"))
-        elif self.asso.abreviation == "projets":
-            pass
-        else:
-            qs = qs.filter(asso__abreviation=self.asso.abreviation)
-        cat = qs.order_by('categorie').values_list('categorie', flat=True).distinct()
-        context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_asso[self.kwargs['asso']] if
-                                     x[0] in cat]
-        if self.kwargs['asso']:
-            nom_asso = self.kwargs['asso']
-            asso = testIsMembreAsso(self.request, nom_asso)
-            if not isinstance(asso, Asso):
-                raise PermissionDenied
+        # qs = self.qs
+        #
+        # if self.asso.abreviation == "public":
+        #     qs = qs.exclude(Q(asso__abreviation="pc")|Q(asso__abreviation="rtg")|Q(asso__abreviation="fer")|Q(asso__abreviation="gt")|Q(asso__abreviation="scic")|Q(asso__abreviation="citealt")|Q(asso__abreviation="viure")|Q(asso__abreviation="bzz2022"))
+        # elif self.asso.abreviation == "projets":
+        #     pass
+        # else:
+        #     qs = qs.filter(asso__abreviation=self.asso.abreviation)
+        context['categorie_list'] = [(x[0], x[1], Choix.get_couleur(x[0])) for x in Choix.type_annonce_asso[self.asso.abreviation]]
 
         proj = Projet.objects.filter(estArchive=False)
         for nomAsso in Choix_global.abreviationsAsso:
@@ -497,10 +391,10 @@ class ListeArticles_asso(ListView):
         #     ateliers = ateliers.exclude(asso__abreviation="rtg")
         # context['ateliers_list'] = [(x.slug, x.titre, x.get_couleur) for x in ateliers]
 
-        context['asso_list'] = [(x.nom, x.abreviation) for x in Asso.objects.all().exclude(abreviation="jp").order_by("id") if self.request.user.est_autorise(x.abreviation)]
-        context['asso_courante'] = asso
-        context['dossier_courant'] =  self.categorie
-        context['asso_courante_abreviation'] = asso.abreviation
+        context['asso_list'] = Choix_global.abreviationsNomsAssoEtPublic#[(x.nom, x.abreviation) for x in Asso.objects.all().exclude(abreviation="jp").order_by("id") if self.request.user.est_autorise(x.abreviation)]
+        context['asso_courante'] = self.asso
+        context['dossier_courant'] = self.categorie
+        context['asso_courante_abreviation'] = self.asso.abreviation
         context['typeFiltre'] = "aucun"
         context['suivis'] = get_suivis_forum(self.request)
 
@@ -579,7 +473,7 @@ class ModifierProjet(UpdateView):
 
     def get_form(self,*args, **kwargs):
         form = super(ModifierProjet, self).get_form(*args, **kwargs)
-        form.fields["asso"].choices = [(x.id, x.nom) for x in Asso.objects.all().order_by("id") if self.request.user.estMembre_str(x.abreviation)]
+        form.fields["asso"].choices = [(x.id, x.nom) for x in Asso.objects.all().exclude(abreviation="jp").order_by("id") if self.request.user.estMembre_str(x.abreviation)]
         return form
 
 class SupprimerProjet(DeleteAccess, DeleteView):
@@ -878,15 +772,24 @@ def ajouterEvenement(request, date=None):
 
 
 @login_required
-def ajouterEvenementArticle(request, id_article):
+def ajouterEvenementArticle(request, slug_article):
     form = EvenementArticleForm(request.POST or None)
 
     if form.is_valid():
-        ev = form.save(request, id_article)
+        ev = form.save(request, slug_article)
         return redirect(ev.article)
 
     return render(request, 'blog/ajouterEvenement.html', {'form': form, })
 
+@login_required
+def ajouterSalonArticle(request, slug_article):
+    form = SalonArticleForm(request.POST or None)
+
+    if form.is_valid():
+        ev = form.save(request, slug_article)
+        return redirect(ev.article)
+
+    return render(request, 'blog/ajouterEvenement.html', {'form': form, })
 
 class SupprimerEvenementArticle(DeleteAccess, DeleteView):
     model = Evenement
@@ -996,10 +899,11 @@ def changerArticles_jardin(request):
 
 @login_required
 def filtrer_articles(request):
-    articles_list = Article.objects.all()
-    for nomAsso in Choix_global.abreviationsAsso:
-        if not getattr(request.user, "adherent_" + nomAsso):
-            articles_list = articles_list.exclude(asso__abreviation=nomAsso)
+    articles_list = Article.objects.none()
+    if request.GET:
+        q_object = request.user.getQObjectsAssoArticles()
+        articles_list = Article.objects.filter(q_object).distinct()
+
     f = ArticleFilter(request.GET, queryset=articles_list)
 
     return render(request, 'blog/article_filter.html', {'filter': f})
@@ -1012,6 +916,20 @@ def ajax_categories(request):
                       {'categories': Choix.get_type_annonce_asso(nomAsso)})
     except:
         return render(request, 'blog/ajax/categories_dropdown_list_options.html', {'categories': Choix.get_type_annonce_asso("defaut")})
+
+
+def ajaxListeArticles(request):
+    try:
+        asso_id = request.GET.get('asso')
+        nomAsso = Asso.objects.get(id=asso_id).abreviation
+        return render(request, 'blog/ajax/listeArticles.html',
+                      {'categories': Choix.get_type_annonce_asso(nomAsso)})
+    except:
+        qs = Article.objects.all()
+        for nomAsso in Choix_global.abreviationsAsso:
+            if not getattr(request.user, "adherent_" + nomAsso):
+                qs = qs.exclude(asso__abreviation=nomAsso)
+        return render(request, 'blog/ajax/categories_dropdown_list_options.html', {'qs': qs})
 
 
 

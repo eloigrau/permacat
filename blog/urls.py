@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.urls import path
+
+from bourseLibre import views_inscriptions
 from . import views, forms
 from django.contrib.auth.decorators import login_required
 from django_filters.views import FilterView
@@ -66,7 +68,8 @@ urlpatterns = [
 
     url(r'ajouterEvenement/$', views.ajouterEvenement, name='ajouterEvenement'),
     url(r'transfereArticlesJardin/$', views.changerArticles_jardin, name='transfereArticlesJardin'),
-    url(r'ajouterEvenementArticle/(?P<id_article>[0-9]+)$', views.ajouterEvenementArticle, name='ajouterEvenementArticle'),
+    path(r'ajouterEvenementArticle/<str:slug_article>', views.ajouterEvenementArticle, name='ajouterEvenementArticle'),
+    path(r'ajouterSalonArticle/<str:slug_article>', views.ajouterSalonArticle, name='ajouterSalonArticle'),
     url(r'^supprimerEvenementArticle/(?P<slug_article>[-\w]+)-(?P<id_evenementArticle>[0-9]+)$', login_required(views.SupprimerEvenementArticle.as_view(), login_url='/auth/login/'), name='supprimerEvenementArticle'),
     url(r'ajouterAdresseArticle/(?P<id_article>[0-9]+)$', views.ajouterAdresseArticle, name='ajouterAdresseArticle'),
     url(r'^supprimerAdresseArticle/(?P<slug_article>[-\w]+)/(?P<id_adresse>[0-9]+)$', login_required(views.SupprimerAdresseArticle.as_view(), login_url='/auth/login/'), name='supprimerAdresseArticle'),
