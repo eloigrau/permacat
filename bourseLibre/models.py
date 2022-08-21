@@ -392,7 +392,7 @@ class Profil(AbstractUser):
 
     def getQObjectsAssoArticles(self):
         q_objects = Q()
-        for asso in self.getListeAbreviationsAssos():
+        for asso in self.getListeAbreviationsAssosEtPublic():
             q_objects |= Q(asso__abreviation=asso) | Q(partagesAsso__abreviation=asso)
         return q_objects
 
