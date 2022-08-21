@@ -42,7 +42,7 @@ from photologue.models import Document
 
 @login_required
 def accueil(request):
-    assos = request.user.getListeAbreviationsAssos()
+    assos = request.user.getListeAbreviationsAssosEtPublic()
     dateMin = (datetime.now() - timedelta(days=30)).replace(tzinfo=pytz.UTC)
 
     derniers_articles = [x for x in Article.objects.filter(Q(date_creation__gt=dateMin) & Q(estArchive=False) & Q(asso__abreviation__in=assos)).order_by('-id') if x.est_autorise(request.user)]
