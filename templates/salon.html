@@ -40,7 +40,12 @@
     messageBody.scrollTop = idConversation.scrollHeight - idConversation.clientHeight;
 </script>
 <hr>
+
+    {% if not messages_echanges %}
 <h5>Commencer la discussion :</h5>
+    {% else %}
+<h5>Répondre :</h5>
+    {% endif %}
 <div class="row-sm-12">
     <form  id="myForm" class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
