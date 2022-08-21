@@ -150,7 +150,7 @@ class Article(models.Model):
     dernierMessage = models.CharField(max_length=100, default=None, blank=True, null=True)
     estArchive = models.BooleanField(default=False, verbose_name="Archiver l'article")
 
-    start_time = models.DateField(verbose_name="Date de l'événement (pour affichage dans l'agenda) - date de début si l'événement a lieu sur plusieurs jours ", null=True, blank=True, help_text="jj/mm/année")
+    start_time = models.DateField(verbose_name="Date de l'événement (pour apparaitre sur l'agenda, sinon vous pourrez ajouter des évènements depuis l'article) ", null=True, blank=True, help_text="jj/mm/année")
     end_time = models.DateField(verbose_name="Date de fin (optionnel, pour affichage dans l'agenda)",  null=True,blank=True, help_text="jj/mm/année")
 
     tags = TaggableManager(verbose_name="Mots clés",  help_text="Liste de mots-clés séparés par une virgule", blank=True)
@@ -396,8 +396,8 @@ class Projet(models.Model):
     date_dernierMessage = models.DateTimeField(verbose_name="Date de Modification", auto_now=False, blank=True, null=True)
     dernierMessage = models.CharField(max_length=100, default="", blank=True, null=True)
 
-    start_time = models.DateField(verbose_name="Date de début (optionnel, pour affichage dans l'agenda)",  null=True,blank=True, help_text="jj/mm/année")
-    end_time = models.DateField(verbose_name="Date de fin (optionnel, pour affichage dans l'agenda)",  null=True,blank=True, help_text="jj/mm/année")
+    start_time = models.DateField(verbose_name="Date de début (optionnel, pour apparaitre dans l'agenda)",  null=True,blank=True, help_text="jj/mm/année")
+    end_time = models.DateField(verbose_name="Date de fin (optionnel, pour apparaitre dans l'agenda)",  null=True,blank=True, help_text="jj/mm/année")
 
     estArchive = models.BooleanField(default=False, verbose_name="Archiver le projet")
     asso = models.ForeignKey(Asso, on_delete=models.SET_NULL, null=True)
