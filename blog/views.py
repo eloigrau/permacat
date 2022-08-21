@@ -357,7 +357,7 @@ class ListeArticles_asso(ListView):
             qs = qs.order_by( '-date_modification', '-date_creation',  'categorie')
 
         self.qs = qs
-        return [x for x in qs.filter(asso=self.asso, estArchive=False) if x.est_autorise(self.request.user)]
+        return qs.filter(Q(asso=self.asso, estArchive=False) & self.q_objects)
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
