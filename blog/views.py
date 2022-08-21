@@ -357,14 +357,14 @@ class ListeArticles_asso(ListView):
             qs = qs.order_by( '-date_modification', '-date_creation',  'categorie')
 
         self.qs = qs
-        return qs.filter(Q(asso=self.asso, estArchive=False) & self.q_objects)
+        return qs.filter(Q(estArchive=False, asso=self.asso) & self.q_objects)
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
 
         context['articles_archives'] = self.qs.filter(Q(estArchive=True, asso=self.asso) & self.q_objects)
-        context['articles_epingles'] = self.qs.filter(Q(estEpingle=True, estArchive=False) & self.q_objects)
+        context['articles_epingles'] = self.qs.filter(Q(estEpingle=True, estArchive=False, asso=self.asso) & self.q_objects)
         context['articles_partages'] = self.qs.filter(~Q(asso=self.asso) & self.q_objects)
 
         # qs = self.qs
