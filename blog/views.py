@@ -363,7 +363,7 @@ class ListeArticles_asso(ListView):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
 
-        context['articles_archives'] = self.qs.filter(estArchive=True)
+        context['articles_archives'] = self.qs.filter(estArchive=True, asso=self.asso)
         context['articles_epingles'] = self.qs.filter(estEpingle=True, estArchive=False)
         context['articles_partages'] = [x for x in self.qs.filter(~Q(asso=self.asso)) if x.est_autorise(self.request.user)]
 
