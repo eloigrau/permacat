@@ -15,11 +15,12 @@
             {% csrf_token %}
              <div class="btn-group btn-block">
                 <div class="col" style="padding-right:0;">
-                    <input class="form-control " name="id_recherche" placeholder="Recherche rapide..." type="text">
+                  {% comment %}  <input class="form-control " name="id_recherche" placeholder="Recherche rapide..." type="text">{% endcomment %}
+           <span class="input-group-append">
+               <input class="form-control fmr-sm-2" name="id_recherche" type="text" placeholder="Rechercher sur le site...">
+    <button class="btn navbar-btn btn-light my-2 my-sm-0" type="submit" data-toggle="tooltip" data-placement="bottom" title="Rechercher sur le site...">{% fontawesome_icon 'search' %}</button>
+            </span>
                         </div>
-            <div class="col-auto" style="padding-left:0;">
-                        <button class="btn btn-outline " type="submit" >{% fontawesome_icon 'search' %}</button>
-            </div>
              </div>
          </form>
      </div>
@@ -104,11 +105,6 @@
 
         <hr>
 <div class="container">
-    <div class="row justify-content-center" >
-        <div class="col-sm-12 textcenter">
-            <p><h4>Choisir un groupe :</h4></p>
-        </div>
-    </div>
 <div class="row justify-content-center">
 <nav class="navbar  navbar-expand-lg navbar-light justify-content-center">
         <div class="navbar-header">

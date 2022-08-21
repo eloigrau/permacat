@@ -31,10 +31,11 @@
                  <form class="form-inline justify-content-center  navbar-form " action="{% url 'chercher_articles' %}" method="get" role = "search">
                     {% csrf_token %}
                     <div class="col" style="padding-right:0;">
-                            <input class="form-control " name="id_recherche" placeholder="Recherche rapide..." type="text">
-                                </div>
-                    <div class="col-auto" style="padding-left:0;">
-                                <button class="btn btn-outline " type="submit" >{% fontawesome_icon 'search' %}</button>
+                          {% comment %}  <input class="form-control " name="id_recherche" placeholder="Recherche rapide..." type="text">{%endcomment %}
+                     <span class="input-group-append">
+                        <input class="form-control fmr-sm-2" name="id_recherche" type="text" placeholder="Recherche rapide...">
+                        <button class="btn navbar-btn btn-light my-2 my-sm-0" type="submit" data-toggle="tooltip" data-placement="bottom" title="Recherche rapide...">{% fontawesome_icon 'search' %}</button>
+                    </span>
                     </div>
                  </form>
              </div>
