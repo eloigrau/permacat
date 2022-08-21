@@ -59,8 +59,7 @@
 
 
 <body>
-    <a name="top"></a>
-<div class="container-fluid">
+<div class="container-fluid" id="top">
 	<div class="row rowprincipal">
 		<div class="colprincipal col-xs-12 col-sm-12 col-lg-12 ">
             {% block navbar%}
@@ -72,7 +71,6 @@
                 <div class="panel-title soustitre" id="top_soustitre" {%block bodyEntete%}{%endblock%}>
                     <div class="row justify-content-sm-center">
                     <div class="col-sm-12 col-md-12 col-lg-12  textcenter">
-
                         <div class="row ">
                            {%block message%}
                             {% if messages %}
@@ -92,7 +90,7 @@
                 </div>
                 <div class="panel-body panelsoustitre ">
                 <div class="row justify-content-sm-center">
-                    <div class="col-sm-12 col-md-12 col-lg-12  textcenter">
+                    <div class="col-sm-12 col-md-12 col-lg-12  textcenter" id="ref-titre">
                             {% block subtitle %}{% endblock %}
                 </div></div>
                 <div class="panel-body bodycontenu ">

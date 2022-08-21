@@ -122,7 +122,7 @@
 
 {%endblock%}
 {% block content %}
-<div class="container" id="ref-titre">
+<div class="container" >
 <div class="row justify-content-center" >
 <nav class="navbar  navbar-expand-md navbar-light justify-content-center">
         <div class="navbar-header">
@@ -286,7 +286,7 @@
 {%if articles_epingles%}
     <div class="row justify-content-center" id="articles_epingles">
         <div class="col-sm-12 textcenter">
-            <p><h4>Articles épinglés :</h4></p>
+            <p><h4>Articles épinglés : </h4></p>
         </div>
     </div>
     <div class="row justify-content-center" >
@@ -300,7 +300,7 @@
 {% if article_list %}
     <div class="row justify-content-center" id="article_list">
         <div class="col-sm-12 textcenter">
-            <p><h4>Articles du groupe :</h4></p>
+            <p><h4>Articles du groupe :  <a href="#ref-titre" class="btn"><i class="fa fa-angle-up"></i></a></h4> </p>
         </div>
     </div>
 
@@ -325,7 +325,7 @@
 <hr>
     <div class="row justify-content-center" id="articles_partages">
         <div class="col-sm-12 textcenter">
-            <p><h4>Articles partagés :</h4></p>
+            <p><h4>Articles partagés : <a href="#ref-titre" class="btn"><i class="fa fa-angle-up"></i></a></p></h4>
         </div>
     </div>
 <div class="row justify-content-center">
@@ -339,8 +339,11 @@
 
 {% endif %}
         {% if articles_archives %}
+
         <div class="textcenter" id="articles_archives">
-            <button id="btn-archives"  type="button" class="btn btn-lg" onclick="toggle_visibility('archives');" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour afficher les archives">
+
+            <p><a href="#ref-titre" class="btn"><i class="fa fa-angle-up"></i></a></p>
+            <button id="btn-archives"  type="button" class="btn btn-lg dropdown-toggle" onclick="toggle_visibility('archives');" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour afficher les archives">
                 Afficher les archives
             </button>
         </div>
