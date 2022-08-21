@@ -331,7 +331,7 @@ class ListeArticles_asso(ListView):
     def get_queryset(self):
         params = dict(self.request.GET.items())
         self.asso = Asso.objects.get(abreviation=self.kwargs['asso'])
-        #self.q_objects = self.request.user.getQObjectsAssoArticles()
+        self.q_objects = self.request.user.getQObjectsAssoArticles()
         #qs = Article.objects.filter(Q(asso__abreviation=self.asso.abreviation) & self.q_objects).distinct()
         qs = Article.objects.filter(Q(asso__abreviation=self.asso.abreviation) | Q(partagesAsso__abreviation=self.asso.abreviation) | Q(partagesAsso__abreviation="public")).distinct()
         self.categorie = None
@@ -363,12 +363,11 @@ class ListeArticles_asso(ListView):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
 
-        context['articles_archives'] = self.qs.filter(estArchive=True, asso=self.asso)
-        context['articles_epingles'] = self.qs.filter(estEpingle=True, estArchive=False)
-        context['articles_partages'] = [x for x in self.qs.filter(~Q(asso=self.asso)) if x.est_autorise(self.request.user)]
+        context['articles_archives'] = self.qs.filter(Q(estArchive=True, asso=self.asso) & self.q_objects)
+        context['articles_epingles'] = self.qs.filter(Q(estEpingle=True, estArchive=False) & self.q_objects)
+        context['articles_partages'] = self.qs.filter(~Q(asso=self.asso) & self.q_objects)
 
         # qs = self.qs
-        #
         # if self.asso.abreviation == "public":
         #     qs = qs.exclude(Q(asso__abreviation="pc")|Q(asso__abreviation="rtg")|Q(asso__abreviation="fer")|Q(asso__abreviation="gt")|Q(asso__abreviation="scic")|Q(asso__abreviation="citealt")|Q(asso__abreviation="viure")|Q(asso__abreviation="bzz2022"))
         # elif self.asso.abreviation == "projets":
