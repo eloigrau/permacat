@@ -395,6 +395,7 @@ class ListeArticles_asso(ListView):
         context['asso_list'] = Choix_global.abreviationsNomsAssoEtPublic#[(x.nom, x.abreviation) for x in Asso.objects.all().exclude(abreviation="jp").order_by("id") if self.request.user.est_autorise(x.abreviation)]
         context['asso_courante'] = self.asso
         context['dossier_courant'] = self.categorie
+        context['est_autorise'] = self.request.user.est_autorise(self.asso.abreviation)
         context['asso_courante_abreviation'] = self.asso.abreviation
         context['typeFiltre'] = "aucun"
         context['suivis'] = get_suivis_forum(self.request)

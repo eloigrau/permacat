@@ -298,6 +298,13 @@
     <hr>
 {%endif%}
 
+{% if not user_est_autorise %}
+    <div class="row justify-content-center">
+        <div class="col-sm-12 textcenter textepetit">
+            (Vous n'êtes pas membre de ce groupe, vous pouvez accéder uniquement aux articles du groupe qu'ils ont partagé avec un groupe auquel vous appartenez.)
+        </div>
+    </div>
+{% endif%}
 {% if article_list %}
     <div class="row justify-content-center" id="article_list">
         <div class="col-sm-12 textcenter">
