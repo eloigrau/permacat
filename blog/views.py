@@ -333,7 +333,7 @@ class ListeArticles_asso(ListView):
         self.asso = Asso.objects.get(abreviation=self.kwargs['asso'])
         self.q_objects = self.request.user.getQObjectsAssoArticles()
         #qs = Article.objects.filter(Q(asso__abreviation=self.asso.abreviation) & self.q_objects).distinct()
-        qs = Article.objects.filter(Q(asso__abreviation=self.asso.abreviation) | Q(partagesAsso__abreviation=self.asso.abreviation) | Q(partagesAsso__abreviation="public")).distinct()
+        qs = Article.objects.filter(self.q_objects & (Q(asso__abreviation=self.asso.abreviation) | Q(partagesAsso__abreviation=self.asso.abreviation) | Q(partagesAsso__abreviation="public"))).distinct()
         self.categorie = None
 
         if "auteur" in params:
@@ -357,15 +357,15 @@ class ListeArticles_asso(ListView):
             qs = qs.order_by( '-date_modification', '-date_creation',  'categorie')
 
         self.qs = qs
-        return qs.filter(Q(estArchive=False, asso=self.asso) & self.q_objects)
+        return qs.filter(Q(estArchive=False, asso=self.asso))
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
 
-        context['articles_archives'] = self.qs.filter(Q(estArchive=True, asso=self.asso) & self.q_objects)
-        context['articles_epingles'] = self.qs.filter(Q(estEpingle=True, estArchive=False, asso=self.asso) & self.q_objects)
-        context['articles_partages'] = self.qs.filter(~Q(asso=self.asso) & self.q_objects)
+        context['articles_archives'] = self.qs.filter(Q(estArchive=True, asso=self.asso))
+        context['articles_epingles'] = self.qs.filter(Q(estEpingle=True, estArchive=False, asso=self.asso))
+        context['articles_partages'] = self.qs.filter(~Q(asso=self.asso))
 
         # qs = self.qs
         # if self.asso.abreviation == "public":
