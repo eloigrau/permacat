@@ -583,6 +583,10 @@ border: 1px inset rgba(28,110,164,0.65);
     color: black;
 }
 
+.message{
+    background-color:white;
+}
+
 .dernierMessage{
     background-color:grey;
 }

@@ -74,7 +74,7 @@ class ArticleForm(forms.ModelForm):
     asso = forms.ModelChoiceField(queryset=Asso.objects.all().exclude(abreviation="jp").order_by("id"), required=True,
                               label="Article public ou réservé aux membres du groupe :", )
 
-    partagesAsso = forms.ModelMultipleChoiceField(label='Partager avec :', required=False, queryset=Asso.objects.exclude(abreviation="jpt").order_by("id"),
+    partagesAsso = forms.ModelMultipleChoiceField(label='Partager avec :', required=False, queryset=Asso.objects.exclude(abreviation="jp").order_by("id"),
                                              widget=forms.CheckboxSelectMultiple(attrs={'class': 'cbox_asso', }) )
 
     class Meta:
@@ -132,7 +132,7 @@ class ArticleForm(forms.ModelForm):
 
 
 class ArticleChangeForm(forms.ModelForm):
-    partagesAsso = forms.ModelMultipleChoiceField(label='Partager avec :', required=False, queryset=Asso.objects.exclude(abreviation="jpt").order_by("id"),
+    partagesAsso = forms.ModelMultipleChoiceField(label='Partager avec :', required=False, queryset=Asso.objects.exclude(abreviation="jp").order_by("id"),
                                              widget=forms.CheckboxSelectMultiple(attrs={'class': 'cbox_asso', }) )
 
     class Meta:
@@ -154,7 +154,7 @@ class ArticleChangeForm(forms.ModelForm):
 
     def save(self, sendMail=True, commit=True):
         instance = super(ArticleChangeForm, self).save(commit=commit)
-        for asso in Asso.objects.exclude(abreviation="jpt"):
+        for asso in Asso.objects.exclude(abreviation="jp"):
             if asso in self.cleaned_data["partagesAsso"]:
                 instance.partagesAsso.add(asso)
             elif instance.partagesAsso.filter(abreviation=asso.abreviation).exists():
