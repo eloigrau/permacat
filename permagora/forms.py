@@ -56,21 +56,24 @@ no_space_validator = RegexValidator(
 
 class ContactForm(forms.Form):
     sujet = forms.CharField(max_length=100, label="Sujet",)
-    msg = forms.CharField(label="Message", widget=forms.Textarea)
+    msg = forms.CharField(label="Message")
     renvoi = forms.BooleanField(label="recevoir une copie",
                                      help_text="Cochez si vous souhaitez obtenir une copie du mail envoyé.", required=False
                                  )
 
+    class Meta:
+        widgets = {
+                'msg': SummernoteWidget(),
+            }
 
 class MessageForm(forms.ModelForm):
-    message = forms.CharField(max_length=100, label="Laisser un commentaire...",)
 
     class Meta:
         model = Message_permagora
         exclude = ['auteur', 'date_creation', 'type_article', 'type_message', 'valide']
 
         widgets = {
-                'message': forms.Textarea(attrs={'rows': 2}),
+            'message': SummernoteWidget(),
             }
 
     def __init__(self, request, message=None, *args, **kwargs):
@@ -81,14 +84,13 @@ class MessageForm(forms.ModelForm):
 
 
 class CommentaireForm(forms.ModelForm):
-    message = forms.CharField(max_length=500, label="Laisser un commentaire...",)
 
     class Meta:
         model = Commentaire_charte
         exclude = ['auteur', 'date_creation', 'type_message', 'valide', 'proposition']
 
         widgets = {
-                'message': forms.Textarea(attrs={'rows': 2}),
+            'message': SummernoteWidget(),
             }
 
     def __init__(self, request, message=None, *args, **kwargs):

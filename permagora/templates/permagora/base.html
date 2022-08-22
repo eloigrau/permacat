@@ -149,16 +149,12 @@
   <hr>
  <div class="site-section">
   <div class="container">
-        <div class="row mb-5">
-          <div class="col-md-12">
-
-<div class="row text-center">
+<div class="row mb-5 text-center">
     <h4>Commentaires</h4>
 </div>
 <div class="row text-center">
     <p><small>Une remarque ? une suggestion ? Vous n'êtes pas d'accord ? Vous voulez enrichir le texte ? N'hésitez pas à donner votre avis ci-dessous...</small></p>
 </div>
-
 <div class="site-comment commentaires" id="idConversation">
 {% for comment in commentaires %}
     <div class="row {% if comment.auteur.id == request.user.id %} msg-auteur  {%else%} msg-destinataire{%endif%}">
@@ -172,7 +168,7 @@
     </div>
 {% endfor %}
 </div>
-    <script>
+<script>
     var messageBody = document.querySelector('#idConversation');
     messageBody.scrollTop = idConversation.scrollHeight - idConversation.clientHeight;
 </script>
@@ -180,23 +176,19 @@
 <hr>
 
 {% if request.user.is_authenticated %}
-<div>
-    <input type="hidden" name="Nouveau Message" value="{{ message }}">
-<div>
+<div class="row justify-content-center mb-5">
+    <div class="col-sm-12 justify-content-center">
 <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <input type="hidden" name="Nouveau Message" value="{{ message_defaut }}">
+<div class="row justify-content-center">
     {% include 'form_template3.html' %}
-</form>
+</form></div>
 </div>
 {% else %}
     <p>(Vous devez vous <a href="{% url 'permagora:login'%}?next={%url 'permagora:bienvenue'%}">authentifier</a> pour laisser un commentaire, merci !)</p>
 {% endif %}
           </div>
         </div>
-      </div>
-</div>
-  </div>
 
   {% endblock %}
 
