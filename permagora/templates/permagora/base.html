@@ -53,18 +53,19 @@
       </div>
       <div class="site-mobile-menu-body"></div>
     </div>
-    <header class="site-navbar py-3" role="banner">
+    <header class="site-navbar" role="banner">
       <div class="container-fluid">
         <div class="row align-items-center">
           <div class="col-11 col-xl-2">
-            <h1 class="mb-0"><a href="{% url 'permagora:bienvenue' %}" class="text-white h2 mb-0">Perm<span class="text-success">Agora</span> </a></h1>
+                <a href="{% url 'permagora:bienvenue' %}" class="text-white h2 mb-0">
+                <img src="{% static 'permagora/images/logo_3.png' %}" alt="Logo" class="img-fluid" style="height:43px;">
+                </a>
           </div>
           <div class="col-12 col-md-10 d-none d-xl-block">
             <nav class="site-navigation position-relative text-right" role="navigation">
               <ul class="site-menu js-clone-nav mx-auto d-none d-lg-block">
                 <li ><a href="{% url 'permagora:bienvenue' %}">Accueil</a></li>
 
-                <li class="cta"><a href="{% url 'permagora:propositions' %}">Les plans d'action</a></li>
           <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">La démarche</a>
               <div class="dropdown-menu" aria-labelledby="dropdown10">
@@ -74,13 +75,7 @@
                   {% comment %}<a class="dropdown-item" href="{% url 'permagora:signataires' %}">Soutiens</a>{% endcomment %}
               </div>
             </li>
-            <li class="nav-item dropdown ">
-              <a class="nav-link dropdown-toggle" href="#" id="dropdownpermagora" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Le collectif</a>
-              <div class="dropdown-menu disabled " aria-labelledby="dropdown10">
-                <a class="dropdown-item" href="{% url 'permagora:presentationPermagora' %}">Qui sommes-nous ?</a>
-                <a class="dropdown-item" href="{% url 'permagora:organisationPermagora' %}">Notre organisation</a>
-              </div>
-            </li>
+                <li class="cta"><a href="{% url 'permagora:propositions' %}">Les plans d'action</a></li>
 
             <li class="nav-item dropdown disabled ">
               <a class="nav-link dropdown-toggle" href="#" id="dropdown2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Le site</a>
@@ -95,9 +90,18 @@
                 <a class="dropdown-item" href="{% url 'permagora:statistiques' %}">Statistiques</a>
                 {% endif %}
                 <a class="dropdown-item" href="{% url 'permagora:contact' %}">Nous contacter</a>
-                <a class="dropdown-item" href="{% url 'bienvenue' %}">Retour perma.cat</a>
+                <a class="dropdown-item" href="{% url 'bienvenue' %}">Accueil perma.cat</a>
+                <a class="dropdown-item" href="{% url 'blog:index_asso' asso='scic'%}#ref-titre">Forum Permagora</a>
               </div>
             </li>
+                  <li class="nav-item dropdown ">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdownpermagora" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Le collectif</a>
+              <div class="dropdown-menu disabled " aria-labelledby="dropdown10">
+                <a class="dropdown-item" href="{% url 'permagora:presentationPermagora' %}">Qui sommes-nous ?</a>
+                <a class="dropdown-item" href="{% url 'permagora:organisationPermagora' %}">Notre organisation</a>
+              </div>
+            </li>
+
                 <li class="nav-item dropdown">
            <a data-toggle="dropdown" class="nav-link dropdown-toggle " href="{% url 'permagora:profil_courant' %}" aria-haspopup="true" aria-expanded="false"  >
               {% fontawesome_icon 'user' %}  </a>

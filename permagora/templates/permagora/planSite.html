@@ -18,13 +18,6 @@
           <div class="cul-sm-12 col-md-8">
               <ul>
                   <li><a href="{% url 'permagora:bienvenue' %}">Accueil</a></li>
-                  <li><a href="{% url 'permagora:propositions' %}">Les plans d'actions </a> :
-                      <ul>
-                       {% for prop in listeProp %}
-                          <li><a href="{{prop.get_absplute_url }}">{{prop.titre}}</a></li>
-                      {% endfor %}
-                      </ul>
-                  </li>
                   <li>La démarche :
                       <ul>
                           <li><a href="{% url 'permagora:introduction' %}">Préambule et introduction</a> </li>
@@ -32,10 +25,14 @@
                           <li><a href="{% url 'permagora:preconisations' %}">Les préconisations générales de l'association</a> </li>
                       </ul>
                   </li>
-                  <li>Le collectif :
+                  <li>Les plans d'actions:
                       <ul>
-                <li><a class="" href="{% url 'permagora:presentationPermagora' %}">Présentation</a></li>
-                <li><a class="" href="{% url 'permagora:organisationPermagora' %}">Organisation</a></li>
+                          <li><a href="{% url 'permagora:propositions' %}">Liste des propositions </a> </li>
+                          <ul>
+                           {% for prop in listeProp %}
+                              <li><a href="{{prop.get_absplute_url }}">{{prop.titre}}</a></li>
+                          {% endfor %}
+                          </ul>
                       </ul>
                   </li>
                   <li>Le site
@@ -43,6 +40,12 @@
                 <li><a class="" href="{% url 'permagora:voirNotifications' %}">Notifications</a></li>
                 <li><a class="" href="{% url 'permagora:faq' %}">Foire Aux Questions</a></li>
                 <li><a class="" href="{% url 'permagora:cgu' %}">Conditions Générales d'Utilisation</a></li>
+                      </ul>
+                  </li>
+                  <li>Le collectif :
+                      <ul>
+                <li><a class="" href="{% url 'permagora:presentationPermagora' %}">Présentation</a></li>
+                <li><a class="" href="{% url 'permagora:organisationPermagora' %}">Organisation</a></li>
                       </ul>
                   </li>
               </ul>
