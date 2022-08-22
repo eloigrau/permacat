@@ -1,0 +1,34 @@
+{
+    "name": "PermAgora",
+    "short_name": "PermAgora",
+    "description": "Le site PermAgora",
+    "icons": [
+        {
+            "src": "/permagora/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/permagora/android-chrome-256x256.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        },
+        {
+            "src": "/permagora/favicon-16x16",
+            "sizes": "16x16",
+            "type": "image/png"
+        },
+        {
+            "src": "/permagora/favicon-32x32.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        },{
+        "src": "permagora/favicon.ico",
+        "sizes": "64x64 72x72 96x96 256x256"
+  }
+    ],
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
+    "display": "minimal-ui",
+    "start_url": "/notifications/activite/"
+}
