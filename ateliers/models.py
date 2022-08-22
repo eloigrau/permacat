@@ -10,14 +10,14 @@ from actstream import action
 
 
 class Choix():
-    type_atelier = ('0','Permaculture'), ('1',"Bricolage"), ('2','Cuisine'), ('3','Bien-être'),('4',"Musique"), ('6', 'Politique'), ('5', 'Autre...')
+    type_atelier = ('0','Permaculture'), ('1',"Bricolage"), ('2','Cuisine'), ('3','Bien-être'), ('4',"Musique"), ('6', 'Politique'), ('5', 'Autre...'), ('7', 'Activité Pro'),
     couleurs_ateliers = {
         '2':'#4DC490', '1':'#C0EDA0', '3':'#00AA8B', '0':'#FCE79C',
         # '0':"#e0f7de", '1':"#dcc0de",
         '5':"#d1ecdc",'3':"#fcf6bd", '4':"#d0f4de", '6':"#fff2a0",
         # '9':"#ffc4c8", '2':"#bccacf", '10':"#87bfae", '11':"#bcb4b4"
     }
-    statut_atelier = ('0', 'proposition'), ('1', "accepté, en cours d'organisation"), ('2', "accepté, s'est déroule correctement"), ('3', "a été annulé"), ('4', "Activité Pro"),
+    statut_atelier = ('0', 'proposition'), ('1', "accepté, en cours d'organisation"), ('2', "accepté, s'est déroule correctement"), ('3', "a été annulé"),
     type_difficulte = ('0', 'facile'), ('1', "moyen"), ("2", "difficile")
     type_jauge = ('1', "1"), ("2", "2"), ("3", "3"), ("4", "4"), ("5", "5")
     type_budget = ('0', "0"), ('1', "1"), ("2", "2"), ("3", "3")

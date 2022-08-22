@@ -6,6 +6,10 @@ body {
     background-color:#2B2A33;
     padding-top: 5px;
     color:black;
+    /*background-image:url('../img/Canigo2.jpg.png');
+    background-repeat: no-repeat;
+    background-position: 50% 30%;
+    background-attachment: fixed;*/
     /*padding: 10px;*/
     /*padding-top: 55px;*/
     /*font-family: Georgia, serif;*/
@@ -521,7 +525,10 @@ border: 1px inset rgba(28,110,164,0.65);
     padding: 12px;
     border-radius: 0.8em;
     margin: 5px;
-    background-color:#fefee0;
+    /*background-color:#fefee0;
+    background-image:url('../img/Canigo2.jpg.png');
+    background-repeat: no-repeat;
+    background-position: 50% 30%;"*/
 }
 
 .bodycontenu{
