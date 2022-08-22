@@ -66,66 +66,28 @@
 {%endblock%}
 {% block content %}
 
-<div class="infinite-container ">
-    {% for atelier in atelier_list %}
 
-{% ifchanged atelier.atelier.categorie %}
-{% if not forloop.first  %}<hr> {% endif %}{% endifchanged %}
+    <nav class="nav nav-tabs justify-content-center">
+      <a class="nav-item nav-link active" href="#prevus" data-toggle="tab">Prévus</a>
+      <a class="nav-item nav-link " href="#passes" data-toggle="tab">Passés</a>
+      <a class="nav-item nav-link " href="#propositions" data-toggle="tab">Proposés</a>
+      <a class="nav-item nav-link " href="#archives" data-toggle="tab">Archivés</a>
+    </nav>
+<div class="tab-content">
+  <div class="tab-pane fade show active" id="prevus">
+    {% include 'ateliers/listAtelier_template.html' %}
+  </div>
 
-<div class="infinite-item ">
-   <div class="row justify-content-center ">
-    <div class="col-sm-12 col-ms-10 col-lg-8 textcenter " >
-        <a  href="{% url 'ateliers:lireAtelier' slug=atelier.slug %}" class="boutonAtelier" > <div style="background-color:{{atelier.atelier.get_couleur}};
-    font-variant: small-caps;" >{{ atelier.titre }}  </div>
-            {% if atelier.start_time %}
-        <p class="textepetit">le {{ atelier.start_time|date:"DATE_FORMAT" }}</p>
-        {% endif %}</a>
+  <div class="tab-pane fade" id="passes">
+    {% include 'ateliers/listAtelier_template.html' with atelier_list=list_passes %}
+  </div>
 
-    </div>
-   </div>
+  <div class="tab-pane fade" id="propositions">
+{% include 'ateliers/listAtelier_template.html' with atelier_list=list_propositions %}
+  </div>
+  <div class="tab-pane fade" id="archives">
+{% include 'ateliers/listAtelier_template.html' with atelier_list=list_archive %}
+  </div>
 </div>
 
-    {% endfor %}
-</div>
-{%include 'pagination.html' %}
-
-        {% if list_archive %}
-<hr>
-        <div class="textcenter">
-            <button id="btn-archives"  type="button" class="btn btn-lg" onclick="toggle_visibility('archives');" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour afficher les archives">
-                Afficher les archives
-            </button>
-        </div>
-        <hr>
-        <div id="archives" style='display:none;'>
-            {% for atelier in list_archive %}
-   <div class="row justify-content-center ">
-    <div class="col-sm-12 col-ms-10 col-lg-8 textcenter " >
-        <a  href="{% url 'ateliers:lireAtelier_id' id=atelier.id %}" class="boutonAtelier" > <div style="background-color:{{atelier.atelier.get_couleur}};
-    font-variant: small-caps;" >{{ atelier.titre }}  </div>
-            {% if atelier.start_time %}
-        <p class="textepetit">le {{ atelier.start_time|date:"DATE_FORMAT" }}</p>
-        {% endif %}</a>
-
-    </div>
-   </div>
-            {% endfor %}
-        </div>
-
-    {% endif %}
-
-<script>
-    function toggle_visibility(id) {
-       var e = document.getElementById(id);
-       var btn = document.getElementById("btn-archives");
-       if(e.style.display == 'block'){
-          e.style.display = 'none';
-          btn.textContent = "Afficher les archives";
-      }
-       else{
-          e.style.display = 'block';
-          btn.textContent = "Cacher les archives";
-      }
-   }
-</script>
 {% endblock %}
