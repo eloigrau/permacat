@@ -14,6 +14,26 @@ class Choix():
     type_message = ('0','Commentaire'), ("1","Coquille"), ('2','Réflexion')
     type_article = ('0','intro'), ("1","constat"), ('2','preconisations'), ('3','propositions'), ('4','liens'), ('5','accueil'), ('6','présentation'), ('7','organisation'),
 
+    def get_url(type_article):
+        if type_article == '0':
+            return reverse('permagora:introduction')
+        elif type_article == '1':
+            return reverse('permagora:risques')
+        elif type_article == '2':
+            return reverse('permagora:preconisations')
+        elif type_article == '3':
+            return reverse('permagora:propositions')
+        elif type_article == '4':
+            return reverse('permagora:liens')
+        elif type_article == '5':
+            return reverse('permagora:bienvenue')
+        elif type_article == '6':
+            return reverse('permagora:presentationPermagora')
+        elif type_article == '7':
+            return reverse('permagora:organisationPermagora')
+        else:
+            return reverse('permagora:bienvenue')
+
 class GenericModel(models.Model):
     type_article = models.CharField(max_length=10,
         choices=(Choix.type_article),
@@ -25,6 +45,10 @@ class GenericModel(models.Model):
 
     def __str__(self):
         return "(Permgora)" + [y for x, y in Choix.type_article][int(self.type_article)] + ", " + str(self.message) if self.message else "(Permgora)" + str([y for x, y in Choix.type_article][int(self.type_article)])
+
+    def get_absolute_url(self): #('0','intro'), ("1","constat"), ('2','preconisations'), ('3','charte'), ('4','liens'), ('5','accueil'), ('6','présentation'), ('7','organisation'),
+        return Choix.get_url(self.type_article)
+
 
 class Message_permagora(models.Model):
     message = models.TextField(null=False, blank=False)
@@ -45,25 +69,7 @@ class Message_permagora(models.Model):
         return "(" + str(self.id) + ") " + str(self.auteur) + " " + str(self.date_creation)
 
     def get_absolute_url(self): #('0','intro'), ("1","constat"), ('2','preconisations'), ('3','charte'), ('4','liens'), ('5','accueil'), ('6','présentation'), ('7','organisation'),
-        if self.type_article == '0':
-            return reverse('permagora:introduction')
-        elif self.type_article == '1':
-            return reverse('permagora:risques')
-        elif self.type_article == '2':
-            return reverse('permagora:preconisations')
-        elif self.type_article == '3':
-            return reverse('permagora:propositions')
-        elif self.type_article == '4':
-            return reverse('permagora:liens')
-        elif self.type_article == '5':
-            return reverse('permagora:bienvenue')
-        elif self.type_article == '6':
-            return reverse('permagora:presentationPermagora')
-        elif self.type_article == '7':
-            return reverse('permagora:organisationPermagora')
-        else:
-            return reverse('permagora:bienvenue')
-
+        return Choix.get_url(self.type_article)
 
 class PoleCharte(models.Model):
     titre = models.TextField(null=False, blank=False)
