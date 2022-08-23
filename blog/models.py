@@ -172,11 +172,14 @@ class Article(models.Model):
     def sendMailArticle_newormodif(self, creation, forcerCreationMails):
         emails = []
         if creation or forcerCreationMails:
-            suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_' + str(self.asso.abreviation))
             titre = "Nouvel article"
             message = "Un article a été posté dans le forum [" + str(
                 self.asso.nom) + "] : '<a href='https://www.perma.cat" + self.get_absolute_url() + "'>" + self.titre + "</a>'"
+            suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_' + str(self.asso.abreviation))
             emails = [suiv.email for suiv in followers(suivi) if self.auteur != suiv and self.est_autorise(suiv)]
+            for asso in self.partagesAsso.all():
+                suivi, created = Suivis.objects.get_or_create(nom_suivi='articles_' + str(asso.abreviation))
+                emails += [suiv.email for suiv in followers(suivi) if self.auteur != suiv and self.est_autorise(suiv)]
         else:
             temps_depuiscreation = timezone.now() - self.date_creation
             if temps_depuiscreation > timedelta(minutes=10):

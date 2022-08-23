@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group, User
 from django.core.mail import mail_admins, send_mail, BadHeaderError
 from .forms import ContactForm, SignerForm, MessageForm, CommentaireForm, PropositionCharteCreationForm, PropositionCharteChangeForm
-from .models import Profil, Message_permagora, PoleCharte, PropositionCharte, Commentaire_charte, Vote, Signataire
+from .models import Profil, Message_permagora, PoleCharte, PropositionCharte, Commentaire_charte, Vote, Signataire, GenericModel
 from datetime import datetime, timedelta
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.db.models import F
@@ -17,6 +17,8 @@ from actstream import action
 from actstream.models import Action
 from django.db.models import Q
 from pytz import UTC as utc
+from hitcount.models import HitCount
+from hitcount.views import HitCountMixin
 
 CharField.register_lookup(Lower, "lower")
 
@@ -44,12 +46,16 @@ def handler400(request, template_name="400.html"):   #requete invalide
 def bienvenue(request):
     commentaires = Message_permagora.objects.filter(type_article="5").order_by("date_creation")
     form = MessageForm(request.POST or None)
+
+    obj, created = GenericModel.objects.get_or_create(type_article='5', message="")
+    hit_count = HitCount.objects.get_for_object(obj)
+    hit_count_response = HitCountMixin.hit_count(request, hit_count)
     if form.is_valid():
         if not request.user.is_authenticated:
             return redirect('login')
         comment = form.save(commit=False)
         comment.auteur = request.user
-        comment.type_article="5"
+        comment.type_article = "5"
         comment.save()
 
         action.send(request.user, verb='permagora_commentaire', action_object=comment, url=comment.get_absolute_url() + "#idConversation",
@@ -183,6 +189,9 @@ def liens(request):
 def preambule(request):
     commentaires = Message_permagora.objects.filter(type_article="6").order_by("date_creation")
     form = MessageForm(request.POST or None)
+    obj, created = GenericModel.objects.get_or_create(type_article='6', message="")
+    hit_count = HitCount.objects.get_for_object(obj)
+    hit_count_response = HitCountMixin.hit_count(request, hit_count)
     if form.is_valid():
         if not request.user.is_authenticated:
             return redirect('login')
@@ -198,6 +207,9 @@ def preambule(request):
 def introduction(request):
     commentaires = Message_permagora.objects.filter(type_article="0").order_by("date_creation")
     form = MessageForm(request.POST or None)
+    obj, created = GenericModel.objects.get_or_create(type_article='0', message="")
+    hit_count = HitCount.objects.get_for_object(obj)
+    hit_count_response = HitCountMixin.hit_count(request, hit_count)
     if form.is_valid():
         if not request.user.is_authenticated:
             return redirect('login')
@@ -225,6 +237,9 @@ def risques(request):
         ("Dépendance vis-à-vis de l’extérieur ", " approvisionnement en ressources (pétrole, matériaux de construction, etc), monnaie sous contrôle des banques et des industries polluantes et émettrices de CO2, décisions politiques centralisées hors de nos frontières et de notre contrôle, etc."),
     ]
     commentaires = Message_permagora.objects.filter(type_article="1").order_by("date_creation")
+    obj, created = GenericModel.objects.get_or_create(type_article='1', message="")
+    hit_count = HitCount.objects.get_for_object(obj)
+    hit_count_response = HitCountMixin.hit_count(request, hit_count)
     form = MessageForm(request.POST or None)
     if form.is_valid():
         if not request.user.is_authenticated:
@@ -256,6 +271,9 @@ def preconisations(request):
     ]
 
     commentaires = Message_permagora.objects.filter(type_article="2").order_by("date_creation")
+    obj, created = GenericModel.objects.get_or_create(type_article='2', message="")
+    hit_count = HitCount.objects.get_for_object(obj)
+    hit_count_response = HitCountMixin.hit_count(request, hit_count)
     form = MessageForm(request.POST or None)
     if form.is_valid():
         if not request.user.is_authenticated:
@@ -332,6 +350,9 @@ dico_charte =[
 
 def propositions(request):
     commentaires = Message_permagora.objects.filter(type_article="3").order_by("date_creation")
+    obj, created = GenericModel.objects.get_or_create(type_article='3', message="")
+    hit_count = HitCount.objects.get_for_object(obj)
+    hit_count_response = HitCountMixin.hit_count(request, hit_count)
     form = MessageForm(request.POST or None)
     if form.is_valid():
         if not request.user.is_authenticated:
@@ -349,6 +370,9 @@ def propositions(request):
 
 def organisationPermagora(request, ):
     commentaires = Message_permagora.objects.filter(type_article="7").order_by("date_creation")
+    obj, created = GenericModel.objects.get_or_create(type_article='7', message="")
+    hit_count = HitCount.objects.get_for_object(obj)
+    hit_count_response = HitCountMixin.hit_count(request, hit_count)
     form = MessageForm(request.POST or None)
     if form.is_valid():
         if not request.user.is_authenticated:
@@ -363,6 +387,9 @@ def organisationPermagora(request, ):
 
 def presentationPermagora(request, ):
     commentaires = Message_permagora.objects.filter(type_article="6").order_by("date_creation")
+    obj, created = GenericModel.objects.get_or_create(type_article='6', message="")
+    hit_count = HitCount.objects.get_for_object(obj)
+    hit_count_response = HitCountMixin.hit_count(request, hit_count)
     form = MessageForm(request.POST or None)
     if form.is_valid():
         if not request.user.is_authenticated:
@@ -426,6 +453,9 @@ def ajouterPoleCharte(request):
 
 def voirProposition(request, slug):
     proposition = PropositionCharte.objects.get(slug=slug)
+    obj, created = GenericModel.objects.get_or_create(type_article='3', message=proposition.slug)
+    hit_count = HitCount.objects.get_for_object(obj)
+    hit_count_response = HitCountMixin.hit_count(request, hit_count)
     commentaires = Commentaire_charte.objects.filter(proposition=proposition)
     if request.user.is_authenticated:
         vote, created = Vote.objects.get_or_create(auteur=request.user, proposition=proposition)

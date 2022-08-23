@@ -12,8 +12,19 @@ LONGITUDE_DEFAUT = '2.8954'
 
 class Choix():
     type_message = ('0','Commentaire'), ("1","Coquille"), ('2','Réflexion')
-    type_article = ('0','intro'), ("1","constat"), ('2','preconisations'), ('3','charte'), ('4','liens'), ('5','accueil'), ('6','présentation'), ('7','organisation'),
+    type_article = ('0','intro'), ("1","constat"), ('2','preconisations'), ('3','propositions'), ('4','liens'), ('5','accueil'), ('6','présentation'), ('7','organisation'),
 
+class GenericModel(models.Model):
+    type_article = models.CharField(max_length=10,
+        choices=(Choix.type_article),
+        default='0', verbose_name="type_article")
+    message = models.TextField(null=True, blank=True)
+
+    def __unicode__(self):
+        return self.__str()
+
+    def __str__(self):
+        return "(Permgora)" + [y for x, y in Choix.type_article][int(self.type_article)] + ", " + str(self.message) if self.message else "(Permgora)" + str([y for x, y in Choix.type_article][int(self.type_article)])
 
 class Message_permagora(models.Model):
     message = models.TextField(null=False, blank=False)
