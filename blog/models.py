@@ -190,6 +190,7 @@ class Article(models.Model):
         if emails:
             action.send(self, verb='emails', url=self.get_absolute_url(), titre=titre, message=message, emails=emails)
 
+
     def save(self, sendMail=True, saveModif=True, forcerCreationMails=False, *args, **kwargs):
         ''' On save, update timestamps '''
         sendMail = sendMail and getattr(self, "sendMail", True)
