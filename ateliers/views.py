@@ -179,14 +179,14 @@ class ListeAteliers(ListView):
         else:
             self.qs = self.qs.order_by('-start_time', 'categorie', '-date_dernierMessage', )
 
-        return self.qs.filter(start_time__gte=now(), start_time__isnull=False)
+        return self.qs.filter(start_time__gte=now(), start_time__isnull=False).order_by('-start_time')
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        context['list_archive'] = Atelier.objects.filter(estArchive=True).order_by('start_time')
-        context['list_propositions'] = self.qs.filter(start_time__isnull=True).order_by('start_time')
-        context['list_passes'] = self.qs.filter(start_time__lt=now(), start_time__isnull=False).order_by('start_time')
+        context['list_archive'] = Atelier.objects.filter(estArchive=True).order_by('-start_time')
+        context['list_propositions'] = self.qs.filter(start_time__isnull=True).order_by('-start_time')
+        context['list_passes'] = self.qs.filter(start_time__lt=now(), start_time__isnull=False).order_by('-start_time')
 
         cat= Atelier.objects.order_by('categorie').values_list('categorie', flat=True).distinct()
         context['categorie_list'] = [x for x in Choix.type_atelier if x[0] in cat]
