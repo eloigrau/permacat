@@ -14,6 +14,7 @@
           <th>Groupe</th>
           <th>Titre</th>
           <th>Dossier</th>
+          <th>Date</th>
         </tr>
       </thead>
     {% endcomment %}
@@ -48,6 +49,22 @@
             {% endif %}
                 </a>
           </td>
+<td data-title=""><span class="badge badge-light">
+                {% if request.user|is_following:article %}
+                    {% fontawesome_icon 'bell' %}
+                    {% else %}
+                    {% fontawesome_icon 'bell-slash' %}
+                {% endif %}&nbsp;
+                {%if article.date_modification %}
+            {%ifnotequal  article.date_creation|date:"DATE_FORMAT" article.date_modification|date:"DATE_FORMAT" %} &nbsp;
+                 Dernière modif le {{ article.date_modification|date:"DATE_FORMAT" }}
+            {%else%}&nbsp;
+                Posté par {{ article.auteur }} le {{ article.date_creation|date:"d/m/Y" }}
+            {%endifnotequal%}
+            {%else%}&nbsp;
+                Posté par {{ article.auteur }} le  {{ article.date_creation|date:"d/m/Y" }}
+            {% endif %}
+              </span></td>
 
         </tr>
         {% endfor %}

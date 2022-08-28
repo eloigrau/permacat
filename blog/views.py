@@ -294,6 +294,9 @@ class ListeArticles(ListView):
         context['suivis'] = get_suivis_forum(self.request)
         context['ordreTriPossibles'] = Choix.ordre_tri_articles
 
+        context['user_membreAsso'] = True
+        context['asso_courante'] = ""
+
         if 'auteur' in self.request.GET:
             context['typeFiltre'] = "auteur"
         if 'categorie' in self.request.GET:
@@ -335,7 +338,6 @@ class ListeArticles_asso(ListView):
         #qs = Article.objects.filter(Q(asso__abreviation=self.asso.abreviation) & self.q_objects).distinct()
         qs = Article.objects.filter(self.q_objects & (Q(asso__abreviation=self.asso.abreviation) | Q(partagesAsso__abreviation=self.asso.abreviation) | Q(partagesAsso__abreviation="public"))).distinct()
         self.categorie = None
-
         if "auteur" in params:
             qs = qs.filter(auteur__username=params['auteur'])
         if "categorie" in params:
