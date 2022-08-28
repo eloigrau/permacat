@@ -116,8 +116,7 @@ style="background-image:linear-gradient(40deg, white, #f2f2f2);"
 					<div class="row" >
 					  <div class="col-sm-12 textcenter" style ="color:#0f7407;">
 						{% if nbNotif %}
-						  <b><a href="{% url 'notifications_news' %}">{% fontawesome_icon 'bell' %}  Vous avez {{nbNotif}} notification{{ nbNotif|pluralize:",s" }} depuis le {{request.user.date_notifications|date:"d/m/Y"}} à {{request.user.date_notifications|date:"G:i"}})</a></b>
-
+						  <b><a href="{% url 'notifications_news' %}">{% fontawesome_icon 'bell' %}  Vous avez {{nbNotif}} notification{{ nbNotif|pluralize:",s" }} </a></b>
 						{%else%}
 						  <b><a href="{% url 'notifications_news' %}">{% fontawesome_icon 'bell' %}  Notifications</a></b>
 						{%endif%}

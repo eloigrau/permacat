@@ -14,7 +14,7 @@
           <th>Groupe</th>
           <th>Titre</th>
           <th>Dossier</th>
-          <th>Date</th>
+          <th class="row_banniere_ordi">Date</th>
         </tr>
       </thead>
     {% endcomment %}
@@ -49,7 +49,7 @@
             {% endif %}
                 </a>
           </td>
-<td data-title=""><span class="badge badge-light">
+<td  class="row_banniere_ordi" data-title=""><span class="badge badge-light">
                 {% if request.user|is_following:article %}
                     {% fontawesome_icon 'bell' %}
                     {% else %}
