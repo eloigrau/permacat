@@ -310,7 +310,7 @@
   <div class="tab-pane " id="historique">
         <div class="col-sm-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2 textcenter">
         <div class="contenu discussion_fiche">
-<h6>
+            <h6>
             {% if article.get_partagesAsso %}
                 Article {{article.get_logo_nomgroupe_html|safe}}, partagé avec
                     {{article.get_partagesAssoLogo|safe}},
@@ -326,7 +326,7 @@
                 {% if article.estModifiable%}
                     - modifiable
                 {%endif%}
-</h6>
+            </h6>
             <div class="row textcenter">
                 <div class="col-sm-12">
           {%for action in actions %}
