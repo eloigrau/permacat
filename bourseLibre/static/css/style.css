@@ -171,7 +171,9 @@ section.p3 {
     padding-left:2%;
     padding-right:2%;
 }
-
+.navbar-header btn-warning, navbar-toggler{
+    background-color:#ffc241;
+}
 .navbarProduits {
     display: inline-block;
    }
@@ -980,19 +982,18 @@ a:active         { color: #005c99 }  /* active links          */
 .conversation{
 	overflow: auto;
 	width: 100%;
-	max-height: 800px;
 }
 
 .commentaires{
 	overflow: auto;
 	width: 100%;
-	max-height: 800px;
+	max-height: 1000px;
 }
 
 .historique{
 	overflow: auto;
 	width: 100%;
-	max-height: 500px;
+	max-height: 700px;
 }
 .card-footer{
 position:absolute;

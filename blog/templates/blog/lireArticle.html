@@ -50,33 +50,15 @@
 {% endblock %}
 {% block content %}
 <div class="contenu article ">
-
-<div class="container-fluid">
 <div class="row">
-    <div class="col-sm-12 justify-content-center">
-        <p class="infos  textepetit textcenter">
-
-
-            {% if article.estArchive%}
-            <span class="badge badge-Light">
-                archivé
+<div class="col-sm-12 offset-md-2 col-md-8 textcenter">
+    <p class="infos  textepetit textcenter">
+            <span >
+                <a href="{% url 'blog:index_asso' asso=article.asso.abreviation %}#ref-titre" >{{ article.get_logo_nomgroupe_html|safe }}</a>
             </span>
-            {%endif%}
-            {% if article.estModifiable%}
-            <span class="badge badge-info">
-                modifiable
-            </span>
-            {%endif%}
-            <a href="{% url 'profil' article.auteur.id %}">
-                <span class="badge badge-Light">
-               rédigé par  {{ article.auteur.username }}
-                </span>
-            </a>
-
-            <span class="badge badge-Light">
-            {% get_hit_count for article as nbvues %}
-            {{ nbvues }} vue{{nbvues|pluralize:"s"}}
-            </span>
+    {% if article.partagesAsso %} <span>{% for p in article.get_logo_nomgroupespartages_html %}{{ p|safe }}{% endfor %}</span> </td>{% endif %}
+            / <span class="badge badge-success" style="background-color:{{article.get_couleur}}" ><a href="{% url 'blog:index'  %}?categorie={{article.categorie}}" >{% if article.get_logo_categorie %}  <img  src="{% static article.get_logo_categorie %}" height="16px"/>  {% endif %} {{ article.get_categorie_display }}</a>
+            </span> -
 
         <a href="{% url 'blog:suivre_article' article.slug %}">
             {% if request.user|is_following:article %}
@@ -89,6 +71,9 @@
             </button>
             {% endif %}
         </a>
+                    <button class="btn btn-light btn-sm" onclick="copyToClipboard('https://www.perma.cat{{article.get_absolute_url}}')" title="Copier l'adresse de l'article"><i class="fa fa-link" aria-hidden="true"></i></button>
+
+
              {% if request.user.is_superuser %}
         <a href="{% url 'blog:suiveursArticle' article.slug %}">
             <button type="button" class="btn btn-light btn-sm" data-toggle="tooltip" data-placement="bottom" title="Voir abonnés">
@@ -96,32 +81,16 @@
             </button>
         </a>
             {% endif %}
-                    <button class="btn btn-light btn-sm" onclick="copyToClipboard('https://www.perma.cat{{article.get_absolute_url}}')" title="Copier l'adresse de l'article"><i class="fa fa-link" aria-hidden="true"></i></button>
-
 
         </p>
-    </div>
-</div>
-
-</div>
-
-<div class="row">
-<div class="col-sm-12 offset-md-2 col-md-8 textcenter">
-            <span >
-                <a href="{% url 'blog:index_asso' asso=article.asso.abreviation %}#ref-titre" >{{ article.get_logo_nomgroupe_html|safe }}</a>
-            </span>
-    {% if article.partagesAsso %} <span>{% for p in article.get_logo_nomgroupespartages_html %}{{ p|safe }}{% endfor %}</span> </td>{% endif %}
-            -
-
-            <span class="badge badge-success" style="background-color:{{article.get_couleur}}" ><a href="{% url 'blog:index'  %}?categorie={{article.categorie}}" >{% if article.get_logo_categorie %}  <img  src="{% static article.get_logo_categorie %}" height="16px"/>  {% endif %} {{ article.get_categorie_display }}</a>
-            </span>
-            {% if article.estEpingle%}
-                -
-            <span class="fa fa-thumb-tack"> </span>
-            {%endif%}
     <div class="row titre_fiche">
         <div class="col textcenter" >
-              <h2> {{ article.titre }}</h2>
+              <h2>
+            {% if article.estEpingle%}
+            <span class="fa fa-thumb-tack"> </span>
+            {%endif%}
+                  {{ article.titre }}
+              </h2>
         </div>
     </div>
         {%if article.start_time%}
@@ -341,13 +310,30 @@
   <div class="tab-pane " id="historique">
         <div class="col-sm-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2 textcenter">
         <div class="contenu discussion_fiche">
+<h6>
             {% if article.get_partagesAsso %}
-            <p> Article {{article.get_logo_nomgroupe_html|safe}}, partagé avec :
-                {{article.get_partagesAssoLogo|safe}}
-            </p>{%endif%}
+                Article {{article.get_logo_nomgroupe_html|safe}}, partagé avec
+                    {{article.get_partagesAssoLogo|safe}},
+            {%endif%}
+
+               rédigé par <a href="{% url 'profil' article.auteur.id %}">{{ article.auteur.username }} </a>
+
+                {% get_hit_count for article as nbvues %}
+                 ({{ nbvues }} vue{{nbvues|pluralize:"s"}})
+                {% if article.estArchive%}
+                    - archivé
+                {%endif%}
+                {% if article.estModifiable%}
+                    - modifiable
+                {%endif%}
+</h6>
+            <div class="row textcenter">
+                <div class="col-sm-12">
           {%for action in actions %}
                 {% include "notifications/notifications_template3.html" with action=action%}
           {%endfor%}
+            </div>
+            </div>
         </div>
         </div>
   </div>

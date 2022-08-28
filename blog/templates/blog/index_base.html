@@ -123,12 +123,13 @@
 
 {%endblock%}
 {% block content %}
+<hr>
 <div class="container" >
 <div class="row justify-content-center" >
 <nav class="navbar  navbar-expand-md navbar-light justify-content-center">
         <div class="navbar-header">
-             <button class="btn btn-primary btn-groupe navbar-toggler dropdown-toggle" type="button" data-toggle="collapse" data-target="#navbarGroupes" aria-controls="navbarProduitContent" aria-expanded="false" aria-label="Toggle navigation">
-               {% if asso_courante %} Groupe : {{asso_courante}} {% else %} Choisir un groupe {% endif %} </button>
+             <button class="btn btn-groupe navbar-toggler dropdown-toggle btn-warning" type="button" data-toggle="collapse" data-target="#navbarGroupes" aria-controls="navbarProduitContent" aria-expanded="false" aria-label="Toggle navigation">
+              {% if asso_courante %} Groupe : {{asso_courante}} {% else %} Choisir un groupe {% endif %} </button>
         </div>
         <div class="collapse navbar-collapse" id="navbarGroupes">
             <ul class="nav navbar-nav justify-content-center ">
