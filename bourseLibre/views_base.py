@@ -96,10 +96,11 @@ def liens(request):
         'https://alternatiba.eu/alternatiba66/',
     ],
         "sites locaux " :[
+        'https://tram66.org/',
         'http://terre-avenirs-peyrestortes.org/',
         'https://www.facebook.com/ramenetagraine/',
         'https://www.facebook.com/fermille/',
-        'http://sel66.free.fr',
+        'https://sel66.net',
         'https://ponteillanature.wixsite.com/eco-nature',
         'https://cce-66.wixsite.com/mysite',
         'https://jardindenat.wixsite.com/website',
