@@ -364,7 +364,7 @@ def propositions(request):
         action.send(request.user, verb='permagora_commentaire', action_object=comment, url=comment.get_absolute_url() + "#idConversation",
                      description="a commenté la page des propositions de l'Agora")
         return redirect(request.path)
-    dico_charte = ((pole, (prop for prop in PropositionCharte.objects.filter(pole=pole).order_by("id"))) for pole in PoleCharte.objects.all() if PropositionCharte.objects.filter(pole=pole))
+    dico_charte = ((pole, (prop for prop in PropositionCharte.objects.filter(pole=pole).order_by("id"))) for pole in PoleCharte.objects.all().order_by("id") if PropositionCharte.objects.filter(pole=pole))
     return render(request, 'permagora/propositions.html', {"dico_charte":dico_charte, 'form': form, 'commentaires': commentaires})
 
 
