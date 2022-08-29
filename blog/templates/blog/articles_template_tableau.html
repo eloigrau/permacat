@@ -50,7 +50,7 @@
             {% endif %}
                 </a>
           </td>
-<td  class="row_banniere_ordi" data-title=""><span class="badge badge-light">
+<td  data-title=""><span class="badge badge-light">
                 {% if request.user|is_following:article %}
                     {% fontawesome_icon 'bell' %}
                     {% else %}
@@ -65,7 +65,8 @@
             {%else%}&nbsp;
                 Posté par {{ article.auteur }} le  {{ article.date_creation|date:"d/m/Y" }}
             {% endif %}
-              </span></td>
+              </span>
+</td>
 
         </tr>
         {% endfor %}
