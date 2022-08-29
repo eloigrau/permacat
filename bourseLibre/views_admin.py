@@ -27,14 +27,15 @@ def getListeMailsAlerte():
     print('Nb actions : ' + str(len(actions)))
     messagesParMails = {}
     for action in actions:
-        for mail in action.data['emails']:
-            message = getMessage(action)
-            if not mail in messagesParMails:
-                messagesParMails[mail] = [message, ]
-            else:
-                for x in messagesParMails[mail]:
-                    if not message in messagesParMails[mail]:
-                        messagesParMails[mail].append(message)
+        if 'emails' in action.data:
+            for mail in action.data['emails']:
+                message = getMessage(action)
+                if not mail in messagesParMails:
+                    messagesParMails[mail] = [message, ]
+                else:
+                    for x in messagesParMails[mail]:
+                        if not message in messagesParMails[mail]:
+                            messagesParMails[mail].append(message)
 
     listeMails = []
     for mail, messages in messagesParMails.items():
