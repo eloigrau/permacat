@@ -234,6 +234,8 @@ def send_mass_html_mail(datatuple, fail_silently=False, auth_user=None,
                                connection=connection)
         for subject, message, html_message, sender, recipient in data if recipient != [SERVER_EMAIL,]
     ]
+    if LOCALL:
+        return True
     return connection.send_messages(messages)
 
 

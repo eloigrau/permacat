@@ -151,11 +151,12 @@ def lireAtelier(request, atelier):
         atelier.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(comment.commentaire))[:96] + "..."
         atelier.save()
         comment.save()
-        action.send(request.user, verb='atelier_message', action_object=atelier, url=atelier.get_absolute_url(),
-                    description="a réagi à l'atelier: '%s'" % atelier.titre)
-        emails = [atelier.auteur, ] + [suiv.email for suiv in inscrits]
-        action.send(request.user, verb='emails', action_object=atelier, url=atelier.get_absolute_url(),
-                    description="a réagi à l'atelier: '%s'" % atelier.titre,  message="L'atelier %s a été commenté" %atelier.titre, emails=emails)
+        action.send(request.user, verb='atelier_message', url=atelier.get_absolute_url(),
+                    description="a commenté l'atelier: '%s'" % atelier.titre)
+        emails = [atelier.auteur.email, ] + [suiv.email for suiv in inscrits]
+        message = "L'atelier <a href='https://www.perma.cat" + atelier.get_absolute_url() + "'>%s</a> a été commenté" %atelier.titre
+        action.send(request.user, verb='emails', url=atelier.get_absolute_url(),
+                    titre="a commenté l'atelier: '%s'" % atelier.titre,  message=message, emails=emails)
 
         return redirect(request.path)
 
