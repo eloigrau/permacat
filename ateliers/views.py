@@ -153,7 +153,7 @@ def lireAtelier(request, atelier):
         comment.save()
         action.send(request.user, verb='atelier_message', url=atelier.get_absolute_url(),
                     description="a commenté l'atelier: '%s'" % atelier.titre)
-        emails = [atelier.auteur.email, ] + [suiv.email for suiv in inscrits]
+        emails = [Profil.objects.get(username=atelier.auteur).email, ] + [suiv.email for suiv in inscrits]
         message = "L'atelier <a href='https://www.perma.cat" + atelier.get_absolute_url() + "'>%s</a> a été commenté" %atelier.titre
         action.send(request.user, verb='emails', url=atelier.get_absolute_url(),
                     titre="a commenté l'atelier: '%s'" % atelier.titre,  message=message, emails=emails)
