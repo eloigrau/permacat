@@ -151,6 +151,7 @@ def lireAtelier(request, atelier):
         atelier.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(comment.commentaire))[:96] + "..."
         atelier.save()
         comment.save()
+
         action.send(request.user, verb='atelier_message', url=atelier.get_absolute_url(),
                     description="a commenté l'atelier: '%s'" % atelier.titre)
         emails = [Profil.objects.get(username=atelier.auteur).email, ] + [suiv.email for suiv in inscrits]
