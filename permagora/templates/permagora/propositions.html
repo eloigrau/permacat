@@ -75,7 +75,7 @@
               <ul>
 {% for point in domaine.1 %}
 
-                  <p><a id="{{point.slug}}">                  </a>{{ forloop.counter }}.   <a href="{{point.get_absolute_url}}" > {{point|safe}}</a></p>
+                  <p><a id="{{point.slug}}">                  </a>{{forloop.parentloop.counter}}.{{ forloop.counter }}/   <a href="{{point.get_absolute_url}}" > {{point|safe}}</a></p>
                       {% comment %}<p class="text-right">
       <a href="{% url 'permagora:ajouterVote_plus' point.slug %}?next={%url 'permagora:propositions'%}#{{domaine.0.slug}}"> {% fontawesome_icon 'thumbs-up' %} {{point.compteur_plus}}</a> &nbsp
       <a href="{% url 'permagora:ajouterVote_moins' point.slug %}?next={%url 'permagora:propositions'%}#{{domaine.0.slug}}" >{% fontawesome_icon 'thumbs-down' %} {{point.compteur_moins}} </a> &nbsp
