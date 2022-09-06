@@ -307,8 +307,9 @@
     </div>
 {% endif%}
 {% if article_list %}
+<div id="article_list"></div>
     {% if asso_courante %}
-    <div class="row justify-content-center" id="article_list">
+    <div class="row justify-content-center" >
         <div class="col-sm-12 textcenter">
             <p><h4>Articles du groupe :  <a href="#ref-titre" class="btn"><i class="fa fa-angle-up"></i></a></h4> </p>
         </div>
@@ -341,11 +342,11 @@
     </div>
 <div class="row justify-content-center">
     <div class="col-sm-12">
-    <div class="infinite-container">
- {% include "blog/articles_template_tableau.html" with article_list=articles_partages %}
+    <div class="infinite-container2">
+        {% include "blog/articles_template_tableau.html" with article_list=articles_partages %}
+        {%include 'pagination2.html' %}
     </div>
     </div>
-{%include 'pagination.html' %}
 </div>
 
 <hr>

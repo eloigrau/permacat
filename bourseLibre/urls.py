@@ -181,6 +181,7 @@ urlpatterns = [
     path(r'salon/accueil', login_required(views.salon_accueil), name='salon_accueil'),
     path(r'salon/d/<str:slug>', login_required(views.salon), name='salon'),
     path(r'creerSalon/', login_required(views.creerSalon), name='creerSalon'),
+    url(r'^salons/$', login_required(views.ListeSalons.as_view()),  name="salons"),
     path(r'suivre_salon/<str:slug_salon>', views_inscriptions.suivre_salon, name='suivre_salon'),
     path(r'inviterDansSalon/<str:slug_salon>', views.inviterDansSalon, name='inviterDansSalon'),
     path(r'invitationDansSalon/<str:slug_salon>', views.invitationDansSalon, name='invitationDansSalon'),

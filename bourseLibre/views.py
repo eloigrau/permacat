@@ -36,7 +36,7 @@ from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import Group, User
-from django.views.decorators.csrf import csrf_exempt
+from django.core.paginator import Paginator
 
 from django.views.decorators.debug import sensitive_variables
 #from django.views.decorators.debug import sensitive_post_parameters
@@ -937,6 +937,13 @@ def chercher_produits(request):
 def lireConversation(request, destinataire):
     conversation = getOrCreateConversation(request.user.username, destinataire)
     messages = Message.objects.filter(conversation=conversation).order_by("date_creation")
+    paginator = Paginator(messages, 10) # Show 10 contacts per page.
+    if not 'page' in request.GET:
+        page_number = paginator.num_pages
+    else:
+        page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
 
     message_defaut = None
     id_panier = request.GET.get('panier')
@@ -977,7 +984,7 @@ def lireConversation(request, destinataire):
             #             sujet + "\n" + message + "\n xxx \n" + str(profil_destinataire.email) + "\n erreur : " + str(inst))
         return redirect(request.path)
 
-    return render(request, 'lireConversation.html', {'conversation': conversation, 'form': form, 'messages_echanges': messages, 'destinataire':destinataire})
+    return render(request, 'lireConversation.html', {'conversation': conversation, 'form': form, 'page_obj': page_obj, 'destinataire':destinataire})
 
 
 
@@ -1119,6 +1126,32 @@ def salon_accueil(request):
 
     return render(request, 'salon/accueilSalons.html', {'salons_prives':salons_prives, "salons_publics":salons_publics, "salons_su":salons_su, "invit":invit, "suivis":suivis})
 
+
+class ListeSalons(ListView):
+    model = Salon
+    context_object_name = "salons_list"
+    template_name = "salon/index.html"
+    paginate_by = 20
+
+    def get_queryset(self):
+        self.params = dict(self.request.GET.items())
+        salons_publics = Salon.objects.filter(estPublic=True).order_by("-date_creation")
+        return salons_publics
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        context["salons_prives"] = [s.salon for s in InscritSalon.objects.filter(profil=self.request.user, salon__estPublic=False).order_by("-date_creation")]
+        suivis, created = Suivis.objects.get_or_create(nom_suivi="salon_accueil")
+        context["invit"] = InvitationDansSalon.objects.filter(profil_invite=self.request.user).order_by("-date_creation")
+
+        if self.request.user.is_superuser:
+            context["salons_su"] = Salon.objects.all().order_by("-date_creation")
+
+        return context
+
+
+
 @login_required
 def salon(request, slug):
     invit = InvitationDansSalon.objects.filter(salon__slug=slug, profil_invite=request.user)
@@ -1132,6 +1165,12 @@ def salon(request, slug):
     inscrits = salon.getInscrits()
     invites = salon.getInvites()
     messages = Message_salon.objects.filter(salon=salon).order_by("date_creation")
+    paginator = Paginator(messages, 10) # Show 10 contacts per page.
+    if not 'page' in request.GET:
+        page_number = paginator.num_pages
+    else:
+        page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     form = Message_salonForm(request.POST or None)
     if form.is_valid():
         message = form.save(commit=False)
@@ -1145,7 +1184,7 @@ def salon(request, slug):
                     description="a envoyé un message dans le salon '" + str(salon.titre) + "' (>"+" ".join([str(x) for x in inscrits])+")")
 
         return redirect(request.path)
-    return render(request, 'salon/salon.html', {'form': form, 'messages_echanges': messages, 'salon':salon, 'suivis':suivis, "inscrits":inscrits, "invites":invites})
+    return render(request, 'salon/salon.html', {'form': form, 'messages_echanges': messages, 'salon':salon, 'suivis':suivis, "inscrits":inscrits, "invites":invites, "page_obj":page_obj})
 
 @login_required
 def creerSalon(request):
