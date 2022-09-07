@@ -44,7 +44,7 @@ class GenericModel(models.Model):
         return self.__str()
 
     def __str__(self):
-        return "[PermAgora] " + [y for x, y in Choix.type_article][int(self.type_article)] + ", " + str(self.message) if self.message else "(Permgora)" + str([y for x, y in Choix.type_article][int(self.type_article)])
+        return "[PermAgora] " + [y for x, y in Choix.type_article][int(self.type_article)] + ", " + str(self.message) if self.message else "[PermAgora] " + str([y for x, y in Choix.type_article][int(self.type_article)])
 
     def get_absolute_url(self): #('0','intro'), ("1","constat"), ('2','preconisations'), ('3','charte'), ('4','liens'), ('5','accueil'), ('6','présentation'), ('7','organisation'),
         return Choix.get_url(self.type_article)
