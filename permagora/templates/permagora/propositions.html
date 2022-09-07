@@ -47,7 +47,7 @@
           <div class="col-sm-12">
             <div class="site-section-heading" data-aos="fade-up">
               <h3 class="text-center titrePolePermagora" id="{{domaine.0.slug}}" onclick="toggle_visibility('{{domaine.0.slug}}_description');">{{ forloop.counter }}/ {{domaine.0|safe}}</h3>
-                {% if domaine.0.description %}<p style="text-align:center; display:none;" id="{{domaine.0.slug}}_description">{{domaine.0.description|safe}}</p> {% endif %}
+                {% if domaine.0.description %}<p style="text-align:center; " id="{{domaine.0.slug}}_description">{{domaine.0.description|safe}}</p> {% endif %}
             </div>
             </div>
           </div>
