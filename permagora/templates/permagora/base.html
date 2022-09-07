@@ -30,14 +30,16 @@
 
     {% fontawesome_stylesheet %}
 
-<link rel="apple-touch-icon" sizes="152x152" href="{% static 'permagora/apple-touch-icon.png' %}">
+<link rel="apple-touch-icon" sizes="180x180" href="{% static 'permagora/apple-touch-icon.png' %}">
 <link rel="icon" type="image/png" sizes="32x32" href="{% static 'permagora/favicon-32x32.png' %}">
+<link rel="icon" type="image/png" sizes="192x192" href="{% static 'permagora/android-chrome-192x192.png' %}">
 <link rel="icon" type="image/png" sizes="16x16" href="{% static 'permagora/favicon-16x16.png' %}">
-<link rel="manifest" href="{% static 'permagora/site.webmanifest' %}">
-<link rel="mask-icon" href="{% static 'permagora/safari-pinned-tab.svg' %}" color="#5bbad5">
-<meta name="msapplication-TileColor" content="#da532c">
+<link rel="manifest" href="{% static 'permagora/site.webmanifest '%}">
+<link rel="mask-icon" href="{% static 'permagora/safari-pinned-tab.svg' %}" color="#78d55b">
+<meta name="msapplication-TileColor" content="#ffc40d">
+<meta name="msapplication-TileImage" content="{% static 'permagora/mstile-144x144.png' %}">
 <meta name="theme-color" content="#ffffff">
-<link rel="shortcut icon" href="{%  static 'permagora/favicon.ico' %}">
+
 
   </head>
   <body>
@@ -58,7 +60,7 @@
         <div class="row align-items-center">
           <div class="col-11 col-xl-2">
                 <a href="{% url 'permagora:bienvenue' %}" class="text-white h2 mb-0">
-                <img src="{% static 'permagora/images/logo_3.png' %}" alt="Logo" class="img-fluid" style="height:43px;">
+                <img src="{% static 'permagora/images/logo_8.png' %}" alt="Logo" class="img-fluid" style="height:43px;">
                 </a>
           </div>
           <div class="col-12 col-md-10 d-none d-xl-block">
