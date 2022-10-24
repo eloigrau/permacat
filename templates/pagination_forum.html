@@ -1,0 +1,26 @@
+  {% if page_obj.paginator.num_pages > 1 %}
+<div class="pagination">
+        {% if page_obj.has_previous %}
+        <a class="pagination-action" href="?page=1{{urlOrdreTri}}#article_list">
+            <i class='fa fa-chevrons-left fa-sm' aria-hidden="true"></i> </a>
+        <a class="pagination-action" href="?page={{ page_obj.previous_page_number }}{{urlOrdreTri}}#article_list">
+            <i class='fa fa-chevron-left fa-sm' aria-hidden="true"></i>
+        </a>
+        {% endif %}
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <span class="pagination-number pagination-current">{{ num }}</span>
+            {% elif num > page_obj.number|add:'-4' and num < page_obj.number|add:'4' %}
+                <a class="pagination-number" href="?page={{ num }}{{urlOrdreTri}}#article_list">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+            <a class="pagination-action" href="?page={{ page_obj.next_page_number }}{{urlOrdreTri}}#article_list">
+                <i class='fa fa-chevron-right fa-sm' aria-hidden="true"></i>
+            </a>
+            <a class="pagination-action" href="?page={{ page_obj.paginator.num_pages }}{{urlOrdreTri}}#article_list">
+                <i class='fa fa-chevrons-right fa-sm' aria-hidden="true"></i>
+            </a>
+        {% endif %}
+    </div>
+{% endif %}

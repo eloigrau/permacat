@@ -252,7 +252,7 @@ class ListeArticles(ListView):
     model = Article
     context_object_name = "article_list"
     template_name = "blog/index.html"
-    paginate_by = 50
+    paginate_by = 20
 
     def get_queryset(self):
         self.params = dict(self.request.GET.items())
@@ -329,7 +329,7 @@ class ListeArticles_asso(ListView):
     model = Article
     context_object_name = "article_list"
     template_name = "blog/index.html"
-    paginate_by = 50
+    paginate_by = 20
 
     def get_queryset(self):
         params = dict(self.request.GET.items())
@@ -419,8 +419,10 @@ class ListeArticles_asso(ListView):
         if 'archives' in self.request.GET:
             context['typeFiltre'] = "archives"
         if 'ordreTri' in self.request.GET:
+            context['urlOrdreTri'] = "&ordreTri=" + self.request.GET['ordreTri']
             context['ordre_triage'] = list(Choix.ordre_tri_articles.keys())[list(Choix.ordre_tri_articles.values()).index(self.request.GET['ordreTri'])]
         else:
+            context['urlOrdreTri'] = ""
             context['ordre_triage'] = "date de dernière modification"
 
         return context

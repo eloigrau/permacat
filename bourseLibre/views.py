@@ -1117,10 +1117,10 @@ def testIsMembreSalon(request, slug):
 def salon_accueil(request):
     salons_su = []
     if request.user.is_superuser:
-        salons_su = Salon.objects.all().order_by("-date_creation")
+        salons_su = Salon.objects.all().order_by("titre")
 
-    salons_prives = [s.salon for s in InscritSalon.objects.filter(profil=request.user, salon__estPublic=False).order_by("-date_creation")]
-    salons_publics = Salon.objects.filter(estPublic=True).order_by("-date_creation")
+    salons_prives = [s.salon for s in InscritSalon.objects.filter(profil=request.user, salon__estPublic=False).order_by("salon__titre")]
+    salons_publics = Salon.objects.filter(estPublic=True).order_by("titre")
     suivis, created = Suivis.objects.get_or_create(nom_suivi="salon_accueil")
     invit = InvitationDansSalon.objects.filter(profil_invite=request.user).order_by("-date_creation")
 
@@ -1135,18 +1135,18 @@ class ListeSalons(ListView):
 
     def get_queryset(self):
         self.params = dict(self.request.GET.items())
-        salons_publics = Salon.objects.filter(estPublic=True).order_by("-date_creation")
+        salons_publics = Salon.objects.filter(estPublic=True).order_by("titre")
         return salons_publics
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        context["salons_prives"] = [s.salon for s in InscritSalon.objects.filter(profil=self.request.user, salon__estPublic=False).order_by("-date_creation")]
+        context["salons_prives"] = [s.salon for s in InscritSalon.objects.filter(profil=self.request.user, salon__estPublic=False).order_by("salon__titre")]
         suivis, created = Suivis.objects.get_or_create(nom_suivi="salon_accueil")
-        context["invit"] = InvitationDansSalon.objects.filter(profil_invite=self.request.user).order_by("-date_creation")
+        context["invit"] = InvitationDansSalon.objects.filter(profil_invite=self.request.user).order_by("salon__titre")
 
         if self.request.user.is_superuser:
-            context["salons_su"] = Salon.objects.all().order_by("-date_creation")
+            context["salons_su"] = Salon.objects.all().order_by("-titre")
 
         return context
 
@@ -1165,7 +1165,7 @@ def salon(request, slug):
     inscrits = salon.getInscrits()
     invites = salon.getInvites()
     messages = Message_salon.objects.filter(salon=salon).order_by("date_creation")
-    paginator = Paginator(messages, 10) # Show 10 contacts per page.
+    paginator = Paginator(messages, 20) # Show 10 contacts per page.
     if not 'page' in request.GET:
         page_number = paginator.num_pages
     else:

@@ -14,7 +14,7 @@
             </a>
                 <div class="dropdown-menu"  aria-labelledby="menuOrdreTri"  id="idOrdreTri">
                     {% for titre, ordre in ordreTriPossibles.items %}
-                     <a class="dropdown-item"  href="?{{ request.GET.urlencode|sansOrdreTri}}&ordreTri={{ordre}}">{{titre}}</a>
+                     <a class="dropdown-item"  href="?{{ request.GET.urlencode|sansOrdreTri}}&ordreTri={{ordre}}#article_list">{{titre}}</a>
                     {% endfor %}
                 </div>
             </li>

@@ -32,6 +32,7 @@ def ordreTri(value):
 @register.filter(is_safe=True)
 def sansOrdreTri(value):
     newvalue = value.replace('ordreTri', 'prec')
+    newvalue = newvalue.replace('page=', 'old=')
     return newvalue
 
 # @register.filter(is_safe=True)
