@@ -507,7 +507,7 @@ class Adhesion_asso(models.Model):
     asso = models.ForeignKey(Asso, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        return self.user.username + " le " + str(self.date_cotisation) + " " + str(self.montant) + " " + str(self.moyen) + "(" + self.asso + ")"
+        return self.user.username + " le " + str(self.date_cotisation) + " " + str(self.montant) + " " + str(self.moyen) + "(" + self.asso.nom + ")"
 
 class Produit(models.Model):  # , BaseProduct):
     user = models.ForeignKey(Profil, on_delete=models.CASCADE,)

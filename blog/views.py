@@ -54,6 +54,10 @@ def accueil(request):
     #asso_list = [(x.nom, x.abreviation) for x in Asso.objects.all().exclude(abreviation="jp").order_by("id") if request.user.est_autorise(x.abreviation)] # ['public'] + [asso for asso in Choix_global.abreviationsAsso if self.request.user.est_autorise(asso)] + ['projets']
     asso_list = Choix_global.abreviationsNomsAssoEtPublic
     suivis = get_suivis_forum(request)
+
+    suivi, created = Suivis.objects.get_or_create(nom_suivi='visite_forum_accueil')
+    hit_count = HitCount.objects.get_for_object(suivi)
+    hit_count_response = HitCountMixin.hit_count(request, hit_count)
 #'categorie_list':categorie_list,'categorie_list_pc':categorie_list_pc,'categorie_list_rtg':categorie_list_rtg,'categorie_list_fer':categorie_list_fer,'categorie_list_gt':categorie_list_gt,'categorie_list_citealt':categorie_list_citealt,'categorie_list_viure':categorie_list_viure,'projets_list':projets_list,'ateliers_list':ateliers_list, 'categorie_list_projets':categorie_list_projets,
     return render(request, 'blog/accueil.html', {'asso_list':asso_list,'derniers_articles':derniers, 'suivis':suivis})
 
