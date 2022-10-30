@@ -1271,6 +1271,8 @@ class Suivis(models.Model):
     def __str__(self):
         return str(self.nom_suivi)
 
+    def get_absolute_url(self):
+        return ""
 
 #class Gestionnaire_Suivis():
         #    def get_suivi_articles(self, asso):
