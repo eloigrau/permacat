@@ -173,7 +173,7 @@
                      <li> <a class="dropdown-item" href="https://semestriel.framapad.org/p/rtg_doctravail" target="_blank"><i class='fa fa-file iconleft' ></i>  Document de travail </a></li>
                             <li><a class="dropdown-item" href="{% url 'blog:index_asso' asso='rtg'%}#ref-titre"><i class='fa fa-comments iconleft' ></i> Articles du forum</a></li>
                             <li><a class="dropdown-item" href="{% url 'blog:lireArticle' slug='dossiersactions-en-cours'%}"><i class='fa fa-comments iconleft' ></i> Dossiers en cours </a></li>
-                            <li><a class="dropdown-item" href="{% url 'defraiement:reunions' %}"><i class='fa fa-comments iconleft' ></i> Defraiement </a></li>
+                            <li><a class="dropdown-item" href="{% url 'defraiement:liste_asso' asso_slug='rtg' %}"><i class='fa fa-comments iconleft' ></i> Defraiement </a></li>
 
    {% endif %}
                               <li class="divider" role="separator"></li>
@@ -241,8 +241,13 @@
                         <li class="divider" role="separator"></li>
                            <li> <a class="dropdown-item" href="{% url 'agora:acceuil' %}"><i class='fa fa-compass iconleft' ></i>  Journée Agora de la Transition  </a></li>
                      <li> <a class="dropdown-item" href="https://semestriel.framapad.org/p/permagora_doctravail" target="_blank"><i class='fa fa-file iconleft' ></i>  Document de travail </a></li>
+                    <li><a class="dropdown-item" href="{% url 'defraiement:liste_asso' asso_slug='scic' %}"><i class='fa fa-comments iconleft' ></i> Defraiement </a></li>
 
    {% endif %}
+                              <li class="divider" role="separator"></li>
+                          <li> <a class="dropdown-item" href="https://www.perma.cat/static/permagora/docs_admin/Statuts-Ri-Charte-PermAgora_final.bb187a297c61.pdf" target="_blank"><i class='fa fa-info-circle iconleft' ></i>  Statuts  </a></li>
+                       <li> <a class="dropdown-item" href="{% url 'adhesion_asso' asso='scic' %}"><i class='fa fa-euro-sign iconleft ' ></i> Adhésion en ligne </a></li>
+
                         </ul>
                     </li>
 

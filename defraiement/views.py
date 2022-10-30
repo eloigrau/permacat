@@ -374,7 +374,29 @@ class ListeReunions(ListView):
             context['categorie_courante'] = [x[1] for x in Choix.type_reunion if x[0] == self.request.GET['categorie']][0]
         if 'ordreTri' in self.request.GET:
             context['typeFiltre'] = "ordreTri"
+        return context
 
+
+class ListeReunions_asso(ListeReunions):
+    def get_queryset(self):
+        params = dict(self.request.GET.items())
+        self.asso = Asso.objects.get(abreviation=self.kwargs['asso_slug'])
+        qs = Reunion.objects.filter(estArchive=False, asso=self.asso)
+
+        if "categorie" in params:
+            qs = qs.filter(categorie=params['categorie'])
+
+        if "ordreTri" in params:
+            qs = qs.order_by(params['ordreTri'])
+        else:
+            qs = qs.order_by('-start_time', 'categorie', 'titre', )
+
+        return qs
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        context['asso_courante'] = self.asso.nom
         return context
 
 class ListeParticipants(ListView):
