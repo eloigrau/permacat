@@ -80,20 +80,18 @@ def getRecapitulatif_euros(request, reunions, prixMax, tarifKilometrique):
     return entete, lignes
 
 @login_required
-def recapitulatif(request, asso, type_reunion="999"):
+def recapitulatif(request, asso):
     asso = testIsMembreAsso(request, asso)
     if not isinstance(asso, Asso):
         raise PermissionDenied
-    if type_reunion != "999":
-        reunions = Reunion.objects.filter(estArchive=False, asso=asso, categorie=type_reunion).order_by('start_time','categorie',)
-    else:
-        reunions = Reunion.objects.filter(estArchive=False, asso=asso, ).order_by('start_time','categorie',)
+
+    reunions = Reunion.objects.filter(estArchive=False, asso=asso, ).order_by('start_time','categorie',)
 
     entete, lignes = getRecapitulatif_km(request, reunions)
     asso_list = [(x.nom, x.abreviation) for x in Asso.objects.all().exclude(abreviation="jp").order_by("id")
                             if request.user.est_autorise(x.abreviation)]
     type_list = Choix.type_reunion
-
+    type_reunion = "tout"
     form = PrixMaxForm(request.POST or None)
     if form.is_valid():
         prixMax = form.cleaned_data["prixMax"]
@@ -397,6 +395,7 @@ class ListeReunions_asso(ListeReunions):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         context['asso_courante'] = self.asso.nom
+        context['asso_courante_slug'] = self.asso.abreviation
         return context
 
 class ListeParticipants(ListView):

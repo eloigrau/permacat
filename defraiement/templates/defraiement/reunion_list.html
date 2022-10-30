@@ -113,11 +113,14 @@
     {% endif %}
 
 <p class="textcenter">
-<a href="{% url 'defraiement:recapitulatif'  asso='rtg' type_reunion='999' %}">
+
+{% if asso_courante %}
+<a href="{% url 'defraiement:recapitulatif'  asso=asso_courante_slug %}">
 <button type="button" class="btn btn-primary" >
         <i class="fa fa-arrow-right"></i> Récapitulatif
     </button>
     </a>&ensp;
+{% endif %}
 </p>
 <script>
     function toggle_visibility(id) {
