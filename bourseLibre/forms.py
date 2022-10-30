@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import Produit, Produit_aliment, Produit_objet, Produit_service, Produit_vegetal, Adresse, \
     Asso, Profil, Message, MessageGeneral, Message_salon, InscriptionNewsletter, Adhesion_permacat, \
-    Produit_offresEtDemandes, Salon, InscritSalon
+    Produit_offresEtDemandes, Salon, InscritSalon, Adhesion_asso
 from django_summernote.widgets import SummernoteWidget
 from blog.forms import SummernoteWidgetWithCustomToolbar
 from django.utils import timezone
@@ -445,6 +445,23 @@ class Adhesion_permacatForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(Adhesion_permacatForm, self).__init__(*args, **kwargs)
         self.fields['user'].choices = [(u.id, u) for i, u in enumerate(Profil.objects.all().order_by('username')) if u.adherent_pc]
+
+class Adhesion_assoForm(forms.ModelForm):
+
+    class Meta:
+        model = Adhesion_asso
+        fields = '__all__'
+        widgets = {
+            'date_cotisation': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
+            }
+
+    def __init__(self, asso_abreviation, *args, **kwargs):
+        super(Adhesion_assoForm, self).__init__(*args, **kwargs)
+        self.fields['user'].choices = [(u.id, u) for i, u in enumerate(Profil.objects.all().order_by('username')) if u.estMembre_str(asso_abreviation)]
 
 class nouvelleDateForm(forms.Form):
     years = [x for x in range(timezone.now().year - 3, timezone.now().year + 1)]

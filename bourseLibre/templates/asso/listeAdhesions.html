@@ -1,0 +1,30 @@
+{% extends 'base_asso.html' %}
+{% load static %}
+{% block header %}
+<script src="{% static 'js/sorttable.js' %}"></script>
+{% endblock %}
+{% block title %} -
+Coopérateurs
+{% endblock %}
+{% block subtitle %}
+<div class="row">
+    <div class="col-sm-12 textcenter">
+        <h3>Liste des adhésions : {{asso}}</h3>
+    </div>
+</div>
+{% endblock %}
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-sm-12 textcenter
+" id="{{mails.type}}">
+        <ul>
+{% for adhesion in listeAdhesions %}
+            <li>{{adhesion}}</li>
+{%endfor%}
+        </ul>
+</div>
+<hr>
+
+
+{% endblock %}

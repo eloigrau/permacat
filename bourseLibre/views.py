@@ -15,7 +15,8 @@ from .forms import Produit_aliment_CreationForm, Produit_vegetal_CreationForm, P
     MessageChangeForm, ContactMailForm, Produit_offresEtDemandes_CreationForm, Produit_offresEtDemandes_modifier_form, \
     SalonForm, Message_salonForm
 from .models import Profil, Produit, Adresse, Choix, Panier, Item, Asso, get_categorie_from_subcat, Conversation, Message, \
-    MessageGeneral, getOrCreateConversation, Suivis, InscriptionNewsletter, Salon, InscritSalon, Message_salon, InvitationDansSalon
+    MessageGeneral, getOrCreateConversation, Suivis, InscriptionNewsletter, Salon, InscritSalon, Message_salon, InvitationDansSalon,\
+    Adhesion_asso, Adhesion_permacat
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
@@ -338,17 +339,28 @@ def listeContacts(request, asso):
     if not isinstance(asso, Asso):
         raise PermissionDenied
     listeMails = []
-    listeMails.append({"type":'user_adherent_ajour' , "profils":asso.getProfils_cotisationAJour(), "titre":"Liste des adhérents Permacat: à jour de leur cotisation "})
-
     if request.user.is_superuser:
-        listeMails.append( {"type":'su : user_newsletter', "profils":Profil.objects.filter(inscrit_newsletter=True), "titre":"Liste des inscrits à la newsletter : "})
-        listeMails.append({"type":'su : anonym_newsletter', "profils":InscriptionNewsletter.objects.all(), "titre":"Liste des inscrits anonymes à la newsletter : "})
-        listeMails.append({"type":'su : user_adherent', "profils":Profil.objects.filter(adherent_pc=True), "titre":"Liste des adhérents Permacat: "})
+        listeMails.append( {"type":'user_newsletter', "profils":Profil.objects.filter(inscrit_newsletter=True), "titre":"su : Liste des inscrits à la newsletter : "})
+        listeMails.append({"type":'anonym_newsletter', "profils":InscriptionNewsletter.objects.all(), "titre":"su : Liste des inscrits anonymes à la newsletter : "})
+        listeMails.append({"type":'user_adherent', "profils":Profil.objects.filter(adherent_pc=True), "titre":"su : Liste des adhérents Permacat: "})
+
+    listeMails.append({"type":'user_adherent_ajour' , "profils":asso.getProfils_cotisationAJour(), "titre":"Liste des adhérents : à jour de leur cotisation "})
+    listeMails.append(
+      {"type":'user_adherent', "profils":Profil.objects.filter(adherent_pc=True), "titre":"Liste des adhérents " + asso.nom},
+    )
+    return render(request, 'asso/listeContacts.html', {"listeMails":listeMails, "asso":asso })
+
+@login_required
+def listeAdhesions(request, asso):
+    asso = testIsMembreAsso(request, asso)
+    if not isinstance(asso, Asso):
+        raise PermissionDenied
+    if asso.abreviation == "pc":
+        qs = Adhesion_permacat.objects.filter().order_by()
     else:
-        listeMails.append(
-          {"type":'user_adherent', "profils":Profil.objects.filter(adherent_pc=True), "titre":"Liste des adhérents " + asso},
-        )
-    return render(request, 'listeContacts.html', {"listeMails":listeMails, "asso":asso })
+        qs = Adhesion_asso.objects.filter(asso=asso).order_by()
+
+    return render(request, 'asso/listeAdhesions.html', {"listeAdhesions":qs, "asso":asso })
 
 @login_required
 def listeContacts_admin(request):

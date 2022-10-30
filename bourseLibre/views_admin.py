@@ -10,7 +10,7 @@ import re
 from django.core import mail
 from actstream import actions
 from bs4 import BeautifulSoup
-from .forms import Adhesion_permacatForm, creerAction_articlenouveauForm
+from .forms import Adhesion_permacatForm, Adhesion_assoForm, creerAction_articlenouveauForm
 from actstream import action
 from actstream.models import followers
 
@@ -375,14 +375,16 @@ def ajouterAdhesion(request, abreviationAsso):
     if not request.user.is_superuser:
         return HttpResponseForbidden()
 
-    if abreviationAsso == 'pc':
+    if abreviationAsso == 'pc' :
         form = Adhesion_permacatForm(request.POST or None)
+    elif abreviationAsso == 'scic' :
+        form = Adhesion_assoForm(abreviationAsso, request.POST or None)
 
-        if form.is_valid():
-            form.save()
-            return redirect('listeContacts', 'pc')
+    if form.is_valid():
+        form.save()
+        return redirect('listeContacts', abreviationAsso)
 
-        return render(request, 'asso/pc/adhesion_ajouter.html', { "form": form,})
+    return render(request, 'asso/adhesion_ajouter.html', { "form": form,})
 
     return render(request, 'erreur.html', {'msg':"Désolé, il n'est pas encore possible d'adhérer a une autre asso par ce biais, réservé permacat"})
 

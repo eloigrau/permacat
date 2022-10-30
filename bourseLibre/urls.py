@@ -127,6 +127,7 @@ urlpatterns = [
     path(r'adhesion/', views.adhesion_entree, name='adhesion_entree'),
     #url(r'^agenda/$', views.agenda, name='agenda',),
     path(r'annuaire/<str:asso>', login_required(views.annuaire), name='annuaire',),
+    path(r'cooperateurs/listeAdhesions/<str:asso>', login_required(views.listeAdhesions), name='listeAdhesions',),
     path(r'cooperateurs/listeContacts/<str:asso>', login_required(views.listeContacts), name='listeContacts',),
     path(r'cooperateurs/listeContacts_admin/', login_required(views.listeContacts_admin), name='listeContacts_admin',),
     path(r'cooperateurs/listeFollowers/<str:asso>', login_required(views.listeFollowers), name='listeFollowers',),

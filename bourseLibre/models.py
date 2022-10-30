@@ -291,19 +291,24 @@ class Profil(AbstractUser):
     def getDistance(self, profil):
         return self.adresse.getDistance(profil.adresse)
 
-    def getAdhesions(self):
-        return Adhesion_permacat.objects.filter(user=self)
+    def getAdhesions(self, abreviationAsso):
+        if abreviationAsso == "pc" :
+            return Adhesion_permacat.objects.filter(user=self)
+        else:
+            return Adhesion_asso.objects.filter(user=self, asso__abreviation=abreviationAsso)
 
     def isCotisationAJour(self, asso_abreviation):
-        if asso_abreviation == "pc":
-            time_threshold = datetime(datetime.now().year - 1, 11, 1)
-            return self.getAdhesions().filter(date_cotisation__gt=time_threshold).count() > 0
-        else:
-            return True
+        time_threshold = datetime(datetime.now().year - 1, 11, 1)
+        return self.getAdhesions(asso_abreviation).filter(date_cotisation__gt=time_threshold).count() > 0
+
 
     @property
     def isCotisationAJour_pc(self):
         return self.isCotisationAJour("pc")
+
+    @property
+    def isCotisationAJour_scic(self):
+        return self.isCotisationAJour("scic")
 
     @property
     def statutMembre_asso(self, asso):
@@ -489,6 +494,20 @@ class Adhesion_permacat(models.Model):
 
     def __str__(self):
         return self.user.username + " le "+ str(self.date_cotisation) + " " + str(self.montant) + " " + str(self.moyen)
+
+class Adhesion_asso(models.Model):
+    user = models.ForeignKey(Profil, on_delete=models.CASCADE, verbose_name="Utilisateur ")
+    date_cotisation = models.DateField(verbose_name="Date de la cotisation", editable=True, auto_now_add=False)
+    montant = models.CharField(max_length=50, blank=False, verbose_name="Montant de l'adhesion")
+    moyen = models.CharField(
+        max_length=3,
+        choices=Choix.type_paiement_adhesion,
+        default='0', verbose_name="Moyen de maiement"
+    )
+    asso = models.ForeignKey(Asso, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.user.username + " le " + str(self.date_cotisation) + " " + str(self.montant) + " " + str(self.moyen) + "(" + self.asso + ")"
 
 class Produit(models.Model):  # , BaseProduct):
     user = models.ForeignKey(Profil, on_delete=models.CASCADE,)

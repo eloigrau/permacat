@@ -19,6 +19,16 @@
 </div>
 <hr>
 
+<div class="row textcenter">
+	<div class="col-sm-12">
+        <a href="{% url 'telechargements_asso' asso=asso.abreviation%}">
+         <button type="button" class="btn btn-primary">
+                 Fichiers à télécharger
+            </button>
+		</a>
+	</div>
+</div>
+<hr>
 {% if request.user.is_superuser %}
 <div class="row textcenter">
 	<div class="col-sm-12">
@@ -39,18 +49,17 @@
     </a>
     </div>
 </div>
-<hr>
-{% endif %}
 <div class="row textcenter">
-	<div class="col-sm-12">
-        <a href="{% url 'telechargements_asso' asso=asso.abreviation%}">
-         <button type="button" class="btn btn-primary">
-                 Fichiers à télécharger
-            </button>
-		</a>
-	</div>
+    <div class="col-sm-12">
+    <a class="dropdown-item" href="{% url 'listeAdhesions' asso=asso.abreviation %}">
+    <button type="button" class="btn btn-primary">
+      SU : Liste adhésions
+    </button>
+    </a>
+    </div>
 </div>
 <hr>
+{% endif %}
 {% endblock %}
 
 
