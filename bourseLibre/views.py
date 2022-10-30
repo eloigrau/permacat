@@ -338,16 +338,15 @@ def listeContacts(request, asso):
     if not isinstance(asso, Asso):
         raise PermissionDenied
     listeMails = []
-    if asso.abreviation == 'pc':
-        listeMails.append({"type":'user_adherent_ajour' , "profils":asso.getProfils_cotisationAJour(), "titre":"Liste des adhérents Permacat: à jour de leur cotisation "})
+    listeMails.append({"type":'user_adherent_ajour' , "profils":asso.getProfils_cotisationAJour(), "titre":"Liste des adhérents Permacat: à jour de leur cotisation "})
 
     if request.user.is_superuser:
-        listeMails.append( {"type":'user_newsletter', "profils":Profil.objects.filter(inscrit_newsletter=True), "titre":"Liste des inscrits à la newsletter : "})
-        listeMails.append({"type":'anonym_newsletter', "profils":InscriptionNewsletter.objects.all(), "titre":"Liste des inscrits anonymes à la newsletter : "})
-        listeMails.append({"type":'user_adherent', "profils":Profil.objects.filter(adherent_pc=True), "titre":"Liste des adhérents Permacat: "})
+        listeMails.append( {"type":'su : user_newsletter', "profils":Profil.objects.filter(inscrit_newsletter=True), "titre":"Liste des inscrits à la newsletter : "})
+        listeMails.append({"type":'su : anonym_newsletter', "profils":InscriptionNewsletter.objects.all(), "titre":"Liste des inscrits anonymes à la newsletter : "})
+        listeMails.append({"type":'su : user_adherent', "profils":Profil.objects.filter(adherent_pc=True), "titre":"Liste des adhérents Permacat: "})
     else:
         listeMails.append(
-          {"type":'user_adherent', "profils":Profil.objects.filter(adherent_pc=True), "titre":"Liste des adhérents Permacat: "},
+          {"type":'user_adherent', "profils":Profil.objects.filter(adherent_pc=True), "titre":"Liste des adhérents " + asso},
         )
     return render(request, 'listeContacts.html', {"listeMails":listeMails, "asso":asso })
 

@@ -11,7 +11,7 @@ else:  # NOQA
 from django.forms import ValidationError
 from django.forms.fields import CharField, MultiValueField
 from django.forms.widgets import TextInput, MultiWidget, HiddenInput
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import gettext_lazy
 from django.utils import timezone
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
@@ -186,7 +186,7 @@ class CaptchaField(MultiValueField):
         if 'error_messages' not in kwargs or 'invalid' not in kwargs.get('error_messages'):
             if 'error_messages' not in kwargs:
                 kwargs['error_messages'] = {}
-            kwargs['error_messages'].update({'invalid': ugettext_lazy('Invalid CAPTCHA')})
+            kwargs['error_messages'].update({'invalid': gettext_lazy ('Invalid CAPTCHA')})
 
         kwargs['widget'] = kwargs.pop('widget', CaptchaTextInput(
             output_format=kwargs.pop('output_format', None),
@@ -220,5 +220,5 @@ class CaptchaField(MultiValueField):
             try:
                 CaptchaStore.objects.get(response=response, hashkey=value[0], expiration__gt=timezone.now()).delete()
             except CaptchaStore.DoesNotExist:
-                raise ValidationError(getattr(self, 'error_messages', {}).get('invalid', ugettext_lazy('Invalid CAPTCHA')))
+                raise ValidationError(getattr(self, 'error_messages', {}).get('invalid', gettext_lazy ('Invalid CAPTCHA')))
         return value

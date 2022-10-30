@@ -84,8 +84,11 @@ def recapitulatif(request, asso):
     asso = testIsMembreAsso(request, asso)
     if not isinstance(asso, Asso):
         raise PermissionDenied
-
-    reunions = Reunion.objects.filter(estArchive=False, asso=asso, ).order_by('start_time','categorie',)
+    type_reunion = request.GET.get('message')
+    if type_reunion:
+        reunions = Reunion.objects.filter(estArchive=False, asso=asso, categorie=type_reunion, ).order_by('start_time','categorie',)
+    else:
+        reunions = Reunion.objects.filter(estArchive=False, asso=asso, ).order_by('start_time','categorie',)
 
     entete, lignes = getRecapitulatif_km(request, reunions)
     asso_list = [(x.nom, x.abreviation) for x in Asso.objects.all().exclude(abreviation="jp").order_by("id")

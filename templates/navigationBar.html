@@ -34,7 +34,7 @@
                     <ul class="dropdown-menu nav5-dropdown-submenu">
                         <li><a class="dropdown-item" href="{% url 'admin:index' %}">Admin</a></li>
                        <li> <a class="dropdown-item" href="{% url 'voirEmails' %}"> voir Emails Alertes</a></li>
-                       <li> <a class="dropdown-item" href="https://www.perma.cat/gestion/bourseLibre/profil/?o=-4.2"> Utilisateurs </a></li>
+                       <li> <a class="dropdown-item" href="https://www.perma.cat/gestion/bourseLibre/profil/?o=-3"> Utilisateurs </a></li>
                                <li> <a class="dropdown-item" href="https://www.perma.cat/gestion/hitcount/hit/"> Hits </a></li>
                                <li> <a class="dropdown-item" href="{% url 'blog:voirTousLieux' %}"> Lieux </a></li>
 
@@ -148,9 +148,6 @@
                        <li class="divider" role="separator"></li>
                         <li><a class="dropdown-item" href="{% url 'admin_asso' asso='pc' %}"><i class='fa fa-database' ></i> Administration  </a></li>
                         {% endif %}
-                        {% if request.user.is_superuser %}
-                        <li><a class="dropdown-item" href="{% url 'ajouterAdhesion' abreviationAsso='pc' %}"><i class='fa fa-database' ></i> Ajouter adhésion  </a></li>
-                        {% endif %}
                         <li class="divider" role="separator"></li>
                        <li> <a class="dropdown-item" href="{% url 'charte' %}"> <i class="fa fa-info-circle iconleft"></i> Charte </a></li>
                        <li> <a class="dropdown-item" href="{% url 'statuts' %}"> <i class="fa fa-info-circle iconleft"></i> Statuts et règlement intérieur </a></li>
@@ -244,6 +241,9 @@
                     <li><a class="dropdown-item" href="{% url 'defraiement:liste_asso' asso_slug='scic' %}"><i class='fa fa-comments iconleft' ></i> Defraiement </a></li>
 
    {% endif %}
+                        {% if request.user.is_superuser %}
+                        <li><a class="dropdown-item" href="{% url 'ajouterAdhesion' abreviationAsso='scic' %}"><i class='fa fa-database' ></i> Ajouter adhésion  </a></li>
+                        {% endif %}
                               <li class="divider" role="separator"></li>
                           <li> <a class="dropdown-item" href="https://www.perma.cat/static/permagora/docs_admin/Statuts-Ri-Charte-PermAgora_final.bb187a297c61.pdf" target="_blank"><i class='fa fa-info-circle iconleft' ></i>  Statuts  </a></li>
                        <li> <a class="dropdown-item" href="{% url 'adhesion_asso' asso='scic' %}"><i class='fa fa-euro-sign iconleft ' ></i> Adhésion en ligne </a></li>

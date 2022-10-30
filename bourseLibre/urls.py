@@ -48,7 +48,7 @@ urlpatterns = [
     url(r'^bienvenue/$', views.bienvenue, name='bienvenue'),
     url(r'^faq/$', views_base.faq, name='faq'),
     url(r'^gallerie/$', views_base.gallerie, name='gallerie'),
-    path(r'admin/<str:asso>', views.admin_asso, name='admin_asso'),
+    path(r'admin_asso/<str:asso>', views.admin_asso, name='admin_asso'),
     url(r'^media/(?P<path>.*)', views.accesfichier, name='accesfichier'),
 
     path(r'fichiers/asso/<str:asso>', views.telechargements_asso, name='telechargements_asso'),

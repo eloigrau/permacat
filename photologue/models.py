@@ -21,7 +21,7 @@ from django.template.defaultfilters import slugify
 from django.urls import reverse
 from django.utils.encoding import force_text, smart_str, filepath_to_uri
 from django.utils.timezone import now
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from io import BytesIO
 from sortedm2m.fields import SortedManyToManyField
 

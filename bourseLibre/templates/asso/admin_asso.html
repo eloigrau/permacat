@@ -8,7 +8,6 @@
 {% endblock %}
 {% block content %}
 
-{% if request.user.adherent_pc and asso.abreviation == "pc" %}
 <div class="row textcenter">
 	<div class="col-sm-12">
         <a href="{% url 'listeContacts' asso=asso.abreviation %}">
@@ -19,7 +18,6 @@
 	</div>
 </div>
 <hr>
-{% endif %}
 
 {% if request.user.is_superuser %}
 <div class="row textcenter">
@@ -30,6 +28,16 @@
             </button>
 		</a>
 	</div>
+</div>
+
+<div class="row textcenter">
+    <div class="col-sm-12">
+    <a class="dropdown-item" href="{% url 'ajouterAdhesion' abreviationAsso=asso.abreviation  %}">
+    <button type="button" class="btn btn-primary">
+      SU : Ajouter adhésion
+    </button>
+    </a>
+    </div>
 </div>
 <hr>
 {% endif %}

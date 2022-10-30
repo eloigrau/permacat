@@ -19,7 +19,7 @@ from django.dispatch import receiver
 from django.template.defaultfilters import slugify
 from django.urls import reverse, reverse_lazy
 from django.utils.timezone import now
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from model_utils.managers import InheritanceManager
 from django.core.mail import send_mail
 from .constantes import Choix, DEGTORAD

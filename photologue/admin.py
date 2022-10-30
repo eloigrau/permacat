@@ -7,7 +7,7 @@ from django.contrib.admin import helpers
 from django.contrib.sites.models import Site
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.utils.translation import ungettext, ugettext_lazy as _
+from django.utils.translation import ungettext, gettext_lazy  as _
 
 from .forms import UploadZipForm
 from .models import Album, Photo, PhotoEffect, PhotoSize, Document, Watermark

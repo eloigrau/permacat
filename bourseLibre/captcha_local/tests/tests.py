@@ -12,7 +12,7 @@ if django.VERSION < (1, 10):  # NOQA
 else:  # NOQA
     from django.urls import reverse  # NOQA
 from django.test import TestCase, override_settings
-from django.utils.translation import ugettext_lazy
+from django.utils.translation import gettext_lazy
 from django.utils import timezone
 import datetime
 import json
@@ -111,7 +111,7 @@ class CaptchaCase(TestCase):
             r = self.client.get(reverse(urlname))
             self.assertEqual(r.status_code, 200)
             r = self.client.post(reverse(urlname), dict(captcha_0='abc', captcha_1='wrong response', subject='xxx', sender='asasd@asdasd.com'))
-            self.assertFormError(r, 'form', 'captcha', ugettext_lazy('Invalid CAPTCHA'))
+            self.assertFormError(r, 'form', 'captcha', gettext_lazy ('Invalid CAPTCHA'))
 
     def test_deleted_expired(self):
         self.default_store.expiration = timezone.now() - datetime.timedelta(minutes=5)
@@ -137,7 +137,7 @@ class CaptchaCase(TestCase):
         self.assertFormError(r, 'form', 'captcha', 'TEST CUSTOM ERROR MESSAGE')
         # empty answer
         r = self.client.post(reverse('captcha-test-custom-error-message'), dict(captcha_0='abc', captcha_1=''))
-        self.assertFormError(r, 'form', 'captcha', ugettext_lazy('This field is required.'))
+        self.assertFormError(r, 'form', 'captcha', gettext_lazy ('This field is required.'))
 
     def test_repeated_challenge(self):
         CaptchaStore.objects.create(challenge='xxx', response='xxx')
@@ -256,14 +256,14 @@ class CaptchaCase(TestCase):
         r = self.client.get(reverse('captcha-test'))
         self.assertEqual(r.status_code, 200)
         r = self.client.post(reverse('captcha-test'), dict(captcha_0='abc', captcha_1='wrong response', subject='xxx', sender='asasd@asdasd.com'))
-        self.assertFormError(r, 'form', 'captcha', ugettext_lazy('Invalid CAPTCHA'))
+        self.assertFormError(r, 'form', 'captcha', gettext_lazy ('Invalid CAPTCHA'))
 
         settings.CAPTCHA_TEST_MODE = True
         # Test mode, only 'PASSED' is accepted
         r = self.client.get(reverse('captcha-test'))
         self.assertEqual(r.status_code, 200)
         r = self.client.post(reverse('captcha-test'), dict(captcha_0='abc', captcha_1='wrong response', subject='xxx', sender='asasd@asdasd.com'))
-        self.assertFormError(r, 'form', 'captcha', ugettext_lazy('Invalid CAPTCHA'))
+        self.assertFormError(r, 'form', 'captcha', gettext_lazy ('Invalid CAPTCHA'))
 
         r = self.client.get(reverse('captcha-test'))
         self.assertEqual(r.status_code, 200)
