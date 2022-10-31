@@ -5,7 +5,7 @@
 {% block subtitle %}
 
 <p class="textcenter">
-    <a href="{% url 'defraiement:participants' %}">
+    <a href="{% url 'defraiement:participants' asso_slug=part.asso.abreviation %}">
         <button type="button" class="btn btn-sm btn-primary">
         &nbsp; <i class="fa fa-arrow-left"></i> Revenir à la liste des participants
         </button>
@@ -37,7 +37,7 @@
               <h2> {{ part.nom }}</h2>
         </div>
     </div>
-        {% if reuest.user.is_superuser %}
+        {% if request.user.is_superuser %}
  	<div class="row">
     <div class="col-md-12 textcenter">
         <p>

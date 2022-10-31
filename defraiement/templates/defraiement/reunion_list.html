@@ -11,13 +11,13 @@
 {%block subtitle%}
 
 <h3 class="textcenter">
-    {% if asso_courante %} {{asso_courante}} - {% endif %} Défraiement
+    {% if asso_courante %} {{asso_courante.nom}} - {% endif %} Défraiement
 </h3>
 <h4 class="textcenter">
     Liste des événements (réunions, trocs...)
 </h4>
 <p class="textcenter">
-    <a href="{% url 'defraiement:participants' %}">
+    <a href="{% url 'defraiement:participants' asso_slug=asso_courante.abreviation %}">
     <button type="button" class="btn btn-primary btn-sm" >
             <i class="fa fa-arrow-right"></i> Liste des participants
         </button>
@@ -27,7 +27,7 @@
 <div class="row align-items-center reunion_titre_page_index">
     <div class="col-md-4 offset-md-4 textcenter justify-content-center">
 
-        <a href="{% url 'defraiement:ajouterReunion' %}">
+        <a href="{% url 'defraiement:ajouterReunion' asso_slug=asso_courante.abreviation %}">
         <button type="button" class="btn btn-success" >
                 <i class="fa fa-plus"></i> Ajouter une réunion
             </button>
@@ -115,7 +115,7 @@
 <p class="textcenter">
 
 {% if asso_courante %}
-<a href="{% url 'defraiement:recapitulatif'  asso=asso_courante_slug %}">
+<a href="{% url 'defraiement:recapitulatif'  asso_slug=asso_courante.abreviation%}">
 <button type="button" class="btn btn-primary" >
         <i class="fa fa-arrow-right"></i> Récapitulatif
     </button>

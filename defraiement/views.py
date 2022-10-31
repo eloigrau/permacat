@@ -80,11 +80,11 @@ def getRecapitulatif_euros(request, reunions, prixMax, tarifKilometrique):
     return entete, lignes
 
 @login_required
-def recapitulatif(request, asso):
-    asso = testIsMembreAsso(request, asso)
+def recapitulatif(request, asso_slug):
+    asso = testIsMembreAsso(request, asso_slug)
     if not isinstance(asso, Asso):
         raise PermissionDenied
-    type_reunion = request.GET.get('message')
+    type_reunion = request.GET.get('type_reunion')
     if type_reunion:
         reunions = Reunion.objects.filter(estArchive=False, asso=asso, categorie=type_reunion, ).order_by('start_time','categorie',)
     else:
@@ -103,7 +103,7 @@ def recapitulatif(request, asso):
 
         return render(request, 'defraiement/recapitulatif.html', {"form": form, "entete":entete, "lignes":lignes, "unite":"euros", "asso_list":asso_list, "type_list":type_list, "asso_courante":asso.abreviation, "type_courant":type_reunion}, )
 
-    return render(request, 'defraiement/recapitulatif.html', {"form": form, "entete":entete, "lignes":lignes, "unite":"km", "asso_list":asso_list, "type_list":type_list, "asso_courante":asso.abreviation, "type_courant":type_reunion},)
+    return render(request, 'defraiement/recapitulatif.html', {"form": form, "asso":asso, "entete":entete, "lignes":lignes, "unite":"km", "asso_list":asso_list, "type_list":type_list, "asso_courante":asso.abreviation, "type_courant":type_reunion},)
 
 def export_recapitulatif(request, asso, type_reunion="999"):
     asso = testIsMembreAsso(request, asso)
@@ -134,11 +134,13 @@ def export_recapitulatif(request, asso, type_reunion="999"):
 
 
 @login_required
-def ajouterReunion(request):
-    form = ReunionForm(request, request.POST or None)
-
+def ajouterReunion(request, asso_slug):
+    form = ReunionForm(request.POST or None)
+    asso = Asso.objects.get(abreviation=asso_slug)
     if form.is_valid():
         reu = form.save(request.user)
+        reu.asso = asso
+        reu.save()
         return redirect(reverse('defraiement:ajouterAdresseReunion', kwargs={"slug": reu.slug}))
 
     return render(request, 'defraiement/ajouterReunion.html', { "form": form,})
@@ -148,13 +150,9 @@ def ajouterReunion(request):
 def modifierParticipantReunion(request, id):
     part = ParticipantReunion.objects.get(id=id)
     form = ParticipantReunionForm(request.POST or None, part.nom)
-    form_adresse = AdresseForm(request.POST or None, instance=part.adresse)
-    #form_adresse2 = AdresseForm3(request.POST or None, instance=part.adresse)
+    form_adresse = AdresseForm3(request.POST or None, instance=part.adresse)
 
-    if form.is_valid() and form_adresse.is_valid():#or form_adresse.is_valid()
-        #if 'adressebtn' in request.POST:
-        #    adresse = form_adresse.save()
-        #else:
+    if form.is_valid() and form_adresse.is_valid():
         adresse = form_adresse.save()
         part.nom = form.cleaned_data['nom']
         part.adresse = adresse
@@ -195,14 +193,10 @@ class ModifierReunion(UpdateView):
 
 def ajouterAdresseReunion(request, slug):
     reunion = get_object_or_404(Reunion, slug=slug)
-    #form_adresse = AdresseForm(request.POST or None)
-    form_adresse2 = AdresseForm3(request.POST or None)
+    form_adresse = AdresseForm3(request.POST or None)
 
-    if form_adresse2.is_valid():#form_adresse.is_valid() or
-        # if 'adressebtn' in request.POST:
-        #     adresse = form_adresse.save()
-        # else:
-        adresse = form_adresse2.save()
+    if form_adresse.is_valid():
+        adresse = form_adresse.save()
         reunion.adresse = adresse
         reunion.save()
         return redirect(reunion)
@@ -243,16 +237,13 @@ class SupprimerReunion(DeleteAccess, DeleteView):
         return Reunion.objects.get(slug=self.kwargs['slug'])
 
 @login_required
-def ajouterParticipant(request):
+def ajouterParticipant(request, asso_slug):
+    asso = testIsMembreAsso(request, asso_slug)
     form = ParticipantReunionForm(request.POST or None, )
-    #form_adresse = AdresseForm(request.POST or None)
     form_adresse2 = AdresseForm3(request.POST or None)
-    if form.is_valid() and form_adresse2.is_valid(): #(form_adresse.is_valid() or
-        # if 'adressebtn' in request.POST:
-        #     adresse = form_adresse.save()
-        # else:
+    if form.is_valid() and form_adresse2.is_valid():
         adresse = form_adresse2.save()
-        part = form.save(adresse)
+        part = form.save(adresse, asso)
 
         return redirect(part.get_absolute_url())
 
@@ -262,9 +253,9 @@ def ajouterParticipant(request):
 @login_required
 def ajouterParticipantReunion(request, slug_reunion):
     reunion = get_object_or_404(Reunion, slug=slug_reunion)
+    asso = reunion.asso
     form = ParticipantReunionForm(request.POST or None, )
-    form_choice = ParticipantReunionChoiceForm(request.POST or None)
-    #form_adresse = AdresseForm(request.POST or None)
+    form_choice = ParticipantReunionChoiceForm(asso.abreviation, request.POST or None)
     form_adresse2 = AdresseForm3(request.POST or None)
 
     if form_choice.is_valid() or (form.is_valid() and form_adresse2.is_valid()):#(form_adresse.is_valid() or form_adresse2.is_valid()):
@@ -273,11 +264,8 @@ def ajouterParticipantReunion(request, slug_reunion):
                 reunion.participants.add(form_choice.cleaned_data["participant"])
                 reunion.save()
                 return redirect(reunion)
-        # if 'adressebtn' in request.POST:
-        #     adresse = form_adresse.save()
-        # else:
         adresse = form_adresse2.save()
-        participant = form.save(adresse)
+        participant = form.save(adresse, asso)
 
         reunion.participants.add(participant)
         reunion.save()
@@ -375,6 +363,7 @@ class ListeReunions(ListView):
             context['categorie_courante'] = [x[1] for x in Choix.type_reunion if x[0] == self.request.GET['categorie']][0]
         if 'ordreTri' in self.request.GET:
             context['typeFiltre'] = "ordreTri"
+        context['asso_courante'] = "public"
         return context
 
 
@@ -397,24 +386,25 @@ class ListeReunions_asso(ListeReunions):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        context['asso_courante'] = self.asso.nom
-        context['asso_courante_slug'] = self.asso.abreviation
+        context['asso_courante'] = self.asso
         return context
 
 class ListeParticipants(ListView):
     model = ParticipantReunion
     context_object_name = "participant_list"
-    template_name = "reunions/participant_list.html"
+    template_name = "reunions/participantreunion_list.html"
     paginate_by = 30
 
     def get_queryset(self):
-        qs = ParticipantReunion.objects.all().order_by("nom")
+        self.asso = Asso.objects.get(abreviation=self.kwargs['asso_slug'])
+        qs = ParticipantReunion.objects.filter(asso=self.asso).order_by("nom")
         return qs
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         context['list_archive'] = Reunion.objects.filter(estArchive=True)
+        context['asso_courante'] = self.asso
         return context
 
 

@@ -11,9 +11,9 @@
 {%block subtitle%}
 
 <p class="textcenter">
-    <a href="{% url 'defraiement:reunions' %}">
+    <a href="{% url 'defraiement:reunions_asso' asso_slug=asso_courante.abreviation %}">
         <button type="button" class="btn btn-sm btn-primary">
-        &nbsp;  <i class="fa fa-arrow-right"></i> liste des réunions
+        &nbsp;  <i class="fa fa-arrow-right"></i> liste des réunions {{asso_courante.nom}}
         </button>
     </a>
 </p>
@@ -22,7 +22,7 @@
 <div class="row align-items-center reunion_titre_page_index">
     <div class="col-md-4 offset-md-4 textcenter justify-content-center">
 
-        <a href="{% url 'defraiement:ajouterParticipant' %}">
+        <a href="{% url 'defraiement:ajouterParticipant' asso_slug=asso_courante.abreviation %}">
         <button type="button" class="btn btn-success" >
                 <i class="fa fa-plus"></i> Ajouter un participant
             </button>
@@ -64,7 +64,7 @@
    <div class="row justify-content-center ">
     <div class="col-sm-12 col-ms-10 col-lg-8 textcenter " >
         <a  href="{% url 'defraiement:lireParticipant' id=part.id %}" class="boutonAtelier" >
-            <div style="font-variant: small-caps;" >{{ part.nom }}  </div>
+            <div style="font-variant: small-caps;" >{{ part.asso.get_logo_nomgroupe_html|safe }} {{ part.nom }}  </div>
             <p class="textepetit"> {{part.reunion_set.all | length}} reunions, {{part.getDistance_routeTotale}}km</p>
           </a>
 
@@ -77,7 +77,7 @@
 {%include 'pagination.html' %}
 
 <p class="textcenter">
-<a href="{% url 'defraiement:recapitulatif'  asso='request.get.asso' type_reunion='None' %}">
+<a href="{% url 'defraiement:recapitulatif'  asso_slug=asso_courante.abreviation %}">
 <button type="button" class="btn btn-success" >
         <i class="fa fa-arrow-right"></i> Récapitulatif
     </button>

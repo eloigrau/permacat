@@ -5,7 +5,7 @@
 {% block subtitle %}
 
 <p class="textcenter">
-    <a href="{% url 'defraiement:reunions' %}">
+    <a href="{% url 'defraiement:reunions_asso' asso_slug=asso_courante %}">
         <button type="button" class="btn btn-sm btn-primary">
         &nbsp;Revenir à la liste des réunions
         </button>
@@ -22,9 +22,9 @@
     {% comment %}
         <div class="collapse navbar-collapse" id="navbarGroupes">
             <ul class="nav navbar-nav justify-content-center ">
-            {% for asso_nom, asso_id in asso_list %}
+            {% for asso_nom, asso_slug in asso_list %}
                 <li class="nav-item  ">
-                      <a  href="{% url 'defraiement:recapitulatif' asso=asso_id %}?type_reunion={{type_courant}}">
+                      <a  href="{% url 'defraiement:recapitulatif' asso_slug=asso_slug %}?type_reunion={{type_courant}}">
                           <button type="button" class="btn  btn-block btn-info" >
                               <h6>{{asso_nom}}</h6>
                        </button>
@@ -38,7 +38,7 @@
         <div class="collapse navbar-collapse" id="navbarType">
             <ul class="nav navbar-nav justify-content-center ">
                 <li class="nav-item  ">
-                      <a  href="{% url 'defraiement:recapitulatif' asso=asso_courante %}">
+                      <a  href="{% url 'defraiement:recapitulatif' asso_slug=asso_courante %}">
                           <button type="button" class="btn  btn-block {%if type_courant == '999' %} btn-warning{% else %}btn-info{% endif %}" >
                               <h6>Tout</h6>
                        </button>
@@ -46,7 +46,7 @@
                 </li>
             {% for type_id, type_nom  in type_list %}
                 <li class="nav-item  ">
-                      <a  href="{% url 'defraiement:recapitulatif' asso=asso_courante  %}?type_reunion={{type_id}}">
+                      <a  href="{% url 'defraiement:recapitulatif' asso_slug=asso_courante  %}?type_reunion={{type_id}}">
                           <button type="button" class="btn  btn-block {%if type_courant == type_id %} btn-warning{% else %}btn-info{% endif %}" >
                               <h6>{{type_nom}}</h6>
                        </button>
@@ -94,7 +94,7 @@
 <hr>
 {% if unite == euros %}
 <p class="textcenter">
-    <a href="{% url 'defraiement:recapitulatif' asso=asso_courante %}" >
+    <a href="{% url 'defraiement:recapitulatif' asso_slug=asso_courante %}" >
         <button type="button" class="btn btn-sm btn-primary">
          Kilométrages
         </button>

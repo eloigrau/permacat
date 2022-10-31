@@ -5,7 +5,7 @@
 {% block subtitle %}
 
 <p class="textcenter">
-    <a href="{% url 'defraiement:reunions' %}">
+    <a href="{% url 'defraiement:reunions_asso' asso_slug=reunion.asso.abreviation %}">
         <button type="button" class="btn btn-sm btn-primary">
         &nbsp;Revenir à la liste des réunions
         </button>

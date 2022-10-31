@@ -21,6 +21,7 @@ class ParticipantReunion(models.Model):
     nom = models.CharField(verbose_name="Nom du participant", max_length=120)
     adresse = models.ForeignKey(Adresse, on_delete=models.CASCADE,)
     #distance = models.TextField(blank=True, null=True, verbose_name="Distance calculée")
+    asso = models.ForeignKey(Asso, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.nom

@@ -11,12 +11,10 @@ class DateInput(forms.DateInput):
     input_type = 'date'
 
 class ReunionForm(forms.ModelForm):
-    asso = forms.ModelChoiceField(queryset=Asso.objects.all().order_by("id"), required=True,
-                              label="Reunion public ou réservé aux membres du groupe :", )
 
     class Meta:
         model = Reunion
-        fields = ['asso', 'categorie', 'titre', 'description', 'start_time']
+        fields = ['categorie', 'titre', 'description', 'start_time']
         widgets = {
             'contenu': SummernoteWidget(),
               'start_time':  forms.DateInput(
@@ -45,10 +43,6 @@ class ReunionForm(forms.ModelForm):
 
         return instance
 
-    def __init__(self, request, *args, **kwargs):
-        super(ReunionForm, self).__init__(*args, **kwargs)
-        self.fields["asso"].choices = [('', '(Choisir un groupe)'), ] + [(x.id, x.nom) for x in Asso.objects.all().order_by("id") if request.user.estMembre_str(x.abreviation)]
-
 
 class ReunionChangeForm(forms.ModelForm):
 
@@ -68,6 +62,10 @@ class ParticipantReunionChoiceForm(forms.Form):
     participant = forms.ModelChoiceField(queryset=ParticipantReunion.objects.all().order_by('nom'), required=True,
                                   label="Participant déjà créé", )
 
+    def __init__(self, asso_slug, *args, **kwargs):
+        super(ParticipantReunionChoiceForm, self).__init__(*args, **kwargs)
+        self.fields['participant'].choices = [(x.id, x.nom) for x in ParticipantReunion.objects.filter(asso__abreviation=asso_slug).order_by('nom')]
+
 class PrixMaxForm(forms.Form):
     prixMax = forms.CharField(required=True, label="Defraiement maximum",initial="1000" )
     tarifKilometrique = forms.CharField(required=True, label="Tarif kilometrique maximum", initial="0.5")
@@ -76,11 +74,12 @@ class PrixMaxForm(forms.Form):
 class ParticipantReunionForm(forms.ModelForm):
     class Meta:
         model = ParticipantReunion
-        fields = ['nom', ]
+        fields = ['nom']
 
-    def save(self, adresse):
+    def save(self, adresse, asso):
         instance = super(ParticipantReunionForm, self).save(commit=False)
         instance.adresse = adresse
+        instance.asso = asso
         instance.save()
         return instance
 

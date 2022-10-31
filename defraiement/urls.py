@@ -22,9 +22,10 @@ from django.contrib.auth.decorators import login_required
 app_name = 'defraiement'
 
 urlpatterns = [
+    #(r'^accueil/$', login_required(views.ListeReunions.as_view(), login_url='/auth/login/'), name="reunions"),
     url(r'^reunions/$', login_required(views.ListeReunions.as_view(), login_url='/auth/login/'), name="reunions"),
-    path(r'liste/<str:asso_slug>', login_required(views.ListeReunions_asso.as_view(), login_url='/auth/login/'), name="liste_asso"),
-    url(r'^participants/$', login_required(views.ListeParticipants.as_view(), login_url='/auth/login/'), name="participants"),
+    path(r'reunions/<str:asso_slug>', login_required(views.ListeReunions_asso.as_view(), login_url='/auth/login/'), name="reunions_asso"),
+    path(r'participants/<str:asso_slug>', login_required(views.ListeParticipants.as_view(), login_url='/auth/login/'), name="participants"),
     path(r'reunion/<str:slug>', views.lireReunion, name='lireReunion'),
     path(r'reunion/<int:id>', views.lireReunion_id, name='lireReunion_id'),
      url(r'^modifierAdresseReunion/(?P<slug>[-\w]+)$', views.modifierAdresseReunion, name='modifierAdresseReunion'),
@@ -33,10 +34,10 @@ urlpatterns = [
     url(r'^modifierReunion/(?P<slug>[-\w]+)$',
         login_required(views.ModifierReunion.as_view(), login_url='/auth/login/'), name='modifierReunion'),
     url(r'^supprimerReunion/(?P<slug>[-\w]+)$', login_required(views.SupprimerReunion.as_view(), login_url='/auth/login/'), name='supprimerReunion'),
-    url(r'^ajouterReunion/$', login_required(views.ajouterReunion), name='ajouterReunion'),
+    path(r'ajouterReunion/<str:asso_slug>', login_required(views.ajouterReunion), name='ajouterReunion'),
 
     path(r'participant/<int:id>', views.lireParticipant, name='lireParticipant'),
-    path(r'ajouterParticipant/', views.ajouterParticipant, name='ajouterParticipant'),
+    path(r'ajouterParticipant/<str:asso_slug>', views.ajouterParticipant, name='ajouterParticipant'),
     path(r'modifierParticipant/<int:id>',
         login_required(views.ModifierParticipant.as_view(), login_url='/auth/login/'), name='modifierParticipant'),
     path(r'modifierParticipantReunion/<int:id>', views.modifierParticipantReunion, name='modifierParticipantReunion'),
@@ -47,7 +48,7 @@ urlpatterns = [
     path(r'ajouterParticipantReunion/<str:slug_reunion>', views.ajouterParticipantReunion, name='ajouterParticipantReunion'),
     path(r'supprimerParticipantReunion/<str:slug_reunion>/<int:id_participantReunion>', login_required(views.SupprimerParticipantReunion.as_view(), login_url='/auth/login/'), name='supprimerParticipantReunion'),
 
-    path(r'recapitulatif/<str:asso>/', views.recapitulatif, name='recapitulatif'),
+    path(r'recapitulatif/<str:asso_slug>/', views.recapitulatif, name='recapitulatif'),
     path(r'export_recapitulatif/<str:asso>/<str:type_reunion>/', views.export_recapitulatif, name='export_recapitulatif'),
 
     url(r'voirTousLieux/$', views.voirLieux, name='voirTousLieux'),
