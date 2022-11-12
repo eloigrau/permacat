@@ -42,13 +42,13 @@ $(document).ready(function() {
 
     });
 });
-
+/*
 document.addEventListener("DOMContentLoaded", function(){
 
 		navbar = $('#navbar')
 
 		// add padding-top to bady (if necessary)
-		navbar_height = document.querySelector('.navbar').offsetHeight;
+		//navbar_height = document.querySelector('.navbar').offsetHeight;
 		//document.body.style.paddingTop = navbar_height + 'px';
 
 		if(navbar){
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function(){
 		// if
 
 	});
-
+*/
 (function(){
     $('bouton_rechercher').click(function(e) {
         var recherche = $('#recherche').val();
