@@ -9,7 +9,7 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.views.generic import UpdateView, DeleteView
 from django.utils.timezone import now
-from .forms import ReunionForm, ReunionChangeForm, ParticipantReunionForm, PrixMaxForm, ParticipantReunionChoiceForm
+from .forms import ReunionForm, ReunionChangeForm, ParticipantReunionForm, PrixMaxForm, ParticipantReunionMultipleChoiceForm, ParticipantReunionChoiceForm
 from .models import Reunion, ParticipantReunion, Choix
 from bourseLibre.forms import AdresseForm, AdresseForm3
 import itertools
@@ -135,7 +135,7 @@ def export_recapitulatif(request, asso, type_reunion="999"):
 
 @login_required
 def ajouterReunion(request, asso_slug):
-    form = ReunionForm(request.POST or None)
+    form = ReunionForm(asso_slug, request.POST or None)
     asso = Asso.objects.get(abreviation=asso_slug)
     if form.is_valid():
         reu = form.save(request.user)
@@ -272,6 +272,21 @@ def ajouterParticipantReunion(request, slug_reunion):
         return redirect(reunion)
 
     return render(request, 'defraiement/ajouterParticipantReunion.html', {'reunion':reunion, 'form': form, 'form_choice':form_choice,  'form_adresse2':form_adresse2 }) ##'form_adresse':form_adresse,
+
+
+@login_required
+def ajouterParticipantsReunion(request, slug_reunion):
+    reunion = get_object_or_404(Reunion, slug=slug_reunion)
+    asso = reunion.asso
+    form_choice = ParticipantReunionMultipleChoiceForm(asso.abreviation, request.POST or None)
+
+    if form_choice.is_valid():
+        for p in form_choice.cleaned_data["participants"]:
+            reunion.participants.add(p)
+        reunion.save()
+        return redirect(reunion)
+
+    return render(request, 'defraiement/ajouterParticipantsReunion.html', {'reunion':reunion, 'form_choice':form_choice }) ##'form_adresse':form_adresse,
 
 
 @login_required

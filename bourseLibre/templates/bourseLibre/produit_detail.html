@@ -171,6 +171,10 @@
 			Modifier</a>
 		<a href="{%url 'produit_supprimer' produit.id %}" class="btn btn-danger btn-lg btn-block" type="button">
 			Supprimer</a>
+		{% if request.user.is_superuser %}
+		<a href="https://www.perma.cat/gestion/bourseLibre/produit/{{produit.id}}/change/" class="btn btn-danger btn-lg btn-block" type="button">
+			SU : Admin </a>
+		{% endif %}
 	</div>
 	{%endif%}
 

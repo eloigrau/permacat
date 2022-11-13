@@ -10,11 +10,17 @@ import math
 from bourseLibre.constantes import DEGTORAD
 import requests
 from blog.models import Choix as Choix_global
+import itertools
 
 # Create your models here.
 class Choix:
     statut_projet = ('prop','Proposition de projet'), ("AGO","Fiche projet soumise à l'AGO"), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
-    type_reunion = ('0',"Réunion équipe"), ('1','Troc de Graine'), ('2','Atelier'), ('3','Rencontre'), ('4','Réunion FestiGraines'), ('5','Autre')
+    type_reunion_asso = {
+        "rtg": ["Réunion équipe", 'Troc de Graine', 'Atelier', 'Rencontre', 'Réunion FestiGraines', 'Autre'],
+        "scic": ['Cercle Ancrage', 'Cercle thématique', 'Cercle Education', 'Evenement', 'Divers',]
+      }
+
+    type_reunion = [(str(i), y) for i, y in enumerate([x for x in list(itertools.chain.from_iterable(type_reunion_asso.values()))])]
 
 
 class ParticipantReunion(models.Model):

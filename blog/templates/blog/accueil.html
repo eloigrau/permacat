@@ -124,6 +124,16 @@
             </li>
         {% endfor %}
 
+        {% if request.user.adherent_jp %}
+            <li class="nav-item ">
+                <a href="{% url 'jardinpartage:index' %}">
+                    <button type="button" class="btn btn-info btn-menu-forum btn-block" >
+                        <h6>Jardins Ptg</h6>
+                    </button>
+                </a>
+            </li>
+        {% endif %}
+
         {% comment %}
             <li class="nav-item dropdown">
                 <a href="{% url 'blog:index' %}">

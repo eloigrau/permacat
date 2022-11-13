@@ -24,6 +24,10 @@ class ReunionForm(forms.ModelForm):
                        }),
         }
 
+    def __init__(self, asso_slug, *args, **kwargs):
+        super(ReunionForm, self).__init__(*args, **kwargs)
+        self.fields['categorie'].choices = [x for x in Choix.type_reunion if x[1] in Choix.type_reunion_asso[asso_slug]]
+
     def save(self, userProfile):
         instance = super(ReunionForm, self).save(commit=False)
 
@@ -57,6 +61,15 @@ class ReunionChangeForm(forms.ModelForm):
                        'type': 'date'
                        }),
         }
+
+class ParticipantReunionMultipleChoiceForm(forms.Form):
+    participants = forms.ModelMultipleChoiceField(queryset=ParticipantReunion.objects.all(), required=True,
+                                  label="",
+        widget=forms.CheckboxSelectMultiple,)
+
+    def __init__(self, asso_slug, *args, **kwargs):
+        super(ParticipantReunionMultipleChoiceForm, self).__init__(*args, **kwargs)
+        self.fields['participants'].choices = [(x.id, x.nom) for x in ParticipantReunion.objects.filter(asso__abreviation=asso_slug).order_by('nom')]
 
 class ParticipantReunionChoiceForm(forms.Form):
     participant = forms.ModelChoiceField(queryset=ParticipantReunion.objects.all().order_by('nom'), required=True,
