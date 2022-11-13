@@ -73,7 +73,7 @@ class ParticipantReunionMultipleChoiceForm(forms.Form):
 
 class ParticipantReunionChoiceForm(forms.Form):
     participant = forms.ModelChoiceField(queryset=ParticipantReunion.objects.all().order_by('nom'), required=True,
-                                  label="Participant déjà créé", )
+                                  label="Participant ", )
 
     def __init__(self, asso_slug, *args, **kwargs):
         super(ParticipantReunionChoiceForm, self).__init__(*args, **kwargs)

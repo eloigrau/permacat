@@ -203,6 +203,17 @@ def ajouterAdresseReunion(request, slug):
 
     return render(request, 'defraiement/ajouterAdresseReunionAdresseReunion.html', {'reunion':reunion, 'form_adresse':form_adresse })
 
+def ajouterAdresseReunionChezParticipant(request, slug):
+    reunion = get_object_or_404(Reunion, slug=slug)
+    form = ParticipantReunionChoiceForm(reunion.asso.abreviation, request.POST or None)
+
+    if form.is_valid():
+        reunion.adresse = form.cleaned_data["participant"].adresse
+        reunion.save()
+        return redirect(reunion)
+
+    return render(request, 'defraiement/ajouterAdresseReunionFromParticpant.html', {'reunion':reunion, 'form':form })
+
 def modifierAdresseReunion(request, slug):
     reunion = get_object_or_404(Reunion, slug=slug)
     #form_adresse = AdresseForm(request.POST or None, instance=reunion)

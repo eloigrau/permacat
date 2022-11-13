@@ -1,0 +1,26 @@
+{% extends 'base_defraiement.html' %}
+
+{% block subtitle %}
+<div class="row justify-content-center">
+	<div class="col col-md-12 textcenter"><h3>Ajouter l'adresse de la réunion '{{reunion.titre}}'</h3>
+	</div>
+
+</div>
+{% endblock  %}
+{% block content %}
+{% if error_message %}
+<p>
+	<strong>{{ error_message }}</strong>
+</p>
+{% endif %}
+<div class="row justify-content-sm-center">
+<div class="col-sm-12 col-md-10 col-lg-9 text-center">
+<form method="post">
+  {% csrf_token %}
+    <p>Chez le participant : </p>
+    {% include 'form_template2.html' %}
+  <button type="submit" class="btn btn-primary">Valider l'adresse de la réunion chez le participant'</button>
+</form>
+</div>
+</div>
+{% endblock %}

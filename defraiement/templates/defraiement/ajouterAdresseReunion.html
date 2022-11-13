@@ -18,19 +18,23 @@
 <form method="post">
   {% csrf_token %}
  {% include 'form_template2.html'%}
-    {% comment %}
-    <p>Donnez l'adresse :</p>
- {% include 'form_template2.html' with form=form_adresse%}
-  <button type="submit" name="adressebtn" class="btn btn-primary">Valider l'adresse</button>
-
-    <hr>
-    {% endcomment %}
   {% csrf_token %}
     <p>Rentrez les coordonnées GPS (latitude, longitude) :</p>
 
  {% include 'form_template2.html' with form=form_adresse2%}
   <button type="submit" name="gpsbtn"  class="btn btn-primary">Valider les coordonnées GPS</button>
 </form>
+</div>
+</div>
+
+
+<div class="row justify-content-sm-center">
+<div class="col-sm-12 col-md-10 col-lg-9 text-center">
+        <a href="{% url 'defraiement:ajouterAdresseReunionChezParticipant' slug=reunion.slug %}">
+           <button type="button" class="btn btn-s btn-success ">
+                <i class="fa fa-arrow-right"></i> Ou utiliser l'adresse d'un participant
+           </button>
+        </a>
 </div>
 </div>
 {% endblock %}
