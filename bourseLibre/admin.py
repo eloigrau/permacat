@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from .models import  Adresse, Produit, Panier, Item, Adhesion_permacat, Asso, MessageGeneral, Conversation, InscriptionNewsletter, InvitationDansSalon, InscritSalon
-from blog.models import Article, Projet, Commentaire, Discussion, CommentaireProjet, Evenement, EvenementAcceuil, AdresseArticle
+from blog.models import Article, Projet, FicheProjet, Commentaire, Discussion, CommentaireProjet, Evenement, EvenementAcceuil, AdresseArticle
 from jardinpartage.models import Article as Art_jardin, Commentaire as Comm_jardin
 from fiches.models import Fiche, Atelier as atelier_fiche, CommentaireFiche
 from ateliers.models import Atelier, CommentaireAtelier, InscriptionAtelier
@@ -39,7 +39,7 @@ class ArticleAdmin(admin.ModelAdmin):
 class Article_jardinAdmin(admin.ModelAdmin):
         list_display = ('titre', 'jardin', 'categorie', 'estArchive', )
 class ProjetAdmin(admin.ModelAdmin):
-    list_display = ('titre', 'estArchive')
+    list_display = ('titre', 'estArchive', 'ficheprojet')
 class ProduitAdmin(admin.ModelAdmin):
     list_display = ('nom_produit', 'categorie', 'estUneOffre', 'asso', 'unite_prix')
 class Adhesion_permacatAdmin(admin.ModelAdmin):
@@ -53,6 +53,7 @@ admin.site.register(Evenement)
 admin.site.register(EvenementAcceuil)
 admin.site.register(AdresseArticle)
 admin.site.register(Projet, ProjetAdmin)
+admin.site.register(FicheProjet)
 admin.site.register(Profil, CustomUserAdmin)
 
 admin.site.register(Adresse)

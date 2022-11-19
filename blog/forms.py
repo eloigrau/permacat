@@ -1,6 +1,6 @@
 from django import forms
 from bourseLibre.models import Salon, InscritSalon
-from .models import Article, Commentaire, Projet, CommentaireProjet, Evenement, AdresseArticle, Discussion, Choix
+from .models import Article, Commentaire, Projet, FicheProjet, CommentaireProjet, Evenement, AdresseArticle, Discussion, Choix
 from django.utils.text import slugify
 import itertools
 from django_summernote.widgets import SummernoteWidget
@@ -279,6 +279,96 @@ class ProjetChangeForm(forms.ModelForm):
                 attrs={'class': 'form-control',
                        'type': 'date'
                        }),
+        }
+
+
+class ProjetForm(forms.ModelForm):
+    asso = forms.ModelChoiceField(queryset=Asso.objects.all(), required=True,
+                              label="Projet public ou réservé aux adhérents de l'asso :", )
+    class Meta:
+        model = Projet
+        fields = ['asso', 'categorie', 'coresponsable', 'titre', 'contenu', 'statut', 'tags',  'start_time']
+        widgets = {
+        'contenu': SummernoteWidget(),
+              'start_time':forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
+              'end_time': forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={'class': 'form-control',
+                       'type': 'date'
+                       }),
+        }
+
+    def __init__(self, request, *args, **kwargs):
+        super(ProjetForm, self).__init__(*args, **kwargs)
+        self.fields['contenu'].strip = False
+        self.fields["asso"].choices = [(x.id, x.nom) for x in Asso.objects.all().exclude(abreviation="jp").order_by("id") if request.user.estMembre_str(x.abreviation)]
+
+    def save(self, userProfile, sendMail=True):
+        instance = super(ProjetForm, self).save(commit=False)
+
+        max_length = Projet._meta.get_field('slug').max_length
+        instance.slug = orig = slugify(instance.titre)[:max_length]
+
+        for x in itertools.count(1):
+            if not Projet.objects.filter(slug=instance.slug).exists():
+                break
+
+            # Truncate the original slug dynamically. Minus 1 for the hyphen.
+            instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
+
+        instance.auteur = userProfile
+
+        instance.save(sendMail)
+
+        return instance
+
+
+class FicheProjetForm(forms.ModelForm):
+    class Meta:
+        model = FicheProjet
+        exclude = ['date_creation', 'date_modification', 'projet' ]
+        widgets = {
+            "raison": SummernoteWidget(),
+            "pourquoi_contexte": SummernoteWidget(),
+            "pourquoi_motivation": SummernoteWidget(),
+            "pourquoi_objectifs": SummernoteWidget(),
+            "pour_qui": SummernoteWidget(),
+            "par_qui": SummernoteWidget(),
+            "avec_qui": SummernoteWidget(),
+            "ou": SummernoteWidget(),
+            "quand": SummernoteWidget(),
+            "comment": SummernoteWidget(),
+            "combien": SummernoteWidget(),
+        }
+
+
+    def save(self, projet):
+        instance = super(FicheProjetForm, self).save(commit=False)
+        instance.projet = projet
+        instance.save()
+        return instance
+
+class FicheProjetChangeForm(forms.ModelForm):
+
+    class Meta:
+        model = FicheProjet
+        exclude = ['date_creation', 'date_modification', 'projet' ]
+        widgets = {
+            "raison": SummernoteWidget(),
+            "pourquoi_contexte": SummernoteWidget(),
+            "pourquoi_motivation": SummernoteWidget(),
+            "pourquoi_objectifs": SummernoteWidget(),
+            "pour_qui": SummernoteWidget(),
+            "par_qui": SummernoteWidget(),
+            "avec_qui": SummernoteWidget(),
+            "ou": SummernoteWidget(),
+            "quand": SummernoteWidget(),
+            "comment": SummernoteWidget(),
+            "combien": SummernoteWidget(),
         }
 
 class CommentProjetForm(forms.ModelForm):

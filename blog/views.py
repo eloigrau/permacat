@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
 from django.http import HttpResponseForbidden
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.utils.html import strip_tags
-from .models import Article, Commentaire, Discussion, Projet, CommentaireProjet, Choix, Evenement,Asso, AdresseArticle
+from .models import Article, Commentaire, Discussion, Projet, CommentaireProjet, Choix, Evenement,Asso, AdresseArticle, FicheProjet
 from .forms import ArticleForm, ArticleAddAlbum, CommentaireArticleForm, CommentaireArticleChangeForm, ArticleChangeForm, ProjetForm, \
     ProjetChangeForm, CommentProjetForm, CommentaireProjetChangeForm, EvenementForm, EvenementArticleForm, AdresseArticleForm,\
-    DiscussionForm, SalonArticleForm
+    DiscussionForm, SalonArticleForm, FicheProjetForm, FicheProjetChangeForm
 from .filters import ArticleFilter
 from.utils import get_suivis_forum
 from django.contrib.auth.decorators import login_required
@@ -522,6 +522,85 @@ def lireProjet(request, slug):
         return redirect(request.path)
 
     return render(request, 'blog/lireProjet.html', {'projet': projet, 'form': form, 'commentaires':commentaires, 'actions':actions},)
+
+@login_required
+def ajouterFicheProjet(request, slug):
+    form = FicheProjetForm(request.POST or None)
+    projet = Projet.objects.get(slug=slug)
+    if form.is_valid():
+        # file is saved
+        fiche_projet = form.save(projet)
+        url = fiche_projet.get_absolute_url()
+
+        suffix = "_" + fiche_projet.projet.asso.abreviation
+        action.send(request.user, verb='projet_nouveau'+suffix + "_ficheProjet", action_object=fiche_projet.projet, url=url,
+                description="a ajouté une 'fiche projet' : '%s'" % fiche_projet.projet.titre)
+        return redirect(url)
+
+    return render(request, 'blog/ficheprojet_creer.html', { "form": form, "projet":projet})
+
+class ModifierFicheProjet(UpdateView):
+    model = FicheProjet
+    form_class = FicheProjetChangeForm
+    template_name_suffix = '_modifier'
+    #fields = ['user','site_web','description', 'competences', 'adresse', 'avatar', 'inscrit_newsletter']
+
+    def get_object(self):
+        return FicheProjet.objects.get(projet__slug=self.kwargs['slug'])
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.date_modification = now()
+        self.object.save()
+        if not self.object.projet.estArchive:
+            url = self.object.get_absolute_url()
+            suffix = "_" + self.object.asso.abreviation
+            action.send(self.request.user, verb='projet_modifier'+suffix+"ficheProet", action_object=self.object, url=url,
+                         description="a modifié la fiche du projet: '%s'" % self.object.projet.titre)
+        #envoi_emails_articleouprojet_modifie(self.object, "Le projet " +  self.object.titre + "a été modifié", False)
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class SupprimerFicheProjet(DeleteAccess, DeleteView):
+    model = FicheProjet
+    success_url = reverse_lazy('blog:index_projets')
+    template_name_suffix = '_supprimer'
+#    fields = ['user','site_web','description', 'competences', 'adresse', 'avatar', 'inscrit_newsletter']
+
+    def get_object(self):
+        return FicheProjet.objects.get(projet__slug=self.kwargs['slug'])
+
+    def get_success_url(self):
+        return reverse('blog:lire_projet', kwargs={'slug':self.object.projet.slug})
+
+@login_required
+def lireProjet(request, slug):
+    projet = get_object_or_404(Projet, slug=slug)
+
+    if not projet.est_autorise(request.user):
+        return render(request, 'notMembre.html', {"asso":"Permacat"})
+
+    commentaires = CommentaireProjet.objects.filter(projet=projet).order_by("date_creation")
+    actions = action_object_stream(projet)
+
+    form = CommentProjetForm(request.POST or None)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.projet = projet
+        comment.auteur_comm = request.user
+        projet.date_dernierMessage = comment.date_creation
+        projet.dernierMessage = ("(" + str(comment.auteur_comm) + ") " + str(strip_tags(comment.commentaire).replace('&nspb',' ')))[:96] + "..."
+        projet.save(sendMail=False)
+        comment.save()
+        url = projet.get_absolute_url()+"#idConversation"
+        suffix = "_" + projet.asso.abreviation
+        action.send(request.user, verb='projet_message'+suffix, action_object=projet, url=url,
+                    description="a réagit au projet: '%s'" % projet.titre)
+        #envoi_emails_articleouprojet_modifie(projet, request.user.username + " a réagit au projet: " +  projet.titre, False)
+        return redirect(request.path)
+
+    return render(request, 'blog/lireProjet.html', {'projet': projet, 'form': form, 'commentaires':commentaires, 'actions':actions},)
+
 
 class ListeProjets(ListView):
     model = Projet

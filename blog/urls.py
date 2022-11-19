@@ -51,6 +51,11 @@ urlpatterns = [
     url(r'^supprimerProjet/(?P<slug>[-\w]+)$',
         login_required(views.SupprimerProjet.as_view(), login_url='/auth/login/'), name='supprimerProjet'),
     url(r'^ajouterProjet/$', views.ajouterNouveauProjet, name='ajouterNouveauProjet'),
+    path(r'projets/ajouterFicheProjet/<str:slug>', views.ajouterFicheProjet, name='ajouterFicheProjet'),
+    path(r'projets/modifier/<str:slug>',
+        login_required(views.ModifierFicheProjet.as_view(), login_url='/auth/login/'), name='modifierFicheProjet'),
+    path(r'projets/supprimer/<str:slug>',
+        login_required(views.SupprimerFicheProjet.as_view(), login_url='/auth/login/'), name='supprimerFicheProjet'),
     url(r'^telecharger_fichier/$', views.telecharger_fichier, name='telechargerFichier'),
 
     url(r'^suivre_article/(?P<slug>[-\w]+)/$', views.suivre_article, name='suivre_article'),

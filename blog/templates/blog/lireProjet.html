@@ -1,5 +1,6 @@
 {% extends 'base_projets.html' %}
 {% load static %}
+{% load app_filters %}
 {% load blog_filters %}
 {% load fontawesome %}
 {% load activity_tags %}
@@ -33,7 +34,6 @@
         </p>
     </div>
     <div class="col-md-2">
-        <p>
         {%if projet.auteur == request.user or request.user.is_superuser%}
 		<div class="btn-group">
 
@@ -47,7 +47,6 @@
                </button></a>
 		</div>
         {%endif%}
-        </p>
     </div>
 </div>
 
@@ -71,7 +70,6 @@
                <button type="button" class="btn btn-sm btn-warning">
                 <span class="glyphicon glyphicon-plus"></span>&nbsp;Statut : {{ projet.get_statut_display }}
                </button>
-         <p>
             <button type="button" class="btn" data-toggle="modal" data-target="#historique">
               {% fontawesome_icon 'bell' %} Historique
             </button>
@@ -99,8 +97,6 @@
                 </div>
               </div>
             </div>
-
-        </p>
 	</div>
 </div>
 
@@ -220,6 +216,7 @@
 				</tr>
                     {% endif %}
 
+
                     {% if projet.fichier_projet%}
                 <tr>
 					<td class="nomProprieteProduit">
@@ -263,12 +260,107 @@
                     Du {{ projet.start_time|date:"d/m/Y"  }} au {{ projet.end_time|date:"d/m/Y"  }}
                     {%else%}
                     le {{ projet.start_time|date:"d/m/Y"  }}
-
+              </a>
                 {% endif %}</td>
                 </tr>
             {% endif %}
 			</tbody>
 		</table>
+
+<div class="row">
+<div class="col-sm-12 textcenter">
+    {%if projet.has_ficheprojet %}
+    <h6>La Fiche Projet </h6>
+		<table class="table table-condensed ">
+			<tbody>
+				<tr>
+					<td class="nomProprieteProduit">
+						Raison d'étre :
+					</td>
+					<td class="proprieteProduit">
+						{{ projet.ficheprojet.raison|safe}}
+					</td>
+				</tr>
+				<tr>
+					<td class="nomProprieteProduit">
+						Pourquoi : contexte, motivations, objectifs
+					</td>
+					<td class="proprieteProduit">
+                        <p>{{ projet.ficheprojet.pourquoi_contexte|safe}}</p>
+                        <p>{{ projet.ficheprojet.pourquoi_motivation|safe}}</p>
+                        <p>{{ projet.ficheprojet.pourquoi_objectifs|safe}}</p>
+					</td>
+				</tr>
+				<tr>
+					<td class="nomProprieteProduit">
+						Pour qui : Le public
+					</td>
+					<td class="proprieteProduit">
+						{{ projet.ficheprojet.pour_qui|safe}}
+					</td>
+				</tr>
+				<tr>
+					<td class="nomProprieteProduit">
+						Avec qui : acteurs et partenaires
+					</td>
+					<td class="proprieteProduit">
+					    <p>	{{ projet.ficheprojet.par_qui|safe}}</p>
+                        <p>{{ projet.ficheprojet.avec_qui|safe}}</p>
+					</td>
+				</tr>
+				<tr>
+					<td class="nomProprieteProduit">
+						Où
+					</td>
+					<td class="proprieteProduit">
+						{{ projet.ficheprojet.ou|safe}}
+					</td>
+				</tr>
+				<tr>
+					<td class="nomProprieteProduit">
+						Quand
+					</td>
+					<td class="proprieteProduit">
+						{{ projet.ficheprojet.quand|safe}}
+					</td>
+				</tr>
+				<tr>
+					<td class="nomProprieteProduit">
+						comment :
+					</td>
+					<td class="proprieteProduit">
+						{{ projet.ficheprojet.comment|safe}}
+					</td>
+				</tr>
+				<tr>
+					<td class="nomProprieteProduit">
+						Combien ? Budget prévisionnel
+					</td>
+					<td class="proprieteProduit">
+						{{ projet.ficheprojet.combien|safe}}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+        {%if projet.auteur == request.user or request.user.is_superuser%}
+                <a href="{% url 'blog:modifierFicheProjet' slug=projet.slug %}">
+                <button type="button" class="btn btn-sm btn-warning" >
+                        <i class="fa fa-edit"></i> Modifier la Fiche Projet
+                </button>
+                </a>
+            {% endif %}
+        {% else %}
+            <a href="{% url 'blog:ajouterFicheProjet' slug=projet.slug %}">
+            <button type="button" class="btn btn-success" >
+                    <i class="fa fa-plus"></i> Ajouter la Fiche Projet
+            </button>
+            </a>
+        {% endif %}
+
+
+</div>
+</div>
+
 	</div>
 </div>
 

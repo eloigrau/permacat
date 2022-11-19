@@ -15,7 +15,6 @@ import uuid
 
 class Choix:
     statut_projet = ('prop','Proposition de projet'), ("AGO","Fiche projet soumise à l'AGO"), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
-
     type_projet = ('Part','Participation à un évènement'), ('AGO',"Organisation d'une AGO"), ('Projlong','Projet a long terme'), ('Projcourt','Projet a court terme'), ('Projponct','Projet ponctuel'),
     type_annonce_base = ('Annonce','Annonce'), ('Administratif','Organisation'), ('Agenda','Agenda'),  ('Chantier','Atelier/Chantier participatif'),\
                    ('Documentation','Documentation'),  ('covoit','Covoiturage'), \
@@ -450,6 +449,42 @@ class Projet(models.Model):
             return True
 
         return getattr(user, "adherent_" + self.asso.abreviation)
+
+    @property
+    def has_ficheprojet(self):
+        return len(FicheProjet.objects.filter(projet=self))==1
+
+class FicheProjet(models.Model):
+    projet = models.OneToOneField(Projet, on_delete=models.CASCADE, primary_key=True,)
+    date_creation = models.DateTimeField(verbose_name="Date de création", auto_now_add=True)
+    date_modification = models.DateTimeField(verbose_name="Date de modification", auto_now=True)
+    raison = models.TextField(null=True, blank=True, verbose_name="Raison d'Etre du projet")
+    pourquoi_contexte = models.TextField(null=True, blank=True, verbose_name="Pourquoi ? Le contexte")
+    pourquoi_motivation = models.TextField(null=True, blank=True, verbose_name="Pourquoi ? Les motivations")
+    pourquoi_objectifs = models.TextField(null=True, blank=True, verbose_name="Pourquoi ? Les objectifs")
+    pour_qui = models.TextField(null=True, blank=True, verbose_name="Pour qui ? Le public")
+    par_qui = models.TextField(null=True, blank=True, verbose_name="Par qui ? Les acteurs")
+    avec_qui = models.TextField(null=True, blank=True, verbose_name="Par qui ? Les partenaires")
+    ou = models.TextField(null=True, blank=True, verbose_name="Où ?")
+    quand = models.TextField(null=True, blank=True, verbose_name="Début ? La périodicité")
+    comment = models.TextField(null=True, blank=True, verbose_name="Comment ? La méthodologie")
+    combien = models.TextField(null=True, blank=True, verbose_name="Combien ? Le budget prévisionnel")
+
+    class Meta:
+        ordering = ('-date_creation', )
+
+    def __str__(self):
+        return "Fiche du projet" + str(self.projet) + " créée le " + str(self.date_creation) + " "+ str(self.raison)
+
+    def get_absolute_url(self):
+        return reverse('blog:lireProjet', kwargs={'slug':self.projet.slug})
+
+    def est_autorise(self, user):
+        if self.projet.asso.abreviation == "public":
+            return True
+
+        return getattr(user, "adherent_" + self.projet.asso.abreviation)
+
 
 class CommentaireProjet(models.Model):
     auteur_comm = models.ForeignKey(Profil, on_delete=models.CASCADE)

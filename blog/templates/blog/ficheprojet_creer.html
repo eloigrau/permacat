@@ -1,0 +1,26 @@
+{% extends 'base_projets.html' %}
+{%block header%}
+{{ form.media }}
+{%endblock%}
+{% block title %} - Ajouter la fiche projet{% endblock %}
+{% block subtitle %}
+<h3>Ajouter la Fiche projet du projet : <a href="{{projet.get_absolute_url}}">{{projet}}</a></h3>
+
+{% endblock %}
+{% block content %}
+
+<div class="row-sm-12 row-lg-6 mx-auto">
+    <form id="myForm" class="form-horizontal" role="form" action="" method="post"
+        enctype="multipart/form-data">
+            {% include 'form_template.html'%}
+    </form>
+</div>
+
+
+<script>
+    $(function() {
+    // Enable on all forms
+    $('form').areYouSure();
+    });
+</script>
+{% endblock %}
