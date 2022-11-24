@@ -71,3 +71,4 @@ class Choix():
 
     type_paiement_adhesion = ('0', 'Espèce'), ("1", "HelloAsso"), ("2", "Cheque"), ("3", "Virement")
 
+
