@@ -452,7 +452,7 @@ class Projet(models.Model):
 
     @property
     def has_ficheprojet(self):
-        return len(FicheProjet.objects.filter(projet=self))==1
+        return hasattr(self, "ficheprojet")
 
 class FicheProjet(models.Model):
     projet = models.OneToOneField(Projet, on_delete=models.CASCADE, primary_key=True,)
