@@ -3,17 +3,20 @@
 {% load fontawesome %}
 {% block subtitle %}
 
-<div class="row justify-content-center">
-    <div class="col-sm-8 offset-sm-2">
-        <nav class="navbar navbar-light justify-content-center" style="display: inline-block;">
-            <button class="btn btn-sm  btn-success" type="button"><a href="{% url 'notifications_news'  %}">Dernières Notifications</a></button>
-            <button class="btn btn-sm  btn-info" type="button"><a href="{% url 'notificationsParDate'  %}"> Notifications par date</a></button>
-            <button class="btn  btn-sm btn-info" type="button"><a href="{% url 'notifications'  %}"> Notifications par type</a></button>
-            <button class="btn  btn-sm btn-info" type="button"><a href="{% url 'articles_visites'  %}"> Dernières visites</a></button>
-        </nav>
-    </div>
-    <div class="col-sm-2 ">
-        <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#help" title="En savoir plus...">
+<p class = "textcenter justify-content-center">
+        <a href="{% url 'notif_cejour' %}">
+                <button class="btn btn-sm btn-info" type="submit" data-toggle="tooltip" data-placement="bottom" title="Changer la date"> aujourd'hui</button>
+        </a>
+        <a href="{% url 'notif_hier' %}">
+                <button class="btn btn-sm btn-info" type="submit" data-toggle="tooltip" data-placement="bottom" title="Changer la date"> depuis hier</button>
+        </a>
+        <a href="{% url 'notif_cettesemaine' %}">
+                <button class="btn btn-sm btn-info" type="submit" data-toggle="tooltip" data-placement="bottom" title="Changer la date"> cette semaine</button>
+        </a>
+        <a href="{% url 'notif_cemois' %}">
+                <button class="btn btn-sm btn-info" type="submit" data-toggle="tooltip" data-placement="bottom" title="Changer la date"> ce mois-ci</button>
+        </a>
+    <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#help" title="En savoir plus...">
          {% fontawesome_icon 'question-circle' %}
         </button>
         <!-- Modal -->
@@ -36,22 +39,6 @@
             </div>
           </div>
         </div>
-    </div>
-</div>
-<hr>
-<p class = "textcenter justify-content-center">
-        <a href="{% url 'notif_cejour' %}">
-                <button class="btn btn-sm btn-info" type="submit" data-toggle="tooltip" data-placement="bottom" title="Changer la date"> aujourd'hui</button>
-        </a>
-        <a href="{% url 'notif_hier' %}">
-                <button class="btn btn-sm btn-info" type="submit" data-toggle="tooltip" data-placement="bottom" title="Changer la date"> depuis hier</button>
-        </a>
-        <a href="{% url 'notif_cettesemaine' %}">
-                <button class="btn btn-sm btn-info" type="submit" data-toggle="tooltip" data-placement="bottom" title="Changer la date"> cette semaine</button>
-        </a>
-        <a href="{% url 'notif_cemois' %}">
-                <button class="btn btn-sm btn-info" type="submit" data-toggle="tooltip" data-placement="bottom" title="Changer la date"> ce mois-ci</button>
-        </a>
 </p>
 <p class = "textcenter justify-content-center">
         <a href="{% url 'changerDateNotif' %}">

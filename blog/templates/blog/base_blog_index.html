@@ -1,0 +1,26 @@
+{% extends 'blog/base_blog.html' %}
+
+{% comment %}
+{% block submenu %}
+<div class="sticky-top">
+    <nav class="navbar navbar-light bs-dark navbar-expand-xl bg-dark navbar-dark">
+        <button class="navbar-toggler navbar-toggler-right navbar-btn" type="button" data-toggle="collapse" data-target="#navbar2" aria-controls="navbar2" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse " id="navbar2">
+            <ul class="navbar-nav subnavbar">
+                {% for  asso_id, asso_nom in asso_list %}
+                <li class="nav-item  ">
+                      <a  href="{% url 'blog:index_asso' asso=asso_id%}#ref-titre">
+                          <button type="button" class="btn {%if asso_courante_abreviation == asso_id %} btn-warning{% else %}btn-info{% endif %}" >
+                              <h6>{{asso_nom}}</h6>
+                       </button>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </nav>
+</div>
+{% endblock %}
+{% endcomment %}

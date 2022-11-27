@@ -142,6 +142,7 @@
         {% if documents %}
       <a class="nav-item nav-link" href="#documents" data-toggle="tab">Document{{documents|pluralize:",s"}}</a>
         {% endif %}
+      <a class="nav-item nav-link" href="#suffrages" data-toggle="tab">Votes</a>
       <a class="nav-item nav-link" href="#historique" data-toggle="tab">Infos</a>
       <a class="nav-item nav-link" href="#plus" data-toggle="tab">Ajouter...</a>
 
@@ -338,6 +339,19 @@
         </div>
   </div>
 
+<div class="tab-pane fade " id="suffrages">
+        <div class="col-sm-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2 textcenter">
+        <div class="contenu discussion_fiche">
+              {%for suffrage in suffrages %}
+            <p><a href="{{suffrage.get_absolute_url}}"> <i class="fa fa-arrow-right"></i> {{suffrage.titre}}</a></p>
+              {%endfor%}
+            {%if article.auteur == request.user or article.estModifiable or request.user.is_superuser %}
+            <hr>
+              <p><a class="btn btn-sm btn-success textleft" href="{% url 'vote:ajouterSuffrage' article_slug=article.slug %}" ><i class="fa fa-plus"></i> Ajouter un vote</a></p>
+            {% endif %}
+      </div>
+    </div>
+</div>
 
   <div class="tab-pane fade " id="plus">
         <div class="col-sm-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2 textcenter">
@@ -364,6 +378,9 @@
         </p>
         <p>
             <a class="btn btn-sm btn-block  btn-info textleft" href="https://www.togetzer.com/index.php?view=evenement&creer_evenement=1" target="_blank"><i class="fa fa-plus"></i>  Covoiturage</a>
+        </p>
+        <p>
+            <a class="btn btn-sm btn-block  btn-info textleft" href="{% url 'vote:ajouterSuffrage' article_slug=article.slug %}" target="_blank"><i class="fa fa-plus"></i>  Ajouter un suffrage</a>
         </p>
 
           </div>

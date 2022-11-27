@@ -3,18 +3,6 @@
 {% block subtitle %}
 <h4 class = "textcenter "> Les dernières nouvelles
 </h4>
-
-<p class = "textcenter ">
-      <a href="{% url 'notifications_news'  %}" class="btn btn-success">
-         Activité récente
-      </a>
-      <a href="{% url 'notifications'  %}" class="btn btn-success">
-         Notifications par type
-      </a>
-      <a href="{% url 'notificationsParDate'  %}" class="btn btn-success">
-         Notifications par date
-      </a>
-</p>
 <h6> Voici les projets, articles, fiches, ateliers ainsi que les offres de l'altermarché parus ces 15 derniers jours</h6>
 {% endblock %}
 {% block content %}

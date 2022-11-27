@@ -13,14 +13,7 @@
 
 {%block subtitle%}
 	<div class="row justify-content-center">
-		<div class="sol-sm-12 col-md-8 offset-md-2  textcenter">
-    <a href="{% url 'vote:ajouterSuffrage' %}">
-        <button type="button" class="btn  btn-success" >
-        <i class="fa fa-plus"></i> Ajouter un suffrage
-        </button>
-    </a>
-       </div>
-		<div class="sol-sm-12 col-md-2 textcenter">
+		<div class="col-sm-12 textcenter">
 
      <a href="{% url 'vote:suivre_suffrages' %}">
     {% if request.user|is_following:suivis %}

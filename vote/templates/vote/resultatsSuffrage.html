@@ -78,9 +78,9 @@
         </ol>
     <h5>
     {% if res|length == 1 %}
-     Résultat : la proposition a obtenu la mention "{{res.0.1.1}}" et la note {{res.0.4}}%
+        <h5>Résultat : la proposition a obtenu la mention "{{res.0.1.1}}" et la note {{res.0.4}}%</h5>
    {% else %}
-    <h5>Résultat : la proposition "<em>{{res.0.0}}</em>" l'emporte au jugement majoritaire (mention "{{res.0.1.1}}", note : {{res.0.4}}%)
+        <h5>Résultat : la proposition "<em>{{res.0.0}}</em>" l'emporte au jugement majoritaire (mention "{{res.0.1.1}}", note : {{res.0.4}}%)</h5>
     {% endif %}
 
     <button id="btn-detail-qm-{{forloop.counter}}"  type="button" class="btn btn-lg" onclick="toggle_visibility('detail-qm-{{forloop.counter}}');" data-toggle="tooltip" data-placement="bottom" title="Cliquez pour afficher les archives">
@@ -92,10 +92,8 @@
         <thead>
           <tr>
                 <th class="tg-0lax">Proposition  </th>
-                {% for choix in choixMajo %}
-                    {% if forloop.counter0 > 0 %}
-                    <th class="tg-baqh">{{choix.1}}</th>
-                    {%endif%}
+                {% for choix in qb.get_typeChoix_liste %}
+                    <th class="tg-baqh">{{choix}}</th>
                 {%endfor%}
                 <th class="tg-baqh">Points (%) </th>
                 <th class="tg-baqh">Jauge majoritaire</th>

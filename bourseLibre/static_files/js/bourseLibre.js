@@ -41,14 +41,28 @@ $(document).ready(function() {
         location.href="/search/?"+recherche;
 
     });
-});
 
+
+    window.onscroll = function() {
+      if (window.scrollY > 50) {
+        document.getElementById('subnavbar_top').classList.add('fixed-top');
+        // add padding top to show content behind navbar
+        navbar_height = document.getElementById('subnavbar_top').offsetHeight;
+        document.body.style.paddingTop = navbar_height + 'px';
+      } else {
+        document.getElementById('navbar_top').classList.remove('fixed-top');
+         // remove padding top from body
+        document.body.style.paddingTop = '0';
+      }
+  });
+});
+/*
 document.addEventListener("DOMContentLoaded", function(){
 
 		navbar = $('#navbar')
 
 		// add padding-top to bady (if necessary)
-		navbar_height = document.querySelector('.navbar').offsetHeight;
+		//navbar_height = document.querySelector('.navbar').offsetHeight;
 		//document.body.style.paddingTop = navbar_height + 'px';
 
 		if(navbar){
@@ -71,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function(){
 		// if
 
 	});
-
+*/
 (function(){
     $('bouton_rechercher').click(function(e) {
         var recherche = $('#recherche').val();

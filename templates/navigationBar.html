@@ -3,7 +3,7 @@
 {% load app_filters %}
 {% block navBar %}
 
-<nav class="navbar navbar-light bs-dark navbar-expand-xl navbarMenu" id="navbar">
+<nav class="navbar navbar-light bs-dark navbar-expand-xl fixed-top" id="navbar">
     <div class="container-fluid">
         <button class="navbar-toggler navbar-btn" type="button" data-toggle="collapse" data-target="#navbarsActuel" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -39,7 +39,7 @@
                                <li> <a class="dropdown-item" href="{% url 'blog:voirTousLieux' %}"> Lieux </a></li>
 
                         <li><a class="dropdown-item" href="{% url 'voir_articles_a_archiver' %}">Archiver articles</a></li>
-
+                        <li><a class="dropdown-item" href="{% url 'vote:index' %}"><i class="fa fa-bullhorn iconleft"></i>  Liste des suffrages </a></li>
                        <li> <a class="dropdown-item" href="{% url 'nettoyerActions' %}"> nettoyerActions</a></li>
                        <li> <a class="dropdown-item" href="{% url 'voirPbProfils' %}"> voirPbProfils</a></li>
                        <li> <a class="dropdown-item" href="{% url 'nettoyerFollows' %}"> nettoyerFollows</a></li>
@@ -211,20 +211,17 @@
                     </li>
 
    {% endcomment %}
-                    {%comment%}
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle"  href="#">Jardins Partagés</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
-                            <li><a class="dropdown-item" href="{% url 'agora' asso='jp'%}"> <i class='fa fa-asterisk' ></i> Salon de discussion</a></li>
-                            <li><a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=1 %}"><i class='fa fa-pagelines' ></i> Jardi Per tots</a></li>
-                            <li><a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=2 %}"><i class='fa fa-pagelines' ></i> Jardin de Palau </a></li>
-                            <li><a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=3 %}"><i class='fa fa-pagelines' ></i> Jardin de Lurçat </a></li>
-                            <li><a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=4 %}"><i class='fa fa-pagelines' ></i> Gardiens de la Terre </a></li>
+                        <li> <a class="dropdown-item" href="{% url 'jardinpartage:index' %}"><i class='fa fa-folder-open iconleft' ></i>  Blog des jardins Partagés </a></li>
+                        <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=1 %}"><i class='fa fa-pagelines' ></i> Jardi Per tots</a></li>
+                        <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=2 %}"><i class='fa fa-pagelines' ></i> Jardin de Palau </a></li>
+                        <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=3 %}"><i class='fa fa-pagelines' ></i> Jardin de Lurçat </a></li>
+                        <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=4 %}"><i class='fa fa-pagelines' ></i> Gardiens de la Terre </a></li>
+                        <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=5 %}"><i class='fa fa-pagelines' ></i> Fermille </a></li>
                         </ul>
                     </li>
-                    {%endcomment%}
-
-
                     <li class="dropdown-submenu">
                         <a class="dropdown-item dropdown-toggle"  href="#">PermAgora</a>
                         <ul class="dropdown-menu  nav5-dropdown-submenu">
@@ -372,6 +369,7 @@
                     </li>
                     </ul>
                 </li>
+                {% comment %}
                 <li class="dropdown-submenu">
                     <a class="dropdown-item dropdown-toggle"  href="#">Jardins Partagés</a>
                     <ul class="dropdown-menu nav8-dropdown-submenu">
@@ -383,6 +381,7 @@
                         <li> <a class="dropdown-item" href="{% url 'jardinpartage:index_jardin' jardin=5 %}"><i class='fa fa-pagelines' ></i> Fermille </a></li>
                     </ul>
                 </li>
+                {% endcomment %}
                 <li class="dropdown-submenu">
                     <a class="dropdown-item dropdown-toggle"  href="#">Ateliers </a>
                     <ul class="dropdown-menu nav8-dropdown-submenu">
@@ -390,12 +389,6 @@
                         {% for atelier in liste_ateliers %}
                         <li><a class=" dropdown-item " href="{%url 'ateliers:lireAtelier' slug=atelier.slug %}"><span>{{atelier.titre}} {% if atelier.start_time %}({{ atelier.start_time|date:"d/m" }}){% endif %} </span></a></li>
                         {% endfor %}
-                    </ul>
-                </li>
-                <li class="dropdown-submenu">
-                    <a class="dropdown-item dropdown-toggle"  href="#">Suffrages </a>
-                    <ul class="dropdown-menu nav8-dropdown-submenu">
-                            <li><a class="dropdown-item" href="{% url 'vote:index' %}"><i class="fa fa-bullhorn iconleft"></i>  Liste des suffrages </a></li>
                     </ul>
                 </li>
                 <li class="dropdown-submenu">

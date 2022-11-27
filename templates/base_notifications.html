@@ -1,2 +1,24 @@
 {% extends 'base.html' %}
 {%block bodyEntete%} style="visibility: collapse;" {%endblock%}
+
+
+{% block submenu %}
+
+<div class="sticky-top">
+    <nav class="navbar navbar-light bs-dark navbar-expand-xl bg-dark navbar-dark">
+        <button class="navbar-toggler navbar-toggler-right navbar-btn" type="button" data-toggle="collapse" data-target="#navbar2" aria-controls="navbar2" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+         </button>
+        <div class="navbar-collapse collapse mx-auto" id="navbar2">
+            <ul class="navbar-nav mx-auto subnavbar">
+		<li class="nav-item"><a href="{% url 'notifications_news'  %}">Dernières Notifications</a></li>
+		<li class="nav-item"><a href="{% url 'notificationsParDate'  %}"> Notifications par date</a></li>
+    <li class="nav-item"><a href="{% url 'notifications'  %}"> Notifications par type</a></li>
+    <li class="nav-item"><a href="{% url 'articles_visites'  %}"> Dernières Visites</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+{% endblock %}

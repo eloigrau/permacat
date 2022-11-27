@@ -19,18 +19,20 @@ from django.http import HttpResponseNotAllowed
 from django.forms import formset_factory
 import itertools
 from bourseLibre.views_base import DeleteAccess
+from blog.models import Article
 
 def accueil(request):
     return render(request, 'vote/accueil.html')
 
 
 @login_required
-def ajouterSuffrage(request):
+def ajouterSuffrage(request, article_slug):
+    article = get_object_or_404(Article, slug=article_slug)
     form = SuffrageForm(request.POST or None)
     #qb_formset = Question_binaire_formset(request.POST or None, prefix="qb")
     #qm_formset = Question_majoritaire_formset(request.POST or None, prefix="qm")
     if form.is_valid() :#and qb_formset.is_valid() and qm_formset.is_valid() :
-        suffrage = form.save(request.user)
+        suffrage = form.save(request.user, article)
         #for form in itertools.chain(qb_formset, qm_formset): # meme question
             # extract name from each form and save
         #    form.save(suffrage=suffrage)
@@ -87,7 +89,7 @@ def supprimerPropositionM(request, slug, id_question, id_proposition):
     suffrage = get_object_or_404(Suffrage, slug=slug)
     if suffrage.auteur != request.user and not request.user.is_superuser:
         return HttpResponseForbidden("Vous n'avez pas l'autorisation de supprimer")
-    proposition = Proposition_m.objects.get(question__id=id_question, id=id_proposition)
+    proposition = Proposition_m.objects.get(question_m__id=id_question, id=id_proposition)
     proposition.delete()
     return redirect(suffrage.get_modifQuestions_url())
 
@@ -208,7 +210,7 @@ def resultatsSuffrage(request, slug):
         vote = ""
 
     return render(request, 'vote/resultatsSuffrage.html', {
-        'suffrage': suffrage, "votes":votes, "res_bin":res_bin, "res_majo": res_majo, "choixMajo":Choix.vote_majoritaire, 'vote':vote })
+        'suffrage': suffrage, "votes":votes, "res_bin":res_bin, "res_majo": res_majo, 'vote':vote })
 
 
 

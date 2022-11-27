@@ -51,9 +51,7 @@
 {% endblock %}
 {% block content %}
      <div class="boxitem_droite">
-                <span class="badge {% if suffrage.estPublic%}badge-success{%else%} badge-warning {%endif%}">
-                Suffrage {{suffrage.asso}}
-            </span>
+
             {% if suffrage.estArchive%}
             <span class="badge badge-Light">
                 archivé
@@ -68,7 +66,11 @@
 <div class="contenu suffrage article">
 <div class="row">
 <div class="col-sm-12 textcenter">
+    <p>Article lié : <a href="{{ suffrage.article.get_absolute_url }}">{{ suffrage.article }}</a></p>
     <h3> {{ suffrage.titre }}</h3>
+<p> <span class="badge {% if suffrage.estPublic%}badge-success{%else%} badge-warning {%endif%}">
+                    {{suffrage.asso}}
+            </span>
     <p>
         {%if suffrage.start_time%}
           <a href="{% url 'cal:agenda' %} " class="textepetit">
@@ -150,7 +152,7 @@
             {{vote.commentaire |safe}}
         </div>
     {% else %}
-        <h5>(Je n'ai pas commenté le suffrage)</h5>
+        <h5>(Vous n'avez pas commenté le suffrage)</h5>
     {% endif %}
     {% endif %}
 

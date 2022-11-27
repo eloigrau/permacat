@@ -16,19 +16,38 @@ class Choix():
                      (0, ("Oui")),
                     (1, ("Non")),
                     (2, ("Ne se prononce pas")))
-    vote_majoritaire = (('', '-----------'),
-                     (0, ("pas du tout d'accord")),
-                    (1, ("Plutot pas d'accord")),
-                    (2, ("Neutre")),
-                    (3, ("Plutot d'accord")),
-                    (4, ("Tout à fait d'accord")))
-
 
     type_vote = (('', '-----------'),
                      ('0', ("Vote d'un projet")),
                     ('1', ("Vote d'une décision")),
                     ('2', ("Sondage")),
                     ('3', ("Election")))
+
+    vote_majoritaire = {'0':(('', '------------ Exprimez votre opinion --------------'),
+                            (0, ("pas du tout d'accord")),
+                            (1, ("Plutot pas d'accord")),
+                            (2, ("Neutre")),
+                            (3, ("Plutot d'accord")),
+                            (4, ("Tout à fait d'accord"))),
+                    '1':(('', '---------- Choisissez une note ---------------'),
+                            (0, ("0 (le plus bas score)")),
+                            (1, ("1")),
+                            (2, ("2")),
+                            (3, ("3")),
+                            (4, ("4 (le plus haut score)"))),
+                    '2': (('', '------------------ Choisissez une appréciation ---------------'),
+                         (0, ("Pas du tout satisfaisant")),
+                         (1, ("Pas très satisfaisant")),
+                         (2, ("Neutre ")),
+                         (3, ("Assez satisfaisant")),
+                         (4, ("Tout-à-fait satisfaisant"))),
+    }
+
+    type_echelledevote = (('', '-----------'),
+                    ('0', ("Opinion: de 'pas du tout d'accord' à 'tout à fait d'accord")),
+                     ('1', ("Note : de 0 à 4")),
+                     ('2', ("Appréciation : de 'pas du tout satisfaisant' à 'tout à fait satisfaisant'")),
+                          )
 
     couleurs_annonces = {
             '0':"#d1ecdc",
@@ -56,8 +75,8 @@ class Choix():
         except:
             return Choix.couleurs_annonces["Autre"]
 
-def getStrFromChoix_majoritaire(choix):
-    return Choix.vote_majoritaire[[y[0] for y in Choix.vote_majoritaire].index(choix)][1]
+def getStrFromChoix_majoritaire(type_choix, choix):
+    return Choix.vote_majoritaire[type_choix][[y[0] for y in Choix.vote_majoritaire[type_choix]].index(choix)][1]
 def getStrFromChoix_ouinon(choix):
     return Choix.vote_ouinon[[y[0] for y in Choix.vote_ouinon].index(choix)][1]
 
@@ -107,6 +126,9 @@ class SuffrageBase(models.Model):
     start_time = models.DateField(verbose_name="Date de début du vote", null=True,blank=False, help_text="jj/mm/année")
     end_time = models.DateField(verbose_name="Date de fin du vote",  null=True,blank=False, help_text="jj/mm/année")
     asso = models.ForeignKey(Asso, on_delete=models.SET_NULL, null=True)
+    article = models.ForeignKey("blog.Article", on_delete=models.CASCADE,
+                                help_text="Article associé",
+                                blank=True, null=True)
 
     class Meta:
         abstract = True
@@ -222,7 +244,7 @@ class Suffrage(SuffrageBase):
         txt = "<table class='comicGreen'> <tbody> <thead><tr><th>Question posée</th><th>Proposition</th></thead>"
         for i, q in enumerate(questions_m):
             txt += "<tr> <td>"
-            txt += str(i+1) + ") " + str(q) + '<a class="btn btn-sm btn-danger textleft" href="' + q.get_delete_url() +'"><i class="fa fa-times"></i></a></td> <td></td> </tr>'
+            txt += str(i+1) + ") " + str(q) + '(' + q.type_choix +')' '<a class="btn btn-sm btn-danger textleft" href="' + q.get_delete_url() +'"><i class="fa fa-times"></i></a></td> <td></td> </tr>'
             for j, p in enumerate(q.propositions):
                 txt += "<tr> <td></td> <td>"
                 txt += str(j + 1) + ") " + str(p) + '<a class="btn btn-sm btn-danger textleft" href="' + p.get_delete_url() +'"><i class="fa fa-times"></i></a></td> </tr>'
@@ -286,7 +308,10 @@ class Resultat_binaire():
                 else:
                     self.resultat = 'Non à ' + str(round(self.nbNon[0] * 100 / self.nbTotal, 1)) + ' %' + str(round(self.nbNon[0] * 100.0/self.nbOuiEtNon)) + ' % des votes exprimés)'
             else:
-                self.resultat = 'Ex aequo à ' + str(round(self.nbOui[0] * 100 / self.nbTotal, 1)) + ' %'
+                if self.nbOuiEtNon:
+                    self.resultat = 'Ex aequo à ' + str(round(self.nbOui[0] * 100 / self.nbTotal, 1)) + ' %'
+                else:
+                    self.resultat = 'Ne se prononce pas'
         else:
             self.nbOui = (0, '0%')
             self.nbNon = (0, '0%')
@@ -310,6 +335,8 @@ class Question_binaire(Question_base):
 
 class Question_majoritaire(Question_base):
     question = models.CharField(max_length=150, verbose_name="Question (jugement majoritaire) soumise au vote :", validators=[MinLengthValidator(1)])
+    type_choix = models.CharField(max_length=30,
+        choices=(Choix.type_echelledevote), default='0', verbose_name="Type de choix de vote")
 
     def __str__(self):
         return str(self.question)
@@ -325,18 +352,22 @@ class Question_majoritaire(Question_base):
         if prop:
             return prop
         else:
-            p = Proposition_m(proposition="J'approuve")
+            p = Proposition_m(proposition="D'accord ?")
             p.save(question_m=self)
             return (p, )
 
     def get_delete_url(self):
         return reverse("vote:supprimerQuestionM", kwargs={"id_question":self.id, 'slug':self.suffrage.slug})
 
+    @property
+    def get_typeChoix_liste(self):
+        return [x[1] for x in Choix.vote_majoritaire[self.type_choix][1:]]
 
 class Proposition_m(models.Model):
     """An Election as Proposition_m as choices."""
     question_m = models.ForeignKey(Question_majoritaire, on_delete=models.CASCADE)
     proposition = models.CharField(max_length=500, verbose_name="Proposition", null=False, blank=False, )
+
 
     def __str__(self):
         """Print the candidate."""
@@ -370,15 +401,15 @@ class Proposition_m(models.Model):
     def majority_gauge_str(self):
         """Compute the majority gauge of this Candidate."""
         majo = self.majority_gauge()
-        return [str(round(100.0*majo[2], 0)) + "%", getStrFromChoix_majoritaire(majo[1]), str(round(100.0*majo[0])) + "%"]
+        return [str(round(100.0*majo[2], 0)) + "%", getStrFromChoix_majoritaire(self.question_m.type_choix, majo[1]), str(round(100.0*majo[0])) + "%"]
 
     def percentage_per_choice(self):
         """Compute the majority gauge of this Candidate."""
         count = self.reponsequestion_m_set.count()
         if not count:
-            return [(mention, 0, 0) for x, mention in Choix.vote_majoritaire[1:]]
+            return [(mention, 0, 0) for x, mention in Choix.vote_majoritaire[self.question_m.type_choix][1:]]
         pourcentages = []
-        for num_mention, mention in Choix.vote_majoritaire[1:]:
+        for num_mention, mention in Choix.vote_majoritaire[self.question_m.type_choix][1:]:
             compte = self.reponsequestion_m_set.filter(choix=num_mention).count()
             pourcentages.append([mention, compte, int(100.0 * compte/count + 0.5)])
         return pourcentages
@@ -387,14 +418,14 @@ class Proposition_m(models.Model):
         """Get the list of the votes for this Candidate."""
         count = self.reponsequestion_m_set.count()
         if count:
-            return [self.reponsequestion_m_set.filter(choix=i).count() * 100.0 / count for i in [x[0] for x in Choix.vote_majoritaire[1:]]]
+            return [self.reponsequestion_m_set.filter(choix=i).count() * 100.0 / count for i in [x[0] for x in Choix.vote_majoritaire[self.question_m.type_choix][1:]]]
         return [0] * (len(Choix.vote_majoritaire) - 1)
 
     def nb_votes_absolu_par_mention(self):
         """Get the list of the votes for this Candidate."""
         if self.nb_votes_absolu():
-            return [self.reponsequestion_m_set.filter(choix=i).count() for i in [x[0] for x in Choix.vote_majoritaire[1:]]]
-        return [0] * (len(Choix.vote_majoritaire) - 1)
+            return [self.reponsequestion_m_set.filter(choix=i).count() for i in [x[0] for x in Choix.vote_majoritaire[self.question_m.type_choix][1:]]]
+        return [0] * (len(Choix.vote_majoritaire[self.question_m.type_choix]) - 1)
 
     def nb_votes_absolu(self):
         """Get the list of the votes for this Candidate."""
@@ -405,7 +436,7 @@ class Proposition_m(models.Model):
         if self.nb_votes_absolu():
             # arrondi, de la somme des points calculés (mention pas du tout d'accord = 0 points, mention toutàafit d'accord = 4 points)
             return round(sum([i*self.reponsequestion_m_set.filter(choix=i).count() for i in
-                    [x[0] for x in Choix.vote_majoritaire[1:]]])*100.0/(self.nb_votes_absolu() * 4), 1)
+                    [x[0] for x in Choix.vote_majoritaire[self.question_m.type_choix][1:]]])*100.0/(self.nb_votes_absolu() * 4), 1)
 
 
 class Vote(models.Model):
@@ -438,7 +469,7 @@ class Vote(models.Model):
 
     def getVoteStr_questionsM(self):
         rep_m = ReponseQuestion_m.objects.filter(vote=self)
-        return [getStrFromChoix_majoritaire(x) for x in rep_m]
+        return [getStrFromChoix_majoritaire(x.question_m.type_choix, x) for x in rep_m]
 
     def getVoteStr_proposition_m(self, proposition):
         try:
@@ -462,14 +493,14 @@ class ReponseQuestion_m(models.Model):
     vote = models.ForeignKey(Vote, on_delete=models.CASCADE, related_name='rep_question_m')
     proposition = models.ForeignKey(Proposition_m, on_delete=models.CASCADE, default=None, null=True)
     choix = models.IntegerField(
-        choices=Choix.vote_majoritaire,
+        choices=Choix.vote_majoritaire['0'],
         default=2, verbose_name="Choix du vote :")
 
     def __str__(self):
-        return str(self.proposition) + ": " + getStrFromChoix_majoritaire(self.choix)
+        return str(self.proposition) + ": " + getStrFromChoix_majoritaire(self.proposition.question_m.type_choix, self.choix)
 
     def str_sansproposition(self):
-        return getStrFromChoix_majoritaire(self.choix)
+        return getStrFromChoix_majoritaire(self.proposition.question_m.type_choix, self.choix)
 
     def str_avecquestion(self):
         return str(self.proposition.question_m), str(self)

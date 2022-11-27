@@ -23,7 +23,7 @@
 
     {% endif %}
     {% if questions_m %}
-        <h5>Question{{questions_m|pluralize:",s"}}  au jugement majoritaire (de 'pas du tout d'accord' à 'tout à fait d'accord') : </h5>
+        <h5>Question{{questions_m|pluralize:",s"}} au jugement majoritaire : </h5>
 
         <table class="comicGreen">
             <thead>
@@ -36,7 +36,7 @@
             <tbody>
             {% for question in questions_m %}
                 <tr>
-                <td class="textleft" {%if vote %}colspan="3"{% else %}colspan="2"{% endif %}>{%if questions_m|length > 1 %}{{ forloop.counter }}) {% endif %}{{question}}</td>
+                <td class="textleft" {%if vote %}colspan="3"{% else %}colspan="2"{% endif %}>{%if questions_m|length > 1 %}{{ forloop.counter }}) {% endif %}{{question}} ({{question.get_type_choix_display}})</td>
                 </tr>
                 {% for proposition in question.propositions %}
                     <tr>

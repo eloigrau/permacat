@@ -1,6 +1,6 @@
 from django import forms
 from .models import Suffrage, Vote, Commentaire, Question_majoritaire, Question_binaire, ReponseQuestion_b, ReponseQuestion_m, \
-    Proposition_m
+    Proposition_m, Choix
 from django.utils.text import slugify
 import itertools
 from django_summernote.widgets import SummernoteWidget
@@ -43,7 +43,7 @@ class SuffrageForm(forms.ModelForm):
 
         return self.cleaned_data
 
-    def save(self, userProfile):
+    def save(self, userProfile, article):
         instance = super(SuffrageForm, self).save(commit=False)
 
         max_length = Suffrage._meta.get_field('slug').max_length
@@ -57,6 +57,7 @@ class SuffrageForm(forms.ModelForm):
             instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
 
         instance.auteur = userProfile
+        instance.article = article
 
         instance.save(userProfile)
 
@@ -139,7 +140,7 @@ class Question_majoritaire_Form(forms.ModelForm):
 
     class Meta:
         model = Question_majoritaire
-        fields = ['question']
+        fields = [ 'question', 'type_choix',]
 
     def save(self, suffrage):
         instance = super(Question_majoritaire_Form, self).save(commit=False)
@@ -180,7 +181,7 @@ class Reponse_majoritaire_Form(forms.ModelForm):
         super(Reponse_majoritaire_Form, self).__init__(*args, **kwargs)
         self.proposition = proposition
         self.question = proposition.question_m.question
-        self.fields['choix'].label = "-> " + proposition.proposition
+        self.fields['choix'] = forms.ChoiceField(choices=Choix.vote_majoritaire[proposition.question_m.type_choix], label="-> " + proposition.proposition)
 
     def save(self, vote):
         instance = super(Reponse_majoritaire_Form, self).save(commit=False)

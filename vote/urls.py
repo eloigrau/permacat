@@ -30,7 +30,7 @@ urlpatterns = [
     url(r'^supprimerSuffrage/(?P<slug>[-\w]+)$',
         login_required(views.SupprimerSuffrage.as_view(), login_url='/auth/login/'), name='supprimerSuffrage'),
 
-    url(r'^ajouterSuffrage/$', login_required(views.ajouterSuffrage), name='ajouterSuffrage'),
+    path(r'ajouterSuffrage/<str:article_slug>', login_required(views.ajouterSuffrage), name='ajouterSuffrage'),
     url(r'^voter/(?P<slug>[-\w]+)$', login_required(views.voter), name='voter'),
     url(r'^modifierVote/(?P<slug>[-\w]+)$', login_required(views.ModifierVote.as_view(), login_url='/auth/login/'), name='modifierVote'),
     url(r'^suffrage/resultat/(?P<slug>[-\w]+)$', views.resultatsSuffrage, name='resultatsSuffrage'),
