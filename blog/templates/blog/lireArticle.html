@@ -142,8 +142,10 @@
         {% if documents %}
       <a class="nav-item nav-link" href="#documents" data-toggle="tab">Document{{documents|pluralize:",s"}}</a>
         {% endif %}
+{% if suffrages %}
       <a class="nav-item nav-link" href="#suffrages" data-toggle="tab">Votes</a>
-      <a class="nav-item nav-link" href="#historique" data-toggle="tab">Infos</a>
+   {% endif %}   
+<a class="nav-item nav-link" href="#historique" data-toggle="tab">Infos</a>
       <a class="nav-item nav-link" href="#plus" data-toggle="tab">Ajouter...</a>
 
     </nav>
