@@ -53,6 +53,7 @@
         <div class="col-sm-12 textcenter">
             <h5>Réunions :</h5>
             <table class="table2 table table-condensed tableprofils table-striped sortable">
+                <thead><td>Date</td><td>Titre</td><td>Distance</td></thead>
             {% for r in reunions %}
                 <tr>
                     <td> <a href="{{r.0.get_absolute_url}}" >{{r.0.start_time}}</a></td>
