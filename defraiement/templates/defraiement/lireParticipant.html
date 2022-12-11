@@ -53,14 +53,14 @@
         <div class="col-sm-12 textcenter">
             <h5>Réunions :</h5>
             <table class="table2 table table-condensed tableprofils table-striped sortable">
-                <tr>
             {% for r in reunions %}
-                    <td> <a href="{{r.0.get_absolute_url}}" >{{r.0.start_time}}</td>
+                <tr>
+                    <td> <a href="{{r.0.get_absolute_url}}" >{{r.0.start_time}}</a></td>
                 <td><a href="{{r.0.get_absolute_url}}" >{{r.0.titre}}</a>
                 </td>
-                    <td> <a href="{{r.0.get_absolute_url}}" >{{r.1}} km</td>
-             {% endfor %}
+                    <td> <a href="{{r.0.get_absolute_url}}" >{{r.1}} km</a></td>
                 </tr>
+             {% endfor %}
             </table>
             <h5>Total : {{part.getDistance_routeTotale}} km</h5>
         </div>
