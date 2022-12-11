@@ -14,20 +14,22 @@ import itertools
 
 # Create your models here.
 class Choix:
-    statut_projet = ('prop','Proposition de projet'), ("AGO","Fiche projet soumise à l'AGO"), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
+    statut_projet = ('prop','Proposition de projet'), ("AGO","Projet soumise à l'AGO"), ('accep',"Accepté par l'association"), ('refus',"Refusé par l'association" ),
     type_reunion_asso = {
         "rtg": ["Réunion équipe", 'Troc de Graine', 'Atelier', 'Rencontre', 'Réunion FestiGraines', 'Autre'],
-        "scic": ['Cercle Ancrage', 'Cercle thématique', 'Cercle Education', 'Evenement', 'Divers',]
+        "scic": ['Cercle Ancrage', 'Cercle thématique', 'Cercle Education', 'Cercle Jardins', 'Evenement', 'Divers',]
       }
 
     type_reunion = [(str(i), y) for i, y in enumerate([x for x in list(itertools.chain.from_iterable(type_reunion_asso.values()))])]
+def get_typereunion(asso):
+    return [(str(i), y) for i, y in enumerate([x for x in Choix.type_reunion_asso[asso]])]
 
 
 class ParticipantReunion(models.Model):
     nom = models.CharField(verbose_name="Nom du participant", max_length=120)
     adresse = models.ForeignKey(Adresse, on_delete=models.CASCADE,)
-    #distance = models.TextField(blank=True, null=True, verbose_name="Distance calculée")
     asso = models.ForeignKey(Asso, on_delete=models.SET_NULL, null=True)
+    #vehicule = models.BooleanField(default=True, verbose_name="Est venu.e avec son véhicule")
 
     def __str__(self):
         return self.nom

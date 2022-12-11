@@ -41,7 +41,7 @@
  	<div class="row">
     <div class="col-md-12 textcenter">
         <p>
-            <a href="https://www.google.com/maps/search/?api=1&query={{part.adresse.get_adresse_str}}" target="_blank">{{ part.adresse.get_adresse_str}}</a>
+            <a href="https://www.google.com/maps/search/?api=1&query={{part.adresse.get_adresse_str}}" target="_blank">su : {{ part.adresse.get_adresse_str}}</a>
 		</p>
     </div>
     </div>
@@ -52,10 +52,16 @@
     <div class="row">
         <div class="col-sm-12 textcenter">
             <h5>Réunions :</h5>
+            <table class="table2 table table-condensed tableprofils table-striped sortable">
+                <tr>
             {% for r in reunions %}
-                <p><a href="{{r.0.get_absolute_url}}" >{{r.0.titre}} : {{r.1}} km</a>
-                </p>
+                    <td> <a href="{{r.0.get_absolute_url}}" >{{r.0.start_time}}</td>
+                <td><a href="{{r.0.get_absolute_url}}" >{{r.0.titre}}</a>
+                </td>
+                    <td> <a href="{{r.0.get_absolute_url}}" >{{r.1}} km</td>
              {% endfor %}
+                </tr>
+            </table>
             <h5>Total : {{part.getDistance_routeTotale}} km</h5>
         </div>
     </div>

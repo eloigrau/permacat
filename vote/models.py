@@ -352,7 +352,7 @@ class Question_majoritaire(Question_base):
         if prop:
             return prop
         else:
-            p = Proposition_m(proposition="D'accord ?")
+            p = Proposition_m(proposition="")
             p.save(question_m=self)
             return (p, )
 

@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import UpdateView, DeleteView
 from django.utils.timezone import now
 from .forms import ReunionForm, ReunionChangeForm, ParticipantReunionForm, PrixMaxForm, ParticipantReunionMultipleChoiceForm, ParticipantReunionChoiceForm
-from .models import Reunion, ParticipantReunion, Choix
+from .models import Reunion, ParticipantReunion, Choix, get_typereunion
 from bourseLibre.forms import AdresseForm, AdresseForm3
 import itertools
 import csv
@@ -45,8 +45,8 @@ def lireParticipant(request, id):
 
     return render(request, 'defraiement/lireParticipant.html', context,)
 
-def getRecapitulatif_km(request, reunions):
-    participants = ParticipantReunion.objects.all()
+def getRecapitulatif_km(request, reunions, asso):
+    participants = ParticipantReunion.objects.filter(asso=asso)
     entete = ["nom", ] + ["<a href="+r.get_absolute_url()+">" +r.titre+"</a>"  + " (" + str(r.start_time) + ")" for r in reunions] + ["km parcourus",]
     lignes = []
     for p in participants:
@@ -57,8 +57,8 @@ def getRecapitulatif_km(request, reunions):
     lignes.append(["Total", ] + distancesTotales + [round(sum(distancesTotales), 2), ])
     return entete, lignes
 
-def getRecapitulatif_euros(request, reunions, prixMax, tarifKilometrique):
-    participants = ParticipantReunion.objects.all()
+def getRecapitulatif_euros(request, reunions, asso, prixMax, tarifKilometrique):
+    participants = ParticipantReunion.objects.filter(asso=asso)
     entete = ["nom", ] + ["<a href="+r.get_absolute_url()+">" +r.titre+"</a>" + " (" + str(r.start_time) +")" for r in reunions] + ["total Euros",]
     lignes = []
 
@@ -90,16 +90,16 @@ def recapitulatif(request, asso_slug):
     else:
         reunions = Reunion.objects.filter(estArchive=False, asso=asso, ).order_by('start_time','categorie',)
 
-    entete, lignes = getRecapitulatif_km(request, reunions)
+    entete, lignes = getRecapitulatif_km(request, reunions, asso)
     asso_list = [(x.nom, x.abreviation) for x in Asso.objects.all().exclude(abreviation="jp").order_by("id")
                             if request.user.est_autorise(x.abreviation)]
-    type_list = Choix.type_reunion
+    type_list = get_typereunion(asso_slug)
     type_reunion = "tout"
     form = PrixMaxForm(request.POST or None)
     if form.is_valid():
         prixMax = form.cleaned_data["prixMax"]
         tarifKilometrique = form.cleaned_data["tarifKilometrique"]
-        entete, lignes = getRecapitulatif_euros(request, reunions, prixMax, tarifKilometrique)
+        entete, lignes = getRecapitulatif_euros(request, reunions, asso, prixMax, tarifKilometrique)
 
         return render(request, 'defraiement/recapitulatif.html', {"form": form, "entete":entete, "lignes":lignes, "unite":"euros", "asso_list":asso_list, "type_list":type_list, "asso_courante":asso.abreviation, "type_courant":type_reunion}, )
 
@@ -121,11 +121,11 @@ def export_recapitulatif(request, asso, type_reunion="999"):
     )
     writer = csv.writer(response)
 
-    entete, lignes = getRecapitulatif_euros(request, reunions)
+    entete, lignes = getRecapitulatif_euros(request, reunions, asso)
     writer.writerow(entete)
     for l in lignes:
         writer.writerow(l)
-    entete, lignes = getRecapitulatif_km(request, reunions)
+    entete, lignes = getRecapitulatif_km(request, reunions, asso)
     writer.writerow(entete)
     for l in lignes:
         writer.writerow(l)
@@ -429,7 +429,7 @@ class ListeParticipants(ListView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        context['list_archive'] = Reunion.objects.filter(estArchive=True)
+        context['list_archive'] = Reunion.objects.filter(estArchive=True, asso=self.asso)
         context['asso_courante'] = self.asso
         return context
 
