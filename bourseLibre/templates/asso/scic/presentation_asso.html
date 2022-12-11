@@ -7,25 +7,18 @@
 
 {% include "asso/presentation_asso_template.html" with adherent=request.user.adherent_scic assos='scic' %}
 
-<h4 class = "textcenter rowbienvenue">Qui sommes nous ?</h4>
 {% endblock %}
 {% block content %}
 <div class="row">
 	<div class="col">
-		<p>Ce groupe est en cours de constitution... Il correspond aux personnes qui voudraient participer au projet de SCIC initié par PermaCat, en vue de : 1) mutualiser nos compétences pour développer nos activités professionnelles et 2) former un collectif pour la création d'un écolieu</p>
-		<p>
-		Nous sommes un groupe de personnes qui essayons de mettre nos rêves en commun, de créer un collectif qui puisse soutenir nos différents projets (perso et professionnels), et mutualiser des moyens pour assurer notre avenir
-		</p>
-		<p>Vous pouvez trouver nos <a href="https://www.perma.cat/media/documents/2022/04/08/Statuts-Ri-Charte-PermAgora_final_N9gMKkP.pdf" trget="_blank">statuts, reglement intérieur et charte ici</a>. Si vous avez des commentaires, n'hesitez pas à nous contacter</p>
-		<p>Nos projets s'articulent autour de la création d'un ou plusieurs ecolieux et du developpement de différents pôles : agriculture, bien-etre/santé, formation, évenementiel,en vue d'adapter notre territoire à un avenir menacé..</p>
-		<p>Notre fonctionnement s'inspire du <a href="https://www.perma.cat/media/documents/2021/08/03/constitution_1_0_finale.pdf" target="_blank">modèle Z :</a></p>
-
 <div class="row justify-content-center">
 	<div class="col-sm-12 col-md-8 textcenter">
-		<img src="{% static 'img/modeleZ.jpg' %}" class="thumbnail" style="width:90%;" alt="ModeleZ">
+		<img src="{% static 'permagora/images/PermAgora-Diagramme3.png' %}" alt="Diagramme" class="img-fluid" style="width:100%;" ></p>
 	</div>
 </div>
-
+		<p>Vous pouvez trouver nos <a href="https://www.perma.cat/media/documents/2022/04/08/Statuts-Ri-Charte-PermAgora_final_N9gMKkP.pdf" trget="_blank">statuts, reglement intérieur et charte ici</a>. Si vous avez des commentaires, n'hesitez pas à nous contacter</p>
+		<p>Nos projets s'articulent autour de la création d'un ou plusieurs tiers-lieux ou ecolieux et du développement de différents pôles : agriculture, bien-etre/santé, formation, évenementiel,en vue d'adapter notre territoire à un avenir menacé..</p>
+<p>Parcourez <a href="{% url 'permagora:bienvenue' %}">notre plateforme </a>pour mieux comprendre notre démarche</p>
 		<p>
 		si vous aussi, vous avez envie de vivre autrement de manière écologique,
 		de construire un monde plus durable et plus respectueux de notre
