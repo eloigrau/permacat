@@ -56,16 +56,21 @@
           $("#id_categorie").html(data);  // replace the contents of the city input with the data that came from the server
         }
       });
-         if (asso != "1"){
-			  $("#id_partagesAsso").parent().removeClass("cache");
-			  $("#id_partagesAsso").children().each((index, element) => {
-			 	if (index == asso - 1){
-					element.style.visibility = "hidden";
-			 	}else{
-					element.style.visibility = "visible";
-			 	}
-			 });
-		 };
+	 if (asso != "1"){
+		  $("#id_partagesAsso").parent().removeClass("cache");
+		  $("#id_partagesAsso").children().each((index, element) => {
+			if (index == asso - 1){
+				element.style.visibility = "hidden";
+			}else{
+				element.style.visibility = "visible";
+			}
+		 });
+		  $("#id_estEpingle").prop('disabled', false);
+		  $("#id_partagesAsso_0").prop('disabled', false);
+	 }else{
+		  $("#id_partagesAsso_0").prop('disabled', true);
+		  $("#id_estEpingle").prop('disabled', true);
+	 };
     });
 
 

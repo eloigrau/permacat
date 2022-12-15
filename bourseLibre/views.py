@@ -1176,7 +1176,7 @@ def salon(request, slug):
     inscrits = salon.getInscrits()
     invites = salon.getInvites()
     messages = Message_salon.objects.filter(salon=salon).order_by("date_creation")
-    paginator = Paginator(messages, 20) # Show 10 contacts per page.
+    paginator = Paginator(messages, 15) # Show 10 contacts per page.
     if not 'page' in request.GET:
         page_number = paginator.num_pages
     else:

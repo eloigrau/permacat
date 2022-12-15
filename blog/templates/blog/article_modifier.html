@@ -57,8 +57,12 @@
 
          if (asso == "1"){
           	$("#id_partagesAsso").parent()[0].style.display = "none";
+		  $("#id_partagesAsso_0").prop('disabled', true);
+		  $("#id_estEpingle").prop('disabled', true);
          }else{
           	$("#id_partagesAsso").parent()[0].style.display = "inherit";
+		  $("#id_estEpingle").prop('disabled', false);
+		  $("#id_partagesAsso_0").prop('disabled', false);
 
           	$("input[id^='id_partagesAsso_']").each(function() {
           	    if($( this ).attr( "value" ) == asso) {
