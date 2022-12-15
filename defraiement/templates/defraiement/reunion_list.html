@@ -31,7 +31,7 @@
         <button type="button" class="btn btn-success" >
                 <i class="fa fa-plus"></i> Ajouter une réunion
             </button>
-        </a>&ensp;&ensp;
+        </a>
     </div>
     <div class="col-md-4 textcenter">
 
@@ -61,7 +61,30 @@
 
 {%endblock%}
 {% block content %}
-
+<nav class="navbar  navbar-expand-md navbar-light justify-content-center">
+<div class="row justify-content-center">
+        <div class="collapse navbar-collapse" id="navbarType">
+            <ul class="nav navbar-nav justify-content-center ">
+            <li class="nav-item  ">
+                  <a  href="{% url 'defraiement:reunions_asso' asso_slug=asso_courante.abreviation %}">
+                      <button type="button" class="btn  btn-block {%if categorie_courante == '999' %} btn-warning{% else %}btn-info{% endif %}" >
+                          <h6>Tout</h6>
+                      </button>
+                </a>
+            </li>
+        {% for type_id, type_nom  in categorie_list %}
+            <li class="nav-item  ">
+                  <a  href="{% url 'defraiement:reunions_asso' asso_slug=asso_courante.abreviation  %}?categorie={{type_id}}">
+                      <button type="button" class="btn  btn-block {%if type_courant == type_id %} btn-warning{% else %}btn-info{% endif %}" >
+                          <h6>{{type_nom}}</h6>
+                   </button>
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+</nav>
 <div class="infinite-container ">
     {% for reunion in reunion_list %}
 

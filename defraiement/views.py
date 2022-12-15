@@ -413,6 +413,12 @@ class ListeReunions_asso(ListeReunions):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         context['asso_courante'] = self.asso
+
+        self.asso = Asso.objects.get(abreviation=self.kwargs['asso_slug'])
+        reu = Reunion.objects.filter(estArchive=False, asso=self.asso)
+        cat = reu.values_list('categorie', flat=True).distinct()
+        context['categorie_list'] = [x for x in Choix.type_reunion if x[0] in cat]
+
         return context
 
 class ListeParticipants(ListView):

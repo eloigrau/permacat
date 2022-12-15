@@ -19,21 +19,6 @@
 
 <hr>
 <nav class="navbar  navbar-expand-md navbar-light justify-content-center">
-    {% comment %}
-        <div class="collapse navbar-collapse" id="navbarGroupes">
-            <ul class="nav navbar-nav justify-content-center ">
-            {% for asso_nom, asso_slug in asso_list %}
-                <li class="nav-item  ">
-                      <a  href="{% url 'defraiement:recapitulatif' asso_slug=asso_slug %}?type_reunion={{type_courant}}">
-                          <button type="button" class="btn  btn-block btn-info" >
-                              <h6>{{asso_nom}}</h6>
-                       </button>
-                    </a>
-                </li>
-            {% endfor %}
-            </ul>
-        </div>
-    {% endcomment %}
 <div class="row justify-content-center">
         <div class="collapse navbar-collapse" id="navbarType">
             <ul class="nav navbar-nav justify-content-center ">
