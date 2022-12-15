@@ -1194,6 +1194,11 @@ def salon(request, slug):
                     action_object=message, target=group, url=url,
                     description="a envoyé un message dans le salon '" + str(salon.titre) + "' (>"+" ".join([str(x) for x in inscrits])+")")
 
+        emails = [suiv.email for suiv in followers(suivis) if request.user != suiv ]
+        message = "Le <a href='https://www.perma.cat" + salon.get_absolute_url() + "'> Salon '" + salon.titre + "'</a>' a été commenté"
+
+        action.send(salon, verb='emails', url=salon.get_absolute_url(), titre="Salon commenté", message=message, emails=emails)
+
         return redirect(request.path)
     return render(request, 'salon/salon.html', {'form': form, 'messages_echanges': messages, 'salon':salon, 'suivis':suivis, "inscrits":inscrits, "invites":invites, "page_obj":page_obj})
 
@@ -1247,7 +1252,6 @@ def invitationDansSalon(request, slug_salon):
 
     return render(request, 'salon/invitationSalon.html', {'salon': salon, "invit": invit})
 
-
 @login_required
 def inviterDansSalon(request, slug_salon):
     salon = testIsMembreSalon(request, slug_salon)
@@ -1296,11 +1300,7 @@ def modifier_message(request, id, type_msg, asso, ):
             object.delete()
             return redirect(obj.get_absolute_url())
 
-
-
     return render(request, 'modifierCommentaire.html', {'form': form, })
-
-
 
 class ModifierMessageAgora(UpdateView):
     model = MessageGeneral
