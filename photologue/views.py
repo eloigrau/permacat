@@ -25,7 +25,7 @@ import os
 from bourseLibre.views_base import DeleteAccess
 
 class AlbumListView(ListView):
-    paginate_by = 2
+    paginate_by = 15
 
     def get_queryset(self):
         qs = Album.objects.on_site()
