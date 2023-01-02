@@ -21,6 +21,14 @@ class Choix:
       }
 
     type_reunion = [(str(i), y) for i, y in enumerate([x for x in list(itertools.chain.from_iterable(type_reunion_asso.values()))])]
+
+    ordre_tri_reunions = {
+                        "Date <":'-start_time',
+                        "Date >":'start_time',
+                        "Titre":'titre',
+                        "Catégorie":'categorie',
+    }
+
 def get_typereunion(asso):
     return [(str(i), y) for i, y in enumerate([x for x in Choix.type_reunion_asso[asso]])]
 

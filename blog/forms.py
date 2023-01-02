@@ -71,10 +71,10 @@ class SummernoteWidgetWithCustomToolbar(SummernoteWidget):
         return summernote_settings
 
 class ArticleForm(forms.ModelForm):
-    asso = forms.ModelChoiceField(queryset=Asso.objects.all().exclude(abreviation="jp").order_by("id"), required=True,
+    asso = forms.ModelChoiceField(queryset=Asso.objects.all().order_by("id"), required=True,
                               label="Article public ou réservé aux membres du groupe :", )
 
-    partagesAsso = forms.ModelMultipleChoiceField(label='Partager avec :', required=False, queryset=Asso.objects.exclude(abreviation="jp").order_by("id"),
+    partagesAsso = forms.ModelMultipleChoiceField(label='Partager avec :', required=False, queryset=Asso.objects.order_by("id"),
                                              widget=forms.CheckboxSelectMultiple(attrs={'class': 'cbox_asso', }) )
 
     class Meta:
@@ -116,7 +116,7 @@ class ArticleForm(forms.ModelForm):
 
     def __init__(self, request, *args, **kwargs):
         super(ArticleForm, self).__init__(*args, **kwargs)
-        self.fields["asso"].choices = [('', '(Choisir un groupe)'), ] + [(x.id, x.nom) for x in Asso.objects.all().exclude(abreviation="jp").order_by("id") if request.user.estMembre_str(x.abreviation)]
+        self.fields["asso"].choices = [('', '(Choisir un groupe)'), ] + [(x.id, x.nom) for x in Asso.objects.all().order_by("id") if request.user.estMembre_str(x.abreviation)]
         self.fields["categorie"].choices = [('', "(Choisir d'abord un groupe ci-dessus)"), ] #+ list(Choix.get_type_annonce_asso(""))
 
         if 'asso' in self.data:
@@ -132,7 +132,7 @@ class ArticleForm(forms.ModelForm):
 
 
 class ArticleChangeForm(forms.ModelForm):
-    partagesAsso = forms.ModelMultipleChoiceField(label='Partager avec :', required=False, queryset=Asso.objects.exclude(abreviation="jp").order_by("id"),
+    partagesAsso = forms.ModelMultipleChoiceField(label='Partager avec :', required=False, queryset=Asso.objects.order_by("id"),
                                              widget=forms.CheckboxSelectMultiple(attrs={'class': 'cbox_asso', }) )
 
     class Meta:
@@ -154,7 +154,7 @@ class ArticleChangeForm(forms.ModelForm):
 
     def save(self, sendMail=True, commit=True):
         instance = super(ArticleChangeForm, self).save(commit=commit)
-        for asso in Asso.objects.exclude(abreviation="jp"):
+        for asso in Asso.objects:
             if asso in self.cleaned_data["partagesAsso"]:
                 instance.partagesAsso.add(asso)
             elif instance.partagesAsso.filter(abreviation=asso.abreviation).exists():
@@ -240,7 +240,7 @@ class ProjetForm(forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
         super(ProjetForm, self).__init__(*args, **kwargs)
         self.fields['contenu'].strip = False
-        self.fields["asso"].choices = [(x.id, x.nom) for x in Asso.objects.all().exclude(abreviation="jp").order_by("id") if request.user.estMembre_str(x.abreviation)]
+        self.fields["asso"].choices = [(x.id, x.nom) for x in Asso.objects.all().order_by("id") if request.user.estMembre_str(x.abreviation)]
 
     def save(self, userProfile, sendMail=True):
         instance = super(ProjetForm, self).save(commit=False)
@@ -305,7 +305,7 @@ class ProjetForm(forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
         super(ProjetForm, self).__init__(*args, **kwargs)
         self.fields['contenu'].strip = False
-        self.fields["asso"].choices = [(x.id, x.nom) for x in Asso.objects.all().exclude(abreviation="jp").order_by("id") if request.user.estMembre_str(x.abreviation)]
+        self.fields["asso"].choices = [(x.id, x.nom) for x in Asso.objects.all().order_by("id") if request.user.estMembre_str(x.abreviation)]
 
     def save(self, userProfile, sendMail=True):
         instance = super(ProjetForm, self).save(commit=False)
@@ -444,6 +444,7 @@ class EvenementArticleForm(forms.ModelForm):
         return instance
 
 class SalonArticleForm(forms.ModelForm):
+
     class Meta:
         model = Salon
         fields = ['titre', 'estPublic' ]
@@ -452,6 +453,7 @@ class SalonArticleForm(forms.ModelForm):
         instance = super(SalonArticleForm, self).save(commit=False)
         article = Article.objects.get(slug=slug_article)
         instance.article = article
+        instance.asso = article.asso
         instance.save()
         inscrit = InscritSalon(salon=instance, profil=request.user)
         inscrit.save()

@@ -81,10 +81,23 @@
                 </a>
             </li>
         {% endfor %}
+
+
         </ul>
     </div>
 </div>
 </nav>
+<div class="row justify-content-center">
+    <div class="col-sm-12 textcenter">
+            <button class="btn dropdown-toggle btn-light" type="button" id="menuOrdreTri" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   Trier par...
+           </button>
+                <div class="dropdown-menu"  aria-labelledby="menuOrdreTri"  id="idOrdreTri">
+                {% for ordreTri,type  in ordreTriPossibles.items %}
+                 <a class="dropdown-item"  href="?ordreTri={{type}}">{{ordreTri}}</a>
+                    {% endfor %}
+                </div>
+    </div></div>
 <div class="infinite-container ">
     {% for reunion in reunion_list %}
 

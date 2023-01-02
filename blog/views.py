@@ -52,7 +52,7 @@ def accueil(request):
 
     derniers = sorted(set([x for x in itertools.chain(derniers_articles_comm[::-1][:8], derniers_articles_modif[::-1][:8], derniers_articles[:8], )]), key=lambda x:x.date_modification if x.date_modification else x.date_creation)[::-1]
 
-    #asso_list = [(x.nom, x.abreviation) for x in Asso.objects.all().exclude(abreviation="jp").order_by("id") if request.user.est_autorise(x.abreviation)] # ['public'] + [asso for asso in Choix_global.abreviationsAsso if self.request.user.est_autorise(asso)] + ['projets']
+    #asso_list = [(x.nom, x.abreviation) for x in Asso.objects.all().order_by("id") if request.user.est_autorise(x.abreviation)] # ['public'] + [asso for asso in Choix_global.abreviationsAsso if self.request.user.est_autorise(asso)] + ['projets']
     asso_list = Choix_global.abreviationsNomsAssoEtPublic
     suivis = get_suivis_forum(request)
 
@@ -296,7 +296,7 @@ class ListeArticles(ListView):
         context['articles_partages'] = []#self.qs.filter(Q(estArchive=False, partagesAsso__isnull=False))#.distinct().order_by(F('date_modification').desc(nulls_last=True), '-date_creation')
         context['articles_archives'] = self.qs.filter(Q(estArchive=True)).distinct()#.order_by(F('date_modification').desc(nulls_last=True), '-date_creation')
 
-        context['asso_list'] = Choix_global.abreviationsNomsAssoEtPublic#[(x.nom, x.abreviation) for x in Asso.objects.all().exclude(abreviation="jp").order_by("id") if self.request.user.est_autorise(x.abreviation)]
+        context['asso_list'] = Choix_global.abreviationsNomsAssoEtPublic#[(x.nom, x.abreviation) for x in Asso.objects.all().order_by("id") if self.request.user.est_autorise(x.abreviation)]
         context['typeFiltre'] = "aucun"
         context['suivis'] = get_suivis_forum(self.request)
         context['ordreTriPossibles'] = Choix.ordre_tri_articles
@@ -401,7 +401,7 @@ class ListeArticles_asso(ListView):
         #     ateliers = ateliers.exclude(asso__abreviation="rtg")
         # context['ateliers_list'] = [(x.slug, x.titre, x.get_couleur) for x in ateliers]
 
-        context['asso_list'] = Choix_global.abreviationsNomsAssoEtPublic#[(x.nom, x.abreviation) for x in Asso.objects.all().exclude(abreviation="jp").order_by("id") if self.request.user.est_autorise(x.abreviation)]
+        context['asso_list'] = Choix_global.abreviationsNomsAssoEtPublic#[(x.nom, x.abreviation) for x in Asso.objects.all().order_by("id") if self.request.user.est_autorise(x.abreviation)]
         context['asso_courante'] = self.asso
         context['dossier_courant'] = self.categorie
         context['user_membreAsso'] = self.request.user.est_autorise(self.asso.abreviation)
@@ -486,7 +486,7 @@ class ModifierProjet(UpdateView):
 
     def get_form(self,*args, **kwargs):
         form = super(ModifierProjet, self).get_form(*args, **kwargs)
-        form.fields["asso"].choices = [(x.id, x.nom) for x in Asso.objects.all().exclude(abreviation="jp").order_by("id") if self.request.user.estMembre_str(x.abreviation)]
+        form.fields["asso"].choices = [(x.id, x.nom) for x in Asso.objects.all().order_by("id") if self.request.user.estMembre_str(x.abreviation)]
         return form
 
 class SupprimerProjet(DeleteAccess, DeleteView):
@@ -630,11 +630,8 @@ class ListeProjets(ListView):
         if "statut" in params:
             qs = qs.filter(statut=params['statut'])
 
-        if "permacat" in params and self.request.user.adherent_pc:
-            if params['permacat'] == "True":
-                qs = qs.filter(estPublic=False)
-            else:
-                qs = qs.filter(estPublic=True)
+        if "asso" in params:
+            qs = qs.filter(asso__abreviation=params['asso'])
 
         if "ordreTri" in params:
             if params['ordreTri'] == "-date_dernierMessage":
@@ -660,6 +657,7 @@ class ListeProjets(ListView):
         cat = Projet.objects.all().order_by('statut').values_list('statut', flat=True).distinct()
         context['statut_list'] = [x for x in Choix.statut_projet if x[0] in cat]
         context['typeFiltre'] = "aucun"
+        context['asso_list'] = Asso.objects.all().order_by("id")
 
         context['ordreTriPossibles'] = Choix.ordre_tri_projets
 
@@ -677,8 +675,9 @@ class ListeProjets(ListView):
                 context['statut_courant'] = [x[1] for x in Choix.statut_projet if x[0] == self.request.GET['statut']][0]
             except:
                 context['statut_courant'] = ""
-        if 'permacat' in self.request.GET:
-            context['typeFiltre'] = "permacat"
+        if 'asso' in self.request.GET:
+            context['typeFiltre'] = "asso"
+            context['asso_courante'] = Asso.objects.get(abreviation=self.request.GET["asso"]).nom
         if 'archives' in self.request.GET:
             context['typeFiltre'] = "archives"
         # if 'ordreTri' in self.request.GET:

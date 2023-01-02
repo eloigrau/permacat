@@ -88,13 +88,14 @@
             </li>
         {% if request.user.adherent_pc %}
                 <li class="nav-item dropdown">
-             <button type="button" class="btn  btn-block {% if request.GET.permacat %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+             <button type="button" class="btn  btn-block {% if request.GET.asso %}btn-primary{%endif%}  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                data-target = "#idPermacat">
-                {% if request.GET.permacat %}{% if request.GET.permacat == "True" %}Permacat {%else%}Public{%endif%}{%else%}Type{%endif%}
+                 {% if request.GET.asso %}{{asso_courante}}{%else%}Groupe{%endif%}
                 </button>
             <div class="dropdown-menu"  aria-labelledby="menuStatut"  id=idPermacat">
-                  <a class="dropdown-item" href="?permacat=True">Permacat</a>
-                  <a class="dropdown-item" href="?permacat=False">Public</a>
+                {% for asso in asso_list %}
+                  <a class="dropdown-item" href="?asso={{asso.abreviation}}">{{asso.nom}}</a>
+                {% endfor %}
             </div>
         </li>
         {% endif %}

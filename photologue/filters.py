@@ -5,7 +5,7 @@ import django_filters
 from datetime import datetime, timedelta, timezone
 
 class DocumentFilter(django_filters.FilterSet):
-    asso = django_filters.ModelMultipleChoiceFilter(field_name='asso', queryset=Asso.objects.all().exclude(abreviation="jp"),
+    asso = django_filters.ModelMultipleChoiceFilter(field_name='asso', queryset=Asso.objects.all(),
         widget=forms.CheckboxSelectMultiple)
     titre = django_filters.CharFilter(lookup_expr='icontains',)
     auteur = django_filters.ModelChoiceFilter(field_name='auteur', queryset=Profil.objects.all().extra(\

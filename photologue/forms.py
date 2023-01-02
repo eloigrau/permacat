@@ -181,7 +181,7 @@ class UploadZipForm(forms.Form):
 
 
 class AlbumForm(forms.ModelForm):
-    asso = forms.ModelChoiceField(queryset=Asso.objects.all().exclude(abreviation="jp"), required=True,
+    asso = forms.ModelChoiceField(queryset=Asso.objects.all(), required=True,
                               label="Album public ou réservé aux adhérents de l'asso :", )
     article = forms.ModelChoiceField(queryset=Article.objects.all(), required=False, empty_label=True,
                               label="Associer l'album à un article du forum ?",)
@@ -217,7 +217,7 @@ class AlbumForm(forms.ModelForm):
 
     def __init__(self, request, *args, **kwargs):
         super(AlbumForm, self).__init__(*args, **kwargs)
-        self.fields["asso"].choices = [(x.id, x.nom) for x in Asso.objects.all().exclude(abreviation="jp") if request.user.estMembre_str(x.abreviation)]
+        self.fields["asso"].choices = [(x.id, x.nom) for x in Asso.objects.all() if request.user.estMembre_str(x.abreviation)]
         self.fields["article"].choices = [('', '(non)')] + [(x.id, x.titre) for i, x in enumerate(Article.objects.filter(estArchive=False).order_by('titre')) if request.user.estMembre_str(x.asso.abreviation)]
 
 
@@ -285,7 +285,7 @@ class DocumentForm(forms.ModelForm):
 
     def __init__(self, request, *args, **kwargs):
         super(DocumentForm, self).__init__(*args, **kwargs)
-        self.fields["asso"].choices = [(x.id, x.nom) for x in Asso.objects.all().exclude(abreviation="jp").order_by("id") if request.user.estMembre_str(x.abreviation)]
+        self.fields["asso"].choices = [(x.id, x.nom) for x in Asso.objects.all().order_by("id") if request.user.estMembre_str(x.abreviation)]
 
     def save(self, request, article, commit=True):
         instance = super(DocumentForm, self).save(commit=False)

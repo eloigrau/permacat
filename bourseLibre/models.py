@@ -1105,10 +1105,12 @@ class Salon(models.Model):
     membres = models.ManyToManyField(Profil, through='InscritSalon')
     estPublic = models.BooleanField(verbose_name="Salon public ou privé (public si coché)", default=False)
     article = models.ForeignKey("blog.Article", on_delete=models.CASCADE,
-                                help_text="L'evenement doit etre associé à un article existant (sinon créez un article avec une date)", blank=True, null=True)
+                                help_text="Le salon doit être associé à un article existant (sinon créez un article avec une date)", blank=True, null=True)
+
+    #asso = models.ForeignKey(Asso, on_delete=models.SET_NULL, null=True)
 
     class Meta:
-        ordering = ('-date_dernierMessage',)
+        ordering = ('titre',)
 
     def __str__(self):
         return "Salon '" + self.titre + "'"

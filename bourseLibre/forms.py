@@ -473,6 +473,8 @@ class creerAction_articlenouveauForm(forms.Form):
 
 
 class SalonForm(forms.ModelForm):
+    #asso = forms.ModelChoiceField(queryset=Asso.objects.all().order_by("id"), required=True,
+    #                          label="Article public ou réservé aux membres du groupe :", )
 
     class Meta:
         model = Salon

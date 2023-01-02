@@ -91,7 +91,7 @@ def recapitulatif(request, asso_slug):
         reunions = Reunion.objects.filter(estArchive=False, asso=asso, ).order_by('start_time','categorie',)
 
     entete, lignes = getRecapitulatif_km(request, reunions, asso)
-    asso_list = [(x.nom, x.abreviation) for x in Asso.objects.all().exclude(abreviation="jp").order_by("id")
+    asso_list = [(x.nom, x.abreviation) for x in Asso.objects.all().order_by("id")
                             if request.user.est_autorise(x.abreviation)]
     type_list = get_typereunion(asso_slug)
     type_reunion = "tout"
@@ -418,6 +418,7 @@ class ListeReunions_asso(ListeReunions):
         reu = Reunion.objects.filter(estArchive=False, asso=self.asso)
         cat = reu.values_list('categorie', flat=True).distinct()
         context['categorie_list'] = [x for x in Choix.type_reunion if x[0] in cat]
+        context['ordreTriPossibles'] = Choix.ordre_tri_reunions
 
         return context
 
