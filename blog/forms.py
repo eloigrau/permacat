@@ -154,7 +154,7 @@ class ArticleChangeForm(forms.ModelForm):
 
     def save(self, sendMail=True, commit=True):
         instance = super(ArticleChangeForm, self).save(commit=commit)
-        for asso in Asso.objects:
+        for asso in Asso.objects.all():
             if asso in self.cleaned_data["partagesAsso"]:
                 instance.partagesAsso.add(asso)
             elif instance.partagesAsso.filter(abreviation=asso.abreviation).exists():
