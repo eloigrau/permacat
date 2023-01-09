@@ -359,7 +359,7 @@ class ListeReunions(ListView):
     model = Reunion
     context_object_name = "reunion_list"
     template_name = "reunions/reunion_list.html"
-    paginate_by = 30
+    paginate_by = 100
 
     def get_queryset(self):
         params = dict(self.request.GET.items())
@@ -394,6 +394,8 @@ class ListeReunions(ListView):
 
 
 class ListeReunions_asso(ListeReunions):
+    paginate_by = 100
+
     def get_queryset(self):
         params = dict(self.request.GET.items())
         self.asso = Asso.objects.get(abreviation=self.kwargs['asso_slug'])
