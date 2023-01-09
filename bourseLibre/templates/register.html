@@ -18,8 +18,8 @@
             <form role="form" action="" method="post" enctype="multipart/form-data">
           {% csrf_token %}
                 {%include 'form_template2.html' with form=form_profil%}
+                <p>Votre adresse pour l'affichage sur la carte :</p>
                 {%include 'form_template2.html' with form=form_adresse%}
-
 
           <button type="submit" class="btn btn-success">S'enregistrer</button>
         </form>
