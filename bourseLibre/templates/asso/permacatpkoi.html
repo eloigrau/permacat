@@ -1,12 +1,16 @@
 {% extends 'base_site.html' %}
+{% load static%}
 
 {% block subtitle %}
 <h4><b>Pourquoi s'inscrire sur www.Perma.Cat ?</b></h4>
 {% endblock %}
 {% block content %}
 <div class="row justify-content-center">
-<div class="col-sm-12 col-md-8">
+<div class="col-sm-12 col-md-12 textcenter">
 
+     <img  style="max-width: 95%; height: auto;" src="{% static 'img/wwwpermacat.png' %}" alt="Pourquoi Perma.Cat ?"/>
+
+{% comment %}
   <ul  class="list">
     <li class="list-item listone"><span>pour <b>créer du lien localement</b> et construire des <b>projets communs</b></span></li>
     <li class="list-item listone"><span>pour <b>faire des échanges</b> (sans sortir son portefeuille ou sa CB...)</span></li>
@@ -21,6 +25,7 @@
      <li class="list-item listone"><span>pour se sortir des algorithmes de <b>capture de l'attention</b> et de la <b>publicité</b></span></li>
  </ul>
 
+{% endcomment %}
 </div>
 </div>
 

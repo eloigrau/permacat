@@ -205,7 +205,7 @@ class Produit_offresEtDemandes_modifier_form(ProduitModifierForm):
 
 
 class AdresseForm(forms.ModelForm):
-    rue = forms.CharField(label="Rue", required=False)
+    rue = forms.CharField(label="Rue (à peu près, champs invisible par les autres membres mais pour un affichage sur la carte)", required=False)
     code_postal = forms.CharField(label="Code postal*", initial="66000", required=False)
     commune = forms.CharField(label="Commune", initial="Perpignan", required=False)
     telephone = forms.CharField(label="Téléphone", required=False)
