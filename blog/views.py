@@ -111,7 +111,7 @@ class ModifierArticle(UpdateView):
 
     def get_form(self,*args, **kwargs):
         form = super(ModifierArticle, self).get_form(*args, **kwargs)
-        form.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all().order_by('nom')) if self.request.user.estMembre_str(x.abreviation)]
+        form.fields["asso"].choices = [(x.id, x.nom) for i, x in enumerate(Asso.objects.all().order_by('id')) if self.request.user.estMembre_str(x.abreviation)]
         form.fields["album"].choices = [("", "---------")] + [(x.id, x.title) for i, x in enumerate(Album.objects.all().order_by('title')) if self.request.user.estMembre_str(x.asso.abreviation)]
 
         return form

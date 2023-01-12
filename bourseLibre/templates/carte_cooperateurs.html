@@ -26,7 +26,9 @@
 <p class="textcenter textepetit">(* les personnes qui ont accepté d'apparaitre dans l'annuaire sont indiquées par une feuille ; les marqueurs gris concernent les colibris qui se sont inscrit sur "<a href="{% url 'carto:carte' %}" >presdecheznous.fr</a>" )</p>
 
 
+{% comment%}
 {% include "asso/presentation_asso_template.html" with adherent=request.user|adherent_asso:asso assos=asso.abreviation%}
+{% endcomment %}
 
 {% endblock %}
 {% block content %}

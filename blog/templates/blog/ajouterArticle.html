@@ -68,6 +68,9 @@
 		  $("#id_estEpingle").prop('disabled', false);
 		  $("#id_partagesAsso_0").prop('disabled', false);
 	 }else{
+		  $("#id_partagesAsso").children().each((index, element) => {
+				element.style.visibility = "hidden";
+		 });
 		  $("#id_partagesAsso_0").prop('disabled', true);
 		  $("#id_estEpingle").prop('disabled', true);
 	 };

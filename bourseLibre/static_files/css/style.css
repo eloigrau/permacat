@@ -40,13 +40,20 @@ font : normal;
 .clearfix { display: block; }
 
 .navbarMenu{
-		position: fixed;
-	    top: 0;
-	    right: 0;
-	    left: 0;
-	    width: 100%;
-	    z-index: 1030;
+}
+
+.fixed-top-2 {
+    margin-top: 56px;
     text-align:center;
+}
+
+.sticky-top {
+    padding-top: 56px;
+}
+
+.subnavbar > li{
+ padding-left:30px;
+  padding-right:30px;
 }
 
 .scrolled-down{
@@ -54,12 +61,6 @@ font : normal;
 }
 .scrolled-up{
     transform:translateY(0); transition: all 0.3s ease-in-out;
-}
-
-.fixed-top-2{
-    margin-top: 56px;
-    padding-top: 56px;
-    text-align:center;
 }
 
 @media screen and (max-width: 600px) {
@@ -2089,4 +2090,9 @@ padding-bottom:10px;
     display: flex;
     flex-direction: row;
     justify-content : space-around;
+}
+
+.icone{
+height:16px;
+
 }
